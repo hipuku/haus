@@ -1,0 +1,58 @@
+/* Outer wrapper — carries the size and positions the status dot */
+.wrapper {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+/* Inner circle — overflow:hidden here only, so status dot is never clipped */
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: var(--avatar-bg, var(--color-primary-subtle));
+  color: var(--avatar-fg, var(--color-primary-on-subtle));
+  font-family: var(--font-sans);
+  font-weight: var(--weight-semibold);
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+}
+
+/* ── Sizes (applied to wrapper) ── */
+
+.xs { width: var(--space-6);  height: var(--space-6);  font-size: var(--type-label-xs-size); }
+.sm { width: var(--space-8);  height: var(--space-8);  font-size: var(--type-label-xs-size); }
+.md { width: var(--space-10); height: var(--space-10); font-size: var(--type-label-sm-size); }
+.lg { width: var(--space-12); height: var(--space-12); font-size: var(--type-label-size); }
+.xl { width: var(--space-16); height: var(--space-16); font-size: var(--type-body-size); }
+
+/* ── Image ── */
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── Status indicator — on wrapper, never clipped ── */
+
+.status {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 35%;
+  height: 35%;
+  min-width: var(--space-2);
+  min-height: var(--space-2);
+  border-radius: 50%;
+  border: var(--border-width-thick) solid var(--color-surface-default);
+  box-sizing: border-box;
+}
+
+.online  { background-color: var(--color-success-default); }
+.away    { background-color: var(--color-warning-default); }
+.busy    { background-color: var(--color-error-default);   }
+.offline { background-color: var(--color-ink-disabled);    }

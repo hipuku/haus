@@ -1,0 +1,22 @@
+{
+  "name": "@haus/colour-utils",
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": ["src"],
+  "scripts": {
+    "test":      "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "chroma-js": "^3.1.2"
+  },
+  "devDependencies": {
+    "@types/chroma-js": "^2.4.4",
+    "vitest": "^2.1.0",
+    "typescript": "^5.4.5"
+  }
+}

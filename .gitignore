@@ -1,0 +1,13 @@
+node_modules
+dist
+.DS_Store
+*.local
+
+# Storybook build output
+storybook-static
+
+# Local tooling
+.claude
+
+# Internal documentation — not for consumers
+DESIGN_ETHOS.md

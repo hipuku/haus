@@ -1,0 +1,104 @@
+.wrapper {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  cursor: pointer;
+  user-select: none;
+}
+
+.wrapper.disabled {
+  cursor: not-allowed;
+  opacity: var(--opacity-disabled);
+}
+
+.input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  margin: 0;
+  pointer-events: none;
+}
+
+/* ── Track ── */
+
+.track {
+  flex-shrink: 0;
+  width: 36px;
+  height: var(--space-5);
+  border-radius: var(--radius-full);
+  background-color: var(--color-border-strong);
+  position: relative;
+  transition: background-color var(--motion-micro);
+  margin-top: 1px;
+}
+
+.wrapper:not(.disabled):hover .track {
+  background-color: var(--color-ink-tertiary);
+}
+
+.input:focus-visible ~ .track {
+  box-shadow: var(--shadow-focus);
+  outline: none;
+}
+
+.on .track {
+  background-color: var(--color-primary-default);
+}
+
+.on:not(.disabled):hover .track {
+  background-color: var(--color-primary-hover);
+}
+
+/* ── Thumb ── */
+
+.thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: var(--space-4);
+  height: var(--space-4);
+  border-radius: 50%;
+  background-color: var(--color-surface-default);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--motion-micro);
+}
+
+.on .thumb {
+  transform: translateX(16px);
+}
+
+/* ── Sizes ── */
+
+.sm .track { width: var(--space-7); height: var(--space-4); }
+.sm .thumb { width: var(--space-3);  height: var(--space-3);  }
+.sm.on .thumb { transform: translateX(12px); }
+
+/* ── Content ── */
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.label {
+  font-family: var(--font-sans);
+  font-size: var(--type-body-sm-size);
+  font-weight: var(--type-body-sm-weight);
+  line-height: var(--type-body-sm-leading);
+  color: var(--color-ink-primary);
+}
+
+.description {
+  font-family: var(--font-sans);
+  font-size: var(--type-label-xs-size);
+  line-height: var(--type-label-xs-leading);
+  color: var(--color-ink-tertiary);
+}
+
+/* ── Label-right layout (default: label left of toggle) ── */
+
+.labelRight {
+  flex-direction: row-reverse;
+}

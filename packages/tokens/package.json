@@ -1,0 +1,13 @@
+{
+  "name": "@haus/tokens",
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./primitives.css": "./src/primitives.css",
+    "./semantics.css": "./src/semantics.css",
+    "./motion.css": "./src/motion.css",
+"./tokens.json": "./src/tokens.json"
+  },
+  "files": ["src"]
+}

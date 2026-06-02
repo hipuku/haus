@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 160" width="400" height="160">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;500;600&amp;display=swap');
+    </style>
+  </defs>
+
+  <!--
+    Mark: three concentric C arcs + centre dot.
+    Reads as "C" for Core, and as nested token layers
+    (primitive → semantic → component) converging inward.
+    Gap opens to the right at ~75°, monoline, round caps.
+  -->
+  <g transform="translate(80,80)">
+    <!-- Outer arc — r=54 -->
+    <path
+      d="M 42.84,32.88 A 54,54 0 1,1 42.84,-32.88"
+      fill="none"
+      stroke="#0d0d0d"
+      stroke-width="3.5"
+      stroke-linecap="round"
+    />
+    <!-- Middle arc — r=37 -->
+    <path
+      d="M 29.36,22.53 A 37,37 0 1,1 29.36,-22.53"
+      fill="none"
+      stroke="#0d0d0d"
+      stroke-width="3.5"
+      stroke-linecap="round"
+    />
+    <!-- Inner arc — r=20 -->
+    <path
+      d="M 15.87,12.17 A 20,20 0 1,1 15.87,-12.17"
+      fill="none"
+      stroke="#0d0d0d"
+      stroke-width="3.5"
+      stroke-linecap="round"
+    />
+    <!-- Core dot -->
+    <circle r="4.5" fill="#0d0d0d"/>
+  </g>
+
+  <!-- Wordmark -->
+  <text
+    x="152"
+    y="91"
+    font-family="'Manrope', 'Helvetica Neue', Arial, sans-serif"
+    font-size="46"
+    font-weight="600"
+    letter-spacing="-0.5"
+    fill="#0d0d0d"
+  >Core</text>
+
+  <!-- Sub-rule -->
+  <line x1="152" y1="104" x2="338" y2="104" stroke="#0d0d0d" stroke-width="1"/>
+
+  <!-- Descriptor -->
+  <text
+    x="152"
+    y="120"
+    font-family="'Manrope', 'Helvetica Neue', Arial, sans-serif"
+    font-size="10"
+    font-weight="300"
+    letter-spacing="3.5"
+    fill="#0d0d0d"
+  >BRAND MANAGEMENT</text>
+</svg>

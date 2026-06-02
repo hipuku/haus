@@ -1,0 +1,117 @@
+.wrapper {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  cursor: pointer;
+  user-select: none;
+}
+
+.wrapper.disabled {
+  cursor: not-allowed;
+  opacity: var(--opacity-disabled);
+}
+
+/* ── Hidden native input ── */
+
+.input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  margin: 0;
+  pointer-events: none;
+}
+
+/* ── Visual box ── */
+
+.box {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--radius-sm);
+  border: var(--border-width-thick) solid var(--color-border-strong);
+  background-color: var(--color-surface-default);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background-color var(--motion-micro),
+    border-color     var(--motion-micro);
+  margin-top: 1px; /* optical alignment with label text */
+}
+
+.wrapper:not(.disabled):hover .box {
+  border-color: var(--color-primary-default);
+}
+
+.input:focus-visible ~ .box {
+  box-shadow: var(--shadow-focus);
+  outline: none;
+}
+
+/* ── Checked ── */
+
+.checked .box {
+  background-color: var(--color-primary-default);
+  border-color: var(--color-primary-default);
+}
+
+.checked:not(.disabled):hover .box {
+  background-color: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+}
+
+/* ── Indeterminate ── */
+
+.indeterminate .box {
+  background-color: var(--color-primary-default);
+  border-color: var(--color-primary-default);
+}
+
+/* ── Error ── */
+
+.error .box {
+  border-color: var(--color-error-default);
+}
+
+.error.checked .box {
+  background-color: var(--color-error-default);
+  border-color: var(--color-error-default);
+}
+
+/* ── Check icon ── */
+
+.icon {
+  color: var(--color-ink-inverse);
+  display: flex;
+}
+
+/* ── Label area ── */
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.label {
+  font-family: var(--font-sans);
+  font-size: var(--type-body-sm-size);
+  font-weight: var(--type-body-sm-weight);
+  line-height: var(--type-body-sm-leading);
+  color: var(--color-ink-primary);
+}
+
+.hint {
+  font-family: var(--font-sans);
+  font-size: var(--type-label-xs-size);
+  line-height: var(--type-label-xs-leading);
+  color: var(--color-ink-tertiary);
+}
+
+.errorMessage {
+  font-family: var(--font-sans);
+  font-size: var(--type-label-xs-size);
+  line-height: var(--type-label-xs-leading);
+  color: var(--color-error-default);
+}

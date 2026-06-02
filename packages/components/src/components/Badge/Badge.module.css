@@ -1,0 +1,88 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  border-radius: var(--radius-full);
+  font-family: var(--font-sans);
+  font-size: var(--type-label-xs-size);
+  font-weight: var(--type-label-xs-weight);
+  line-height: var(--type-label-xs-leading);
+  letter-spacing: var(--type-label-xs-tracking);
+  text-transform: uppercase;
+  padding: 2px var(--space-2);
+  white-space: nowrap;
+}
+
+/* ── Subtle (default) ── */
+
+.neutral.subtle {
+  background-color: var(--color-surface-subtle);
+  color: var(--color-ink-secondary);
+}
+
+.primary.subtle {
+  background-color: var(--color-primary-subtle);
+  color: var(--color-primary-on-subtle);
+}
+
+.info.subtle {
+  background-color: var(--color-info-subtle);
+  color: var(--color-info-on-subtle);
+}
+
+.success.subtle {
+  background-color: var(--color-success-subtle);
+  color: var(--color-success-on-subtle);
+}
+
+.warning.subtle {
+  background-color: var(--color-warning-subtle);
+  color: var(--color-warning-on-subtle);
+}
+
+.error.subtle {
+  background-color: var(--color-error-subtle);
+  color: var(--color-error-on-subtle);
+}
+
+/* ── Solid ── */
+
+.neutral.solid {
+  background-color: var(--color-surface-inverse);
+  color: var(--color-ink-inverse);
+}
+
+.primary.solid {
+  background-color: var(--color-primary-default);
+  color: var(--color-ink-on-aronia);
+}
+
+.info.solid {
+  background-color: var(--color-info-default);
+  color: var(--color-info-on-default);
+}
+
+.success.solid {
+  background-color: var(--color-success-solid);
+  color: var(--color-ink-inverse);
+}
+
+.warning.solid {
+  background-color: var(--color-warning-solid);
+  color: var(--color-ink-inverse);
+}
+
+.error.solid {
+  background-color: var(--color-error-default);
+  color: var(--color-error-on-default);
+}
+
+/* ── Dot indicator ── */
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: currentColor;
+  flex-shrink: 0;
+}

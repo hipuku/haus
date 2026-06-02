@@ -1,0 +1,139 @@
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  padding-left: calc(var(--space-4) + 3px); /* compensate for accent border */
+  border-radius: var(--radius-lg);
+  border: var(--border-width-default) solid;
+  border-left-width: 3px;
+  box-shadow: var(--shadow-lg);
+  max-width: 360px;
+  width: 100%;
+  font-family: var(--font-sans);
+  animation: slideIn var(--motion-slide-in);
+}
+
+@keyframes slideIn {
+  from { transform: translateY(8px); opacity: 0; }
+  to   { transform: translateY(0);   opacity: 1; }
+}
+
+/* ── Variants ── */
+
+.neutral {
+  background-color: var(--color-surface-inverse);
+  border-color: var(--color-surface-inverse);
+  color: var(--color-ink-inverse);
+}
+
+.info {
+  background-color: var(--color-info-subtle);
+  border-color: var(--color-info-border);
+  border-left-color: var(--color-info-default);
+  color: var(--color-ink-primary);
+}
+
+.success {
+  background-color: var(--color-success-subtle);
+  border-color: var(--color-success-border);
+  border-left-color: var(--color-success-default);
+  color: var(--color-ink-primary);
+}
+
+.warning {
+  background-color: var(--color-warning-subtle);
+  border-color: var(--color-warning-border);
+  border-left-color: var(--color-warning-default);
+  color: var(--color-ink-primary);
+}
+
+.error {
+  background-color: var(--color-error-subtle);
+  border-color: var(--color-error-border);
+  border-left-color: var(--color-error-default);
+  color: var(--color-ink-primary);
+}
+
+/* ── Icon ── */
+
+.icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  margin-top: 1px;
+}
+
+.neutral .icon  { color: var(--color-ink-inverse);  }
+.info    .icon  { color: var(--color-info-default);  }
+.success .icon  { color: var(--color-success-default); }
+.warning .icon  { color: var(--color-warning-default); }
+.error   .icon  { color: var(--color-error-default); }
+
+/* ── Body ── */
+
+.body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.title {
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  line-height: var(--type-label-leading);
+  letter-spacing: var(--type-label-tracking);
+}
+
+.description {
+  font-size: var(--type-body-sm-size);
+  font-weight: var(--type-body-sm-weight);
+  line-height: var(--type-body-sm-leading);
+  color: var(--color-ink-secondary);
+}
+
+.neutral .description { color: var(--color-ink-inverse); opacity: 0.8; }
+
+/* On neutral (dark) toasts, action buttons get a persistent white outline */
+.neutral .action { color: var(--color-ink-inverse); }
+.neutral .action button {
+  color: var(--color-ink-inverse);
+  border-color: var(--color-border-inverse);
+  background-color: transparent;
+}
+.neutral .action button:hover {
+  background-color: var(--color-surface-inverse-hover);
+  border-color: var(--color-border-inverse-hover);
+}
+
+.action {
+  margin-top: var(--space-2);
+}
+
+/* ── Close button ── */
+
+.close {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.6;
+  transition: opacity var(--motion-micro);
+  padding: 0;
+  margin-top: 1px;
+}
+
+.close:hover { opacity: 1; }
+.close:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
