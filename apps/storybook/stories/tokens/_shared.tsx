@@ -310,7 +310,6 @@ export function Callout({
             letterSpacing: 'var(--tracking-widest)',
             textTransform: 'uppercase',
             color: t.text,
-            opacity: 0.7,
           }}
         >
           {label}

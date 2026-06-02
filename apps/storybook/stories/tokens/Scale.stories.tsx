@@ -52,7 +52,7 @@ function BreakpointsPage() {
         {breakpoints.map(({ name, value, use }) => (
           <React.Fragment key={name}>
             <TD>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--type-mono-size)', fontWeight: 'var(--weight-medium)' as React.CSSProperties['fontWeight'], color: 'var(--color-ink-primary)', whiteSpace: 'nowrap' }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--type-mono-size)', fontWeight: 500, color: 'var(--color-ink-primary)', whiteSpace: 'nowrap' }}>
                 tokens.{name}
               </span>
             </TD>

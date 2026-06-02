@@ -96,20 +96,18 @@
 
 .neutral .description { color: var(--color-ink-inverse); opacity: 0.8; }
 
-/* On neutral (dark) toasts, action buttons get a persistent white outline */
+/* Neutral (dark) toast — action inherits inverse ink colour via cascade */
 .neutral .action { color: var(--color-ink-inverse); }
-.neutral .action button {
-  color: var(--color-ink-inverse);
-  border-color: var(--color-border-inverse);
-  background-color: transparent;
-}
-.neutral .action button:hover {
-  background-color: var(--color-surface-inverse-hover);
-  border-color: var(--color-border-inverse-hover);
+
+.titleRow {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  flex-wrap: wrap;
 }
 
 .action {
-  margin-top: var(--space-2);
+  flex-shrink: 0;
 }
 
 /* ── Close button ── */

@@ -110,6 +110,31 @@
   filter: brightness(0.9);
 }
 
+.text {
+  background-color: transparent;
+  border-color: transparent;
+  color: inherit;
+  padding-left: var(--space-1);
+  padding-right: var(--space-1);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  text-decoration-color: oklch(from currentColor l c h / 0.35);
+  transition:
+    text-decoration-color     var(--motion-micro),
+    text-decoration-thickness var(--motion-micro);
+}
+.text:hover:not(:disabled) {
+  background-color: transparent;
+  border-color: transparent;
+  text-decoration-color: currentColor;
+  text-decoration-thickness: 2px;
+}
+.text:active:not(:disabled) {
+  background-color: transparent;
+  text-decoration-color: currentColor;
+}
+
 /* ── Loading spinner ── */
 
 .spinner {

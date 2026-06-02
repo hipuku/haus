@@ -73,7 +73,7 @@
   font-family: var(--font-sans);
   font-size: var(--type-label-xs-size);
   line-height: var(--type-label-xs-leading);
-  color: var(--color-ink-tertiary);
+  color: var(--color-ink-secondary);
 }
 
 .errorMessage {

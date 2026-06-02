@@ -67,9 +67,11 @@ export function Toast({
       <span className={styles.icon}>{ICONS[variant]}</span>
 
       <div className={styles.body}>
-        <span className={styles.title}>{title}</span>
+        <div className={styles.titleRow}>
+          <span className={styles.title}>{title}</span>
+          {action && <div className={styles.action}>{action}</div>}
+        </div>
         {description && <span className={styles.description}>{description}</span>}
-        {action && <div className={styles.action}>{action}</div>}
       </div>
 
       {onClose && (

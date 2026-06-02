@@ -18,10 +18,10 @@ import { pageWrap, pageTitleStyle, pageDescStyle } from '../tokens/_shared'
 const sectionHead: React.CSSProperties = {
   fontFamily: 'var(--font-sans)',
   fontSize: 'var(--type-label-xs-size)',
-  fontWeight: 'var(--weight-medium)' as React.CSSProperties['fontWeight'],
+  fontWeight: 500,
   letterSpacing: 'var(--tracking-widest)',
   textTransform: 'uppercase',
-  color: 'var(--color-ink-tertiary)',
+  color: 'var(--color-ink-secondary)',
   margin: 'var(--space-8) 0 var(--space-4)',
   paddingBottom: 'var(--space-2)',
   borderBottom: '1px solid var(--color-border-subtle)',
@@ -40,8 +40,9 @@ function ButtonsPage() {
     <div style={pageWrap}>
       <h1 style={pageTitleStyle}>Button</h1>
       <p style={pageDescStyle}>
-        Four variants, three sizes, loading and disabled states. The primary variant uses aronia.
-        Ghost is for secondary actions where a border would add visual noise.
+        Five variants, three sizes, loading and disabled states. The primary variant uses aronia.
+        Ghost is for secondary actions where a border would add visual noise. Text is for inline
+        actions inside other components — inherits colour from context, hover thickens the underline.
       </p>
 
       <h2 style={sectionHead}>Variants</h2>
@@ -50,7 +51,20 @@ function ButtonsPage() {
         <Button variant="secondary">Secondary</Button>
         <Button variant="ghost">Ghost</Button>
         <Button variant="danger">Danger</Button>
+        <Button variant="text">Text</Button>
       </Row>
+
+      <h2 style={sectionHead}>Text variant — in context</h2>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', fontFamily: 'var(--font-sans)', fontSize: 'var(--type-body-sm-size)', color: 'var(--color-ink-secondary)' }}>
+          Showing results 1–20 of 84.
+          <Button variant="text" size="sm">Load more</Button>
+        </div>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--space-3)', padding: 'var(--space-3) var(--space-4)', background: 'var(--color-surface-inverse)', borderRadius: 'var(--radius-lg)', color: 'var(--color-ink-inverse)', fontFamily: 'var(--font-sans)', fontSize: 'var(--type-label-size)' }}>
+          Colour deleted
+          <Button variant="text" size="sm">Undo</Button>
+        </div>
+      </div>
 
       <h2 style={sectionHead}>Sizes</h2>
       <Row>
@@ -171,7 +185,7 @@ function CardPage() {
       <div style={{ maxWidth: 320 }}>
         <Card padding={false}>
           <div style={{ padding: 'var(--space-4) var(--space-5)', borderBottom: '1px solid var(--color-border-subtle)' }}>
-            <span style={{ fontFamily: 'var(--font-sans)', fontWeight: 'var(--weight-semibold)' as React.CSSProperties['fontWeight'], fontSize: 'var(--type-label-size)' }}>Card header</span>
+            <span style={{ fontFamily: 'var(--font-sans)', fontWeight: 600, fontSize: 'var(--type-label-size)' }}>Card header</span>
           </div>
           <div style={{ padding: 'var(--space-4) var(--space-5)' }}>
             <p style={{ margin: 0, fontFamily: 'var(--font-sans)', fontSize: 'var(--type-body-sm-size)', color: 'var(--color-ink-secondary)' }}>
@@ -294,7 +308,7 @@ function ToastPage() {
         <Toast
           variant="neutral"
           title="Colour deleted"
-          action={<Button variant="ghost" size="sm">Undo</Button>}
+          action={<Button variant="text" size="sm">Undo</Button>}
           onClose={() => {}}
         />
       </div>

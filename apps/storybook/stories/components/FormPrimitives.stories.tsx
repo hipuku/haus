@@ -6,10 +6,10 @@ import { pageWrap, pageTitleStyle, pageDescStyle } from '../tokens/_shared'
 const sectionHead: React.CSSProperties = {
   fontFamily: 'var(--font-sans)',
   fontSize: 'var(--type-label-xs-size)',
-  fontWeight: 'var(--weight-medium)' as React.CSSProperties['fontWeight'],
+  fontWeight: 500,
   letterSpacing: 'var(--tracking-widest)',
   textTransform: 'uppercase',
-  color: 'var(--color-ink-tertiary)',
+  color: 'var(--color-ink-secondary)',
   margin: 'var(--space-8) 0 var(--space-4)',
   paddingBottom: 'var(--space-2)',
   borderBottom: '1px solid var(--color-border-subtle)',

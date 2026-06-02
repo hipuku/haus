@@ -29,6 +29,7 @@ function ShadowDemo({ name, css }: { name: string; css: string }) {
     return (
       <div style={{ width: 112, display: 'flex', alignItems: 'center' }}>
         <input
+          aria-label="Focus ring demo"
           value="Focused"
           readOnly
           style={{

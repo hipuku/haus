@@ -75,7 +75,7 @@ function EasingRow({ css, name, token, description }: EasingEntry) {
   return (
     <>
       <TD>
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--type-mono-size)', fontWeight: 'var(--weight-semibold)' as React.CSSProperties['fontWeight'], color: 'var(--color-ink-primary)', whiteSpace: 'nowrap' }}>
+        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--type-mono-size)', fontWeight: 600, color: 'var(--color-ink-primary)', whiteSpace: 'nowrap' }}>
           {name}
         </span>
       </TD>
@@ -178,7 +178,7 @@ function MotionPage() {
         {durations.map(({ name, value, use }) => (
           <React.Fragment key={name}>
             <TD><CopyChip name={name} /></TD>
-            <TD><span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--type-mono-size)', color: 'var(--color-ink-tertiary)', whiteSpace: 'nowrap' }}>{value}</span></TD>
+            <TD><span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--type-mono-size)', color: 'var(--color-ink-secondary)', whiteSpace: 'nowrap' }}>{value}</span></TD>
             <TD><DurationBar ms={parseInt(value)} /></TD>
             <TD><span style={{ fontSize: 'var(--type-body-sm-size)', color: 'var(--color-ink-secondary)' }}>{use}</span></TD>
           </React.Fragment>
