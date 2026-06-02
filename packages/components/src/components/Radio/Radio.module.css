@@ -65,8 +65,8 @@
 
 .circle {
   flex-shrink: 0;
-  width: 16px;
-  height: 16px;
+  width: var(--space-4);
+  height: var(--space-4);
   border-radius: 50%;
   border: var(--border-width-thick) solid var(--color-border-strong);
   background-color: var(--color-surface-default);
@@ -131,4 +131,10 @@
   font-size: var(--type-label-xs-size);
   line-height: var(--type-label-xs-leading);
   color: var(--color-ink-secondary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .circle {
+    transition-duration: var(--duration-reduced);
+  }
 }

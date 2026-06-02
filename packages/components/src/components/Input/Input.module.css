@@ -96,3 +96,9 @@
   line-height: var(--type-label-xs-leading);
   color: var(--color-error-default);
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .inputWrap {
+    transition-duration: var(--duration-reduced);
+  }
+}

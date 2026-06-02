@@ -1,6 +1,6 @@
 # Design and Engineering Decisions
 
-Key decisions made during the design and build of haus. Recorded to explain the *why* — not as immutable rules, but so future changes are made with full awareness of what they replace.
+Key decisions made during the design and build of haus. Recorded to explain the *why*, not as immutable rules, but so future changes are made with full awareness of what they replace.
 
 ---
 
@@ -10,11 +10,11 @@ OKLCH gives perceptual uniformity that hex and HSL don't. Equal numeric steps in
 
 ## Three-layer token architecture: primitives → semantics → components
 
-Primitives hold raw values — no meaning, just numbers. Semantics hold intent — role names like `--color-surface-default` that alias primitives. Components consume semantics only; they never reach through to primitives. This separation means a theme swap (dark mode, high-contrast, brand variant) is a single-file change to `semantics.css` with zero component edits. It also enforces a discipline: if you can't name what a token *does*, it shouldn't exist.
+Primitives hold raw values (no meaning, just numbers). Semantics hold intent: role names like `--color-surface-default` that alias primitives. Components consume semantics only; they never reach through to primitives. This separation means a theme swap (dark mode, high-contrast, brand variant) is a single-file change to `semantics.css` with zero component edits. It also enforces a discipline: if you can't name what a token *does*, it shouldn't exist.
 
 ## Role-based type system over a heading scale
 
-The type system has no h1–h6. It has roles: `display`, `heading-lg`, `heading`, `heading-sm`, `body-lg`, `body`, `body-sm`, `label`, `label-sm`, `label-xs`, `mono`. This decouples visual hierarchy from document semantics — a component author picks the role that fits the content's purpose, not the size that looks right. It also prevents the common mistake of using h1 styles on decorative text to get a large font size.
+The type system has no h1-h6. It has roles: `display`, `heading-lg`, `heading`, `heading-sm`, `body-lg`, `body`, `body-sm`, `label`, `label-sm`, `label-xs`, `mono`. This decouples visual hierarchy from document semantics. A component author picks the role that fits the content's purpose, not the size that looks right. It also prevents the common mistake of using h1 styles on decorative text to get a large font size.
 
 ## The four-property rule for type tokens
 
@@ -26,11 +26,11 @@ Component CSS uses CSS Modules. The token layer is plain CSS custom properties, 
 
 ## Semantic `on-*` pairing for every surface token
 
-Every surface token has a corresponding `on-*` text token: `--color-success-subtle` is paired with `--color-success-on-subtle`. This is borrowed from Material Design 3's insight that surface and text contrast should be specified together, not left for component authors to work out at usage time. It also makes contrast failures impossible to accidentally introduce — if you use the paired token, the contrast is guaranteed by construction.
+Every surface token has a corresponding `on-*` text token: `--color-success-subtle` is paired with `--color-success-on-subtle`. This is borrowed from Material Design 3's insight that surface and text contrast should be specified together, not left for component authors to work out at usage time. It also makes contrast failures impossible to accidentally introduce: use the paired token and the contrast is guaranteed by construction.
 
 ## W3C Design Tokens JSON as the canonical export format
 
-`tokens.json` conforms to the W3C Design Tokens 1.0 format. This means haus tokens are compatible with Style Dictionary, Theo, and any token pipeline that reads the spec — without any haus-specific tooling. The CSS custom properties are the runtime format; the JSON is the handoff format for tools and downstream systems.
+`tokens.json` conforms to the W3C Design Tokens 1.0 format. This means haus tokens are compatible with Style Dictionary, Theo, and any token pipeline that reads the spec without any haus-specific tooling. The CSS custom properties are the runtime format; the JSON is the handoff format for tools and downstream systems.
 
 ## Monorepo with pnpm workspaces
 
@@ -38,12 +38,22 @@ Three packages: `tokens`, `components`, `colour-utils`. Keeping them separate me
 
 ## Manrope for UI, Fira Code for mono
 
-Manrope is a variable font with a wide weight range (200–800), which means the full type scale ships in one font load with no fallback weight snapping. Fira Code has programming ligatures and a compact footprint. Both are available on Google Fonts, which removes the self-hosting requirement for a v1 system. Domine is loaded for the marketing site only and is explicitly excluded from the token package — mixing a serif display font into UI components was rejected.
+Manrope is a variable font with a wide weight range (200-800), which means the full type scale ships in one font load with no fallback weight snapping. Fira Code has programming ligatures and a compact footprint. Both are available on Google Fonts, which removes the self-hosting requirement for a v1 system. Domine is loaded for the marketing site only and is explicitly excluded from the token package. Mixing a serif display font into UI components was rejected.
 
 ## Light mode only in v1
 
-Dark mode in haus lives entirely in `semantics.css` via `light-dark()` — no separate stylesheet, no class toggle. This is the planned v2 architecture. Doing it properly in v1 would require auditing every semantic token for dark-mode contrast, which doubles the colour decision surface before any consumer has used the system. Shipping light-only first lets the token structure prove itself in production before the dark-mode layer is added.
+Dark mode in haus lives entirely in `semantics.css` via `light-dark()`, no separate stylesheet, no class toggle. This is the planned v2 architecture. Doing it properly in v1 would require auditing every semantic token for dark-mode contrast, which doubles the colour decision surface before any consumer has used the system. Shipping light-only first lets the token structure prove itself in production before the dark-mode layer is added.
 
 ## Storybook as the product, not documentation
 
-For an open-source design system, Storybook is what consumers actually read. A token that exists in `primitives.css` but has no story is a token that doesn't exist for the people using the system. The rule enforced here: nothing ships without a corresponding story. This also means the token pages are themselves a design artefact — they need to look good, not just be technically correct.
+For an open-source design system, Storybook is what consumers actually read. A token that exists in `primitives.css` but has no story is a token that doesn't exist for the people using the system. The rule enforced here: nothing ships without a corresponding story. This also means the token pages are themselves a design artefact: they need to look good, not just be technically correct.
+
+## `prefers-reduced-motion` policy
+
+All animated components respect `prefers-reduced-motion: reduce` by overriding `transition-duration` and `animation-duration` to `--duration-reduced`.
+
+The override targets duration rather than using `transition: none` because:
+- Some transforms carry positional meaning (Toggle thumb, Modal entry offset) and need to apply even without animation
+- A control that snaps instantly to its new position still communicates state; one that doesn't move at all is ambiguous
+
+`--duration-reduced` is a named token rather than a hardcoded `0ms` so it stays tunable and reads as intentional in the source.

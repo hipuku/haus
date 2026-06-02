@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './Button.module.css'
 
-export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'text'
+export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'text' | 'external'
 export type ButtonSize    = 'sm' | 'md' | 'lg'
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -35,17 +35,23 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       className,
     ].filter(Boolean).join(' ')
 
+    const externalIcon = variant === 'external'
+      ? <span className={styles.externalIcon} aria-hidden="true">↗</span>
+      : null
+
     if (href) {
       return (
         <a
           href={href}
           target={target}
+          rel={target === '_blank' ? 'noopener noreferrer' : undefined}
           className={cls}
           aria-disabled={disabled || loading}
           {...(rest as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
         >
           {loading && <span className={styles.spinner} aria-hidden />}
           {children}
+          {externalIcon}
         </a>
       )
     }
@@ -60,6 +66,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       >
         {loading && <span className={styles.spinner} aria-hidden />}
         {children}
+        {externalIcon}
       </button>
     )
   }

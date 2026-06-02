@@ -31,7 +31,7 @@
   line-height: var(--type-body-sm-leading);
   color: var(--color-ink-primary);
   resize: vertical;
-  min-height: 80px;
+  min-height: var(--space-20);
   transition:
     border-color var(--motion-micro),
     box-shadow   var(--motion-micro);
@@ -76,4 +76,10 @@
   font-size: var(--type-label-xs-size);
   line-height: var(--type-label-xs-leading);
   color: var(--color-error-default);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .textarea {
+    transition-duration: var(--duration-reduced);
+  }
 }

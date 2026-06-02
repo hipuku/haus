@@ -65,7 +65,7 @@
 }
 
 .on .thumb {
-  transform: translateX(16px);
+  transform: translateX(var(--space-4));
 }
 
 /* ── Sizes ── */
@@ -101,4 +101,11 @@
 
 .labelRight {
   flex-direction: row-reverse;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track,
+  .thumb {
+    transition-duration: var(--duration-reduced);
+  }
 }

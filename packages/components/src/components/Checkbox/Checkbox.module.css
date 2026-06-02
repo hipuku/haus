@@ -26,8 +26,8 @@
 
 .box {
   flex-shrink: 0;
-  width: 16px;
-  height: 16px;
+  width: var(--space-4);
+  height: var(--space-4);
   border-radius: var(--radius-sm);
   border: var(--border-width-thick) solid var(--color-border-strong);
   background-color: var(--color-surface-default);
@@ -109,9 +109,23 @@
   color: var(--color-ink-secondary);
 }
 
+.required {
+  color: var(--color-error-default);
+  margin-left: var(--space-1);
+}
+
 .errorMessage {
+  display: block;
   font-family: var(--font-sans);
   font-size: var(--type-label-xs-size);
   line-height: var(--type-label-xs-leading);
   color: var(--color-error-default);
+  margin-top: var(--space-1);
+  padding-left: calc(var(--space-4) + var(--space-2)); /* indent past checkbox + gap */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .box {
+    transition-duration: var(--duration-reduced);
+  }
 }

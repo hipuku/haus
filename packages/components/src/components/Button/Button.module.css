@@ -118,7 +118,7 @@
   padding-right: var(--space-1);
   text-decoration: underline;
   text-underline-offset: 3px;
-  text-decoration-thickness: 1px;
+  text-decoration-thickness: var(--border-width-default);
   text-decoration-color: oklch(from currentColor l c h / 0.35);
   transition:
     text-decoration-color     var(--motion-micro),
@@ -128,11 +128,20 @@
   background-color: transparent;
   border-color: transparent;
   text-decoration-color: currentColor;
-  text-decoration-thickness: 2px;
+  text-decoration-thickness: var(--border-width-thick);
 }
 .text:active:not(:disabled) {
   background-color: transparent;
   text-decoration-color: currentColor;
+}
+
+.external {
+  composes: text;
+  display: inline;
+}
+
+.externalIcon {
+  padding-left: 0.15em;
 }
 
 /* ── Loading spinner ── */
@@ -140,13 +149,22 @@
 .spinner {
   width: 1em;
   height: 1em;
-  border: 2px solid currentColor;
+  border: var(--border-width-thick) solid currentColor;
   border-top-color: transparent;
   border-radius: 50%;
-  animation: spin var(--duration-slow) linear infinite;
+  animation: spin var(--duration-slow) var(--ease-linear) infinite;
   flex-shrink: 0;
 }
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    transition-duration: var(--duration-reduced);
+  }
+  .spinner {
+    animation-duration: var(--duration-reduced);
+  }
 }

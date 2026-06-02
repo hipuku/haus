@@ -67,7 +67,7 @@ export function Modal({
       <div
         ref={dialogRef}
         role="dialog"
-        aria-modal
+        aria-modal="true"
         aria-label={title}
         className={dialogCls}
         tabIndex={-1}

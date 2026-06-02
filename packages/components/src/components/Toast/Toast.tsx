@@ -3,40 +3,12 @@ import styles from './Toast.module.css'
 
 export type ToastVariant = 'neutral' | 'info' | 'success' | 'warning' | 'error'
 
-const ICONS: Record<ToastVariant, React.ReactNode> = {
-  neutral: (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
-      <circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1.5"/>
-      <path d="M8 5V8.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-      <circle cx="8" cy="11" r="0.75" fill="currentColor"/>
-    </svg>
-  ),
-  info: (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
-      <circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1.5"/>
-      <path d="M8 5V8.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-      <circle cx="8" cy="11" r="0.75" fill="currentColor"/>
-    </svg>
-  ),
-  success: (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
-      <circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1.5"/>
-      <path d="M5.5 8L7 9.5L10.5 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
-  ),
-  warning: (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
-      <path d="M8 2L14.5 13.5H1.5L8 2Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
-      <path d="M8 6.5V9.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-      <circle cx="8" cy="11.5" r="0.75" fill="currentColor"/>
-    </svg>
-  ),
-  error: (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
-      <circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1.5"/>
-      <path d="M5.5 5.5L10.5 10.5M10.5 5.5L5.5 10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-    </svg>
-  ),
+const ICONS: Record<ToastVariant, string> = {
+  neutral: 'fa-solid fa-circle-info',
+  info:    'fa-solid fa-circle-info',
+  success: 'fa-solid fa-circle-check',
+  warning: 'fa-solid fa-triangle-exclamation',
+  error:   'fa-solid fa-circle-xmark',
 }
 
 export interface ToastProps {
@@ -64,7 +36,7 @@ export function Toast({
 
   return (
     <div className={cls} role="status" aria-live="polite" aria-atomic>
-      <span className={styles.icon}>{ICONS[variant]}</span>
+      <i className={[ICONS[variant], styles.icon].join(' ')} aria-hidden="true" />
 
       <div className={styles.body}>
         <div className={styles.titleRow}>

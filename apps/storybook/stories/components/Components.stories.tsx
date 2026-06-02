@@ -40,9 +40,10 @@ function ButtonsPage() {
     <div style={pageWrap}>
       <h1 style={pageTitleStyle}>Button</h1>
       <p style={pageDescStyle}>
-        Five variants, three sizes, loading and disabled states. The primary variant uses aronia.
+        Six variants, three sizes, loading and disabled states. The primary variant uses aronia.
         Ghost is for secondary actions where a border would add visual noise. Text is for inline
-        actions inside other components — inherits colour from context, hover thickens the underline.
+        actions — inherits colour from context, hover thickens the underline. External matches Text
+        but appends a diagonal arrow and adds rel="noopener noreferrer" automatically.
       </p>
 
       <h2 style={sectionHead}>Variants</h2>
@@ -52,9 +53,10 @@ function ButtonsPage() {
         <Button variant="ghost">Ghost</Button>
         <Button variant="danger">Danger</Button>
         <Button variant="text">Text</Button>
+        <Button variant="external">External</Button>
       </Row>
 
-      <h2 style={sectionHead}>Text variant — in context</h2>
+      <h2 style={sectionHead}>Text + external — in context</h2>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', fontFamily: 'var(--font-sans)', fontSize: 'var(--type-body-sm-size)', color: 'var(--color-ink-secondary)' }}>
           Showing results 1–20 of 84.
@@ -63,6 +65,12 @@ function ButtonsPage() {
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--space-3)', padding: 'var(--space-3) var(--space-4)', background: 'var(--color-surface-inverse)', borderRadius: 'var(--radius-lg)', color: 'var(--color-ink-inverse)', fontFamily: 'var(--font-sans)', fontSize: 'var(--type-label-size)' }}>
           Colour deleted
           <Button variant="text" size="sm">Undo</Button>
+        </div>
+        <div style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--type-body-sm-size)', color: 'var(--color-ink-secondary)' }}>
+          Learn more in the{' '}
+          <Button variant="external" size="sm" href="#" target="_blank">documentation</Button>
+          {' '}or view the{' '}
+          <Button variant="external" size="sm" href="#" target="_blank">source on GitHub</Button>
         </div>
       </div>
 

@@ -94,7 +94,7 @@ export function Checkbox({
             {label && (
               <span className={styles.label}>
                 {label}
-                {required && <span aria-hidden style={{ color: 'var(--color-error-default)', marginLeft: 'var(--space-1)' }}>*</span>}
+                {required && <span aria-hidden className={styles.required}>*</span>}
               </span>
             )}
             {hint && !error && <span className={styles.hint}>{hint}</span>}
@@ -103,8 +103,7 @@ export function Checkbox({
       </label>
 
       {error && (
-        <span id={errorId} className={styles.errorMessage} role="alert"
-          style={{ display: 'block', marginTop: 'var(--space-1)', paddingLeft: 'calc(16px + var(--space-2))' }}>
+        <span id={errorId} className={styles.errorMessage} role="alert">
           {error}
         </span>
       )}
