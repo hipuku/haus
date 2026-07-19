@@ -7,5 +7,7 @@ export type { ContrastResult }             from './contrast'
 export { clusterByPerceptualDistance }     from './cluster'
 export type { ColourCluster }              from './cluster'
 
+export { deltaE }                          from './deltaE'
+
 export { nearestNamedColour }              from './namedColour'
 export type { NamedColourMatch }           from './namedColour'
