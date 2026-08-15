@@ -5,6 +5,10 @@ const config: StorybookConfig = {
     '../stories/**/*.mdx',
     '../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)',
   ],
+  staticDirs: [
+    { from: '../../../logo.svg', to: '/brand/logo.svg' },
+    { from: '../../../wordmark.svg', to: '/brand/wordmark.svg' },
+  ],
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
