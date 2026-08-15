@@ -28,7 +28,15 @@ motion.css       Easing curves and duration tokens.
 
 Theming (brand and role swaps) lives entirely in `semantics.css`; components never change. haus is light-mode only — dark mode is explicitly out of scope, not a deferred layer.
 
+## Links
+
+- **Live Storybook:** [haus.hipuku.dev](https://haus.hipuku.dev)
+- **npm:** [`haus-colour-utils`](https://www.npmjs.com/package/haus-colour-utils)
+
+```bash
+npm install haus-colour-utils
+```
+
 ## Status
 
-Active development. `haus-colour-utils` is published to npm; `@haus/tokens` and
-`@haus/components` are internal-only.
+Active development. `haus-colour-utils` is published to npm; `@haus/tokens` and `@haus/components` are internal-only.
