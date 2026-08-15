@@ -40,9 +40,11 @@ Three packages: `tokens`, `components`, `colour-utils`. Keeping them separate me
 
 Manrope is a variable font with a wide weight range (200-800), which means the full type scale ships in one font load with no fallback weight snapping. Fira Code has programming ligatures and a compact footprint. Both are available on Google Fonts, which removes the self-hosting requirement for a v1 system. Domine is loaded for the marketing site only and is explicitly excluded from the token package. Mixing a serif display font into UI components was rejected.
 
-## Light mode only in v1
+## Light mode only
 
-Dark mode in haus lives entirely in `semantics.css` via `light-dark()`, no separate stylesheet, no class toggle. This is the planned v2 architecture. Doing it properly in v1 would require auditing every semantic token for dark-mode contrast, which doubles the colour decision surface before any consumer has used the system. Shipping light-only first lets the token structure prove itself in production before the dark-mode layer is added.
+haus is light mode only, and dark mode is out of scope — not a deferred layer. The semantic layer declares `color-scheme: light` and there is no `light-dark()` usage anywhere in the tokens. Doing dark mode properly would require auditing every semantic token for dark-mode contrast, which doubles the colour decision surface; the system is deliberately scoped to prove the light token structure without that cost. If dark mode were ever revisited, it would live entirely in `semantics.css` with zero component edits — but that is explicitly not part of this system.
+
+Scope is locked in two other ways worth recording here: there is **no MCP server** and **no Figma Code Connect** integration. The product surface is the token packages, the 12 React components, and Storybook — nothing more.
 
 ## Storybook as the product, not documentation
 
