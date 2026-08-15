@@ -1,0 +1,31 @@
+name: Publish colour-utils
+
+# Publishes haus-colour-utils to npm when a colour-utils-v* tag is pushed.
+# Requires an NPM_TOKEN secret (npm automation token) in the repo settings.
+on:
+  push:
+    tags:
+      - 'colour-utils-v*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm --filter haus-colour-utils build
+      - run: pnpm --filter haus-colour-utils test
+
+      - run: pnpm --filter haus-colour-utils publish --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
