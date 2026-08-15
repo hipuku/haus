@@ -30,4 +30,5 @@ Theming (brand and role swaps) lives entirely in `semantics.css`; components nev
 
 ## Status
 
-Active development. Not yet published to npm.
+Active development. `haus-colour-utils` is published to npm; `@haus/tokens` and
+`@haus/components` are internal-only.
