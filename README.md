@@ -14,7 +14,7 @@ An opinionated, open-source design system. Token-first, light-mode only, OKLCH t
 |---|---|
 | `@haus/tokens` | Design tokens as CSS custom properties and W3C Design Tokens JSON |
 | `@haus/components` | React component library (12 components) built on the token layer |
-| `@haus/colour-utils` | Colour science utilities — OKLCH analysis, perceptual clustering, CIEDE2000 distance |
+| `haus-colour-utils` | Colour science utilities — OKLCH analysis, perceptual clustering, CIEDE2000 distance |
 
 ## Token architecture
 

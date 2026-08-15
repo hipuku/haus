@@ -1,7 +1,8 @@
 # Publishing this package
 
-The package is build-ready but **not yet published**. The name `@haus/colour-utils`
-is a placeholder — the `@haus` scope is not owned, so it cannot be published as-is.
+The package is build-ready and named **`haus-colour-utils`** (unscoped; confirmed
+available on npm). It is **not yet published** — the final `npm publish` is the only
+remaining step, and it needs an authenticated npm session.
 
 ## What is already done
 
@@ -13,21 +14,17 @@ is a placeholder — the `@haus` scope is not owned, so it cannot be published a
 
 ## What remains for you to do
 
-1. **Pick a real package name.** Either an unscoped name that is free on npm
-   (check with `npm view <name>`), or a scope you own (`@your-user/colour-utils`).
-   Update the `"name"` field in `package.json`.
-
-2. **Decide the version.** It is still `0.1.0`. Bump if you want a different
-   starting point (`npm version <patch|minor|major>`).
-
-3. **Authenticate and publish:**
+1. ✅ **Name chosen** — `haus-colour-utils` (unscoped, available on npm).
+2. **Version** — currently `0.1.0`. Bump only if you want a different starting point
+   (`npm version <patch|minor|major>`).
+3. **Authenticate and publish**, from `packages/colour-utils/`:
 
    ```sh
-   npm login
-   npm publish --access public
+   npm login          # once, if not already authenticated
+   npm publish        # unscoped public package publishes public by default
    ```
 
-   `--access public` is required for a scoped package (`@your-user/…`); it is
-   harmless for an unscoped one. `prepublishOnly` will build and test automatically.
+   `prepublishOnly` builds and runs the 22 tests before the publish goes out, so a
+   broken build cannot be published.
 
-That is the entire remaining checklist — no code changes are needed.
+No code changes remain.

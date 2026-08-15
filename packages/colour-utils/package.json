@@ -1,5 +1,5 @@
 {
-  "name": "@haus/colour-utils",
+  "name": "haus-colour-utils",
   "version": "0.1.0",
   "type": "module",
   "sideEffects": false,
