@@ -1,6 +1,26 @@
 {
   "name": "haus-colour-utils",
-  "version": "0.1.0",
+  "version": "0.1.1",
+  "description": "Perceptual colour utilities — CIEDE2000 distance, WCAG contrast, OKLCH lightness scales, and nearest-named-colour.",
+  "license": "MIT",
+  "author": "hipuku",
+  "homepage": "https://github.com/hipuku/haus/tree/main/packages/colour-utils#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hipuku/haus.git",
+    "directory": "packages/colour-utils"
+  },
+  "keywords": [
+    "colour",
+    "color",
+    "oklch",
+    "ciede2000",
+    "wcag",
+    "contrast",
+    "perceptual",
+    "design-tokens",
+    "accessibility"
+  ],
   "type": "module",
   "sideEffects": false,
   "main": "./dist/index.js",
