@@ -1,30 +1,36 @@
-# Publishing this package
+# Releasing this package
 
-The package is build-ready and named **`haus-colour-utils`** (unscoped; confirmed
-available on npm). It is **not yet published** — the final `npm publish` is the only
-remaining step, and it needs an authenticated npm session.
+`haus-colour-utils` is **published on npm** (unscoped, public):
+https://www.npmjs.com/package/haus-colour-utils
 
-## What is already done
+## Cutting a new release
 
-- `tsup` build produces ESM + `.d.ts` into `dist/` (`pnpm run build`).
-- `package.json` `main`/`module`/`types`/`exports` point at the built `dist/` output.
-- `"sideEffects": false` and `"files": ["dist"]` are set.
-- `prepublishOnly` runs the build and the test suite before any publish.
-- `chroma-js` stays an external runtime dependency; it is not bundled.
+From `packages/colour-utils/`:
 
-## What remains for you to do
-
-1. ✅ **Name chosen** — `haus-colour-utils` (unscoped, available on npm).
-2. **Version** — currently `0.1.0`. Bump only if you want a different starting point
-   (`npm version <patch|minor|major>`).
-3. **Authenticate and publish**, from `packages/colour-utils/`:
+1. Bump the version (npm will not overwrite a version that is already published):
 
    ```sh
-   npm login          # once, if not already authenticated
-   npm publish        # unscoped public package publishes public by default
+   npm version patch    # or: minor / major
    ```
 
-   `prepublishOnly` builds and runs the 22 tests before the publish goes out, so a
-   broken build cannot be published.
+2. Publish (an authenticated npm session is required):
 
-No code changes remain.
+   ```sh
+   npm publish
+   ```
+
+   `prepublishOnly` runs the build and the full test suite first, so a broken
+   build cannot be published.
+
+## Build setup (already in place)
+
+- `tsup` produces ESM + `.d.ts` into `dist/`.
+- `package.json` `main` / `module` / `types` / `exports` point at the built `dist/`.
+- `"sideEffects": false` and `"files": ["dist"]` are set.
+- `chroma-js` stays an external runtime dependency; it is not bundled.
+
+## Automated publish (optional)
+
+`.github/workflows/publish.yml` publishes on a `colour-utils-v*` tag once an
+`NPM_TOKEN` automation-token secret is added to the repo. Until then, releases are
+the manual `npm version` + `npm publish` above.
