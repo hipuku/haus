@@ -10,7 +10,7 @@ OKLCH gives perceptual uniformity that hex and HSL don't. Equal numeric steps in
 
 ## Three-layer token architecture: primitives → semantics → components
 
-Primitives hold raw values (no meaning, just numbers). Semantics hold intent: role names like `--color-surface-default` that alias primitives. Components consume semantics only; they never reach through to primitives. This separation means a theme swap (dark mode, high-contrast, brand variant) is a single-file change to `semantics.css` with zero component edits. It also enforces a discipline: if you can't name what a token *does*, it shouldn't exist.
+Primitives hold raw values (no meaning, just numbers). Semantics hold intent: role names like `--color-surface-default` that alias primitives. Components consume semantics only; they never reach through to primitives. This separation means a theme swap (high-contrast, a brand variant) is a single-file change to `semantics.css` with zero component edits. It also enforces a discipline: if you can't name what a token *does*, it shouldn't exist.
 
 ## Role-based type system over a heading scale
 
