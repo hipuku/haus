@@ -25,8 +25,13 @@ jobs:
       - name: Typecheck
         run: pnpm -r run typecheck
 
-      - name: Test colour-utils
-        run: pnpm --filter haus-colour-utils build && pnpm --filter haus-colour-utils test
+      # Packages resolve through dist/, which is gitignored, so the workspace
+      # must be built before anything can import across package boundaries.
+      - name: Build packages
+        run: pnpm run build
+
+      - name: Test
+        run: pnpm -r run test
 
       - name: Build Storybook
         run: pnpm run build-storybook
