@@ -1,9 +1,45 @@
 {
   "name": "@haus/components",
   "version": "0.1.0",
+  "description": "haus design system components \u2014 12 accessible React primitives built on @haus/tokens.",
+  "license": "MIT",
+  "author": "hipuku",
+  "homepage": "https://github.com/hipuku/haus/tree/main/packages/components#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hipuku/haus.git",
+    "directory": "packages/components"
+  },
+  "keywords": [
+    "design-system",
+    "react",
+    "components",
+    "ui",
+    "accessible",
+    "haus",
+    "design-tokens"
+  ],
   "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./src/index.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./styles.css": "./dist/styles.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build && tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "@haus/tokens": "workspace:*"
@@ -12,12 +48,13 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   },
-  "scripts": {
-    "typecheck": "tsc --noEmit"
-  },
   "devDependencies": {
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "typescript": "^5.4.5"
+    "@vitejs/plugin-react": "^4.3.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typescript": "^5.4.5",
+    "vite": "^5.3.1"
   }
 }
