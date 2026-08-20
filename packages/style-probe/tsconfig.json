@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    // extract.ts is authored against the browser's DOM API even though the
+    // package is consumed from Node — the function is shipped to the page and
+    // evaluated there.
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "noUncheckedIndexedAccess": true
+  },
+  "include": ["src"]
+}
