@@ -1,13 +1,54 @@
 {
   "name": "@haus/tokens",
   "version": "0.1.0",
-  "type": "module",
-  "exports": {
-    ".": "./src/index.ts",
-    "./primitives.css": "./src/primitives.css",
-    "./semantics.css": "./src/semantics.css",
-    "./motion.css": "./src/motion.css",
-"./tokens.json": "./src/tokens.json"
+  "description": "haus design tokens — OKLCH colour, type, spacing, radius, shadow and motion, as W3C-DTCG JSON, CSS custom properties, and typed JS constants.",
+  "license": "MIT",
+  "author": "hipuku",
+  "homepage": "https://github.com/hipuku/haus/tree/main/packages/tokens#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hipuku/haus.git",
+    "directory": "packages/tokens"
   },
-  "files": ["src"]
+  "keywords": [
+    "design-tokens",
+    "design-system",
+    "oklch",
+    "dtcg",
+    "w3c-design-tokens",
+    "css-custom-properties",
+    "haus"
+  ],
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./primitives.css": "./dist/primitives.css",
+    "./semantics.css": "./dist/semantics.css",
+    "./motion.css": "./dist/motion.css",
+    "./tokens.json": "./dist/tokens.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build && npm run test"
+  },
+  "devDependencies": {
+    "tsup": "^8.5.1",
+    "typescript": "^5.4.5",
+    "vitest": "^2.1.0"
+  }
 }
