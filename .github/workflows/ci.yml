@@ -30,6 +30,12 @@ jobs:
       - name: Lint
         run: pnpm run lint
 
+      # The hardcoded-value gate. Catches a component reaching past the token
+      # layer — the common failure when components are generated rather than
+      # hand-written.
+      - name: Lint CSS (design tokens)
+        run: pnpm run lint:css
+
       - name: Typecheck
         run: pnpm -r run typecheck
 

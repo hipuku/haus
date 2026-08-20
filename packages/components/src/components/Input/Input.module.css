@@ -43,7 +43,7 @@
 }
 
 .inputWrap.error:focus-within {
-  box-shadow: 0 0 0 2px var(--color-surface-default), 0 0 0 4px var(--color-error-default);
+  box-shadow: var(--shadow-focus-error);
 }
 
 .inputWrap.disabled {

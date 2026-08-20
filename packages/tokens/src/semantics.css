@@ -99,6 +99,9 @@
     /* ── Focus ring ───────────────────────────────────────────────────────── */
     /* Inner ring matches surface (creates gap), outer ring is focus colour   */
     --shadow-focus: 0 0 0 2px var(--color-surface-default), 0 0 0 4px var(--color-border-focus);
+    /* Same ring in the error state — the outer band carries the error colour  */
+    /* so an invalid field stays legible as invalid while focused.             */
+    --shadow-focus-error: 0 0 0 2px var(--color-surface-default), 0 0 0 4px var(--color-error-default);
 
     /* ── Typography roles ─────────────────────────────────────────────────── */
     /* Use all four props together. Components must not mix roles.            */

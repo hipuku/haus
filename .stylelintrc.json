@@ -1,0 +1,81 @@
+{
+  "extends": ["stylelint-config-standard"],
+  "plugins": ["stylelint-declaration-strict-value"],
+  "rules": {
+    "scale-unlimited/declaration-strict-value": [
+      [
+        "/color$/",
+        "background",
+        "box-shadow",
+        "font-size",
+        "font-weight",
+        "font-family",
+        "line-height",
+        "letter-spacing",
+        "/^padding/",
+        "/^margin/",
+        "gap",
+        "row-gap",
+        "column-gap",
+        "border-radius",
+        "border-width",
+        "z-index"
+      ],
+      {
+        "ignoreKeywords": [
+          "transparent",
+          "currentColor",
+          "currentcolor",
+          "inherit",
+          "initial",
+          "unset",
+          "revert",
+          "none",
+          "auto"
+        ],
+        "ignoreValues": [
+          "0",
+          "1",
+          "50%",
+          "100%",
+          "1px",
+          "2px",
+          "-2px",
+          "0.15em",
+          "2px var(--space-2)",
+          "/var\\(--/"
+        ],
+        "disableFix": true,
+        "message": "Use a design token: `${property}` must be a var(--…), not a hardcoded value"
+      }
+    ],
+
+    "custom-property-pattern": null,
+    "selector-class-pattern": null,
+    "declaration-empty-line-before": null,
+    "no-descending-specificity": null,
+    "alpha-value-notation": null,
+    "color-function-notation": null,
+
+    "rule-empty-line-before": null,
+    "custom-property-empty-line-before": null,
+    "comment-empty-line-before": null,
+    "declaration-block-single-line-max-declarations": null,
+    "keyframes-name-pattern": null,
+    "hue-degree-notation": null,
+    "value-keyword-case": null,
+    "declaration-block-no-redundant-longhand-properties": null,
+
+    "property-no-unknown": [true, { "ignoreProperties": ["composes"] }]
+  },
+  "overrides": [
+    {
+      "files": ["packages/tokens/src/*.css"],
+      "rules": {
+        "scale-unlimited/declaration-strict-value": null,
+        "no-duplicate-selectors": null
+      }
+    }
+  ],
+  "ignoreFiles": ["**/dist/**", "**/node_modules/**", "**/storybook-static/**"]
+}
