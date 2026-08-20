@@ -1,5 +1,10 @@
 import { defineConfig } from 'tsup'
 
+// NOTE: dependencies here are pinned to literal semver ranges, never pnpm's
+// `workspace:` protocol. pnpm rewrites that protocol at pack time; npm ships it
+// verbatim, producing a package that cannot be installed at all
+// (EUNSUPPORTEDPROTOCOL). A literal range is correct under both.
+
 export default defineConfig({
   entry: ['src/index.ts'],
   format: ['esm'],
