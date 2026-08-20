@@ -14,10 +14,10 @@ importers:
 
   apps/storybook:
     dependencies:
-      '@haus/components':
+      haus-components:
         specifier: workspace:*
         version: link:../../packages/components
-      '@haus/tokens':
+      haus-tokens:
         specifier: workspace:*
         version: link:../../packages/tokens
     devDependencies:
@@ -91,7 +91,7 @@ importers:
 
   packages/components:
     dependencies:
-      '@haus/tokens':
+      haus-tokens:
         specifier: workspace:*
         version: link:../tokens
     devDependencies:

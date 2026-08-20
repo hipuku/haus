@@ -6,8 +6,8 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
-    "@haus/tokens": "workspace:*",
-    "@haus/components": "workspace:*"
+    "haus-tokens": "workspace:*",
+    "haus-components": "workspace:*"
   },
   "devDependencies": {
     "storybook": "^8.6.18",

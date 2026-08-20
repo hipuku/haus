@@ -1,11 +1,11 @@
-# @haus/components
+# haus-components
 
-Twelve accessible React components built on [`@haus/tokens`](../tokens).
+Twelve accessible React components built on [`haus-tokens`](../tokens).
 
 ## Install
 
 ```bash
-npm install @haus/components @haus/tokens
+npm install haus-components haus-tokens
 ```
 
 `react` and `react-dom` (^18) are peer dependencies — your copy is the only copy.
@@ -16,14 +16,14 @@ Import the token layers, then the component stylesheet. Order matters:
 components reference the semantic tokens, so those must be defined first.
 
 ```ts
-import '@haus/tokens/primitives.css'
-import '@haus/tokens/semantics.css'
-import '@haus/tokens/motion.css'
-import '@haus/components/styles.css'
+import 'haus-tokens/primitives.css'
+import 'haus-tokens/semantics.css'
+import 'haus-tokens/motion.css'
+import 'haus-components/styles.css'
 ```
 
 ```tsx
-import { Button, Card, Badge } from '@haus/components'
+import { Button, Card, Badge } from 'haus-components'
 
 <Card>
   <Button variant="primary" size="lg">Save changes</Button>

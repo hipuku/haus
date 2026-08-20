@@ -1,24 +1,24 @@
-# @haus/tokens
+# haus-tokens
 
 The haus design tokens — OKLCH colour, type, spacing, radius, shadow, motion —
 in three forms, from one source of truth.
 
 | Form | Import | For |
 |---|---|---|
-| CSS custom properties | `@haus/tokens/primitives.css`, `/semantics.css`, `/motion.css` | styling components |
-| Typed JS constants | `import { tokens } from '@haus/tokens'` | build config, style-in-JS, media queries |
-| W3C-DTCG JSON | `@haus/tokens/tokens.json` | design-tool sync, external tooling |
+| CSS custom properties | `haus-tokens/primitives.css`, `/semantics.css`, `/motion.css` | styling components |
+| Typed JS constants | `import { tokens } from 'haus-tokens'` | build config, style-in-JS, media queries |
+| W3C-DTCG JSON | `haus-tokens/tokens.json` | design-tool sync, external tooling |
 
 ## Install
 
 ```bash
-npm install @haus/tokens
+npm install haus-tokens
 ```
 
 ```ts
-import '@haus/tokens/primitives.css'
-import '@haus/tokens/semantics.css'
-import '@haus/tokens/motion.css'
+import 'haus-tokens/primitives.css'
+import 'haus-tokens/semantics.css'
+import 'haus-tokens/motion.css'
 ```
 
 Load them in that order: `primitives` declares raw values, `semantics` gives
@@ -45,7 +45,7 @@ Custom properties cannot be used inside `@media` conditions, and build tools
 can't read CSS. The JS export covers that:
 
 ```ts
-import { tokens } from '@haus/tokens'
+import { tokens } from 'haus-tokens'
 
 tokens.color.aronia[500]  // 'oklch(52% 0.138 300)'
 tokens.breakpoint.lg      // '1024px'  — breakpoints are JS-only, by necessity

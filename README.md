@@ -12,8 +12,8 @@ An opinionated, open-source design system. Token-first, light-mode only, OKLCH t
 
 | Package | Description |
 |---|---|
-| `@haus/tokens` | Design tokens as CSS custom properties and W3C Design Tokens JSON |
-| `@haus/components` | React component library (12 components) built on the token layer |
+| `haus-tokens` | Design tokens as CSS custom properties and W3C Design Tokens JSON |
+| `haus-components` | React component library (12 components) built on the token layer |
 | `haus-colour-utils` | Colour science utilities — OKLCH analysis, perceptual clustering, CIEDE2000 distance |
 
 ## Token architecture
@@ -39,4 +39,4 @@ npm install haus-colour-utils
 
 ## Status
 
-Active development. `haus-colour-utils` is published to npm; `@haus/tokens` and `@haus/components` are internal-only.
+Active development. `haus-colour-utils` is published to npm; `haus-tokens` and `haus-components` are internal-only.

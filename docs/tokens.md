@@ -1,6 +1,6 @@
 # haus tokens
 
-`@haus/tokens` is the source of truth for every visual value in haus: colour,
+`haus-tokens` is the source of truth for every visual value in haus: colour,
 type, space, radius, elevation, and motion. It ships as plain CSS custom
 properties (the runtime format) and a W3C Design Tokens JSON file (the handoff
 format for tooling). haus is **light-mode only** â€” there is no dark theme and no
@@ -131,9 +131,9 @@ The package exposes both the CSS files and a typed JS object.
 Import the layers once at your app root, in order:
 
 ```css
-@import '@haus/tokens/primitives.css';
-@import '@haus/tokens/semantics.css';
-@import '@haus/tokens/motion.css';
+@import 'haus-tokens/primitives.css';
+@import 'haus-tokens/semantics.css';
+@import 'haus-tokens/motion.css';
 ```
 
 Then reference the **semantic** tokens (and motion/space/radius primitives) in
@@ -162,7 +162,7 @@ format, so it feeds Style Dictionary, Theo, or any spec-compliant pipeline with 
 haus-specific tooling:
 
 ```js
-import tokens from '@haus/tokens/tokens.json' with { type: 'json' }
+import tokens from 'haus-tokens/tokens.json' with { type: 'json' }
 ```
 
 ### Typed JS object
@@ -171,7 +171,7 @@ The package's main export is a typed `tokens` object mirroring the same values â
 useful for CSS-in-JS or reading a value in JavaScript:
 
 ```ts
-import { tokens } from '@haus/tokens'
+import { tokens } from 'haus-tokens'
 
 tokens.color.aronia[500]     // 'oklch(52% 0.138 300)'
 tokens.duration.moderate     // '300ms'

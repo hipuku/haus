@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import React, { useState } from 'react'
-import { Checkbox, RadioGroup, Toggle } from '@haus/components'
+import { Checkbox, RadioGroup, Toggle } from 'haus-components'
 import { pageWrap, pageTitleStyle, pageDescStyle } from '../tokens/_shared'
 
 const sectionHead: React.CSSProperties = {

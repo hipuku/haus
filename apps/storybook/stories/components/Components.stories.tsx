@@ -10,7 +10,7 @@ import {
   Avatar,
   Toast,
   Modal,
-} from '@haus/components'
+} from 'haus-components'
 import { pageWrap, pageTitleStyle, pageDescStyle } from '../tokens/_shared'
 
 /* ─── Layout helpers ─────────────────────────────────────────────────────── */
