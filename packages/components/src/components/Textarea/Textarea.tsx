@@ -13,7 +13,9 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     { label, hint, error, required, disabled, className, id, ...rest },
     ref
   ) {
-    const textareaId = id ?? React.useId()
+    // Called unconditionally — see Checkbox for why.
+    const generatedId = React.useId()
+    const textareaId = id ?? generatedId
     const hintId     = hint  ? `${textareaId}-hint`  : undefined
     const errorId    = error ? `${textareaId}-error` : undefined
     const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined

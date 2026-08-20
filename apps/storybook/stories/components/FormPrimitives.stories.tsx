@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import React, { useState } from 'react'
 import { Checkbox, RadioGroup, Toggle } from 'haus-components'
 import { pageWrap, pageTitleStyle, pageDescStyle } from '../tokens/_shared'

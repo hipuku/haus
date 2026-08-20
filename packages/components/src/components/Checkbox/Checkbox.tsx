@@ -33,7 +33,11 @@ export function Checkbox({
   className,
 }: CheckboxProps) {
   const inputRef   = React.useRef<HTMLInputElement>(null)
-  const inputId    = id ?? React.useId()
+  // useId must be called unconditionally: `id ?? React.useId()` skips the
+  // hook whenever an id is passed, so a parent that renders this component
+  // with and without one changes the hook count between renders.
+  const generatedId = React.useId()
+  const inputId    = id ?? generatedId
   const errorId    = error ? `${inputId}-error` : undefined
   const isControlled = checked !== undefined
 

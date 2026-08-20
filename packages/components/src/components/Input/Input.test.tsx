@@ -18,6 +18,17 @@ describe('Input', () => {
     expect(screen.getByLabelText('Email')).toHaveAttribute('id', 'signup-email')
   })
 
+  it('survives gaining an id between renders', () => {
+    // Regression: the id was once `id ?? React.useId()`, which short-circuits
+    // and skips the hook whenever an id is passed. A parent that renders this
+    // component without an id and then with one changes the hook count, and
+    // React throws "Rendered more hooks than during the previous render".
+    // useId is now called unconditionally; this pins that.
+    const { rerender } = render(<Input label="Email" />)
+    expect(() => rerender(<Input label="Email" id="now-explicit" />)).not.toThrow()
+    expect(screen.getByLabelText('Email')).toHaveAttribute('id', 'now-explicit')
+  })
+
   it('points aria-describedby at the hint', () => {
     render(<Input label="Password" hint="At least 12 characters" />)
     const input = screen.getByLabelText('Password')

@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import React from 'react'
 import {
-  CopyChip, Callout, ColLabel,
+  CopyChip, ColLabel,
   pageWrap, pageTitleStyle, pageDescStyle,
   tokenNameStyle,
   TableGrid, TH, TD, TableDivider,
@@ -57,11 +57,6 @@ const typeMetaLabels: Record<string, string> = {
   'mono':       '13px · 400 · lh 1.6',
 }
 
-const domineRows = [
-  { label: 'Body copy', size: '1rem',     weight: 400, sample: 'Build something people actually want to use.' },
-  { label: 'Heading',   size: '1.5rem',   weight: 700, sample: 'Designed for clarity.' },
-  { label: 'Display',   size: '1.875rem', weight: 700, sample: 'The design system.' },
-]
 
 const iconRows = [
   { name: '--icon-xs', value: '0.75rem', px: '12px', pair: 'label-xs' },

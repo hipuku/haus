@@ -30,7 +30,9 @@ export function Toggle({
   name,
   className,
 }: ToggleProps) {
-  const inputId      = id ?? React.useId()
+  // Called unconditionally — see Checkbox for why.
+  const generatedId  = React.useId()
+  const inputId      = id ?? generatedId
   const isControlled = checked !== undefined
 
   const [internalChecked, setInternalChecked] = React.useState(defaultChecked)

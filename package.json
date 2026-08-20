@@ -6,15 +6,23 @@
     "build": "pnpm -r run build",
     "storybook": "pnpm run build && pnpm --filter storybook run storybook",
     "build-storybook": "pnpm run build && pnpm --filter storybook run build-storybook",
-    "lint": "pnpm -r run lint",
-    "typecheck": "pnpm -r run typecheck"
+    "lint": "eslint .",
+    "typecheck": "pnpm -r run typecheck",
+    "lint:fix": "eslint . --fix"
   },
   "devDependencies": {
-    "typescript": "^5.4.5"
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.8.1",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-storybook": "^10.5.10",
+    "globals": "^17.11.0",
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^8.67.0"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
       "esbuild"
     ]
-  }
+  },
+  "type": "module"
 }

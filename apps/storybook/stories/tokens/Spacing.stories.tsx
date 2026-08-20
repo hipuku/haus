@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react-vite'
 import React from 'react'
 import {
   CopyChip, ColLabel,
@@ -147,4 +147,4 @@ export default meta
 type Story = StoryObj
 export const Space:       Story = { render: () => <SpacePage /> }
 export const Radius:      Story = { render: () => <RadiusPage /> }
-export const BorderWidth: Story = { name: 'Border Width', render: () => <BorderWidthPage /> }
+export const BorderWidth: Story = { render: () => <BorderWidthPage /> }
