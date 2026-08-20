@@ -8,7 +8,7 @@ on:
 
 jobs:
   ci:
-    name: Lint, Typecheck, Test, Build
+    name: Tokens, Lint, Typecheck, Test, Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,6 +21,11 @@ jobs:
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
+
+      # Generated primitives must match tokens.json. This is what replaced the
+      # test that used to compare the three hand-maintained copies.
+      - name: Tokens up to date
+        run: pnpm --filter haus-tokens run tokens:check
 
       - name: Lint
         run: pnpm run lint
