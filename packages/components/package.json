@@ -42,7 +42,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "haus-tokens": "workspace:*"
+    "haus-tokens": "^0.1.0"
   },
   "peerDependencies": {
     "react": "^18.0.0",

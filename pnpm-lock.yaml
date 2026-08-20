@@ -92,8 +92,8 @@ importers:
   packages/components:
     dependencies:
       haus-tokens:
-        specifier: workspace:*
-        version: link:../tokens
+        specifier: ^0.1.0
+        version: 0.1.0
     devDependencies:
       '@types/react':
         specifier: ^18.3.3
@@ -1546,6 +1546,9 @@ packages:
 
   haus-colour-utils@0.1.2:
     resolution: {integrity: sha512-FHaYM+ROgAKi0vLRKmn7fVALpN+SD/I0IQyKTLiMdtZrYdIXEYg9LoxBGbg8diLIBZc2jLBBYwXRSJ03gGFalQ==}
+
+  haus-tokens@0.1.0:
+    resolution: {integrity: sha512-Jlf+4+FRAahy80/zzw783OytQX1SWY8y3zAfuAV+2c9KgBOoUHDyzVJ+7pJtnUYtajZ2TH3v3utHlVs4CWhi9g==}
 
   indent-string@4.0.0:
     resolution: {integrity: sha512-EdDDZu4A2OyIK7Lr/2zG+w5jmbuk1DVBnEwREQvBzspBJkCEbRa8GxU1lghYcaGJCnRWibjDXlq779X1/y5xwg==}
@@ -3449,6 +3452,8 @@ snapshots:
   haus-colour-utils@0.1.2:
     dependencies:
       chroma-js: 3.2.0
+
+  haus-tokens@0.1.0: {}
 
   indent-string@4.0.0: {}
 
