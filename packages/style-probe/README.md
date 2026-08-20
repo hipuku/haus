@@ -65,7 +65,7 @@ whole document — a component that never mounted must not read as a clean one.
 
 | Property | Raw | Normalised |
 |---|---|---|
-| `color`, `backgroundColor` | `rgb()` / `rgba()` | lowercase hex, alpha pair appended when `< 1`, `null` when fully transparent |
+| `color`, `backgroundColor` | `oklch()`, `oklab()`, `color(srgb …)`, `rgb()`, named | lowercase hex, alpha pair appended when `< 1`, `null` when fully transparent |
 | `effectiveBackgroundColor` | — | nearest non-transparent ancestor background (the value to pair with `color` for contrast) |
 | `fontFamily` | the whole stack | first family, unquoted |
 | `lineHeight` | `24px` / `normal` | unitless ratio against font-size; `null` for `normal` |
@@ -74,6 +74,15 @@ whole document — a component that never mounted must not read as a clean one.
 | `borderRadius`, `gap` | four/two sides | distinct values, deduped |
 | `borderColor` | four sides | only sides with non-zero width — computed border colour defaults to `currentColor` even at width `0` |
 | `motionDurations` | `0.2s, 300ms` | milliseconds, non-zero, distinct |
+
+### Colours are not always `rgb()`
+
+`getComputedStyle` stopped normalising colours. A value authored in OKLCH comes
+back as `oklch(0.52 0.138 300)` verbatim, so a probe that only reads `rgb()`
+reports `null` for every colour on a modern design system — silently, since
+`null` is also what a genuinely transparent element returns. Parsing is
+delegated to [`haus-colour-utils`](../colour-utils), which covers the modern
+syntaxes as well as the classic ones.
 
 ## Authoring constraint
 
