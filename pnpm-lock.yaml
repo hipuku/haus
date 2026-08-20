@@ -118,6 +118,10 @@ importers:
         version: 5.4.21(@types/node@26.2.0)
 
   packages/style-probe:
+    dependencies:
+      haus-colour-utils:
+        specifier: workspace:^
+        version: link:../colour-utils
     devDependencies:
       happy-dom:
         specifier: ^20.11.6

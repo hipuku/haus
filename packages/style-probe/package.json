@@ -1,6 +1,6 @@
 {
   "name": "haus-style-probe",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Read a rendered element's design decisions: in-browser computed-style extraction plus pure, testable normalisation into typed token values.",
   "license": "MIT",
   "author": "hipuku",
@@ -40,6 +40,9 @@
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "npm run build && npm run test"
+  },
+  "dependencies": {
+    "haus-colour-utils": "workspace:^"
   },
   "devDependencies": {
     "happy-dom": "^20.11.6",

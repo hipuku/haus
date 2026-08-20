@@ -35,7 +35,16 @@ describe("rgbToHex", () => {
   it("returns null for unparseable input", () => {
     expect(rgbToHex("")).toBeNull();
     expect(rgbToHex("none")).toBeNull();
-    expect(rgbToHex("blue")).toBeNull();
+    expect(rgbToHex("not-a-colour")).toBeNull();
+  });
+
+  it("reads the modern colour syntaxes getComputedStyle actually returns", () => {
+    // Chromium hands back an oklch-authored colour verbatim rather than
+    // normalising it to rgb(). Every haus colour arrives in this form.
+    expect(rgbToHex("oklch(0.52 0.138 300)")).toBe("#7653ab");
+    expect(rgbToHex("oklch(1 0 0)")).toBe("#ffffff");
+    expect(rgbToHex("oklab(0.5 0.1 -0.1)")).toBe("#81459a");
+    expect(rgbToHex("color(srgb 0.2 0.4 0.6)")).toBe("#336699");
   });
 });
 

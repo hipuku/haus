@@ -7,43 +7,20 @@
  * these functions collapse that surface into the ElementStyle shape.
  */
 
+import { toHex } from "haus-colour-utils";
 import type { ElementStyle, ExtractedElement, RawElement } from "./types.js";
 
-function clampByte(n: number): number {
-  if (Number.isNaN(n)) return NaN;
-  return Math.max(0, Math.min(255, Math.round(n)));
-}
-
-function toHexPair(n: number): string {
-  return clampByte(n).toString(16).padStart(2, "0");
-}
-
 /**
- * rgb()/rgba() → lowercase hex. Returns null for fully transparent or
- * unparseable input. Appends an alpha pair when 0 < alpha < 1.
+ * Any CSS colour → lowercase hex; null when fully transparent or unparseable.
+ *
+ * Delegates to haus-colour-utils. getComputedStyle stopped normalising to
+ * `rgb()`: a colour authored in OKLCH comes back as `oklch(0.52 0.138 300)`
+ * verbatim, so a probe that only speaks rgb() silently reports null for every
+ * colour on a modern design system.
+ *
+ * @deprecated Prefer `toHex` — the name predates support for anything but rgb().
  */
-export function rgbToHex(input: string): string | null {
-  if (!input) return null;
-  const v = input.trim().toLowerCase();
-  if (v === "transparent" || v === "none" || v === "") return null;
-
-  const m = v.match(/^rgba?\(([^)]+)\)$/);
-  if (!m) return null;
-
-  const parts = m[1]!.split(/[,/\s]+/).filter(Boolean);
-  if (parts.length < 3) return null;
-
-  const r = clampByte(parseFloat(parts[0]!));
-  const g = clampByte(parseFloat(parts[1]!));
-  const b = clampByte(parseFloat(parts[2]!));
-  if (Number.isNaN(r) || Number.isNaN(g) || Number.isNaN(b)) return null;
-
-  const a = parts.length >= 4 ? parseFloat(parts[3]!) : 1;
-  if (a === 0) return null;
-
-  const base = `#${toHexPair(r)}${toHexPair(g)}${toHexPair(b)}`;
-  return a < 1 ? base + toHexPair(a * 255) : base;
-}
+export const rgbToHex = toHex;
 
 /** First family in a font stack, unquoted and trimmed. */
 export function firstFontFamily(stack: string): string | null {
@@ -184,14 +161,14 @@ export function normaliseElement(el: RawElement): ExtractedElement {
   // A side's border colour is only meaningful when that side has width.
   // Computed border-*-color defaults to currentColor even at width 0.
   const borderColorIfVisible = (color: string, width: string): string | null =>
-    (pxToNumber(width) ?? 0) > 0 ? rgbToHex(color) : null;
+    (pxToNumber(width) ?? 0) > 0 ? toHex(color) : null;
 
   const durations = parseDurations(r.transitionDuration);
 
   const styles: ElementStyle = {
-    color: rgbToHex(r.color),
-    backgroundColor: rgbToHex(r.backgroundColor),
-    effectiveBackgroundColor: rgbToHex(r.effectiveBackgroundColor),
+    color: toHex(r.color),
+    backgroundColor: toHex(r.backgroundColor),
+    effectiveBackgroundColor: toHex(r.effectiveBackgroundColor),
     borderColor: uniqueDefined([
       borderColorIfVisible(r.borderTopColor, r.borderTopWidth),
       borderColorIfVisible(r.borderRightColor, r.borderRightWidth),

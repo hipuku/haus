@@ -1,3 +1,5 @@
+export { toHex }                           from './toHex'
+
 export { generateLightnessScale }          from './lightnessScale'
 export type { LightnessScaleOptions }      from './lightnessScale'
 

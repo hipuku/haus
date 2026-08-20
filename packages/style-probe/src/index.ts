@@ -26,8 +26,11 @@
 
 export { extractRawElements } from "./extract.js";
 
+export { toHex } from "haus-colour-utils";
+
 export {
   normaliseElement,
+  /** @deprecated Use `toHex`. */
   rgbToHex,
   firstFontFamily,
   pxToNumber,

@@ -1,6 +1,6 @@
 {
   "name": "haus-colour-utils",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Perceptual colour utilities — CIEDE2000 distance, WCAG contrast, OKLCH lightness scales, and nearest-named-colour.",
   "license": "MIT",
   "author": "hipuku",

@@ -57,14 +57,30 @@ export function extractRawElements(options?: ProbeOptions): RawElement[] {
     let bgNode: Element | null = el;
     while (bgNode) {
       const bg = window.getComputedStyle(bgNode).backgroundColor;
-      const m = bg.match(/rgba?\(([^)]+)\)/);
-      if (m) {
-        const parts = m[1]!.split(/[,/\s]+/).filter(Boolean);
-        const alpha = parts.length >= 4 ? parseFloat(parts[3]!) : 1;
-        if (alpha > 0) {
-          effectiveBg = bg;
-          break;
+      // Only the alpha matters here, and it has to be read without assuming a
+      // colour syntax: getComputedStyle returns an oklch()/oklab()/color()
+      // value verbatim, so matching rgb() alone would read every modern colour
+      // as transparent and walk straight past it to the page canvas.
+      let alpha = 1;
+      if (bg === "" || bg === "transparent") {
+        alpha = 0;
+      } else {
+        const rgb = bg.match(/rgba?\(([^)]+)\)/);
+        if (rgb) {
+          const parts = rgb[1]!.split(/[,/\s]+/).filter(Boolean);
+          alpha = parts.length >= 4 ? parseFloat(parts[3]!) : 1;
+        } else {
+          // Modern syntaxes carry alpha after a slash: oklch(L C H / 0.5).
+          const slash = bg.match(/\/\s*([\d.]+%?)\s*\)/);
+          if (slash) {
+            const raw = slash[1]!;
+            alpha = raw.endsWith("%") ? parseFloat(raw) / 100 : parseFloat(raw);
+          }
         }
+      }
+      if (Number.isFinite(alpha) && alpha > 0) {
+        effectiveBg = bg;
+        break;
       }
       bgNode = bgNode.parentElement;
     }
