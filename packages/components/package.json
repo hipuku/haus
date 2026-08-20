@@ -1,6 +1,6 @@
 {
   "name": "haus-components",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "haus design system components — 12 accessible React primitives built on haus-tokens.",
   "license": "MIT",
   "author": "hipuku",
@@ -44,7 +44,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "haus-tokens": "^0.1.0"
+    "haus-tokens": "^0.1.2"
   },
   "peerDependencies": {
     "react": "^18.0.0",

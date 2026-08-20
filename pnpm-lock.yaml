@@ -119,8 +119,8 @@ importers:
   packages/components:
     dependencies:
       haus-tokens:
-        specifier: ^0.1.0
-        version: 0.1.0
+        specifier: ^0.1.2
+        version: 0.1.2
     devDependencies:
       '@testing-library/jest-dom':
         specifier: ^7.0.1
@@ -2256,8 +2256,8 @@ packages:
   haus-colour-utils@0.1.2:
     resolution: {integrity: sha512-FHaYM+ROgAKi0vLRKmn7fVALpN+SD/I0IQyKTLiMdtZrYdIXEYg9LoxBGbg8diLIBZc2jLBBYwXRSJ03gGFalQ==}
 
-  haus-tokens@0.1.0:
-    resolution: {integrity: sha512-Jlf+4+FRAahy80/zzw783OytQX1SWY8y3zAfuAV+2c9KgBOoUHDyzVJ+7pJtnUYtajZ2TH3v3utHlVs4CWhi9g==}
+  haus-tokens@0.1.2:
+    resolution: {integrity: sha512-2XzSesc4ke5+P5otz8kgUajTS3Bm178Rg24Er9Ei3dlZhz/nUJnEt8boqL3CL8zwY+XXtvIjY03BzS6DGqWxYg==}
 
   hermes-estree@0.25.1:
     resolution: {integrity: sha512-0wUoCcLp+5Ev5pDW2OriHC2MJCbwLwuRx+gAqMTOkGKJJiBCLjtrvy4PWUGn6MIVefecRpzoOZ/UV6iGdOr+Cw==}
@@ -5206,7 +5206,7 @@ snapshots:
     dependencies:
       chroma-js: 3.2.0
 
-  haus-tokens@0.1.0: {}
+  haus-tokens@0.1.2: {}
 
   hermes-estree@0.25.1: {}
 
