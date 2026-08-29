@@ -1,0 +1,46 @@
+{
+  "name": "haus-colour-names",
+  "version": "0.1.0",
+  "description": "31,900 named colours as data, for pairing with a perceptual matcher.",
+  "license": "MIT",
+  "author": "hipuku",
+  "homepage": "https://github.com/hipuku/haus/tree/main/packages/colour-names#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hipuku/haus.git",
+    "directory": "packages/colour-names"
+  },
+  "keywords": [
+    "colour",
+    "color",
+    "colour-names",
+    "color-names",
+    "dataset"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build && npm run test"
+  },
+  "devDependencies": {
+    "tsup": "^8.5.1",
+    "typescript": "^5.4.5",
+    "vitest": "^2.1.0"
+  }
+}

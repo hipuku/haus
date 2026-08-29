@@ -11,5 +11,5 @@ export type { ColourCluster }              from './cluster'
 
 export { deltaE }                          from './deltaE'
 
-export { nearestNamedColour }              from './namedColour'
-export type { NamedColourMatch }           from './namedColour'
+export { nearestNamedColour, createNamedColourMatcher, basicColourNames } from './namedColour'
+export type { NamedColourMatch, NamedColourEntry } from './namedColour'

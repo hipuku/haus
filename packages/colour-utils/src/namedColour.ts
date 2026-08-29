@@ -7,51 +7,79 @@ export interface NamedColourMatch {
   distance: number  // CIEDE2000 ΔE
 }
 
-interface ColourEntry {
+/** One entry of a name dataset. `haus-colour-names` emits exactly this shape. */
+export interface NamedColourEntry {
   hex: string
   name: string
+}
+
+interface IndexedEntry extends NamedColourEntry {
   L: number
   a: number
   b: number
 }
-
-// Pre-compute Lab values once at module load — no repeated conversions at query time
-const COLOUR_LIST: ColourEntry[] = Object.entries(
-  colornames as Record<string, string>
-).map(([rawHex, name]) => {
-  const hex = `#${rawHex.padStart(6, '0')}`
-  const [L, a, b] = chroma(hex).lab()
-  return { hex, name, L, a, b }
-})
 
 // Two-stage search: CIE76 (fast Euclidean in Lab) narrows the dataset to
 // candidates within a generous radius; CIEDE2000 re-scores for accuracy.
 const CIE76_RADIUS = 28
 
 /**
- * Finds the closest named colour to the given hex using CIEDE2000 distance.
+ * Build a matcher over a name dataset.
+ *
+ * The bundled dataset here is 289 basic colour terms, which is what most callers
+ * want and costs nothing to carry. For exhaustive naming, install
+ * `haus-colour-names` (31,900 entries, 748KB) and pass its entries in:
+ *
+ *   const nameColour = createNamedColourMatcher(colourNameEntries())
+ *
+ * Keeping the data out of this package is deliberate. A caller who only wants
+ * CIEDE2000 or WCAG contrast should not install a name dataset to get it.
+ *
+ * Lab values are computed on the first query rather than at construction, so
+ * building a matcher you never call is free.
+ */
+export function createNamedColourMatcher(
+  entries: NamedColourEntry[],
+): (hex: string, topN?: number) => NamedColourMatch[] {
+  let indexed: IndexedEntry[] | undefined
+
+  return function nearest(hex: string, topN = 5): NamedColourMatch[] {
+    if (!indexed) {
+      indexed = entries.map((entry) => {
+        const [L, a, b] = chroma(entry.hex).lab()
+        return { ...entry, L, a, b }
+      })
+    }
+
+    const [L1, a1, b1] = chroma(hex).lab()
+
+    const candidates: IndexedEntry[] = []
+    for (const entry of indexed) {
+      const d = Math.sqrt((L1 - entry.L) ** 2 + (a1 - entry.a) ** 2 + (b1 - entry.b) ** 2)
+      if (d < CIE76_RADIUS) candidates.push(entry)
+    }
+
+    // If nothing is in radius, fall back to the whole set by CIE76.
+    const pool = candidates.length > 0 ? candidates : indexed
+
+    return pool
+      .map((entry) => ({
+        name: entry.name,
+        hex: entry.hex,
+        distance: Math.round(chroma.deltaE(hex, entry.hex) * 10) / 10,
+      }))
+      .sort((a, b) => a.distance - b.distance || a.name.localeCompare(b.name))
+      .slice(0, topN)
+  }
+}
+
+/** The 289 basic colour terms bundled with this package. */
+export const basicColourNames: NamedColourEntry[] = Object.entries(
+  colornames as Record<string, string>,
+).map(([rawHex, name]) => ({ hex: `#${rawHex.padStart(6, '0').toLowerCase()}`, name }))
+
+/**
+ * Closest named colour by CIEDE2000, over the bundled 289 terms.
  * Returns the top N matches (default 5).
  */
-export function nearestNamedColour(hex: string, topN = 5): NamedColourMatch[] {
-  const [L1, a1, b1] = chroma(hex).lab()
-
-  const candidates: ColourEntry[] = []
-  for (const entry of COLOUR_LIST) {
-    const d = Math.sqrt(
-      (L1 - entry.L) ** 2 + (a1 - entry.a) ** 2 + (b1 - entry.b) ** 2
-    )
-    if (d < CIE76_RADIUS) candidates.push(entry)
-  }
-
-  // If nothing in radius, fall back to nearest by CIE76
-  const pool = candidates.length > 0 ? candidates : COLOUR_LIST
-
-  return pool
-    .map(entry => ({
-      name: entry.name,
-      hex: entry.hex,
-      distance: Math.round(chroma.deltaE(hex, entry.hex) * 10) / 10,
-    }))
-    .sort((a, b) => a.distance - b.distance)
-    .slice(0, topN)
-}
+export const nearestNamedColour = createNamedColourMatcher(basicColourNames)

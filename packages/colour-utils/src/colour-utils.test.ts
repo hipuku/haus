@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import chroma from 'chroma-js'
 import { generateLightnessScale }        from './lightnessScale'
+import { basicColourNames, createNamedColourMatcher } from './namedColour'
 import { wcagContrast, isLight, suggestTextColour } from './contrast'
 import { clusterByPerceptualDistance }   from './cluster'
 import { nearestNamedColour }            from './namedColour'
@@ -123,5 +124,39 @@ describe('nearestNamedColour', () => {
     for (const m of nearestNamedColour('#123456', 5)) {
       expect(m.hex).toMatch(/^#[0-9a-f]{6}$/i)
     }
+  })
+})
+
+describe('createNamedColourMatcher', () => {
+  it('matches against the dataset it is given, not the bundled one', () => {
+    const nameColour = createNamedColourMatcher([
+      { hex: '#ff0000', name: 'Only Red' },
+      { hex: '#0000ff', name: 'Only Blue' },
+    ])
+    expect(nameColour('#fe0202', 1)[0]!.name).toBe('Only Red')
+  })
+
+  it('breaks a tie on equal distance by name, so the order is not the dataset order', () => {
+    // Two entries equidistant from the query. Without a tie break the winner is
+    // whichever the dataset listed first, and a reordered dataset changes the answer.
+    const forwards = createNamedColourMatcher([
+      { hex: '#ff0000', name: 'Zulu Red' },
+      { hex: '#ff0000', name: 'Alpha Red' },
+    ])
+    const backwards = createNamedColourMatcher([
+      { hex: '#ff0000', name: 'Alpha Red' },
+      { hex: '#ff0000', name: 'Zulu Red' },
+    ])
+    expect(forwards('#ff0000')[0]!.name).toBe('Alpha Red')
+    expect(backwards('#ff0000')[0]!.name).toBe('Alpha Red')
+  })
+
+  it('returns an empty list for an empty dataset rather than throwing', () => {
+    expect(createNamedColourMatcher([])('#ff0000')).toEqual([])
+  })
+
+  it('bundles 289 basic colour terms', () => {
+    expect(basicColourNames).toHaveLength(289)
+    for (const entry of basicColourNames) expect(entry.hex).toMatch(/^#[0-9a-f]{6}$/)
   })
 })
