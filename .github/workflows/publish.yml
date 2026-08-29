@@ -21,6 +21,19 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      # First, so a missing credential costs seconds rather than failing after
+      # the install, the build and the pack, which is what it did the first time.
+      - name: The npm token exists
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          if [ -z "$NPM_TOKEN" ]; then
+            echo "NPM_TOKEN is not set on this repository."
+            echo "Create an npm automation token, then add it under"
+            echo "Settings > Secrets and variables > Actions as NPM_TOKEN."
+            exit 1
+          fi
+
       - uses: pnpm/action-setup@v4
 
       - uses: actions/setup-node@v5
@@ -103,7 +116,12 @@ jobs:
       - name: Test
         run: pnpm --filter ${{ steps.tag.outputs.name }} run --if-present test
 
+      # setup-node's registry-url writes an .npmrc that npm reads and pnpm does
+      # not always pick up, so the token is written explicitly. NODE_AUTH_TOKEN
+      # stays set because pnpm consults it too.
       - name: Publish
-        run: pnpm --filter ${{ steps.tag.outputs.name }} publish --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          npm config set //registry.npmjs.org/:_authToken "$NODE_AUTH_TOKEN"
+          pnpm --filter ${{ steps.tag.outputs.name }} publish --no-git-checks
