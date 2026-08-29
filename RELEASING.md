@@ -5,8 +5,32 @@ Five packages publish to npm from this repo, unscoped and public:
 `haus-colour-names`.
 
 Each is released by pushing a tag. `.github/workflows/publish.yml` reads the tag, checks the
-manifest agrees with it, builds, tests and publishes. It needs an `NPM_TOKEN`
-automation-token secret.
+manifest agrees with it, builds, tests and publishes.
+
+## Authentication
+
+There is no npm token. The workflow publishes by **trusted publishing**: GitHub mints a
+short-lived OIDC token proving which repository, workflow and commit is asking, and npm
+checks that against a trusted publisher registered on the package. Nothing long-lived is
+stored, so there is no secret to leak and nothing that expires at an inconvenient moment.
+Published releases carry provenance for the same reason — npm can prove where they came from.
+
+Each package needs this configured once, at
+`npmjs.com/package/<name>/access` → **Trusted publisher**:
+
+| Field | Value |
+|---|---|
+| Provider | GitHub Actions |
+| Organization or user | `hipuku` |
+| Repository | `haus` |
+| Workflow filename | `publish.yml` |
+| Environment | *(leave empty)* |
+
+A package that does not exist on npm yet cannot be configured this way, because the settings
+page is a property of the package. Publish its first version manually — `pnpm pack` in the
+package directory, then `npm publish <tarball>` from your own machine, answering the 2FA
+prompt — and register the trusted publisher immediately afterwards. Every release after the
+first goes through CI.
 
 ## Tag format
 

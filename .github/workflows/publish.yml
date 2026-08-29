@@ -7,7 +7,12 @@ name: Publish
 # One workflow rather than one per package: five near-identical files drift
 # apart, and the fifth is always the one nobody remembers to add.
 #
-# Requires an NPM_TOKEN automation-token secret.
+# Authenticates to npm by trusted publishing (OIDC): GitHub mints a short-lived
+# identity token for this workflow, npm verifies it against the trusted publisher
+# configured on the package, and no long-lived credential exists to leak, rotate
+# or expire. There is deliberately no NPM_TOKEN secret. Each package must have
+# this repository and this workflow filename registered as its trusted publisher
+# on npmjs.com first; see RELEASING.md.
 
 on:
   push:
@@ -18,21 +23,14 @@ jobs:
   publish:
     runs-on: ubuntu-latest
 
+    # id-token lets this job request the OIDC token npm authenticates against.
+    # Without it the publish fails with no credential, and no secret can stand in.
+    permissions:
+      id-token: write
+      contents: read
+
     steps:
       - uses: actions/checkout@v5
-
-      # First, so a missing credential costs seconds rather than failing after
-      # the install, the build and the pack, which is what it did the first time.
-      - name: The npm token exists
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          if [ -z "$NPM_TOKEN" ]; then
-            echo "NPM_TOKEN is not set on this repository."
-            echo "Create an npm automation token, then add it under"
-            echo "Settings > Secrets and variables > Actions as NPM_TOKEN."
-            exit 1
-          fi
 
       - uses: pnpm/action-setup@v4
 
@@ -116,12 +114,25 @@ jobs:
       - name: Test
         run: pnpm --filter ${{ steps.tag.outputs.name }} run --if-present test
 
-      # setup-node's registry-url writes an .npmrc that npm reads and pnpm does
-      # not always pick up, so the token is written explicitly. NODE_AUTH_TOKEN
-      # stays set because pnpm consults it too.
-      - name: Publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # Trusted publishing is npm CLI only, and only from 11.5.1. The npm that
+      # ships with Node 22 is older than that, so it is upgraded rather than
+      # trusted to be new enough.
+      - name: Upgrade npm to a version that speaks OIDC
+        run: npm install -g npm@latest
+
+      # Two tools, because each does one half. pnpm rewrites `workspace:^` to the
+      # dependency's real version as it packs — npm would publish the manifest
+      # verbatim and ship something no consumer can resolve. npm is what holds
+      # the OIDC credential. So pnpm makes the tarball and npm publishes it.
+      - name: Pack
+        id: pack
         run: |
-          npm config set //registry.npmjs.org/:_authToken "$NODE_AUTH_TOKEN"
-          pnpm --filter ${{ steps.tag.outputs.name }} publish --no-git-checks
+          pnpm --filter ${{ steps.tag.outputs.name }} pack --pack-destination "${RUNNER_TEMP}"
+          tarball=$(ls "${RUNNER_TEMP}"/*.tgz)
+          echo "Packed ${tarball}"
+          echo "tarball=${tarball}" >> "$GITHUB_OUTPUT"
+
+      # No token, no .npmrc credential. Provenance is attached automatically,
+      # because npm can prove which workflow and which commit produced this.
+      - name: Publish
+        run: npm publish "${{ steps.pack.outputs.tarball }}" --access public
