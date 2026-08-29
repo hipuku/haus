@@ -9,11 +9,16 @@ name: Design system drift
 # express) and one is a deliberately seeded stale token. Failing on those would
 # teach everyone to ignore the job, so it comments instead.
 
+# Paused. The checkout of hipuku/loom fails with "Not Found": the repository is
+# private and the automatic GITHUB_TOKEN has no access to it, so this job has
+# been failing on every push. loom is being reconsidered, and a job that always
+# fails teaches everyone to ignore the whole check list.
+#
+# To bring it back: make loom public, or add a read token as the LOOM_PAT secret
+# and set `token: ${{ secrets.LOOM_PAT }}` on that checkout step. Then restore
+# the push and pull_request triggers below.
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -25,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out haus
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           path: haus
 
@@ -33,14 +38,14 @@ jobs:
       # out is simpler than publishing the audit as a package, and keeps the two
       # in step without a release cycle between them.
       - name: Check out loom
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: hipuku/loom
           path: loom
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Install loom
         working-directory: loom

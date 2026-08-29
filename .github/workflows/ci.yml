@@ -8,16 +8,16 @@ on:
 
 jobs:
   ci:
-    name: Tokens, Lint, Typecheck, Test, Build
+    name: Tokens, Lint, Build, Typecheck, Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: pnpm/action-setup@v4
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 22
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
@@ -36,13 +36,16 @@ jobs:
       - name: Lint CSS (design tokens)
         run: pnpm run lint:css
 
-      - name: Typecheck
-        run: pnpm -r run typecheck
-
-      # Packages resolve through dist/, which is gitignored, so the workspace
-      # must be built before anything can import across package boundaries.
+      # Packages resolve through dist/, which is gitignored, and workspace:^ links
+      # them to each other, so nothing can typecheck across a package boundary
+      # until the workspace is built. This used to sit after Typecheck and passed
+      # only because the internal dependencies resolved to their published copies
+      # on npm, which ship a dist.
       - name: Build packages
         run: pnpm run build
+
+      - name: Typecheck
+        run: pnpm -r run typecheck
 
       - name: Test
         run: pnpm -r run test

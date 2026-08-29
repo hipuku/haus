@@ -19,13 +19,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: pnpm/action-setup@v4
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 22
           cache: pnpm
           registry-url: https://registry.npmjs.org
 
@@ -93,8 +93,12 @@ jobs:
             fi
           done
 
+      # `...<name>` is "this package and everything it depends on". components
+      # cannot typecheck without haus-tokens' dist, and dist is gitignored, so
+      # building the target alone fails on any package with a workspace
+      # dependency.
       - name: Build
-        run: pnpm --filter ${{ steps.tag.outputs.name }} run build
+        run: pnpm --filter "...${{ steps.tag.outputs.name }}" run build
 
       - name: Test
         run: pnpm --filter ${{ steps.tag.outputs.name }} run --if-present test
