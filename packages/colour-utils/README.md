@@ -14,7 +14,10 @@ import {
   wcagContrast,
   clusterByPerceptualDistance,
   nearestNamedColour,
+  createNamedColourMatcher,
   generateLightnessScale,
+  oklch,
+  hueFamily,
   isLight,
   suggestTextColour,
 } from "haus-colour-utils";
@@ -39,7 +42,32 @@ wcagContrast("#767676", "#ffffff");
 Group colours that are perceptually within `threshold` ΔE of each other (default `8`) — the basis for finding near-duplicate tokens.
 
 ### `nearestNamedColour(hex, topN?): NamedColourMatch[]`
-The closest named colours to a hex, ranked by CIEDE2000 distance.
+The closest named colours to a hex, ranked by CIEDE2000 distance, over the 289 basic colour terms bundled here.
+
+### `createNamedColourMatcher(entries): (hex, topN?) => NamedColourMatch[]`
+The same search over a dataset you supply. Install [`haus-colour-names`](../colour-names) for the exhaustive 31,900-name set:
+
+```ts
+import { colourNameEntries } from "haus-colour-names";
+const nameColour = createNamedColourMatcher(colourNameEntries());
+```
+
+### `oklch(hex): Oklch | null`
+Lightness, chroma and hue. `h` is `null` for an achromatic colour, so a grey cannot silently propagate a `NaN`.
+
+```ts
+oklch("#ff0000"); // { l: 0.628, c: 0.258, h: 29.2 }
+```
+
+### `hueFamily(hex, families?, neutralChroma?): string | null`
+Which named family a colour belongs to: one of `HUE_FAMILIES`, or `"Neutral"` below `NEUTRAL_CHROMA` (0.03).
+
+```ts
+hueFamily("#2563eb"); // "Blue"
+hueFamily("#f7f7fa"); // "Neutral". A tinted near-white is still a grey.
+```
+
+Chroma rather than HSL saturation, which inflates at the extremes of lightness and reads a tinted near-black as a saturated hue. The bins are midpoints between measured OKLCH hues, not the HSL wheel's boundaries; reusing those offsets every family by about one place.
 
 ### `generateLightnessScale(hex, options?): string[]`
 A perceptual lightness ramp anchored on a colour, in OKLCH. Options: `{ steps = 10, minL = 8, maxL = 97 }`.

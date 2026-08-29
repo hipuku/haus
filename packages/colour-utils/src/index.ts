@@ -13,3 +13,6 @@ export { deltaE }                          from './deltaE'
 
 export { nearestNamedColour, createNamedColourMatcher, basicColourNames } from './namedColour'
 export type { NamedColourMatch, NamedColourEntry } from './namedColour'
+
+export { oklch, hueFamily, HUE_FAMILIES, NEUTRAL_CHROMA } from './oklch'
+export type { Oklch, HueFamily }           from './oklch'

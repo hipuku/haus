@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest'
 import chroma from 'chroma-js'
 import { generateLightnessScale }        from './lightnessScale'
 import { basicColourNames, createNamedColourMatcher } from './namedColour'
+import { hueFamily, oklch, HUE_FAMILIES } from './oklch'
 import { wcagContrast, isLight, suggestTextColour } from './contrast'
 import { clusterByPerceptualDistance }   from './cluster'
 import { nearestNamedColour }            from './namedColour'
@@ -158,5 +159,69 @@ describe('createNamedColourMatcher', () => {
   it('bundles 289 basic colour terms', () => {
     expect(basicColourNames).toHaveLength(289)
     for (const entry of basicColourNames) expect(entry.hex).toMatch(/^#[0-9a-f]{6}$/)
+  })
+})
+
+describe('oklch', () => {
+  it('reports lightness, chroma and hue', () => {
+    const red = oklch('#ff0000')!
+    expect(red.l).toBeCloseTo(0.628, 2)
+    expect(red.c).toBeCloseTo(0.258, 2)
+    expect(red.h).toBeCloseTo(29.2, 0)
+  })
+
+  it('reports no hue for a true grey rather than NaN', () => {
+    expect(oklch('#2b2b2b')!.h).toBeNull()
+    expect(oklch('#000000')!.h).toBeNull()
+  })
+
+  it('returns null for a colour it cannot parse', () => {
+    expect(oklch('not a colour')).toBeNull()
+  })
+})
+
+describe('hueFamily', () => {
+  it('calls tinted near-blacks and near-whites Neutral', () => {
+    // The greys a design system ships. HSL saturation reads these as hues,
+    // which is the whole reason this is chroma-based.
+    for (const hex of ['#0b0b14', '#101820', '#f7f7fa', '#12100e', '#8a8f98', '#2b2b2b']) {
+      expect(hueFamily(hex)).toBe('Neutral')
+    }
+  })
+
+  it('names the primaries as themselves', () => {
+    // The bins are midpoints between measured OKLCH hues, not the HSL numbers.
+    // Reusing HSL's boundaries offsets every family by roughly one place, which
+    // is how #ff0000 ends up called Orange and #0000ff called Purple.
+    expect(hueFamily('#ff0000')).toBe('Red')
+    expect(hueFamily('#ffff00')).toBe('Yellow')
+    expect(hueFamily('#00ff00')).toBe('Green')
+    expect(hueFamily('#0000ff')).toBe('Blue')
+  })
+
+  it('names the hues a site actually uses', () => {
+    expect(hueFamily('#2563eb')).toBe('Blue')
+    expect(hueFamily('#16a34a')).toBe('Green')
+    expect(hueFamily('#dc2626')).toBe('Red')
+    expect(hueFamily('#ffa500')).toBe('Orange')
+    expect(hueFamily('#ec4899')).toBe('Pink')
+    expect(hueFamily('#7c3aed')).toBe('Purple')
+  })
+
+  it('covers the whole wheel with no gap between bins', () => {
+    for (let h = 0; h < 360; h += 1) {
+      const named = HUE_FAMILIES.some((f) =>
+        f.min > f.max ? h >= f.min || h < f.max : h >= f.min && h < f.max,
+      )
+      expect(named, `hue ${h} falls in no family`).toBe(true)
+    }
+  })
+
+  it('accepts a different vocabulary', () => {
+    expect(hueFamily('#ff0000', [{ name: 'Warm', min: 300, max: 90 }])).toBe('Warm')
+  })
+
+  it('returns null for a colour it cannot parse', () => {
+    expect(hueFamily('nope')).toBeNull()
   })
 })
