@@ -1,15 +1,23 @@
-name: Publish colour-utils
+name: Publish
 
-# Publishes haus-colour-utils to npm when a colour-utils-v* tag is pushed.
-# Requires an NPM_TOKEN secret (npm automation token) in the repo settings.
+# Publishes one package to npm when a `<dir>-v<version>` tag is pushed, where
+# `<dir>` is its directory under packages/. So `colour-utils-v0.1.3` publishes
+# packages/colour-utils, and `tokens-v0.2.0` publishes packages/tokens.
+#
+# One workflow rather than one per package: five near-identical files drift
+# apart, and the fifth is always the one nobody remembers to add.
+#
+# Requires an NPM_TOKEN automation-token secret.
+
 on:
   push:
     tags:
-      - 'colour-utils-v*'
+      - '*-v*'
 
 jobs:
   publish:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
@@ -21,11 +29,77 @@ jobs:
           cache: pnpm
           registry-url: https://registry.npmjs.org
 
+      # Splits the tag and refuses to go further unless the manifest agrees with
+      # it. A tag that says 0.1.3 over a package.json that says 0.1.2 publishes
+      # something nobody can trace back to a commit.
+      - name: Read the tag
+        id: tag
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          dir="${tag%-v*}"
+          version="${tag##*-v}"
+          manifest="packages/${dir}/package.json"
+
+          if [ ! -f "$manifest" ]; then
+            echo "No package at ${manifest}. The tag prefix must be a directory under packages/."
+            exit 1
+          fi
+
+          name=$(node -p "require('./${manifest}').name")
+          declared=$(node -p "require('./${manifest}').version")
+
+          if [ "$declared" != "$version" ]; then
+            echo "Tag ${tag} wants ${version}, but ${manifest} says ${declared}."
+            exit 1
+          fi
+
+          echo "dir=${dir}"         >> "$GITHUB_OUTPUT"
+          echo "name=${name}"       >> "$GITHUB_OUTPUT"
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+          echo "Publishing ${name}@${version} from packages/${dir}"
+
       - run: pnpm install --frozen-lockfile
 
-      - run: pnpm --filter haus-colour-utils build
-      - run: pnpm --filter haus-colour-utils test
+      # pnpm rewrites `workspace:^` to the dependency's real version at publish
+      # time. If that version is not on npm the published package is installable
+      # but broken, and the first person to find out is a consumer.
+      # pnpm rewrites `workspace:^` to the dependency's real version at publish
+      # time. If that version is not on npm the published package is installable
+      # but broken, and the first person to find out is a consumer.
+      - name: Workspace dependencies are published
+        run: |
+          required=$(node -e "
+            const dir = process.argv[1];
+            const manifest = require('./packages/' + dir + '/package.json');
+            const deps = { ...(manifest.dependencies || {}), ...(manifest.peerDependencies || {}) };
+            const out = Object.keys(deps)
+              .filter((d) => String(deps[d]).startsWith('workspace:'))
+              .map((d) => d + '@' + require('./packages/' + d.replace(/^haus-/, '') + '/package.json').version);
+            console.log(out.join(' '));
+          " "${{ steps.tag.outputs.dir }}")
 
-      - run: pnpm --filter haus-colour-utils publish --no-git-checks
+          if [ -z "$required" ]; then
+            echo "No workspace dependencies to check."
+            exit 0
+          fi
+
+          for dep in $required; do
+            if npm view "$dep" version > /dev/null 2>&1; then
+              echo "${dep} is published"
+            else
+              echo "${{ steps.tag.outputs.name }} depends on ${dep}, which is not on npm."
+              echo "Publish that package first. See RELEASING.md."
+              exit 1
+            fi
+          done
+
+      - name: Build
+        run: pnpm --filter ${{ steps.tag.outputs.name }} run build
+
+      - name: Test
+        run: pnpm --filter ${{ steps.tag.outputs.name }} run --if-present test
+
+      - name: Publish
+        run: pnpm --filter ${{ steps.tag.outputs.name }} publish --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
