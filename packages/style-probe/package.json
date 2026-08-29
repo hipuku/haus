@@ -42,7 +42,7 @@
     "prepublishOnly": "npm run build && npm run test"
   },
   "dependencies": {
-    "haus-colour-utils": "^0.1.2"
+    "haus-colour-utils": "workspace:^"
   },
   "devDependencies": {
     "happy-dom": "^20.11.6",

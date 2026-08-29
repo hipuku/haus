@@ -10,11 +10,18 @@ An opinionated, open-source design system. Token-first, light-mode only, OKLCH t
 
 ## Packages
 
-| Package | Description |
-|---|---|
-| `haus-tokens` | Design tokens as CSS custom properties and W3C Design Tokens JSON |
-| `haus-components` | React component library (12 components) built on the token layer |
-| `haus-colour-utils` | Colour science utilities — OKLCH analysis, perceptual clustering, CIEDE2000 distance |
+Two tracks share this workspace. `haus-tokens` and `haus-components` are the design
+system. `haus-colour-utils` and `haus-style-probe` are the colour and measurement libraries
+the auditing tools were written against, and they are the two with consumers outside this
+repo.
+
+| Package | Description | Used by |
+|---|---|---|
+| `haus-tokens` | Design tokens as CSS custom properties and W3C Design Tokens JSON | `haus-components` |
+| `haus-components` | React component library (12 components) built on the token layer | this repo's Storybook |
+| `haus-colour-utils` | Colour science: OKLCH analysis, perceptual clustering, CIEDE2000 distance, WCAG contrast | drift, hexicon |
+| `haus-style-probe` | Reads what a browser actually computed for an element, normalised into one shape | drift |
+| `haus-colour-names` | 31,900 named colours as data, for pairing with the matcher in `haus-colour-utils` | nothing yet; vault and hexicon each carry their own copy |
 
 ## Token architecture
 
@@ -39,4 +46,6 @@ npm install haus-colour-utils
 
 ## Status
 
-Active development. `haus-colour-utils` is published to npm; `haus-tokens` and `haus-components` are internal-only.
+Active development. `haus-colour-utils` and `haus-style-probe` are published to npm and
+consumed by other projects. `haus-tokens` and `haus-components` are not yet released; the
+Storybook is the way to look at them.

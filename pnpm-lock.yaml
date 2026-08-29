@@ -97,6 +97,18 @@ importers:
         specifier: ^5.3.1
         version: 5.4.21(@types/node@26.2.0)
 
+  packages/colour-names:
+    devDependencies:
+      tsup:
+        specifier: ^8.5.1
+        version: 8.5.1(postcss@8.5.26)(tsx@4.23.12)(typescript@5.9.3)
+      typescript:
+        specifier: ^5.4.5
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@26.2.0)(happy-dom@20.11.6)(jsdom@30.0.1)
+
   packages/colour-utils:
     dependencies:
       chroma-js:
@@ -119,8 +131,8 @@ importers:
   packages/components:
     dependencies:
       haus-tokens:
-        specifier: ^0.1.2
-        version: 0.1.2
+        specifier: workspace:^
+        version: link:../tokens
     devDependencies:
       '@testing-library/jest-dom':
         specifier: ^7.0.1
@@ -165,8 +177,8 @@ importers:
   packages/style-probe:
     dependencies:
       haus-colour-utils:
-        specifier: ^0.1.2
-        version: 0.1.2
+        specifier: workspace:^
+        version: link:../colour-utils
     devDependencies:
       happy-dom:
         specifier: ^20.11.6
@@ -2252,12 +2264,6 @@ packages:
   hasown@2.0.3:
     resolution: {integrity: sha512-ej4AhfhfL2Q2zpMmLo7U1Uv9+PyhIZpgQLGT1F9miIGmiCJIoCgSmczFdrc97mWT4kVY72KA+WnnhJ5pghSvSg==}
     engines: {node: '>= 0.4'}
-
-  haus-colour-utils@0.1.2:
-    resolution: {integrity: sha512-FHaYM+ROgAKi0vLRKmn7fVALpN+SD/I0IQyKTLiMdtZrYdIXEYg9LoxBGbg8diLIBZc2jLBBYwXRSJ03gGFalQ==}
-
-  haus-tokens@0.1.2:
-    resolution: {integrity: sha512-2XzSesc4ke5+P5otz8kgUajTS3Bm178Rg24Er9Ei3dlZhz/nUJnEt8boqL3CL8zwY+XXtvIjY03BzS6DGqWxYg==}
 
   hermes-estree@0.25.1:
     resolution: {integrity: sha512-0wUoCcLp+5Ev5pDW2OriHC2MJCbwLwuRx+gAqMTOkGKJJiBCLjtrvy4PWUGn6MIVefecRpzoOZ/UV6iGdOr+Cw==}
@@ -5201,12 +5207,6 @@ snapshots:
   hasown@2.0.3:
     dependencies:
       function-bind: 1.1.2
-
-  haus-colour-utils@0.1.2:
-    dependencies:
-      chroma-js: 3.2.0
-
-  haus-tokens@0.1.2: {}
 
   hermes-estree@0.25.1: {}
 

@@ -1,7 +1,7 @@
 {
   "name": "haus-components",
   "version": "0.1.1",
-  "description": "haus design system components — 12 accessible React primitives built on haus-tokens.",
+  "description": "haus design system components \u2014 12 accessible React primitives built on haus-tokens.",
   "license": "MIT",
   "author": "hipuku",
   "homepage": "https://github.com/hipuku/haus/tree/main/packages/components#readme",
@@ -44,11 +44,11 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "haus-tokens": "^0.1.2"
+    "haus-tokens": "workspace:^"
   },
   "peerDependencies": {
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^7.0.1",
