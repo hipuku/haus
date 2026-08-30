@@ -69,8 +69,14 @@ git tag style-probe-v0.2.1 <commit>
 git push --tags
 ```
 
-The workflow runs, finds the version on npm and stops there. The tag is the point: it is what
-lets `git describe` and the npm page agree on which commit a published version came from.
+The tag is the point: it is what lets `git describe` and the npm page agree on which commit a
+published version came from.
+
+Actions runs the workflow **as it existed at the tagged commit**, not as it exists on `main`. So a
+tag written onto a commit from before the skip check will still run the old workflow and fail at
+npm with "cannot publish over the previously published versions". The tag is created correctly
+either way; the run is noise, and the run can be deleted from the Actions page. `tokens-v0.1.2` and
+`style-probe-v0.2.1` are both in that state. Any tag written from here on gets the skip.
 
 ## Order matters
 
