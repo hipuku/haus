@@ -1,7 +1,7 @@
 {
   "name": "haus-tokens",
-  "version": "0.1.2",
-  "description": "haus design tokens — OKLCH colour, type, spacing, radius, shadow and motion, as W3C-DTCG JSON, CSS custom properties, and typed JS constants.",
+  "version": "0.2.0",
+  "description": "haus design tokens: OKLCH colour, type, spacing, radius, shadow and motion, as W3C-DTCG JSON, CSS custom properties, and typed JS constants.",
   "license": "MIT",
   "author": "hipuku",
   "homepage": "https://github.com/hipuku/haus/tree/main/packages/tokens#readme",
@@ -44,11 +44,14 @@
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "npm run tokens:check && npm run build",
     "tokens": "tsx scripts/build-tokens.ts",
-    "tokens:check": "tsx scripts/build-tokens.ts --check"
+    "tokens:check": "tsx scripts/build-tokens.ts --check",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "devDependencies": {
     "tsup": "^8.5.1",
     "tsx": "^4.23.12",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "vitest": "^2.1.0"
   }
 }

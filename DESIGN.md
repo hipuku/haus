@@ -10,7 +10,7 @@ OKLCH gives perceptual uniformity that hex and HSL don't. Equal numeric steps in
 
 ## Three-layer token architecture: primitives → semantics → components
 
-Primitives hold raw values (no meaning, just numbers). Semantics hold intent: role names like `--color-surface-default` that alias primitives. Components consume semantics only; they never reach through to primitives. This separation means a theme swap (high-contrast, a brand variant) is a single-file change to `semantics.css` with zero component edits. It also enforces a discipline: if you can't name what a token *does*, it shouldn't exist.
+Primitives hold raw values (no meaning, just numbers). Semantics hold intent: role names like `--color-surface-default` that alias primitives. Components consume semantics for colour, padding, gap, margin, radius, elevation and motion, and no component reads a colour, radius, shadow or motion primitive. Two kinds of primitive read remain, both deliberate and both tested: 31 declarations take a size off the space ladder (height, width, min/max, transform offsets), because a size is a value rather than a role; and 56 read a primitive whose own name already is the role, such as `--font-sans` and `--border-width-default`. This separation means a theme swap (high-contrast, a brand variant) is a single-file change to `semantics.css` with zero component edits. It also enforces a discipline: if you can't name what a token *does*, it shouldn't exist.
 
 ## Role-based type system over a heading scale
 
@@ -42,9 +42,9 @@ Manrope is a variable font with a wide weight range (200-800), which means the f
 
 ## Light mode only
 
-haus is light mode only, and dark mode is out of scope — not a deferred layer. The semantic layer declares `color-scheme: light` and there is no `light-dark()` usage anywhere in the tokens. Doing dark mode properly would require auditing every semantic token for dark-mode contrast, which doubles the colour decision surface; the system is deliberately scoped to prove the light token structure without that cost. If dark mode were ever revisited, it would live entirely in `semantics.css` with zero component edits — but that is explicitly not part of this system.
+haus is light mode only, and dark mode is out of scope, and not a deferred layer. The semantic layer declares `color-scheme: light` and there is no `light-dark()` usage anywhere in the tokens. Doing dark mode properly would require auditing every semantic token for dark-mode contrast, which doubles the colour decision surface; the system is deliberately scoped to prove the light token structure without that cost. If dark mode were ever revisited, it would live entirely in `semantics.css` with zero component edits, but that is explicitly not part of this system.
 
-Scope is locked in two other ways worth recording here: there is **no MCP server** and **no Figma Code Connect** integration. The product surface is the token packages, the 12 React components, and Storybook — nothing more.
+Scope is locked in two other ways worth recording here: there is **no MCP server** and **no Figma Code Connect** integration. The product surface is the token packages, the 12 React components, and Storybook, and nothing more.
 
 ## Storybook as the product, not documentation
 

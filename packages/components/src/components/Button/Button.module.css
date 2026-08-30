@@ -2,11 +2,11 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-2);
+  gap: var(--space-gap-xs);
   font-family: var(--font-sans);
   font-weight: var(--weight-medium);
   letter-spacing: var(--tracking-normal);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-control);
   border: var(--border-width-default) solid transparent;
   cursor: pointer;
   transition:
@@ -36,21 +36,21 @@
 .sm {
   font-size: var(--type-label-sm-size);
   line-height: var(--type-label-sm-leading);
-  padding: var(--space-1) var(--space-3);
+  padding: var(--space-inset-2xs) var(--space-inset-sm);
   min-height: 28px;
 }
 
 .md {
   font-size: var(--type-label-size);
   line-height: var(--type-label-leading);
-  padding: var(--space-2) var(--space-4);
+  padding: var(--space-inset-xs) var(--space-inset-md);
   min-height: 36px;
 }
 
 .lg {
   font-size: var(--type-body-size);
   line-height: var(--type-body-leading);
-  padding: var(--space-3) var(--space-5);
+  padding: var(--space-inset-sm) var(--space-inset-lg);
   min-height: 44px;
 }
 
@@ -114,8 +114,8 @@
   background-color: transparent;
   border-color: transparent;
   color: inherit;
-  padding-left: var(--space-1);
-  padding-right: var(--space-1);
+  padding-left: var(--space-inset-2xs);
+  padding-right: var(--space-inset-2xs);
   text-decoration: underline;
   text-underline-offset: 3px;
   text-decoration-thickness: var(--border-width-default);
@@ -152,7 +152,7 @@
   border: var(--border-width-thick) solid currentColor;
   border-top-color: transparent;
   border-radius: 50%;
-  animation: spin var(--duration-slow) var(--ease-linear) infinite;
+  animation: spin var(--motion-duration-emphasis) var(--ease-linear) infinite;
   flex-shrink: 0;
 }
 

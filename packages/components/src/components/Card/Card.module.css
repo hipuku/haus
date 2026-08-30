@@ -1,6 +1,6 @@
 .card {
   background-color: var(--color-surface-raised);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-surface);
   overflow: hidden;
 }
 
@@ -9,7 +9,7 @@
 }
 
 .elevated {
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--elevation-floating);
   border: var(--border-width-default) solid var(--color-border-subtle);
 }
 
@@ -18,5 +18,5 @@
 }
 
 .padded {
-  padding: var(--space-5);
+  padding: var(--space-inset-lg);
 }

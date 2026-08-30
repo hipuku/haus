@@ -1,7 +1,7 @@
 .wrapper {
   display: inline-flex;
   align-items: flex-start;
-  gap: var(--space-2);
+  gap: var(--space-gap-xs);
   cursor: pointer;
   user-select: none;
 }
@@ -28,7 +28,7 @@
   flex-shrink: 0;
   width: var(--space-4);
   height: var(--space-4);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-marker);
   border: var(--border-width-thick) solid var(--color-border-strong);
   background-color: var(--color-surface-default);
   display: flex;
@@ -111,7 +111,7 @@
 
 .required {
   color: var(--color-error-default);
-  margin-left: var(--space-1);
+  margin-left: var(--space-stack-2xs);
 }
 
 .errorMessage {
@@ -120,8 +120,8 @@
   font-size: var(--type-label-xs-size);
   line-height: var(--type-label-xs-leading);
   color: var(--color-error-default);
-  margin-top: var(--space-1);
-  padding-left: calc(var(--space-4) + var(--space-2)); /* indent past checkbox + gap */
+  margin-top: var(--space-stack-2xs);
+  padding-left: calc(var(--space-inset-md) + var(--space-inset-xs)); /* indent past checkbox + gap */
 }
 
 @media (prefers-reduced-motion: reduce) {

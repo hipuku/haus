@@ -37,6 +37,30 @@ const radius = [
   { name: 'radius-full', value: '9999px',  px: '∞'    },
 ]
 
+const spaceRoles = [
+  { name: 'space-inset-2xs', alias: 'space-1', px: '4px',  use: 'Button' },
+  { name: 'space-inset-xs',  alias: 'space-2', px: '8px',  use: 'Badge, Button, Checkbox, Input, Select, Textarea' },
+  { name: 'space-inset-sm',  alias: 'space-3', px: '12px', use: 'Button, Input, Select, Textarea, Toast' },
+  { name: 'space-inset-md',  alias: 'space-4', px: '16px', use: 'Button, Checkbox, Modal, Toast' },
+  { name: 'space-inset-lg',  alias: 'space-5', px: '20px', use: 'Button, Card, Modal' },
+  { name: 'space-inset-xl',  alias: 'space-6', px: '24px', use: 'Modal' },
+  { name: 'space-inset-2xl', alias: 'space-8', px: '32px', use: 'Select' },
+  { name: 'space-gap-2xs',   alias: 'space-1', px: '4px',  use: 'Badge, Input, Radio, Select, Textarea, Toast' },
+  { name: 'space-gap-xs',    alias: 'space-2', px: '8px',  use: 'Button, Checkbox, Input, Radio' },
+  { name: 'space-gap-sm',    alias: 'space-3', px: '12px', use: 'Modal, Radio, Toast, Toggle' },
+  { name: 'space-gap-md',    alias: 'space-4', px: '16px', use: 'Modal, Radio' },
+  { name: 'space-stack-2xs', alias: 'space-1', px: '4px',  use: 'Checkbox, Input, Radio, Select, Textarea' },
+  { name: 'space-stack-xs',  alias: 'space-2', px: '8px',  use: 'Radio' },
+]
+
+const radiusRoles = [
+  { name: 'radius-control', alias: 'radius-md',   value: '0.5rem',  use: 'Button, Input, Select, Textarea' },
+  { name: 'radius-surface', alias: 'radius-lg',   value: '0.75rem', use: 'Card, Toast' },
+  { name: 'radius-overlay', alias: 'radius-xl',   value: '1rem',    use: 'Modal' },
+  { name: 'radius-marker',  alias: 'radius-sm',   value: '0.25rem', use: 'Checkbox, Modal and Toast icons' },
+  { name: 'radius-pill',    alias: 'radius-full', value: '9999px',  use: 'Badge, Toggle track' },
+]
+
 const borderWidths = [
   { name: 'border-width-default', value: '1px', use: 'Inputs, dividers, cards' },
   { name: 'border-width-thick',   value: '2px', use: 'Active inputs, selected states' },
@@ -49,7 +73,7 @@ function SpacePage() {
     <div style={pageWrap}>
       <h1 style={pageTitleStyle}>Space</h1>
       <p style={pageDescStyle}>
-        4px grid. Every token is a multiple of 4. <code style={{ fontFamily: 'var(--font-mono)' }}>space-1</code> through <code style={{ fontFamily: 'var(--font-mono)' }}>space-6</code> for component internals — gaps, padding, inline spacing. <code style={{ fontFamily: 'var(--font-mono)' }}>space-8</code> and above for layout — section margins, page gutters.
+        4px grid. Every token is a multiple of 4. <code style={{ fontFamily: 'var(--font-mono)' }}>space-1</code> through <code style={{ fontFamily: 'var(--font-mono)' }}>space-6</code> for component internals: gaps, padding, inline spacing. <code style={{ fontFamily: 'var(--font-mono)' }}>space-8</code> and above for layout: section margins, page gutters.
       </p>
 
       <TableGrid columns={SPACE_COLS}>
@@ -84,7 +108,7 @@ function RadiusPage() {
     <div style={pageWrap}>
       <h1 style={pageTitleStyle}>Radius</h1>
       <p style={pageDescStyle}>
-        Seven steps from sharp to pill. <code style={{ fontFamily: 'var(--font-mono)' }}>radius-md</code> for interactive elements, <code style={{ fontFamily: 'var(--font-mono)' }}>radius-lg</code> for cards and panels, <code style={{ fontFamily: 'var(--font-mono)' }}>radius-2xl</code> for dialogs. Use <code style={{ fontFamily: 'var(--font-mono)' }}>radius-none</code> to explicitly clear corners — never hardcode 0.
+        Seven steps from sharp to pill. <code style={{ fontFamily: 'var(--font-mono)' }}>radius-md</code> for interactive elements, <code style={{ fontFamily: 'var(--font-mono)' }}>radius-lg</code> for cards and panels, <code style={{ fontFamily: 'var(--font-mono)' }}>radius-2xl</code> for dialogs. Use <code style={{ fontFamily: 'var(--font-mono)' }}>radius-none</code> to explicitly clear corners, and never hardcode 0.
       </p>
 
       <div style={{ display: 'flex', gap: 'var(--space-6)', flexWrap: 'wrap', marginTop: 'var(--space-2)' }}>
@@ -105,12 +129,75 @@ function RadiusPage() {
   )
 }
 
+const ROLE_COLS = 'auto auto auto 1fr'
+
+function SpaceRolesPage() {
+  return (
+    <div style={pageWrap}>
+      <h1 style={pageTitleStyle}>Space roles</h1>
+      <p style={pageDescStyle}>
+        Three roles over one ladder. <code style={{ fontFamily: 'var(--font-mono)' }}>inset</code> is padding, the space inside a component between its edge and its content. <code style={{ fontFamily: 'var(--font-mono)' }}>gap</code> is space between siblings, set by the parent. <code style={{ fontFamily: 'var(--font-mono)' }}>stack</code> is margin, space a component asks for around itself. A step is the same size whichever role reads it, so the roles stay comparable, and splitting them is what lets padding be retuned later without moving page rhythm. Components read these; the ladder below them is for sizes.
+      </p>
+
+      <TableGrid columns={ROLE_COLS}>
+        <TH><ColLabel icon="fa-solid fa-tag">Token</ColLabel></TH>
+        <TH><ColLabel icon="fa-solid fa-arrow-down-long">Aliases</ColLabel></TH>
+        <TH><ColLabel icon="fa-solid fa-hashtag">Value</ColLabel></TH>
+        <TH><ColLabel icon="fa-solid fa-circle-info">Use</ColLabel></TH>
+        <TableDivider />
+        {spaceRoles.map(({ name, alias, px, use }) => (
+          <React.Fragment key={name}>
+            <TD><CopyChip name={name} /></TD>
+            <TD><span style={{ ...tokenValueStyle, whiteSpace: 'nowrap' }}>{alias}</span></TD>
+            <TD><span style={{ ...tokenValueStyle, whiteSpace: 'nowrap' }}>{px}</span></TD>
+            <TD><span style={{ fontSize: 'var(--type-body-sm-size)', color: 'var(--color-ink-secondary)' }}>{use}</span></TD>
+          </React.Fragment>
+        ))}
+      </TableGrid>
+    </div>
+  )
+}
+
+function RadiusRolesPage() {
+  return (
+    <div style={pageWrap}>
+      <h1 style={pageTitleStyle}>Radius roles</h1>
+      <p style={pageDescStyle}>
+        Named for what is rounded, so a component asks for the shape of the thing rather than a size off the ramp. Retuning every control is one edit here.
+      </p>
+
+      <TableGrid columns={ROLE_COLS}>
+        <TH><ColLabel icon="fa-solid fa-eye">Demo</ColLabel></TH>
+        <TH><ColLabel icon="fa-solid fa-tag">Token</ColLabel></TH>
+        <TH><ColLabel icon="fa-solid fa-arrow-down-long">Aliases</ColLabel></TH>
+        <TH><ColLabel icon="fa-solid fa-circle-info">Use</ColLabel></TH>
+        <TableDivider />
+        {radiusRoles.map(({ name, alias, value, use }) => (
+          <React.Fragment key={name}>
+            <TD>
+              <div style={{
+                width: 56, height: 32,
+                background: 'var(--color-primary-subtle)',
+                border: '1px solid var(--color-primary-default)',
+                borderRadius: value,
+              }} />
+            </TD>
+            <TD><CopyChip name={name} /></TD>
+            <TD><span style={{ ...tokenValueStyle, whiteSpace: 'nowrap' }}>{alias}</span></TD>
+            <TD><span style={{ fontSize: 'var(--type-body-sm-size)', color: 'var(--color-ink-secondary)' }}>{use}</span></TD>
+          </React.Fragment>
+        ))}
+      </TableGrid>
+    </div>
+  )
+}
+
 function BorderWidthPage() {
   return (
     <div style={pageWrap}>
       <h1 style={pageTitleStyle}>Border Width</h1>
       <p style={pageDescStyle}>
-        Two widths. <code style={{ fontFamily: 'var(--font-mono)' }}>default</code> (1px) for structure — inputs, dividers, cards. <code style={{ fontFamily: 'var(--font-mono)' }}>thick</code> (2px) for active and selected states only. Never introduce a third.
+        Two widths. <code style={{ fontFamily: 'var(--font-mono)' }}>default</code> (1px) for structure: inputs, dividers, cards. <code style={{ fontFamily: 'var(--font-mono)' }}>thick</code> (2px) for active and selected states only. Never introduce a third.
       </p>
 
       <TableGrid columns={BORDER_COLS}>
@@ -146,5 +233,7 @@ const meta: Meta = {
 export default meta
 type Story = StoryObj
 export const Space:       Story = { render: () => <SpacePage /> }
+export const SpaceRoles:  Story = { name: 'Space roles',  render: () => <SpaceRolesPage /> }
 export const Radius:      Story = { render: () => <RadiusPage /> }
+export const RadiusRoles: Story = { name: 'Radius roles', render: () => <RadiusRolesPage /> }
 export const BorderWidth: Story = { render: () => <BorderWidthPage /> }

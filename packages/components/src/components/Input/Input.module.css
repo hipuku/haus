@@ -1,7 +1,7 @@
 .wrapper {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: var(--space-gap-2xs);
 }
 
 .label {
@@ -15,17 +15,17 @@
 
 .required {
   color: var(--color-error-default);
-  margin-left: var(--space-1);
+  margin-left: var(--space-stack-2xs);
 }
 
 .inputWrap {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--space-gap-xs);
   background-color: var(--color-surface-default);
   border: var(--border-width-default) solid var(--color-border-default);
-  border-radius: var(--radius-md);
-  padding: 0 var(--space-3);
+  border-radius: var(--radius-control);
+  padding: 0 var(--space-inset-sm);
   transition:
     border-color var(--motion-micro),
     box-shadow   var(--motion-micro);
@@ -63,7 +63,7 @@
   font-weight: var(--type-body-sm-weight);
   line-height: var(--type-body-sm-leading);
   color: var(--color-ink-primary);
-  padding: var(--space-2) 0;
+  padding: var(--space-inset-xs) 0;
 }
 
 .input::placeholder {

@@ -1,11 +1,11 @@
-/* Outer wrapper — carries the size and positions the status dot */
+/* Outer wrapper: carries the size and positions the status dot */
 .wrapper {
   position: relative;
   display: inline-flex;
   flex-shrink: 0;
 }
 
-/* Inner circle — overflow:hidden here only, so status dot is never clipped */
+/* Inner circle: overflow:hidden here only, so the status dot is never clipped */
 .avatar {
   display: inline-flex;
   align-items: center;
@@ -37,7 +37,7 @@
   object-fit: cover;
 }
 
-/* ── Status indicator — on wrapper, never clipped ── */
+/* ── Status indicator, on the wrapper so it is never clipped ── */
 
 .status {
   position: absolute;

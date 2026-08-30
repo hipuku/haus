@@ -21,8 +21,16 @@ const shadows = [
   { name: 'shadow-md',    css: 'var(--shadow-md)',    use: 'Dropdowns, select menus' },
   { name: 'shadow-lg',    css: 'var(--shadow-lg)',    use: 'Modals, dialogs' },
   { name: 'shadow-xl',    css: 'var(--shadow-xl)',    use: 'Full-page overlays' },
-  { name: 'shadow-focus', css: 'var(--shadow-focus)', use: 'Keyboard focus ring — all interactive elements' },
+  { name: 'shadow-focus', css: 'var(--shadow-focus)', use: 'Keyboard focus ring, all interactive elements' },
 ]
+
+const elevationRoles = [
+  { name: 'elevation-raised',   alias: 'shadow-sm', use: 'Toggle knob' },
+  { name: 'elevation-floating', alias: 'shadow-lg', use: 'Card, Toast' },
+  { name: 'elevation-overlay',  alias: 'shadow-xl', use: 'Modal' },
+]
+
+const ELEV_COLS = 'auto auto auto 1fr'
 
 function ShadowDemo({ name, css }: { name: string; css: string }) {
   if (name === 'shadow-focus') {
@@ -79,7 +87,7 @@ function ShadowDemo({ name, css }: { name: string; css: string }) {
 /* ─── Z-index data ───────────────────────────────────────────────────────── */
 
 const zEntries = [
-  { name: 'z-tooltip',  value: 600, use: 'Tooltips — always on top' },
+  { name: 'z-tooltip',  value: 600, use: 'Tooltips, always on top' },
   { name: 'z-toast',    value: 500, use: 'Toast notifications' },
   { name: 'z-modal',    value: 400, use: 'Dialogs, modals' },
   { name: 'z-overlay',  value: 300, use: 'Sheet backgrounds, scrim' },
@@ -123,12 +131,46 @@ function ShadowsPage() {
   )
 }
 
+function ElevationRolesPage() {
+  return (
+    <div style={pageWrap}>
+      <h1 style={pageTitleStyle}>Elevation roles</h1>
+      <p style={pageDescStyle}>
+        Named for how high the thing sits, rather than how large its shadow is. Components read these; the shadow ramp above is what they resolve to. Three roles cover the system, because a fourth would be a height nothing in it occupies.
+      </p>
+
+      <TableGrid columns={ELEV_COLS}>
+        <TH><ColLabel icon="fa-solid fa-eye">Demo</ColLabel></TH>
+        <TH><ColLabel icon="fa-solid fa-tag">Token</ColLabel></TH>
+        <TH><ColLabel icon="fa-solid fa-arrow-down-long">Aliases</ColLabel></TH>
+        <TH><ColLabel icon="fa-solid fa-circle-info">Use</ColLabel></TH>
+        <TableDivider />
+        {elevationRoles.map(({ name, alias, use }) => (
+          <React.Fragment key={name}>
+            <TD style={{ padding: 'var(--space-3) 0' }}>
+              <div style={{
+                width: 72, height: 40,
+                background: 'var(--color-surface-raised)',
+                borderRadius: 'var(--radius-lg)',
+                boxShadow: `var(--${name})`,
+              }} />
+            </TD>
+            <TD style={{ padding: 'var(--space-3) 0' }}><CopyChip name={name} /></TD>
+            <TD style={{ padding: 'var(--space-3) 0' }}><span style={{ ...tokenValueStyle, whiteSpace: 'nowrap' }}>{alias}</span></TD>
+            <TD style={{ padding: 'var(--space-3) 0' }}><span style={{ fontSize: 'var(--type-body-sm-size)', color: 'var(--color-ink-secondary)', whiteSpace: 'nowrap' }}>{use}</span></TD>
+          </React.Fragment>
+        ))}
+      </TableGrid>
+    </div>
+  )
+}
+
 function ZIndexPage() {
   return (
     <div style={pageWrap}>
       <h1 style={pageTitleStyle}>Z-Index</h1>
       <p style={pageDescStyle}>
-        Fixed stacking order prevents z-index inflation. Bands are intentionally spaced — a sticky header at 200 and its dropdown at 100 coexist without conflict. Reference via <code style={{ fontFamily: 'var(--font-mono)' }}>var(--z-modal)</code> in CSS or <code style={{ fontFamily: 'var(--font-mono)' }}>tokens.zIndex</code> in JS. Never place a component outside its correct band.
+        Fixed stacking order prevents z-index inflation. Bands are intentionally spaced: a sticky header at 200 and its dropdown at 100 coexist without conflict. Reference via <code style={{ fontFamily: 'var(--font-mono)' }}>var(--z-modal)</code> in CSS or <code style={{ fontFamily: 'var(--font-mono)' }}>tokens.zIndex</code> in JS. Never place a component outside its correct band.
       </p>
 
       <TableGrid columns={Z_COLS}>
@@ -153,7 +195,7 @@ function OpacityPage() {
     <div style={pageWrap}>
       <h1 style={pageTitleStyle}>Opacity</h1>
       <p style={pageDescStyle}>
-        Two values for two jobs. <code style={{ fontFamily: 'var(--font-mono)' }}>opacity-disabled</code> (0.4) for unavailable elements — visible but non-interactive. <code style={{ fontFamily: 'var(--font-mono)' }}>opacity-overlay</code> (0.6) for modal scrims. Never simulate colour tints with opacity — use the palette's subtle and border steps instead.
+        Two values for two jobs. <code style={{ fontFamily: 'var(--font-mono)' }}>opacity-disabled</code> (0.4) for unavailable elements, visible but non-interactive. <code style={{ fontFamily: 'var(--font-mono)' }}>opacity-overlay</code> (0.6) for modal scrims. Never simulate colour tints with opacity. Use the palette's subtle and border steps instead.
       </p>
 
       <TableGrid columns={OP_COLS}>
@@ -190,5 +232,6 @@ const meta: Meta = {
 export default meta
 type Story = StoryObj
 export const Shadows: Story = { render: () => <ShadowsPage /> }
+export const ElevationRoles: Story = { name: 'Elevation roles', render: () => <ElevationRolesPage /> }
 export const ZIndex:  Story = { name: 'Z-Index',  render: () => <ZIndexPage /> }
 export const Opacity: Story = { render: () => <OpacityPage /> }

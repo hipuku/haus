@@ -1,13 +1,13 @@
 .toast {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-3) var(--space-4);
-  padding-left: calc(var(--space-4) + 3px); /* compensate for accent border */
-  border-radius: var(--radius-lg);
+  gap: var(--space-gap-sm);
+  padding: var(--space-inset-sm) var(--space-inset-md);
+  padding-left: calc(var(--space-inset-md) + 3px); /* compensate for accent border */
+  border-radius: var(--radius-surface);
   border: var(--border-width-default) solid;
   border-left-width: 3px;
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--elevation-floating);
   max-width: 360px;
   width: 100%;
   font-family: var(--font-sans);
@@ -76,7 +76,7 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: var(--space-gap-2xs);
 }
 
 .title {
@@ -95,13 +95,13 @@
 
 .neutral .description { color: var(--color-ink-inverse); opacity: 0.8; }
 
-/* Neutral (dark) toast — action inherits inverse ink colour via cascade */
+/* Neutral (dark) toast: action inherits inverse ink colour via cascade */
 .neutral .action { color: var(--color-ink-inverse); }
 
 .titleRow {
   display: flex;
   align-items: baseline;
-  gap: var(--space-3);
+  gap: var(--space-gap-sm);
   flex-wrap: wrap;
 }
 
@@ -118,7 +118,7 @@
   justify-content: center;
   width: 24px;
   height: 24px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-marker);
   border: none;
   background: transparent;
   cursor: pointer;

@@ -1,6 +1,6 @@
 # haus-tokens
 
-The haus design tokens — OKLCH colour, type, spacing, radius, shadow, motion —
+The haus design tokens: OKLCH colour, type, spacing, radius, shadow and motion,
 in three forms, from one source of truth.
 
 | Form | Import | For |
@@ -30,14 +30,24 @@ them meaning, `motion` adds duration and easing. All three are wrapped in
 ```
 primitives.css   --aronia-500: oklch(52% 0.138 300)
                         ↓
-semantics.css    --primary-default: var(--aronia-500)
+semantics.css    --color-primary-default: var(--aronia-500)
                         ↓
-your component   background: var(--primary-default)
+your component   background: var(--color-primary-default)
 ```
 
-**Components must never reference a primitive directly.** A primitive is a raw
-value with no opinion; a semantic token carries the decision. Reaching past the
-semantic layer is what makes a theme swap impossible later.
+A primitive is a raw value with no opinion; a semantic token carries the
+decision. Components read the semantic layer for colour, type, spacing, radius,
+elevation and motion, and reaching past it is what makes a theme swap
+impossible later.
+
+Two kinds of primitive read are documented rather than hidden. Sizes: 31
+declarations across the haus components take a size off the space ladder, on
+`height`, `width`, `min-*`/`max-*` and `transform` offsets, because a size is a
+value rather than a role. And 56 read a primitive that has no semantic alias
+because the primitive's own name already is the role: `--font-sans`,
+`--weight-*`, `--border-width-*`, `--opacity-disabled`, `--icon-sm`,
+`--z-modal`. No component reads a colour, radius, shadow or motion primitive,
+and a test in `haus-components` holds that line.
 
 ## Typed constants
 
@@ -48,19 +58,19 @@ can't read CSS. The JS export covers that:
 import { tokens } from 'haus-tokens'
 
 tokens.color.aronia[500]  // 'oklch(52% 0.138 300)'
-tokens.breakpoint.lg      // '1024px'  — breakpoints are JS-only, by necessity
+tokens.breakpoint.lg      // '1024px', breakpoints are JS-only by necessity
 tokens.motion['fade-in']  // '200ms cubic-bezier(0.00, 0.00, 0.20, 1.00)'
 ```
 
 This is the **primitive** layer only. Semantic tokens live in `semantics.css`
-and in `tokens.json`, because their whole job is to be swappable at runtime —
-freezing them into a JS constant would defeat the point.
+and in `tokens.json`, because their whole job is to be swappable at runtime.
+Freezing them into a JS constant would defeat the point.
 
 ## The DTCG JSON
 
 `tokens.json` conforms to the [W3C Design Tokens](https://tr.designtokens.org/format/)
 format, so it round-trips through design tooling. It stores *typed* values
-rather than CSS strings — a font family is an array, a cubic-bezier is four
+rather than CSS strings: a font family is an array, a cubic-bezier is four
 numbers, a composite is an alias:
 
 ```jsonc
@@ -72,13 +82,20 @@ numbers, a composite is an alias:
 ## Three copies, one truth
 
 Stating the same tokens three times invites exactly the drift this design
-system exists to prevent — so `tokens.test.ts` checks it mechanically on every
-run. It compares all three forms *after* resolving DTCG's typed values and
-aliases, so a real value change fails the build while a formatting difference
-does not, and it fails if any form declares a token the others don't.
+system exists to prevent. So two of the three are not stated at all:
+`tokens.json` is the source, and `primitives.css` and `index.ts` are generated
+from it by `scripts/build-tokens.ts`. `pnpm run tokens:check` regenerates them
+in memory and fails if what is committed differs, which is the first step CI
+runs. Change a value in `tokens.json` and `pnpm run tokens` writes the other
+two; change one of the other two by hand and CI says so.
 
-That covers 133 tokens against the JSON and 112 against the CSS. Change a value
-in one place and the suite tells you about the other two.
+`semantics.css` is the one token file still written by hand, because a role is a
+decision rather than a derivation. `semantics.test.ts` holds it to the rules
+this package states: every token it reads is declared in the layers below, no
+declaration carries a raw value, every subtle and default surface has its
+paired `on-*` text token, every interactive scale has a disabled state, no
+colour role names a palette, and a spacing step is the same size whichever of
+the three roles reads it.
 
 ## Licence
 

@@ -1,15 +1,15 @@
 .badge {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-1);
-  border-radius: var(--radius-full);
+  gap: var(--space-gap-2xs);
+  border-radius: var(--radius-pill);
   font-family: var(--font-sans);
   font-size: var(--type-label-xs-size);
   font-weight: var(--type-label-xs-weight);
   line-height: var(--type-label-xs-leading);
   letter-spacing: var(--type-label-xs-tracking);
   text-transform: uppercase;
-  padding: 2px var(--space-2);
+  padding: 2px var(--space-inset-xs);
   white-space: nowrap;
 }
 
