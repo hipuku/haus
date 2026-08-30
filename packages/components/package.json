@@ -1,7 +1,7 @@
 {
   "name": "haus-components",
   "version": "0.3.0",
-  "description": "haus design system components \u2014 12 accessible React primitives built on haus-tokens.",
+  "description": "haus design system components: 12 accessible React primitives built on haus-tokens.",
   "license": "MIT",
   "author": "hipuku",
   "homepage": "https://github.com/hipuku/haus/tree/main/packages/components#readme",
