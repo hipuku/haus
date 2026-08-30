@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out haus
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
         with:
           path: haus
 
@@ -38,7 +38,7 @@ jobs:
       # out is simpler than publishing the audit as a package, and keeps the two
       # in step without a release cycle between them.
       - name: Check out loom
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
         with:
           repository: hipuku/loom
           path: loom
