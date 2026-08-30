@@ -14,12 +14,25 @@ updates:
       # a decision about what to test against, not about what to support.
       react:
         patterns: ['react', 'react-dom', '@types/react', '@types/react-dom']
+      # Storybook's addons version with Storybook, not against it. Listed by
+      # name because @chromatic-com/storybook and eslint-plugin-storybook match
+      # neither '@storybook/*' nor each other, and a major of either alone is a
+      # pull request that cannot pass until the core is upgraded too.
       storybook:
-        patterns: ['storybook', '@storybook/*']
+        patterns:
+          - 'storybook'
+          - '@storybook/*'
+          - '@chromatic-com/storybook'
+          - 'eslint-plugin-storybook'
+          - 'chromatic'
       build:
         patterns: ['tsup', 'vite', '@vitejs/*', 'typescript']
+      # The test runner and its environments are their own group. Grouped with
+      # the linters, one vitest major holds an eslint patch hostage.
+      test:
+        patterns: ['vitest', '@vitest/*', 'vitest-axe', 'jsdom', 'happy-dom', '@testing-library/*']
       tooling:
-        patterns: ['eslint*', '@eslint/*', 'typescript-eslint', 'prettier*', 'vitest', '@vitest/*', 'jsdom', '@testing-library/*']
+        patterns: ['eslint*', '@eslint/*', 'typescript-eslint', 'prettier*']
     commit-message:
       prefix: 'deps'
     ignore:
