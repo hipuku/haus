@@ -1,5 +1,5 @@
 /**
- * haus-style-probe — read a rendered element's design decisions.
+ * haus-style-probe: read a rendered element's design decisions.
  *
  * The shared measuring tool underneath the portfolio's design-system auditors.
  * Two halves, deliberately split at the browser boundary:
@@ -8,7 +8,7 @@
  *      computed-style strings. Scope it to one component with `{ root }`, or
  *      omit it to walk the whole document.
  *   2. `normaliseElement` runs *in Node* and turns those strings into typed,
- *      unit-normalised values — pure, deterministic, testable without a browser.
+ *      unit-normalised values: pure, deterministic, testable without a browser.
  *
  * The split is the point: the same probe answers "what does this whole site
  * ship?" (descriptive audit) and "what does this one mounted component

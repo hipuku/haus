@@ -63,7 +63,7 @@ describe('RadioGroup', () => {
   })
 
   it('marks the group required and invalid, not the individual radios', () => {
-    // The constraint belongs to the group — one of N must be chosen — so the
+    // The constraint belongs to the group, where one of N must be chosen, so the
     // ARIA state has to sit on the container.
     render(<RadioGroup name="size" options={OPTIONS} label="Size" required error="Pick a size" />)
     const group = screen.getByRole('radiogroup', { name: /Size/ })

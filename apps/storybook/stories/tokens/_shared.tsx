@@ -1,6 +1,6 @@
 /**
  * Shared primitives for token story pages.
- * Not exported from the package — internal documentation only.
+ * Not exported from the package. Internal documentation only.
  */
 import React, { useState } from 'react'
 
@@ -125,7 +125,7 @@ export const tokenValueStyle: React.CSSProperties = {
   textOverflow: 'ellipsis',
 }
 
-/* ─── Table — single-grid approach ──────────────────────────────────────── */
+/* ─── Table, single-grid approach ──────────────────────────────────────── */
 
 /**
  * Parent grid for a token table. All TH + TD children share the same column
@@ -155,7 +155,7 @@ export function TableGrid({
   )
 }
 
-/** Header cell — sits directly inside TableGrid. No bottom border (use TableDivider). */
+/** Header cell, sits directly inside TableGrid. No bottom border (use TableDivider). */
 export function TH({
   children,
   style,
@@ -199,7 +199,7 @@ export function TableDivider({ weight = 'header' }: { weight?: 'header' | 'row' 
   )
 }
 
-/** Data cell — sits directly inside TableGrid. */
+/** Data cell, sits directly inside TableGrid. */
 export function TD({
   children,
   style,

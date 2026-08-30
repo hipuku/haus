@@ -2,11 +2,11 @@
    Typed constants for the primitive layer.
 
    The CSS custom properties are the runtime form; this exists for the places
-   they cannot reach — @media conditions, build config, style-in-JS. Semantic
+   they cannot reach: @media conditions, build config, style-in-JS. Semantic
    tokens are deliberately absent: their whole job is to be swappable at
    runtime, which freezing them into a constant would defeat.
 
-   GENERATED FROM src/tokens.json — do not edit.
+   GENERATED FROM src/tokens.json. Do not edit.
    Regenerate with `npm run tokens`; `npm run tokens:check` fails CI if stale.
    ─────────────────────────────────────────────────────────────────────────── */
 

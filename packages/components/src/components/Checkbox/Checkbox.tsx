@@ -41,7 +41,7 @@ export function Checkbox({
   const errorId    = error ? `${inputId}-error` : undefined
   const isControlled = checked !== undefined
 
-  // Internal state for uncontrolled usage — drives the visual box class
+  // Internal state for uncontrolled usage, driving the visual box class
   const [internalChecked, setInternalChecked] = React.useState(defaultChecked)
   const isChecked = isControlled ? checked : internalChecked
 

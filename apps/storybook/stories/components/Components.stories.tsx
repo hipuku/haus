@@ -42,7 +42,7 @@ function ButtonsPage() {
       <p style={pageDescStyle}>
         Six variants, three sizes, loading and disabled states. The primary variant uses aronia.
         Ghost is for secondary actions where a border would add visual noise. Text is for inline
-        actions — inherits colour from context, hover thickens the underline. External matches Text
+        actions, inheriting colour from context, hover thickens the underline. External matches Text
         but appends a diagonal arrow and adds rel="noopener noreferrer" automatically.
       </p>
 
@@ -56,7 +56,7 @@ function ButtonsPage() {
         <Button variant="external">External</Button>
       </Row>
 
-      <h2 style={sectionHead}>Text + external — in context</h2>
+      <h2 style={sectionHead}>Text + external, in context</h2>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', fontFamily: 'var(--font-sans)', fontSize: 'var(--type-body-sm-size)', color: 'var(--color-ink-secondary)' }}>
           Showing results 1–20 of 84.
@@ -116,7 +116,7 @@ function FormControlsPage() {
         Focus ring uses the primary colour. Error state overrides the border colour and focus ring.
       </p>
 
-      <h2 style={sectionHead}>Input — states</h2>
+      <h2 style={sectionHead}>Input states</h2>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
         <Input label="Default" placeholder="Enter a value" />
         <Input label="With hint" hint="This is a hint message" placeholder="Enter a value" />
@@ -174,17 +174,17 @@ function CardPage() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'var(--space-5)' }}>
         <Card variant="default">
           <p style={{ margin: 0, fontFamily: 'var(--font-sans)', fontSize: 'var(--type-body-sm-size)', color: 'var(--color-ink-secondary)' }}>
-            Default card — bordered, surface-raised background.
+            Default card, bordered, with a surface-raised background.
           </p>
         </Card>
         <Card variant="elevated">
           <p style={{ margin: 0, fontFamily: 'var(--font-sans)', fontSize: 'var(--type-body-sm-size)', color: 'var(--color-ink-secondary)' }}>
-            Elevated card — shadow, no border.
+            Elevated card, with a shadow and no border.
           </p>
         </Card>
         <Card variant="outlined">
           <p style={{ margin: 0, fontFamily: 'var(--font-sans)', fontSize: 'var(--type-body-sm-size)', color: 'var(--color-ink-secondary)' }}>
-            Outlined card — thick border, no shadow.
+            Outlined card, with a thick border and no shadow.
           </p>
         </Card>
       </div>
@@ -259,7 +259,7 @@ function AvatarPage() {
         anchors to the bottom-right corner.
       </p>
 
-      <h2 style={sectionHead}>Sizes — initials fallback</h2>
+      <h2 style={sectionHead}>Sizes, with initials fallback</h2>
       <Row gap="var(--space-4)">
         <Avatar size="xs" name="Ada Lovelace" />
         <Avatar size="sm" name="Ada Lovelace" />
@@ -292,7 +292,7 @@ function ToastPage() {
     <div style={pageWrap}>
       <h1 style={pageTitleStyle}>Toast</h1>
       <p style={pageDescStyle}>
-        Five variants. Neutral inverts the surface — useful for generic notifications.
+        Five variants. Neutral inverts the surface, which suits generic notifications.
         All others use the feedback colour scale. Title is required; description and action
         are optional. Close button appears when onClose is provided.
       </p>
@@ -365,7 +365,7 @@ function ModalPage() {
         footer={<><Button variant="ghost" onClick={() => setOpen(null)}>Cancel</Button><Button onClick={() => setOpen(null)}>Apply</Button></>}
       >
         <p style={{ margin: 0, color: 'var(--color-ink-secondary)', fontFamily: 'var(--font-sans)', fontSize: 'var(--type-body-sm-size)', lineHeight: 'var(--type-body-sm-leading)' }}>
-          For complex content that needs more horizontal space — colour import wizards,
+          For complex content that needs more horizontal space: colour import wizards,
           multi-column forms, data tables.
         </p>
       </Modal>

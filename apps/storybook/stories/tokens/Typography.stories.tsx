@@ -102,7 +102,7 @@ function TypographyScale() {
     <div style={pageWrap}>
       <h1 style={pageTitleStyle}>Typography</h1>
       <p style={pageDescStyle}>
-        Manrope (variable, UI) and Fira Code (monospace). All four properties together, always — size, weight, leading, tracking. Setting only <code style={{ fontFamily: 'var(--font-mono)' }}>font-size</code> from a type token and guessing the rest is using the system wrong. Roles replace heading levels — <code style={{ fontFamily: 'var(--font-mono)' }}>label-xs</code> through <code style={{ fontFamily: 'var(--font-mono)' }}>display</code>, never h1–h6. Click any token to copy.
+        Manrope (variable, UI) and Fira Code (monospace). All four properties together, always: size, weight, leading, tracking. Setting only <code style={{ fontFamily: 'var(--font-mono)' }}>font-size</code> from a type token and guessing the rest is using the system wrong. Roles replace heading levels: <code style={{ fontFamily: 'var(--font-mono)' }}>label-xs</code> through <code style={{ fontFamily: 'var(--font-mono)' }}>display</code>, never h1–h6. Click any token to copy.
       </p>
 
       <TableGrid columns={TYPE_COLS}>
@@ -123,7 +123,7 @@ function IconSizes() {
     <div style={pageWrap}>
       <h1 style={pageTitleStyle}>Icon Sizes</h1>
       <p style={pageDescStyle}>
-        Font Awesome 6 Solid. Set <code style={{ fontFamily: 'var(--font-mono)' }}>font-size</code> on the <code style={{ fontFamily: 'var(--font-mono)' }}>&lt;i&gt;</code> element using the matching icon token. Each size is paired with a type role — icon and adjacent copy must use the same scale step.
+        Font Awesome 6 Solid. Set <code style={{ fontFamily: 'var(--font-mono)' }}>font-size</code> on the <code style={{ fontFamily: 'var(--font-mono)' }}>&lt;i&gt;</code> element using the matching icon token. Each size is paired with a type role, so icon and adjacent copy use the same scale step.
       </p>
 
       <TableGrid columns={ICON_COLS}>

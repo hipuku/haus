@@ -7,6 +7,6 @@ export default defineConfig({
   clean: true,
   sourcemap: true,
   treeshake: true,
-  // chroma-js stays external — it is a runtime dependency, not bundled.
+  // chroma-js stays external, because it is a runtime dependency rather than a bundled one.
   // colornames.json is imported by namedColour.ts and gets inlined.
 })

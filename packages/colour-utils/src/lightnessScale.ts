@@ -21,7 +21,7 @@ export function generateLightnessScale(
   const [, c, h] = base.lch()
 
   // Scale chroma down toward the extremes so light/dark steps don't
-  // look over-saturated — mirrors how CSS palettes are tuned.
+  // look over-saturated. This mirrors how CSS palettes are tuned.
   return Array.from({ length: steps }, (_, i) => {
     const t   = i / (steps - 1)
     const L   = maxL - t * (maxL - minL)

@@ -5,7 +5,7 @@ import { defineConfig } from 'vite'
 /**
  * Library build.
  *
- * Vite rather than tsup — the rest of the workspace uses tsup, but tsup routes
+ * Vite rather than tsup. The rest of the workspace uses tsup, but tsup routes
  * every stylesheet through esbuild's global `css` loader, which turns each
  * *.module.css into plain global CSS and hands the component an empty styles
  * object (`className="undefined"` on every element, silently). Vite's PostCSS
@@ -31,7 +31,7 @@ export default defineConfig({
     sourcemap: true,
     cssCodeSplit: false,
     rollupOptions: {
-      // The consumer's React must be the only React — two copies break hooks.
+      // The consumer's React must be the only React, because two copies break hooks.
       external: ['react', 'react-dom', 'react/jsx-runtime'],
       output: {
         // Stable name so the exports map can point at it.

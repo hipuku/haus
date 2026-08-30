@@ -1,5 +1,5 @@
 /**
- * The probe contract — the boundary between "what the browser rendered" and
+ * The probe contract: the boundary between "what the browser rendered" and
  * "what a design-system tool can reason about".
  *
  * Two shapes, deliberately separate:
@@ -126,9 +126,9 @@ export interface ExtractedElement {
 export interface ProbeOptions {
   /**
    * CSS selector for the subtree to read. When set, the probe reads the
-   * matched element **and its descendants**, and nothing else — the
+   * matched element **and its descendants**, and nothing else, the
    * single-component read (mount one component, measure it). When omitted,
-   * the whole document is walked — the site-wide crawl.
+   * the whole document is walked, the site-wide crawl.
    */
   root?: string;
   /**

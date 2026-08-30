@@ -21,7 +21,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
     { label, hint, error, options, required, placeholder, disabled, className, id, children, ...rest },
     ref
   ) {
-    // Called unconditionally — see Checkbox for why.
+    // Called unconditionally. See Checkbox for why.
     const generatedId = React.useId()
     const selectId  = id ?? generatedId
     const hintId    = hint  ? `${selectId}-hint`  : undefined

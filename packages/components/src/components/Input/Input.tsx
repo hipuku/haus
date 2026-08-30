@@ -15,7 +15,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     { label, hint, error, prefix, suffix, required, disabled, className, id, ...rest },
     ref
   ) {
-    // Called unconditionally — see Checkbox for why.
+    // Called unconditionally. See Checkbox for why.
     const generatedId = React.useId()
     const inputId   = id ?? generatedId
     const hintId    = hint  ? `${inputId}-hint`  : undefined

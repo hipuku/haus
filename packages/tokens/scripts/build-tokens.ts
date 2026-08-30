@@ -4,8 +4,8 @@
  *   npm run tokens         regenerate src/primitives.css and src/index.ts
  *   npm run tokens:check   fail if either is stale (CI gate)
  *
- * Why: the primitives were stated three times — as DTCG JSON, as CSS custom
- * properties, and as typed JS constants — and kept in step by hand. A test used
+ * Why: the primitives were stated three times, as DTCG JSON, as CSS custom
+ * properties and as typed JS constants, and kept in step by hand. A test used
  * to compare them, which caught drift after the fact; generating two of the
  * three makes that drift impossible instead.
  *
@@ -14,7 +14,7 @@
  * `tokens.json` does not model, along with `--shadow-focus`, `color-scheme`, and
  * the relative-colour-syntax alpha tokens. Generating it would mean inventing a
  * source for all of that first. Semantic drift is caught by loom's audit
- * instead — generation prevents primitive drift, the audit detects the rest.
+ * instead: generation prevents primitive drift, and the audit detects the rest.
  */
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
@@ -52,9 +52,9 @@ function entries(group: DtcgGroup): Array<[string, DtcgToken]> {
 const BANNER = `/* ─── haus / primitives ──────────────────────────────────────────────────────
    Raw values only. No component or semantic meaning.
    Nothing outside this file should define raw values.
-   Components must never reference these directly — use semantics.css.
+   Components must never reference these directly. Use semantics.css.
 
-   GENERATED FROM src/tokens.json — do not edit.
+   GENERATED FROM src/tokens.json. Do not edit.
    Regenerate with \`npm run tokens\`; \`npm run tokens:check\` fails CI if stale.
    ─────────────────────────────────────────────────────────────────────────── */`
 
@@ -63,7 +63,7 @@ const FAMILIES: Array<{ key: string; heading: string; note?: string }> = [
   {
     key: 'damson',
     heading: 'Damson (Cool Neutral) ── H=290°, very low chroma',
-    note: 'Same hue family as Aronia — monochromatic, highly cohesive.',
+    note: 'Same hue family as Aronia, so the pairing is monochromatic and highly cohesive.',
   },
   { key: 'elderberry', heading: 'Elderberry (Indigo) ── H=265°, distinct from Aronia H=300°' },
   { key: 'greengage', heading: 'Greengage (Green) ── H=148°' },
@@ -88,8 +88,8 @@ const SCALES: Array<{
   { heading: 'Spacing scale (4px base)', prefix: '--space', path: ['spacing'] },
   { heading: 'Radius', prefix: '--radius', path: ['radius'] },
   {
-    heading: 'Shadows — tinted with damson H=290°',
-    note: '--shadow-focus is in semantics.css — it references semantic colour tokens.',
+    heading: 'Shadows, tinted with damson H=290°',
+    note: '--shadow-focus is in semantics.css, because it references semantic colour tokens.',
     prefix: '--shadow',
     path: ['shadow'],
     // shadow.focus resolves through semantic colour tokens, so it is declared
@@ -100,7 +100,7 @@ const SCALES: Array<{
   { heading: 'Z-index', prefix: '--z', path: ['zIndex'] },
   { heading: 'Border width', prefix: '--border-width', path: ['borderWidth'] },
   { heading: 'Opacity', prefix: '--opacity', path: ['opacity'] },
-  { heading: 'Icon sizes (Font Awesome — pairs with type scale)', prefix: '--icon', path: ['iconSize'] },
+  { heading: 'Icon sizes (Font Awesome, paired with the type scale)', prefix: '--icon', path: ['iconSize'] },
 ]
 
 /** Groups that are JS-only: custom properties cannot be used in @media conditions. */
@@ -220,11 +220,11 @@ function buildIndexTs(): string {
    Typed constants for the primitive layer.
 
    The CSS custom properties are the runtime form; this exists for the places
-   they cannot reach — @media conditions, build config, style-in-JS. Semantic
+   they cannot reach: @media conditions, build config, style-in-JS. Semantic
    tokens are deliberately absent: their whole job is to be swappable at
    runtime, which freezing them into a constant would defeat.
 
-   GENERATED FROM src/tokens.json — do not edit.
+   GENERATED FROM src/tokens.json. Do not edit.
    Regenerate with \`npm run tokens\`; \`npm run tokens:check\` fails CI if stale.
    ─────────────────────────────────────────────────────────────────────────── */
 

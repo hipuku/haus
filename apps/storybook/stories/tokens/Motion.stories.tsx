@@ -11,8 +11,8 @@ import {
 const DUR_COLS = 'auto auto auto 1fr'
 
 const durations = [
-  { name: 'duration-instant',  value: '50ms',  use: 'Skeleton shimmer, badge counters — imperceptible' },
-  { name: 'duration-fast',     value: '100ms', use: 'Checkbox, toggle, icon swap — snappy micro-interactions' },
+  { name: 'duration-instant',  value: '50ms',  use: 'Skeleton shimmer and badge counters, imperceptible' },
+  { name: 'duration-fast',     value: '100ms', use: 'Checkbox, toggle and icon swap: snappy micro-interactions' },
   { name: 'duration-normal',   value: '200ms', use: 'Hover, focus, most UI state changes' },
   { name: 'duration-moderate', value: '300ms', use: 'Panels, drawers, modals entering' },
   { name: 'duration-slow',     value: '500ms', use: 'Page transitions, complex sequences' },
@@ -165,7 +165,7 @@ function MotionPage() {
     <div style={pageWrap}>
       <h1 style={pageTitleStyle}>Motion</h1>
       <p style={pageDescStyle}>
-        Never write raw <code style={{ fontFamily: 'var(--font-mono)' }}>ms</code> or <code style={{ fontFamily: 'var(--font-mono)' }}>cubic-bezier()</code> values in component code. Use composite tokens — they pair the correct duration with the correct easing for each interaction type. All animated properties must collapse to <code style={{ fontFamily: 'var(--font-mono)' }}>var(--duration-reduced)</code> (0ms) inside <code style={{ fontFamily: 'var(--font-mono)' }}>prefers-reduced-motion</code>.
+        Never write raw <code style={{ fontFamily: 'var(--font-mono)' }}>ms</code> or <code style={{ fontFamily: 'var(--font-mono)' }}>cubic-bezier()</code> values in component code. Use composite tokens, which pair the correct duration with the correct easing for each interaction type. All animated properties must collapse to <code style={{ fontFamily: 'var(--font-mono)' }}>var(--duration-reduced)</code> (0ms) inside <code style={{ fontFamily: 'var(--font-mono)' }}>prefers-reduced-motion</code>.
       </p>
 
       <SectionHead>Durations</SectionHead>
@@ -185,7 +185,7 @@ function MotionPage() {
         ))}
       </TableGrid>
 
-      <SectionHead>Easing curves — press ▶ to preview</SectionHead>
+      <SectionHead>Easing curves, press ▶ to preview</SectionHead>
       <TableGrid columns={EASE_COLS}>
         <TH><ColLabel icon="fa-solid fa-tag">Name</ColLabel></TH>
         <TH><ColLabel icon="fa-solid fa-code">Token</ColLabel></TH>
@@ -195,7 +195,7 @@ function MotionPage() {
         {easings.map(e => <EasingRow key={e.name} {...e} />)}
       </TableGrid>
 
-      <SectionHead>Composite tokens — duration + easing pairs</SectionHead>
+      <SectionHead>Composite tokens: duration + easing pairs</SectionHead>
       <TableGrid columns={COMP_COLS}>
         <TH><ColLabel icon="fa-solid fa-tag">Token</ColLabel></TH>
         <TH><ColLabel icon="fa-solid fa-eye">Demo</ColLabel></TH>

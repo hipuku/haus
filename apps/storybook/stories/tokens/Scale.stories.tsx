@@ -40,7 +40,7 @@ function BreakpointsPage() {
     <div style={pageWrap}>
       <h1 style={pageTitleStyle}>Layout</h1>
       <p style={pageDescStyle}>
-        JS constants, not CSS custom properties — custom properties can't be used inside <code style={{ fontFamily: 'var(--font-mono)' }}>@media</code> query conditions. Import from <code style={{ fontFamily: 'var(--font-mono)' }}>haus-tokens</code> and use in Tailwind's <code style={{ fontFamily: 'var(--font-mono)' }}>screens</code> config or style-in-JS.
+        JS constants, not CSS custom properties, because custom properties can't be used inside <code style={{ fontFamily: 'var(--font-mono)' }}>@media</code> query conditions. Import from <code style={{ fontFamily: 'var(--font-mono)' }}>haus-tokens</code> and use in Tailwind's <code style={{ fontFamily: 'var(--font-mono)' }}>screens</code> config or style-in-JS.
       </p>
 
       <TableGrid columns={BP_COLS}>

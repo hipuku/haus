@@ -151,22 +151,22 @@ const damson: [string, string][] = [
 ]
 
 const feedback: { heading: string; steps: [string, string][] }[] = [
-  { heading: 'Elderberry · H=265° — info', steps: [
+  { heading: 'Elderberry · H=265°, info', steps: [
     ['elderberry-100', 'oklch(97% 0.020 265)'], ['elderberry-200', 'oklch(93% 0.040 265)'],
     ['elderberry-400', 'oklch(74% 0.160 265)'], ['elderberry-500', 'oklch(55% 0.200 265)'],
     ['elderberry-700', 'oklch(42% 0.160 265)'], ['elderberry-900', 'oklch(30% 0.120 265)'],
   ]},
-  { heading: 'Greengage · H=148° — success', steps: [
+  { heading: 'Greengage · H=148°, success', steps: [
     ['greengage-100', 'oklch(97% 0.030 148)'], ['greengage-200', 'oklch(93% 0.055 148)'],
     ['greengage-400', 'oklch(75% 0.150 148)'], ['greengage-500', 'oklch(58% 0.185 148)'],
     ['greengage-700', 'oklch(45% 0.150 148)'], ['greengage-900', 'oklch(33% 0.110 148)'],
   ]},
-  { heading: 'Mango · H=65° — warning', steps: [
+  { heading: 'Mango · H=65°, warning', steps: [
     ['mango-100', 'oklch(97% 0.025 65)'], ['mango-200', 'oklch(93% 0.045 65)'],
     ['mango-400', 'oklch(76% 0.145 65)'], ['mango-500', 'oklch(60% 0.175 65)'],
     ['mango-700', 'oklch(47% 0.142 65)'], ['mango-900', 'oklch(38% 0.110 65)'],
   ]},
-  { heading: 'Cherry · H=27° — error', steps: [
+  { heading: 'Cherry · H=27°, error', steps: [
     ['cherry-100', 'oklch(97% 0.030 27)'], ['cherry-200', 'oklch(93% 0.055 27)'],
     ['cherry-400', 'oklch(74% 0.160 27)'], ['cherry-500', 'oklch(58% 0.200 27)'],
     ['cherry-700', 'oklch(44% 0.168 27)'], ['cherry-900', 'oklch(33% 0.110 27)'],
@@ -203,7 +203,7 @@ const semanticGroups: SemGroup[] = [
     { token: 'border-focus',    resolvedTo: '→ primary-default' },
     { token: 'border-disabled', resolvedTo: 'damson-200'        },
   ]},
-  { heading: 'Primary — Aronia', accent: 'var(--color-primary-default)', tokens: [
+  { heading: 'Primary: Aronia', accent: 'var(--color-primary-default)', tokens: [
     { token: 'primary-default',   resolvedTo: 'aronia-500' },
     { token: 'primary-hover',     resolvedTo: 'aronia-600' },
     { token: 'primary-pressed',   resolvedTo: 'aronia-700' },
@@ -211,7 +211,7 @@ const semanticGroups: SemGroup[] = [
     { token: 'primary-on-subtle', resolvedTo: 'aronia-700' },
     { token: 'primary-disabled',  resolvedTo: 'damson-200' },
   ]},
-  { heading: 'Feedback — Info (Elderberry)', accent: 'var(--color-info-default)', tokens: [
+  { heading: 'Feedback: Info (Elderberry)', accent: 'var(--color-info-default)', tokens: [
     { token: 'info-subtle',     resolvedTo: 'elderberry-100' },
     { token: 'info-border',     resolvedTo: 'elderberry-200' },
     { token: 'info-default',    resolvedTo: 'elderberry-500' },
@@ -219,7 +219,7 @@ const semanticGroups: SemGroup[] = [
     { token: 'info-on-default', resolvedTo: 'damson-0'       },
     { token: 'info-emphasis',   resolvedTo: 'elderberry-900' },
   ]},
-  { heading: 'Feedback — Success (Greengage)', accent: 'var(--color-success-default)', tokens: [
+  { heading: 'Feedback: Success (Greengage)', accent: 'var(--color-success-default)', tokens: [
     { token: 'success-subtle',     resolvedTo: 'greengage-100' },
     { token: 'success-border',     resolvedTo: 'greengage-200' },
     { token: 'success-default',    resolvedTo: 'greengage-500' },
@@ -227,7 +227,7 @@ const semanticGroups: SemGroup[] = [
     { token: 'success-on-default', resolvedTo: 'damson-900'    },
     { token: 'success-emphasis',   resolvedTo: 'greengage-900' },
   ]},
-  { heading: 'Feedback — Warning (Mango)', accent: 'var(--color-warning-default)', tokens: [
+  { heading: 'Feedback: Warning (Mango)', accent: 'var(--color-warning-default)', tokens: [
     { token: 'warning-subtle',     resolvedTo: 'mango-100'  },
     { token: 'warning-border',     resolvedTo: 'mango-200'  },
     { token: 'warning-default',    resolvedTo: 'mango-500'  },
@@ -235,7 +235,7 @@ const semanticGroups: SemGroup[] = [
     { token: 'warning-on-default', resolvedTo: 'damson-900' },
     { token: 'warning-emphasis',   resolvedTo: 'mango-900'  },
   ]},
-  { heading: 'Feedback — Error (Cherry)', accent: 'var(--color-error-default)', tokens: [
+  { heading: 'Feedback: Error (Cherry)', accent: 'var(--color-error-default)', tokens: [
     { token: 'error-subtle',     resolvedTo: 'cherry-100' },
     { token: 'error-border',     resolvedTo: 'cherry-200' },
     { token: 'error-default',    resolvedTo: 'cherry-500' },
@@ -252,7 +252,7 @@ function PrimitivesPage() {
     <div style={pageWrap}>
       <h1 style={pageTitleStyle}>Primitives</h1>
       <p style={pageDescStyle}>
-        OKLCH throughout — perceptually uniform, wide-gamut. Aronia runs 100–950 in ten even steps; the 500 anchor is the source value for each ramp. Feedback palettes use six targeted steps: 100 (bg), 200 (border), 400 (icon), 500 (default), 700 (on-subtle text), 900 (emphasis). Never reference primitives from a component — use the semantic layer.
+        OKLCH throughout: perceptually uniform and wide-gamut. Aronia runs 100–950 in ten even steps; the 500 anchor is the source value for each ramp. Feedback palettes use six targeted steps: 100 (bg), 200 (border), 400 (icon), 500 (default), 700 (on-subtle text), 900 (emphasis). Never reference primitives from a component. Use the semantic layer.
       </p>
 
       <SectionHead accent="var(--color-primary-default)">Aronia · H=300° · dusty purple</SectionHead>
@@ -263,7 +263,7 @@ function PrimitivesPage() {
       <ColorRamp steps={damson} />
       <CompactRef steps={damson} />
 
-      <SectionHead>Feedback palettes — semantic roles map here</SectionHead>
+      <SectionHead>Feedback palettes, where semantic roles map</SectionHead>
       {feedback.map(({ heading, steps }) => (
         <React.Fragment key={heading}>
           <p style={subHead}>{heading}</p>
@@ -280,7 +280,7 @@ function SemanticsPage() {
     <div style={pageWrap}>
       <h1 style={pageTitleStyle}>Semantics</h1>
       <p style={pageDescStyle}>
-        Role-based aliases between primitives and components. Each token names an intent — <code style={{ fontFamily: 'var(--font-mono)' }}>surface-sunken</code> describes purpose, not a value. Swap a theme by pointing these tokens at different primitives; nothing in components changes. <strong>on-*</strong> tokens show "Aa" on their paired background — contrast is visible, not just implied. Click any token to copy.
+        Role-based aliases between primitives and components. Each token names an intent: <code style={{ fontFamily: 'var(--font-mono)' }}>surface-sunken</code> describes purpose, not a value. Swap a theme by pointing these tokens at different primitives; nothing in components changes. <strong>on-*</strong> tokens show "Aa" on their paired background, so contrast is visible rather than implied. Click any token to copy.
       </p>
 
       {semanticGroups.map(({ heading, tokens, accent }) => (

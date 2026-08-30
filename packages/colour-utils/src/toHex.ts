@@ -1,7 +1,7 @@
 import chroma from 'chroma-js'
 
 /**
- * `color(srgb r g b [/ a])` — the one modern syntax chroma does not parse.
+ * `color(srgb r g b [/ a])`, the one modern syntax chroma does not parse.
  * Components are 0–1 floats rather than bytes.
  */
 function parseColorSrgb(value: string): string | null {
@@ -23,7 +23,7 @@ function parseColorSrgb(value: string): string | null {
 }
 
 /**
- * `rgb()/rgba()` with out-of-range or fractional channels — chroma rejects
+ * `rgb()/rgba()` with out-of-range or fractional channels, which chroma rejects
  * these, but CSS defines them as clamped and rounded, and a probe should not
  * throw away a colour because a stylesheet wrote `rgb(255.6, -3, 128.4)`.
  */
@@ -63,7 +63,7 @@ function parseLooseRgb(value: string): string | null {
  *
  * @example
  * toHex('oklch(0.52 0.138 300)')  // '#7653ab'
- * toHex('rgba(0, 0, 0, 0)')       // null — fully transparent
+ * toHex('rgba(0, 0, 0, 0)')       // null, fully transparent
  */
 export function toHex(input: string): string | null {
   if (!input) return null
@@ -81,7 +81,7 @@ export function toHex(input: string): string | null {
     return null
   }
 
-  // A fully transparent colour carries no design decision — treat it as absent
+  // A fully transparent colour carries no design decision, so treat it as absent
   // rather than as black, which is what its channels would otherwise report.
   if (colour.alpha() === 0) return null
 

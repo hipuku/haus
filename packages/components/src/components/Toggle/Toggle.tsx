@@ -30,7 +30,7 @@ export function Toggle({
   name,
   className,
 }: ToggleProps) {
-  // Called unconditionally — see Checkbox for why.
+  // Called unconditionally. See Checkbox for why.
   const generatedId  = React.useId()
   const inputId      = id ?? generatedId
   const isControlled = checked !== undefined

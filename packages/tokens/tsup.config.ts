@@ -1,7 +1,7 @@
 import { copyFile } from 'node:fs/promises'
 import { defineConfig } from 'tsup'
 
-// The CSS files and tokens.json are shipped as-is — they are the source form,
+// The CSS files and tokens.json are shipped as-is. They are the source form,
 // not something to compile. `files: ["dist"]` means only dist is published, so
 // they are copied there rather than exported from src.
 const ASSETS = ['primitives.css', 'semantics.css', 'motion.css', 'tokens.json']

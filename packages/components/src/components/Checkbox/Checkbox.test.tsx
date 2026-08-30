@@ -25,7 +25,7 @@ describe('Checkbox', () => {
   })
 
   it('stays put when controlled and the parent does not update', async () => {
-    // A controlled checkbox must not manage its own state — if it does, the UI
+    // A controlled checkbox must not manage its own state. If it does, the UI
     // and the parent's value silently disagree.
     const onChange = vi.fn()
     render(<Checkbox label="Locked" checked={false} onChange={onChange} />)

@@ -18,7 +18,7 @@ import type { ElementStyle, ExtractedElement, RawElement } from "./types.js";
  * verbatim, so a probe that only speaks rgb() silently reports null for every
  * colour on a modern design system.
  *
- * @deprecated Prefer `toHex` — the name predates support for anything but rgb().
+ * @deprecated Prefer `toHex`. The name predates support for anything but rgb().
  */
 export const rgbToHex = toHex;
 

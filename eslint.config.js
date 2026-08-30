@@ -9,7 +9,7 @@ import { defineConfig, globalIgnores } from 'eslint/config'
  * One config for the whole workspace.
  *
  * haus had a root `lint` script that ran `pnpm -r run lint` while no package
- * defined a `lint` script — it errored and exited 0, so it reported success
+ * defined a `lint` script. It errored and exited 0, so it reported success
  * while linting nothing. This replaces it with a real config; each package's
  * `lint` script now points back here.
  *
@@ -35,7 +35,7 @@ export default defineConfig([
     },
     rules: {
       // The underscore prefix is the established signal for a deliberately
-      // unused binding — a discarded destructure, a signature-only parameter.
+      // unused binding: a discarded destructure, or a signature-only parameter.
       '@typescript-eslint/no-unused-vars': [
         'error',
         { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },

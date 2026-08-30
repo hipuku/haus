@@ -3,7 +3,7 @@
  *
  * These tests never import `extractRawElements` and call it directly. They
  * rebuild it from its own source with `new Function`, which strips every
- * closure over module scope — exactly what Playwright's `page.evaluate` does
+ * closure over module scope, exactly what Playwright's `page.evaluate` does
  * when it ships the function to the browser. A helper accidentally hoisted to
  * module scope, or a bundler's `__name` wrapper, passes a direct call and
  * fails here. That is the whole point: this suite guards the one property the
@@ -14,7 +14,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { extractRawElements } from "./extract.js";
 import type { ProbeOptions, RawElement } from "./types.js";
 
-/** Rehydrate the function the way the browser does — no module scope, no imports. */
+/** Rehydrate the function the way the browser does, with no module scope and no imports. */
 function asEvaluatedInPage(): (options?: ProbeOptions) => RawElement[] {
   return new Function(`return (${extractRawElements.toString()})`)() as (
     options?: ProbeOptions,
@@ -62,7 +62,7 @@ describe("scoping", () => {
   });
 
   it("returns nothing when the root selector matches nothing", () => {
-    // A missed mount must not silently degrade into a whole-page read — that
+    // A missed mount must not silently degrade into a whole-page read, because that
     // would make a component that never rendered look clean.
     expect(probe({ root: "#never-mounted" })).toEqual([]);
   });

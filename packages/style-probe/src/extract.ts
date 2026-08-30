@@ -30,7 +30,7 @@ export function extractRawElements(options?: ProbeOptions): RawElement[] {
   // Scope: a named root reads that element plus its subtree (the single
   // component read); no root walks the whole document (the crawl). A root
   // selector that matches nothing yields an empty result rather than silently
-  // falling back to the document — a missed mount must not look like a clean
+  // falling back to the document. A missed mount must not look like a clean
   // component.
   let all: Element[];
   if (options?.root) {
@@ -51,7 +51,7 @@ export function extractRawElements(options?: ProbeOptions): RawElement[] {
 
     // Effective background: walk ancestors (incl. self) to the first
     // non-transparent background; fall back to the white page canvas.
-    // Deliberately walks past the probe root — the background a reader
+    // Deliberately walks past the probe root, because the background a reader
     // actually sees is a property of the page, not of the subtree.
     let effectiveBg = "rgb(255, 255, 255)";
     let bgNode: Element | null = el;

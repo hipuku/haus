@@ -70,7 +70,7 @@ function RadioPage() {
     <div style={{ ...pageWrap, maxWidth: 560 }}>
       <h1 style={pageTitleStyle}>Radio</h1>
       <p style={pageDescStyle}>
-        Always rendered as a RadioGroup — individual radios without a group are inaccessible.
+        Always rendered as a RadioGroup, because individual radios without a group are inaccessible.
         Supports vertical (default) and horizontal orientation. Hint text per option.
       </p>
 
@@ -82,7 +82,7 @@ function RadioPage() {
         onChange={setPlan}
         options={[
           { value: 'monthly', label: 'Monthly',  hint: '$12/month' },
-          { value: 'yearly',  label: 'Yearly',   hint: '$99/year — save 31%' },
+          { value: 'yearly',  label: 'Yearly',   hint: '$99/year, save 31%' },
           { value: 'lifetime', label: 'Lifetime', hint: 'One-time $299' },
         ]}
       />

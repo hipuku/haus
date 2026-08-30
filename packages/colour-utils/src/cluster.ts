@@ -1,7 +1,7 @@
 import chroma from 'chroma-js'
 
 export interface ColourCluster {
-  representative: string   // hex — the colour closest to the cluster centroid
+  representative: string   // hex, the colour closest to the cluster centroid
   members: string[]        // all hex values in the cluster
   size: number
 }
