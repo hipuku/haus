@@ -8,7 +8,7 @@ Twelve accessible React components built on [`haus-tokens`](../tokens).
 npm install haus-components haus-tokens
 ```
 
-`react` and `react-dom` (^18) are peer dependencies — your copy is the only copy.
+`react` and `react-dom` are peer dependencies, `^18 || ^19`, so your copy is the only copy.
 
 ## Usage
 
@@ -47,7 +47,7 @@ breaks server rendering, and it takes away your control over where the
 component styles sit relative to the token layers. One explicit import keeps
 both.
 
-Class names are scoped at build time — `haus-Button-button-2ZuB7` — so they can
+Class names are scoped at build time, as in `haus-Button-button-2ZuB7`, so they can
 never collide with yours.
 
 ## Server rendering
@@ -64,7 +64,7 @@ setup, import these from a client component.
 Vite library mode rather than the tsup used elsewhere in this workspace. tsup
 routes every stylesheet through esbuild's global `css` loader, which turns each
 `*.module.css` into plain global CSS and hands the component an empty styles
-object — `className="undefined"` on every element, with no error. Vite's
+object, giving `className="undefined"` on every element with no error. Vite's
 PostCSS pipeline scopes CSS modules properly, which is the entire reason this
 package needs a build.
 

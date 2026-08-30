@@ -6,7 +6,7 @@ An opinionated, open-source design system. Token-first, light-mode only, OKLCH t
 
 - **Light mode only.** There is no dark theme and no `light-dark()` layer.
 - **12 React components** (CSS Modules): Avatar, Badge, Button, Card, Checkbox, Input, Modal, Radio, Select, Textarea, Toast, Toggle.
-- **No MCP server and no Figma Code Connect** — out of scope for this system.
+- **Scope stops at the tokens and the components.** No MCP server, no Figma Code Connect.
 
 ## Packages
 
@@ -33,19 +33,24 @@ semantics.css    Role aliases. No raw values. What components consume.
 motion.css       Easing curves and duration tokens.
 ```
 
-Theming (brand and role swaps) lives entirely in `semantics.css`; components never change. haus is light-mode only — dark mode is explicitly out of scope, not a deferred layer.
+Theming (brand and role swaps) lives entirely in `semantics.css`; components never change. haus is light-mode only, and dark mode is out of scope rather than a deferred layer.
 
 ## Links
 
 - **Live Storybook:** [haus.hipuku.dev](https://haus.hipuku.dev)
-- **npm:** [`haus-colour-utils`](https://www.npmjs.com/package/haus-colour-utils)
+- **npm:** [`haus-tokens`](https://www.npmjs.com/package/haus-tokens) ·
+  [`haus-components`](https://www.npmjs.com/package/haus-components) ·
+  [`haus-colour-utils`](https://www.npmjs.com/package/haus-colour-utils) ·
+  [`haus-style-probe`](https://www.npmjs.com/package/haus-style-probe) ·
+  [`haus-colour-names`](https://www.npmjs.com/package/haus-colour-names)
 
 ```bash
-npm install haus-colour-utils
+npm install haus-tokens haus-components
 ```
 
 ## Status
 
-Active development. `haus-colour-utils` and `haus-style-probe` are published to npm and
-consumed by other projects. `haus-tokens` and `haus-components` are not yet released; the
-Storybook is the way to look at them.
+Active development. All five packages are published to npm. `haus-colour-utils` and
+`haus-style-probe` have consumers outside this repo; `haus-tokens` and `haus-components`
+are released and the Storybook is the way to look at them. Releasing is documented in
+[RELEASING.md](./RELEASING.md).
