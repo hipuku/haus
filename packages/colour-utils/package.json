@@ -1,6 +1,6 @@
 {
   "name": "haus-colour-utils",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Perceptual colour utilities: CIEDE2000 distance, WCAG contrast, OKLCH lightness scales, and nearest-named-colour.",
   "license": "MIT",
   "author": "hipuku",
@@ -47,6 +47,7 @@
   },
   "devDependencies": {
     "@types/chroma-js": "^3.1.2",
+    "haus-colour-names": "workspace:^",
     "tsup": "^8.5.1",
     "typescript": "^5.4.5",
     "vitest": "^4.1.11"

@@ -52,24 +52,40 @@ export interface HueFamily {
 /**
  * Hue families, ordered round the wheel from red. `min` above `max` wraps.
  *
- * The boundaries are the midpoints between measured OKLCH hues of the colours
- * each family is named after: red 29, orange 71, yellow 110, green 142, cyan
- * 195, blue 264, violet 293, magenta 328, pink 354.
+ * The boundaries are fitted to 4,275 human-named colours rather than derived.
+ * Every entry in haus-colour-names whose name ends in a family word, and whose
+ * previous word is not also one ("Blue Green" is nobody's evidence), is a colour
+ * a person decided the family of: 1,094 Greens, 1,070 Blues, 509 Reds and so on.
+ * The eight boundaries are the set that maximises mean per-family recall over
+ * that data, which `hue-families.test.ts` asserts and holds at 0.77.
  *
- * They are not the HSL numbers. OKLCH hue is a different wheel, and reusing
- * HSL's boundaries (red 0, yellow 60, green 120, blue 240) offsets every family
- * by roughly one place: it puts #ff0000 in Orange, #ffff00 in Green and #0000ff
- * in Purple. Checked against 27 canonical colours, tailwind's ramps included.
+ * They replace a set derived as the midpoints between the measured hues of the
+ * eight colours the families are named after. That construction is only right if
+ * a family is centred on the colour it is named after, and the data says several
+ * are not. The colour called orange sits at hue 71, while the median of 222
+ * colours people call orange is 47, so a midpoint at 50 put more than half of
+ * them in Red. Purple was worse: its median is 312 and the bin ended at 310.
+ *
+ * These are not the HSL numbers either. OKLCH hue is a different wheel, and
+ * reusing HSL's boundaries (red 0, yellow 60, green 120, blue 240) offsets every
+ * family by roughly one place: it puts #ff0000 in Orange and #0000ff in Purple.
+ *
+ * Two edges are judgement rather than fit. Orange ends at 72 rather than the
+ * fitted 70, because #ffa500 is at 71 and a vocabulary that cannot name the
+ * colour called orange is not usable; it costs 0.002 of accuracy. And no
+ * boundary separates purple from magenta: #800080 and #ff00ff are both at hue
+ * 328 and differ only in lightness and chroma. 328 is Purple here, because far
+ * more real colours at that hue are called purple than magenta.
  */
 export const HUE_FAMILIES: HueFamily[] = [
-  { name: 'Red', min: 11, max: 50 },
-  { name: 'Orange', min: 50, max: 90 },
-  { name: 'Yellow', min: 90, max: 126 },
-  { name: 'Green', min: 126, max: 168 },
-  { name: 'Cyan', min: 168, max: 230 },
-  { name: 'Blue', min: 230, max: 278 },
-  { name: 'Purple', min: 278, max: 310 },
-  { name: 'Pink', min: 310, max: 11 },
+  { name: 'Red', min: 11, max: 34 },
+  { name: 'Orange', min: 34, max: 72 },
+  { name: 'Yellow', min: 72, max: 111 },
+  { name: 'Green', min: 111, max: 170 },
+  { name: 'Cyan', min: 170, max: 208 },
+  { name: 'Blue', min: 208, max: 276 },
+  { name: 'Purple', min: 276, max: 338 },
+  { name: 'Pink', min: 338, max: 11 },
 ]
 
 /**

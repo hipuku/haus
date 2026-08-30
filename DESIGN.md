@@ -8,6 +8,33 @@ Key decisions made during the design and build of haus. Recorded to explain the 
 
 OKLCH gives perceptual uniformity that hex and HSL don't. Equal numeric steps in L, C, or H produce equal-feeling changes to the eye, which means palette ramps and feedback scales can be authored by reasoning about perception rather than guessing at hex values. Wide-gamut support (P3) is a free consequence. Every colour in haus is defined in OKLCH; conversion to hex for tooling is a display concern, not a source-of-truth concern.
 
+## Hue family bins fitted to named colours, not derived from anchors
+
+`hueFamily` in `haus-colour-utils` reports which of eight families a colour belongs to. The
+first version binned OKLCH hue at the midpoints between the measured hues of the eight
+colours the families are named after, which is a construction that only holds if each
+family is centred on its namesake.
+
+Measured against 4,275 colours from `haus-colour-names` whose names end in a family word,
+several are not. The median of 222 colours people call orange is hue 47, while `#ffa500`
+is at 71, so a midpoint at 50 filed most oranges as red. Purple ran the other way: its
+median is 312 and the bin ended at 310, which is why `#800080` came out as Pink.
+
+The boundaries are now the set that maximises mean per-family recall over that data, which
+moved it from 0.62 to 0.78. Per-family recall rather than plain accuracy, because there are
+five times as many labelled greens as oranges and plain accuracy rises when a small family
+is emptied into a large neighbour.
+
+Two edges are judgement. Orange ends at 72 rather than the fitted 70, so that `#ffa500` is
+still Orange, at a cost of 0.002. And purple and magenta cannot be separated at all:
+`#800080` and `#ff00ff` are both hue 328 and differ only in lightness and chroma, so one of
+the two is misnamed whatever the boundary does. 328 is Purple, because far more real
+colours at that hue are called purple.
+
+The fit is a test rather than a comment. `hue-families.test.ts` rebuilds the labelled set,
+holds recall above 0.77, and asserts that every declared family is reachable, so a boundary
+moved for one colour that looked wrong cannot quietly cost the other 4,274.
+
 ## Three-layer token architecture: primitives → semantics → components
 
 Primitives hold raw values (no meaning, just numbers). Semantics hold intent: role names like `--color-surface-default` that alias primitives. Components consume semantics for colour, padding, gap, margin, radius, elevation and motion, and no component reads a colour, radius, shadow or motion primitive. Two kinds of primitive read remain, both deliberate and both tested: 31 declarations take a size off the space ladder (avatar sizes, the checkbox and radio boxes, the toggle track and thumb, a few min/max bounds), because a size is a value rather than a role; and 56 read a primitive whose own name already is the role, such as `--font-sans` and `--border-width-default`. Control heights are neither: Button, Input and Select set `min-height` in raw pixels, and `min-height` is not in stylelint's strict-value list. This separation means a theme swap (high-contrast, a brand variant) is a single-file change to `semantics.css` with zero component edits. It also enforces a discipline: if you can't name what a token *does*, it shouldn't exist.

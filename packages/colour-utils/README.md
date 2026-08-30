@@ -71,7 +71,7 @@ hueFamily("#2563eb"); // "Blue"
 hueFamily("#f7f7fa"); // "Neutral". A tinted near-white is still a grey.
 ```
 
-Chroma rather than HSL saturation, which inflates at the extremes of lightness and reads a tinted near-black as a saturated hue. The bins are midpoints between measured OKLCH hues, not the HSL wheel's boundaries; reusing those offsets every family by about one place.
+Chroma rather than HSL saturation, which inflates at the extremes of lightness and reads a tinted near-black as a saturated hue. The bins are fitted to 4,275 colours a person named, taken from `haus-colour-names`: the boundaries are the set that maximises mean per-family recall, and `hue-families.test.ts` holds it at 0.77. They are not the HSL wheel's boundaries, which offset every family by about one place, and they are no longer midpoints between the eight colours the families are named after. That construction assumed a family is centred on its namesake, and several are not: the median of 222 colours people call orange is hue 47, while `#ffa500` is at 71, so a midpoint at 50 filed most oranges as red.
 
 ### `generateLightnessScale(hex, options?): string[]`
 A perceptual lightness ramp anchored on a colour, in OKLCH. Options: `{ steps = 10, minL = 8, maxL = 97 }`.
