@@ -20,25 +20,23 @@ on:
       - '*-v*'
 
 jobs:
-  publish:
+  # Reading the tag is separated from acting on it so that a tag naming a version
+  # already on npm can be skipped rather than failed. Tags are also written after
+  # the fact, to give an earlier release a commit to point at, and those must not
+  # look like a broken pipeline.
+  plan:
     runs-on: ubuntu-latest
-
-    # id-token lets this job request the OIDC token npm authenticates against.
-    # Without it the publish fails with no credential, and no secret can stand in.
-    permissions:
-      id-token: write
-      contents: read
-
+    outputs:
+      dir: ${{ steps.tag.outputs.dir }}
+      name: ${{ steps.tag.outputs.name }}
+      version: ${{ steps.tag.outputs.version }}
+      publish: ${{ steps.published.outputs.publish }}
     steps:
       - uses: actions/checkout@v5
-
-      - uses: pnpm/action-setup@v4
 
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-          cache: pnpm
-          registry-url: https://registry.npmjs.org
 
       # Splits the tag and refuses to go further unless the manifest agrees with
       # it. A tag that says 0.1.3 over a package.json that says 0.1.2 publishes
@@ -67,13 +65,44 @@ jobs:
           echo "dir=${dir}"         >> "$GITHUB_OUTPUT"
           echo "name=${name}"       >> "$GITHUB_OUTPUT"
           echo "version=${version}" >> "$GITHUB_OUTPUT"
-          echo "Publishing ${name}@${version} from packages/${dir}"
+
+      - name: Is this version already on npm?
+        id: published
+        run: |
+          if npm view "${{ steps.tag.outputs.name }}@${{ steps.tag.outputs.version }}" version > /dev/null 2>&1; then
+            echo "${{ steps.tag.outputs.name }}@${{ steps.tag.outputs.version }} is already published. Nothing to do."
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  publish:
+    needs: plan
+    if: needs.plan.outputs.publish == 'true'
+    runs-on: ubuntu-latest
+
+    # id-token lets this job request the OIDC token npm authenticates against.
+    # Without it the publish fails with no credential, and no secret can stand in.
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+
+      - run: |
+          echo "Publishing ${{ needs.plan.outputs.name }}@${{ needs.plan.outputs.version }} from packages/${{ needs.plan.outputs.dir }}"
 
       - run: pnpm install --frozen-lockfile
 
-      # pnpm rewrites `workspace:^` to the dependency's real version at publish
-      # time. If that version is not on npm the published package is installable
-      # but broken, and the first person to find out is a consumer.
       # pnpm rewrites `workspace:^` to the dependency's real version at publish
       # time. If that version is not on npm the published package is installable
       # but broken, and the first person to find out is a consumer.
@@ -87,7 +116,7 @@ jobs:
               .filter((d) => String(deps[d]).startsWith('workspace:'))
               .map((d) => d + '@' + require('./packages/' + d.replace(/^haus-/, '') + '/package.json').version);
             console.log(out.join(' '));
-          " "${{ steps.tag.outputs.dir }}")
+          " "${{ needs.plan.outputs.dir }}")
 
           if [ -z "$required" ]; then
             echo "No workspace dependencies to check."
@@ -98,7 +127,7 @@ jobs:
             if npm view "$dep" version > /dev/null 2>&1; then
               echo "${dep} is published"
             else
-              echo "${{ steps.tag.outputs.name }} depends on ${dep}, which is not on npm."
+              echo "${{ needs.plan.outputs.name }} depends on ${dep}, which is not on npm."
               echo "Publish that package first. See RELEASING.md."
               exit 1
             fi
@@ -109,10 +138,10 @@ jobs:
       # building the target alone fails on any package with a workspace
       # dependency.
       - name: Build
-        run: pnpm --filter "...${{ steps.tag.outputs.name }}" run build
+        run: pnpm --filter "...${{ needs.plan.outputs.name }}" run build
 
       - name: Test
-        run: pnpm --filter ${{ steps.tag.outputs.name }} run --if-present test
+        run: pnpm --filter ${{ needs.plan.outputs.name }} run --if-present test
 
       # Trusted publishing is npm CLI only, and only from 11.5.1. The npm that
       # ships with Node 22 is older than that, so it is upgraded rather than
@@ -121,13 +150,13 @@ jobs:
         run: npm install -g npm@latest
 
       # Two tools, because each does one half. pnpm rewrites `workspace:^` to the
-      # dependency's real version as it packs — npm would publish the manifest
+      # dependency's real version as it packs. npm would publish the manifest
       # verbatim and ship something no consumer can resolve. npm is what holds
       # the OIDC credential. So pnpm makes the tarball and npm publishes it.
       - name: Pack
         id: pack
         run: |
-          pnpm --filter ${{ steps.tag.outputs.name }} pack --pack-destination "${RUNNER_TEMP}"
+          pnpm --filter ${{ needs.plan.outputs.name }} pack --pack-destination "${RUNNER_TEMP}"
           tarball=$(ls "${RUNNER_TEMP}"/*.tgz)
           echo "Packed ${tarball}"
           echo "tarball=${tarball}" >> "$GITHUB_OUTPUT"

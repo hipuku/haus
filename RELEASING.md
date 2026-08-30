@@ -5,7 +5,9 @@ Five packages publish to npm from this repo, unscoped and public:
 `haus-colour-names`.
 
 Each is released by pushing a tag. `.github/workflows/publish.yml` reads the tag, checks the
-manifest agrees with it, builds, tests and publishes.
+manifest agrees with it, builds, tests and publishes. If the version in the tag is already on
+npm, the run skips instead of failing, so a tag can also be written after the fact to give an
+earlier release a commit to point at.
 
 ## Authentication
 
@@ -13,7 +15,7 @@ There is no npm token. The workflow publishes by **trusted publishing**: GitHub 
 short-lived OIDC token proving which repository, workflow and commit is asking, and npm
 checks that against a trusted publisher registered on the package. Nothing long-lived is
 stored, so there is no secret to leak and nothing that expires at an inconvenient moment.
-Published releases carry provenance for the same reason — npm can prove where they came from.
+Published releases carry provenance for the same reason: npm can prove where they came from.
 
 Each package needs this configured once, at
 `npmjs.com/package/<name>/access` → **Trusted publisher**:
@@ -27,9 +29,9 @@ Each package needs this configured once, at
 | Environment | *(leave empty)* |
 
 A package that does not exist on npm yet cannot be configured this way, because the settings
-page is a property of the package. Publish its first version manually — `pnpm pack` in the
+page is a property of the package. Publish its first version manually, with `pnpm pack` in the
 package directory, then `npm publish <tarball>` from your own machine, answering the 2FA
-prompt — and register the trusted publisher immediately afterwards. Every release after the
+prompt, then register the trusted publisher immediately afterwards. Every release after the
 first goes through CI.
 
 ## Tag format
@@ -56,6 +58,19 @@ git push && git push --tags
 
 Watch the run. npm will not overwrite a version that already exists, so a failed publish is
 recoverable by bumping again.
+
+### Tagging a release that already happened
+
+The first version of each package was published by hand, before this workflow existed, and
+two of the five never got one. Tag the commit whose manifest carries that version:
+
+```sh
+git tag style-probe-v0.2.1 <commit>
+git push --tags
+```
+
+The workflow runs, finds the version on npm and stops there. The tag is the point: it is what
+lets `git describe` and the npm page agree on which commit a published version came from.
 
 ## Order matters
 
