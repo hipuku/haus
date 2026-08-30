@@ -7,8 +7,12 @@
    components, both deliberate:
 
    · 31 declarations take a size off the space ladder, on height, width,
-     min/max and transform offsets. A size is a value, not a role, and calling
-     a 20px control height --space-inset-lg would say something untrue.
+     min/max and transform offsets: the avatar sizes and its status dot, the
+     checkbox and radio boxes, the toggle track and thumb and the thumb's
+     travel, the modal's close button and max height, the toast and modal
+     entry offsets, the textarea's minimum height and the select chevron's
+     offset. A size is a value, not a role, and calling a 16px checkbox
+     --space-inset-md would say something untrue.
    · 56 read a primitive that has no alias here because its own name already
      is the role: --font-sans, --weight-*, --border-width-*, --tracking-normal,
      --opacity-disabled, --icon-sm, --z-modal.
@@ -223,10 +227,12 @@
        already roles in motion.css and are read from there.                   */
     --motion-duration-emphasis: var(--duration-slow);  /* Button's loading sweep */
 
-    /* Sizes are not spacing. Control heights, icon boxes and overlay widths
-       read the primitive ladder directly: they are values, and naming them as
-       inset or gap would say something untrue about what they are. Thirty-one
-       declarations across the components do this deliberately.               */
+    /* Sizes are not spacing. Marker boxes, avatar sizes, the toggle's travel
+       and a few min/max bounds read the primitive ladder directly: they are
+       values, and naming them as inset or gap would say something untrue about
+       what they are. Thirty-one declarations do this deliberately.
+       Button, Input and Select set min-height in raw pixels instead, which is
+       neither, and is issue territory rather than a decision recorded here.  */
 
 
   }

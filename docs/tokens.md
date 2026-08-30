@@ -94,9 +94,17 @@ Semantic groups:
 Two kinds of primitive read remain in the components, and both are deliberate.
 
 Thirty-one declarations take a size off the space ladder, on `height`, `width`,
-`min-*`/`max-*` and `transform` offsets. A size is a value rather than a role,
-and calling a 20px control height `--space-inset-lg` would say something untrue
-about what it is. No padding, gap or margin does this.
+`min-*`/`max-*` and `transform` offsets: the avatar sizes and its status dot,
+the checkbox and radio boxes, the toggle track and thumb and the thumb's travel,
+the modal's close button and max height, the toast and modal entry offsets, the
+textarea's minimum height and the select chevron's offset. A size is a value
+rather than a role, and calling a 16px checkbox `--space-inset-md` would say
+something untrue about what it is. No padding, gap or margin does this.
+
+Control heights are the gap in this account. Button, Input and Select set
+`min-height` in raw pixels (28, 36, 44), which is neither a role nor a
+primitive, and stylelint's strict-value list does not cover `min-height`, so
+nothing catches it.
 
 Fifty-six read a primitive that has no semantic alias because the primitive's
 own name already is the role: `--font-sans`, `--weight-*`, `--border-width-*`,

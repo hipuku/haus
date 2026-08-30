@@ -43,7 +43,8 @@ impossible later.
 Two kinds of primitive read are documented rather than hidden. Sizes: 31
 declarations across the haus components take a size off the space ladder, on
 `height`, `width`, `min-*`/`max-*` and `transform` offsets, because a size is a
-value rather than a role. And 56 read a primitive that has no semantic alias
+value rather than a role. They are the avatar sizes, the checkbox and radio
+boxes, the toggle track and thumb, and a few min/max bounds. And 56 read a primitive that has no semantic alias
 because the primitive's own name already is the role: `--font-sans`,
 `--weight-*`, `--border-width-*`, `--opacity-disabled`, `--icon-sm`,
 `--z-modal`. No component reads a colour, radius, shadow or motion primitive,
