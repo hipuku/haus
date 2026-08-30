@@ -1,0 +1,35 @@
+# One pnpm workspace, so a single npm entry at the root covers every package.
+# Weekly and grouped, so a review is one pull request rather than nine.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    groups:
+      # React moves the components package and its Storybook together. The peer
+      # range is deliberately wider than the dev dependency, so a major here is
+      # a decision about what to test against, not about what to support.
+      react:
+        patterns: ['react', 'react-dom', '@types/react', '@types/react-dom']
+      storybook:
+        patterns: ['storybook', '@storybook/*']
+      build:
+        patterns: ['tsup', 'vite', '@vitejs/*', 'typescript']
+      tooling:
+        patterns: ['eslint*', '@eslint/*', 'typescript-eslint', 'prettier*', 'vitest', '@vitest/*', 'jsdom', '@testing-library/*']
+    commit-message:
+      prefix: 'deps'
+    ignore:
+      # @types/node describes the runtime CI installs rather than the newest
+      # release line. A major here typechecks against APIs the running Node
+      # does not have.
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
