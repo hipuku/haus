@@ -142,6 +142,12 @@
     --z-toast:     500;   /* Toast notifications */
     --z-tooltip:   600;   /* Tooltips, always on top */
 
+    /* ── Control heights ─────────────────────────────────────────────────────── */
+    /* A scale of its own: 36px and 44px are not steps on the 4px spacing ladder. */
+    --control-height-sm:  1.75rem;   /* 28px, Button sm. Pointer-only density; below the 24px minimum for a target with no spacing exception. */
+    --control-height-md:  2.25rem;   /* 36px, the default for Button, Input and Select */
+    --control-height-lg:  2.75rem;   /* 44px, Button lg. The WCAG 2.5.8 AAA target size, and Apple's HIG minimum. */
+
     /* ── Border width ────────────────────────────────────────────────────────── */
     --border-width-default:  1px;   /* Borders, dividers, inputs */
     --border-width-thick:    2px;   /* Focus rings, active emphasis */

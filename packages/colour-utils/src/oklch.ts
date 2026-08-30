@@ -77,7 +77,7 @@ export interface HueFamily {
  * 328 and differ only in lightness and chroma. 328 is Purple here, because far
  * more real colours at that hue are called purple than magenta.
  */
-export const HUE_FAMILIES: HueFamily[] = [
+export const HUE_FAMILIES = [
   { name: 'Red', min: 11, max: 34 },
   { name: 'Orange', min: 34, max: 72 },
   { name: 'Yellow', min: 72, max: 111 },
@@ -86,18 +86,35 @@ export const HUE_FAMILIES: HueFamily[] = [
   { name: 'Blue', min: 208, max: 276 },
   { name: 'Purple', min: 276, max: 338 },
   { name: 'Pink', min: 338, max: 11 },
-]
+] as const satisfies readonly HueFamily[]
+
+/**
+ * What the default vocabulary can return. A union rather than `string`, because
+ * both consumers compare this to literals and group a UI by it, and a boundary
+ * that moves is otherwise invisible until someone looks at a colour page. A
+ * renamed family should fail a typecheck.
+ */
+export type HueFamilyName = (typeof HUE_FAMILIES)[number]['name'] | 'Neutral'
 
 /**
  * Family name for a hex: one of HUE_FAMILIES, or "Neutral" below NEUTRAL_CHROMA.
  * Returns null if the hex will not parse.
  *
+ * Called with one argument it returns a HueFamilyName. Called with a vocabulary
+ * of your own it returns a plain string, because the names are yours.
+ *
  * @param families override the bins to use a different vocabulary
  * @param neutralChroma override the neutral cut
  */
+export function hueFamily(hex: string): HueFamilyName | null
 export function hueFamily(
   hex: string,
-  families: HueFamily[] = HUE_FAMILIES,
+  families: readonly HueFamily[],
+  neutralChroma?: number,
+): string | null
+export function hueFamily(
+  hex: string,
+  families: readonly HueFamily[] = HUE_FAMILIES,
   neutralChroma: number = NEUTRAL_CHROMA,
 ): string | null {
   const colour = oklch(hex)

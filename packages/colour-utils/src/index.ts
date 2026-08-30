@@ -15,4 +15,4 @@ export { nearestNamedColour, createNamedColourMatcher, basicColourNames } from '
 export type { NamedColourMatch, NamedColourEntry } from './namedColour'
 
 export { oklch, hueFamily, HUE_FAMILIES, NEUTRAL_CHROMA } from './oklch'
-export type { Oklch, HueFamily }           from './oklch'
+export type { Oklch, HueFamily, HueFamilyName } from './oklch'
