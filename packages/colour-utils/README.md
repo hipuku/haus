@@ -52,6 +52,10 @@ import { colourNameEntries } from "haus-colour-names";
 const nameColour = createNamedColourMatcher(colourNameEntries());
 ```
 
+Both rank on the true CIEDE2000 distance and round only the number they report, so a
+candidate 0.96 away outranks one 1.00 away even though both display as `1`. Equal distances
+break by name, so the result does not depend on the order the dataset happens to be in.
+
 ### `oklch(hex): Oklch | null`
 Lightness, chroma and hue. `h` is `null` for an achromatic colour, so a grey cannot silently propagate a `NaN`.
 

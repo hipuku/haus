@@ -152,6 +152,21 @@ describe('createNamedColourMatcher', () => {
     expect(backwards('#ff0000')[0]!.name).toBe('Alpha Red')
   })
 
+  it('ranks on the true distance, not the rounded one', () => {
+    // Two entries whose distances round to the same tenth. The nearer one has to
+    // win, and it is the one the name tiebreak would put second, so a matcher
+    // that rounds before sorting fails here. On the 31,900-entry dataset that
+    // mistake renamed 8% of colours.
+    // Both are ΔE 1.0 from #808080 once rounded: 0.9567 and 0.9996.
+    const nameColour = createNamedColourMatcher([
+      { hex: '#7e7e7d', name: 'Alpha Grey' },
+      { hex: '#7e7e7f', name: 'Zulu Grey' },
+    ])
+    const [first, second] = nameColour('#808080', 2)
+    expect(first!.name).toBe('Zulu Grey')
+    expect(first!.distance).toBe(second!.distance)
+  })
+
   it('returns an empty list for an empty dataset rather than throwing', () => {
     expect(createNamedColourMatcher([])('#ff0000')).toEqual([])
   })

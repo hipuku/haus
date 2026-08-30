@@ -62,14 +62,20 @@ export function createNamedColourMatcher(
     // If nothing is in radius, fall back to the whole set by CIE76.
     const pool = candidates.length > 0 ? candidates : indexed
 
+    // Sort on the raw distance and round only for display. Rounding first put
+    // every candidate within 0.05 of another into a tie, and the tiebreak then
+    // decided the name: on the 31,900-entry dataset that renamed 8% of colours
+    // to something that was not the nearest match. The name comparison stays as
+    // a tiebreak for genuinely equal distances, so the result is deterministic.
     return pool
       .map((entry) => ({
         name: entry.name,
         hex: entry.hex,
-        distance: Math.round(chroma.deltaE(hex, entry.hex) * 10) / 10,
+        distance: chroma.deltaE(hex, entry.hex),
       }))
       .sort((a, b) => a.distance - b.distance || a.name.localeCompare(b.name))
       .slice(0, topN)
+      .map((match) => ({ ...match, distance: Math.round(match.distance * 10) / 10 }))
   }
 }
 
