@@ -18,7 +18,7 @@ import { createNamedColourMatcher } from 'haus-colour-utils'
 const nameColour = createNamedColourMatcher(colourNameEntries())
 
 nameColour('#4f84ba', 3)
-// [ { name: 'Blue Cola', hex: '#4a84c4', distance: 3.1 }, … ]
+// [ { name: 'Blue Vault', hex: '#4e83bd', distance: 0.7 }, … ]
 ```
 
 `haus-colour-utils` bundles 289 basic colour terms and uses them by default, so reach for

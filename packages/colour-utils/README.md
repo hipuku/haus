@@ -27,7 +27,7 @@ import {
 CIEDE2000 perceptual distance between two hex colours. `< 1` is imperceptible; `< 2` is a just-noticeable difference.
 
 ```ts
-deltaE("#3366cc", "#3467cc"); // ~0.7, effectively the same colour
+deltaE("#3366cc", "#3467cc"); // 0.34, effectively the same colour
 ```
 
 ### `wcagContrast(foreground, background): ContrastResult`

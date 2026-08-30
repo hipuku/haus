@@ -61,11 +61,11 @@ Every surface token has a corresponding `on-*` text token: `--color-success-subt
 
 ## Monorepo with pnpm workspaces
 
-Three packages: `tokens`, `components`, `colour-utils`. Keeping them separate means a project that only needs the token layer doesn't pull in the React component code, and a project using `colour-utils` server-side doesn't depend on the browser component bundle. pnpm workspaces because workspace symlinks work reliably across packages without manual linking and the lockfile deduplication keeps the install footprint small.
+Five packages: `tokens`, `components`, `colour-utils`, `style-probe` and `colour-names`. Keeping them separate means a project that only needs the token layer doesn't pull in the React component code, a project using `colour-utils` server-side doesn't depend on the browser component bundle, and a project that wants CIEDE2000 doesn't pay 748KB for 31,900 names it never asks about. pnpm workspaces because workspace symlinks work reliably across packages without manual linking and the lockfile deduplication keeps the install footprint small.
 
 ## Manrope for UI, Fira Code for mono
 
-Manrope is a variable font with a wide weight range (200-800), which means the full type scale ships in one font load with no fallback weight snapping. Fira Code has programming ligatures and a compact footprint. Both are available on Google Fonts, which removes the self-hosting requirement for a v1 system. Domine is loaded for the marketing site only and is explicitly excluded from the token package. Mixing a serif display font into UI components was rejected.
+Manrope is a variable font with a wide weight range (200-800), which means the full type scale ships in one font load with no fallback weight snapping. Fira Code has programming ligatures and a compact footprint. Both are available on Google Fonts, which removes the self-hosting requirement for a v1 system. A serif display face was tried and rejected: mixing one into UI components fought the type scale, and nothing outside a marketing page wanted it.
 
 ## Light mode only
 

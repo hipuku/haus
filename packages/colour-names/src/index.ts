@@ -11,7 +11,7 @@
  *   import { createNamedColourMatcher } from 'haus-colour-utils'
  *
  *   const nameColour = createNamedColourMatcher(colourNameEntries())
- *   nameColour('#4f84ba')  // [{ name: 'Blue Cola', hex: '#4a84c4', distance: 3.1 }, …]
+ *   nameColour('#4f84ba')  // [{ name: 'Blue Vault', hex: '#4e83bd', distance: 0.7 }, …]
  */
 
 import raw from './colournames.json'

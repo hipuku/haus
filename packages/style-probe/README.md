@@ -99,7 +99,8 @@ than the crawl.
 - **[drift](https://github.com/hipuku/drift)**: walks whole sites to describe
   the design system a page actually ships.
 - **loom**: mounts one component and compares its rendered value against the
-  intended design.
+  intended design. Private, and the drift-check workflow that runs it here is
+  paused while it is reconsidered.
 
 Descriptive audit and prescriptive comparison are different tools; the
 measurement underneath them should not be written twice.
