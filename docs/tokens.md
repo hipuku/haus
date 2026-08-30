@@ -101,14 +101,17 @@ textarea's minimum height and the select chevron's offset. A size is a value
 rather than a role, and calling a 16px checkbox `--space-inset-md` would say
 something untrue about what it is. No padding, gap or margin does this.
 
-Control heights are the gap in this account. Button, Input and Select set
-`min-height` in raw pixels (28, 36, 44), which is neither a role nor a
-primitive, and stylelint's strict-value list does not cover `min-height`, so
-nothing catches it.
+Control heights are a scale of their own rather than a step off the ladder,
+because 36px and 44px are not on it. `--control-height-sm`, `-md` and `-lg` are
+28px, 36px and 44px: pointer density, the default, and the WCAG 2.5.8 AAA target
+size. Button reads all three, Input and Select read the middle one, and
+`min-height` is in stylelint's strict-value list so the next control cannot
+invent a fourth height.
 
-Fifty-six read a primitive that has no semantic alias because the primitive's
+Sixty-one read a primitive that has no semantic alias because the primitive's
 own name already is the role: `--font-sans`, `--weight-*`, `--border-width-*`,
-`--tracking-normal`, `--opacity-disabled`, `--icon-sm`, `--z-modal`.
+`--tracking-normal`, `--opacity-disabled`, `--icon-sm`, `--z-modal`,
+`--control-height-*`.
 
 No component reads a colour, radius, shadow or motion primitive. `tokens.test.ts`
 in `haus-components` checks all of this on every run, so the counts above are

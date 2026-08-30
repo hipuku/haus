@@ -75,7 +75,7 @@ describe('components read roles, not primitives', () => {
 
   it('reads no primitive outside the documented set', () => {
     // Primitives whose own name already is the role, so no alias exists.
-    const NAMED_ROLE = /^--(font-|weight-|border-width-|tracking-|opacity-|icon-|z-)/
+    const NAMED_ROLE = /^--(font-|weight-|border-width-|tracking-|opacity-|icon-|z-|control-height-)/
     const undocumented = PAST.flatMap((d) =>
       d.primitives.filter((t) => !/^--space-\d+$/.test(t) && !NAMED_ROLE.test(t)).map((t) => `${d.file}: ${t}`),
     )
@@ -87,6 +87,6 @@ describe('components read roles, not primitives', () => {
     // If a component legitimately gains or loses one, update them together.
     const sizes = PAST.filter((d) => d.primitives.some((t) => /^--space-\d+$/.test(t)))
     expect(sizes.length).toBe(31)
-    expect(PAST.length - sizes.length).toBe(56)
+    expect(PAST.length - sizes.length).toBe(61)
   })
 })

@@ -13,7 +13,7 @@
      entry offsets, the textarea's minimum height and the select chevron's
      offset. A size is a value, not a role, and calling a 16px checkbox
      --space-inset-md would say something untrue.
-   · 56 read a primitive that has no alias here because its own name already
+   · 61 read a primitive that has no alias here because its own name already
      is the role: --font-sans, --weight-*, --border-width-*, --tracking-normal,
      --opacity-disabled, --icon-sm, --z-modal.
 
@@ -231,8 +231,11 @@
        and a few min/max bounds read the primitive ladder directly: they are
        values, and naming them as inset or gap would say something untrue about
        what they are. Thirty-one declarations do this deliberately.
-       Button, Input and Select set min-height in raw pixels instead, which is
-       neither, and is issue territory rather than a decision recorded here.  */
+
+       Control heights are not on that ladder at all: 36px and 44px are not
+       steps of it. They are their own primitive scale, --control-height-sm,
+       -md and -lg, whose names are already the role, so they are read direct
+       like --border-width-default.  */
 
 
   }

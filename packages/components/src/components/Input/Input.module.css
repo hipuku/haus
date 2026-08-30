@@ -29,7 +29,7 @@
   transition:
     border-color var(--motion-micro),
     box-shadow   var(--motion-micro);
-  min-height: 36px;
+  min-height: var(--control-height-md);
 }
 
 .inputWrap:focus-within {

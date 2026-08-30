@@ -37,21 +37,21 @@
   font-size: var(--type-label-sm-size);
   line-height: var(--type-label-sm-leading);
   padding: var(--space-inset-2xs) var(--space-inset-sm);
-  min-height: 28px;
+  min-height: var(--control-height-sm);
 }
 
 .md {
   font-size: var(--type-label-size);
   line-height: var(--type-label-leading);
   padding: var(--space-inset-xs) var(--space-inset-md);
-  min-height: 36px;
+  min-height: var(--control-height-md);
 }
 
 .lg {
   font-size: var(--type-body-size);
   line-height: var(--type-body-leading);
   padding: var(--space-inset-sm) var(--space-inset-lg);
-  min-height: 44px;
+  min-height: var(--control-height-lg);
 }
 
 /* ── Variants ── */

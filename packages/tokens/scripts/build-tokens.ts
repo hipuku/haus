@@ -98,6 +98,12 @@ const SCALES: Array<{
     omit: ['focus'],
   },
   { heading: 'Z-index', prefix: '--z', path: ['zIndex'] },
+  {
+    heading: 'Control heights',
+    note: 'A scale of its own: 36px and 44px are not steps on the 4px spacing ladder.',
+    prefix: '--control-height',
+    path: ['controlHeight'],
+  },
   { heading: 'Border width', prefix: '--border-width', path: ['borderWidth'] },
   { heading: 'Opacity', prefix: '--opacity', path: ['opacity'] },
   { heading: 'Icon sizes (Font Awesome, paired with the type scale)', prefix: '--icon', path: ['iconSize'] },

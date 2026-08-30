@@ -19,6 +19,7 @@
         "column-gap",
         "border-radius",
         "border-width",
+        "min-height",
         "z-index"
       ],
       {
