@@ -133,12 +133,19 @@ jobs:
             fi
           done
 
-      # `...<name>` is "this package and everything it depends on". components
-      # cannot typecheck without haus-tokens' dist, and dist is gitignored, so
-      # building the target alone fails on any package with a workspace
-      # dependency.
+      # The whole workspace, not `--filter "...<name>"`.
+      #
+      # The filter is "this package and everything it depends on", and it left
+      # haus-colour-names unbuilt when publishing haus-colour-utils 0.3.0, whose
+      # test imports it. dist is gitignored, so the test failed to resolve the
+      # package entry and the release stopped. Whether the selector is meant to
+      # follow devDependencies is beside the point: a release is not the place
+      # to depend on the answer, and five packages build in seconds.
+      #
+      # This is what haus#18 suspected about the style-probe filter, with a
+      # reproduction attached.
       - name: Build
-        run: pnpm --filter "...${{ needs.plan.outputs.name }}" run build
+        run: pnpm run build
 
       - name: Test
         run: pnpm --filter ${{ needs.plan.outputs.name }} run --if-present test
