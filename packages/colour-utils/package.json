@@ -48,7 +48,7 @@
   "devDependencies": {
     "@types/chroma-js": "^2.4.4",
     "tsup": "^8.5.1",
-    "typescript": "^5.4.5",
+    "typescript": "^7.0.2",
     "vitest": "^2.1.0"
   }
 }
