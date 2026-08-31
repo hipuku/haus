@@ -61,7 +61,7 @@ Every surface token has a corresponding `on-*` text token: `--color-success-subt
 
 ## Monorepo with pnpm workspaces
 
-Five packages: `tokens`, `components`, `colour-utils`, `style-probe` and `colour-names`. Keeping them separate means a project that only needs the token layer doesn't pull in the React component code, a project using `colour-utils` server-side doesn't depend on the browser component bundle, and a project that wants CIEDE2000 doesn't pay 748KB for 31,900 names it never asks about. pnpm workspaces because workspace symlinks work reliably across packages without manual linking and the lockfile deduplication keeps the install footprint small.
+Five packages: `tokens`, `components`, `colour-utils`, `style-probe` and `colour-names`. Keeping them separate means a project that only needs the token layer doesn't pull in the React component code, a project using `colour-utils` server-side doesn't depend on the browser component bundle, and a project that wants CIEDE2000 doesn't pay 764KB for 31,900 names it never asks about. pnpm workspaces because workspace symlinks work reliably across packages without manual linking and the lockfile deduplication keeps the install footprint small.
 
 ## Manrope for UI, Fira Code for mono
 

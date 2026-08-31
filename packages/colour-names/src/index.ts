@@ -3,7 +3,7 @@
  *
  * The meodai colour-names dataset: 31,900 hex values with a human name each.
  * Data only, no dependencies and no matching logic, so a project that wants ΔE
- * from haus-colour-utils does not pay 748KB for names it never asks about.
+ * from haus-colour-utils does not pay 764KB for names it never asks about.
  *
  * Pair it with `createNamedColourMatcher` from haus-colour-utils:
  *

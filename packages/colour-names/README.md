@@ -5,7 +5,7 @@
 The dataset is [meodai/color-names](https://github.com/meodai/color-names). This package
 carries it and normalises the hexes; the perceptual matching lives in
 [`haus-colour-utils`](../colour-utils), so a project that wants CIEDE2000 or WCAG contrast
-does not install 748KB of names to get them.
+does not install 764KB of names to get them.
 
 ```bash
 npm install haus-colour-names haus-colour-utils

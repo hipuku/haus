@@ -28,7 +28,7 @@ const CIE76_RADIUS = 28
  *
  * The bundled dataset here is 289 basic colour terms, which is what most callers
  * want and costs nothing to carry. For exhaustive naming, install
- * `haus-colour-names` (31,900 entries, 748KB) and pass its entries in:
+ * `haus-colour-names` (31,900 entries, 764KB) and pass its entries in:
  *
  *   const nameColour = createNamedColourMatcher(colourNameEntries())
  *
