@@ -9,6 +9,8 @@ npm install haus-components haus-tokens
 ```
 
 `react` and `react-dom` are peer dependencies, `^18 || ^19`, so your copy is the only copy.
+Nothing else is required. Every icon in the package is drawn inline, so there is no icon
+font to load and no stylesheet beyond `haus-components/styles.css` and the token layers.
 
 ## Usage
 
@@ -38,6 +40,10 @@ import { Button, Card, Badge } from 'haus-components'
 
 Every component forwards its ref and spreads the remaining props onto the
 underlying element, so anything not modelled as a prop is still reachable.
+
+`Modal` takes either a `title`, which becomes the visible heading and names the
+dialog, or an `aria-label` when the design has no heading. The types require one
+of the two, since a dialog with no accessible name is announced as nothing.
 
 ## The stylesheet is separate, on purpose
 

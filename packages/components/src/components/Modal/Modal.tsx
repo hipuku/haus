@@ -4,35 +4,106 @@ import styles from './Modal.module.css'
 
 export type ModalSize = 'sm' | 'md' | 'lg'
 
-export interface ModalProps {
+interface ModalBaseProps {
   open:        boolean
   onClose:     () => void
-  title?:      string
   size?:       ModalSize
   footer?:     React.ReactNode
   className?:  string
   children?:   React.ReactNode
 }
 
+/* A dialog with no accessible name is a dialog a screen reader announces as
+   nothing. Either the visible heading names it, or an aria-label does, and the
+   type says so rather than leaving it to a reviewer to notice. */
+type ModalLabel =
+  | { title:  string;    'aria-label'?: never  }
+  | { title?: undefined; 'aria-label':  string }
+
+export type ModalProps = ModalBaseProps & ModalLabel
+
+/* Everything Tab can reach. tabindex="-1" is excluded deliberately: it is how an
+   element says it is programmatically focusable but not in the tab order, which
+   is what the dialog itself uses. */
+const FOCUSABLE = [
+  'a[href]',
+  'area[href]',
+  'input:not([disabled])',
+  'select:not([disabled])',
+  'textarea:not([disabled])',
+  'button:not([disabled])',
+  'iframe',
+  'object',
+  'embed',
+  '[tabindex]:not([tabindex="-1"])',
+  '[contenteditable]',
+].join(',')
+
 export function Modal({
   open,
   onClose,
   title,
+  'aria-label': ariaLabel,
   size = 'md',
   footer,
   className,
   children,
 }: ModalProps) {
   const dialogRef = React.useRef<HTMLDivElement>(null)
+  const titleId = React.useId()
 
-  // Close on Escape
+  /* Escape closes, and Tab cycles within the dialog.
+   *
+   * aria-modal="true" tells assistive technology that the rest of the page is
+   * inert. Nothing in the DOM enforces that on its own, so without the Tab
+   * handling below the attribute is a claim the component does not keep: focus
+   * walks straight out into the page behind. The focusin listener is the other
+   * half, catching focus moved by anything other than Tab.
+   *
+   * An axe run cannot see either problem, which is why the assertion belongs in
+   * the suite as a keyboard test rather than in the accessibility check. */
   React.useEffect(() => {
     if (!open) return
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose()
+        return
+      }
+      if (e.key !== 'Tab') return
+
+      const root = dialogRef.current
+      if (!root) return
+
+      const items = Array.from(root.querySelectorAll<HTMLElement>(FOCUSABLE))
+      if (items.length === 0) {
+        e.preventDefault()
+        root.focus()
+        return
+      }
+
+      const first = items[0]
+      const last = items[items.length - 1]
+      const active = document.activeElement
+      const outside = !active || !root.contains(active) || active === root
+
+      if (e.shiftKey ? active === first || outside : active === last || outside) {
+        e.preventDefault()
+        ;(e.shiftKey ? last : first).focus()
+      }
     }
-    document.addEventListener('keydown', handler)
-    return () => document.removeEventListener('keydown', handler)
+
+    const onFocusIn = (e: FocusEvent) => {
+      const root = dialogRef.current
+      if (root && !root.contains(e.target as Node)) root.focus()
+    }
+
+    document.addEventListener('keydown', onKeyDown)
+    document.addEventListener('focusin', onFocusIn)
+    return () => {
+      document.removeEventListener('keydown', onKeyDown)
+      document.removeEventListener('focusin', onFocusIn)
+    }
   }, [open, onClose])
 
   // Focus the dialog on open, restore on close
@@ -68,13 +139,14 @@ export function Modal({
         ref={dialogRef}
         role="dialog"
         aria-modal="true"
-        aria-label={title}
+        aria-labelledby={title ? titleId : undefined}
+        aria-label={title ? undefined : ariaLabel}
         className={dialogCls}
         tabIndex={-1}
       >
         {title && (
           <div className={styles.header}>
-            <h2 className={styles.title}>{title}</h2>
+            <h2 id={titleId} className={styles.title}>{title}</h2>
             <button
               type="button"
               className={styles.close}

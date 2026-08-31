@@ -44,6 +44,18 @@ describe('Toast', () => {
     expect(screen.getByRole('button', { name: 'Undo' })).toBeInTheDocument()
   })
 
+  it('draws its severity icon rather than naming an icon font', () => {
+    // The package declares haus-tokens and the React peers and nothing else.
+    // An icon-font class name here means a consumer without that font loaded
+    // gets an empty element where the severity indicator belongs, and no error
+    // to say why. This asserts the icon is in the DOM and is not a class.
+    const { container } = render(<Toast title="Failed" variant="error" />)
+    const icon = container.querySelector('svg[aria-hidden="true"]')
+    expect(icon).toBeInTheDocument()
+    expect(container.querySelector('i')).not.toBeInTheDocument()
+    expect(container.innerHTML).not.toContain('fa-')
+  })
+
   it('applies the variant class', () => {
     render(<Toast title="Failed" variant="error" />)
     expect(screen.getByRole('status').className).toContain('error')

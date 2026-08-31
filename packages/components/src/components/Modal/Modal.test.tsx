@@ -50,6 +50,72 @@ describe('Modal', () => {
     expect(onClose).not.toHaveBeenCalled()
   })
 
+  it('names itself from the visible heading rather than repeating it', () => {
+    // aria-label would duplicate the h2 the sighted reader already has, and a
+    // screen reader would meet the same words twice.
+    render(<Modal open onClose={vi.fn()} title="Settings">Body</Modal>)
+    const dialog = screen.getByRole('dialog', { name: 'Settings' })
+    expect(dialog).not.toHaveAttribute('aria-label')
+    expect(dialog.getAttribute('aria-labelledby')).toBe(
+      screen.getByRole('heading', { name: 'Settings' }).id,
+    )
+  })
+
+  it('takes an aria-label when there is no visible heading', () => {
+    render(<Modal open onClose={vi.fn()} aria-label="Image viewer">Body</Modal>)
+    expect(screen.getByRole('dialog', { name: 'Image viewer' })).toBeInTheDocument()
+  })
+
+  it('keeps Tab inside the dialog', async () => {
+    // aria-modal="true" says the rest of the page is inert. Nothing enforces
+    // that on its own, and axe cannot see the difference, so the claim is only
+    // true if Tab wraps. Three stops here: close, Cancel, Confirm.
+    const user = userEvent.setup()
+    render(
+      <Modal open onClose={vi.fn()} title="Confirm"
+        footer={<><button>Cancel</button><button>Confirm</button></>}
+      >
+        Body
+      </Modal>,
+    )
+    const close = screen.getByRole('button', { name: 'Close modal' })
+    const confirm = screen.getByRole('button', { name: 'Confirm' })
+
+    await user.tab()
+    expect(close).toHaveFocus()
+    await user.tab()
+    await user.tab()
+    expect(confirm).toHaveFocus()
+    await user.tab()
+    expect(close).toHaveFocus()
+  })
+
+  it('wraps backwards on Shift+Tab', async () => {
+    const user = userEvent.setup()
+    render(
+      <Modal open onClose={vi.fn()} title="Confirm"
+        footer={<><button>Cancel</button><button>Confirm</button></>}
+      >
+        Body
+      </Modal>,
+    )
+    await user.tab({ shift: true })
+    expect(screen.getByRole('button', { name: 'Confirm' })).toHaveFocus()
+  })
+
+  it('pulls focus back when it lands outside the dialog', () => {
+    // Tab is not the only way out: a click, a script, or a browser control can
+    // move focus. The focusin listener is what makes the trap a trap.
+    render(
+      <>
+        <button>Behind the modal</button>
+        <Modal open onClose={vi.fn()} title="Settings">Body</Modal>
+      </>,
+    )
+    screen.getByRole('button', { name: 'Behind the modal' }).focus()
+    expect(screen.getByRole('dialog')).toHaveFocus()
+  })
+
   it('moves focus to the dialog on open', () => {
     render(<Modal open onClose={vi.fn()} title="Settings">Body</Modal>)
     expect(screen.getByRole('dialog')).toHaveFocus()
