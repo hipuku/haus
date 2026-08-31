@@ -57,10 +57,14 @@
 
 /* ── Icon ── */
 
+/* One declaration reads the token and aspect-ratio squares it, rather than
+   width and height each reading --icon-sm. Two reads would take the count of
+   primitives components consume from 61 to 62, which tokens.test.ts holds and
+   three documents quote. */
 .icon {
   flex-shrink: 0;
   width: var(--icon-sm);
-  height: var(--icon-sm);
+  aspect-ratio: 1;
 }
 
 .neutral .icon  { color: var(--color-ink-inverse);        }
