@@ -1,38 +1,47 @@
 import React from 'react'
 import styles from './Checkbox.module.css'
 
-export interface CheckboxProps {
-  checked?:        boolean
-  defaultChecked?: boolean
-  indeterminate?:  boolean
+export interface CheckboxProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'type' | 'size'> {
+  /** `(checked)` rather than the change event, as Toggle also gives. */
   onChange?:       (checked: boolean) => void
   label?:          string
   hint?:           string
   error?:          string
-  disabled?:       boolean
-  required?:       boolean
-  id?:             string
-  name?:           string
-  value?:          string
-  className?:      string
+  indeterminate?:  boolean
 }
 
-export function Checkbox({
-  checked,
-  defaultChecked = false,
-  indeterminate = false,
-  onChange,
-  label,
-  hint,
-  error,
-  disabled,
-  required,
-  id,
-  name,
-  value,
-  className,
-}: CheckboxProps) {
+export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(
+  {
+    checked,
+    defaultChecked = false,
+    indeterminate = false,
+    onChange,
+    label,
+    hint,
+    error,
+    disabled,
+    required,
+    id,
+    name,
+    value,
+    className,
+    ...rest
+  },
+  ref,
+) {
   const inputRef   = React.useRef<HTMLInputElement>(null)
+  // The internal ref drives `indeterminate`, which has no attribute and can
+  // only be set on the node. A caller's ref has to reach the same node, so
+  // both are assigned rather than one replacing the other.
+  const setInput = React.useCallback(
+    (node: HTMLInputElement | null) => {
+      inputRef.current = node
+      if (typeof ref === 'function') ref(node)
+      else if (ref) ref.current = node
+    },
+    [ref],
+  )
   // useId must be called unconditionally: `id ?? React.useId()` skips the
   // hook whenever an id is passed, so a parent that renders this component
   // with and without one changes the hook count between renders.
@@ -67,7 +76,7 @@ export function Checkbox({
     <div>
       <label className={wrapperCls} htmlFor={inputId}>
         <input
-          ref={inputRef}
+          ref={setInput}
           type="checkbox"
           id={inputId}
           name={name}
@@ -80,6 +89,7 @@ export function Checkbox({
           aria-describedby={errorId}
           className={styles.input}
           onChange={handleChange}
+          {...rest}
         />
         <span className={styles.box} aria-hidden>
           {indeterminate ? (
@@ -113,4 +123,4 @@ export function Checkbox({
       )}
     </div>
   )
-}
+})

@@ -8,31 +8,36 @@ export interface RadioOption {
   disabled?: boolean
 }
 
-export interface RadioGroupProps {
+export interface RadioGroupProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {
+  /** `(value)` rather than the change event: a group has no single control. */
+  onChange?:   (value: string) => void
   name:        string
   value?:      string
   defaultValue?: string
-  onChange?:   (value: string) => void
   options:     RadioOption[]
   label?:      string
   error?:      string
   required?:   boolean
   orientation?: 'vertical' | 'horizontal'
-  className?:  string
 }
 
-export function RadioGroup({
-  name,
-  value,
-  defaultValue,
-  onChange,
-  options,
-  label,
-  error,
-  required,
-  orientation = 'vertical',
-  className,
-}: RadioGroupProps) {
+export const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>(function RadioGroup(
+  {
+    name,
+    value,
+    defaultValue,
+    onChange,
+    options,
+    label,
+    error,
+    required,
+    orientation = 'vertical',
+    className,
+    ...rest
+  },
+  ref,
+) {
   const groupId = React.useId()
   const errorId = error ? `${groupId}-error` : undefined
 
@@ -57,12 +62,14 @@ export function RadioGroup({
 
   return (
     <div
+      ref={ref}
       role="radiogroup"
       aria-labelledby={label ? `${groupId}-label` : undefined}
       aria-describedby={errorId}
       aria-required={required}
       aria-invalid={!!error}
       className={[styles.group, className].filter(Boolean).join(' ')}
+      {...rest}
     >
       {label && (
         <span id={`${groupId}-label`} className={styles.groupLabel}>
@@ -111,4 +118,4 @@ export function RadioGroup({
       )}
     </div>
   )
-}
+})

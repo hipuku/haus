@@ -4,13 +4,12 @@ import styles from './Avatar.module.css'
 export type AvatarSize   = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 export type AvatarStatus = 'online' | 'away' | 'busy' | 'offline'
 
-export interface AvatarProps {
+export interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
   src?:    string
   alt?:    string
   name?:   string
   size?:   AvatarSize
   status?: AvatarStatus
-  className?: string
 }
 
 const PALETTE: Array<[string, string]> = [
@@ -39,14 +38,17 @@ function initials(name: string): string {
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
 }
 
-export function Avatar({ src, alt, name, size = 'md', status, className }: AvatarProps) {
+export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(function Avatar(
+  { src, alt, name, size = 'md', status, className, ...rest },
+  ref,
+) {
   const [bg, fg] = name ? PALETTE[nameHash(name)] : PALETTE[0]
 
   const wrapperCls = [styles.wrapper, styles[size], className].filter(Boolean).join(' ')
   const statusLabel = status ? `, ${status}` : ''
 
   return (
-    <div className={wrapperCls}>
+    <div ref={ref} className={wrapperCls} {...rest}>
       <div
         className={styles.avatar}
         style={!src ? { '--avatar-bg': bg, '--avatar-fg': fg } as React.CSSProperties : undefined}
@@ -71,4 +73,4 @@ export function Avatar({ src, alt, name, size = 'md', status, className }: Avata
       )}
     </div>
   )
-}
+})

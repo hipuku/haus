@@ -8,13 +8,10 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   padding?: boolean
 }
 
-export function Card({
-  variant = 'default',
-  padding = true,
-  className,
-  children,
-  ...rest
-}: CardProps) {
+export const Card = React.forwardRef<HTMLDivElement, CardProps>(function Card(
+  { variant = 'default', padding = true, className, children, ...rest },
+  ref,
+) {
   const cls = [
     styles.card,
     styles[variant],
@@ -23,8 +20,8 @@ export function Card({
   ].filter(Boolean).join(' ')
 
   return (
-    <div className={cls} {...rest}>
+    <div ref={ref} className={cls} {...rest}>
       {children}
     </div>
   )
-}
+})

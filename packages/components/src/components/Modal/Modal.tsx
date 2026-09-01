@@ -4,13 +4,12 @@ import styles from './Modal.module.css'
 
 export type ModalSize = 'sm' | 'md' | 'lg'
 
-interface ModalBaseProps {
+interface ModalBaseProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title' | 'aria-label' | 'onClick'> {
   open:        boolean
   onClose:     () => void
   size?:       ModalSize
   footer?:     React.ReactNode
-  className?:  string
-  children?:   React.ReactNode
 }
 
 /* A dialog with no accessible name is a dialog a screen reader announces as
@@ -39,17 +38,22 @@ const FOCUSABLE = [
   '[contenteditable]',
 ].join(',')
 
-export function Modal({
-  open,
-  onClose,
-  title,
-  'aria-label': ariaLabel,
-  size = 'md',
-  footer,
-  className,
-  children,
-}: ModalProps) {
+export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(function Modal(
+  { open, onClose, title, 'aria-label': ariaLabel, size = 'md', footer, className, children, ...rest },
+  ref,
+) {
   const dialogRef = React.useRef<HTMLDivElement>(null)
+  // The dialog is the node a caller wants: className already lands there, and
+  // the focus trap needs the same element, so both refs are assigned rather
+  // than one replacing the other.
+  const setDialog = React.useCallback(
+    (node: HTMLDivElement | null) => {
+      dialogRef.current = node
+      if (typeof ref === 'function') ref(node)
+      else if (ref) ref.current = node
+    },
+    [ref],
+  )
   const titleId = React.useId()
 
   /* Escape closes, and Tab cycles within the dialog.
@@ -136,13 +140,14 @@ export function Modal({
       onClick={e => { if (e.target === e.currentTarget) onClose() }}
     >
       <div
-        ref={dialogRef}
+        ref={setDialog}
         role="dialog"
         aria-modal="true"
         aria-labelledby={title ? titleId : undefined}
         aria-label={title ? undefined : ariaLabel}
         className={dialogCls}
         tabIndex={-1}
+        {...rest}
       >
         {title && (
           <div className={styles.header}>
@@ -167,4 +172,4 @@ export function Modal({
     </div>,
     document.body
   )
-}
+})

@@ -45,23 +45,20 @@ const ICONS: Record<ToastVariant, React.ReactNode> = {
   ),
 }
 
-export interface ToastProps {
+export interface ToastProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
   variant?:     ToastVariant
+  /** Named rather than spread: it is the visible heading, not the tooltip the
+   *  native title attribute would give. */
   title:        string
   description?: string
   action?:      React.ReactNode
   onClose?:     () => void
-  className?:   string
 }
 
-export function Toast({
-  variant     = 'neutral',
-  title,
-  description,
-  action,
-  onClose,
-  className,
-}: ToastProps) {
+export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(function Toast(
+  { variant = 'neutral', title, description, action, onClose, className, ...rest },
+  ref,
+) {
   const cls = [
     styles.toast,
     styles[variant],
@@ -69,7 +66,7 @@ export function Toast({
   ].filter(Boolean).join(' ')
 
   return (
-    <div className={cls} role="status" aria-live="polite" aria-atomic>
+    <div ref={ref} className={cls} role="status" aria-live="polite" aria-atomic {...rest}>
       <svg
         className={styles.icon}
         viewBox="0 0 16 16"
@@ -105,4 +102,4 @@ export function Toast({
       )}
     </div>
   )
-}
+})

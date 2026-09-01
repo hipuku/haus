@@ -39,7 +39,12 @@ import { Button, Card, Badge } from 'haus-components'
 `Radio` · `Select` · `Textarea` · `Toast` · `Toggle`
 
 Every component forwards its ref and spreads the remaining props onto the
-underlying element, so anything not modelled as a prop is still reachable.
+underlying element, so anything not modelled as a prop is still reachable. That
+sentence is asserted over the barrel in `src/api-surface.test.tsx`, so a
+thirteenth component is held to it by existing.
+
+The ref goes to the element a caller would want: the control on the form
+components, the dialog on `Modal`, the root elsewhere.
 
 `Modal` takes either a `title`, which becomes the visible heading and names the
 dialog, or an `aria-label` when the design has no heading. The types require one

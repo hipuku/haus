@@ -10,14 +10,17 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   dot?:        boolean
 }
 
-export function Badge({
-  variant    = 'neutral',
-  appearance = 'subtle',
-  dot        = false,
-  className,
-  children,
-  ...rest
-}: BadgeProps) {
+export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
+  {
+    variant    = 'neutral',
+    appearance = 'subtle',
+    dot        = false,
+    className,
+    children,
+    ...rest
+  },
+  ref,
+) {
   const cls = [
     styles.badge,
     styles[variant],
@@ -26,9 +29,9 @@ export function Badge({
   ].filter(Boolean).join(' ')
 
   return (
-    <span className={cls} {...rest}>
+    <span ref={ref} className={cls} {...rest}>
       {dot && <span className={styles.dot} aria-hidden />}
       {children}
     </span>
   )
-}
+})

@@ -3,33 +3,33 @@ import styles from './Toggle.module.css'
 
 export type ToggleSize = 'sm' | 'md'
 
-export interface ToggleProps {
-  checked?:        boolean
-  defaultChecked?: boolean
+export interface ToggleProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'type' | 'size'> {
+  /** `(checked)` rather than the change event, as Checkbox also gives. */
   onChange?:       (checked: boolean) => void
   label?:          string
   description?:    string
   size?:           ToggleSize
-  disabled?:       boolean
   labelPosition?:  'left' | 'right'
-  id?:             string
-  name?:           string
-  className?:      string
 }
 
-export function Toggle({
-  checked,
-  defaultChecked = false,
-  onChange,
-  label,
-  description,
-  size = 'md',
-  disabled,
-  labelPosition = 'left',
-  id,
-  name,
-  className,
-}: ToggleProps) {
+export const Toggle = React.forwardRef<HTMLInputElement, ToggleProps>(function Toggle(
+  {
+    checked,
+    defaultChecked = false,
+    onChange,
+    label,
+    description,
+    size = 'md',
+    disabled,
+    labelPosition = 'left',
+    id,
+    name,
+    className,
+    ...rest
+  },
+  ref,
+) {
   // Called unconditionally. See Checkbox for why.
   const generatedId  = React.useId()
   const inputId      = id ?? generatedId
@@ -62,6 +62,7 @@ export function Toggle({
       )}
 
       <input
+        ref={ref}
         type="checkbox"
         role="switch"
         id={inputId}
@@ -72,10 +73,11 @@ export function Toggle({
         aria-checked={isOn}
         className={styles.input}
         onChange={handleChange}
+        {...rest}
       />
       <span className={styles.track} aria-hidden>
         <span className={styles.thumb} />
       </span>
     </label>
   )
-}
+})
