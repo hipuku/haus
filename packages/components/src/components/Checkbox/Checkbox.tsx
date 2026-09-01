@@ -47,7 +47,13 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(functi
   // with and without one changes the hook count between renders.
   const generatedId = React.useId()
   const inputId    = id ?? generatedId
+  const hintId     = hint  ? `${inputId}-hint`  : undefined
   const errorId    = error ? `${inputId}-error` : undefined
+  // Both, in reading order, as Input and Select already do. The hint used to
+  // sit inside the <label>, which made it part of the accessible *name*: a
+  // screen reader announced "Accept terms Read them first, checkbox" as one
+  // string rather than a name and a description.
+  const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined
   const isControlled = checked !== undefined
 
   // Internal state for uncontrolled usage, driving the visual box class
@@ -86,7 +92,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(functi
           disabled={disabled}
           required={required}
           aria-invalid={!!error}
-          aria-describedby={errorId}
+          aria-describedby={describedBy}
           className={styles.input}
           onChange={handleChange}
           {...rest}
@@ -103,18 +109,21 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(functi
           ) : null}
         </span>
 
-        {(label || hint) && (
+        {label && (
           <span className={styles.content}>
-            {label && (
-              <span className={styles.label}>
-                {label}
-                {required && <span aria-hidden className={styles.required}>*</span>}
-              </span>
-            )}
-            {hint && !error && <span className={styles.hint}>{hint}</span>}
+            <span className={styles.label}>
+              {label}
+              {required && <span aria-hidden className={styles.required}>*</span>}
+            </span>
           </span>
         )}
       </label>
+
+      {/* Outside the label on purpose: anything inside it is read as part of the
+          name. Indented to line up under the label text rather than under the box. */}
+      {hint && !error && (
+        <span id={hintId} className={styles.hint}>{hint}</span>
+      )}
 
       {error && (
         <span id={errorId} className={styles.errorMessage} role="alert">

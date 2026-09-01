@@ -4,16 +4,27 @@ import { axe } from 'vitest-axe'
 import { Toggle } from './Toggle'
 
 describe('Toggle', () => {
+  it('keeps the description out of the name', async () => {
+    // Every assertion below used to match the name with a regex, because the
+    // label element wraps both spans and its whole text was the name: the
+    // control announced as "Notifications Sends a push to your devices" and no
+    // description at all.
+    render(<Toggle label="Notifications" description="Sends a push to your devices" />)
+    const toggle = screen.getByRole('switch')
+    expect(toggle).toHaveAccessibleName('Notifications')
+    expect(toggle).toHaveAccessibleDescription('Sends a push to your devices')
+  })
+
   it('exposes itself as a switch, not a checkbox', () => {
     // The visual affordance is a switch; the role has to match or assistive
     // technology announces the wrong control and the wrong state wording.
     render(<Toggle label="Notifications" />)
-    expect(screen.getByRole('switch', { name: /Notifications/ })).toBeInTheDocument()
+    expect(screen.getByRole('switch', { name: 'Notifications' })).toBeInTheDocument()
   })
 
   it('toggles when uncontrolled', async () => {
     render(<Toggle label="Notifications" />)
-    const toggle = screen.getByRole('switch', { name: /Notifications/ })
+    const toggle = screen.getByRole('switch', { name: 'Notifications' })
     expect(toggle).not.toBeChecked()
     await userEvent.click(toggle)
     expect(toggle).toBeChecked()
@@ -22,7 +33,7 @@ describe('Toggle', () => {
   it('reports the new value to onChange', async () => {
     const onChange = vi.fn()
     render(<Toggle label="Notifications" onChange={onChange} />)
-    await userEvent.click(screen.getByRole('switch', { name: /Notifications/ }))
+    await userEvent.click(screen.getByRole('switch', { name: 'Notifications' }))
     expect(onChange).toHaveBeenCalledWith(true)
   })
 

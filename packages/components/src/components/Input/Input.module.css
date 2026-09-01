@@ -32,7 +32,13 @@
   min-height: var(--control-height-md);
 }
 
-.inputWrap:focus-within {
+ /* :has(:focus-visible) rather than :focus-within. The ring is drawn on the
+   wrapper, which is not itself focusable, so :focus-visible cannot go directly
+   on it — but :focus-within also fires for a pointer, where every other control
+   in the system rings only for the keyboard. This keeps the ring where it has to
+   be drawn and the rule everything else follows. Text fields still ring on click,
+   because :focus-visible matches them there by the browser's own heuristic. */
+.inputWrap:has(:focus-visible) {
   border-color: var(--color-border-focus);
   box-shadow: var(--shadow-focus);
   outline: none;
@@ -42,7 +48,7 @@
   border-color: var(--color-error-default);
 }
 
-.inputWrap.error:focus-within {
+.inputWrap.error:has(:focus-visible) {
   box-shadow: var(--shadow-focus-error);
 }
 
@@ -100,5 +106,16 @@
 @media (prefers-reduced-motion: reduce) {
   .inputWrap {
     transition-duration: var(--duration-reduced);
+  }
+}
+
+/* forced-colors drops box-shadow entirely, and every ring in this system is one.
+   Without this a Windows High Contrast user gets no focus indicator at all.
+   `Highlight` is the system's own focus colour, so it follows the user's theme
+   rather than ours. */
+@media (forced-colors: active) {
+  .inputWrap:has(:focus-visible) {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
   }
 }

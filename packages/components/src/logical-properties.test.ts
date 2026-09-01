@@ -37,6 +37,13 @@ function stylesheets(): [string, string][] {
 
 const SHEETS = stylesheets()
 
+/** The same source with every comment removed. A rule that is being explained is
+ *  not a rule that is in force, and these assertions read prose otherwise. */
+const CODE: [string, string][] = SHEETS.map(([file, css]) => [
+  file,
+  css.replace(/\/\*[\s\S]*?\*\//g, ''),
+])
+
 /** Property names that pin a value to the left or the right of the box. */
 const PHYSICAL =
   /(^|[\s{;])(margin|padding|border|inset|scroll-margin|scroll-padding)?-?(left|right)\b\s*(-[a-z-]+)?\s*:/
@@ -49,10 +56,9 @@ describe('components are written in logical properties', () => {
 
   it('uses no physical inline-axis property', () => {
     const offenders: string[] = []
-    for (const [file, css] of SHEETS) {
+    for (const [file, css] of CODE) {
       css.split('\n').forEach((line, i) => {
-        const code = line.split('/*')[0]
-        if (PHYSICAL.test(code)) offenders.push(`${file}:${i + 1} ${code.trim()}`)
+        if (PHYSICAL.test(line)) offenders.push(`${file}:${i + 1} ${line.trim()}`)
       })
     }
     expect(offenders).toEqual([])
@@ -63,15 +69,36 @@ describe('components are written in logical properties', () => {
     // sliding element needs a sign that an [dir='rtl'] rule can flip. Toggle's
     // thumb is the case — without this it slides out of the wrong end of a
     // right-to-left track, and no rename would have caught it.
-    const offenders = SHEETS.filter(
+    const offenders = CODE.filter(
       ([, css]) => css.includes('translateX(') && !css.includes("[dir='rtl']") && !css.includes('[dir="rtl"]'),
     ).map(([file]) => file)
     expect(offenders).toEqual([])
   })
 
+  it('gives every focus ring a forced-colors fallback', () => {
+    // Every ring in this system is a box-shadow, and forced-colors mode drops
+    // box-shadow entirely — so a ring without this block is no ring at all in
+    // Windows High Contrast. The rule cannot be written once globally: three
+    // components draw the ring on a sibling of a visually hidden input, so a
+    // blanket :focus-visible outline would land on an element nobody can see.
+    const offenders = CODE.filter(
+      ([, css]) => css.includes('--shadow-focus') && !css.includes('forced-colors: active'),
+    ).map(([file]) => file)
+    expect(offenders).toEqual([])
+  })
+
+  it('rings on the keyboard, not the pointer', () => {
+    // :focus-within fires for a mouse press too. Input drew its ring on a
+    // wrapper, which is not focusable, and reached for :focus-within to do it —
+    // :has(:focus-visible) keeps the ring where it has to be drawn and the rule
+    // every other control follows.
+    const offenders = CODE.filter(([, css]) => css.includes(':focus-within')).map(([file]) => file)
+    expect(offenders).toEqual([])
+  })
+
   it('has text-align on the logical keywords', () => {
     const offenders: string[] = []
-    for (const [file, css] of SHEETS) {
+    for (const [file, css] of CODE) {
       for (const m of css.matchAll(/text-align:\s*(left|right)\b/g)) {
         offenders.push(`${file} text-align: ${m[1]}`)
       }

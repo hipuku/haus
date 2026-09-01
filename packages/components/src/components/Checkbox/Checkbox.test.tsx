@@ -4,6 +4,22 @@ import { axe } from 'vitest-axe'
 import { Checkbox } from './Checkbox'
 
 describe('Checkbox', () => {
+  it('keeps the hint out of the name', () => {
+    // The hint used to render inside the <label>, so it was read as part of the
+    // name: "Accept terms Read them first" as one string, with nothing left to
+    // be a description. aria-describedby pointed only at the error.
+    render(<Checkbox label="Accept terms" hint="Read them first" />)
+    const box = screen.getByRole('checkbox')
+    expect(box).toHaveAccessibleName('Accept terms')
+    expect(box).toHaveAccessibleDescription('Read them first')
+  })
+
+  it('describes with the hint and the error together, in reading order', () => {
+    render(<Checkbox label="Accept terms" hint="Read them first" error="Required" />)
+    // The hint is hidden while an error shows, so the description is the error.
+    expect(screen.getByRole('checkbox')).toHaveAccessibleDescription('Required')
+  })
+
   it('associates its label with the input', () => {
     render(<Checkbox label="Remember me" />)
     expect(screen.getByRole('checkbox', { name: /Remember me/ })).toBeInTheDocument()

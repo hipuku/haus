@@ -53,6 +53,14 @@
   border-color: var(--color-error-default);
 }
 
+/* --shadow-focus-error existed and nothing read it here: an invalid Select rang
+   in the ordinary focus colour, so the error state disappeared the moment it was
+   focused. Input and Textarea both had this rule. */
+.select.error:focus-visible {
+  border-color: var(--color-error-default);
+  box-shadow: var(--shadow-focus-error);
+}
+
 .select:disabled {
   background-color: var(--color-surface-disabled);
   border-color: var(--color-border-disabled);
@@ -86,5 +94,16 @@
 @media (prefers-reduced-motion: reduce) {
   .select {
     transition-duration: var(--duration-reduced);
+  }
+}
+
+/* forced-colors drops box-shadow entirely, and every ring in this system is one.
+   Without this a Windows High Contrast user gets no focus indicator at all.
+   `Highlight` is the system's own focus colour, so it follows the user's theme
+   rather than ours. */
+@media (forced-colors: active) {
+  .select:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
   }
 }

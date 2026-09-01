@@ -33,6 +33,8 @@ export const Toggle = React.forwardRef<HTMLInputElement, ToggleProps>(function T
   // Called unconditionally. See Checkbox for why.
   const generatedId  = React.useId()
   const inputId      = id ?? generatedId
+  const labelId       = label ? `${inputId}-label` : undefined
+  const descriptionId = description ? `${inputId}-description` : undefined
   const isControlled = checked !== undefined
 
   const [internalChecked, setInternalChecked] = React.useState(defaultChecked)
@@ -56,8 +58,10 @@ export const Toggle = React.forwardRef<HTMLInputElement, ToggleProps>(function T
     <label className={wrapperCls} htmlFor={inputId}>
       {(label || description) && (
         <span className={styles.content}>
-          {label && <span className={styles.label}>{label}</span>}
-          {description && <span className={styles.description}>{description}</span>}
+          {label && <span id={labelId} className={styles.label}>{label}</span>}
+          {description && (
+            <span id={descriptionId} className={styles.description}>{description}</span>
+          )}
         </span>
       )}
 
@@ -71,6 +75,12 @@ export const Toggle = React.forwardRef<HTMLInputElement, ToggleProps>(function T
         defaultChecked={isControlled ? undefined : defaultChecked}
         disabled={disabled}
         aria-checked={isOn}
+        // The whole label element wraps both the label and the description, so
+        // its text was the accessible name and the description was read as part
+        // of it. Naming the label span explicitly scopes the name to the label,
+        // and leaves the description to be a description.
+        aria-labelledby={labelId}
+        aria-describedby={descriptionId}
         className={styles.input}
         onChange={handleChange}
         {...rest}

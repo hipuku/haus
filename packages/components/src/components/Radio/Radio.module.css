@@ -138,3 +138,14 @@
     transition-duration: var(--duration-reduced);
   }
 }
+
+/* forced-colors drops box-shadow entirely, and every ring in this system is one.
+   Without this a Windows High Contrast user gets no focus indicator at all.
+   `Highlight` is the system's own focus colour, so it follows the user's theme
+   rather than ours. */
+@media (forced-colors: active) {
+  .input:focus-visible ~ .circle {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+}

@@ -103,10 +103,15 @@
 }
 
 .hint {
+  display: block;
   font-family: var(--font-sans);
   font-size: var(--type-label-xs-size);
   line-height: var(--type-label-xs-leading);
   color: var(--color-ink-secondary);
+  margin-block-start: var(--space-stack-2xs);
+  /* Sits outside the label now, so it carries the same indent the error message
+     does: aligned under the label text rather than under the box. */
+  padding-inline-start: calc(var(--space-inset-md) + var(--space-inset-xs));
 }
 
 .required {
@@ -127,5 +132,16 @@
 @media (prefers-reduced-motion: reduce) {
   .box {
     transition-duration: var(--duration-reduced);
+  }
+}
+
+/* forced-colors drops box-shadow entirely, and every ring in this system is one.
+   Without this a Windows High Contrast user gets no focus indicator at all.
+   `Highlight` is the system's own focus colour, so it follows the user's theme
+   rather than ours. */
+@media (forced-colors: active) {
+  .input:focus-visible ~ .box {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
   }
 }
