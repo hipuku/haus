@@ -137,6 +137,7 @@ export const tokens = {
     normal: "200ms",
     moderate: "300ms",
     slow: "500ms",
+    reduced: "0ms",
   },
   easing: {
     enter: "cubic-bezier(0.00, 0.00, 0.20, 1.00)",
@@ -159,6 +160,11 @@ export const tokens = {
     md: "0 4px 6px -1px oklch(18% 0.003 290 / 0.10), 0 2px 4px -2px oklch(18% 0.003 290 / 0.10)",
     lg: "0 10px 15px -3px oklch(18% 0.003 290 / 0.10), 0 4px 6px -4px oklch(18% 0.003 290 / 0.07)",
     xl: "0 20px 25px -5px oklch(18% 0.003 290 / 0.10), 0 8px 10px -6px oklch(18% 0.003 290 / 0.10)",
+  },
+  controlHeight: {
+    sm: "1.75rem",
+    md: "2.25rem",
+    lg: "2.75rem",
   },
   zIndex: {
     base: 0,

@@ -1,47 +1,38 @@
-/* ─── haus / motion ──────────────────────────────────────────────────────────
-   Easing curves and durations.
-   All animation tokens live here. Components must not hardcode values.
+/* ─── haus / primitives ──────────────────────────────────────────────────────
+   Raw values only. No component or semantic meaning.
+   Nothing outside this file should define raw values.
+   Components must never reference these directly. Use semantics.css.
+
+   GENERATED FROM src/tokens.json. Do not edit.
+   Regenerate with `npm run tokens`; `npm run tokens:check` fails CI if stale.
    ─────────────────────────────────────────────────────────────────────────── */
 
 @layer haus.motion {
 
   :root {
 
-    /* ── Durations ────────────────────────────────────────────────────────── */
+    /* ── Durations ───────────────────────────────────────────────────────────── */
     --haus-duration-instant:   50ms;
-    --haus-duration-fast:     100ms;   /* micro-interactions: checkbox, toggle */
-    --haus-duration-normal:   200ms;   /* most UI transitions: hover, focus */
-    --haus-duration-moderate: 300ms;   /* panels, drawers, modals entering */
-    --haus-duration-slow:     500ms;   /* page transitions, complex sequences */
+    --haus-duration-fast:      100ms;
+    --haus-duration-normal:    200ms;
+    --haus-duration-moderate:  300ms;
+    --haus-duration-slow:      500ms;
+    --haus-duration-reduced:   0ms;   /* Components read this under @media (prefers-reduced-motion: reduce) */
 
-    /* ── Easing curves ────────────────────────────────────────────────────── */
+    /* ── Easing curves ───────────────────────────────────────────────────────── */
+    --haus-ease-enter:   cubic-bezier(0.00, 0.00, 0.20, 1.00);   /* Elements appearing: start slow, arrive with energy */
+    --haus-ease-exit:    cubic-bezier(0.40, 0.00, 1.00, 1.00);   /* Elements leaving: leave quickly, no lingering */
+    --haus-ease-move:    cubic-bezier(0.40, 0.00, 0.20, 1.00);   /* Position changes: balanced, physical */
+    --haus-ease-spring:  cubic-bezier(0.34, 1.56, 0.64, 1.00);   /* Slight overshoot for interactive feedback */
+    --haus-ease-linear:  linear;   /* For opacity fades where easing adds no value */
 
-    /* Elements appearing: start slow, arrive with energy */
-    --haus-ease-enter: cubic-bezier(0.00, 0.00, 0.20, 1.00);
-
-    /* Elements leaving: leave quickly, no lingering */
-    --haus-ease-exit:  cubic-bezier(0.40, 0.00, 1.00, 1.00);
-
-    /* Position changes within the UI: balanced, physical */
-    --haus-ease-move:  cubic-bezier(0.40, 0.00, 0.20, 1.00);
-
-    /* Spring-like, with slight overshoot for interactive feedback */
-    --haus-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1.00);
-
-    /* Linear, for opacity fades where easing adds no value */
-    --haus-ease-linear: linear;
-
-    /* ── Composite motion tokens (duration + easing pairs) ─────────────────── */
-    --haus-motion-fade-in:       var(--haus-duration-normal) var(--haus-ease-enter);
-    --haus-motion-fade-out:      var(--haus-duration-fast)   var(--haus-ease-exit);
-    --haus-motion-slide-in:      var(--haus-duration-moderate) var(--haus-ease-enter);
-    --haus-motion-slide-out:     var(--haus-duration-fast)     var(--haus-ease-exit);
-    --haus-motion-micro:         var(--haus-duration-fast)   var(--haus-ease-move);
-    --haus-motion-interactive:   var(--haus-duration-normal) var(--haus-ease-move);
-
-    /* ── Reduced motion ───────────────────────────────────────────────────── */
-    /* Components use these via @media (prefers-reduced-motion: reduce)       */
-    --haus-duration-reduced: 0ms;
+    /* ── Composite motion tokens (duration + easing pairs) ───────────────────── */
+    --haus-motion-fade-in:      var(--haus-duration-normal) var(--haus-ease-enter);
+    --haus-motion-fade-out:     var(--haus-duration-fast) var(--haus-ease-exit);
+    --haus-motion-slide-in:     var(--haus-duration-moderate) var(--haus-ease-enter);
+    --haus-motion-slide-out:    var(--haus-duration-fast) var(--haus-ease-exit);
+    --haus-motion-micro:        var(--haus-duration-fast) var(--haus-ease-move);   /* Checkbox, toggle */
+    --haus-motion-interactive:  var(--haus-duration-normal) var(--haus-ease-move);   /* Hover, focus */
 
   }
 }

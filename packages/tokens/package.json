@@ -23,13 +23,14 @@
   "sideEffects": [
     "*.css"
   ],
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     },
     "./index.css": "./dist/index.css",
     "./layers.css": "./dist/layers.css",
@@ -55,6 +56,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
+    "haus-colour-utils": "workspace:^",
     "tsup": "^8.5.1",
     "tsx": "^4.23.12",
     "typescript": "^5.4.5",

@@ -2,7 +2,7 @@
  * Generates haus's primitive layer from `src/tokens.json`, and the brand map's
  * TypeScript from `src/brand.css`.
  *
- *   npm run tokens         regenerate src/primitives.css and src/index.ts
+ *   npm run tokens         regenerate every derived file under src/
  *   npm run tokens:check   fail if either is stale (CI gate)
  *
  * Why: the primitives were stated three times, as DTCG JSON, as CSS custom
@@ -137,10 +137,17 @@ const propName = (prefix: string, leaf: string) =>
 /** Pads to `width` so generated columns line up like a hand-written file. */
 const pad = (s: string, width: number) => s.padEnd(width)
 
-/** A fontFamily $value is an array; CSS wants the stack with the face quoted. */
+/**
+ * A $value that is an array is one of two things, and they render nothing alike:
+ * a cubicBezier's four numbers, or a fontFamily's stack. Treating the first as
+ * the second produced `'0', 0, 0.2, 1` for every easing.
+ */
 function cssValue(token: DtcgToken): string {
   const value = token.$value
   if (Array.isArray(value)) {
+    if (value.every((n) => typeof n === 'number')) {
+      return `cubic-bezier(${(value as number[]).map((n) => n.toFixed(2)).join(', ')})`
+    }
     const [face, ...fallbacks] = value.map(String)
     return [`'${face}'`, ...fallbacks].join(', ')
   }
@@ -178,6 +185,84 @@ function buildPrimitivesCss(): string {
     lines.push(...declarations(pairs, scale.prefix))
     lines.push('')
   }
+
+  lines.push('  }', '}', '')
+  return lines.join('\n')
+}
+
+// ─── tokens.json's semantic block ────────────────────────────────────────────
+
+/**
+ * `semantic.color` in tokens.json restated brand.css by hand: 55 entries, the
+ * same role-to-primitive choices, kept in step by nobody. docs/tokens.md
+ * documents tokens.json as the Style Dictionary handoff path, so a consumer
+ * reads it — which makes an unverified snapshot worse than none.
+ *
+ * Derived from brand.css now, which is where those choices live since the split.
+ * Descriptions are carried across by key so the prose survives regeneration.
+ */
+function buildSemanticColor(): Record<string, DtcgToken> {
+  const css = readFileSync(join(srcDir, 'brand.css'), 'utf8')
+  const existing = (tokens.semantic?.color ?? {}) as Record<string, DtcgToken>
+  const out: Record<string, DtcgToken> = {}
+
+  for (const [, name, value] of css.matchAll(
+    /^\s*(--haus-brand-[a-z0-9-]+)\s*:\s*([^;]+);/gm,
+  )) {
+    const key = name.replace('--haus-brand-', '')
+    // A plain alias becomes a DTCG reference; anything computed (the relative
+    // colour entries) is carried through as its literal, because DTCG has no
+    // way to express `oklch(from …)` and inventing one here would be a fourth
+    // dialect nobody reads.
+    const alias = /^var\(\s*--haus-([a-z]+)-(\d+)\s*\)$/.exec(value.trim())
+    const $value = alias ? `{color.${alias[1]}.${alias[2]}}` : value.trim()
+    const description = existing[key]?.$description
+    out[key] = description ? { $value, $description: description } : { $value }
+  }
+  return out
+}
+
+// ─── motion.css ──────────────────────────────────────────────────────────────
+
+/**
+ * The durations, easings and composite pairs, from the same tokens.json entries
+ * the JS export already read.
+ *
+ * It was typed by hand beside them, so the two forms of the same six pairs were
+ * kept in step by nobody. Generating it is the same argument as the primitives:
+ * a test comparing them catches drift afterwards, generating one of the two
+ * makes drift impossible.
+ */
+function buildMotionCss(): string {
+  const lines: string[] = [
+    BANNER,
+    '',
+    '@layer haus.motion {',
+    '',
+    '  :root {',
+    '',
+  ]
+
+  lines.push(heading('Durations'))
+  lines.push(...declarations(entries(group(['duration'])), '--duration'))
+  lines.push('')
+
+  lines.push(heading('Easing curves'))
+  lines.push(...declarations(entries(group(['easing'])), '--ease'))
+  lines.push('')
+
+  lines.push(heading('Composite motion tokens (duration + easing pairs)'))
+  // A composite $value is an alias pair like "{duration.fast} {easing.move}";
+  // aliasToVar turns each half into the var() the CSS wants.
+  const composites = entries(group(['motion'])).map(([leaf, token]) => {
+    const value = String(token.$value)
+      .split(/\s+/)
+      .map((part) => aliasToVar(part))
+      .join(' ')
+    return [leaf, { ...token, $value: value }] as [string, DtcgToken]
+  })
+  lines.push(...declarations(composites, '--motion'))
+  lines.push('')
 
   lines.push('  }', '}', '')
   return lines.join('\n')
@@ -230,6 +315,21 @@ function jsValue(token: DtcgToken): string {
   }
   if (typeof value === 'number') return String(value)
   return JSON.stringify(String(value))
+}
+
+/**
+ * A DTCG alias turned into the `var()` the CSS reads, rather than the literal
+ * value: `{duration.fast}` → `var(--haus-duration-fast)`. The composite motion
+ * tokens have to point at the duration and easing properties so that overriding
+ * one moves everything built on it — inlining the literals would freeze them.
+ */
+function aliasToVar(part: string): string {
+  const alias = /^\{([^}]+)\}$/.exec(part)
+  if (!alias) return part
+  const segments = alias[1].split('.')
+  // `duration.fast` → `--duration` + `fast`; `easing.move` → `--ease` + `move`.
+  const group = segments[0] === 'easing' ? '--ease' : `--${segments[0]}`
+  return `var(${propName(group, segments.slice(1).join('-'))})`
 }
 
 /** DTCG aliases (`{duration.normal}`) resolved to their literal value. */
@@ -321,6 +421,9 @@ ${jsObject(entries(group(['motion'])), '    ', composite)}
   shadow: {
 ${jsObject(entries(group(['shadow'])).filter(([leaf]) => leaf !== 'focus'), '    ')}
   },
+  controlHeight: {
+${jsObject(entries(group(['controlHeight'])), '    ')}
+  },
   zIndex: {
 ${jsObject(entries(group(['zIndex'])), '    ')}
   },
@@ -351,11 +454,17 @@ export { brandRoles } from './brand'
 
 const outputs: Record<string, string> = {
   'primitives.css': buildPrimitivesCss(),
+  'motion.css': buildMotionCss(),
   'index.ts': buildIndexTs(),
   // Generated from brand.css rather than tokens.json, which is why it is listed
   // separately: editing the brand map without regenerating is exactly the drift
   // `tokens:check` exists to catch.
   'brand.ts': buildBrandTypes(),
+  'tokens.json': JSON.stringify(
+    { ...tokens, semantic: { ...tokens.semantic, color: buildSemanticColor() } },
+    null,
+    2,
+  ) + '\n',
 }
 
 const check = process.argv.includes('--check')
@@ -386,7 +495,7 @@ if (check) {
     )
     process.exit(1)
   }
-  console.log('✓ primitives.css, index.ts and brand.ts are up to date with their sources')
+  console.log(`✓ ${Object.keys(outputs).join(', ')} are up to date with their sources`)
 } else {
   console.log(`✓ Wrote ${Object.keys(outputs).join(', ')} from tokens.json`)
 }
