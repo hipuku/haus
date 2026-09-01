@@ -97,42 +97,9 @@ haus-colour-utils  →  haus-style-probe
 haus-colour-names     (nothing depends on it)
 ```
 
-## Semver policy
-
-Settled 2026-09-01 as ruling A4, and the reason the 1.0 cut exists.
-
-**Every package is 1.x or above. Nothing stays on 0.x.**
-
-The five packages sat on 0.x because 0.x reads as "not finished yet", and that was never the
-claim being made. `^0.2.0` does not mean what a reader expects: under the caret rule, a 0.x
-minor is treated as breaking, so **a minor cannot reach a consumer while a patch can**. That is
-backwards, and it is why the control-height tokens sat published and unreachable in drift until
-a lockfile was repointed by hand.
-
-Once on 1.x the ordinary rules apply, and here is what each one means for a token system, where
-the usual advice about "the public API" is not enough:
-
-| Bump | What it covers |
-|---|---|
-| **major** | Removing or renaming a custom property. Changing which primitive a role resolves to in a way that alters contrast. Removing or renaming a component prop or one of its accepted values. Raising the supported browser floor. |
-| **minor** | Adding a property, a role, a component, a prop or an accepted value. Changing a value within its documented intent, where a shade moves and every contrast pair it participates in still passes. |
-| **patch** | A fix that changes no name and no documented value: a wrong `var()` reference, a missing `on-*` pair, a build artefact that did not match its source. |
-
-Three consequences worth stating, because each has already caught someone here:
-
-- **A token rename is a major even when the value is identical.** The name is the API.
-- **A contrast change is a major even when the hex barely moves.** A consumer may be relying on
-  a documented ratio, and there is no way for them to detect the change at install time.
-- **Prefixing every property with `--haus-` is one major, taken once.** It lands with the 1.0
-  cut alongside the brand-map split and ruling A5, so consumers absorb one migration rather
-  than three. See `docs/theming.md`.
-
-`CHANGELOG.md` records every entry under the bump it claimed. A release with no changelog entry
-is not a release.
-
 ## What the workflow will not do for you
 
 - It does not decide the version. Semver is a claim about compatibility and it is yours to
-  make; the policy above says what each bump has to mean, not which one this release is.
+  make.
 - It does not push the tag. Nothing here rewrites or pushes history on your behalf.
 - It does not publish more than one package per tag. Two releases means two tags.
