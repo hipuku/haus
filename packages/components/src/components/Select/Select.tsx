@@ -16,6 +16,22 @@ export interface SelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectE
   placeholder?: string
 }
 
+/**
+ * A native `<select>` in haus's clothing.
+ *
+ * The closed control is fully themed: `appearance: none`, then this system's own
+ * border, radius, chevron and focus ring. **The open list is not, and cannot be.**
+ * The popup is drawn by the operating system and no CSS reaches inside it, so it
+ * will look like the platform rather than like haus.
+ *
+ * That is the trade rather than an omission, and it is the reason this is still a
+ * `<select>`: the platform gives back free keyboard handling, a wheel picker on
+ * iOS, and assistive-technology behaviour that a custom listbox has to reimplement
+ * and keep correct. See `docs/decisions/0011-select-is-a-native-select.md`.
+ *
+ * If you need the list itself styled, this is the wrong component and haus does
+ * not yet ship the right one.
+ */
 export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
   function Select(
     { label, hint, error, options, required, placeholder, disabled, className, id, children, ...rest },
