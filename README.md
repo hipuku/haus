@@ -38,6 +38,10 @@ Theming (brand and role swaps) lives entirely in `semantics.css`; components nev
 ## Links
 
 - **Live Storybook:** [haus.hipuku.dev](https://haus.hipuku.dev)
+- **Documents:** [`docs/tokens.md`](./docs/tokens.md) is the token reference ·
+  [`docs/theming.md`](./docs/theming.md) is the theming contract ·
+  [`DESIGN.md`](./DESIGN.md) is the architecture and the decisions ·
+  [`RELEASING.md`](./RELEASING.md) holds the semver policy
 - **npm:** [`haus-tokens`](https://www.npmjs.com/package/haus-tokens) ·
   [`haus-components`](https://www.npmjs.com/package/haus-components) ·
   [`haus-colour-utils`](https://www.npmjs.com/package/haus-colour-utils) ·
