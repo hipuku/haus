@@ -1,0 +1,17 @@
+/* ─── haus / tokens ──────────────────────────────────────────────────────────
+   The whole token layer in one import, in the right order.
+
+     @import 'haus-tokens/index.css';
+
+   The four files are still exported individually for anyone who wants to swap
+   one — replacing brand.css is the documented case — but the order matters and
+   getting it wrong fails silently: an unresolved var() drops the declaration
+   with no warning, no build error, and a component that renders unstyled.
+   Shipping the barrel means the common case cannot get it wrong.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+@import url('./layers.css');
+@import url('./primitives.css');
+@import url('./brand.css');
+@import url('./semantics.css');
+@import url('./motion.css');

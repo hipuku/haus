@@ -195,3 +195,8 @@ export const tokens = {
 } as const
 
 export type Tokens = typeof tokens
+
+/* The brand map's type and role list, generated from brand.css. Re-exported here
+   so a consumer has one entry point rather than two. */
+export type { BrandMap } from './brand'
+export { brandRoles } from './brand'

@@ -14,6 +14,7 @@ const read = (f: string) => readFileSync(join(SRC, f), 'utf8')
 const semantics = read('semantics.css')
 const primitives = read('primitives.css')
 const motion = read('motion.css')
+const brand = read('brand.css')
 
 /** Custom properties a file declares, e.g. `--haus-color-ink-primary`. */
 const declared = (css: string) =>
@@ -24,7 +25,15 @@ const referenced = (css: string) =>
   new Set([...css.matchAll(/var\(\s*(--[\w-]+)/g)].map((m) => m[1]))
 
 const SEMANTIC = declared(semantics)
-const AVAILABLE = new Set([...SEMANTIC, ...declared(primitives), ...declared(motion)])
+// brand.css joined the layers when A3 split it out of this file: semantics now
+// reads --haus-brand-* entries rather than palette ramps, and those are declared
+// there.
+const AVAILABLE = new Set([
+  ...SEMANTIC,
+  ...declared(primitives),
+  ...declared(motion),
+  ...declared(brand),
+])
 
 describe('semantics.css', () => {
   it('reads the token files it is meant to read', () => {

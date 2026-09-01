@@ -1,0 +1,97 @@
+/* ─── haus / brand ───────────────────────────────────────────────────────────
+   Which primitive each role takes. The one file a consumer replaces.
+
+   It contains nothing else: no new names, no raw values, no structure. A brand
+   author sees a flat list of ramp choices; a component author sees an unchanged
+   role name in semantics.css. That separation is the whole of ruling A3 — before
+   it, the brand and the role system were the same file, so taking haus's roles
+   meant taking haus's palette, and two products declared their own tokens rather
+   than do that.
+
+   Every entry here is required. `BrandMap` in the package's TypeScript export is
+   generated from this file, so a brand that omits a role or misnames one fails a
+   consumer's build instead of rendering an unresolved var().
+
+   The default brand applies at :root, so the common case needs no attribute. A
+   named brand applies at [data-haus-theme="<name>"] and nests, because custom
+   properties inherit. See brands/ruby.css for a complete second brand.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+@layer haus.brand {
+
+  :root {
+
+    /* ── Surfaces ────────────────────────────────────────────────────────── */
+    --haus-brand-surface-default:        var(--haus-damson-0);
+    --haus-brand-surface-subtle:         var(--haus-damson-100);
+    --haus-brand-surface-raised:         var(--haus-damson-0);    /* elevation via shadow, not colour */
+    --haus-brand-surface-overlay:        var(--haus-damson-50);   /* modal / popover, barely off-white */
+    --haus-brand-surface-sunken:         var(--haus-damson-200);
+    --haus-brand-surface-inverse:        var(--haus-damson-900);  /* dark chip, tooltip bg in light mode */
+    --haus-brand-surface-disabled:       var(--haus-damson-100);
+    --haus-brand-surface-inverse-hover:  oklch(from var(--haus-damson-0) l c h / 0.10);
+
+    /* ── Ink ─────────────────────────────────────────────────────────────── */
+    --haus-brand-ink-primary:    var(--haus-damson-900);
+    --haus-brand-ink-secondary:  var(--haus-damson-700);
+    --haus-brand-ink-tertiary:   var(--haus-damson-500);
+    --haus-brand-ink-disabled:   var(--haus-damson-400);
+    --haus-brand-ink-inverse:    var(--haus-damson-0);
+    --haus-brand-ink-link:       var(--haus-aronia-500);
+    --haus-brand-ink-on-aronia:  var(--haus-damson-0);
+
+    /* ── Borders ─────────────────────────────────────────────────────────── */
+    --haus-brand-border-subtle:         var(--haus-damson-100);
+    --haus-brand-border-default:        var(--haus-damson-200);
+    --haus-brand-border-strong:         var(--haus-damson-300);
+    --haus-brand-border-disabled:       var(--haus-damson-200);
+    --haus-brand-border-inverse:        oklch(from var(--haus-damson-0) l c h / 0.30);
+    --haus-brand-border-inverse-hover:  oklch(from var(--haus-damson-0) l c h / 0.50);
+
+    /* ── Primary ─────────────────────────────────────────────────────────── */
+    --haus-brand-primary-default:    var(--haus-aronia-500);
+    --haus-brand-primary-hover:      var(--haus-aronia-600);
+    --haus-brand-primary-pressed:    var(--haus-aronia-700);
+    --haus-brand-primary-subtle:     var(--haus-aronia-100);
+    --haus-brand-primary-on-subtle:  var(--haus-aronia-700);
+    --haus-brand-primary-disabled:   var(--haus-damson-200);
+
+    /* ── Info ────────────────────────────────────────────────────────────── */
+    --haus-brand-info-subtle:      var(--haus-elderberry-100);
+    --haus-brand-info-border:      var(--haus-elderberry-200);
+    --haus-brand-info-default:     var(--haus-elderberry-500);
+    --haus-brand-info-on-subtle:   var(--haus-elderberry-700);
+    --haus-brand-info-on-default:  var(--haus-damson-0);
+    --haus-brand-info-emphasis:    var(--haus-elderberry-900);
+
+    /* ── Success ─────────────────────────────────────────────────────────── */
+    --haus-brand-success-subtle:      var(--haus-greengage-100);
+    --haus-brand-success-border:      var(--haus-greengage-200);
+    --haus-brand-success-default:     var(--haus-greengage-500);
+    --haus-brand-success-on-subtle:   var(--haus-greengage-700);
+    --haus-brand-success-on-default:  var(--haus-damson-900);  /* dark text, because greengage-500 fails with white */
+    --haus-brand-success-solid:       var(--haus-greengage-700);  /* 700-level: white text passes at 6.82:1 */
+    --haus-brand-success-emphasis:    var(--haus-greengage-900);
+
+    /* ── Warning ─────────────────────────────────────────────────────────── */
+    --haus-brand-warning-subtle:      var(--haus-mango-100);
+    --haus-brand-warning-border:      var(--haus-mango-200);
+    --haus-brand-warning-default:     var(--haus-mango-500);
+    --haus-brand-warning-on-subtle:   var(--haus-mango-700);
+    --haus-brand-warning-on-default:  var(--haus-damson-900);  /* dark text, because mango-500 fails with white */
+    --haus-brand-warning-solid:       var(--haus-mango-700);   /* 700-level: white text passes at 7.05:1 */
+    --haus-brand-warning-emphasis:    var(--haus-mango-900);
+
+    /* ── Error ───────────────────────────────────────────────────────────── */
+    --haus-brand-error-subtle:      var(--haus-cherry-100);
+    --haus-brand-error-border:      var(--haus-cherry-200);
+    --haus-brand-error-default:     var(--haus-cherry-500);
+    --haus-brand-error-on-subtle:   var(--haus-cherry-700);
+    --haus-brand-error-on-default:  var(--haus-damson-0);
+    --haus-brand-error-emphasis:    var(--haus-cherry-900);
+
+    /* ── Everything else ─────────────────────────────────────────────────── */
+    --haus-brand-backdrop:  oklch(from var(--haus-damson-950) l c h / var(--haus-opacity-overlay));
+
+  }
+}

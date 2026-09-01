@@ -14,14 +14,28 @@ font to load and no stylesheet beyond `haus-components/styles.css` and the token
 
 ## Usage
 
-Import the token layers, then the component stylesheet. Order matters:
-components reference the semantic tokens, so those must be defined first.
+Import the token layer, then the component stylesheet.
 
 ```ts
-import 'haus-tokens/primitives.css'
-import 'haus-tokens/semantics.css'
-import 'haus-tokens/motion.css'
+import 'haus-tokens/index.css'
 import 'haus-components/styles.css'
+```
+
+`index.css` is the four token files in the right order. They are still exported
+individually if you want to swap one — replacing `brand.css` is the documented
+case — but the order matters and getting it wrong fails silently: an unresolved
+`var()` drops the declaration with no warning, no build error, and a component
+that renders unstyled.
+
+Both stylesheets are in cascade layers, `haus.*`, so **your own unlayered CSS
+beats them without a specificity fight.**
+
+To theme a subtree, put a brand on it:
+
+```tsx
+import 'haus-tokens/brands/ruby.css'
+
+<div data-haus-theme="ruby">…</div>
 ```
 
 ```tsx

@@ -1,0 +1,15 @@
+/* ─── haus / layers ──────────────────────────────────────────────────────────
+   The cascade order, declared once and before anything opens a layer, so the
+   order is a statement here rather than a consequence of import order in
+   whoever's bundler.
+
+   Read bottom-up: primitives hold raw values, brand chooses which of them each
+   role takes, semantics say what the roles mean, motion is durations and
+   easings, and components come last so a role change reaches them.
+
+   A consumer's own unlayered CSS beats every one of these, which is the point:
+   an unlayered rule wins against any layered one regardless of specificity, so
+   overriding haus never needs a specificity fight.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+@layer haus.primitives, haus.brand, haus.semantics, haus.motion, haus.components;

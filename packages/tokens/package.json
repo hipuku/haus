@@ -31,10 +31,15 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./index.css": "./dist/index.css",
+    "./layers.css": "./dist/layers.css",
     "./primitives.css": "./dist/primitives.css",
+    "./brand.css": "./dist/brand.css",
     "./semantics.css": "./dist/semantics.css",
     "./motion.css": "./dist/motion.css",
-    "./tokens.json": "./dist/tokens.json"
+    "./brands/*.css": "./dist/brands/*.css",
+    "./tokens.json": "./dist/tokens.json",
+    "./package.json": "./package.json"
   },
   "files": [
     "dist"

@@ -32,85 +32,92 @@
     color-scheme: light;
   }
 
-  :root {
+  /* `:root, [data-haus-theme]` rather than a bare `:root`, and the second half is
+     load-bearing rather than defensive. A custom property is substituted where it
+     is *declared*: a role resolved once at :root inherits its computed value down,
+     so a nested brand override would never re-trigger it. Redeclaring the roles on
+     the themed element is what makes `<div data-haus-theme="ruby">` work, and what
+     makes nesting work. */
+  :root,
+  [data-haus-theme] {
 
     /* ── Surface ──────────────────────────────────────────────────────────── */
-    --haus-color-surface-default:  var(--haus-damson-0);
-    --haus-color-surface-subtle:   var(--haus-damson-100);
-    --haus-color-surface-raised:   var(--haus-damson-0);    /* elevation via shadow, not colour */
-    --haus-color-surface-overlay:  var(--haus-damson-50);   /* modal / popover, barely off-white */
-    --haus-color-surface-sunken:   var(--haus-damson-200);
-    --haus-color-surface-inverse:  var(--haus-damson-900);  /* dark chip, tooltip bg in light mode */
-    --haus-color-surface-disabled: var(--haus-damson-100);
+    --haus-color-surface-default:  var(--haus-brand-surface-default);
+    --haus-color-surface-subtle:   var(--haus-brand-surface-subtle);
+    --haus-color-surface-raised:   var(--haus-brand-surface-raised);    /* elevation via shadow, not colour */
+    --haus-color-surface-overlay:  var(--haus-brand-surface-overlay);   /* modal / popover, barely off-white */
+    --haus-color-surface-sunken:   var(--haus-brand-surface-sunken);
+    --haus-color-surface-inverse:  var(--haus-brand-surface-inverse);  /* dark chip, tooltip bg in light mode */
+    --haus-color-surface-disabled: var(--haus-brand-surface-disabled);
 
     /* ── Ink (text) ───────────────────────────────────────────────────────── */
-    --haus-color-ink-primary:    var(--haus-damson-900);
-    --haus-color-ink-secondary:  var(--haus-damson-700);
-    --haus-color-ink-tertiary:   var(--haus-damson-500);
-    --haus-color-ink-disabled:   var(--haus-damson-400);
-    --haus-color-ink-inverse:    var(--haus-damson-0);
-    --haus-color-ink-link:       var(--haus-aronia-500);
-    --haus-color-ink-on-aronia:  var(--haus-damson-0);
+    --haus-color-ink-primary:    var(--haus-brand-ink-primary);
+    --haus-color-ink-secondary:  var(--haus-brand-ink-secondary);
+    --haus-color-ink-tertiary:   var(--haus-brand-ink-tertiary);
+    --haus-color-ink-disabled:   var(--haus-brand-ink-disabled);
+    --haus-color-ink-inverse:    var(--haus-brand-ink-inverse);
+    --haus-color-ink-link:       var(--haus-brand-ink-link);
+    --haus-color-ink-on-aronia:  var(--haus-brand-ink-on-aronia);
 
     /* ── Border ───────────────────────────────────────────────────────────── */
-    --haus-color-border-subtle:   var(--haus-damson-100);
-    --haus-color-border-default:  var(--haus-damson-200);
-    --haus-color-border-strong:   var(--haus-damson-300);
+    --haus-color-border-subtle:   var(--haus-brand-border-subtle);
+    --haus-color-border-default:  var(--haus-brand-border-default);
+    --haus-color-border-strong:   var(--haus-brand-border-strong);
     --haus-color-border-focus:    var(--haus-color-primary-default);
-    --haus-color-border-disabled: var(--haus-damson-200);
+    --haus-color-border-disabled: var(--haus-brand-border-disabled);
 
     /* ── Primary: Aronia ─────────────────────────────────────────────────── */
-    --haus-color-primary-default:   var(--haus-aronia-500);
-    --haus-color-primary-hover:     var(--haus-aronia-600);
-    --haus-color-primary-pressed:   var(--haus-aronia-700);
-    --haus-color-primary-subtle:    var(--haus-aronia-100);
-    --haus-color-primary-on-subtle: var(--haus-aronia-700);
-    --haus-color-primary-disabled:  var(--haus-damson-200);
+    --haus-color-primary-default:   var(--haus-brand-primary-default);
+    --haus-color-primary-hover:     var(--haus-brand-primary-hover);
+    --haus-color-primary-pressed:   var(--haus-brand-primary-pressed);
+    --haus-color-primary-subtle:    var(--haus-brand-primary-subtle);
+    --haus-color-primary-on-subtle: var(--haus-brand-primary-on-subtle);
+    --haus-color-primary-disabled:  var(--haus-brand-primary-disabled);
 
     /* ── Feedback: Info (Elderberry · Indigo) ────────────────────────────── */
-    --haus-color-info-subtle:     var(--haus-elderberry-100);
-    --haus-color-info-border:     var(--haus-elderberry-200);
-    --haus-color-info-default:    var(--haus-elderberry-500);
-    --haus-color-info-on-subtle:  var(--haus-elderberry-700);
-    --haus-color-info-on-default: var(--haus-damson-0);
-    --haus-color-info-emphasis:   var(--haus-elderberry-900);
+    --haus-color-info-subtle:     var(--haus-brand-info-subtle);
+    --haus-color-info-border:     var(--haus-brand-info-border);
+    --haus-color-info-default:    var(--haus-brand-info-default);
+    --haus-color-info-on-subtle:  var(--haus-brand-info-on-subtle);
+    --haus-color-info-on-default: var(--haus-brand-info-on-default);
+    --haus-color-info-emphasis:   var(--haus-brand-info-emphasis);
 
     /* ── Feedback: Success (Greengage · Green) ───────────────────────────── */
-    --haus-color-success-subtle:     var(--haus-greengage-100);
-    --haus-color-success-border:     var(--haus-greengage-200);
-    --haus-color-success-default:    var(--haus-greengage-500);
-    --haus-color-success-on-subtle:  var(--haus-greengage-700);
-    --haus-color-success-on-default: var(--haus-damson-900);  /* dark text, because greengage-500 fails with white */
-    --haus-color-success-solid:      var(--haus-greengage-700);  /* 700-level: white text passes at 6.82:1 */
-    --haus-color-success-emphasis:   var(--haus-greengage-900);
+    --haus-color-success-subtle:     var(--haus-brand-success-subtle);
+    --haus-color-success-border:     var(--haus-brand-success-border);
+    --haus-color-success-default:    var(--haus-brand-success-default);
+    --haus-color-success-on-subtle:  var(--haus-brand-success-on-subtle);
+    --haus-color-success-on-default: var(--haus-brand-success-on-default);  /* dark text, because greengage-500 fails with white */
+    --haus-color-success-solid:      var(--haus-brand-success-solid);  /* 700-level: white text passes at 6.82:1 */
+    --haus-color-success-emphasis:   var(--haus-brand-success-emphasis);
 
     /* ── Feedback: Warning (Mango · Golden) ──────────────────────────────── */
-    --haus-color-warning-subtle:     var(--haus-mango-100);
-    --haus-color-warning-border:     var(--haus-mango-200);
-    --haus-color-warning-default:    var(--haus-mango-500);
-    --haus-color-warning-on-subtle:  var(--haus-mango-700);
-    --haus-color-warning-on-default: var(--haus-damson-900);  /* dark text, because mango-500 fails with white */
-    --haus-color-warning-solid:      var(--haus-mango-700);   /* 700-level: white text passes at 7.05:1 */
-    --haus-color-warning-emphasis:   var(--haus-mango-900);
+    --haus-color-warning-subtle:     var(--haus-brand-warning-subtle);
+    --haus-color-warning-border:     var(--haus-brand-warning-border);
+    --haus-color-warning-default:    var(--haus-brand-warning-default);
+    --haus-color-warning-on-subtle:  var(--haus-brand-warning-on-subtle);
+    --haus-color-warning-on-default: var(--haus-brand-warning-on-default);  /* dark text, because mango-500 fails with white */
+    --haus-color-warning-solid:      var(--haus-brand-warning-solid);   /* 700-level: white text passes at 7.05:1 */
+    --haus-color-warning-emphasis:   var(--haus-brand-warning-emphasis);
 
     /* ── Feedback: Error (Cherry · Red) ─────────────────────────────────── */
-    --haus-color-error-subtle:     var(--haus-cherry-100);
-    --haus-color-error-border:     var(--haus-cherry-200);
-    --haus-color-error-default:    var(--haus-cherry-500);
-    --haus-color-error-on-subtle:  var(--haus-cherry-700);
-    --haus-color-error-on-default: var(--haus-damson-0);
-    --haus-color-error-emphasis:   var(--haus-cherry-900);
+    --haus-color-error-subtle:     var(--haus-brand-error-subtle);
+    --haus-color-error-border:     var(--haus-brand-error-border);
+    --haus-color-error-default:    var(--haus-brand-error-default);
+    --haus-color-error-on-subtle:  var(--haus-brand-error-on-subtle);
+    --haus-color-error-on-default: var(--haus-brand-error-on-default);
+    --haus-color-error-emphasis:   var(--haus-brand-error-emphasis);
 
     /* ── Backdrop (Modal, Drawer, etc.) ──────────────────────────────────── */
     /* Relative colour syntax: damson-950's l/c/h at --haus-opacity-overlay alpha  */
-    --haus-color-backdrop: oklch(from var(--haus-damson-950) l c h / var(--haus-opacity-overlay));
+    --haus-color-backdrop: var(--haus-brand-backdrop);
 
     /* ── Inverse surface interactions (UI placed on dark/inverted surfaces) ── */
     /* Relative colour syntax: white (damson-0) at three opacity levels.      */
     /* Opacity fractions here are interaction-layer values, not raw colours.  */
-    --haus-color-border-inverse:        oklch(from var(--haus-damson-0) l c h / 0.30);
-    --haus-color-border-inverse-hover:  oklch(from var(--haus-damson-0) l c h / 0.50);
-    --haus-color-surface-inverse-hover: oklch(from var(--haus-damson-0) l c h / 0.10);
+    --haus-color-border-inverse:        var(--haus-brand-border-inverse);
+    --haus-color-border-inverse-hover:  var(--haus-brand-border-inverse-hover);
+    --haus-color-surface-inverse-hover: var(--haus-brand-surface-inverse-hover);
 
     /* ── Focus ring ───────────────────────────────────────────────────────── */
     /* Inner ring matches surface (creates gap), outer ring is focus colour   */

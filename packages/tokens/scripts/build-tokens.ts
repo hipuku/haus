@@ -1,5 +1,6 @@
 /**
- * Generates haus's primitive layer from `src/tokens.json`.
+ * Generates haus's primitive layer from `src/tokens.json`, and the brand map's
+ * TypeScript from `src/brand.css`.
  *
  *   npm run tokens         regenerate src/primitives.css and src/index.ts
  *   npm run tokens:check   fail if either is stale (CI gate)
@@ -182,6 +183,42 @@ function buildPrimitivesCss(): string {
   return lines.join('\n')
 }
 
+// ─── brand.d.ts: the map a consumer has to satisfy ───────────────────────────
+
+/**
+ * `BrandMap` is generated from brand.css rather than typed beside it. The
+ * contract asks for a type that fails a consumer's build when a brand omits a
+ * role or misnames one, and a hand-maintained copy would be the fourth
+ * hand-maintained restatement in this package — which is already a filed issue.
+ */
+function buildBrandTypes(): string {
+  const css = readFileSync(join(srcDir, 'brand.css'), 'utf8')
+  const names = [...css.matchAll(/^\s*(--haus-brand-[a-z0-9-]+)\s*:/gm)].map((m) => m[1])
+  if (names.length === 0) throw new Error('brand.css declares no --haus-brand- properties')
+
+  return [
+    BANNER,
+    '',
+    '/**',
+    ' * Every entry a brand must supply, generated from brand.css.',
+    ' *',
+    ' * A brand file is CSS, so this cannot check it directly. What it does check is',
+    ' * the object form: build a brand in TypeScript, satisfy this type, and a missing',
+    ' * or misspelled role is a compile error rather than an unresolved var() that',
+    ' * drops a declaration with no warning at all.',
+    ' */',
+    'export interface BrandMap {',
+    ...names.map((n) => `  '${n}': string`),
+    '}',
+    '',
+    '/** The role names themselves, for anyone generating a brand rather than writing one. */',
+    `export const brandRoles = [`,
+    ...names.map((n) => `  '${n}',`),
+    '] as const',
+    '',
+  ].join('\n')
+}
+
 // ─── index.ts ────────────────────────────────────────────────────────────────
 
 /** A JS value: numbers stay numbers, everything else is a quoted string. */
@@ -302,6 +339,11 @@ ${jsObject(entries(group(['breakpoint'])), '    ')}
 } as const
 
 export type Tokens = typeof tokens
+
+/* The brand map's type and role list, generated from brand.css. Re-exported here
+   so a consumer has one entry point rather than two. */
+export type { BrandMap } from './brand'
+export { brandRoles } from './brand'
 `
 }
 
@@ -310,6 +352,10 @@ export type Tokens = typeof tokens
 const outputs: Record<string, string> = {
   'primitives.css': buildPrimitivesCss(),
   'index.ts': buildIndexTs(),
+  // Generated from brand.css rather than tokens.json, which is why it is listed
+  // separately: editing the brand map without regenerating is exactly the drift
+  // `tokens:check` exists to catch.
+  'brand.ts': buildBrandTypes(),
 }
 
 const check = process.argv.includes('--check')
@@ -340,7 +386,7 @@ if (check) {
     )
     process.exit(1)
   }
-  console.log('✓ primitives.css and index.ts are up to date with tokens.json')
+  console.log('✓ primitives.css, index.ts and brand.ts are up to date with their sources')
 } else {
   console.log(`✓ Wrote ${Object.keys(outputs).join(', ')} from tokens.json`)
 }
