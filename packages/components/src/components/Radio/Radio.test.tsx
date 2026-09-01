@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { axe } from 'vitest-axe'
 import { RadioGroup } from './Radio'
+import styles from './Radio.module.css'
 
 const OPTIONS = [
   { value: 'sm', label: 'Small' },
@@ -36,6 +37,28 @@ describe('RadioGroup', () => {
     await userEvent.click(screen.getByRole('radio', { name: 'Medium' }))
     expect(screen.getByRole('radio', { name: 'Small' })).not.toBeChecked()
     expect(screen.getByRole('radio', { name: 'Medium' })).toBeChecked()
+  })
+
+  it('moves the drawn dot, not only the native input', async () => {
+    // The regression this exists for. `toBeChecked()` reads the input, and the
+    // browser updates that itself whatever the component does — so the two
+    // assertions above passed for as long as the dot was stuck on defaultValue.
+    // The dot is drawn by the `checked` class on the label, so that is what has
+    // to be asserted for the visible control to be under test at all.
+    const { container } = render(
+      <RadioGroup name="size" options={OPTIONS} defaultValue="sm" />,
+    )
+    // Compared against the module's own export rather than the string
+    // 'checked': CSS Modules hash the name, so a literal silently matches
+    // nothing and the assertion passes for the wrong reason.
+    const dotted = () =>
+      [...container.querySelectorAll('label')]
+        .filter(el => el.className.split(' ').includes(styles.checked))
+        .map(el => el.textContent)
+
+    expect(dotted()).toEqual(['Small'])
+    await userEvent.click(screen.getByRole('radio', { name: 'Medium' }))
+    expect(dotted()).toEqual(['Medium'])
   })
 
   it('does not manage its own state when controlled', async () => {

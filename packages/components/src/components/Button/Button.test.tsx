@@ -52,6 +52,34 @@ describe('Button', () => {
     expect(screen.getByRole('link', { name: 'Nope' })).toHaveAttribute('aria-disabled', 'true')
   })
 
+  it('a disabled anchor cannot be focused or followed', async () => {
+    // aria-disabled announces a state without creating one. This test is the
+    // half the assertion above was missing: the link stayed in the tab order
+    // and still navigated, so it was disabled to a screen reader and live to
+    // everyone else.
+    render(
+      <>
+        <Button href="/x" disabled>Nope</Button>
+        <button type="button">after</button>
+      </>,
+    )
+    const link = screen.getByRole('link', { name: 'Nope' })
+    expect(link).not.toHaveAttribute('href')
+    expect(link).toHaveAttribute('tabindex', '-1')
+
+    await userEvent.tab()
+    expect(screen.getByRole('button', { name: 'after' })).toHaveFocus()
+  })
+
+  it('a disabled anchor keeps target and rel off too', () => {
+    // Otherwise a disabled external link still advertises a new tab it will
+    // never open.
+    render(<Button href="https://example.com" target="_blank" disabled>Nope</Button>)
+    const link = screen.getByRole('link', { name: /Nope/ })
+    expect(link).not.toHaveAttribute('target')
+    expect(link).not.toHaveAttribute('rel')
+  })
+
   it('applies variant and size classes', () => {
     render(<Button variant="danger" size="lg">Delete</Button>)
     const cls = screen.getByRole('button', { name: 'Delete' }).className
@@ -70,6 +98,15 @@ describe('Button', () => {
     const ref = createRef<HTMLButtonElement>()
     render(<Button ref={ref}>Ref</Button>)
     expect(ref.current).toBeInstanceOf(HTMLButtonElement)
+  })
+
+  it('forwards a ref to the anchor too', () => {
+    // The anchor branch dropped the ref silently, and the component was typed
+    // forwardRef<HTMLButtonElement> so nothing warned: a caller measuring or
+    // focusing a link-shaped Button got null and no explanation.
+    const ref = createRef<HTMLAnchorElement>()
+    render(<Button ref={ref} href="/x">Ref</Button>)
+    expect(ref.current).toBeInstanceOf(HTMLAnchorElement)
   })
 
   it('hides the decorative external icon from assistive technology', () => {

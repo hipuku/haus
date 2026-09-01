@@ -36,6 +36,20 @@ export function RadioGroup({
   const groupId = React.useId()
   const errorId = error ? `${groupId}-error` : undefined
 
+  // Internal state for uncontrolled usage, as Checkbox and Toggle already do.
+  // Without it `isChecked` was derived from `value ?? defaultValue` and never
+  // moved: the native input flipped, because the browser owns that, while the
+  // drawn dot stayed on whatever `defaultValue` was. The visible control and
+  // the real one disagreed for the whole life of the component.
+  const isControlled = value !== undefined
+  const [internalValue, setInternalValue] = React.useState(defaultValue)
+  const selected = isControlled ? value : internalValue
+
+  function handleChange(next: string) {
+    if (!isControlled) setInternalValue(next)
+    onChange?.(next)
+  }
+
   const optionsCls = [
     styles.options,
     orientation === 'horizontal' ? styles.horizontal : '',
@@ -59,9 +73,7 @@ export function RadioGroup({
 
       <div className={optionsCls}>
         {options.map(opt => {
-          const isChecked = value !== undefined
-            ? value === opt.value
-            : defaultValue === opt.value
+          const isChecked = selected === opt.value
 
           const itemCls = [
             styles.radio,
@@ -79,11 +91,10 @@ export function RadioGroup({
                 id={inputId}
                 name={name}
                 value={opt.value}
-                checked={value !== undefined ? isChecked : undefined}
-                defaultChecked={value === undefined ? opt.value === defaultValue : undefined}
+                checked={isChecked}
                 disabled={opt.disabled}
                 className={styles.input}
-                onChange={() => onChange?.(opt.value)}
+                onChange={() => handleChange(opt.value)}
               />
               <span className={styles.circle} aria-hidden />
               <span className={styles.radioContent}>

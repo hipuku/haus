@@ -50,6 +50,14 @@ describe('Avatar', () => {
     expect(second.getByRole('img').getAttribute('style')).toBe(firstStyle)
   })
 
+  it('renders rather than throwing when the name is empty', () => {
+    // initials('') split to [''], so [0][0] was undefined and .toUpperCase()
+    // threw. An avatar for a user whose name had not loaded took the page down
+    // instead of drawing an empty circle.
+    expect(() => render(<Avatar name="" />)).not.toThrow()
+    expect(() => render(<Avatar name="   " />)).not.toThrow()
+  })
+
   it('applies the size class', () => {
     const { container } = render(<Avatar name="Ada" size="lg" />)
     expect(container.firstElementChild!.className).toContain('lg')

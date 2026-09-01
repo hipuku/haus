@@ -13,7 +13,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   target?:   string
 }
 
-export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
   function Button(
     {
       variant  = 'primary',
@@ -35,6 +35,8 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       className,
     ].filter(Boolean).join(' ')
 
+    const isDisabled = disabled || loading
+
     const externalIcon = variant === 'external'
       ? <span className={styles.externalIcon} aria-hidden="true">↗</span>
       : null
@@ -42,11 +44,19 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     if (href) {
       return (
         <a
-          href={href}
-          target={target}
-          rel={target === '_blank' ? 'noopener noreferrer' : undefined}
+          ref={ref as React.Ref<HTMLAnchorElement>}
+          // An anchor has no disabled state, and aria-disabled alone announces
+          // one without creating it: the link stayed focusable and still
+          // navigated. Dropping href is what actually disables it — the element
+          // is then neither focusable nor activatable — so role and tabIndex
+          // put back the two things href was carrying.
+          href={isDisabled ? undefined : href}
+          role={isDisabled ? 'link' : undefined}
+          tabIndex={isDisabled ? -1 : undefined}
+          target={isDisabled ? undefined : target}
+          rel={!isDisabled && target === '_blank' ? 'noopener noreferrer' : undefined}
           className={cls}
-          aria-disabled={disabled || loading}
+          aria-disabled={isDisabled}
           {...(rest as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
         >
           {loading && <span className={styles.spinner} aria-hidden />}
@@ -58,10 +68,10 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     return (
       <button
-        ref={ref}
+        ref={ref as React.Ref<HTMLButtonElement>}
         className={cls}
-        disabled={disabled || loading}
-        aria-disabled={disabled || loading}
+        disabled={isDisabled}
+        aria-disabled={isDisabled}
         {...rest}
       >
         {loading && <span className={styles.spinner} aria-hidden />}
