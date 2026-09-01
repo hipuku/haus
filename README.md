@@ -33,7 +33,19 @@ semantics.css    Role aliases. No raw values. What components consume.
 motion.css       Easing curves and duration tokens.
 ```
 
-Theming (brand and role swaps) lives entirely in `semantics.css`; components never change. haus is light-mode only, and dark mode is out of scope rather than a deferred layer.
+Theming is being split out of `semantics.css` into a brand layer of its own, with a scoping selector and a `--haus-` prefix. Today the brand and the roles are the same file, so a role swap is not the single-file change this section used to claim: see [decision 0003](docs/decisions/0003-brand-and-roles-are-separate-layers.md) for the contract and what it costs.
+
+haus is light-mode only. That is a consequence of [decision 0002](docs/decisions/0002-surface-polarity-is-fixed.md) rather than a deferred layer: surface polarity is fixed by the contract, so a dark theme cannot arrive as a brand map.
+
+## Decisions
+
+The rulings this system is built on are recorded one file each in
+[`docs/decisions/`](docs/decisions/README.md): what was chosen, what it was
+chosen over, and what it costs. Several are settled and not yet implemented, and
+say so.
+
+Start with [0003, the brand and role split](docs/decisions/0003-brand-and-roles-are-separate-layers.md),
+which is the one the rest of the roadmap hangs off.
 
 ## Links
 
