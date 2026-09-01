@@ -11,6 +11,35 @@ const OPTIONS = [
 ]
 
 describe('RadioGroup', () => {
+  it('moves selection with the arrow keys, as its role promises', async () => {
+    // The container claims role="radiogroup", and a radio group is expected to
+    // move selection with the arrows and hold one tab stop. Nothing tested it:
+    // this comes free from the native inputs sharing a name, and free is worth
+    // asserting precisely because nobody wrote it.
+    const onChange = vi.fn()
+    render(<RadioGroup name="size" options={OPTIONS} defaultValue="sm" onChange={onChange} />)
+
+    await userEvent.tab()
+    expect(screen.getByRole('radio', { name: 'Small' })).toHaveFocus()
+
+    await userEvent.keyboard('{ArrowDown}')
+    expect(screen.getByRole('radio', { name: 'Medium' })).toBeChecked()
+    expect(onChange).toHaveBeenLastCalledWith('md')
+  })
+
+  it('is one tab stop, not three', async () => {
+    render(
+      <>
+        <RadioGroup name="size" options={OPTIONS} defaultValue="sm" />
+        <button type="button">after</button>
+      </>,
+    )
+    await userEvent.tab()
+    expect(screen.getByRole('radio', { name: 'Small' })).toHaveFocus()
+    await userEvent.tab()
+    expect(screen.getByRole('button', { name: 'after' })).toHaveFocus()
+  })
+
   it('renders one radio per option, sharing a name', () => {
     // A shared name is what makes them mutually exclusive. Without it every
     // radio toggles independently and the group is meaningless.

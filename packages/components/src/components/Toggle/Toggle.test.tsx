@@ -4,6 +4,27 @@ import { axe } from 'vitest-axe'
 import { Toggle } from './Toggle'
 
 describe('Toggle', () => {
+  it('toggles with the keyboard, not only the mouse', async () => {
+    // Every interaction test in this package used userEvent.click. A switch that
+    // works on click and not on Space is operable by exactly half its users, and
+    // clicking a <label> reaches the input by a different route than focusing it
+    // and pressing a key — so the click tests could not have caught it.
+    const onChange = vi.fn()
+    render(<Toggle label="Notifications" onChange={onChange} />)
+    const toggle = screen.getByRole('switch')
+
+    await userEvent.tab()
+    expect(toggle).toHaveFocus()
+
+    await userEvent.keyboard(' ')
+    expect(onChange).toHaveBeenLastCalledWith(true)
+    expect(toggle).toBeChecked()
+
+    await userEvent.keyboard(' ')
+    expect(onChange).toHaveBeenLastCalledWith(false)
+    expect(toggle).not.toBeChecked()
+  })
+
   it('keeps the description out of the name', async () => {
     // Every assertion below used to match the name with a regex, because the
     // label element wraps both spans and its whole text was the name: the

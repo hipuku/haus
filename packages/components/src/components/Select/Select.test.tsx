@@ -11,6 +11,31 @@ const OPTIONS = [
 ]
 
 describe('Select', () => {
+  it('is reachable and operable from the keyboard', async () => {
+    // A native <select> gives this for free, and that is the argument for still
+    // being one — see docs/decisions/0011. Free is worth asserting: the day this
+    // becomes a custom listbox, this test is what says the keyboard came with it.
+    const onChange = vi.fn()
+    render(
+      <Select
+        label="Role"
+        options={[
+          { value: 'a', label: 'Author' },
+          { value: 'm', label: 'Maintainer' },
+        ]}
+        onChange={onChange}
+      />,
+    )
+    const select = screen.getByRole('combobox', { name: 'Role' })
+
+    await userEvent.tab()
+    expect(select).toHaveFocus()
+
+    await userEvent.selectOptions(select, 'm')
+    expect(onChange).toHaveBeenCalled()
+    expect(select).toHaveValue('m')
+  })
+
   it('associates the label with the select', () => {
     render(<Select label="Palette" options={OPTIONS} />)
     expect(screen.getByLabelText('Palette')).toBeInstanceOf(HTMLSelectElement)

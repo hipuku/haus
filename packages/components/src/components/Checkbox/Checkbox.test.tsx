@@ -4,6 +4,19 @@ import { axe } from 'vitest-axe'
 import { Checkbox } from './Checkbox'
 
 describe('Checkbox', () => {
+  it('checks with the keyboard, not only the mouse', async () => {
+    const onChange = vi.fn()
+    render(<Checkbox label="Accept terms" onChange={onChange} />)
+    const box = screen.getByRole('checkbox')
+
+    await userEvent.tab()
+    expect(box).toHaveFocus()
+
+    await userEvent.keyboard(' ')
+    expect(onChange).toHaveBeenLastCalledWith(true)
+    expect(box).toBeChecked()
+  })
+
   it('keeps the hint out of the name', () => {
     // The hint used to render inside the <label>, so it was read as part of the
     // name: "Accept terms Read them first" as one string, with nothing left to

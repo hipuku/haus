@@ -4,6 +4,36 @@ import { axe } from 'vitest-axe'
 import { Modal } from './Modal'
 
 describe('Modal', () => {
+  it('focuses the dialog on open and gives focus back on close', async () => {
+    // Eight tests covered the trap and none covered the release. A dialog that
+    // traps focus and then drops it on <body> leaves a keyboard user at the top
+    // of the document with no idea where they were.
+    const { rerender } = render(
+      <>
+        <button type="button">open</button>
+        <Modal open={false} onClose={() => {}} title="Confirm">Body</Modal>
+      </>,
+    )
+    const opener = screen.getByRole('button', { name: 'open' })
+    opener.focus()
+
+    rerender(
+      <>
+        <button type="button">open</button>
+        <Modal open onClose={() => {}} title="Confirm">Body</Modal>
+      </>,
+    )
+    expect(screen.getByRole('dialog')).toHaveFocus()
+
+    rerender(
+      <>
+        <button type="button">open</button>
+        <Modal open={false} onClose={() => {}} title="Confirm">Body</Modal>
+      </>,
+    )
+    expect(opener).toHaveFocus()
+  })
+
   it('renders nothing while closed', () => {
     render(<Modal open={false} onClose={vi.fn()} title="Settings">Body</Modal>)
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()

@@ -67,6 +67,14 @@ Renders under `react-dom/server` with no DOM present. The interactive
 components (`Modal`, `Toggle`, `Checkbox`) use hooks but no layout effects at
 module scope, so they hydrate cleanly.
 
+Asserted in `src/ssr.test.tsx`, which runs in a node environment rather than
+jsdom — under jsdom a component can reach for `document` and get one, which is
+the mistake the test is looking for.
+
+**One exception, and it is asserted too.** An open `Modal` is a portal, and a
+portal has nowhere to go on a server, so it throws rather than hydrating wrong.
+Render it closed on the server and open it on the client.
+
 Note there is no `'use client'` directive: under a React Server Components
 setup, import these from a client component.
 
