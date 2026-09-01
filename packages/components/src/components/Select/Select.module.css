@@ -1,21 +1,21 @@
 .wrapper {
   display: flex;
   flex-direction: column;
-  gap: var(--space-gap-2xs);
+  gap: var(--haus-space-gap-2xs);
 }
 
 .label {
-  font-family: var(--font-sans);
-  font-size: var(--type-label-sm-size);
-  font-weight: var(--weight-semibold);
-  line-height: var(--type-label-sm-leading);
-  letter-spacing: var(--type-label-sm-tracking);
-  color: var(--color-ink-primary);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-label-sm-size);
+  font-weight: var(--haus-weight-semibold);
+  line-height: var(--haus-type-label-sm-leading);
+  letter-spacing: var(--haus-type-label-sm-tracking);
+  color: var(--haus-color-ink-primary);
 }
 
 .required {
-  color: var(--color-error-default);
-  margin-inline-start: var(--space-stack-2xs);
+  color: var(--haus-color-error-default);
+  margin-inline-start: var(--haus-space-stack-2xs);
 }
 
 .selectWrap {
@@ -27,73 +27,73 @@
 .select {
   appearance: none;
   width: 100%;
-  background-color: var(--color-surface-default);
-  border: var(--border-width-default) solid var(--color-border-default);
-  border-radius: var(--radius-control);
-  padding: var(--space-inset-xs) var(--space-inset-2xl) var(--space-inset-xs) var(--space-inset-sm);
-  font-family: var(--font-sans);
-  font-size: var(--type-body-sm-size);
-  font-weight: var(--type-body-sm-weight);
-  line-height: var(--type-body-sm-leading);
-  color: var(--color-ink-primary);
+  background-color: var(--haus-color-surface-default);
+  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  border-radius: var(--haus-radius-control);
+  padding: var(--haus-space-inset-xs) var(--haus-space-inset-2xl) var(--haus-space-inset-xs) var(--haus-space-inset-sm);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
+  line-height: var(--haus-type-body-sm-leading);
+  color: var(--haus-color-ink-primary);
   cursor: pointer;
   transition:
-    border-color var(--motion-micro),
-    box-shadow   var(--motion-micro);
-  min-height: var(--control-height-md);
+    border-color var(--haus-motion-micro),
+    box-shadow   var(--haus-motion-micro);
+  min-height: var(--haus-control-height-md);
 }
 
 .select:focus-visible {
   outline: none;
-  border-color: var(--color-border-focus);
-  box-shadow: var(--shadow-focus);
+  border-color: var(--haus-color-border-focus);
+  box-shadow: var(--haus-shadow-focus);
 }
 
 .select.error {
-  border-color: var(--color-error-default);
+  border-color: var(--haus-color-error-default);
 }
 
-/* --shadow-focus-error existed and nothing read it here: an invalid Select rang
+/* --haus-shadow-focus-error existed and nothing read it here: an invalid Select rang
    in the ordinary focus colour, so the error state disappeared the moment it was
    focused. Input and Textarea both had this rule. */
 .select.error:focus-visible {
-  border-color: var(--color-error-default);
-  box-shadow: var(--shadow-focus-error);
+  border-color: var(--haus-color-error-default);
+  box-shadow: var(--haus-shadow-focus-error);
 }
 
 .select:disabled {
-  background-color: var(--color-surface-disabled);
-  border-color: var(--color-border-disabled);
-  color: var(--color-ink-disabled);
+  background-color: var(--haus-color-surface-disabled);
+  border-color: var(--haus-color-border-disabled);
+  color: var(--haus-color-ink-disabled);
   cursor: not-allowed;
 }
 
 .chevron {
   position: absolute;
-  inset-inline-end: var(--space-3);
+  inset-inline-end: var(--haus-space-3);
   pointer-events: none;
-  color: var(--color-ink-tertiary);
+  color: var(--haus-color-ink-tertiary);
   display: flex;
   align-items: center;
 }
 
 .hint {
-  font-family: var(--font-sans);
-  font-size: var(--type-label-xs-size);
-  line-height: var(--type-label-xs-leading);
-  color: var(--color-ink-secondary);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-label-xs-size);
+  line-height: var(--haus-type-label-xs-leading);
+  color: var(--haus-color-ink-secondary);
 }
 
 .errorMessage {
-  font-family: var(--font-sans);
-  font-size: var(--type-label-xs-size);
-  line-height: var(--type-label-xs-leading);
-  color: var(--color-error-default);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-label-xs-size);
+  line-height: var(--haus-type-label-xs-leading);
+  color: var(--haus-color-error-default);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .select {
-    transition-duration: var(--duration-reduced);
+    transition-duration: var(--haus-duration-reduced);
   }
 }
 

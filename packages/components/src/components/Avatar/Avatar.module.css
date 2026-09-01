@@ -11,10 +11,10 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background-color: var(--avatar-bg, var(--color-primary-subtle));
-  color: var(--avatar-fg, var(--color-primary-on-subtle));
-  font-family: var(--font-sans);
-  font-weight: var(--weight-semibold);
+  background-color: var(--haus-avatar-bg, var(--haus-color-primary-subtle));
+  color: var(--haus-avatar-fg, var(--haus-color-primary-on-subtle));
+  font-family: var(--haus-font-sans);
+  font-weight: var(--haus-weight-semibold);
   overflow: hidden;
   width: 100%;
   height: 100%;
@@ -23,11 +23,11 @@
 
 /* ── Sizes (applied to wrapper) ── */
 
-.xs { width: var(--space-6);  height: var(--space-6);  font-size: var(--type-label-xs-size); }
-.sm { width: var(--space-8);  height: var(--space-8);  font-size: var(--type-label-xs-size); }
-.md { width: var(--space-10); height: var(--space-10); font-size: var(--type-label-sm-size); }
-.lg { width: var(--space-12); height: var(--space-12); font-size: var(--type-label-size); }
-.xl { width: var(--space-16); height: var(--space-16); font-size: var(--type-body-size); }
+.xs { width: var(--haus-space-6);  height: var(--haus-space-6);  font-size: var(--haus-type-label-xs-size); }
+.sm { width: var(--haus-space-8);  height: var(--haus-space-8);  font-size: var(--haus-type-label-xs-size); }
+.md { width: var(--haus-space-10); height: var(--haus-space-10); font-size: var(--haus-type-label-sm-size); }
+.lg { width: var(--haus-space-12); height: var(--haus-space-12); font-size: var(--haus-type-label-size); }
+.xl { width: var(--haus-space-16); height: var(--haus-space-16); font-size: var(--haus-type-body-size); }
 
 /* ── Image ── */
 
@@ -45,14 +45,14 @@
   inset-inline-end: 0;
   width: 35%;
   height: 35%;
-  min-width: var(--space-2);
-  min-height: var(--space-2);
+  min-width: var(--haus-space-2);
+  min-height: var(--haus-space-2);
   border-radius: 50%;
-  border: var(--border-width-thick) solid var(--color-surface-default);
+  border: var(--haus-border-width-thick) solid var(--haus-color-surface-default);
   box-sizing: border-box;
 }
 
-.online  { background-color: var(--color-success-default); }
-.away    { background-color: var(--color-warning-default); }
-.busy    { background-color: var(--color-error-default);   }
-.offline { background-color: var(--color-ink-disabled);    }
+.online  { background-color: var(--haus-color-success-default); }
+.away    { background-color: var(--haus-color-warning-default); }
+.busy    { background-color: var(--haus-color-error-default);   }
+.offline { background-color: var(--haus-color-ink-disabled);    }

@@ -1,13 +1,13 @@
 .backdrop {
   position: fixed;
   inset: 0;
-  background-color: var(--color-backdrop);
+  background-color: var(--haus-color-backdrop);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--space-inset-md);
-  z-index: var(--z-modal);
-  animation: fadeIn var(--motion-fade-in);
+  padding: var(--haus-space-inset-md);
+  z-index: var(--haus-z-modal);
+  animation: fadeIn var(--haus-motion-fade-in);
 }
 
 @keyframes fadeIn {
@@ -16,19 +16,19 @@
 }
 
 .dialog {
-  background-color: var(--color-surface-default);
-  border-radius: var(--radius-overlay);
-  box-shadow: var(--elevation-overlay);
+  background-color: var(--haus-color-surface-default);
+  border-radius: var(--haus-radius-overlay);
+  box-shadow: var(--haus-elevation-overlay);
   display: flex;
   flex-direction: column;
-  max-height: calc(100vh - var(--space-8));
+  max-height: calc(100vh - var(--haus-space-8));
   width: 100%;
-  animation: slideUp var(--motion-slide-in);
+  animation: slideUp var(--haus-motion-slide-in);
   outline: none;
 }
 
 @keyframes slideUp {
-  from { transform: translateY(var(--space-3)); opacity: 0; }
+  from { transform: translateY(var(--haus-space-3)); opacity: 0; }
   to   { transform: translateY(0);    opacity: 1; }
 }
 
@@ -44,18 +44,18 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: var(--space-gap-md);
-  padding: var(--space-inset-lg) var(--space-inset-xl);
-  border-bottom: var(--border-width-default) solid var(--color-border-subtle);
+  gap: var(--haus-space-gap-md);
+  padding: var(--haus-space-inset-lg) var(--haus-space-inset-xl);
+  border-bottom: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
 }
 
 .title {
-  font-family: var(--font-sans);
-  font-size: var(--type-heading-sm-size);
-  font-weight: var(--type-heading-sm-weight);
-  line-height: var(--type-heading-sm-leading);
-  letter-spacing: var(--type-heading-sm-tracking);
-  color: var(--color-ink-primary);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-heading-sm-size);
+  font-weight: var(--haus-type-heading-sm-weight);
+  line-height: var(--haus-type-heading-sm-leading);
+  letter-spacing: var(--haus-type-heading-sm-tracking);
+  color: var(--haus-color-ink-primary);
   margin: 0;
 }
 
@@ -64,26 +64,26 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: var(--space-7);
-  height: var(--space-7);
-  border-radius: var(--radius-marker);
+  width: var(--haus-space-7);
+  height: var(--haus-space-7);
+  border-radius: var(--haus-radius-marker);
   border: none;
   background: transparent;
   cursor: pointer;
-  color: var(--color-ink-tertiary);
-  transition: color var(--motion-micro), background-color var(--motion-micro);
+  color: var(--haus-color-ink-tertiary);
+  transition: color var(--haus-motion-micro), background-color var(--haus-motion-micro);
   padding: 0;
   margin-block-start: -2px;
 }
 
 .close:hover {
-  color: var(--color-ink-primary);
-  background-color: var(--color-surface-subtle);
+  color: var(--haus-color-ink-primary);
+  background-color: var(--haus-color-surface-subtle);
 }
 
 .close:focus-visible {
   outline: none;
-  box-shadow: var(--shadow-focus);
+  box-shadow: var(--haus-shadow-focus);
 }
 
 /* ── Body ── */
@@ -91,11 +91,11 @@
 .body {
   flex: 1;
   overflow-y: auto;
-  padding: var(--space-inset-lg) var(--space-inset-xl);
-  font-family: var(--font-sans);
-  font-size: var(--type-body-sm-size);
-  line-height: var(--type-body-sm-leading);
-  color: var(--color-ink-secondary);
+  padding: var(--haus-space-inset-lg) var(--haus-space-inset-xl);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-body-sm-size);
+  line-height: var(--haus-type-body-sm-leading);
+  color: var(--haus-color-ink-secondary);
 }
 
 /* ── Footer ── */
@@ -104,15 +104,15 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: var(--space-gap-sm);
-  padding: var(--space-inset-md) var(--space-inset-xl);
-  border-top: var(--border-width-default) solid var(--color-border-subtle);
+  gap: var(--haus-space-gap-sm);
+  padding: var(--haus-space-inset-md) var(--haus-space-inset-xl);
+  border-top: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .backdrop,
   .dialog {
-    animation-duration: var(--duration-reduced);
+    animation-duration: var(--haus-duration-reduced);
   }
 }
 

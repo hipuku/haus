@@ -12,10 +12,10 @@
      travel, the modal's close button and max height, the toast and modal
      entry offsets, the textarea's minimum height and the select chevron's
      offset. A size is a value, not a role, and calling a 16px checkbox
-     --space-inset-md would say something untrue.
+     --haus-space-inset-md would say something untrue.
    · 61 read a primitive that has no alias here because its own name already
-     is the role: --font-sans, --weight-*, --border-width-*, --tracking-normal,
-     --opacity-disabled, --icon-sm, --z-modal.
+     is the role: --haus-font-sans, --haus-weight-*, --haus-border-width-*, --haus-tracking-normal,
+     --haus-opacity-disabled, --haus-icon-sm, --haus-z-modal.
 
    No component reads a colour, radius, shadow or motion primitive.
 
@@ -35,147 +35,147 @@
   :root {
 
     /* ── Surface ──────────────────────────────────────────────────────────── */
-    --color-surface-default:  var(--damson-0);
-    --color-surface-subtle:   var(--damson-100);
-    --color-surface-raised:   var(--damson-0);    /* elevation via shadow, not colour */
-    --color-surface-overlay:  var(--damson-50);   /* modal / popover, barely off-white */
-    --color-surface-sunken:   var(--damson-200);
-    --color-surface-inverse:  var(--damson-900);  /* dark chip, tooltip bg in light mode */
-    --color-surface-disabled: var(--damson-100);
+    --haus-color-surface-default:  var(--haus-damson-0);
+    --haus-color-surface-subtle:   var(--haus-damson-100);
+    --haus-color-surface-raised:   var(--haus-damson-0);    /* elevation via shadow, not colour */
+    --haus-color-surface-overlay:  var(--haus-damson-50);   /* modal / popover, barely off-white */
+    --haus-color-surface-sunken:   var(--haus-damson-200);
+    --haus-color-surface-inverse:  var(--haus-damson-900);  /* dark chip, tooltip bg in light mode */
+    --haus-color-surface-disabled: var(--haus-damson-100);
 
     /* ── Ink (text) ───────────────────────────────────────────────────────── */
-    --color-ink-primary:    var(--damson-900);
-    --color-ink-secondary:  var(--damson-700);
-    --color-ink-tertiary:   var(--damson-500);
-    --color-ink-disabled:   var(--damson-400);
-    --color-ink-inverse:    var(--damson-0);
-    --color-ink-link:       var(--aronia-500);
-    --color-ink-on-aronia:  var(--damson-0);
+    --haus-color-ink-primary:    var(--haus-damson-900);
+    --haus-color-ink-secondary:  var(--haus-damson-700);
+    --haus-color-ink-tertiary:   var(--haus-damson-500);
+    --haus-color-ink-disabled:   var(--haus-damson-400);
+    --haus-color-ink-inverse:    var(--haus-damson-0);
+    --haus-color-ink-link:       var(--haus-aronia-500);
+    --haus-color-ink-on-aronia:  var(--haus-damson-0);
 
     /* ── Border ───────────────────────────────────────────────────────────── */
-    --color-border-subtle:   var(--damson-100);
-    --color-border-default:  var(--damson-200);
-    --color-border-strong:   var(--damson-300);
-    --color-border-focus:    var(--color-primary-default);
-    --color-border-disabled: var(--damson-200);
+    --haus-color-border-subtle:   var(--haus-damson-100);
+    --haus-color-border-default:  var(--haus-damson-200);
+    --haus-color-border-strong:   var(--haus-damson-300);
+    --haus-color-border-focus:    var(--haus-color-primary-default);
+    --haus-color-border-disabled: var(--haus-damson-200);
 
     /* ── Primary: Aronia ─────────────────────────────────────────────────── */
-    --color-primary-default:   var(--aronia-500);
-    --color-primary-hover:     var(--aronia-600);
-    --color-primary-pressed:   var(--aronia-700);
-    --color-primary-subtle:    var(--aronia-100);
-    --color-primary-on-subtle: var(--aronia-700);
-    --color-primary-disabled:  var(--damson-200);
+    --haus-color-primary-default:   var(--haus-aronia-500);
+    --haus-color-primary-hover:     var(--haus-aronia-600);
+    --haus-color-primary-pressed:   var(--haus-aronia-700);
+    --haus-color-primary-subtle:    var(--haus-aronia-100);
+    --haus-color-primary-on-subtle: var(--haus-aronia-700);
+    --haus-color-primary-disabled:  var(--haus-damson-200);
 
     /* ── Feedback: Info (Elderberry · Indigo) ────────────────────────────── */
-    --color-info-subtle:     var(--elderberry-100);
-    --color-info-border:     var(--elderberry-200);
-    --color-info-default:    var(--elderberry-500);
-    --color-info-on-subtle:  var(--elderberry-700);
-    --color-info-on-default: var(--damson-0);
-    --color-info-emphasis:   var(--elderberry-900);
+    --haus-color-info-subtle:     var(--haus-elderberry-100);
+    --haus-color-info-border:     var(--haus-elderberry-200);
+    --haus-color-info-default:    var(--haus-elderberry-500);
+    --haus-color-info-on-subtle:  var(--haus-elderberry-700);
+    --haus-color-info-on-default: var(--haus-damson-0);
+    --haus-color-info-emphasis:   var(--haus-elderberry-900);
 
     /* ── Feedback: Success (Greengage · Green) ───────────────────────────── */
-    --color-success-subtle:     var(--greengage-100);
-    --color-success-border:     var(--greengage-200);
-    --color-success-default:    var(--greengage-500);
-    --color-success-on-subtle:  var(--greengage-700);
-    --color-success-on-default: var(--damson-900);  /* dark text, because greengage-500 fails with white */
-    --color-success-solid:      var(--greengage-700);  /* 700-level: white text passes at 6.82:1 */
-    --color-success-emphasis:   var(--greengage-900);
+    --haus-color-success-subtle:     var(--haus-greengage-100);
+    --haus-color-success-border:     var(--haus-greengage-200);
+    --haus-color-success-default:    var(--haus-greengage-500);
+    --haus-color-success-on-subtle:  var(--haus-greengage-700);
+    --haus-color-success-on-default: var(--haus-damson-900);  /* dark text, because greengage-500 fails with white */
+    --haus-color-success-solid:      var(--haus-greengage-700);  /* 700-level: white text passes at 6.82:1 */
+    --haus-color-success-emphasis:   var(--haus-greengage-900);
 
     /* ── Feedback: Warning (Mango · Golden) ──────────────────────────────── */
-    --color-warning-subtle:     var(--mango-100);
-    --color-warning-border:     var(--mango-200);
-    --color-warning-default:    var(--mango-500);
-    --color-warning-on-subtle:  var(--mango-700);
-    --color-warning-on-default: var(--damson-900);  /* dark text, because mango-500 fails with white */
-    --color-warning-solid:      var(--mango-700);   /* 700-level: white text passes at 7.05:1 */
-    --color-warning-emphasis:   var(--mango-900);
+    --haus-color-warning-subtle:     var(--haus-mango-100);
+    --haus-color-warning-border:     var(--haus-mango-200);
+    --haus-color-warning-default:    var(--haus-mango-500);
+    --haus-color-warning-on-subtle:  var(--haus-mango-700);
+    --haus-color-warning-on-default: var(--haus-damson-900);  /* dark text, because mango-500 fails with white */
+    --haus-color-warning-solid:      var(--haus-mango-700);   /* 700-level: white text passes at 7.05:1 */
+    --haus-color-warning-emphasis:   var(--haus-mango-900);
 
     /* ── Feedback: Error (Cherry · Red) ─────────────────────────────────── */
-    --color-error-subtle:     var(--cherry-100);
-    --color-error-border:     var(--cherry-200);
-    --color-error-default:    var(--cherry-500);
-    --color-error-on-subtle:  var(--cherry-700);
-    --color-error-on-default: var(--damson-0);
-    --color-error-emphasis:   var(--cherry-900);
+    --haus-color-error-subtle:     var(--haus-cherry-100);
+    --haus-color-error-border:     var(--haus-cherry-200);
+    --haus-color-error-default:    var(--haus-cherry-500);
+    --haus-color-error-on-subtle:  var(--haus-cherry-700);
+    --haus-color-error-on-default: var(--haus-damson-0);
+    --haus-color-error-emphasis:   var(--haus-cherry-900);
 
     /* ── Backdrop (Modal, Drawer, etc.) ──────────────────────────────────── */
-    /* Relative colour syntax: damson-950's l/c/h at --opacity-overlay alpha  */
-    --color-backdrop: oklch(from var(--damson-950) l c h / var(--opacity-overlay));
+    /* Relative colour syntax: damson-950's l/c/h at --haus-opacity-overlay alpha  */
+    --haus-color-backdrop: oklch(from var(--haus-damson-950) l c h / var(--haus-opacity-overlay));
 
     /* ── Inverse surface interactions (UI placed on dark/inverted surfaces) ── */
     /* Relative colour syntax: white (damson-0) at three opacity levels.      */
     /* Opacity fractions here are interaction-layer values, not raw colours.  */
-    --color-border-inverse:        oklch(from var(--damson-0) l c h / 0.30);
-    --color-border-inverse-hover:  oklch(from var(--damson-0) l c h / 0.50);
-    --color-surface-inverse-hover: oklch(from var(--damson-0) l c h / 0.10);
+    --haus-color-border-inverse:        oklch(from var(--haus-damson-0) l c h / 0.30);
+    --haus-color-border-inverse-hover:  oklch(from var(--haus-damson-0) l c h / 0.50);
+    --haus-color-surface-inverse-hover: oklch(from var(--haus-damson-0) l c h / 0.10);
 
     /* ── Focus ring ───────────────────────────────────────────────────────── */
     /* Inner ring matches surface (creates gap), outer ring is focus colour   */
-    --shadow-focus: 0 0 0 2px var(--color-surface-default), 0 0 0 4px var(--color-border-focus);
+    --haus-shadow-focus: 0 0 0 2px var(--haus-color-surface-default), 0 0 0 4px var(--haus-color-border-focus);
     /* Same ring in the error state, with the outer band carrying the error colour  */
     /* so an invalid field stays legible as invalid while focused.             */
-    --shadow-focus-error: 0 0 0 2px var(--color-surface-default), 0 0 0 4px var(--color-error-default);
+    --haus-shadow-focus-error: 0 0 0 2px var(--haus-color-surface-default), 0 0 0 4px var(--haus-color-error-default);
 
     /* ── Typography roles ─────────────────────────────────────────────────── */
     /* Use all four props together. Components must not mix roles.            */
 
-    --type-label-xs-size:     var(--text-11);
-    --type-label-xs-weight:   var(--weight-medium);
-    --type-label-xs-leading:  var(--leading-normal);
-    --type-label-xs-tracking: var(--tracking-widest);
+    --haus-type-label-xs-size:     var(--haus-text-11);
+    --haus-type-label-xs-weight:   var(--haus-weight-medium);
+    --haus-type-label-xs-leading:  var(--haus-leading-normal);
+    --haus-type-label-xs-tracking: var(--haus-tracking-widest);
 
-    --type-label-sm-size:     var(--text-12);
-    --type-label-sm-weight:   var(--weight-medium);
-    --type-label-sm-leading:  var(--leading-normal);
-    --type-label-sm-tracking: var(--tracking-wide);
+    --haus-type-label-sm-size:     var(--haus-text-12);
+    --haus-type-label-sm-weight:   var(--haus-weight-medium);
+    --haus-type-label-sm-leading:  var(--haus-leading-normal);
+    --haus-type-label-sm-tracking: var(--haus-tracking-wide);
 
-    --type-label-size:        var(--text-13);
-    --type-label-weight:      var(--weight-medium);
-    --type-label-leading:     var(--leading-normal);
-    --type-label-tracking:    var(--tracking-normal);
+    --haus-type-label-size:        var(--haus-text-13);
+    --haus-type-label-weight:      var(--haus-weight-medium);
+    --haus-type-label-leading:     var(--haus-leading-normal);
+    --haus-type-label-tracking:    var(--haus-tracking-normal);
 
-    --type-body-sm-size:      var(--text-13);
-    --type-body-sm-weight:    var(--weight-regular);
-    --type-body-sm-leading:   var(--leading-relaxed);
-    --type-body-sm-tracking:  var(--tracking-normal);
+    --haus-type-body-sm-size:      var(--haus-text-13);
+    --haus-type-body-sm-weight:    var(--haus-weight-regular);
+    --haus-type-body-sm-leading:   var(--haus-leading-relaxed);
+    --haus-type-body-sm-tracking:  var(--haus-tracking-normal);
 
-    --type-body-size:         var(--text-14);
-    --type-body-weight:       var(--weight-regular);
-    --type-body-leading:      var(--leading-relaxed);
-    --type-body-tracking:     var(--tracking-normal);
+    --haus-type-body-size:         var(--haus-text-14);
+    --haus-type-body-weight:       var(--haus-weight-regular);
+    --haus-type-body-leading:      var(--haus-leading-relaxed);
+    --haus-type-body-tracking:     var(--haus-tracking-normal);
 
-    --type-body-lg-size:      var(--text-16);
-    --type-body-lg-weight:    var(--weight-regular);
-    --type-body-lg-leading:   var(--leading-loose);
-    --type-body-lg-tracking:  var(--tracking-normal);
+    --haus-type-body-lg-size:      var(--haus-text-16);
+    --haus-type-body-lg-weight:    var(--haus-weight-regular);
+    --haus-type-body-lg-leading:   var(--haus-leading-loose);
+    --haus-type-body-lg-tracking:  var(--haus-tracking-normal);
 
-    --type-heading-sm-size:     var(--text-16);
-    --type-heading-sm-weight:   var(--weight-semibold);
-    --type-heading-sm-leading:  var(--leading-compact);
-    --type-heading-sm-tracking: var(--tracking-tight);
+    --haus-type-heading-sm-size:     var(--haus-text-16);
+    --haus-type-heading-sm-weight:   var(--haus-weight-semibold);
+    --haus-type-heading-sm-leading:  var(--haus-leading-compact);
+    --haus-type-heading-sm-tracking: var(--haus-tracking-tight);
 
-    --type-heading-size:        var(--text-20);
-    --type-heading-weight:      var(--weight-semibold);
-    --type-heading-leading:     var(--leading-snug);
-    --type-heading-tracking:    var(--tracking-tight);
+    --haus-type-heading-size:        var(--haus-text-20);
+    --haus-type-heading-weight:      var(--haus-weight-semibold);
+    --haus-type-heading-leading:     var(--haus-leading-snug);
+    --haus-type-heading-tracking:    var(--haus-tracking-tight);
 
-    --type-heading-lg-size:     var(--text-24);
-    --type-heading-lg-weight:   var(--weight-semibold);
-    --type-heading-lg-leading:  var(--leading-tighter);
-    --type-heading-lg-tracking: var(--tracking-tight);
+    --haus-type-heading-lg-size:     var(--haus-text-24);
+    --haus-type-heading-lg-weight:   var(--haus-weight-semibold);
+    --haus-type-heading-lg-leading:  var(--haus-leading-tighter);
+    --haus-type-heading-lg-tracking: var(--haus-tracking-tight);
 
-    --type-display-size:        var(--text-30);
-    --type-display-weight:      var(--weight-bold);
-    --type-display-leading:     var(--leading-tight);
-    --type-display-tracking:    var(--tracking-tight);
+    --haus-type-display-size:        var(--haus-text-30);
+    --haus-type-display-weight:      var(--haus-weight-bold);
+    --haus-type-display-leading:     var(--haus-leading-tight);
+    --haus-type-display-tracking:    var(--haus-tracking-tight);
 
-    --type-mono-size:           var(--text-13);
-    --type-mono-weight:         var(--weight-regular);
-    --type-mono-leading:        var(--leading-loose);
-    --type-mono-tracking:       var(--tracking-normal);
+    --haus-type-mono-size:           var(--haus-text-13);
+    --haus-type-mono-weight:         var(--haus-weight-regular);
+    --haus-type-mono-leading:        var(--haus-leading-loose);
+    --haus-type-mono-tracking:       var(--haus-tracking-normal);
 
 
     /* ── Spacing ─────────────────────────────────────────────────────────────
@@ -183,49 +183,49 @@
        siblings, stack is margin. A step is the same size whichever role reads
        it, so the roles stay comparable. Splitting them is what lets padding be
        retuned later without moving page rhythm, and without first working out
-       which --space-3 meant which.
+       which --haus-space-3 meant which.
 
        Only the steps components use are named. Add one when a component needs
        it, rather than reaching past this layer.                              */
 
     /* Padding: space inside a component, between its edge and its content. */
-    --space-inset-2xs:  var(--space-1);   /* 4px  */
-    --space-inset-xs:   var(--space-2);   /* 8px  */
-    --space-inset-sm:   var(--space-3);   /* 12px */
-    --space-inset-md:   var(--space-4);   /* 16px */
-    --space-inset-lg:   var(--space-5);   /* 20px */
-    --space-inset-xl:   var(--space-6);   /* 24px */
-    --space-inset-2xl:  var(--space-8);   /* 32px */
+    --haus-space-inset-2xs:  var(--haus-space-1);   /* 4px  */
+    --haus-space-inset-xs:   var(--haus-space-2);   /* 8px  */
+    --haus-space-inset-sm:   var(--haus-space-3);   /* 12px */
+    --haus-space-inset-md:   var(--haus-space-4);   /* 16px */
+    --haus-space-inset-lg:   var(--haus-space-5);   /* 20px */
+    --haus-space-inset-xl:   var(--haus-space-6);   /* 24px */
+    --haus-space-inset-2xl:  var(--haus-space-8);   /* 32px */
 
     /* Gap: space between siblings, set by the parent. */
-    --space-gap-2xs:    var(--space-1);   /* 4px  */
-    --space-gap-xs:     var(--space-2);   /* 8px  */
-    --space-gap-sm:     var(--space-3);   /* 12px */
-    --space-gap-md:     var(--space-4);   /* 16px */
+    --haus-space-gap-2xs:    var(--haus-space-1);   /* 4px  */
+    --haus-space-gap-xs:     var(--haus-space-2);   /* 8px  */
+    --haus-space-gap-sm:     var(--haus-space-3);   /* 12px */
+    --haus-space-gap-md:     var(--haus-space-4);   /* 16px */
 
     /* Stack: margin, space a component asks for around itself. */
-    --space-stack-2xs:  var(--space-1);   /* 4px  */
-    --space-stack-xs:   var(--space-2);   /* 8px  */
+    --haus-space-stack-2xs:  var(--haus-space-1);   /* 4px  */
+    --haus-space-stack-xs:   var(--haus-space-2);   /* 8px  */
 
     /* ── Radius ──────────────────────────────────────────────────────────────
        Named for what is rounded, so a component asks for the shape of the
        thing rather than a size off the ramp.                                 */
-    --radius-control:   var(--radius-md);    /* Button, Input, Select, Textarea */
-    --radius-surface:   var(--radius-lg);    /* Card, Toast                     */
-    --radius-overlay:   var(--radius-xl);    /* Modal                           */
-    --radius-marker:    var(--radius-sm);    /* Checkbox, Modal/Toast icons     */
-    --radius-pill:      var(--radius-full);  /* Badge, Toggle track             */
+    --haus-radius-control:   var(--haus-radius-md);    /* Button, Input, Select, Textarea */
+    --haus-radius-surface:   var(--haus-radius-lg);    /* Card, Toast                     */
+    --haus-radius-overlay:   var(--haus-radius-xl);    /* Modal                           */
+    --haus-radius-marker:    var(--haus-radius-sm);    /* Checkbox, Modal/Toast icons     */
+    --haus-radius-pill:      var(--haus-radius-full);  /* Badge, Toggle track             */
 
     /* ── Elevation ───────────────────────────────────────────────────────────
        Named for how high the thing sits, rather than how large its shadow is. */
-    --elevation-raised:  var(--shadow-sm);   /* Toggle knob            */
-    --elevation-floating: var(--shadow-lg);  /* Card, Toast            */
-    --elevation-overlay: var(--shadow-xl);   /* Modal                  */
+    --haus-elevation-raised:  var(--haus-shadow-sm);   /* Toggle knob            */
+    --haus-elevation-floating: var(--haus-shadow-lg);  /* Card, Toast            */
+    --haus-elevation-overlay: var(--haus-shadow-xl);   /* Modal                  */
 
     /* ── Motion ──────────────────────────────────────────────────────────────
        Named for what moves. The curves and the reduced-motion duration are
        already roles in motion.css and are read from there.                   */
-    --motion-duration-emphasis: var(--duration-slow);  /* Button's loading sweep */
+    --haus-motion-duration-emphasis: var(--haus-duration-slow);  /* Button's loading sweep */
 
     /* Sizes are not spacing. Marker boxes, avatar sizes, the toggle's travel
        and a few min/max bounds read the primitive ladder directly: they are
@@ -233,9 +233,9 @@
        what they are. Thirty-one declarations do this deliberately.
 
        Control heights are not on that ladder at all: 36px and 44px are not
-       steps of it. They are their own primitive scale, --control-height-sm,
+       steps of it. They are their own primitive scale, --haus-control-height-sm,
        -md and -lg, whose names are already the role, so they are read direct
-       like --border-width-default.  */
+       like --haus-border-width-default.  */
 
 
   }

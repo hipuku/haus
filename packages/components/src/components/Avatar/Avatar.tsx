@@ -57,7 +57,7 @@ export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(function Ava
     <div ref={ref} className={wrapperCls} {...rest}>
       <div
         className={styles.avatar}
-        style={!src ? { '--avatar-bg': bg, '--avatar-fg': fg } as React.CSSProperties : undefined}
+        style={!src ? { '--haus-avatar-bg': bg, '--haus-avatar-fg': fg } as React.CSSProperties : undefined}
         role="img"
         aria-label={alt ?? (name ? `${name}${statusLabel}` : 'Avatar')}
       >

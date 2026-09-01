@@ -1,14 +1,14 @@
 .wrapper {
   display: inline-flex;
   align-items: flex-start;
-  gap: var(--space-gap-xs);
+  gap: var(--haus-space-gap-xs);
   cursor: pointer;
   user-select: none;
 }
 
 .wrapper.disabled {
   cursor: not-allowed;
-  opacity: var(--opacity-disabled);
+  opacity: var(--haus-opacity-disabled);
 }
 
 /* ── Hidden native input ── */
@@ -26,63 +26,63 @@
 
 .box {
   flex-shrink: 0;
-  width: var(--space-4);
-  height: var(--space-4);
-  border-radius: var(--radius-marker);
-  border: var(--border-width-thick) solid var(--color-border-strong);
-  background-color: var(--color-surface-default);
+  width: var(--haus-space-4);
+  height: var(--haus-space-4);
+  border-radius: var(--haus-radius-marker);
+  border: var(--haus-border-width-thick) solid var(--haus-color-border-strong);
+  background-color: var(--haus-color-surface-default);
   display: flex;
   align-items: center;
   justify-content: center;
   transition:
-    background-color var(--motion-micro),
-    border-color     var(--motion-micro);
+    background-color var(--haus-motion-micro),
+    border-color     var(--haus-motion-micro);
   margin-block-start: 1px; /* optical alignment with label text */
 }
 
 .wrapper:not(.disabled):hover .box {
-  border-color: var(--color-primary-default);
+  border-color: var(--haus-color-primary-default);
 }
 
 .input:focus-visible ~ .box {
-  box-shadow: var(--shadow-focus);
+  box-shadow: var(--haus-shadow-focus);
   outline: none;
 }
 
 /* ── Checked ── */
 
 .checked .box {
-  background-color: var(--color-primary-default);
-  border-color: var(--color-primary-default);
+  background-color: var(--haus-color-primary-default);
+  border-color: var(--haus-color-primary-default);
 }
 
 .checked:not(.disabled):hover .box {
-  background-color: var(--color-primary-hover);
-  border-color: var(--color-primary-hover);
+  background-color: var(--haus-color-primary-hover);
+  border-color: var(--haus-color-primary-hover);
 }
 
 /* ── Indeterminate ── */
 
 .indeterminate .box {
-  background-color: var(--color-primary-default);
-  border-color: var(--color-primary-default);
+  background-color: var(--haus-color-primary-default);
+  border-color: var(--haus-color-primary-default);
 }
 
 /* ── Error ── */
 
 .error .box {
-  border-color: var(--color-error-default);
+  border-color: var(--haus-color-error-default);
 }
 
 .error.checked .box {
-  background-color: var(--color-error-default);
-  border-color: var(--color-error-default);
+  background-color: var(--haus-color-error-default);
+  border-color: var(--haus-color-error-default);
 }
 
 /* ── Check icon ── */
 
 .icon {
-  color: var(--color-ink-inverse);
+  color: var(--haus-color-ink-inverse);
   display: flex;
 }
 
@@ -95,43 +95,43 @@
 }
 
 .label {
-  font-family: var(--font-sans);
-  font-size: var(--type-body-sm-size);
-  font-weight: var(--type-body-sm-weight);
-  line-height: var(--type-body-sm-leading);
-  color: var(--color-ink-primary);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
+  line-height: var(--haus-type-body-sm-leading);
+  color: var(--haus-color-ink-primary);
 }
 
 .hint {
   display: block;
-  font-family: var(--font-sans);
-  font-size: var(--type-label-xs-size);
-  line-height: var(--type-label-xs-leading);
-  color: var(--color-ink-secondary);
-  margin-block-start: var(--space-stack-2xs);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-label-xs-size);
+  line-height: var(--haus-type-label-xs-leading);
+  color: var(--haus-color-ink-secondary);
+  margin-block-start: var(--haus-space-stack-2xs);
   /* Sits outside the label now, so it carries the same indent the error message
      does: aligned under the label text rather than under the box. */
-  padding-inline-start: calc(var(--space-inset-md) + var(--space-inset-xs));
+  padding-inline-start: calc(var(--haus-space-inset-md) + var(--haus-space-inset-xs));
 }
 
 .required {
-  color: var(--color-error-default);
-  margin-inline-start: var(--space-stack-2xs);
+  color: var(--haus-color-error-default);
+  margin-inline-start: var(--haus-space-stack-2xs);
 }
 
 .errorMessage {
   display: block;
-  font-family: var(--font-sans);
-  font-size: var(--type-label-xs-size);
-  line-height: var(--type-label-xs-leading);
-  color: var(--color-error-default);
-  margin-block-start: var(--space-stack-2xs);
-  padding-inline-start: calc(var(--space-inset-md) + var(--space-inset-xs)); /* indent past checkbox + gap */
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-label-xs-size);
+  line-height: var(--haus-type-label-xs-leading);
+  color: var(--haus-color-error-default);
+  margin-block-start: var(--haus-space-stack-2xs);
+  padding-inline-start: calc(var(--haus-space-inset-md) + var(--haus-space-inset-xs)); /* indent past checkbox + gap */
 }
 
 @media (prefers-reduced-motion: reduce) {
   .box {
-    transition-duration: var(--duration-reduced);
+    transition-duration: var(--haus-duration-reduced);
   }
 }
 

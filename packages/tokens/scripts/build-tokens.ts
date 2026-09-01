@@ -89,7 +89,7 @@ const SCALES: Array<{
   { heading: 'Radius', prefix: '--radius', path: ['radius'] },
   {
     heading: 'Shadows, tinted with damson H=290°',
-    note: '--shadow-focus is in semantics.css, because it references semantic colour tokens.',
+    note: '--haus-shadow-focus is in semantics.css, because it references semantic colour tokens.',
     prefix: '--shadow',
     path: ['shadow'],
     // shadow.focus resolves through semantic colour tokens, so it is declared
@@ -119,8 +119,19 @@ function group(path: string[]): DtcgGroup {
   ) as DtcgGroup
 }
 
-/** `--shadow-` + `sm` → `--shadow-sm`; `--font` + `sans` → `--font-sans`. */
-const propName = (prefix: string, leaf: string) => `${prefix}-${leaf}`
+/**
+ * Every custom property haus defines carries `--haus-`, at every layer,
+ * primitives included. Ruling A3 and `docs/decisions/0003`.
+ *
+ * The point is that a consumer can adopt haus without auditing their own
+ * namespace first: unprefixed, `--space-4` and `--text-14` sat in the global
+ * namespace where anyone running Tailwind collides with them.
+ *
+ * `--shadow` + `sm` → `--haus-shadow-sm`; `--font` + `sans` → `--haus-font-sans`.
+ */
+const NAMESPACE = '--haus-'
+const propName = (prefix: string, leaf: string) =>
+  `${prefix.replace(/^--/, NAMESPACE)}-${leaf}`
 
 /** Pads to `width` so generated columns line up like a hand-written file. */
 const pad = (s: string, width: number) => s.padEnd(width)

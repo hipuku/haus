@@ -1,35 +1,35 @@
 .wrapper {
   display: flex;
   flex-direction: column;
-  gap: var(--space-gap-2xs);
+  gap: var(--haus-space-gap-2xs);
 }
 
 .label {
-  font-family: var(--font-sans);
-  font-size: var(--type-label-sm-size);
-  font-weight: var(--weight-semibold);
-  line-height: var(--type-label-sm-leading);
-  letter-spacing: var(--type-label-sm-tracking);
-  color: var(--color-ink-primary);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-label-sm-size);
+  font-weight: var(--haus-weight-semibold);
+  line-height: var(--haus-type-label-sm-leading);
+  letter-spacing: var(--haus-type-label-sm-tracking);
+  color: var(--haus-color-ink-primary);
 }
 
 .required {
-  color: var(--color-error-default);
-  margin-inline-start: var(--space-stack-2xs);
+  color: var(--haus-color-error-default);
+  margin-inline-start: var(--haus-space-stack-2xs);
 }
 
 .inputWrap {
   display: flex;
   align-items: center;
-  gap: var(--space-gap-xs);
-  background-color: var(--color-surface-default);
-  border: var(--border-width-default) solid var(--color-border-default);
-  border-radius: var(--radius-control);
-  padding: 0 var(--space-inset-sm);
+  gap: var(--haus-space-gap-xs);
+  background-color: var(--haus-color-surface-default);
+  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  border-radius: var(--haus-radius-control);
+  padding: 0 var(--haus-space-inset-sm);
   transition:
-    border-color var(--motion-micro),
-    box-shadow   var(--motion-micro);
-  min-height: var(--control-height-md);
+    border-color var(--haus-motion-micro),
+    box-shadow   var(--haus-motion-micro);
+  min-height: var(--haus-control-height-md);
 }
 
  /* :has(:focus-visible) rather than :focus-within. The ring is drawn on the
@@ -39,22 +39,22 @@
    be drawn and the rule everything else follows. Text fields still ring on click,
    because :focus-visible matches them there by the browser's own heuristic. */
 .inputWrap:has(:focus-visible) {
-  border-color: var(--color-border-focus);
-  box-shadow: var(--shadow-focus);
+  border-color: var(--haus-color-border-focus);
+  box-shadow: var(--haus-shadow-focus);
   outline: none;
 }
 
 .inputWrap.error {
-  border-color: var(--color-error-default);
+  border-color: var(--haus-color-error-default);
 }
 
 .inputWrap.error:has(:focus-visible) {
-  box-shadow: var(--shadow-focus-error);
+  box-shadow: var(--haus-shadow-focus-error);
 }
 
 .inputWrap.disabled {
-  background-color: var(--color-surface-disabled);
-  border-color: var(--color-border-disabled);
+  background-color: var(--haus-color-surface-disabled);
+  border-color: var(--haus-color-border-disabled);
   cursor: not-allowed;
 }
 
@@ -64,48 +64,48 @@
   background: transparent;
   border: none;
   outline: none;
-  font-family: var(--font-sans);
-  font-size: var(--type-body-sm-size);
-  font-weight: var(--type-body-sm-weight);
-  line-height: var(--type-body-sm-leading);
-  color: var(--color-ink-primary);
-  padding: var(--space-inset-xs) 0;
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
+  line-height: var(--haus-type-body-sm-leading);
+  color: var(--haus-color-ink-primary);
+  padding: var(--haus-space-inset-xs) 0;
 }
 
 .input::placeholder {
-  color: var(--color-ink-tertiary);
+  color: var(--haus-color-ink-tertiary);
 }
 
 .input:disabled {
   cursor: not-allowed;
-  color: var(--color-ink-disabled);
+  color: var(--haus-color-ink-disabled);
 }
 
 .adornment {
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  color: var(--color-ink-secondary);
-  font-size: var(--type-body-sm-size);
+  color: var(--haus-color-ink-secondary);
+  font-size: var(--haus-type-body-sm-size);
 }
 
 .hint {
-  font-family: var(--font-sans);
-  font-size: var(--type-label-xs-size);
-  line-height: var(--type-label-xs-leading);
-  color: var(--color-ink-secondary);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-label-xs-size);
+  line-height: var(--haus-type-label-xs-leading);
+  color: var(--haus-color-ink-secondary);
 }
 
 .errorMessage {
-  font-family: var(--font-sans);
-  font-size: var(--type-label-xs-size);
-  line-height: var(--type-label-xs-leading);
-  color: var(--color-error-default);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-label-xs-size);
+  line-height: var(--haus-type-label-xs-leading);
+  color: var(--haus-color-error-default);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .inputWrap {
-    transition-duration: var(--duration-reduced);
+    transition-duration: var(--haus-duration-reduced);
   }
 }
 

@@ -1,14 +1,14 @@
 .wrapper {
   display: inline-flex;
   align-items: flex-start;
-  gap: var(--space-gap-sm);
+  gap: var(--haus-space-gap-sm);
   cursor: pointer;
   user-select: none;
 }
 
 .wrapper.disabled {
   cursor: not-allowed;
-  opacity: var(--opacity-disabled);
+  opacity: var(--haus-opacity-disabled);
 }
 
 .input {
@@ -25,29 +25,29 @@
 .track {
   flex-shrink: 0;
   width: 36px;
-  height: var(--space-5);
-  border-radius: var(--radius-pill);
-  background-color: var(--color-border-strong);
+  height: var(--haus-space-5);
+  border-radius: var(--haus-radius-pill);
+  background-color: var(--haus-color-border-strong);
   position: relative;
-  transition: background-color var(--motion-micro);
+  transition: background-color var(--haus-motion-micro);
   margin-block-start: 1px;
 }
 
 .wrapper:not(.disabled):hover .track {
-  background-color: var(--color-ink-tertiary);
+  background-color: var(--haus-color-ink-tertiary);
 }
 
 .input:focus-visible ~ .track {
-  box-shadow: var(--shadow-focus);
+  box-shadow: var(--haus-shadow-focus);
   outline: none;
 }
 
 .on .track {
-  background-color: var(--color-primary-default);
+  background-color: var(--haus-color-primary-default);
 }
 
 .on:not(.disabled):hover .track {
-  background-color: var(--color-primary-hover);
+  background-color: var(--haus-color-primary-hover);
 }
 
 /* ── Thumb ── */
@@ -56,32 +56,32 @@
   position: absolute;
   top: 2px;
   inset-inline-start: 2px;
-  width: var(--space-4);
-  height: var(--space-4);
+  width: var(--haus-space-4);
+  height: var(--haus-space-4);
   border-radius: 50%;
-  background-color: var(--color-surface-default);
-  box-shadow: var(--elevation-raised);
-  transition: transform var(--motion-micro);
+  background-color: var(--haus-color-surface-default);
+  box-shadow: var(--haus-elevation-raised);
+  transition: transform var(--haus-motion-micro);
   /* How far the thumb travels, and which way. There is no logical equivalent of
      translateX, so the direction is a sign the RTL rule flips: without it the
      thumb slides out of the left-hand end of a right-to-left track. Travel is a
      variable so a size only has to restate the distance. */
-  --thumb-travel: var(--space-4);
-  --thumb-direction: 1;
+  --haus-thumb-travel: var(--haus-space-4);
+  --haus-thumb-direction: 1;
 }
 
 [dir='rtl'] .thumb {
-  --thumb-direction: -1;
+  --haus-thumb-direction: -1;
 }
 
 .on .thumb {
-  transform: translateX(calc(var(--thumb-direction) * var(--thumb-travel)));
+  transform: translateX(calc(var(--haus-thumb-direction) * var(--haus-thumb-travel)));
 }
 
 /* ── Sizes ── */
 
-.sm .track { width: var(--space-7); height: var(--space-4); }
-.sm .thumb { width: var(--space-3);  height: var(--space-3);  --thumb-travel: 12px; }
+.sm .track { width: var(--haus-space-7); height: var(--haus-space-4); }
+.sm .thumb { width: var(--haus-space-3);  height: var(--haus-space-3);  --haus-thumb-travel: 12px; }
 
 /* ── Content ── */
 
@@ -92,18 +92,18 @@
 }
 
 .label {
-  font-family: var(--font-sans);
-  font-size: var(--type-body-sm-size);
-  font-weight: var(--type-body-sm-weight);
-  line-height: var(--type-body-sm-leading);
-  color: var(--color-ink-primary);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
+  line-height: var(--haus-type-body-sm-leading);
+  color: var(--haus-color-ink-primary);
 }
 
 .description {
-  font-family: var(--font-sans);
-  font-size: var(--type-label-xs-size);
-  line-height: var(--type-label-xs-leading);
-  color: var(--color-ink-secondary);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-label-xs-size);
+  line-height: var(--haus-type-label-xs-leading);
+  color: var(--haus-color-ink-secondary);
 }
 
 /* ── Label-right layout (default: label left of toggle) ── */
@@ -115,7 +115,7 @@
 @media (prefers-reduced-motion: reduce) {
   .track,
   .thumb {
-    transition-duration: var(--duration-reduced);
+    transition-duration: var(--haus-duration-reduced);
   }
 }
 

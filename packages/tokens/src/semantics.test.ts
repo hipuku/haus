@@ -15,7 +15,7 @@ const semantics = read('semantics.css')
 const primitives = read('primitives.css')
 const motion = read('motion.css')
 
-/** Custom properties a file declares, e.g. `--color-ink-primary`. */
+/** Custom properties a file declares, e.g. `--haus-color-ink-primary`. */
 const declared = (css: string) =>
   new Set([...css.matchAll(/^\s*(--[\w-]+)\s*:/gm)].map((m) => m[1]))
 
@@ -52,20 +52,20 @@ describe('semantics.css', () => {
     const unpaired: string[] = []
     for (const family of families) {
       for (const step of ['subtle', 'default']) {
-        const surface = `--color-${family}-${step}`
-        const ink = `--color-${family}-on-${step}`
+        const surface = `--haus-color-${family}-${step}`
+        const ink = `--haus-color-${family}-on-${step}`
         if (SEMANTIC.has(surface) && !SEMANTIC.has(ink)) unpaired.push(surface)
       }
     }
     // primary-default's paired ink is --color-ink-on-aronia, named for the
     // palette it sits on rather than the role, because it is shared.
-    expect(unpaired).toEqual(['--color-primary-default'])
-    expect(SEMANTIC.has('--color-ink-on-aronia')).toBe(true)
+    expect(unpaired).toEqual(['--haus-color-primary-default'])
+    expect(SEMANTIC.has('--haus-color-ink-on-aronia')).toBe(true)
   })
 
   it('gives every interactive scale a disabled state', () => {
     for (const scale of ['surface', 'ink', 'border', 'primary']) {
-      expect(SEMANTIC.has(`--color-${scale}-disabled`), `--color-${scale}-disabled`).toBe(true)
+      expect(SEMANTIC.has(`--haus-color-${scale}-disabled`), `--haus-color-${scale}-disabled`).toBe(true)
     }
   })
 
@@ -74,7 +74,7 @@ describe('semantics.css', () => {
     // the text sits on. Every other palette name belongs to primitives.css.
     const palettes = ['aronia', 'damson', 'elderberry', 'greengage', 'mango', 'cherry']
     const offenders = [...SEMANTIC].filter(
-      (t) => t !== '--color-ink-on-aronia' && palettes.some((p) => t.includes(p)),
+      (t) => t !== '--haus-color-ink-on-aronia' && palettes.some((p) => t.includes(p)),
     )
     expect(offenders).toEqual([])
   })
@@ -82,12 +82,12 @@ describe('semantics.css', () => {
   it('keeps spacing roles on the primitive ladder', () => {
     // Every inset/gap/stack step aliases a --space-N primitive directly, so a
     // step is the same size whichever role reads it.
-    const roles = [...semantics.matchAll(/^\s*(--space-(?:inset|gap|stack)-[\w-]+)\s*:\s*var\((--space-\d+)\)/gm)]
+    const roles = [...semantics.matchAll(/^\s*(--haus-space-(?:inset|gap|stack)-[\w-]+)\s*:\s*var\((--haus-space-\d+)\)/gm)]
     expect(roles.length).toBeGreaterThan(10)
     const sizeOf = new Map<string, string>()
     for (const [, , primitive] of roles) expect(declared(primitives).has(primitive)).toBe(true)
     for (const [, role, primitive] of roles) {
-      const step = role.replace(/^--space-(?:inset|gap|stack)-/, '')
+      const step = role.replace(/^--haus-space-(?:inset|gap|stack)-/, '')
       const seen = sizeOf.get(step)
       if (seen) expect(primitive, `${role} disagrees with an earlier ${step}`).toBe(seen)
       else sizeOf.set(step, primitive)

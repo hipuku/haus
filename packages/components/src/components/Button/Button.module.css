@@ -2,18 +2,18 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-gap-xs);
-  font-family: var(--font-sans);
-  font-weight: var(--weight-medium);
-  letter-spacing: var(--tracking-normal);
-  border-radius: var(--radius-control);
-  border: var(--border-width-default) solid transparent;
+  gap: var(--haus-space-gap-xs);
+  font-family: var(--haus-font-sans);
+  font-weight: var(--haus-weight-medium);
+  letter-spacing: var(--haus-tracking-normal);
+  border-radius: var(--haus-radius-control);
+  border: var(--haus-border-width-default) solid transparent;
   cursor: pointer;
   transition:
-    background-color var(--motion-micro),
-    border-color     var(--motion-micro),
-    color            var(--motion-micro),
-    box-shadow       var(--motion-micro);
+    background-color var(--haus-motion-micro),
+    border-color     var(--haus-motion-micro),
+    color            var(--haus-motion-micro),
+    box-shadow       var(--haus-motion-micro);
   text-decoration: none;
   white-space: nowrap;
   user-select: none;
@@ -21,90 +21,90 @@
 
 .button:focus-visible {
   outline: none;
-  box-shadow: var(--shadow-focus);
+  box-shadow: var(--haus-shadow-focus);
 }
 
 .button:disabled,
 .button[aria-disabled="true"] {
   cursor: not-allowed;
-  opacity: var(--opacity-disabled);
+  opacity: var(--haus-opacity-disabled);
   pointer-events: none;
 }
 
 /* ── Sizes ── */
 
 .sm {
-  font-size: var(--type-label-sm-size);
-  line-height: var(--type-label-sm-leading);
-  padding: var(--space-inset-2xs) var(--space-inset-sm);
-  min-height: var(--control-height-sm);
+  font-size: var(--haus-type-label-sm-size);
+  line-height: var(--haus-type-label-sm-leading);
+  padding: var(--haus-space-inset-2xs) var(--haus-space-inset-sm);
+  min-height: var(--haus-control-height-sm);
 }
 
 .md {
-  font-size: var(--type-label-size);
-  line-height: var(--type-label-leading);
-  padding: var(--space-inset-xs) var(--space-inset-md);
-  min-height: var(--control-height-md);
+  font-size: var(--haus-type-label-size);
+  line-height: var(--haus-type-label-leading);
+  padding: var(--haus-space-inset-xs) var(--haus-space-inset-md);
+  min-height: var(--haus-control-height-md);
 }
 
 .lg {
-  font-size: var(--type-body-size);
-  line-height: var(--type-body-leading);
-  padding: var(--space-inset-sm) var(--space-inset-lg);
-  min-height: var(--control-height-lg);
+  font-size: var(--haus-type-body-size);
+  line-height: var(--haus-type-body-leading);
+  padding: var(--haus-space-inset-sm) var(--haus-space-inset-lg);
+  min-height: var(--haus-control-height-lg);
 }
 
 /* ── Variants ── */
 
 .primary {
-  background-color: var(--color-primary-default);
-  border-color: var(--color-primary-default);
-  color: var(--color-ink-on-aronia);
+  background-color: var(--haus-color-primary-default);
+  border-color: var(--haus-color-primary-default);
+  color: var(--haus-color-ink-on-aronia);
 }
 .primary:hover:not(:disabled) {
-  background-color: var(--color-primary-hover);
-  border-color: var(--color-primary-hover);
+  background-color: var(--haus-color-primary-hover);
+  border-color: var(--haus-color-primary-hover);
 }
 .primary:active:not(:disabled) {
-  background-color: var(--color-primary-pressed);
-  border-color: var(--color-primary-pressed);
+  background-color: var(--haus-color-primary-pressed);
+  border-color: var(--haus-color-primary-pressed);
 }
 
 .secondary {
-  background-color: var(--color-surface-subtle);
-  border-color: var(--color-border-default);
-  color: var(--color-ink-primary);
+  background-color: var(--haus-color-surface-subtle);
+  border-color: var(--haus-color-border-default);
+  color: var(--haus-color-ink-primary);
 }
 .secondary:hover:not(:disabled) {
-  background-color: var(--color-surface-sunken);
-  border-color: var(--color-border-strong);
+  background-color: var(--haus-color-surface-sunken);
+  border-color: var(--haus-color-border-strong);
 }
 .secondary:active:not(:disabled) {
-  background-color: var(--color-surface-sunken);
+  background-color: var(--haus-color-surface-sunken);
   filter: brightness(0.97);
 }
 
 .ghost {
   background-color: transparent;
   border-color: transparent;
-  color: var(--color-ink-primary);
+  color: var(--haus-color-ink-primary);
 }
 .ghost:hover:not(:disabled) {
-  background-color: var(--color-surface-subtle);
-  border-color: var(--color-border-subtle);
+  background-color: var(--haus-color-surface-subtle);
+  border-color: var(--haus-color-border-subtle);
 }
 .ghost:active:not(:disabled) {
-  background-color: var(--color-surface-sunken);
+  background-color: var(--haus-color-surface-sunken);
 }
 
 .error {
-  background-color: var(--color-error-default);
-  border-color: var(--color-error-default);
-  color: var(--color-error-on-default);
+  background-color: var(--haus-color-error-default);
+  border-color: var(--haus-color-error-default);
+  color: var(--haus-color-error-on-default);
 }
 .error:hover:not(:disabled) {
-  background-color: var(--color-error-emphasis);
-  border-color: var(--color-error-emphasis);
+  background-color: var(--haus-color-error-emphasis);
+  border-color: var(--haus-color-error-emphasis);
 }
 .error:active:not(:disabled) {
   filter: brightness(0.9);
@@ -114,20 +114,20 @@
   background-color: transparent;
   border-color: transparent;
   color: inherit;
-  padding-inline: var(--space-inset-2xs);
+  padding-inline: var(--haus-space-inset-2xs);
   text-decoration: underline;
   text-underline-offset: 3px;
-  text-decoration-thickness: var(--border-width-default);
+  text-decoration-thickness: var(--haus-border-width-default);
   text-decoration-color: oklch(from currentColor l c h / 0.35);
   transition:
-    text-decoration-color     var(--motion-micro),
-    text-decoration-thickness var(--motion-micro);
+    text-decoration-color     var(--haus-motion-micro),
+    text-decoration-thickness var(--haus-motion-micro);
 }
 .text:hover:not(:disabled) {
   background-color: transparent;
   border-color: transparent;
   text-decoration-color: currentColor;
-  text-decoration-thickness: var(--border-width-thick);
+  text-decoration-thickness: var(--haus-border-width-thick);
 }
 .text:active:not(:disabled) {
   background-color: transparent;
@@ -149,10 +149,10 @@
 .spinner {
   width: 1em;
   height: 1em;
-  border: var(--border-width-thick) solid currentColor;
+  border: var(--haus-border-width-thick) solid currentColor;
   border-top-color: transparent;
   border-radius: 50%;
-  animation: spin var(--motion-duration-emphasis) var(--ease-linear) infinite;
+  animation: spin var(--haus-motion-duration-emphasis) var(--haus-ease-linear) infinite;
   flex-shrink: 0;
 }
 
@@ -162,10 +162,10 @@
 
 @media (prefers-reduced-motion: reduce) {
   .button {
-    transition-duration: var(--duration-reduced);
+    transition-duration: var(--haus-duration-reduced);
   }
   .spinner {
-    animation-duration: var(--duration-reduced);
+    animation-duration: var(--haus-duration-reduced);
   }
 }
 

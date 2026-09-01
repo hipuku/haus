@@ -1,77 +1,77 @@
 .toast {
   display: flex;
   align-items: center;
-  gap: var(--space-gap-sm);
-  padding: var(--space-inset-sm) var(--space-inset-md);
-  padding-inline-start: calc(var(--space-inset-md) + 3px); /* compensate for accent border */
-  border-radius: var(--radius-surface);
-  border: var(--border-width-default) solid;
+  gap: var(--haus-space-gap-sm);
+  padding: var(--haus-space-inset-sm) var(--haus-space-inset-md);
+  padding-inline-start: calc(var(--haus-space-inset-md) + 3px); /* compensate for accent border */
+  border-radius: var(--haus-radius-surface);
+  border: var(--haus-border-width-default) solid;
   border-inline-start-width: 3px;
-  box-shadow: var(--elevation-floating);
+  box-shadow: var(--haus-elevation-floating);
   max-width: 360px;
   width: 100%;
-  font-family: var(--font-sans);
-  animation: slideIn var(--motion-slide-in);
+  font-family: var(--haus-font-sans);
+  animation: slideIn var(--haus-motion-slide-in);
 }
 
 @keyframes slideIn {
-  from { transform: translateY(var(--space-2)); opacity: 0; }
+  from { transform: translateY(var(--haus-space-2)); opacity: 0; }
   to   { transform: translateY(0);   opacity: 1; }
 }
 
 /* ── Variants ── */
 
 .neutral {
-  background-color: var(--color-surface-inverse);
-  border-color: var(--color-surface-inverse);
-  color: var(--color-ink-inverse);
+  background-color: var(--haus-color-surface-inverse);
+  border-color: var(--haus-color-surface-inverse);
+  color: var(--haus-color-ink-inverse);
 }
 
 .info {
-  background-color: var(--color-info-subtle);
-  border-color: var(--color-info-border);
-  border-inline-start-color: var(--color-info-default);
-  color: var(--color-ink-primary);
+  background-color: var(--haus-color-info-subtle);
+  border-color: var(--haus-color-info-border);
+  border-inline-start-color: var(--haus-color-info-default);
+  color: var(--haus-color-ink-primary);
 }
 
 .success {
-  background-color: var(--color-success-subtle);
-  border-color: var(--color-success-border);
-  border-inline-start-color: var(--color-success-default);
-  color: var(--color-ink-primary);
+  background-color: var(--haus-color-success-subtle);
+  border-color: var(--haus-color-success-border);
+  border-inline-start-color: var(--haus-color-success-default);
+  color: var(--haus-color-ink-primary);
 }
 
 .warning {
-  background-color: var(--color-warning-subtle);
-  border-color: var(--color-warning-border);
-  border-inline-start-color: var(--color-warning-default);
-  color: var(--color-ink-primary);
+  background-color: var(--haus-color-warning-subtle);
+  border-color: var(--haus-color-warning-border);
+  border-inline-start-color: var(--haus-color-warning-default);
+  color: var(--haus-color-ink-primary);
 }
 
 .error {
-  background-color: var(--color-error-subtle);
-  border-color: var(--color-error-border);
-  border-inline-start-color: var(--color-error-default);
-  color: var(--color-ink-primary);
+  background-color: var(--haus-color-error-subtle);
+  border-color: var(--haus-color-error-border);
+  border-inline-start-color: var(--haus-color-error-default);
+  color: var(--haus-color-ink-primary);
 }
 
 /* ── Icon ── */
 
 /* One declaration reads the token and aspect-ratio squares it, rather than
-   width and height each reading --icon-sm. Two reads would take the count of
+   width and height each reading --haus-icon-sm. Two reads would take the count of
    primitives components consume from 61 to 62, which tokens.test.ts holds and
    three documents quote. */
 .icon {
   flex-shrink: 0;
-  width: var(--icon-sm);
+  width: var(--haus-icon-sm);
   aspect-ratio: 1;
 }
 
-.neutral .icon  { color: var(--color-ink-inverse);        }
-.info    .icon  { color: var(--color-info-on-subtle);      }
-.success .icon  { color: var(--color-success-on-subtle);   }
-.warning .icon  { color: var(--color-warning-on-subtle);   }
-.error   .icon  { color: var(--color-error-on-subtle);     }
+.neutral .icon  { color: var(--haus-color-ink-inverse);        }
+.info    .icon  { color: var(--haus-color-info-on-subtle);      }
+.success .icon  { color: var(--haus-color-success-on-subtle);   }
+.warning .icon  { color: var(--haus-color-warning-on-subtle);   }
+.error   .icon  { color: var(--haus-color-error-on-subtle);     }
 
 /* ── Body ── */
 
@@ -80,32 +80,32 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-gap-2xs);
+  gap: var(--haus-space-gap-2xs);
 }
 
 .title {
-  font-size: var(--type-label-size);
-  font-weight: var(--type-label-weight);
-  line-height: var(--type-label-leading);
-  letter-spacing: var(--type-label-tracking);
+  font-size: var(--haus-type-label-size);
+  font-weight: var(--haus-type-label-weight);
+  line-height: var(--haus-type-label-leading);
+  letter-spacing: var(--haus-type-label-tracking);
 }
 
 .description {
-  font-size: var(--type-body-sm-size);
-  font-weight: var(--type-body-sm-weight);
-  line-height: var(--type-body-sm-leading);
-  color: var(--color-ink-secondary);
+  font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
+  line-height: var(--haus-type-body-sm-leading);
+  color: var(--haus-color-ink-secondary);
 }
 
-.neutral .description { color: var(--color-ink-inverse); opacity: 0.8; }
+.neutral .description { color: var(--haus-color-ink-inverse); opacity: 0.8; }
 
 /* Neutral (dark) toast: action inherits inverse ink colour via cascade */
-.neutral .action { color: var(--color-ink-inverse); }
+.neutral .action { color: var(--haus-color-ink-inverse); }
 
 .titleRow {
   display: flex;
   align-items: baseline;
-  gap: var(--space-gap-sm);
+  gap: var(--haus-space-gap-sm);
   flex-wrap: wrap;
 }
 
@@ -122,13 +122,13 @@
   justify-content: center;
   width: 24px;
   height: 24px;
-  border-radius: var(--radius-marker);
+  border-radius: var(--haus-radius-marker);
   border: none;
   background: transparent;
   cursor: pointer;
   color: inherit;
   opacity: 0.6;
-  transition: opacity var(--motion-micro);
+  transition: opacity var(--haus-motion-micro);
   padding: 0;
   align-self: flex-start;
 }
@@ -136,12 +136,12 @@
 .close:hover { opacity: 1; }
 .close:focus-visible {
   outline: none;
-  box-shadow: var(--shadow-focus);
+  box-shadow: var(--haus-shadow-focus);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .toast {
-    animation-duration: var(--duration-reduced);
+    animation-duration: var(--haus-duration-reduced);
   }
 }
 

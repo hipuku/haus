@@ -1,42 +1,42 @@
 .group {
   display: flex;
   flex-direction: column;
-  gap: var(--space-gap-2xs);
+  gap: var(--haus-space-gap-2xs);
 }
 
 .groupLabel {
-  font-family: var(--font-sans);
-  font-size: var(--type-label-sm-size);
-  font-weight: var(--weight-semibold);
-  line-height: var(--type-label-sm-leading);
-  letter-spacing: var(--type-label-sm-tracking);
-  color: var(--color-ink-primary);
-  margin-block-end: var(--space-stack-xs);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-label-sm-size);
+  font-weight: var(--haus-weight-semibold);
+  line-height: var(--haus-type-label-sm-leading);
+  letter-spacing: var(--haus-type-label-sm-tracking);
+  color: var(--haus-color-ink-primary);
+  margin-block-end: var(--haus-space-stack-xs);
 }
 
 .required {
-  color: var(--color-error-default);
-  margin-inline-start: var(--space-stack-2xs);
+  color: var(--haus-color-error-default);
+  margin-inline-start: var(--haus-space-stack-2xs);
 }
 
 .options {
   display: flex;
   flex-direction: column;
-  gap: var(--space-gap-sm);
+  gap: var(--haus-space-gap-sm);
 }
 
 .horizontal {
   flex-direction: row;
   flex-wrap: wrap;
-  gap: var(--space-gap-md);
+  gap: var(--haus-space-gap-md);
 }
 
 .errorMessage {
-  font-family: var(--font-sans);
-  font-size: var(--type-label-xs-size);
-  line-height: var(--type-label-xs-leading);
-  color: var(--color-error-default);
-  margin-block-start: var(--space-stack-2xs);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-label-xs-size);
+  line-height: var(--haus-type-label-xs-leading);
+  color: var(--haus-color-error-default);
+  margin-block-start: var(--haus-space-stack-2xs);
 }
 
 /* ── Individual radio item ── */
@@ -44,14 +44,14 @@
 .radio {
   display: inline-flex;
   align-items: flex-start;
-  gap: var(--space-gap-xs);
+  gap: var(--haus-space-gap-xs);
   cursor: pointer;
   user-select: none;
 }
 
 .radio.disabled {
   cursor: not-allowed;
-  opacity: var(--opacity-disabled);
+  opacity: var(--haus-opacity-disabled);
 }
 
 .input {
@@ -65,31 +65,31 @@
 
 .circle {
   flex-shrink: 0;
-  width: var(--space-4);
-  height: var(--space-4);
+  width: var(--haus-space-4);
+  height: var(--haus-space-4);
   border-radius: 50%;
-  border: var(--border-width-thick) solid var(--color-border-strong);
-  background-color: var(--color-surface-default);
+  border: var(--haus-border-width-thick) solid var(--haus-color-border-strong);
+  background-color: var(--haus-color-surface-default);
   display: flex;
   align-items: center;
   justify-content: center;
   transition:
-    background-color var(--motion-micro),
-    border-color     var(--motion-micro);
+    background-color var(--haus-motion-micro),
+    border-color     var(--haus-motion-micro);
   margin-block-start: 1px;
 }
 
 .radio:not(.disabled):hover .circle {
-  border-color: var(--color-primary-default);
+  border-color: var(--haus-color-primary-default);
 }
 
 .input:focus-visible ~ .circle {
-  box-shadow: var(--shadow-focus);
+  box-shadow: var(--haus-shadow-focus);
   outline: none;
 }
 
 .checked .circle {
-  border-color: var(--color-primary-default);
+  border-color: var(--haus-color-primary-default);
 }
 
 .checked .circle::after {
@@ -97,19 +97,19 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: var(--color-primary-default);
+  background-color: var(--haus-color-primary-default);
 }
 
 .error .circle {
-  border-color: var(--color-error-default);
+  border-color: var(--haus-color-error-default);
 }
 
 .error.checked .circle {
-  border-color: var(--color-error-default);
+  border-color: var(--haus-color-error-default);
 }
 
 .error.checked .circle::after {
-  background-color: var(--color-error-default);
+  background-color: var(--haus-color-error-default);
 }
 
 .radioContent {
@@ -119,23 +119,23 @@
 }
 
 .radioLabel {
-  font-family: var(--font-sans);
-  font-size: var(--type-body-sm-size);
-  font-weight: var(--type-body-sm-weight);
-  line-height: var(--type-body-sm-leading);
-  color: var(--color-ink-primary);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
+  line-height: var(--haus-type-body-sm-leading);
+  color: var(--haus-color-ink-primary);
 }
 
 .radioHint {
-  font-family: var(--font-sans);
-  font-size: var(--type-label-xs-size);
-  line-height: var(--type-label-xs-leading);
-  color: var(--color-ink-secondary);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-label-xs-size);
+  line-height: var(--haus-type-label-xs-leading);
+  color: var(--haus-color-ink-secondary);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .circle {
-    transition-duration: var(--duration-reduced);
+    transition-duration: var(--haus-duration-reduced);
   }
 }
 

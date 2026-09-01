@@ -58,7 +58,7 @@ describe('components read roles, not primitives', () => {
   })
 
   it('reads no colour, radius, shadow or motion primitive', () => {
-    const banned = /^--(aronia|damson|elderberry|greengage|mango|cherry|radius|shadow|duration|ease|motion)-/
+    const banned = /^--haus-(aronia|damson|elderberry|greengage|mango|cherry|radius|shadow|duration|ease|motion)-/
     const offenders = PAST.flatMap((d) =>
       d.primitives.filter((t) => banned.test(t)).map((t) => `${d.file} ${d.property}: ${t}`),
     )
@@ -78,7 +78,7 @@ describe('components read roles, not primitives', () => {
     // because the declaration that names the primitive is not the one that
     // spends it.
     const SPACING = /^(padding|margin|gap|row-gap|column-gap)(-|$)/
-    const misuse = PAST.filter((d) => d.primitives.some((t) => /^--space-\d+$/.test(t)) && SPACING.test(d.property)).map(
+    const misuse = PAST.filter((d) => d.primitives.some((t) => /^--haus-space-\d+$/.test(t)) && SPACING.test(d.property)).map(
       (d) => `${d.file} ${d.property}`,
     )
     expect(misuse).toEqual([])
@@ -86,9 +86,9 @@ describe('components read roles, not primitives', () => {
 
   it('reads no primitive outside the documented set', () => {
     // Primitives whose own name already is the role, so no alias exists.
-    const NAMED_ROLE = /^--(font-|weight-|border-width-|tracking-|opacity-|icon-|z-|control-height-)/
+    const NAMED_ROLE = /^--haus-(font-|weight-|border-width-|tracking-|opacity-|icon-|z-|control-height-)/
     const undocumented = PAST.flatMap((d) =>
-      d.primitives.filter((t) => !/^--space-\d+$/.test(t) && !NAMED_ROLE.test(t)).map((t) => `${d.file}: ${t}`),
+      d.primitives.filter((t) => !/^--haus-space-\d+$/.test(t) && !NAMED_ROLE.test(t)).map((t) => `${d.file}: ${t}`),
     )
     expect(undocumented).toEqual([])
   })
@@ -96,7 +96,7 @@ describe('components read roles, not primitives', () => {
   it('matches the counts the docs state', () => {
     // docs/tokens.md, DESIGN.md and the semantics.css header all quote these.
     // If a component legitimately gains or loses one, update them together.
-    const sizes = PAST.filter((d) => d.primitives.some((t) => /^--space-\d+$/.test(t)))
+    const sizes = PAST.filter((d) => d.primitives.some((t) => /^--haus-space-\d+$/.test(t)))
     expect(sizes.length).toBe(31)
     expect(PAST.length - sizes.length).toBe(61)
   })
