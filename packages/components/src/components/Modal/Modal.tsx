@@ -1,8 +1,9 @@
 import React from 'react'
 import { createPortal } from 'react-dom'
+import type { Size } from '../../types'
 import styles from './Modal.module.css'
 
-export type ModalSize = 'sm' | 'md' | 'lg'
+export type ModalSize = Size
 
 interface ModalBaseProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title' | 'aria-label' | 'onClick'> {
@@ -10,6 +11,10 @@ interface ModalBaseProps
   onClose:     () => void
   size?:       ModalSize
   footer?:     React.ReactNode
+  /** Lands on the dialog rather than the backdrop, where `className` used to.
+   *  Ruling B5 put `className` on the root — here the backdrop — and this is the
+   *  named second target it asks for. */
+  dialogClassName?: string
 }
 
 /* A dialog with no accessible name is a dialog a screen reader announces as
@@ -39,7 +44,18 @@ const FOCUSABLE = [
 ].join(',')
 
 export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(function Modal(
-  { open, onClose, title, 'aria-label': ariaLabel, size = 'md', footer, className, children, ...rest },
+  {
+    open,
+    onClose,
+    title,
+    'aria-label': ariaLabel,
+    size = 'md',
+    footer,
+    className,
+    dialogClassName,
+    children,
+    ...rest
+  },
   ref,
 ) {
   const dialogRef = React.useRef<HTMLDivElement>(null)
@@ -131,12 +147,12 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(function Modal
   const dialogCls = [
     styles.dialog,
     styles[size],
-    className,
+    dialogClassName,
   ].filter(Boolean).join(' ')
 
   return createPortal(
     <div
-      className={styles.backdrop}
+      className={[styles.backdrop, className].filter(Boolean).join(' ')}
       onClick={e => { if (e.target === e.currentTarget) onClose() }}
     >
       <div

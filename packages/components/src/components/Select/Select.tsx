@@ -7,12 +7,23 @@ export interface SelectOption {
   disabled?: boolean
 }
 
+/* `size` is omitted rather than shadowed. The native attribute counts characters
+   or rows, which is not what `size` means anywhere else in this system, and a
+   prop that means one thing here and another everywhere else is worse than an
+   absent one. There is no replacement yet: `sm` and `lg` text controls are a
+   design that does not exist. */
 export interface SelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'size'> {
   label?:    string
   hint?:     string
   error?:    string
   options?:  SelectOption[]
   required?: boolean
+  /** Lands on the field itself rather than the root, for the cases where the
+   *  control needs styling and the block around it does not. Ruling B5 put
+   *  `className` on the root of every component; this is the named second
+   *  target that rule asks for rather than redirecting the one everyone
+   *  expects. */
+  controlClassName?: string
   placeholder?: string
 }
 
@@ -34,7 +45,7 @@ export interface SelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectE
  */
 export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
   function Select(
-    { label, hint, error, options, required, placeholder, disabled, className, id, children, ...rest },
+    { label, hint, error, options, required, placeholder, disabled, className, controlClassName, id, children, ...rest },
     ref
   ) {
     // Called unconditionally. See Checkbox for why.
@@ -47,11 +58,11 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
     const selectCls = [
       styles.select,
       error ? styles.error : '',
-      className,
+      controlClassName,
     ].filter(Boolean).join(' ')
 
     return (
-      <div className={styles.wrapper}>
+      <div className={[styles.wrapper, className].filter(Boolean).join(' ')}>
         {label && (
           <label htmlFor={selectId} className={styles.label}>
             {label}

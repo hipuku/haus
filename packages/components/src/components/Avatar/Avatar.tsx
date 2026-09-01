@@ -1,7 +1,13 @@
 import React from 'react'
+import type { Size } from '../../types'
 import styles from './Avatar.module.css'
 
-export type AvatarSize   = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+/**
+ * The shared scale plus `xs` and `xl`, which ruling A5 allows as a documented
+ * extension: an avatar is a picture rather than a control, and a 16px avatar in
+ * a dense table has a use that a 16px button does not.
+ */
+export type AvatarSize = Size | 'xs' | 'xl'
 export type AvatarStatus = 'online' | 'away' | 'busy' | 'offline'
 
 export interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {

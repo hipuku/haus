@@ -1,7 +1,13 @@
 import React from 'react'
+import type { Size } from '../../types'
 import styles from './Toggle.module.css'
 
-export type ToggleSize = 'sm' | 'md'
+/**
+ * Two of the three, because two are what it has designs for. Same reasoning as
+ * Button's tone: narrowing the shared union is honest, and adding an `lg` that
+ * renders at `md` to satisfy a type is not.
+ */
+export type ToggleSize = Extract<Size, 'sm' | 'md'>
 
 export interface ToggleProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'type' | 'size'> {

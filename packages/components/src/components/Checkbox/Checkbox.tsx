@@ -14,6 +14,9 @@ export interface CheckboxProps
   hint?:           string
   error?:          string
   indeterminate?:  boolean
+  /** Lands on the row holding the box and the label, where `className` used to.
+   *  The named second target ruling B5 asks for. */
+  controlClassName?: string
 }
 
 export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(
@@ -31,6 +34,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(functi
     name,
     value,
     className,
+    controlClassName,
     ...rest
   },
   ref,
@@ -74,17 +78,21 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(functi
     onChange?.(e.target.checked, e)
   }
 
+  // className goes on the root, ruling B5. It used to go on the inner <label>,
+  // which left the outer <div> unreachable by any means at all — no prop
+  // addressed it. That is the case that decided B5: a convention that has to
+  // describe a defect is not worth writing down.
   const wrapperCls = [
     styles.wrapper,
     isChecked    ? styles.checked      : '',
     indeterminate ? styles.indeterminate : '',
     error        ? styles.error        : '',
     disabled     ? styles.disabled     : '',
-    className,
+    controlClassName,
   ].filter(Boolean).join(' ')
 
   return (
-    <div>
+    <div className={className}>
       <label className={wrapperCls} htmlFor={inputId}>
         <input
           ref={setInput}

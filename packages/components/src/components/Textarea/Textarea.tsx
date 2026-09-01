@@ -6,11 +6,17 @@ export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextArea
   hint?:     string
   error?:    string
   required?: boolean
+  /** Lands on the field itself rather than the root, for the cases where the
+   *  control needs styling and the block around it does not. Ruling B5 put
+   *  `className` on the root of every component; this is the named second
+   *  target that rule asks for rather than redirecting the one everyone
+   *  expects. */
+  controlClassName?: string
 }
 
 export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   function Textarea(
-    { label, hint, error, required, disabled, className, id, ...rest },
+    { label, hint, error, required, disabled, className, controlClassName, id, ...rest },
     ref
   ) {
     // Called unconditionally. See Checkbox for why.
@@ -23,11 +29,11 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     const textareaCls = [
       styles.textarea,
       error ? styles.error : '',
-      className,
+      controlClassName,
     ].filter(Boolean).join(' ')
 
     return (
-      <div className={styles.wrapper}>
+      <div className={[styles.wrapper, className].filter(Boolean).join(' ')}>
         {label && (
           <label htmlFor={textareaId} className={styles.label}>
             {label}

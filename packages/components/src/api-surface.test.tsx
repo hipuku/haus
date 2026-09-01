@@ -49,6 +49,30 @@ describe('the API the README promises', () => {
     expect(ref.current, `${name} did not forward its ref`).toBeInstanceOf(HTMLElement)
   })
 
+  it.each(components)('%s lands className on the same node as its ref', (name, Component) => {
+    // Ruling B5. className used to land on a different node in almost every
+    // component — the root on six, an inner label on Checkbox so its outer div
+    // was unreachable, .inputWrap on Input, the dialog on Modal — with no
+    // documented rule, so a consumer had to read the source of each one.
+    //
+    // Deliberately not tied to the ref. The two rules point at different nodes
+    // on a wrapped control and that is correct: the ref goes to the field, which
+    // is what a caller wants to focus, and className goes to the block around
+    // it. Asserting them together was the first version of this test and it
+    // failed on every wrapped component, which is the distinction being made.
+    const { container } = render(<Component {...REQUIRED[name]} className="probe-class" />)
+    const marked = document.querySelector('.probe-class')
+    expect(marked, `${name} dropped className entirely`).not.toBeNull()
+
+    // The root of what the component rendered: a direct child of the test
+    // container, or of <body> for a component that portals.
+    const parent = marked!.parentElement
+    expect(
+      parent === container || parent === document.body,
+      `${name} put className on an inner node rather than its root`,
+    ).toBe(true)
+  })
+
   it.each(components)('%s spreads unknown props onto an element', (name, Component) => {
     // data-* is the honest probe: it is never a modelled prop, so it can only
     // arrive by being spread. Without it a consumer cannot attach a test hook,
