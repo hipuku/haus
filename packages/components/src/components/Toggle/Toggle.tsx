@@ -5,8 +5,9 @@ export type ToggleSize = 'sm' | 'md'
 
 export interface ToggleProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'type' | 'size'> {
-  /** `(checked)` rather than the change event, as Checkbox also gives. */
-  onChange?:       (checked: boolean) => void
+  /** `(checked, event)`, matching Checkbox and RadioGroup. See Checkbox for why
+   *  the event is there. */
+  onChange?:       (checked: boolean, event: React.ChangeEvent<HTMLInputElement>) => void
   label?:          string
   description?:    string
   size?:           ToggleSize
@@ -42,7 +43,7 @@ export const Toggle = React.forwardRef<HTMLInputElement, ToggleProps>(function T
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     if (!isControlled) setInternalChecked(e.target.checked)
-    onChange?.(e.target.checked)
+    onChange?.(e.target.checked, e)
   }
 
   const wrapperCls = [

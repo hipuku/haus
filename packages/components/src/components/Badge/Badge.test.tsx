@@ -9,7 +9,7 @@ describe('Badge', () => {
   })
 
   it('applies variant and appearance classes', () => {
-    render(<Badge variant="success" appearance="solid">Passed</Badge>)
+    render(<Badge tone="success" appearance="solid">Passed</Badge>)
     const cls = screen.getByText('Passed').className
     expect(cls).toContain('success')
     expect(cls).toContain('solid')
@@ -37,18 +37,18 @@ describe('Badge', () => {
   it('conveys meaning through text, not colour alone', async () => {
     // A badge that carried its meaning only in its variant colour would be
     // unreadable to a colourblind user. The text is the accessible signal.
-    render(<Badge variant="error">Failed</Badge>)
+    render(<Badge tone="error">Failed</Badge>)
     expect(screen.getByText('Failed')).toHaveTextContent('Failed')
   })
 
   it('has no axe violations across variants', async () => {
     const { container } = render(
       <>
-        <Badge variant="neutral">Neutral</Badge>
-        <Badge variant="success">Success</Badge>
-        <Badge variant="warning">Warning</Badge>
-        <Badge variant="error">Error</Badge>
-        <Badge variant="info" appearance="solid">Info</Badge>
+        <Badge tone="neutral">Neutral</Badge>
+        <Badge tone="success">Success</Badge>
+        <Badge tone="warning">Warning</Badge>
+        <Badge tone="error">Error</Badge>
+        <Badge tone="info" appearance="solid">Info</Badge>
         <Badge dot>With dot</Badge>
       </>,
     )

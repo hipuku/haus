@@ -10,8 +10,10 @@ export interface RadioOption {
 
 export interface RadioGroupProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {
-  /** `(value)` rather than the change event: a group has no single control. */
-  onChange?:   (value: string) => void
+  /** `(value, event)`, matching Checkbox and Toggle. The value first because a
+   *  group has no single control and the value is the whole point; the event
+   *  second so `event.target.name` is reachable. */
+  onChange?:   (value: string, event: React.ChangeEvent<HTMLInputElement>) => void
   name:        string
   value?:      string
   defaultValue?: string
@@ -50,9 +52,9 @@ export const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>(func
   const [internalValue, setInternalValue] = React.useState(defaultValue)
   const selected = isControlled ? value : internalValue
 
-  function handleChange(next: string) {
+  function handleChange(next: string, event: React.ChangeEvent<HTMLInputElement>) {
     if (!isControlled) setInternalValue(next)
-    onChange?.(next)
+    onChange?.(next, event)
   }
 
   const optionsCls = [
@@ -79,7 +81,7 @@ export const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>(func
       )}
 
       <div className={optionsCls}>
-        {options.map(opt => {
+        {options.map((opt, i) => {
           const isChecked = selected === opt.value
 
           const itemCls = [
@@ -89,7 +91,11 @@ export const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>(func
             opt.disabled ? styles.disabled : '',
           ].filter(Boolean).join(' ')
 
-          const inputId = `${groupId}-${opt.value}`
+          // Indexed rather than derived from the value. A value is caller data:
+          // "extra large" or "50%" or "a/b" all produce an id that htmlFor still
+          // matches but that no querySelector or CSS selector can address, and
+          // two values differing only in whitespace collide outright.
+          const inputId = `${groupId}-option-${i}`
 
           return (
             <label key={opt.value} className={itemCls} htmlFor={inputId}>
@@ -101,7 +107,7 @@ export const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>(func
                 checked={isChecked}
                 disabled={opt.disabled}
                 className={styles.input}
-                onChange={() => handleChange(opt.value)}
+                onChange={e => handleChange(opt.value, e)}
               />
               <span className={styles.circle} aria-hidden />
               <span className={styles.radioContent}>

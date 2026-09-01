@@ -80,11 +80,28 @@ describe('Button', () => {
     expect(link).not.toHaveAttribute('rel')
   })
 
-  it('applies variant and size classes', () => {
-    render(<Button variant="danger" size="lg">Delete</Button>)
+  it('applies variant, tone and size classes', () => {
+    render(<Button variant="secondary" tone="error" size="lg">Delete</Button>)
     const cls = screen.getByRole('button', { name: 'Delete' }).className
-    expect(cls).toContain('danger')
+    expect(cls).toContain('secondary')
+    expect(cls).toContain('error')
     expect(cls).toContain('lg')
+  })
+
+  it('carries no tone class when neutral', () => {
+    // The default is a weight with no meaning attached, so it should not fight
+    // the variant's own colours with an empty tone class.
+    render(<Button variant="primary">Save</Button>)
+    expect(screen.getByRole('button', { name: 'Save' }).className).not.toContain('error')
+  })
+
+  it('external is behaviour, so it stacks on any weight', () => {
+    // It used to be a variant that silently forced the text weight. A primary
+    // button that opens elsewhere is now expressible.
+    render(<Button variant="primary" external href="https://example.com">Docs</Button>)
+    const cls = screen.getByRole('link', { name: 'Docs' }).className
+    expect(cls).toContain('primary')
+    expect(cls).toContain('external')
   })
 
   it('merges className rather than replacing the component classes', () => {
@@ -110,7 +127,7 @@ describe('Button', () => {
   })
 
   it('hides the decorative external icon from assistive technology', () => {
-    render(<Button variant="external" href="https://example.com">Docs</Button>)
+    render(<Button external href="https://example.com">Docs</Button>)
     // The arrow is presentational; announcing "↗" after the label is noise.
     expect(screen.getByRole('link', { name: 'Docs' })).toBeInTheDocument()
   })
@@ -121,9 +138,9 @@ describe('Button', () => {
         <Button variant="primary">Primary</Button>
         <Button variant="secondary">Secondary</Button>
         <Button variant="ghost">Ghost</Button>
-        <Button variant="danger">Danger</Button>
+        <Button tone="error">Error</Button>
         <Button variant="text">Text</Button>
-        <Button variant="external" href="https://example.com">External</Button>
+        <Button external href="https://example.com">External</Button>
         <Button disabled>Disabled</Button>
         <Button loading>Loading</Button>
       </>,

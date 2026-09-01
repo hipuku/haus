@@ -1,5 +1,7 @@
+export type { Tone, Appearance, Size } from './types'
+
 export { Button }     from './components/Button'
-export type { ButtonProps, ButtonVariant, ButtonSize } from './components/Button'
+export type { ButtonProps, ButtonVariant, ButtonTone, ButtonSize } from './components/Button'
 
 export { Input }      from './components/Input'
 export type { InputProps } from './components/Input'
@@ -14,13 +16,13 @@ export { Textarea }   from './components/Textarea'
 export type { TextareaProps } from './components/Textarea'
 
 export { Badge }      from './components/Badge'
-export type { BadgeProps, BadgeVariant, BadgeAppearance } from './components/Badge'
+export type { BadgeProps, BadgeTone, BadgeVariant, BadgeAppearance } from './components/Badge'
 
 export { Avatar }     from './components/Avatar'
 export type { AvatarProps, AvatarSize, AvatarStatus } from './components/Avatar'
 
 export { Toast }      from './components/Toast'
-export type { ToastProps, ToastVariant } from './components/Toast'
+export type { ToastProps, ToastTone, ToastVariant } from './components/Toast'
 
 export { Modal }      from './components/Modal'
 export type { ModalProps, ModalSize } from './components/Modal'

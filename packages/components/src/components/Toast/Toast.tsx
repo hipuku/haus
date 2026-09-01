@@ -1,7 +1,11 @@
 import React from 'react'
+import type { Tone } from '../../types'
 import styles from './Toast.module.css'
 
-export type ToastVariant = 'neutral' | 'info' | 'success' | 'warning' | 'error'
+export type ToastTone = Tone
+
+/** @deprecated Renamed to `ToastTone` in 1.0, ruling A5. */
+export type ToastVariant = ToastTone
 
 /* Drawn here rather than named as icon-font classes. The package declares
    haus-tokens and the two React peers and nothing else, so a consumer without
@@ -9,7 +13,7 @@ export type ToastVariant = 'neutral' | 'info' | 'success' | 'warning' | 'error'
    indicator belongs, with no error to say why. These are the same stroke
    idiom as the dismiss button below: currentColor, 1.5 units, round caps, so
    the .icon colour rules keep working unchanged. */
-const ICONS: Record<ToastVariant, React.ReactNode> = {
+const ICONS: Record<ToastTone, React.ReactNode> = {
   neutral: (
     <>
       <circle cx="8" cy="8" r="6.25" />
@@ -46,7 +50,7 @@ const ICONS: Record<ToastVariant, React.ReactNode> = {
 }
 
 export interface ToastProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
-  variant?:     ToastVariant
+  tone?:        ToastTone
   /** Named rather than spread: it is the visible heading, not the tooltip the
    *  native title attribute would give. */
   title:        string
@@ -56,12 +60,12 @@ export interface ToastProps extends Omit<React.HTMLAttributes<HTMLDivElement>, '
 }
 
 export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(function Toast(
-  { variant = 'neutral', title, description, action, onClose, className, ...rest },
+  { tone = 'neutral', title, description, action, onClose, className, ...rest },
   ref,
 ) {
   const cls = [
     styles.toast,
-    styles[variant],
+    styles[tone],
     className,
   ].filter(Boolean).join(' ')
 
@@ -77,7 +81,7 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(function Toast
         strokeLinejoin="round"
         aria-hidden="true"
       >
-        {ICONS[variant]}
+        {ICONS[tone]}
       </svg>
 
       <div className={styles.body}>

@@ -3,8 +3,13 @@ import styles from './Checkbox.module.css'
 
 export interface CheckboxProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'type' | 'size'> {
-  /** `(checked)` rather than the change event, as Toggle also gives. */
-  onChange?:       (checked: boolean) => void
+  /**
+   * `(checked, event)`. The boolean first because it is what a caller almost
+   * always wants; the event second because without it there was no way to read
+   * `event.target.name`, which is how a form with many checkboxes tells them
+   * apart. Toggle and RadioGroup hand back the same pair.
+   */
+  onChange?:       (checked: boolean, event: React.ChangeEvent<HTMLInputElement>) => void
   label?:          string
   hint?:           string
   error?:          string
@@ -66,7 +71,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(functi
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     if (!isControlled) setInternalChecked(e.target.checked)
-    onChange?.(e.target.checked)
+    onChange?.(e.target.checked, e)
   }
 
   const wrapperCls = [
@@ -90,7 +95,12 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(functi
           checked={isControlled ? checked : undefined}
           defaultChecked={isControlled ? undefined : defaultChecked}
           disabled={disabled}
-          required={required}
+          // aria-required rather than the native attribute, as Input, Select,
+          // Textarea and RadioGroup all do. These components own their error
+          // display — there is an `error` prop and a role="alert" message — and
+          // the native attribute brings the browser's own validation bubble,
+          // which would fight it. Checkbox was the one doing the opposite.
+          aria-required={required}
           aria-invalid={!!error}
           aria-describedby={describedBy}
           className={styles.input}

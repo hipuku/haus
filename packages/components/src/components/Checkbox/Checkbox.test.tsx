@@ -4,6 +4,20 @@ import { axe } from 'vitest-axe'
 import { Checkbox } from './Checkbox'
 
 describe('Checkbox', () => {
+  it('hands back the event, so a form can tell its controls apart', () => {
+    // Checkbox, Toggle and RadioGroup all used to give only the value, and the
+    // three text controls gave only the native event. A form with many
+    // checkboxes had no way to read event.target.name and had to close over the
+    // identity of each one instead.
+    const onChange = vi.fn()
+    render(<Checkbox label="Accept" name="terms" onChange={onChange} />)
+    screen.getByRole('checkbox').click()
+
+    const [checked, event] = onChange.mock.calls[0]
+    expect(checked).toBe(true)
+    expect((event.target as HTMLInputElement).name).toBe('terms')
+  })
+
   it('checks with the keyboard, not only the mouse', async () => {
     const onChange = vi.fn()
     render(<Checkbox label="Accept terms" onChange={onChange} />)
@@ -13,7 +27,7 @@ describe('Checkbox', () => {
     expect(box).toHaveFocus()
 
     await userEvent.keyboard(' ')
-    expect(onChange).toHaveBeenLastCalledWith(true)
+    expect(onChange).toHaveBeenLastCalledWith(true, expect.objectContaining({ target: expect.anything() }))
     expect(box).toBeChecked()
   })
 
@@ -50,7 +64,7 @@ describe('Checkbox', () => {
     const onChange = vi.fn()
     render(<Checkbox label="Subscribe" onChange={onChange} />)
     await userEvent.click(screen.getByRole('checkbox', { name: /Subscribe/ }))
-    expect(onChange).toHaveBeenCalledWith(true)
+    expect(onChange).toHaveBeenCalledWith(true, expect.objectContaining({ target: expect.anything() }))
   })
 
   it('stays put when controlled and the parent does not update', async () => {
@@ -60,7 +74,7 @@ describe('Checkbox', () => {
     render(<Checkbox label="Locked" checked={false} onChange={onChange} />)
     const box = screen.getByRole('checkbox', { name: /Locked/ })
     await userEvent.click(box)
-    expect(onChange).toHaveBeenCalledWith(true)
+    expect(onChange).toHaveBeenCalledWith(true, expect.objectContaining({ target: expect.anything() }))
     expect(box).not.toBeChecked()
   })
 

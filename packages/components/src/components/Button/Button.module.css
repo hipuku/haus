@@ -97,16 +97,16 @@
   background-color: var(--color-surface-sunken);
 }
 
-.danger {
+.error {
   background-color: var(--color-error-default);
   border-color: var(--color-error-default);
   color: var(--color-error-on-default);
 }
-.danger:hover:not(:disabled) {
+.error:hover:not(:disabled) {
   background-color: var(--color-error-emphasis);
   border-color: var(--color-error-emphasis);
 }
-.danger:active:not(:disabled) {
+.error:active:not(:disabled) {
   filter: brightness(0.9);
 }
 
@@ -134,8 +134,9 @@
   text-decoration-color: currentColor;
 }
 
+/* No longer composes .text: external is behaviour now, so it stacks on whatever
+   weight the caller chose rather than silently forcing the text weight. */
 .external {
-  composes: text;
   display: inline;
 }
 

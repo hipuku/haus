@@ -11,6 +11,38 @@ const OPTIONS = [
 ]
 
 describe('RadioGroup', () => {
+  it('gives every option a usable id, whatever the value is', () => {
+    // Ids were `${groupId}-${opt.value}`, so a value with a space, a slash or a
+    // percent produced an id that htmlFor still matched but that no CSS or
+    // querySelector could address — and two values differing only in whitespace
+    // collided outright, leaving one label pointing at the other's input.
+    render(
+      <RadioGroup
+        name="size"
+        options={[
+          { value: 'extra large', label: 'Extra large' },
+          { value: 'extra  large', label: 'Extra  large' },
+          { value: '50%', label: 'Half' },
+        ]}
+      />,
+    )
+    const ids = screen.getAllByRole('radio').map(el => el.id)
+    expect(new Set(ids).size).toBe(3)
+    for (const id of ids) {
+      expect(id).toMatch(/^[A-Za-z0-9\-_:.]+$/)
+      expect(document.querySelectorAll(`#${CSS.escape(id)}`)).toHaveLength(1)
+    }
+  })
+
+  it('still labels each option after the id change', () => {
+    render(
+      <RadioGroup name="size" options={[{ value: 'a b', label: 'Spaced' }]} />,
+    )
+    // The point of an id here is htmlFor. If that broke, the label would stop
+    // naming the radio and this would find nothing.
+    expect(screen.getByRole('radio', { name: 'Spaced' })).toBeInTheDocument()
+  })
+
   it('moves selection with the arrow keys, as its role promises', async () => {
     // The container claims role="radiogroup", and a radio group is expected to
     // move selection with the arrows and hold one tab stop. Nothing tested it:
@@ -24,7 +56,7 @@ describe('RadioGroup', () => {
 
     await userEvent.keyboard('{ArrowDown}')
     expect(screen.getByRole('radio', { name: 'Medium' })).toBeChecked()
-    expect(onChange).toHaveBeenLastCalledWith('md')
+    expect(onChange).toHaveBeenLastCalledWith('md', expect.objectContaining({ target: expect.anything() }))
   })
 
   it('is one tab stop, not three', async () => {
@@ -53,7 +85,7 @@ describe('RadioGroup', () => {
     const onChange = vi.fn()
     render(<RadioGroup name="size" options={OPTIONS} onChange={onChange} />)
     await userEvent.click(screen.getByRole('radio', { name: 'Medium' }))
-    expect(onChange).toHaveBeenCalledWith('md')
+    expect(onChange).toHaveBeenCalledWith('md', expect.objectContaining({ target: expect.anything() }))
   })
 
   it('honours defaultValue', () => {
@@ -94,7 +126,7 @@ describe('RadioGroup', () => {
     const onChange = vi.fn()
     render(<RadioGroup name="size" options={OPTIONS} value="sm" onChange={onChange} />)
     await userEvent.click(screen.getByRole('radio', { name: 'Medium' }))
-    expect(onChange).toHaveBeenCalledWith('md')
+    expect(onChange).toHaveBeenCalledWith('md', expect.objectContaining({ target: expect.anything() }))
     expect(screen.getByRole('radio', { name: 'Small' })).toBeChecked()
   })
 

@@ -17,11 +17,11 @@ describe('Toggle', () => {
     expect(toggle).toHaveFocus()
 
     await userEvent.keyboard(' ')
-    expect(onChange).toHaveBeenLastCalledWith(true)
+    expect(onChange).toHaveBeenLastCalledWith(true, expect.objectContaining({ target: expect.anything() }))
     expect(toggle).toBeChecked()
 
     await userEvent.keyboard(' ')
-    expect(onChange).toHaveBeenLastCalledWith(false)
+    expect(onChange).toHaveBeenLastCalledWith(false, expect.objectContaining({ target: expect.anything() }))
     expect(toggle).not.toBeChecked()
   })
 
@@ -55,7 +55,7 @@ describe('Toggle', () => {
     const onChange = vi.fn()
     render(<Toggle label="Notifications" onChange={onChange} />)
     await userEvent.click(screen.getByRole('switch', { name: 'Notifications' }))
-    expect(onChange).toHaveBeenCalledWith(true)
+    expect(onChange).toHaveBeenCalledWith(true, expect.objectContaining({ target: expect.anything() }))
   })
 
   it('honours defaultChecked', () => {
@@ -68,7 +68,7 @@ describe('Toggle', () => {
     render(<Toggle label="Locked on" checked onChange={onChange} />)
     const toggle = screen.getByRole('switch', { name: /Locked on/ })
     await userEvent.click(toggle)
-    expect(onChange).toHaveBeenCalledWith(false)
+    expect(onChange).toHaveBeenCalledWith(false, expect.objectContaining({ target: expect.anything() }))
     expect(toggle).toBeChecked()
   })
 

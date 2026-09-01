@@ -1,18 +1,29 @@
 import React from 'react'
+import type { Appearance, Tone } from '../../types'
 import styles from './Badge.module.css'
 
-export type BadgeVariant    = 'neutral' | 'primary' | 'info' | 'success' | 'warning' | 'error'
-export type BadgeAppearance = 'subtle'  | 'solid'
+/**
+ * Badge carries one tone beyond the shared vocabulary: `primary`, the brand
+ * itself, which is a look rather than a meaning and has no equivalent on Toast.
+ * Kept because a brand-coloured badge is a real thing a consumer wants and
+ * removing it would be a loss dressed as consistency.
+ */
+export type BadgeTone = Tone | 'primary'
+
+/** @deprecated Renamed to `BadgeTone` in 1.0. `variant` meant semantics here and
+ *  visual weight on Button; ruling A5 split the two. */
+export type BadgeVariant = BadgeTone
+export type BadgeAppearance = Appearance
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
-  variant?:    BadgeVariant
+  tone?:       BadgeTone
   appearance?: BadgeAppearance
   dot?:        boolean
 }
 
 export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
   {
-    variant    = 'neutral',
+    tone       = 'neutral',
     appearance = 'subtle',
     dot        = false,
     className,
@@ -23,7 +34,7 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(function Badg
 ) {
   const cls = [
     styles.badge,
-    styles[variant],
+    styles[tone],
     styles[appearance],
     className,
   ].filter(Boolean).join(' ')

@@ -49,7 +49,7 @@ describe('Toast', () => {
     // An icon-font class name here means a consumer without that font loaded
     // gets an empty element where the severity indicator belongs, and no error
     // to say why. This asserts the icon is in the DOM and is not a class.
-    const { container } = render(<Toast title="Failed" variant="error" />)
+    const { container } = render(<Toast title="Failed" tone="error" />)
     const icon = container.querySelector('svg[aria-hidden="true"]')
     expect(icon).toBeInTheDocument()
     expect(container.querySelector('i')).not.toBeInTheDocument()
@@ -57,7 +57,7 @@ describe('Toast', () => {
   })
 
   it('applies the variant class', () => {
-    render(<Toast title="Failed" variant="error" />)
+    render(<Toast title="Failed" tone="error" />)
     expect(screen.getByRole('status').className).toContain('error')
   })
 
@@ -65,8 +65,8 @@ describe('Toast', () => {
     const { container } = render(
       <>
         <Toast title="Neutral" />
-        <Toast title="Success" variant="success" description="All good" />
-        <Toast title="Error" variant="error" onClose={vi.fn()} />
+        <Toast title="Success" tone="success" description="All good" />
+        <Toast title="Error" tone="error" onClose={vi.fn()} />
         <Toast title="With action" action={<button>Undo</button>} />
       </>,
     )
