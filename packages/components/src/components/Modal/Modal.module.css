@@ -73,7 +73,7 @@
   color: var(--color-ink-tertiary);
   transition: color var(--motion-micro), background-color var(--motion-micro);
   padding: 0;
-  margin-top: -2px;
+  margin-block-start: -2px;
 }
 
 .close:hover {

@@ -11,12 +11,12 @@
   line-height: var(--type-label-sm-leading);
   letter-spacing: var(--type-label-sm-tracking);
   color: var(--color-ink-primary);
-  margin-bottom: var(--space-stack-xs);
+  margin-block-end: var(--space-stack-xs);
 }
 
 .required {
   color: var(--color-error-default);
-  margin-left: var(--space-stack-2xs);
+  margin-inline-start: var(--space-stack-2xs);
 }
 
 .options {
@@ -36,7 +36,7 @@
   font-size: var(--type-label-xs-size);
   line-height: var(--type-label-xs-leading);
   color: var(--color-error-default);
-  margin-top: var(--space-stack-2xs);
+  margin-block-start: var(--space-stack-2xs);
 }
 
 /* ── Individual radio item ── */
@@ -76,7 +76,7 @@
   transition:
     background-color var(--motion-micro),
     border-color     var(--motion-micro);
-  margin-top: 1px;
+  margin-block-start: 1px;
 }
 
 .radio:not(.disabled):hover .circle {

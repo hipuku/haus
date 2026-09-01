@@ -114,8 +114,7 @@
   background-color: transparent;
   border-color: transparent;
   color: inherit;
-  padding-left: var(--space-inset-2xs);
-  padding-right: var(--space-inset-2xs);
+  padding-inline: var(--space-inset-2xs);
   text-decoration: underline;
   text-underline-offset: 3px;
   text-decoration-thickness: var(--border-width-default);
@@ -141,7 +140,7 @@
 }
 
 .externalIcon {
-  padding-left: 0.15em;
+  padding-inline-start: 0.15em;
 }
 
 /* ── Loading spinner ── */

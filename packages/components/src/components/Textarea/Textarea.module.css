@@ -15,7 +15,7 @@
 
 .required {
   color: var(--color-error-default);
-  margin-left: var(--space-stack-2xs);
+  margin-inline-start: var(--space-stack-2xs);
 }
 
 .textarea {

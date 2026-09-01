@@ -66,8 +66,19 @@ describe('components read roles, not primitives', () => {
   })
 
   it('reads the space ladder only for sizes, never for padding, gap or margin', () => {
-    const SIZE = /^(width|height|min-width|min-height|max-width|max-height|top|right|bottom|left|transform|flex-basis)$/
-    const misuse = PAST.filter((d) => d.primitives.some((t) => /^--space-\d+$/.test(t)) && !SIZE.test(d.property)).map(
+    // Stated as the rule it is named after rather than as an allowlist of the
+    // properties that happened to exist when it was written. The allowlist
+    // version failed on `inset-inline-end` and on a custom property the moment
+    // the components were converted to logical properties, neither of which is
+    // padding, gap or margin — it was reporting the arrival of new CSS as
+    // misuse.
+    //
+    // Known limit, unchanged by the rewrite: a value laundered through a custom
+    // property (`--pad: var(--space-4); padding: var(--pad)`) is invisible here,
+    // because the declaration that names the primitive is not the one that
+    // spends it.
+    const SPACING = /^(padding|margin|gap|row-gap|column-gap)(-|$)/
+    const misuse = PAST.filter((d) => d.primitives.some((t) => /^--space-\d+$/.test(t)) && SPACING.test(d.property)).map(
       (d) => `${d.file} ${d.property}`,
     )
     expect(misuse).toEqual([])

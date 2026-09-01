@@ -30,7 +30,7 @@
   background-color: var(--color-border-strong);
   position: relative;
   transition: background-color var(--motion-micro);
-  margin-top: 1px;
+  margin-block-start: 1px;
 }
 
 .wrapper:not(.disabled):hover .track {
@@ -55,24 +55,33 @@
 .thumb {
   position: absolute;
   top: 2px;
-  left: 2px;
+  inset-inline-start: 2px;
   width: var(--space-4);
   height: var(--space-4);
   border-radius: 50%;
   background-color: var(--color-surface-default);
   box-shadow: var(--elevation-raised);
   transition: transform var(--motion-micro);
+  /* How far the thumb travels, and which way. There is no logical equivalent of
+     translateX, so the direction is a sign the RTL rule flips: without it the
+     thumb slides out of the left-hand end of a right-to-left track. Travel is a
+     variable so a size only has to restate the distance. */
+  --thumb-travel: var(--space-4);
+  --thumb-direction: 1;
+}
+
+[dir='rtl'] .thumb {
+  --thumb-direction: -1;
 }
 
 .on .thumb {
-  transform: translateX(var(--space-4));
+  transform: translateX(calc(var(--thumb-direction) * var(--thumb-travel)));
 }
 
 /* ── Sizes ── */
 
 .sm .track { width: var(--space-7); height: var(--space-4); }
-.sm .thumb { width: var(--space-3);  height: var(--space-3);  }
-.sm.on .thumb { transform: translateX(12px); }
+.sm .thumb { width: var(--space-3);  height: var(--space-3);  --thumb-travel: 12px; }
 
 /* ── Content ── */
 

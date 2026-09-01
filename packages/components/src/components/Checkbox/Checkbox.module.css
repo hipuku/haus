@@ -37,7 +37,7 @@
   transition:
     background-color var(--motion-micro),
     border-color     var(--motion-micro);
-  margin-top: 1px; /* optical alignment with label text */
+  margin-block-start: 1px; /* optical alignment with label text */
 }
 
 .wrapper:not(.disabled):hover .box {
@@ -111,7 +111,7 @@
 
 .required {
   color: var(--color-error-default);
-  margin-left: var(--space-stack-2xs);
+  margin-inline-start: var(--space-stack-2xs);
 }
 
 .errorMessage {
@@ -120,8 +120,8 @@
   font-size: var(--type-label-xs-size);
   line-height: var(--type-label-xs-leading);
   color: var(--color-error-default);
-  margin-top: var(--space-stack-2xs);
-  padding-left: calc(var(--space-inset-md) + var(--space-inset-xs)); /* indent past checkbox + gap */
+  margin-block-start: var(--space-stack-2xs);
+  padding-inline-start: calc(var(--space-inset-md) + var(--space-inset-xs)); /* indent past checkbox + gap */
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -15,7 +15,7 @@
 
 .required {
   color: var(--color-error-default);
-  margin-left: var(--space-stack-2xs);
+  margin-inline-start: var(--space-stack-2xs);
 }
 
 .selectWrap {
@@ -62,7 +62,7 @@
 
 .chevron {
   position: absolute;
-  right: var(--space-3);
+  inset-inline-end: var(--space-3);
   pointer-events: none;
   color: var(--color-ink-tertiary);
   display: flex;

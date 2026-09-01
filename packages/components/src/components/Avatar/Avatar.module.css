@@ -42,7 +42,7 @@
 .status {
   position: absolute;
   bottom: 0;
-  right: 0;
+  inset-inline-end: 0;
   width: 35%;
   height: 35%;
   min-width: var(--space-2);
