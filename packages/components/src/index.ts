@@ -7,7 +7,7 @@ export { Input }      from './components/Input'
 export type { InputProps } from './components/Input'
 
 export { Card }       from './components/Card'
-export type { CardProps, CardVariant } from './components/Card'
+export type { CardProps, CardVariant, CardElement } from './components/Card'
 
 export { Select }     from './components/Select'
 export type { SelectProps, SelectOption } from './components/Select'
@@ -16,7 +16,7 @@ export { Textarea }   from './components/Textarea'
 export type { TextareaProps } from './components/Textarea'
 
 export { Badge }      from './components/Badge'
-export type { BadgeProps, BadgeTone, BadgeVariant, BadgeAppearance } from './components/Badge'
+export type { BadgeProps, BadgeTone, BadgeVariant, BadgeAppearance, BadgeElement } from './components/Badge'
 
 export { Avatar }     from './components/Avatar'
 export type { AvatarProps, AvatarSize, AvatarStatus } from './components/Avatar'

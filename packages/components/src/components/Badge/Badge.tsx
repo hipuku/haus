@@ -15,17 +15,24 @@ export type BadgeTone = Tone | 'primary'
 export type BadgeVariant = BadgeTone
 export type BadgeAppearance = Appearance
 
-export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
+/** See `CardElement` for why this is a plain union rather than generic polymorphism. */
+export type BadgeElement = 'span' | 'output' | 'dd' | 'li'
+
+export interface BadgeProps extends React.HTMLAttributes<HTMLElement> {
   tone?:       BadgeTone
   appearance?: BadgeAppearance
   dot?:        boolean
+  /** The element to render. A count in a definition list or a live result is a
+   *  `<dd>` or an `<output>`, not a `<span>`. */
+  as?:         BadgeElement
 }
 
-export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
+export const Badge = React.forwardRef<HTMLElement, BadgeProps>(function Badge(
   {
     tone       = 'neutral',
     appearance = 'subtle',
     dot        = false,
+    as: Element = 'span',
     className,
     children,
     ...rest
@@ -40,9 +47,9 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(function Badg
   ].filter(Boolean).join(' ')
 
   return (
-    <span ref={ref} className={cls} {...rest}>
+    <Element ref={ref as React.Ref<never>} className={cls} {...rest}>
       {dot && <span className={styles.dot} aria-hidden />}
       {children}
-    </span>
+    </Element>
   )
 })

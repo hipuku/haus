@@ -3,6 +3,27 @@ import { axe } from 'vitest-axe'
 import { Card } from './Card'
 
 describe('Card', () => {
+  it('renders the element the document needs', () => {
+    // A card is often a list item or an article. A <div> in those places is a
+    // hole in the document outline that no amount of styling fixes, and there
+    // was no way to say so: no `as`, no `asChild`, no ElementType anywhere in
+    // the package.
+    const { container } = render(
+      <ul>
+        <Card as="li">Body</Card>
+      </ul>,
+    )
+    expect(container.querySelector('li')).not.toBeNull()
+    expect(screen.getAllByRole('listitem')).toHaveLength(1)
+  })
+
+  it('keeps its classes on whatever element it becomes', () => {
+    render(<Card as="article" data-testid="c">Body</Card>)
+    const el = screen.getByTestId('c')
+    expect(el.tagName).toBe('ARTICLE')
+    expect(el.className).toContain('card')
+  })
+
   it('renders its children', () => {
     render(<Card>Contents</Card>)
     expect(screen.getByText('Contents')).toBeInTheDocument()

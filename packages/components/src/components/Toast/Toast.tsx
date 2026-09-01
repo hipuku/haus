@@ -59,6 +59,25 @@ export interface ToastProps extends Omit<React.HTMLAttributes<HTMLDivElement>, '
   onClose?:     () => void
 }
 
+/**
+ * The surface of a notice, and deliberately only that.
+ *
+ * **There is no provider, no queue, no positioning, no auto-dismiss timer and no
+ * z-index, and there will not be.** Ruling B4,
+ * `docs/decisions/0008-toast-is-presentational.md`. A toast *system* is an
+ * application concern — it owns global state, a portal, and a policy about how
+ * many notices stack and for how long — and a design system that ships one is
+ * shipping an opinion most consumers end up fighting.
+ *
+ * So a consumer owns: where toasts appear, how many, in what order, how long
+ * they stay, and the live region they are announced from. This component owns
+ * how one looks and that it is announced at all — it carries `role="status"`
+ * and `aria-live="polite"` itself, so a notice dropped into a consumer's own
+ * container is still read out.
+ *
+ * If that reads as a gap rather than a boundary, it was: the absence was
+ * undocumented until this was written, which is the whole of what B4 settled.
+ */
 export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(function Toast(
   { tone = 'neutral', title, description, action, onClose, className, ...rest },
   ref,

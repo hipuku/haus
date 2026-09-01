@@ -50,6 +50,12 @@ components, the dialog on `Modal`, the root elsewhere.
 dialog, or an `aria-label` when the design has no heading. The types require one
 of the two, since a dialog with no accessible name is announced as nothing.
 
+`Toast` is the surface of a notice and nothing else: no provider, no queue, no
+positioning, no timer. That is a boundary rather than a gap — see
+[decision 0008](../../docs/decisions/0008-toast-is-presentational.md). You own
+where notices appear and for how long; it owns how one looks, and carries its
+own `role="status"` so it is announced wherever you put it.
+
 ## The stylesheet is separate, on purpose
 
 The CSS is emitted as a standalone `styles.css` rather than injected when you

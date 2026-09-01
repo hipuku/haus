@@ -1,9 +1,54 @@
+import React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { axe } from 'vitest-axe'
 import { Modal } from './Modal'
 
 describe('Modal', () => {
+  it('can put focus on the action rather than the container', async () => {
+    // The default is safe and says nothing: focus lands on the dialog and the
+    // user tabs from the top. A confirm dialog with one obvious action should be
+    // able to start there.
+    function Harness() {
+      const confirm = React.useRef<HTMLButtonElement>(null)
+      return (
+        <Modal open onClose={() => {}} title="Delete" initialFocus={confirm}>
+          <button type="button">Cancel</button>
+          <button type="button" ref={confirm}>Delete</button>
+        </Modal>
+      )
+    }
+    render(<Harness />)
+    expect(screen.getByRole('button', { name: 'Delete' })).toHaveFocus()
+  })
+
+  it('falls back to the dialog when the initialFocus target never attached', () => {
+    // A ref pointing at nothing would otherwise focus nothing at all, which is
+    // worse than focusing the container: the keyboard user starts at <body>.
+    function Harness() {
+      const missing = React.useRef<HTMLButtonElement>(null)
+      return (
+        <Modal open onClose={() => {}} title="Delete" initialFocus={missing}>
+          <button type="button">Cancel</button>
+        </Modal>
+      )
+    }
+    render(<Harness />)
+    expect(screen.getByRole('dialog')).toHaveFocus()
+  })
+
+  it('can refuse to close on a backdrop click', async () => {
+    // A destructive confirm, or anything holding unsaved input, should not be
+    // dismissed by a misplaced click. There was no way to say so.
+    const onClose = vi.fn()
+    const { container } = render(
+      <Modal open onClose={onClose} title="Delete" dismissOnBackdrop={false}>Body</Modal>,
+    )
+    const backdrop = container.ownerDocument.querySelector('[class*="backdrop"]')!
+    await userEvent.click(backdrop as HTMLElement)
+    expect(onClose).not.toHaveBeenCalled()
+  })
+
   it('focuses the dialog on open and gives focus back on close', async () => {
     // Eight tests covered the trap and none covered the release. A dialog that
     // traps focus and then drops it on <body> leaves a keyboard user at the top

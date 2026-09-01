@@ -11,6 +11,19 @@ interface ModalBaseProps
   onClose:     () => void
   size?:       ModalSize
   footer?:     React.ReactNode
+  /**
+   * Where focus goes when the dialog opens. Defaults to the dialog itself, which
+   * is safe and says nothing: a screen reader announces the dialog and the user
+   * tabs from the top. Point it at the primary action when there is an obvious
+   * one, or at the first field on a form.
+   */
+  initialFocus?: React.RefObject<HTMLElement | null>
+  /**
+   * Whether clicking the backdrop closes the dialog. On by default, and worth
+   * turning off for anything destructive or anything holding unsaved input —
+   * a misplaced click should not discard work, and there was no way to say so.
+   */
+  dismissOnBackdrop?: boolean
   /** Lands on the dialog rather than the backdrop, where `className` used to.
    *  Ruling B5 put `className` on the root — here the backdrop — and this is the
    *  named second target it asks for. */
@@ -51,6 +64,8 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(function Modal
     'aria-label': ariaLabel,
     size = 'md',
     footer,
+    initialFocus,
+    dismissOnBackdrop = true,
     className,
     dialogClassName,
     children,
@@ -130,9 +145,14 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(function Modal
   React.useEffect(() => {
     if (!open) return
     const prev = document.activeElement as HTMLElement | null
-    dialogRef.current?.focus()
+    // The caller's target if it has one and it is actually in the document;
+    // otherwise the dialog. A ref that has not attached yet would silently
+    // focus nothing, which is worse than focusing the container.
+    const target = initialFocus?.current
+    if (target && target.isConnected) target.focus()
+    else dialogRef.current?.focus()
     return () => { prev?.focus() }
-  }, [open])
+  }, [open, initialFocus])
 
   // Prevent body scroll when open
   React.useEffect(() => {
@@ -153,7 +173,11 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(function Modal
   return createPortal(
     <div
       className={[styles.backdrop, className].filter(Boolean).join(' ')}
-      onClick={e => { if (e.target === e.currentTarget) onClose() }}
+      onClick={
+        dismissOnBackdrop
+          ? e => { if (e.target === e.currentTarget) onClose() }
+          : undefined
+      }
     >
       <div
         ref={setDialog}
