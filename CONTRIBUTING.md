@@ -57,6 +57,21 @@ ring at all for the people who need it most.
 test per component — that lets the thirteenth arrive without it.
 `api-surface.test.ts` is the pattern.
 
+## Visual regression
+
+Chromatic runs on pull requests only, not on pushes to `main`. It bills by
+snapshot — one per story, per browser, per run — and running on both events
+doubles the cost for no extra signal, since a push that came through a pull
+request has already been diffed.
+
+It needs `CHROMATIC_PROJECT_TOKEN` as a repository secret. Without it the job
+skips with a notice rather than failing: a job that fails for people who cannot
+fix it is a job everyone learns to ignore.
+
+A visual change does not fail the build. It is for a human to accept or reject,
+and failing on one would mean every intentional design change arrives as a red
+tick.
+
 ## Decisions
 
 Anything that changes what a consumer sees, or that someone will otherwise

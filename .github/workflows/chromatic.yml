@@ -1,0 +1,66 @@
+name: Chromatic
+
+# Pull requests only, and deliberately not pushes to main.
+#
+# Chromatic bills by snapshot — one per story, per browser, per run — and this
+# Storybook has roughly forty stories. Running on both events doubles that for
+# no extra signal: the diff a reviewer needs is the one against the base branch,
+# and a push to main that came through a pull request has already been diffed.
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  visual:
+    name: Visual regression
+    runs-on: ubuntu-latest
+    # Skips cleanly rather than failing red when the token is absent — on a fork,
+    # or before anyone has set it. A visual-regression job that fails for people
+    # who cannot possibly fix it teaches everyone to ignore a red tick.
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # Chromatic diffs against a baseline commit, so it needs the history to
+          # find one. With a shallow clone every run looks like the first run and
+          # every story reads as a change.
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # The packages first: the Storybook consumes the built dist, not the source.
+      - run: pnpm run build
+
+      - name: Publish to Chromatic
+        id: chromatic
+        if: ${{ env.CHROMATIC_PROJECT_TOKEN != '' }}
+        env:
+          CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+        uses: chromaui/action@v13
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          workingDir: apps/storybook
+          # Storybook is already built by the step above's dependency graph; this
+          # keeps the action from building it a second time.
+          buildScriptName: build-storybook
+          # A visual change is for a human to accept or reject. Failing the build
+          # on one would mean every intentional design change arrives as a red
+          # tick, which is how teams learn to merge past this job.
+          exitZeroOnChanges: true
+          # A story that no longer exists should stop being billed for.
+          autoAcceptChanges: false
+
+      - name: Say why this was skipped
+        if: ${{ env.CHROMATIC_PROJECT_TOKEN == '' }}
+        env:
+          CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+        run: |
+          echo "::notice::CHROMATIC_PROJECT_TOKEN is not set, so no visual diff ran."
+          echo "Add it under Settings → Secrets and variables → Actions."
