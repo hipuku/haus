@@ -5,7 +5,7 @@ first, and only cover what a consumer sees: an internal refactor with no
 observable effect does not appear here.
 
 This file starts at Unreleased. **The releases before it have no entries, and
-that is the honest position** — `haus-components` went 0.2.0 → 0.4.0 with a
+that is the honest position.** `haus-components` went 0.2.0 to 0.4.0 with a
 breaking change in between and nothing recorded it, so reconstructing those
 notes now would mean inventing them from commit messages written for a different
 purpose. Everything from here is written as it lands.
@@ -20,7 +20,7 @@ even when the hex barely moves.
 The 1.0 cut. Everything below is breaking, deliberately, and lands in one major
 rather than two so a consumer migrates once.
 
-### `haus-tokens` — breaking
+### `haus-tokens`, breaking
 
 - **Every custom property carries `--haus-`.** `--space-4` is
   `--haus-space-4`, at every layer including primitives. Unprefixed they sat in
@@ -36,7 +36,7 @@ rather than two so a consumer migrates once.
 - Added: a `require` condition and a `./package.json` export.
 - Fixed: `controlHeight` reaches the JS export, which it never did.
 
-### `haus-components` — breaking
+### `haus-components`, breaking
 
 - **`variant` is visual weight only.** Badge and Toast take `tone`; Button takes
   `variant` for weight, `tone` for meaning, and `external` as its own prop.
@@ -54,7 +54,7 @@ rather than two so a consumer migrates once.
   Modal.
 - Added: a `require` condition and a `./package.json` export.
 
-### `haus-components` — fixed
+### `haus-components`, fixed
 
 - RadioGroup never moved its drawn selection when uncontrolled: the dot stayed on
   `defaultValue` while the native input flipped.

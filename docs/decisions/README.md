@@ -6,8 +6,8 @@ An entry here is a decision rather than a description: it records what was
 chosen, what it was chosen over, and what it costs. `docs/tokens.md` describes
 the token layers as they are; these say why they are that way.
 
-**Status is about the decision, not the code.** A decision can be settled and
-unimplemented — several below are, and say so — because agreeing the contract
+**Status is about the decision rather than the code.** A decision can be settled
+and unimplemented. Several below are, and say so, because agreeing the contract
 before writing it is the point of deciding in the open. Where a decision is not
 yet true of the package, the entry names the wave that makes it true.
 

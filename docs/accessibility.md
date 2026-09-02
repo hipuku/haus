@@ -14,7 +14,7 @@ places it fails. A statement that only lists successes is marketing.
 | Every surface pairs with an ink that clears AA | `contrast.test.ts`, measured with `haus-colour-utils` |
 | The focus ring clears SC 1.4.11 at 3:1 | the same file, against three surfaces |
 | Focus is visible in forced-colors mode | `logical-properties.test.ts`, per component |
-| Controls work from the keyboard, not just the pointer | Space, arrows and tab-stop tests |
+| Controls are operable from the keyboard | Space, arrows and tab-stop tests |
 | A dialog traps focus **and gives it back** | `Modal.test.tsx` |
 | Hints describe rather than rename | `toHaveAccessibleName` / `toHaveAccessibleDescription` |
 | Components render with no DOM | `ssr.test.tsx`, in a node environment |
@@ -33,28 +33,28 @@ right fix is either a floor on the token or a documented spacing requirement
 around the control, and neither has been done.
 
 **`Select`'s open list is not themed and cannot be.** It is a native `<select>`,
-so the popup is drawn by the operating system. That is a deliberate trade —
-[decision 0011](decisions/0011-select-is-a-native-select.md) — and what the
-platform gives back is keyboard handling that is correct everywhere, a wheel
-picker on iOS, and assistive behaviour a custom listbox has to reimplement and
-then keep correct.
+so the popup is drawn by the operating system. That is a deliberate trade, in
+[decision 0011](decisions/0011-select-is-a-native-select.md). What the platform
+gives back is keyboard handling that is correct everywhere, a wheel picker on
+iOS, and assistive behaviour a custom listbox has to reimplement and then keep
+correct.
 
 ## Two things that are the consumer's
 
-**Toast is presentational.** No provider, no queue, no positioning, no timer —
-[decision 0008](decisions/0008-toast-is-presentational.md). It carries its own
+**Toast is presentational.** No provider, no queue, no positioning, no timer.
+See [decision 0008](decisions/0008-toast-is-presentational.md). It carries its own
 `role="status"`, so a notice dropped into your container is announced; where it
 appears, how many stack and for how long are yours.
 
-**Contrast is decided at the token layer, not the call site.** Every surface has
-a paired `on-*` ink and those pairs are measured. Reach past a role to a
-primitive and you have left that guarantee behind — which is what the tier guard
-in `haus-components` exists to catch.
+**Contrast is decided at the token layer.** Every surface has a paired `on-*`
+ink and those pairs are measured. Reach past a role to a primitive and you have
+left that guarantee behind, which is what the tier guard in `haus-components`
+exists to catch.
 
 ## Focus
 
-One treatment, everywhere: a double ring, `0 0 0 2px <surface>, 0 0 0 4px <focus>`
-— [decision 0001](decisions/0001-focus-is-a-double-ring.md). The inner band is
+One treatment, everywhere: a double ring, `0 0 0 2px <surface>, 0 0 0 4px <focus>`,
+in [decision 0001](decisions/0001-focus-is-a-double-ring.md). The inner band is
 the element's own backdrop, so the ring reads on a card and on the page without
 a second variant, and the outer band is the accent at full strength, because
 alpha is what made the alternatives fail.
@@ -66,8 +66,8 @@ Checkbox, Radio and Toggle draw the ring on a **sibling** of a visually hidden
 input, so a blanket `:focus-visible` outline would land on an element nobody can
 see.
 
-Rings appear for the keyboard, not the pointer. Text fields still ring on click,
-because `:focus-visible` matches them there by the browser's own heuristic.
+Rings appear for the keyboard. Text fields still ring on click, because
+`:focus-visible` matches them there by the browser's own heuristic.
 
 ## What is not covered
 
@@ -80,6 +80,6 @@ because `:focus-visible` matches them there by the browser's own heuristic.
   story under a visual diff is the missing half.
 - **No reduced-motion audit.** Components honour `prefers-reduced-motion` where
   they animate; nothing checks that they all do.
-- **Colour is not the only channel, but that is not asserted.** Status is carried
-  by tone and by an icon in Toast and Badge; no test proves a state is
-  distinguishable without colour.
+- **Nothing proves a state is distinguishable without colour.** Status is
+  carried by tone and by an icon in Toast and Badge, and no test checks that the
+  icon is doing that work.

@@ -21,7 +21,7 @@ consumer on their next install, so the pain being solved was mostly the caret
 rule rather than the package count.
 
 What is left is a sixth package on the release path and a second place a version
-is stated — two sources of truth for the same fact, which is the failure mode
+is stated. Two sources of truth for the same fact is the failure mode
 this project keeps paying for elsewhere.
 
 Tier-per-package is also what a tiered system should look like from outside. One

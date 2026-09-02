@@ -5,8 +5,8 @@
 ## Context
 
 `variant` meant three different things. On Button it mixed visual weight,
-semantics and behaviour in one union — `primary | secondary | ghost | danger |
-text | external` — where `external` also injected a glyph. On Card it meant
+semantics and behaviour in one union, `primary | secondary | ghost | danger |
+text | external`, where `external` also injected a glyph. On Card it meant
 elevation. On Badge it meant semantics, with fill split out into `appearance`.
 Button said `danger` where Badge and Toast said `error`. No `tone` prop existed
 anywhere.

@@ -38,6 +38,6 @@ the 1.x cut and a migration guide rather than on its own.
 
 **One worked example does not prove a contract.** This decision is not
 demonstrated until a second brand map exists on a codebase that was not written
-to flatter it — Vault's adoption is the first honest test, and the running note
+to flatter it. Vault's adoption is the first honest test, and the running note
 of every moment someone wants to reach past the role layer is the acceptance
 criterion.

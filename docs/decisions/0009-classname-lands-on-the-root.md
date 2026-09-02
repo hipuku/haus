@@ -20,9 +20,9 @@ a named prop for it rather than redirecting the one everybody expects.
 Easier: one rule, guessable without reading source.
 
 Harder: it moves where styles land on six components, so it is breaking for
-anyone currently relying on the old node — another entry for the 1.x guide.
+anyone currently relying on the old node, and another entry for the 1.x guide.
 
 Documenting the current placement instead was the alternative, and it was
 rejected on one case: Checkbox's outer div is currently unreachable by any means.
-That is a defect, not a convention, and a convention that has to describe a
-defect is not worth writing down.
+That is a defect. A convention that has to describe one is not worth writing
+down.

@@ -28,7 +28,7 @@ distance and its direction as variables, and a `[dir='rtl']` rule flips the sign
 Easier: the library can ship in a locale it was not written for, which is the
 difference between a component library and one component library.
 
-Harder: nothing, in practice — no public name changed, which is why it landed
+Harder: nothing, in practice. No public name changed, which is why it landed
 before the 1.x cut rather than inside it.
 
 **It is guarded rather than trusted.** The component tests run with `css: false`,

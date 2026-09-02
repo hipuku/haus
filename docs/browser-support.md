@@ -42,7 +42,7 @@ than an accident.
 Mostly **silently**, which is the part worth knowing. An unsupported
 `oklch(from …)` is an invalid declaration, and an invalid declaration is dropped:
 no console warning, no build error, and a border that is simply absent. The same
-is true of an unsupported `@layer` — the whole block is skipped, so every token
+is true of an unsupported `@layer`: the whole block is skipped, so every token
 disappears at once and components render unstyled rather than badly.
 
 There is no fallback layer and no `@supports` guard. Adding either would mean
@@ -55,6 +55,5 @@ the drift problem it exists to solve.
 - **Print.** Nothing here has a print stylesheet, and the token layer assumes a
   screen: the surfaces are near-white rather than white, and shadows carry
   elevation that print cannot show.
-- **Forced colours** is supported rather than not — every focus ring has a
-  fallback — but that is the only mode-level accommodation. See
-  [accessibility.md](accessibility.md).
+- **Forced colours** is supported. Every focus ring has a fallback, and that is
+  the only mode-level accommodation here. See [accessibility.md](accessibility.md).

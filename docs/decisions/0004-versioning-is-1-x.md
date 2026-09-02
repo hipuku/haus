@@ -28,4 +28,4 @@ Easier: the tier promise becomes explicit, and consumers stop needing a manual
 bump per package per release.
 
 Harder: breaking changes now cost a major, and the hue bins have already moved
-twice. That is the trade — the discipline is the product.
+twice. That is the trade: the discipline is the product.

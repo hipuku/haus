@@ -6,9 +6,9 @@ Key decisions made during the design and build of haus. Recorded to explain the 
 
 ## Colour space: OKLCH over hex and HSL
 
-OKLCH gives perceptual uniformity that hex and HSL don't. Equal numeric steps in L, C, or H produce equal-feeling changes to the eye, which means palette ramps and feedback scales can be authored by reasoning about perception rather than guessing at hex values. Wide-gamut support (P3) is a free consequence. Every colour in haus is defined in OKLCH; conversion to hex for tooling is a display concern, not a source-of-truth concern.
+OKLCH is perceptually uniform. Equal numeric steps in L, C, or H produce equal-feeling changes to the eye, which means palette ramps and feedback scales can be authored by reasoning about perception rather than guessing at hex values. Wide-gamut support (P3) is a free consequence. Every colour in haus is defined in OKLCH. Conversion to hex for tooling is a display concern; the OKLCH value stays the source.
 
-## Hue family bins fitted to named colours, not derived from anchors
+## Hue family bins are fitted to named colours
 
 `hueFamily` in `haus-colour-utils` reports which of eight families a colour belongs to. The
 first version binned OKLCH hue at the midpoints between the measured hues of the eight
@@ -41,7 +41,7 @@ Primitives hold raw values (no meaning, just numbers). Semantics hold intent: ro
 
 ## Role-based type system over a heading scale
 
-The type system has no h1-h6. It has roles: `display`, `heading-lg`, `heading`, `heading-sm`, `body-lg`, `body`, `body-sm`, `label`, `label-sm`, `label-xs`, `mono`. This decouples visual hierarchy from document semantics. A component author picks the role that fits the content's purpose, not the size that looks right. It also prevents the common mistake of using h1 styles on decorative text to get a large font size.
+The type system has roles rather than heading levels: `display`, `heading-lg`, `heading`, `heading-sm`, `body-lg`, `body`, `body-sm`, `label`, `label-sm`, `label-xs`, `mono`. This decouples visual hierarchy from document semantics. A component author picks the role that fits the content's purpose. Picking by the size that looks right is what produces h1 styles on decorative text.
 
 ## The four-property rule for type tokens
 
@@ -49,11 +49,11 @@ Every type role defines exactly four properties: size, weight, line-height, and 
 
 ## CSS Modules over Tailwind for components
 
-Component CSS uses CSS Modules. The token layer is plain CSS custom properties, so any consuming project can use Tailwind, vanilla CSS, or CSS-in-JS against the tokens. Keeping component styles in CSS Modules avoids coupling haus to any consumer's build tooling, and means the component styles are readable without knowing Tailwind's class vocabulary. Utility classes are a consumer's choice, not the system's.
+Component CSS uses CSS Modules. The token layer is plain CSS custom properties, so any consuming project can use Tailwind, vanilla CSS, or CSS-in-JS against the tokens. Keeping component styles in CSS Modules avoids coupling haus to any consumer's build tooling, and means the component styles are readable without knowing Tailwind's class vocabulary. Utility classes stay a consumer's choice.
 
 ## Semantic `on-*` pairing for every surface token
 
-Every surface token has a corresponding `on-*` text token: `--color-success-subtle` is paired with `--color-success-on-subtle`. This is borrowed from Material Design 3's insight that surface and text contrast should be specified together, not left for component authors to work out at usage time. It also makes contrast failures impossible to accidentally introduce: use the paired token and the contrast is guaranteed by construction.
+Every surface token has a corresponding `on-*` text token: `--color-success-subtle` is paired with `--color-success-on-subtle`. Surface and text contrast are specified together, so a component author never works out a pairing at the call site. The approach is Material Design 3's. It also makes contrast failures impossible to accidentally introduce: use the paired token and the contrast is guaranteed by construction.
 
 ## W3C Design Tokens JSON as the canonical export format
 
@@ -73,9 +73,9 @@ haus is light mode only, and dark mode is out of scope, and not a deferred layer
 
 Scope is locked in two other ways worth recording here: there is **no MCP server** and **no Figma Code Connect** integration. The product surface is the token packages, the 12 React components, and Storybook, and nothing more.
 
-## Storybook as the product, not documentation
+## Storybook is the product surface
 
-For an open-source design system, Storybook is what consumers actually read. A token that exists in `primitives.css` but has no story is a token that doesn't exist for the people using the system. The rule enforced here: nothing ships without a corresponding story. This also means the token pages are themselves a design artefact: they need to look good, not just be technically correct.
+For an open-source design system, Storybook is what consumers actually read. A token that exists in `primitives.css` but has no story is a token that doesn't exist for the people using the system. The rule enforced here: nothing ships without a corresponding story. The token pages are a design artefact in their own right, and are held to the same visual standard as the components they document.
 
 ## `prefers-reduced-motion` policy
 

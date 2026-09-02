@@ -17,13 +17,13 @@ call anywhere in the published code.
 
 Realistically, that leaves:
 
-- **A supply-chain problem** — a compromised dependency, or a published artefact
+- **A supply-chain problem.** A compromised dependency, or a published artefact
   that does not match this source.
 - **A component that renders unescaped input.** The components pass their props
   to DOM attributes; none uses `dangerouslySetInnerHTML`.
 - **A CSS injection** through a value that reaches a custom property.
   `Avatar` sets two properties from a `style` prop, derived from the `name` it is
-  given — worth knowing if a name is attacker-controlled.
+  given, which is worth knowing if a name is attacker-controlled.
 
 ## What is not
 

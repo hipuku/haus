@@ -19,9 +19,9 @@ positioning, auto-dismiss and stacking are the consumer's.
 ## Consequences
 
 Easier: the component stays a component. A toast system is an application
-concern — it owns global state, a portal and a policy about how many notices can
-stack and for how long — and a design system that ships one is shipping an
-opinion most consumers will fight.
+concern. It owns global state, a portal, and a policy about how many notices can
+stack and for how long, and a design system that ships one is shipping an opinion
+most consumers will fight.
 
 Harder: every consumer writes the queue. That is the accepted cost, and the
 boundary has to be stated **in the component's own documentation** rather than

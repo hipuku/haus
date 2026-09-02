@@ -30,6 +30,6 @@ rather than a swap.
 
 And the cost worth naming plainly: **this rules out a dark mode built on the
 brand map.** A dark theme is a polarity inversion, so under this decision it
-cannot be a brand — it would have to be a second contract, or this decision has
+cannot be a brand. It would have to be a second contract, or this decision has
 to be reopened. It is the most common question asked of a design system, and the
 answer here is "not through theming", which is a choice rather than an oversight.

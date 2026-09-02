@@ -18,8 +18,8 @@ Both consumers of this system reached the same conclusion independently and each
 recorded it in their own source. core's `Dropdown` is "a styled listbox standing
 in for `<select>`, whose native popup can't be themed". vault's `Select` is "a
 custom dropdown replacing native `<select>`". As of 2026-09-01 the replacement
-exists twice — `core/lib/use-listbox.ts` and
-`vault/src/renderer/src/hooks/useListbox.ts` — kept deliberately diffable against
+exists twice, as `core/lib/use-listbox.ts` and
+`vault/src/renderer/src/hooks/useListbox.ts`, kept deliberately diffable against
 the day one of them moves here.
 
 So the system ships the one component neither consumer uses.
@@ -37,7 +37,7 @@ every platform without being written, a wheel picker on iOS rather than a list
 squeezed into a phone viewport, and assistive-technology behaviour that a custom
 listbox has to reimplement and then keep correct through every future change.
 The `useListbox` implementations are 160 lines each, and that is the floor rather
-than the finished cost — arrow keys, Home, End, typeahead, `aria-activedescendant`
+than the finished cost: arrow keys, Home, End, typeahead, `aria-activedescendant`
 and the rule that `role="option"` must be a direct child of the listbox.
 
 What it costs is real and is the whole finding: a consumer who needs the list

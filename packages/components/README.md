@@ -22,10 +22,10 @@ import 'haus-components/styles.css'
 ```
 
 `index.css` is the four token files in the right order. They are still exported
-individually if you want to swap one — replacing `brand.css` is the documented
-case — but the order matters and getting it wrong fails silently: an unresolved
-`var()` drops the declaration with no warning, no build error, and a component
-that renders unstyled.
+individually if you want to swap one, and replacing `brand.css` is the
+documented case. The order matters, and getting it wrong fails silently: an
+unresolved `var()` drops the declaration with no warning, no build error, and a
+component that renders unstyled.
 
 Both stylesheets are in cascade layers, `haus.*`, so **your own unlayered CSS
 beats them without a specificity fight.**
@@ -65,7 +65,7 @@ dialog, or an `aria-label` when the design has no heading. The types require one
 of the two, since a dialog with no accessible name is announced as nothing.
 
 `Toast` is the surface of a notice and nothing else: no provider, no queue, no
-positioning, no timer. That is a boundary rather than a gap — see
+positioning, no timer. That is a boundary rather than a gap. See
 [decision 0008](../../docs/decisions/0008-toast-is-presentational.md). You own
 where notices appear and for how long; it owns how one looks, and carries its
 own `role="status"` so it is announced wherever you put it.
@@ -88,7 +88,7 @@ components (`Modal`, `Toggle`, `Checkbox`) use hooks but no layout effects at
 module scope, so they hydrate cleanly.
 
 Asserted in `src/ssr.test.tsx`, which runs in a node environment rather than
-jsdom — under jsdom a component can reach for `document` and get one, which is
+jsdom. Under jsdom a component can reach for `document` and get one, which is
 the mistake the test is looking for.
 
 **One exception, and it is asserted too.** An open `Modal` is a portal, and a

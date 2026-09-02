@@ -4,8 +4,8 @@
 
 ## Context
 
-The token layers are layered — `haus.primitives`, `haus.semantics`,
-`haus.motion` — and `haus-components/styles.css` is not. So it competes with a
+The token layers are layered as `haus.primitives`, `haus.semantics` and
+`haus.motion`. `haus-components/styles.css` is not. So it competes with a
 consumer's own module CSS by source order, which means whether a component's
 style or a consumer's override wins depends on import order rather than on
 anything either of them declared.
@@ -14,7 +14,7 @@ The related problem is that the package boundary has no guard. `var(--x)` for an
 undefined `--x` drops the declaration silently: no console warning, no build
 error, and a focus ring that is simply absent. Drift wrote a test that reads
 `styles.css` and asserts every role it references resolves, and it found five
-undefined roles before they reached a screen — then found a sixth defect in a
+undefined roles before they reached a screen, then found a sixth defect in a
 published package within an hour of upgrading.
 
 Three shapes were considered: export a function consumers call from their own

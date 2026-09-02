@@ -37,13 +37,13 @@ which is the rule the whole token layer rests on.
 **Generated files are generated.** `primitives.css`, `motion.css`, `index.ts`,
 `brand.ts` and `tokens.json`'s semantic block all come from
 `packages/tokens/scripts/build-tokens.ts`. Edit the source or the generator, never
-the output — `pnpm --filter haus-tokens run tokens:check` fails CI if they
+the output. `pnpm --filter haus-tokens run tokens:check` fails CI if they
 disagree, and it has already caught someone editing a comment in a generated
 file.
 
-**Components read roles, not primitives.** Two exceptions are allowed and both
-are tested: a size off the space ladder, and a primitive whose own name is
-already the role. `packages/components/src/tokens.test.ts` enforces it.
+**Components read roles.** Two primitive reads are allowed and both are tested:
+a size off the space ladder, and a primitive whose own name is already the
+role. `packages/components/src/tokens.test.ts` enforces it.
 
 **Never a physical inline-axis property.** `margin-inline-start`, not
 `margin-left`. `logical-properties.test.ts` enforces it, including the case a
@@ -53,32 +53,31 @@ rename cannot fix: a `translateX` with no `[dir='rtl']` rule to flip it.
 `box-shadow` and forced-colors drops those, so a ring without the fallback is no
 ring at all for the people who need it most.
 
-**A claim about every component wants a test that walks the barrel.** Not one
-test per component — that lets the thirteenth arrive without it.
-`api-surface.test.ts` is the pattern.
+**A claim about every component wants a test that walks the barrel.** One test
+per component lets the thirteenth arrive without it. `api-surface.test.ts` is
+the pattern.
 
 ## Visual regression
 
-Chromatic runs on pull requests only, not on pushes to `main`. It bills by
-snapshot — one per story, per browser, per run — and running on both events
-doubles the cost for no extra signal, since a push that came through a pull
-request has already been diffed.
+Chromatic runs on pull requests only. It bills by
+snapshot: one per story, per browser, per run. Running on both events doubles
+the cost for no extra signal, since a push that came through a pull request has
+already been diffed.
 
 It needs `CHROMATIC_PROJECT_TOKEN` as a repository secret. Without it the job
-skips with a notice rather than failing: a job that fails for people who cannot
-fix it is a job everyone learns to ignore.
+skips with a notice. A job that fails for people who cannot fix it is a job
+everyone learns to ignore.
 
-A visual change does not fail the build. It is for a human to accept or reject,
-and failing on one would mean every intentional design change arrives as a red
-tick.
+A visual change does not fail the build. It is for a human to accept or reject.
+Failing on one would mean every intentional design change arrives as a red tick.
 
 ## Decisions
 
 Anything that changes what a consumer sees, or that someone will otherwise
 re-litigate in six months, gets a file in [`docs/decisions/`](docs/decisions/README.md):
-context, decision, consequences, and what it was chosen *over*.
+context, decision, consequences, and what it was chosen over.
 
-A decision can be accepted and unimplemented — several are, and say so. Agreeing
+A decision can be accepted and unimplemented. Several are, and say so. Agreeing
 a contract before writing it is the point of deciding in the open.
 
 ## Commits and versions
@@ -89,7 +88,7 @@ know why. What was broken, what it now does, and what was decided against.
 Versioning is [decision 0004](docs/decisions/0004-versioning-is-1-x.md): 1.x
 everywhere, a token rename is a major at an identical value, and a contrast
 change is a major even when the hex barely moves. `RELEASING.md` has the bump
-table and the publish order — `haus-components` depends on `haus-tokens`, so
+table and the publish order. `haus-components` depends on `haus-tokens`, so
 tokens goes to npm first and the workflow enforces it.
 
 Add a `CHANGELOG.md` entry in the same commit as the change. The gap between
@@ -98,8 +97,8 @@ reconstructed honestly now.
 
 ## What not to do
 
-- Do not add a component without deciding to. Twelve is a scope, not a count —
-  widening it should cost a decision the way narrowing it would.
+- Do not add a component without deciding to. Twelve is a scope. Widening it
+  should cost a decision the way narrowing it would.
 - Do not reach past a role to a primitive to get a colour. If the role you want
   does not exist, that is the finding.
 - Do not add a second colour system for older browsers. See

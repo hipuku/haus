@@ -53,7 +53,7 @@ here. The file declares `color-scheme: light`.
 Semantic groups:
 
 - **Surface**: `--color-surface-default | subtle | raised | overlay | sunken |
-  inverse | disabled`. Elevation is expressed with shadow, not surface colour
+  inverse | disabled`. Elevation is expressed with shadow rather than surface colour
   (`raised` is the same value as `default`).
 - **Ink (text)**: `--color-ink-primary | secondary | tertiary | disabled |
   inverse | link | on-aronia`.
@@ -131,7 +131,7 @@ mango-700) exist for the cases that need white text.
 
 #### Typography roles
 
-The type system has **roles, not h1–h6**: `display`, `heading-lg`, `heading`,
+The type system has **roles rather than heading levels**: `display`, `heading-lg`, `heading`,
 `heading-sm`, `body-lg`, `body`, `body-sm`, `label`, `label-sm`, `label-xs`,
 `mono`. Every role declares exactly **four** properties, size, weight, leading and
 tracking, each as its own token (`--type-<role>-size`, `-weight`, `-leading`,
@@ -157,12 +157,12 @@ using the system wrong.
 
 ## Why OKLCH
 
-Every colour is authored in OKLCH, not hex or HSL. OKLCH is perceptually uniform:
+Every colour is authored in OKLCH, which is perceptually uniform:
 equal numeric steps in L (lightness), C (chroma), or H (hue) produce
 equal-feeling changes to the eye. That means palette ramps and feedback scales
 can be reasoned about rather than guessed, hue stays stable across lightness
 changes, and wide-gamut (P3) support comes for free. Conversion to hex is a
-display concern for tooling, never the source of truth.
+display concern for tooling; the OKLCH value stays the source.
 
 Hue separation is intentional and maintained: each feedback hue sits far enough
 from its neighbours to avoid perceptual confusion (a warning that reads as

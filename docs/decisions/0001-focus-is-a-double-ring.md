@@ -11,7 +11,7 @@ accent at 32% alpha.
 
 Only one of the three is contrast-safe. Core's, measured against its own
 surfaces, composites to 1.63:1 on a card and 1.60:1 on the page, where WCAG 2.2
-SC 1.4.11 asks for 3:1 — so the app that used it had no conforming focus
+SC 1.4.11 asks for 3:1, so the app that used it had no conforming focus
 indicator anywhere. A soft halo has the same problem in a milder form: its
 strongest pixel is not its measured contrast.
 
@@ -31,8 +31,7 @@ system's own `Highlight` colour.
 ## Consequences
 
 Easier: one treatment to test, and a contrast claim that can be computed rather
-than eyeballed — the value is derived with `haus-colour-utils` and asserted,
-not chosen.
+than eyeballed. The value is derived with `haus-colour-utils` and asserted.
 
 Harder: a 4px ring needs room. A component packed tightly against a neighbour
 will need spacing it did not need before, and a full-width input is the one

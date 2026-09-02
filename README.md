@@ -49,13 +49,13 @@ which is the one the rest of the roadmap hangs off.
 
 ## Documents
 
-- [**Decisions**](docs/decisions/README.md) — the rulings this system is built
+- [**Decisions**](docs/decisions/README.md). The rulings this system is built
   on, one file each, including the ones that are settled and not yet implemented.
-- [**Accessibility**](docs/accessibility.md) — what is checked and by what, two
+- [**Accessibility**](docs/accessibility.md). What is checked and by what, two
   known failures disclosed, and what is not covered.
-- [**Browser support**](docs/browser-support.md) — the floor, the one feature
+- [**Browser support**](docs/browser-support.md). The floor, the one feature
   that sets it, and what widening it would cost.
-- [**Tokens**](docs/tokens.md) — the layers as they are.
+- [**Tokens**](docs/tokens.md). The layers as they are.
 - [**Contributing**](CONTRIBUTING.md) · [**Changelog**](CHANGELOG.md) ·
   [**Releasing**](RELEASING.md) · [**Security**](SECURITY.md)
 
