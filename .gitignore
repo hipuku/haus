@@ -10,3 +10,4 @@ storybook-static
 
 # Tarballs from a manual `pnpm pack` (first publish of a new package)
 *.tgz
+coverage/

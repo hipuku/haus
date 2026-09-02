@@ -47,6 +47,18 @@ say so.
 Start with [0003, the brand and role split](docs/decisions/0003-brand-and-roles-are-separate-layers.md),
 which is the one the rest of the roadmap hangs off.
 
+## Documents
+
+- [**Decisions**](docs/decisions/README.md) — the rulings this system is built
+  on, one file each, including the ones that are settled and not yet implemented.
+- [**Accessibility**](docs/accessibility.md) — what is checked and by what, two
+  known failures disclosed, and what is not covered.
+- [**Browser support**](docs/browser-support.md) — the floor, the one feature
+  that sets it, and what widening it would cost.
+- [**Tokens**](docs/tokens.md) — the layers as they are.
+- [**Contributing**](CONTRIBUTING.md) · [**Changelog**](CHANGELOG.md) ·
+  [**Releasing**](RELEASING.md) · [**Security**](SECURITY.md)
+
 ## Links
 
 - **Live Storybook:** [haus.hipuku.dev](https://haus.hipuku.dev)

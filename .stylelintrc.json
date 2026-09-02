@@ -1,6 +1,10 @@
 {
-  "extends": ["stylelint-config-standard"],
-  "plugins": ["stylelint-declaration-strict-value"],
+  "extends": [
+    "stylelint-config-standard"
+  ],
+  "plugins": [
+    "stylelint-declaration-strict-value"
+  ],
   "rules": {
     "scale-unlimited/declaration-strict-value": [
       [
@@ -47,17 +51,15 @@
           "/var\\(--/"
         ],
         "disableFix": true,
-        "message": "Use a design token: `${property}` must be a var(--…), not a hardcoded value"
+        "message": "Use a design token: `${property}` must be a var(--\u2026), not a hardcoded value"
       }
     ],
-
     "custom-property-pattern": null,
     "selector-class-pattern": null,
     "declaration-empty-line-before": null,
     "no-descending-specificity": null,
     "alpha-value-notation": null,
     "color-function-notation": null,
-
     "rule-empty-line-before": null,
     "custom-property-empty-line-before": null,
     "comment-empty-line-before": null,
@@ -66,17 +68,30 @@
     "hue-degree-notation": null,
     "value-keyword-case": null,
     "declaration-block-no-redundant-longhand-properties": null,
-
-    "property-no-unknown": [true, { "ignoreProperties": ["composes"] }]
+    "property-no-unknown": [
+      true,
+      {
+        "ignoreProperties": [
+          "composes"
+        ]
+      }
+    ]
   },
   "overrides": [
     {
-      "files": ["packages/tokens/src/*.css"],
+      "files": [
+        "packages/tokens/src/*.css"
+      ],
       "rules": {
         "scale-unlimited/declaration-strict-value": null,
         "no-duplicate-selectors": null
       }
     }
   ],
-  "ignoreFiles": ["**/dist/**", "**/node_modules/**", "**/storybook-static/**"]
+  "ignoreFiles": [
+    "**/dist/**",
+    "**/node_modules/**",
+    "**/storybook-static/**",
+    "**/coverage/**"
+  ]
 }

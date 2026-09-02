@@ -42,7 +42,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
-    "prepublishOnly": "npm run build && npm run test"
+    "prepublishOnly": "npm run build && npm run test",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "chroma-js": "^3.1.2"

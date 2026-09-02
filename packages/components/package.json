@@ -43,7 +43,8 @@
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "npm run build && npm run test",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "haus-tokens": "workspace:^"

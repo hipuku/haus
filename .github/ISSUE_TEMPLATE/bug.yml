@@ -1,0 +1,44 @@
+name: Bug
+description: Something in a published package does not do what it says.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before filing: is the token you are reading namespaced? Every property
+        carries `--haus-` since 1.0, and an unprefixed one resolves to nothing
+        and drops the declaration silently — which looks like a broken component.
+  - type: dropdown
+    id: package
+    attributes:
+      label: Package
+      options:
+        - haus-tokens
+        - haus-components
+        - haus-colour-utils
+        - haus-colour-names
+        - haus-style-probe
+    validations: { required: true }
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      placeholder: haus-components 1.0.0
+    validations: { required: true }
+  - type: textarea
+    id: expected
+    attributes:
+      label: What it should do, and what it does
+      description: The claim it breaks, if there is one — a README line, a docstring, a decision record.
+    validations: { required: true }
+  - type: textarea
+    id: repro
+    attributes:
+      label: How to see it
+      description: A minimal case beats a description. A Storybook story is ideal.
+    validations: { required: true }
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and version
+      description: "The floor is Chrome 119, Safari 16.4, Firefox 128 — see docs/browser-support.md."

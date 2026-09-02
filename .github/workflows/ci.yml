@@ -47,8 +47,10 @@ jobs:
       - name: Typecheck
         run: pnpm -r run typecheck
 
+      # With coverage, so the floors in each vitest.config.ts are enforced here
+      # rather than being a number someone can run locally and ignore.
       - name: Test
-        run: pnpm -r run test
+        run: pnpm -r run test:coverage
 
       - name: Build Storybook
         run: pnpm run build-storybook

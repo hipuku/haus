@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: A security problem
+    url: https://github.com/hipuku/haus/security/advisories/new
+    about: Report privately as an advisory rather than in a public issue.
+  - name: A decision to revisit
+    url: https://github.com/hipuku/haus/tree/main/docs/decisions
+    about: Read the record first — several things that look like oversights are written down as trades.
