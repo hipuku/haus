@@ -9,10 +9,12 @@ const config: StorybookConfig = {
     { from: '../../../logo.svg', to: '/brand/logo.svg' },
     { from: '../../../wordmark.svg', to: '/brand/wordmark.svg' },
   ],
+  // essentials and interactions are gone as packages: controls, actions,
+  // viewport, backgrounds, toolbars, measure, outline and the interaction
+  // runner all moved into the core `storybook` package in 9. Listing them here
+  // is now an error rather than a no-op.
   addons: [
     '@storybook/addon-links',
-    '@storybook/addon-essentials',
-    '@storybook/addon-interactions',
     '@storybook/addon-a11y',
     '@chromatic-com/storybook',
   ],
@@ -20,9 +22,10 @@ const config: StorybookConfig = {
     name: '@storybook/react-vite',
     options: {},
   },
-  docs: {
-    autodocs: 'tag',
-  },
+  // `docs.autodocs` is gone. Tagging a meta with `autodocs` is the whole
+  // mechanism now, which is what it always meant here — the option said "only
+  // tagged components get docs" and nothing was tagged, so this generated
+  // nothing at all.
 }
 
 export default config

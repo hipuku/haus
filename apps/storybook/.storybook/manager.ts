@@ -1,5 +1,7 @@
-import { addons } from '@storybook/manager-api'
-import { create } from '@storybook/theming'
+// Both moved into the core `storybook` package in 9: @storybook/manager-api and
+// @storybook/theming no longer exist as installable packages.
+import { addons } from 'storybook/manager-api'
+import { create } from 'storybook/theming'
 
 // haus brand applied to the Storybook chrome. The wordmark and logo are served
 // from /brand/* via staticDirs in main.ts; plum is aronia (the brand primitive).

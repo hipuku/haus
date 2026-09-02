@@ -1,7 +1,7 @@
-import type { Preview } from '@storybook/react'
-import 'haus-tokens/primitives.css'
-import 'haus-tokens/semantics.css'
-import 'haus-tokens/motion.css'
+import type { Preview } from '@storybook/react-vite'
+// The barrel, in the order the four token files have to load. Storybook is a
+// consumer like any other, so it takes the import a consumer is told to take.
+import 'haus-tokens/index.css'
 // haus-components now ships a compiled stylesheet; importing the package no
 // longer pulls its CSS modules in as a side effect of consuming source.
 import 'haus-components/styles.css'
