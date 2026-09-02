@@ -17,26 +17,26 @@ const subHead: React.CSSProperties = {
   fontWeight: 500,
   letterSpacing: '0.08em',
   textTransform: 'uppercase',
-  color: 'var(--color-ink-secondary)',
-  margin: 'var(--space-5) 0 0',
+  color: 'var(--haus-color-ink-secondary)',
+  margin: 'var(--haus-space-5) 0 0',
 }
 
 /* ─── Building blocks ────────────────────────────────────────────────────── */
 
 function ColorRamp({ steps, accentStep }: { steps: [string, string][]; accentStep?: number }) {
   return (
-    <div style={{ marginTop: 'var(--space-3)' }}>
+    <div style={{ marginTop: 'var(--haus-space-3)' }}>
       <div style={{
         display: 'flex',
-        borderRadius: 'var(--radius-md)',
+        borderRadius: 'var(--haus-radius-md)',
         overflow: 'hidden',
-        border: '1px solid var(--color-border-default)',
+        border: '1px solid var(--haus-color-border-default)',
       }}>
         {steps.map(([name, value]) => (
           <div key={name} style={{ flex: 1, height: 56, background: value }} />
         ))}
       </div>
-      <div style={{ display: 'flex', marginTop: 'var(--space-1)' }}>
+      <div style={{ display: 'flex', marginTop: 'var(--haus-space-1)' }}>
         {steps.map(([name]) => {
           const step = name.split('-').pop() ?? ''
           const isAnchor = accentStep !== undefined && parseInt(step) === accentStep
@@ -44,13 +44,13 @@ function ColorRamp({ steps, accentStep }: { steps: [string, string][]; accentSte
             <div key={name} style={{ flex: 1, textAlign: 'center' }}>
               <span style={{
                 display: 'inline-block',
-                fontFamily: 'var(--font-mono)',
+                fontFamily: 'var(--haus-font-mono)',
                 fontSize: '0.5rem',
                 fontWeight: isAnchor ? 700 : 400,
-                color: isAnchor ? 'var(--color-ink-primary)' : 'var(--color-ink-secondary)',
+                color: isAnchor ? 'var(--haus-color-ink-primary)' : 'var(--haus-color-ink-secondary)',
                 ...(isAnchor ? {
-                  background: 'var(--color-surface-subtle)',
-                  border: '1px solid var(--color-border-strong)',
+                  background: 'var(--haus-color-surface-subtle)',
+                  border: '1px solid var(--haus-color-border-strong)',
                   borderRadius: '2px',
                   padding: '0 2px',
                 } : {}),
@@ -67,14 +67,14 @@ function ColorRamp({ steps, accentStep }: { steps: [string, string][]; accentSte
 
 function CompactRef({ steps }: { steps: [string, string][] }) {
   return (
-    <div style={{ marginTop: 'var(--space-2)' }}>
+    <div style={{ marginTop: 'var(--haus-space-2)' }}>
       {steps.map(([name, value]) => (
         <div key={name} style={{
           display: 'grid',
           gridTemplateColumns: '1fr 1fr',
-          gap: 'var(--space-2)',
-          padding: 'var(--space-1) 0',
-          borderBottom: '1px solid var(--color-border-default)',
+          gap: 'var(--haus-space-2)',
+          padding: 'var(--haus-space-1) 0',
+          borderBottom: '1px solid var(--haus-color-border-default)',
           alignItems: 'center',
         }}>
           <CopyChip name={name} />
@@ -94,31 +94,31 @@ function SemRow({ token, resolvedTo }: { token: string; resolvedTo: string }) {
     const base = token.replace('-on-subtle', '')
     swatch = (
       <div style={{
-        width: 44, height: 36, borderRadius: 'var(--radius-md)',
-        background: `var(--color-${base}-subtle)`,
-        border: `1px solid var(--color-${base}-border)`,
+        width: 44, height: 36, borderRadius: 'var(--haus-radius-md)',
+        background: `var(--haus-color-${base}-subtle)`,
+        border: `1px solid var(--haus-color-${base}-border)`,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}>
-        <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--type-label-size)', fontWeight: 700, color: `var(--color-${token})`, lineHeight: 1 }}>Aa</span>
+        <span style={{ fontFamily: 'var(--haus-font-sans)', fontSize: 'var(--haus-type-label-size)', fontWeight: 700, color: `var(--haus-color-${token})`, lineHeight: 1 }}>Aa</span>
       </div>
     )
   } else if (isOnDefault) {
     const base = token.replace('-on-default', '')
     swatch = (
       <div style={{
-        width: 44, height: 36, borderRadius: 'var(--radius-md)',
-        background: `var(--color-${base}-default)`,
+        width: 44, height: 36, borderRadius: 'var(--haus-radius-md)',
+        background: `var(--haus-color-${base}-default)`,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}>
-        <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--type-label-size)', fontWeight: 700, color: `var(--color-${token})`, lineHeight: 1 }}>Aa</span>
+        <span style={{ fontFamily: 'var(--haus-font-sans)', fontSize: 'var(--haus-type-label-size)', fontWeight: 700, color: `var(--haus-color-${token})`, lineHeight: 1 }}>Aa</span>
       </div>
     )
   } else {
     swatch = (
       <div style={{
-        width: 44, height: 36, borderRadius: 'var(--radius-md)',
-        background: `var(--color-${token})`,
-        border: '1px solid var(--color-border-default)',
+        width: 44, height: 36, borderRadius: 'var(--haus-radius-md)',
+        background: `var(--haus-color-${token})`,
+        border: '1px solid var(--haus-color-border-default)',
       }} />
     )
   }
@@ -203,7 +203,7 @@ const semanticGroups: SemGroup[] = [
     { token: 'border-focus',    resolvedTo: '→ primary-default' },
     { token: 'border-disabled', resolvedTo: 'damson-200'        },
   ]},
-  { heading: 'Primary: Aronia', accent: 'var(--color-primary-default)', tokens: [
+  { heading: 'Primary: Aronia', accent: 'var(--haus-color-primary-default)', tokens: [
     { token: 'primary-default',   resolvedTo: 'aronia-500' },
     { token: 'primary-hover',     resolvedTo: 'aronia-600' },
     { token: 'primary-pressed',   resolvedTo: 'aronia-700' },
@@ -211,7 +211,7 @@ const semanticGroups: SemGroup[] = [
     { token: 'primary-on-subtle', resolvedTo: 'aronia-700' },
     { token: 'primary-disabled',  resolvedTo: 'damson-200' },
   ]},
-  { heading: 'Feedback: Info (Elderberry)', accent: 'var(--color-info-default)', tokens: [
+  { heading: 'Feedback: Info (Elderberry)', accent: 'var(--haus-color-info-default)', tokens: [
     { token: 'info-subtle',     resolvedTo: 'elderberry-100' },
     { token: 'info-border',     resolvedTo: 'elderberry-200' },
     { token: 'info-default',    resolvedTo: 'elderberry-500' },
@@ -219,7 +219,7 @@ const semanticGroups: SemGroup[] = [
     { token: 'info-on-default', resolvedTo: 'damson-0'       },
     { token: 'info-emphasis',   resolvedTo: 'elderberry-900' },
   ]},
-  { heading: 'Feedback: Success (Greengage)', accent: 'var(--color-success-default)', tokens: [
+  { heading: 'Feedback: Success (Greengage)', accent: 'var(--haus-color-success-default)', tokens: [
     { token: 'success-subtle',     resolvedTo: 'greengage-100' },
     { token: 'success-border',     resolvedTo: 'greengage-200' },
     { token: 'success-default',    resolvedTo: 'greengage-500' },
@@ -227,7 +227,7 @@ const semanticGroups: SemGroup[] = [
     { token: 'success-on-default', resolvedTo: 'damson-900'    },
     { token: 'success-emphasis',   resolvedTo: 'greengage-900' },
   ]},
-  { heading: 'Feedback: Warning (Mango)', accent: 'var(--color-warning-default)', tokens: [
+  { heading: 'Feedback: Warning (Mango)', accent: 'var(--haus-color-warning-default)', tokens: [
     { token: 'warning-subtle',     resolvedTo: 'mango-100'  },
     { token: 'warning-border',     resolvedTo: 'mango-200'  },
     { token: 'warning-default',    resolvedTo: 'mango-500'  },
@@ -235,7 +235,7 @@ const semanticGroups: SemGroup[] = [
     { token: 'warning-on-default', resolvedTo: 'damson-900' },
     { token: 'warning-emphasis',   resolvedTo: 'mango-900'  },
   ]},
-  { heading: 'Feedback: Error (Cherry)', accent: 'var(--color-error-default)', tokens: [
+  { heading: 'Feedback: Error (Cherry)', accent: 'var(--haus-color-error-default)', tokens: [
     { token: 'error-subtle',     resolvedTo: 'cherry-100' },
     { token: 'error-border',     resolvedTo: 'cherry-200' },
     { token: 'error-default',    resolvedTo: 'cherry-500' },
@@ -255,7 +255,7 @@ function PrimitivesPage() {
         OKLCH throughout: perceptually uniform and wide-gamut. Aronia runs 100–950 in ten even steps; the 500 anchor is the source value for each ramp. Feedback palettes use six targeted steps: 100 (bg), 200 (border), 400 (icon), 500 (default), 700 (on-subtle text), 900 (emphasis). Never reference primitives from a component. Use the semantic layer.
       </p>
 
-      <SectionHead accent="var(--color-primary-default)">Aronia · H=300° · dusty purple</SectionHead>
+      <SectionHead accent="var(--haus-color-primary-default)">Aronia · H=300° · dusty purple</SectionHead>
       <ColorRamp steps={aronia} accentStep={500} />
       <CompactRef steps={aronia} />
 
@@ -280,7 +280,7 @@ function SemanticsPage() {
     <div style={pageWrap}>
       <h1 style={pageTitleStyle}>Semantics</h1>
       <p style={pageDescStyle}>
-        Role-based aliases between primitives and components. Each token names an intent: <code style={{ fontFamily: 'var(--font-mono)' }}>surface-sunken</code> describes purpose, not a value. Swap a theme by pointing these tokens at different primitives; nothing in components changes. <strong>on-*</strong> tokens show "Aa" on their paired background, so contrast is visible rather than implied. Click any token to copy.
+        Role-based aliases between primitives and components. Each token names an intent: <code style={{ fontFamily: 'var(--haus-font-mono)' }}>surface-sunken</code> describes purpose, not a value. Swap a theme by pointing these tokens at different primitives; nothing in components changes. <strong>on-*</strong> tokens show "Aa" on their paired background, so contrast is visible rather than implied. Click any token to copy.
       </p>
 
       {semanticGroups.map(({ heading, tokens, accent }) => (

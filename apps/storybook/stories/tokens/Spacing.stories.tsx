@@ -73,7 +73,7 @@ function SpacePage() {
     <div style={pageWrap}>
       <h1 style={pageTitleStyle}>Space</h1>
       <p style={pageDescStyle}>
-        4px grid. Every token is a multiple of 4. <code style={{ fontFamily: 'var(--font-mono)' }}>space-1</code> through <code style={{ fontFamily: 'var(--font-mono)' }}>space-6</code> for component internals: gaps, padding, inline spacing. <code style={{ fontFamily: 'var(--font-mono)' }}>space-8</code> and above for layout: section margins, page gutters.
+        4px grid. Every token is a multiple of 4. <code style={{ fontFamily: 'var(--haus-font-mono)' }}>space-1</code> through <code style={{ fontFamily: 'var(--haus-font-mono)' }}>space-6</code> for component internals: gaps, padding, inline spacing. <code style={{ fontFamily: 'var(--haus-font-mono)' }}>space-8</code> and above for layout: section margins, page gutters.
       </p>
 
       <TableGrid columns={SPACE_COLS}>
@@ -89,8 +89,8 @@ function SpacePage() {
                   height: 12,
                   width: px,
                   maxWidth: '100%',
-                  background: 'var(--color-primary-default)',
-                  borderRadius: 'var(--radius-sm)',
+                  background: 'var(--haus-color-primary-default)',
+                  borderRadius: 'var(--haus-radius-sm)',
                 }} />
               </div>
             </TD>
@@ -108,16 +108,16 @@ function RadiusPage() {
     <div style={pageWrap}>
       <h1 style={pageTitleStyle}>Radius</h1>
       <p style={pageDescStyle}>
-        Seven steps from sharp to pill. <code style={{ fontFamily: 'var(--font-mono)' }}>radius-md</code> for interactive elements, <code style={{ fontFamily: 'var(--font-mono)' }}>radius-lg</code> for cards and panels, <code style={{ fontFamily: 'var(--font-mono)' }}>radius-2xl</code> for dialogs. Use <code style={{ fontFamily: 'var(--font-mono)' }}>radius-none</code> to explicitly clear corners, and never hardcode 0.
+        Seven steps from sharp to pill. <code style={{ fontFamily: 'var(--haus-font-mono)' }}>radius-md</code> for interactive elements, <code style={{ fontFamily: 'var(--haus-font-mono)' }}>radius-lg</code> for cards and panels, <code style={{ fontFamily: 'var(--haus-font-mono)' }}>radius-2xl</code> for dialogs. Use <code style={{ fontFamily: 'var(--haus-font-mono)' }}>radius-none</code> to explicitly clear corners, and never hardcode 0.
       </p>
 
-      <div style={{ display: 'flex', gap: 'var(--space-6)', flexWrap: 'wrap', marginTop: 'var(--space-2)' }}>
+      <div style={{ display: 'flex', gap: 'var(--haus-space-6)', flexWrap: 'wrap', marginTop: 'var(--haus-space-2)' }}>
         {radius.map(({ name, value, px }) => (
-          <div key={name} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--space-2)' }}>
+          <div key={name} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--haus-space-2)' }}>
             <div style={{
               width: 96, height: 60,
-              background: 'var(--color-primary-subtle)',
-              border: '1px solid var(--color-primary-default)',
+              background: 'var(--haus-color-primary-subtle)',
+              border: '1px solid var(--haus-color-primary-default)',
               borderRadius: value,
             }} />
             <CopyChip name={name} />
@@ -136,7 +136,7 @@ function SpaceRolesPage() {
     <div style={pageWrap}>
       <h1 style={pageTitleStyle}>Space roles</h1>
       <p style={pageDescStyle}>
-        Three roles over one ladder. <code style={{ fontFamily: 'var(--font-mono)' }}>inset</code> is padding, the space inside a component between its edge and its content. <code style={{ fontFamily: 'var(--font-mono)' }}>gap</code> is space between siblings, set by the parent. <code style={{ fontFamily: 'var(--font-mono)' }}>stack</code> is margin, space a component asks for around itself. A step is the same size whichever role reads it, so the roles stay comparable, and splitting them is what lets padding be retuned later without moving page rhythm. Components read these; the ladder below them is for sizes.
+        Three roles over one ladder. <code style={{ fontFamily: 'var(--haus-font-mono)' }}>inset</code> is padding, the space inside a component between its edge and its content. <code style={{ fontFamily: 'var(--haus-font-mono)' }}>gap</code> is space between siblings, set by the parent. <code style={{ fontFamily: 'var(--haus-font-mono)' }}>stack</code> is margin, space a component asks for around itself. A step is the same size whichever role reads it, so the roles stay comparable, and splitting them is what lets padding be retuned later without moving page rhythm. Components read these; the ladder below them is for sizes.
       </p>
 
       <TableGrid columns={ROLE_COLS}>
@@ -150,7 +150,7 @@ function SpaceRolesPage() {
             <TD><CopyChip name={name} /></TD>
             <TD><span style={{ ...tokenValueStyle, whiteSpace: 'nowrap' }}>{alias}</span></TD>
             <TD><span style={{ ...tokenValueStyle, whiteSpace: 'nowrap' }}>{px}</span></TD>
-            <TD><span style={{ fontSize: 'var(--type-body-sm-size)', color: 'var(--color-ink-secondary)' }}>{use}</span></TD>
+            <TD><span style={{ fontSize: 'var(--haus-type-body-sm-size)', color: 'var(--haus-color-ink-secondary)' }}>{use}</span></TD>
           </React.Fragment>
         ))}
       </TableGrid>
@@ -177,14 +177,14 @@ function RadiusRolesPage() {
             <TD>
               <div style={{
                 width: 56, height: 32,
-                background: 'var(--color-primary-subtle)',
-                border: '1px solid var(--color-primary-default)',
+                background: 'var(--haus-color-primary-subtle)',
+                border: '1px solid var(--haus-color-primary-default)',
                 borderRadius: value,
               }} />
             </TD>
             <TD><CopyChip name={name} /></TD>
             <TD><span style={{ ...tokenValueStyle, whiteSpace: 'nowrap' }}>{alias}</span></TD>
-            <TD><span style={{ fontSize: 'var(--type-body-sm-size)', color: 'var(--color-ink-secondary)' }}>{use}</span></TD>
+            <TD><span style={{ fontSize: 'var(--haus-type-body-sm-size)', color: 'var(--haus-color-ink-secondary)' }}>{use}</span></TD>
           </React.Fragment>
         ))}
       </TableGrid>
@@ -197,7 +197,7 @@ function BorderWidthPage() {
     <div style={pageWrap}>
       <h1 style={pageTitleStyle}>Border Width</h1>
       <p style={pageDescStyle}>
-        Two widths. <code style={{ fontFamily: 'var(--font-mono)' }}>default</code> (1px) for structure: inputs, dividers, cards. <code style={{ fontFamily: 'var(--font-mono)' }}>thick</code> (2px) for active and selected states only. Never introduce a third.
+        Two widths. <code style={{ fontFamily: 'var(--haus-font-mono)' }}>default</code> (1px) for structure: inputs, dividers, cards. <code style={{ fontFamily: 'var(--haus-font-mono)' }}>thick</code> (2px) for active and selected states only. Never introduce a third.
       </p>
 
       <TableGrid columns={BORDER_COLS}>
@@ -210,12 +210,12 @@ function BorderWidthPage() {
           <React.Fragment key={name}>
             <TD>
               <div style={{ display: 'flex', alignItems: 'center', minWidth: 44 }}>
-                <div style={{ width: 44, borderBottom: `${value} solid var(--color-ink-primary)` }} />
+                <div style={{ width: 44, borderBottom: `${value} solid var(--haus-color-ink-primary)` }} />
               </div>
             </TD>
             <TD><CopyChip name={name} /></TD>
             <TD><span style={{ ...tokenValueStyle, whiteSpace: 'nowrap' }}>{value}</span></TD>
-            <TD><span style={{ fontSize: 'var(--type-body-sm-size)', color: 'var(--color-ink-secondary)', whiteSpace: 'nowrap' }}>{use}</span></TD>
+            <TD><span style={{ fontSize: 'var(--haus-type-body-sm-size)', color: 'var(--haus-color-ink-secondary)', whiteSpace: 'nowrap' }}>{use}</span></TD>
           </React.Fragment>
         ))}
       </TableGrid>

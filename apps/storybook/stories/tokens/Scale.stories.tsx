@@ -22,12 +22,12 @@ const breakpoints = [
 
 function BpBar({ value }: { value: number }) {
   return (
-    <div style={{ position: 'relative', width: '100%', height: 10, background: 'var(--color-border-default)', borderRadius: 'var(--radius-full)', overflow: 'hidden' }}>
+    <div style={{ position: 'relative', width: '100%', height: 10, background: 'var(--haus-color-border-default)', borderRadius: 'var(--haus-radius-full)', overflow: 'hidden' }}>
       <div style={{
         position: 'absolute', left: 0, top: 0, height: '100%',
         width: `${(value / MAX_BP) * 100}%`,
-        background: 'var(--color-primary-default)',
-        borderRadius: 'var(--radius-full)',
+        background: 'var(--haus-color-primary-default)',
+        borderRadius: 'var(--haus-radius-full)',
       }} />
     </div>
   )
@@ -40,7 +40,7 @@ function BreakpointsPage() {
     <div style={pageWrap}>
       <h1 style={pageTitleStyle}>Layout</h1>
       <p style={pageDescStyle}>
-        JS constants, not CSS custom properties, because custom properties can't be used inside <code style={{ fontFamily: 'var(--font-mono)' }}>@media</code> query conditions. Import from <code style={{ fontFamily: 'var(--font-mono)' }}>haus-tokens</code> and use in Tailwind's <code style={{ fontFamily: 'var(--font-mono)' }}>screens</code> config or style-in-JS.
+        JS constants, not CSS custom properties, because custom properties can't be used inside <code style={{ fontFamily: 'var(--haus-font-mono)' }}>@media</code> query conditions. Import from <code style={{ fontFamily: 'var(--haus-font-mono)' }}>haus-tokens</code> and use in Tailwind's <code style={{ fontFamily: 'var(--haus-font-mono)' }}>screens</code> config or style-in-JS.
       </p>
 
       <TableGrid columns={BP_COLS}>
@@ -52,13 +52,13 @@ function BreakpointsPage() {
         {breakpoints.map(({ name, value, use }) => (
           <React.Fragment key={name}>
             <TD>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--type-mono-size)', fontWeight: 500, color: 'var(--color-ink-primary)', whiteSpace: 'nowrap' }}>
+              <span style={{ fontFamily: 'var(--haus-font-mono)', fontSize: 'var(--haus-type-mono-size)', fontWeight: 500, color: 'var(--haus-color-ink-primary)', whiteSpace: 'nowrap' }}>
                 tokens.{name}
               </span>
             </TD>
             <TD><BpBar value={value} /></TD>
             <TD><span style={{ ...tokenValueStyle, whiteSpace: 'nowrap' }}>{value}px</span></TD>
-            <TD><span style={{ fontSize: 'var(--type-body-sm-size)', color: 'var(--color-ink-secondary)', whiteSpace: 'nowrap' }}>{use}</span></TD>
+            <TD><span style={{ fontSize: 'var(--haus-type-body-sm-size)', color: 'var(--haus-color-ink-secondary)', whiteSpace: 'nowrap' }}>{use}</span></TD>
           </React.Fragment>
         ))}
       </TableGrid>
@@ -66,10 +66,10 @@ function BreakpointsPage() {
       <Callout label="Usage">
         <pre style={{
           margin: 0,
-          fontFamily: 'var(--font-mono)',
-          fontSize: 'var(--type-mono-size)',
-          color: 'var(--color-ink-secondary)',
-          lineHeight: 'var(--type-mono-leading)',
+          fontFamily: 'var(--haus-font-mono)',
+          fontSize: 'var(--haus-type-mono-size)',
+          color: 'var(--haus-color-ink-secondary)',
+          lineHeight: 'var(--haus-type-mono-leading)',
           overflowX: 'auto',
         }}>{`import { tokens } from 'haus-tokens'
 

@@ -6,11 +6,21 @@ import React, { useState } from 'react'
 
 /* ─── Copy-to-clipboard chip ─────────────────────────────────────────────── */
 
+/**
+ * The token name, as documentation and as something to paste.
+ *
+ * `name` is the suffix — `color-surface-default` — and the namespace is added
+ * here. Every caller passes it that way, so putting the prefix in one place is
+ * what stopped these pages handing out `var(--color-surface-default)` after
+ * ruling A3 namespaced everything: a name that no longer exists, on the page
+ * whose entire job is to tell you the name.
+ */
 export function CopyChip({ name }: { name: string }) {
+  const property = `--haus-${name}`
   const [flash, setFlash] = useState(false)
 
   function copy() {
-    void navigator.clipboard.writeText(`var(--${name})`)
+    void navigator.clipboard.writeText(`var(${property})`)
     setFlash(true)
     setTimeout(() => setFlash(false), 1400)
   }
@@ -18,31 +28,31 @@ export function CopyChip({ name }: { name: string }) {
   return (
     <button
       onClick={copy}
-      title={`Copy var(--${name})`}
+      title={`Copy var(${property})`}
       style={{
         all: 'unset',
         display: 'inline-flex',
         alignItems: 'center',
-        gap: 'var(--space-1)',
-        fontFamily: 'var(--font-mono)',
-        fontSize: 'var(--type-mono-size)',
-        fontWeight: 'var(--weight-medium)' as React.CSSProperties['fontWeight'],
-        color: flash ? 'var(--color-success-emphasis)' : 'var(--color-ink-primary)',
+        gap: 'var(--haus-space-1)',
+        fontFamily: 'var(--haus-font-mono)',
+        fontSize: 'var(--haus-type-mono-size)',
+        fontWeight: 'var(--haus-weight-medium)' as React.CSSProperties['fontWeight'],
+        color: flash ? 'var(--haus-color-success-emphasis)' : 'var(--haus-color-ink-primary)',
         cursor: 'pointer',
         transition: 'color 150ms',
         whiteSpace: 'nowrap',
-        borderRadius: 'var(--radius-sm)',
-        padding: '1px var(--space-1)',
-        background: flash ? 'var(--color-success-subtle)' : 'transparent',
+        borderRadius: 'var(--haus-radius-sm)',
+        padding: '1px var(--haus-space-1)',
+        background: flash ? 'var(--haus-color-success-subtle)' : 'transparent',
       }}
     >
       <span style={{
-        fontSize: 'var(--type-label-xs-size)',
+        fontSize: 'var(--haus-type-label-xs-size)',
         opacity: flash ? 1 : 0,
         transition: 'opacity 150ms',
-        color: 'var(--color-success-emphasis)',
+        color: 'var(--haus-color-success-emphasis)',
       }}>✓</span>
-      {flash ? 'copied' : `--${name}`}
+      {flash ? 'copied' : property}
     </button>
   )
 }
@@ -50,9 +60,9 @@ export function CopyChip({ name }: { name: string }) {
 /* ─── Page wrapper ───────────────────────────────────────────────────────── */
 
 export const pageWrap: React.CSSProperties = {
-  fontFamily: 'var(--font-sans)',
-  padding: 'var(--space-8)',
-  background: 'var(--color-surface-default)',
+  fontFamily: 'var(--haus-font-sans)',
+  padding: 'var(--haus-space-8)',
+  background: 'var(--haus-color-surface-default)',
   maxWidth: 960,
   minHeight: '100vh',
   boxSizing: 'border-box',
@@ -61,34 +71,34 @@ export const pageWrap: React.CSSProperties = {
 /* ─── Page title ─────────────────────────────────────────────────────────── */
 
 export const pageTitleStyle: React.CSSProperties = {
-  fontFamily: 'var(--font-sans)',
-  fontSize: 'var(--type-heading-lg-size)',
-  fontWeight: 'var(--type-heading-lg-weight)' as React.CSSProperties['fontWeight'],
-  lineHeight: 'var(--type-heading-lg-leading)',
-  letterSpacing: 'var(--type-heading-lg-tracking)',
-  color: 'var(--color-ink-primary)',
-  margin: '0 0 var(--space-1)',
+  fontFamily: 'var(--haus-font-sans)',
+  fontSize: 'var(--haus-type-heading-lg-size)',
+  fontWeight: 'var(--haus-type-heading-lg-weight)' as React.CSSProperties['fontWeight'],
+  lineHeight: 'var(--haus-type-heading-lg-leading)',
+  letterSpacing: 'var(--haus-type-heading-lg-tracking)',
+  color: 'var(--haus-color-ink-primary)',
+  margin: '0 0 var(--haus-space-1)',
 }
 
 /* ─── Page description ───────────────────────────────────────────────────── */
 
 export const pageDescStyle: React.CSSProperties = {
-  fontSize: 'var(--type-body-size)',
-  fontWeight: 'var(--type-body-weight)' as React.CSSProperties['fontWeight'],
-  lineHeight: 'var(--type-body-leading)',
-  color: 'var(--color-ink-secondary)',
-  margin: '0 0 var(--space-6)',
+  fontSize: 'var(--haus-type-body-size)',
+  fontWeight: 'var(--haus-type-body-weight)' as React.CSSProperties['fontWeight'],
+  lineHeight: 'var(--haus-type-body-leading)',
+  color: 'var(--haus-color-ink-secondary)',
+  margin: '0 0 var(--haus-space-6)',
   maxWidth: 640,
 }
 
 /* ─── Column label ───────────────────────────────────────────────────────── */
 
 export const colLabelStyle: React.CSSProperties = {
-  fontSize: 'var(--type-label-xs-size)',
-  fontWeight: 'var(--weight-semibold)' as React.CSSProperties['fontWeight'],
-  letterSpacing: 'var(--tracking-widest)',
+  fontSize: 'var(--haus-type-label-xs-size)',
+  fontWeight: 'var(--haus-weight-semibold)' as React.CSSProperties['fontWeight'],
+  letterSpacing: 'var(--haus-tracking-widest)',
   textTransform: 'uppercase',
-  color: 'var(--color-ink-secondary)',
+  color: 'var(--haus-color-ink-secondary)',
   whiteSpace: 'nowrap',
 }
 
@@ -109,17 +119,17 @@ export function ColLabel({ icon, children }: { icon?: string; children?: React.R
 /* ─── Token name + value ─────────────────────────────────────────────────── */
 
 export const tokenNameStyle: React.CSSProperties = {
-  fontFamily: 'var(--font-mono)',
-  fontSize: 'var(--type-mono-size)',
-  fontWeight: 'var(--weight-medium)' as React.CSSProperties['fontWeight'],
-  color: 'var(--color-ink-primary)',
+  fontFamily: 'var(--haus-font-mono)',
+  fontSize: 'var(--haus-type-mono-size)',
+  fontWeight: 'var(--haus-weight-medium)' as React.CSSProperties['fontWeight'],
+  color: 'var(--haus-color-ink-primary)',
   whiteSpace: 'nowrap',
 }
 
 export const tokenValueStyle: React.CSSProperties = {
-  fontFamily: 'var(--font-mono)',
-  fontSize: 'var(--type-mono-size)',
-  color: 'var(--color-ink-secondary)',
+  fontFamily: 'var(--haus-font-mono)',
+  fontSize: 'var(--haus-type-mono-size)',
+  color: 'var(--haus-color-ink-secondary)',
   whiteSpace: 'nowrap',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
@@ -145,8 +155,8 @@ export function TableGrid({
       style={{
         display: 'grid',
         gridTemplateColumns: columns,
-        columnGap: 'var(--space-4)',
-        marginTop: 'var(--space-2)',
+        columnGap: 'var(--haus-space-4)',
+        marginTop: 'var(--haus-space-2)',
         ...style,
       }}
     >
@@ -170,7 +180,7 @@ export function TH({
         display: 'flex',
         alignItems: 'center',
         gap: '5px',
-        padding: 'var(--space-2) 0',
+        padding: 'var(--haus-space-2) 0',
         ...style,
       }}
     >
@@ -189,10 +199,10 @@ export function TableDivider({ weight = 'header' }: { weight?: 'header' | 'row' 
     <div
       style={{
         gridColumn: '1 / -1',
-        height: weight === 'header' ? 'var(--border-width-thick)' : 'var(--border-width-default)',
+        height: weight === 'header' ? 'var(--haus-border-width-thick)' : 'var(--haus-border-width-default)',
         background: weight === 'header'
-          ? 'var(--color-border-strong)'
-          : 'var(--color-border-default)',
+          ? 'var(--haus-color-border-strong)'
+          : 'var(--haus-color-border-default)',
         margin: 0,
       }}
     />
@@ -214,8 +224,8 @@ export function TD({
       style={{
         display: 'flex',
         alignItems: align === 'center' ? 'center' : 'flex-start',
-        padding: 'var(--space-2) 0',
-        borderBottom: '1px solid var(--color-border-default)',
+        padding: 'var(--haus-space-2) 0',
+        borderBottom: '1px solid var(--haus-color-border-default)',
         ...style,
       }}
     >
@@ -240,18 +250,18 @@ export function SectionHead({
   return (
     <p
       style={{
-        fontSize: 'var(--type-label-xs-size)',
-        fontWeight: 'var(--weight-medium)' as React.CSSProperties['fontWeight'],
-        letterSpacing: 'var(--tracking-widest)',
+        fontSize: 'var(--haus-type-label-xs-size)',
+        fontWeight: 'var(--haus-weight-medium)' as React.CSSProperties['fontWeight'],
+        letterSpacing: 'var(--haus-tracking-widest)',
         textTransform: 'uppercase',
-        color: 'var(--color-ink-secondary)',
-        margin: `var(--space-8) calc(-1 * var(--space-2)) var(--space-3)`,
-        padding: `var(--space-1) var(--space-2)`,
-        background: 'var(--color-surface-subtle)',
-        borderRadius: 'var(--radius-sm)',
+        color: 'var(--haus-color-ink-secondary)',
+        margin: `var(--haus-space-8) calc(-1 * var(--haus-space-2)) var(--haus-space-3)`,
+        padding: `var(--haus-space-1) var(--haus-space-2)`,
+        background: 'var(--haus-color-surface-subtle)',
+        borderRadius: 'var(--haus-radius-sm)',
         whiteSpace: 'nowrap',
         ...(accent
-          ? { borderLeft: `3px solid ${accent}`, paddingLeft: 'var(--space-3)' }
+          ? { borderLeft: `3px solid ${accent}`, paddingLeft: 'var(--haus-space-3)' }
           : {}),
       }}
     >
@@ -266,14 +276,14 @@ type CalloutVariant = 'neutral' | 'info'
 
 const calloutTokens: Record<CalloutVariant, { bg: string; border: string; text: string }> = {
   neutral: {
-    bg:     'var(--color-surface-subtle)',
-    border: 'var(--color-border-default)',
-    text:   'var(--color-ink-secondary)',
+    bg:     'var(--haus-color-surface-subtle)',
+    border: 'var(--haus-color-border-default)',
+    text:   'var(--haus-color-ink-secondary)',
   },
   info: {
-    bg:     'var(--color-info-subtle)',
-    border: 'var(--color-info-border)',
-    text:   'var(--color-info-on-subtle)',
+    bg:     'var(--haus-color-info-subtle)',
+    border: 'var(--haus-color-info-border)',
+    text:   'var(--haus-color-info-on-subtle)',
   },
 }
 
@@ -294,20 +304,20 @@ export function Callout({
   return (
     <div
       style={{
-        marginTop: 'var(--space-10)',
-        padding: `var(--space-4) var(--space-5)`,
+        marginTop: 'var(--haus-space-10)',
+        padding: `var(--haus-space-4) var(--haus-space-5)`,
         background: t.bg,
         border: `1px solid ${t.border}`,
-        borderRadius: 'var(--radius-lg)',
+        borderRadius: 'var(--haus-radius-lg)',
       }}
     >
       {label && (
         <p
           style={{
-            margin: `0 0 var(--space-2)`,
-            fontSize: 'var(--type-label-xs-size)',
-            fontWeight: 'var(--weight-semibold)' as React.CSSProperties['fontWeight'],
-            letterSpacing: 'var(--tracking-widest)',
+            margin: `0 0 var(--haus-space-2)`,
+            fontSize: 'var(--haus-type-label-xs-size)',
+            fontWeight: 'var(--haus-weight-semibold)' as React.CSSProperties['fontWeight'],
+            letterSpacing: 'var(--haus-tracking-widest)',
             textTransform: 'uppercase',
             color: t.text,
           }}
@@ -317,8 +327,8 @@ export function Callout({
       )}
       <div
         style={{
-          fontSize: 'var(--type-body-sm-size)',
-          lineHeight: 'var(--type-body-sm-leading)',
+          fontSize: 'var(--haus-type-body-sm-size)',
+          lineHeight: 'var(--haus-type-body-sm-leading)',
           color: t.text,
         }}
       >
@@ -342,15 +352,15 @@ export function PlayButton({
       onClick={onClick}
       aria-label="Play animation"
       style={{
-        fontFamily: 'var(--font-mono)',
-        fontSize: 'var(--type-label-xs-size)',
-        color: 'var(--color-primary-on-subtle)',
-        background: 'var(--color-primary-subtle)',
+        fontFamily: 'var(--haus-font-mono)',
+        fontSize: 'var(--haus-type-label-xs-size)',
+        color: 'var(--haus-color-primary-on-subtle)',
+        background: 'var(--haus-color-primary-subtle)',
         border: 'none',
-        borderRadius: 'var(--radius-sm)',
+        borderRadius: 'var(--haus-radius-sm)',
         padding: compact
-          ? `var(--space-1) var(--space-2)`
-          : `var(--space-1) var(--space-2)`,
+          ? `var(--haus-space-1) var(--haus-space-2)`
+          : `var(--haus-space-1) var(--haus-space-2)`,
         cursor: 'pointer',
         whiteSpace: 'nowrap',
         flexShrink: 0,

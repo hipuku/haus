@@ -13,9 +13,9 @@ const TYPE_COLS = 'auto auto auto 1fr'
 const ICON_COLS = 'auto auto auto 1fr'
 
 const tokenMeta: React.CSSProperties = {
-  fontFamily: 'var(--font-mono)',
+  fontFamily: 'var(--haus-font-mono)',
   fontSize: '0.6875rem',
-  color: 'var(--color-ink-secondary)',
+  color: 'var(--haus-color-ink-secondary)',
   whiteSpace: 'nowrap',
 }
 
@@ -30,17 +30,17 @@ type TypeEntry = {
 }
 
 const typeScale: TypeEntry[] = [
-  { token: 'label-xs',   size: 'var(--type-label-xs-size)',   weight: 'var(--type-label-xs-weight)',   lineHeight: 'var(--type-label-xs-leading)',   tracking: 'var(--type-label-xs-tracking)',   trackingDisplay: '0.08em',  sample: 'REQUIRED' },
-  { token: 'label-sm',   size: 'var(--type-label-sm-size)',   weight: 'var(--type-label-sm-weight)',   lineHeight: 'var(--type-label-sm-leading)',   tracking: 'var(--type-label-sm-tracking)',   trackingDisplay: '0.02em',  sample: 'Sort by date' },
-  { token: 'label',      size: 'var(--type-label-size)',      weight: 'var(--type-label-weight)',      lineHeight: 'var(--type-label-leading)',      tracking: 'var(--type-label-tracking)',      trackingDisplay: '—',       sample: 'Email address' },
-  { token: 'body-sm',    size: 'var(--type-body-sm-size)',    weight: 'var(--type-body-sm-weight)',    lineHeight: 'var(--type-body-sm-leading)',    tracking: 'var(--type-body-sm-tracking)',    trackingDisplay: '—',       sample: 'You have 3 unread messages.' },
-  { token: 'body',       size: 'var(--type-body-size)',       weight: 'var(--type-body-weight)',       lineHeight: 'var(--type-body-leading)',       tracking: 'var(--type-body-tracking)',       trackingDisplay: '—',       sample: 'The quick brown fox jumps over the lazy dog.' },
-  { token: 'body-lg',    size: 'var(--type-body-lg-size)',    weight: 'var(--type-body-lg-weight)',    lineHeight: 'var(--type-body-lg-leading)',    tracking: 'var(--type-body-lg-tracking)',    trackingDisplay: '—',       sample: 'Designed for teams who ship fast.' },
-  { token: 'heading-sm', size: 'var(--type-heading-sm-size)', weight: 'var(--type-heading-sm-weight)', lineHeight: 'var(--type-heading-sm-leading)', tracking: 'var(--type-heading-sm-tracking)', trackingDisplay: '−0.01em', sample: 'Recent activity' },
-  { token: 'heading',    size: 'var(--type-heading-size)',    weight: 'var(--type-heading-weight)',    lineHeight: 'var(--type-heading-leading)',    tracking: 'var(--type-heading-tracking)',    trackingDisplay: '−0.01em', sample: 'Settings' },
-  { token: 'heading-lg', size: 'var(--type-heading-lg-size)', weight: 'var(--type-heading-lg-weight)', lineHeight: 'var(--type-heading-lg-leading)', tracking: 'var(--type-heading-lg-tracking)', trackingDisplay: '−0.01em', sample: 'Welcome back' },
-  { token: 'display',    size: 'var(--type-display-size)',    weight: 'var(--type-display-weight)',    lineHeight: 'var(--type-display-leading)',    tracking: 'var(--type-display-tracking)',    trackingDisplay: '−0.01em', sample: 'Haus.' },
-  { token: 'mono',       size: 'var(--type-mono-size)',       weight: 'var(--type-mono-weight)',       lineHeight: 'var(--type-mono-leading)',       tracking: 'var(--type-mono-tracking)',       trackingDisplay: '—',       sample: 'var(--color-ink-primary)', family: 'mono' },
+  { token: 'label-xs',   size: 'var(--haus-type-label-xs-size)',   weight: 'var(--haus-type-label-xs-weight)',   lineHeight: 'var(--haus-type-label-xs-leading)',   tracking: 'var(--haus-type-label-xs-tracking)',   trackingDisplay: '0.08em',  sample: 'REQUIRED' },
+  { token: 'label-sm',   size: 'var(--haus-type-label-sm-size)',   weight: 'var(--haus-type-label-sm-weight)',   lineHeight: 'var(--haus-type-label-sm-leading)',   tracking: 'var(--haus-type-label-sm-tracking)',   trackingDisplay: '0.02em',  sample: 'Sort by date' },
+  { token: 'label',      size: 'var(--haus-type-label-size)',      weight: 'var(--haus-type-label-weight)',      lineHeight: 'var(--haus-type-label-leading)',      tracking: 'var(--haus-type-label-tracking)',      trackingDisplay: '—',       sample: 'Email address' },
+  { token: 'body-sm',    size: 'var(--haus-type-body-sm-size)',    weight: 'var(--haus-type-body-sm-weight)',    lineHeight: 'var(--haus-type-body-sm-leading)',    tracking: 'var(--haus-type-body-sm-tracking)',    trackingDisplay: '—',       sample: 'You have 3 unread messages.' },
+  { token: 'body',       size: 'var(--haus-type-body-size)',       weight: 'var(--haus-type-body-weight)',       lineHeight: 'var(--haus-type-body-leading)',       tracking: 'var(--haus-type-body-tracking)',       trackingDisplay: '—',       sample: 'The quick brown fox jumps over the lazy dog.' },
+  { token: 'body-lg',    size: 'var(--haus-type-body-lg-size)',    weight: 'var(--haus-type-body-lg-weight)',    lineHeight: 'var(--haus-type-body-lg-leading)',    tracking: 'var(--haus-type-body-lg-tracking)',    trackingDisplay: '—',       sample: 'Designed for teams who ship fast.' },
+  { token: 'heading-sm', size: 'var(--haus-type-heading-sm-size)', weight: 'var(--haus-type-heading-sm-weight)', lineHeight: 'var(--haus-type-heading-sm-leading)', tracking: 'var(--haus-type-heading-sm-tracking)', trackingDisplay: '−0.01em', sample: 'Recent activity' },
+  { token: 'heading',    size: 'var(--haus-type-heading-size)',    weight: 'var(--haus-type-heading-weight)',    lineHeight: 'var(--haus-type-heading-leading)',    tracking: 'var(--haus-type-heading-tracking)',    trackingDisplay: '−0.01em', sample: 'Settings' },
+  { token: 'heading-lg', size: 'var(--haus-type-heading-lg-size)', weight: 'var(--haus-type-heading-lg-weight)', lineHeight: 'var(--haus-type-heading-lg-leading)', tracking: 'var(--haus-type-heading-lg-tracking)', trackingDisplay: '−0.01em', sample: 'Welcome back' },
+  { token: 'display',    size: 'var(--haus-type-display-size)',    weight: 'var(--haus-type-display-weight)',    lineHeight: 'var(--haus-type-display-leading)',    tracking: 'var(--haus-type-display-tracking)',    trackingDisplay: '−0.01em', sample: 'Haus.' },
+  { token: 'mono',       size: 'var(--haus-type-mono-size)',       weight: 'var(--haus-type-mono-weight)',       lineHeight: 'var(--haus-type-mono-leading)',       tracking: 'var(--haus-type-mono-tracking)',       trackingDisplay: '—',       sample: 'var(--haus-color-ink-primary)', family: 'mono' },
 ]
 
 const typeMetaLabels: Record<string, string> = {
@@ -76,12 +76,12 @@ function TypeRow({ token, size, weight, lineHeight, tracking, trackingDisplay, s
       <TD><span style={{ ...tokenMeta, minWidth: '4ch', textAlign: 'right' }}>{trackingDisplay}</span></TD>
       <TD style={{ minWidth: 0 }}>
         <div style={{
-          fontFamily: family === 'mono' ? 'var(--font-mono)' : 'var(--font-sans)',
+          fontFamily: family === 'mono' ? 'var(--haus-font-mono)' : 'var(--haus-font-sans)',
           fontSize: size,
           fontWeight: weight,
           lineHeight,
           letterSpacing: tracking,
-          color: 'var(--color-ink-primary)',
+          color: 'var(--haus-color-ink-primary)',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap',
@@ -102,7 +102,7 @@ function TypographyScale() {
     <div style={pageWrap}>
       <h1 style={pageTitleStyle}>Typography</h1>
       <p style={pageDescStyle}>
-        Manrope (variable, UI) and Fira Code (monospace). All four properties together, always: size, weight, leading, tracking. Setting only <code style={{ fontFamily: 'var(--font-mono)' }}>font-size</code> from a type token and guessing the rest is using the system wrong. Roles replace heading levels: <code style={{ fontFamily: 'var(--font-mono)' }}>label-xs</code> through <code style={{ fontFamily: 'var(--font-mono)' }}>display</code>, never h1–h6. Click any token to copy.
+        Manrope (variable, UI) and Fira Code (monospace). All four properties together, always: size, weight, leading, tracking. Setting only <code style={{ fontFamily: 'var(--haus-font-mono)' }}>font-size</code> from a type token and guessing the rest is using the system wrong. Roles replace heading levels: <code style={{ fontFamily: 'var(--haus-font-mono)' }}>label-xs</code> through <code style={{ fontFamily: 'var(--haus-font-mono)' }}>display</code>, never h1–h6. Click any token to copy.
       </p>
 
       <TableGrid columns={TYPE_COLS}>
@@ -123,7 +123,7 @@ function IconSizes() {
     <div style={pageWrap}>
       <h1 style={pageTitleStyle}>Icon Sizes</h1>
       <p style={pageDescStyle}>
-        Font Awesome 6 Solid. Set <code style={{ fontFamily: 'var(--font-mono)' }}>font-size</code> on the <code style={{ fontFamily: 'var(--font-mono)' }}>&lt;i&gt;</code> element using the matching icon token. Each size is paired with a type role, so icon and adjacent copy use the same scale step.
+        Font Awesome 6 Solid. Set <code style={{ fontFamily: 'var(--haus-font-mono)' }}>font-size</code> on the <code style={{ fontFamily: 'var(--haus-font-mono)' }}>&lt;i&gt;</code> element using the matching icon token. Each size is paired with a type role, so icon and adjacent copy use the same scale step.
       </p>
 
       <TableGrid columns={ICON_COLS}>
@@ -136,12 +136,12 @@ function IconSizes() {
           <React.Fragment key={name}>
             <TD>
               <div style={{ display: 'flex', alignItems: 'center', minWidth: 32 }}>
-                <i className="fa-solid fa-bell" style={{ fontSize: value, color: 'var(--color-ink-secondary)' }} />
+                <i className="fa-solid fa-bell" style={{ fontSize: value, color: 'var(--haus-color-ink-secondary)' }} />
               </div>
             </TD>
             <TD><CopyChip name={name.slice(2)} /></TD>
             <TD><span style={{ ...tokenNameStyle, whiteSpace: 'nowrap' }}>{value} · {px}</span></TD>
-            <TD><span style={{ fontSize: 'var(--type-body-sm-size)', color: 'var(--color-ink-secondary)', whiteSpace: 'nowrap' }}>{pair}</span></TD>
+            <TD><span style={{ fontSize: 'var(--haus-type-body-sm-size)', color: 'var(--haus-color-ink-secondary)', whiteSpace: 'nowrap' }}>{pair}</span></TD>
           </React.Fragment>
         ))}
       </TableGrid>

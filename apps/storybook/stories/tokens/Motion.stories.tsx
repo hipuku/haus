@@ -29,14 +29,14 @@ function DurationBar({ ms }: { ms: number }) {
   }, [])
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
-      <div style={{ width: 120, height: 8, background: 'var(--color-border-default)', borderRadius: 'var(--radius-full)', overflow: 'hidden' }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--haus-space-2)' }}>
+      <div style={{ width: 120, height: 8, background: 'var(--haus-color-border-default)', borderRadius: 'var(--haus-radius-full)', overflow: 'hidden' }}>
         <div
           key={key}
           style={{
             height: '100%',
-            background: 'var(--color-primary-default)',
-            borderRadius: 'var(--radius-full)',
+            background: 'var(--haus-color-primary-default)',
+            borderRadius: 'var(--haus-radius-full)',
             width: running ? '100%' : '0%',
             transition: running ? `width ${ms}ms linear` : 'none',
           }}
@@ -75,14 +75,14 @@ function EasingRow({ css, name, token, description }: EasingEntry) {
   return (
     <>
       <TD>
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--type-mono-size)', fontWeight: 600, color: 'var(--color-ink-primary)', whiteSpace: 'nowrap' }}>
+        <span style={{ fontFamily: 'var(--haus-font-mono)', fontSize: 'var(--haus-type-mono-size)', fontWeight: 600, color: 'var(--haus-color-ink-primary)', whiteSpace: 'nowrap' }}>
           {name}
         </span>
       </TD>
       <TD><CopyChip name={token} /></TD>
       <TD>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
-          <div style={{ width: 120, height: 36, position: 'relative', overflow: 'hidden', borderRadius: 'var(--radius-sm)', background: 'var(--color-surface-subtle)', flexShrink: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--haus-space-2)' }}>
+          <div style={{ width: 120, height: 36, position: 'relative', overflow: 'hidden', borderRadius: 'var(--haus-radius-sm)', background: 'var(--haus-color-surface-subtle)', flexShrink: 0 }}>
             <div
               key={key}
               style={{
@@ -91,8 +91,8 @@ function EasingRow({ css, name, token, description }: EasingEntry) {
                 top: '50%',
                 transform: 'translateY(-50%)',
                 width: 28, height: 28,
-                background: 'var(--color-primary-default)',
-                borderRadius: 'var(--radius-md)',
+                background: 'var(--haus-color-primary-default)',
+                borderRadius: 'var(--haus-radius-md)',
                 transition: active ? `left 400ms ${css}` : 'none',
               }}
             />
@@ -101,7 +101,7 @@ function EasingRow({ css, name, token, description }: EasingEntry) {
         </div>
       </TD>
       <TD>
-        <span style={{ fontSize: 'var(--type-body-sm-size)', color: 'var(--color-ink-secondary)', lineHeight: 'var(--type-body-sm-leading)' }}>
+        <span style={{ fontSize: 'var(--haus-type-body-sm-size)', color: 'var(--haus-color-ink-secondary)', lineHeight: 'var(--haus-type-body-sm-leading)' }}>
           {description}
         </span>
       </TD>
@@ -137,15 +137,15 @@ function CompositeRow({ name, duration, ease, use }: typeof composites[number]) 
     <>
       <TD><CopyChip name={name} /></TD>
       <TD>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
-          <div style={{ width: 120, height: 32, position: 'relative', overflow: 'hidden', borderRadius: 'var(--radius-sm)', background: 'var(--color-surface-subtle)', flexShrink: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--haus-space-2)' }}>
+          <div style={{ width: 120, height: 32, position: 'relative', overflow: 'hidden', borderRadius: 'var(--haus-radius-sm)', background: 'var(--haus-color-surface-subtle)', flexShrink: 0 }}>
             <div
               key={key}
               style={{
                 position: 'absolute',
                 ...(isFade
-                  ? { inset: 0, opacity: active ? 1 : 0, background: 'var(--color-primary-subtle)', transition: active ? `opacity ${duration}ms ${ease}` : 'none' }
-                  : { top: 4, bottom: 4, left: active ? 'calc(100% - 28px)' : '4px', width: 24, background: 'var(--color-primary-default)', borderRadius: 'var(--radius-sm)', transition: active ? `left ${duration}ms ${ease}` : 'none' }
+                  ? { inset: 0, opacity: active ? 1 : 0, background: 'var(--haus-color-primary-subtle)', transition: active ? `opacity ${duration}ms ${ease}` : 'none' }
+                  : { top: 4, bottom: 4, left: active ? 'calc(100% - 28px)' : '4px', width: 24, background: 'var(--haus-color-primary-default)', borderRadius: 'var(--haus-radius-sm)', transition: active ? `left ${duration}ms ${ease}` : 'none' }
                 ),
               }}
             />
@@ -153,7 +153,7 @@ function CompositeRow({ name, duration, ease, use }: typeof composites[number]) 
           <PlayButton onClick={play} compact />
         </div>
       </TD>
-      <TD><span style={{ fontSize: 'var(--type-body-sm-size)', color: 'var(--color-ink-secondary)' }}>{use}</span></TD>
+      <TD><span style={{ fontSize: 'var(--haus-type-body-sm-size)', color: 'var(--haus-color-ink-secondary)' }}>{use}</span></TD>
     </>
   )
 }
@@ -165,7 +165,7 @@ function MotionPage() {
     <div style={pageWrap}>
       <h1 style={pageTitleStyle}>Motion</h1>
       <p style={pageDescStyle}>
-        Never write raw <code style={{ fontFamily: 'var(--font-mono)' }}>ms</code> or <code style={{ fontFamily: 'var(--font-mono)' }}>cubic-bezier()</code> values in component code. Use composite tokens, which pair the correct duration with the correct easing for each interaction type. All animated properties must collapse to <code style={{ fontFamily: 'var(--font-mono)' }}>var(--duration-reduced)</code> (0ms) inside <code style={{ fontFamily: 'var(--font-mono)' }}>prefers-reduced-motion</code>.
+        Never write raw <code style={{ fontFamily: 'var(--haus-font-mono)' }}>ms</code> or <code style={{ fontFamily: 'var(--haus-font-mono)' }}>cubic-bezier()</code> values in component code. Use composite tokens, which pair the correct duration with the correct easing for each interaction type. All animated properties must collapse to <code style={{ fontFamily: 'var(--haus-font-mono)' }}>var(--haus-duration-reduced)</code> (0ms) inside <code style={{ fontFamily: 'var(--haus-font-mono)' }}>prefers-reduced-motion</code>.
       </p>
 
       <SectionHead>Durations</SectionHead>
@@ -178,9 +178,9 @@ function MotionPage() {
         {durations.map(({ name, value, use }) => (
           <React.Fragment key={name}>
             <TD><CopyChip name={name} /></TD>
-            <TD><span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--type-mono-size)', color: 'var(--color-ink-secondary)', whiteSpace: 'nowrap' }}>{value}</span></TD>
+            <TD><span style={{ fontFamily: 'var(--haus-font-mono)', fontSize: 'var(--haus-type-mono-size)', color: 'var(--haus-color-ink-secondary)', whiteSpace: 'nowrap' }}>{value}</span></TD>
             <TD><DurationBar ms={parseInt(value)} /></TD>
-            <TD><span style={{ fontSize: 'var(--type-body-sm-size)', color: 'var(--color-ink-secondary)' }}>{use}</span></TD>
+            <TD><span style={{ fontSize: 'var(--haus-type-body-sm-size)', color: 'var(--haus-color-ink-secondary)' }}>{use}</span></TD>
           </React.Fragment>
         ))}
       </TableGrid>
@@ -206,7 +206,7 @@ function MotionPage() {
       </TableGrid>
 
       <Callout variant="info" label="Reduced motion">
-        Set <code style={{ fontFamily: 'var(--font-mono)' }}>transition-duration</code> to <code style={{ fontFamily: 'var(--font-mono)' }}>var(--duration-reduced)</code> (0ms) inside <code style={{ fontFamily: 'var(--font-mono)' }}>@media (prefers-reduced-motion: reduce)</code>. Position and layout changes may remain; opacity and transform animations should collapse.
+        Set <code style={{ fontFamily: 'var(--haus-font-mono)' }}>transition-duration</code> to <code style={{ fontFamily: 'var(--haus-font-mono)' }}>var(--haus-duration-reduced)</code> (0ms) inside <code style={{ fontFamily: 'var(--haus-font-mono)' }}>@media (prefers-reduced-motion: reduce)</code>. Position and layout changes may remain; opacity and transform animations should collapse.
       </Callout>
     </div>
   )
