@@ -49,6 +49,10 @@ describe("rgbToHex", () => {
 });
 
 describe("firstFontFamily", () => {
+  it("returns null for an empty stack", () => {
+    expect(firstFontFamily("")).toBeNull()
+  })
+
   it("takes the first family and strips quotes", () => {
     expect(firstFontFamily('"Helvetica Neue", Arial, sans-serif')).toBe("Helvetica Neue");
     expect(firstFontFamily("Inter, system-ui")).toBe("Inter");
@@ -74,6 +78,10 @@ describe("pxToNumber", () => {
 });
 
 describe("normaliseFontWeight", () => {
+  it("returns null for an empty value", () => {
+    expect(normaliseFontWeight("")).toBeNull()
+  })
+
   it("maps keywords and parses numbers", () => {
     expect(normaliseFontWeight("normal")).toBe(400);
     expect(normaliseFontWeight("bold")).toBe(700);
@@ -82,6 +90,10 @@ describe("normaliseFontWeight", () => {
 });
 
 describe("normaliseLineHeight", () => {
+  it("returns null for an empty value", () => {
+    expect(normaliseLineHeight("", 16)).toBeNull()
+  })
+
   it("returns null for normal", () => {
     expect(normaliseLineHeight("normal", 16)).toBeNull();
   });
@@ -100,6 +112,10 @@ describe("normaliseLineHeight", () => {
 });
 
 describe("normaliseLetterSpacing", () => {
+  it("returns 0 for an empty value", () => {
+    expect(normaliseLetterSpacing("", 16)).toBe(0)
+  })
+
   it("returns 0 for normal", () => {
     expect(normaliseLetterSpacing("normal", 16)).toBe(0);
   });
@@ -111,6 +127,10 @@ describe("normaliseLetterSpacing", () => {
 });
 
 describe("normaliseBoxShadow", () => {
+  it("returns null for an empty value", () => {
+    expect(normaliseBoxShadow("")).toBeNull()
+  })
+
   it("returns null for none", () => {
     expect(normaliseBoxShadow("none")).toBeNull();
   });
@@ -198,3 +218,151 @@ describe("normaliseElement", () => {
     });
   });
 });
+
+/*
+ * The motion, blur and stacking fields. These were the whole of the uncovered
+ * half of this file: `splitTopLevel`, `parseBlur` and `parseDurations` are only
+ * reachable through `normaliseElement`, and the fixture above leaves every one
+ * of their inputs undefined. They are also the fields drift reads to answer
+ * whether a page's transitions match the motion tokens, so they are the last
+ * ones that should have been going untested.
+ */
+describe("normaliseElement: motion, blur and stacking", () => {
+  const base: RawElement["raw"] = {
+    color: "rgb(0, 0, 0)",
+    backgroundColor: "rgb(255, 255, 255)",
+    effectiveBackgroundColor: "rgb(255, 255, 255)",
+    borderTopColor: "rgb(0, 0, 0)",
+    borderRightColor: "rgb(0, 0, 0)",
+    borderBottomColor: "rgb(0, 0, 0)",
+    borderLeftColor: "rgb(0, 0, 0)",
+    borderTopWidth: "0px",
+    borderRightWidth: "0px",
+    borderBottomWidth: "0px",
+    borderLeftWidth: "0px",
+    fontFamily: "sans-serif",
+    fontSize: "16px",
+    fontWeight: "400",
+    lineHeight: "normal",
+    letterSpacing: "normal",
+    borderTopLeftRadius: "0px",
+    borderTopRightRadius: "0px",
+    borderBottomRightRadius: "0px",
+    borderBottomLeftRadius: "0px",
+    boxShadow: "none",
+    paddingTop: "0px",
+    paddingRight: "0px",
+    paddingBottom: "0px",
+    paddingLeft: "0px",
+    marginTop: "0px",
+    marginRight: "0px",
+    marginBottom: "0px",
+    marginLeft: "0px",
+    rowGap: "0px",
+    columnGap: "0px",
+  }
+
+  const styles = (over: Partial<RawElement["raw"]>) =>
+    normaliseElement({ tag: "div", hasText: false, raw: { ...base, ...over } }).styles
+
+  describe("durations", () => {
+    it("converts seconds to milliseconds", () => {
+      expect(styles({ transitionDuration: "0.15s" }).motionDurations).toEqual([150])
+    })
+
+    it("keeps a value already in milliseconds", () => {
+      expect(styles({ transitionDuration: "200ms" }).motionDurations).toEqual([200])
+    })
+
+    it("drops zero-duration entries and sorts what is left", () => {
+      // `transition: none` computes to 0s, which is the absence of motion
+      // rather than a motion value, so it must not become a token to compare.
+      expect(styles({ transitionDuration: "0.3s, 0s, 0.1s" }).motionDurations).toEqual([100, 300])
+    })
+
+    it("deduplicates repeated durations", () => {
+      expect(styles({ transitionDuration: "0.2s, 200ms, 0.2s" }).motionDurations).toEqual([200])
+    })
+
+    it("is empty when the property is absent", () => {
+      expect(styles({}).motionDurations).toEqual([])
+    })
+  })
+
+  describe("easings", () => {
+    it("splits on top-level commas only, so a cubic-bezier survives whole", () => {
+      // The reason `splitTopLevel` exists: cubic-bezier() carries three commas
+      // of its own, and a naive split would return four fragments of one curve.
+      expect(
+        styles({
+          transitionDuration: "0.2s, 0.3s",
+          transitionTimingFunction: "cubic-bezier(0.2, 0, 0, 1), ease-out",
+        }).motionEasings,
+      ).toEqual(["cubic-bezier(0.2, 0, 0, 1)", "ease-out"])
+    })
+
+    it("deduplicates a repeated curve", () => {
+      expect(
+        styles({
+          transitionDuration: "0.2s, 0.3s",
+          transitionTimingFunction: "ease-out, ease-out",
+        }).motionEasings,
+      ).toEqual(["ease-out"])
+    })
+
+    it("is empty when nothing has a duration", () => {
+      // An easing with no duration animates nothing. Reporting the curve alone
+      // would put an easing token on an element that never moves.
+      expect(
+        styles({ transitionDuration: "0s", transitionTimingFunction: "ease-in-out" })
+          .motionEasings,
+      ).toEqual([])
+    })
+  })
+
+  describe("blur", () => {
+    it("reads a blur radius out of filter", () => {
+      expect(styles({ filter: "blur(4px)" }).blur).toEqual([4])
+    })
+
+    it("reads filter and backdrop-filter together, sorted and deduplicated", () => {
+      expect(
+        styles({ filter: "blur(8px) saturate(1.2)", backdropFilter: "blur(2px) blur(8px)" }).blur,
+      ).toEqual([2, 8])
+    })
+
+    it("ignores a zero radius and a filter of none", () => {
+      expect(styles({ filter: "blur(0px)", backdropFilter: "none" }).blur).toEqual([])
+    })
+
+    it("ignores filters that are not blur", () => {
+      expect(styles({ filter: "brightness(0.9) drop-shadow(0 1px 2px black)" }).blur).toEqual([])
+    })
+  })
+
+  describe("gradient", () => {
+    it("keeps a background-image that is a gradient", () => {
+      const g = "linear-gradient(rgb(0, 0, 0), rgb(255, 255, 255))"
+      expect(styles({ backgroundImage: g }).gradient).toBe(g)
+    })
+
+    it("drops a background-image that is not a gradient", () => {
+      expect(styles({ backgroundImage: 'url("hero.png")' }).gradient).toBeNull()
+      expect(styles({ backgroundImage: "none" }).gradient).toBeNull()
+    })
+  })
+
+  describe("z-index and opacity", () => {
+    it("reads a numeric z-index", () => {
+      expect(styles({ zIndex: "10" }).zIndex).toBe(10)
+    })
+
+    it("treats auto as no stacking level", () => {
+      expect(styles({ zIndex: "auto" }).zIndex).toBeNull()
+    })
+
+    it("reads opacity as a number", () => {
+      expect(styles({ opacity: "0.5" }).opacity).toBe(0.5)
+    })
+  })
+})
