@@ -36,7 +36,7 @@ What the platform gives back is the reason: keyboard handling that is correct on
 every platform without being written, a wheel picker on iOS rather than a list
 squeezed into a phone viewport, and assistive-technology behaviour that a custom
 listbox has to reimplement and then keep correct through every future change.
-The `useListbox` implementations are 160 lines each, and that is the floor rather
+The `useListbox` implementations are 180 and 159 lines, and that is the floor rather
 than the finished cost: arrow keys, Home, End, typeahead, `aria-activedescendant`
 and the rule that `role="option"` must be a direct child of the listbox.
 

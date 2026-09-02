@@ -14,8 +14,8 @@ them. There was no exported theme-contract type and no example brand.
 
 Two products had already answered the question this raises. Vault declared 159
 custom properties of its own. Core, whose first commit came after all five
-packages were on npm, declared 348 lines and took no dependency on the token
-tier at all. Same author, both with the alternative available.
+packages were on npm, declared 56 of its own and took no dependency on the
+token tier at all. Same author, both with the alternative available.
 
 The role layer is not what they rejected. Of Vault's 40 differing values, six
 differ only by decimal padding, about thirty are palette-name swaps, and roughly

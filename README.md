@@ -25,15 +25,16 @@ repo.
 
 ## Token architecture
 
-Three layers, strict separation:
+Four layers, strict separation:
 
 ```
 primitives.css   Raw values. No meaning. No component should reference these.
-semantics.css    Role aliases. No raw values. What components consume.
+brand.css        Which primitive each role takes. The one file a consumer replaces.
+semantics.css    What each role means. No palette names.
 motion.css       Easing curves and duration tokens.
 ```
 
-Theming is being split out of `semantics.css` into a brand layer of its own, with a scoping selector and a `--haus-` prefix. Today the brand and the roles are the same file, so a role swap is not the single-file change this section used to claim: see [decision 0003](docs/decisions/0003-brand-and-roles-are-separate-layers.md) for the contract and what it costs.
+Every property carries `--haus-`, and roles are declared on `:root, [data-haus-theme]`, so a brand applies to a subtree and nests. Replacing `brand.css` is how you theme; `brands/ruby.css` is a complete second brand, and `BrandMap` is generated from `brand.css` so an omission is a type error rather than an unresolved `var()`. See [decision 0003](docs/decisions/0003-brand-and-roles-are-separate-layers.md).
 
 haus is light-mode only. That is a consequence of [decision 0002](docs/decisions/0002-surface-polarity-is-fixed.md) rather than a deferred layer: surface polarity is fixed by the contract, so a dark theme cannot arrive as a brand map.
 

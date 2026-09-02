@@ -45,9 +45,9 @@ declarations across the haus components take a size off the space ladder, on
 `height`, `width`, `min-*`/`max-*` and `transform` offsets, because a size is a
 value rather than a role. They are the avatar sizes, the checkbox and radio
 boxes, the toggle track and thumb, and a few min/max bounds. And 61 read a primitive that has no semantic alias
-because the primitive's own name already is the role: `--font-sans`,
-`--weight-*`, `--border-width-*`, `--opacity-disabled`, `--icon-sm`,
-`--z-modal`. No component reads a colour, radius, shadow or motion primitive,
+because the primitive's own name already is the role: `--haus-font-sans`,
+`--weight-*`, `--border-width-*`, `--haus-opacity-disabled`, `--haus-icon-sm`,
+`--haus-z-modal`. No component reads a colour, radius, shadow or motion primitive,
 and a test in `haus-components` holds that line.
 
 ## Typed constants
@@ -82,15 +82,20 @@ numbers, a composite is an alias:
 
 ## Three copies, one truth
 
-Stating the same tokens three times invites exactly the drift this design
-system exists to prevent. So two of the three are not stated at all:
-`tokens.json` is the source, and `primitives.css` and `index.ts` are generated
-from it by `scripts/build-tokens.ts`. `pnpm run tokens:check` regenerates them
-in memory and fails if what is committed differs, which is the first step CI
-runs. Change a value in `tokens.json` and `pnpm run tokens` writes the other
-two; change one of the other two by hand and CI says so.
+Stating the same tokens more than once invites exactly the drift this design
+system exists to prevent, so most of the restatements are not stated at all.
+`scripts/build-tokens.ts` writes five files: `primitives.css` and `motion.css`
+from `tokens.json`, `index.ts` as the typed export, `brand.ts` as the `BrandMap`
+type from `brand.css`, and `tokens.json`'s own `semantic.color` block from
+`brand.css` as well.
 
-`semantics.css` is the one token file still written by hand, because a role is a
+`pnpm run tokens:check` regenerates all five in memory and fails if what is
+committed differs, which is the first step CI runs. Change a source and
+`pnpm run tokens` writes the derived files; change a derived file by hand and CI
+says so, which has already caught someone editing a comment inside one.
+
+Two token files are written by hand. `brand.css` says which primitive each role
+takes, and `semantics.css` says what each role means, because a role is a
 decision rather than a derivation. `semantics.test.ts` holds it to the rules
 this package states: every token it reads is declared in the layers below, no
 declaration carries a raw value, every subtle and default surface has its

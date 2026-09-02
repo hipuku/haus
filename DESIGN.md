@@ -37,7 +37,7 @@ moved for one colour that looked wrong cannot quietly cost the other 4,274.
 
 ## Three-layer token architecture: primitives → semantics → components
 
-Primitives hold raw values (no meaning, just numbers). Semantics hold intent: role names like `--color-surface-default` that alias primitives. Components consume semantics for colour, padding, gap, margin, radius, elevation and motion, and no component reads a colour, radius, shadow or motion primitive. Two kinds of primitive read remain, both deliberate and both tested: 31 declarations take a size off the space ladder (avatar sizes, the checkbox and radio boxes, the toggle track and thumb, a few min/max bounds), because a size is a value rather than a role; and 61 read a primitive whose own name already is the role, such as `--font-sans`, `--border-width-default` and `--control-height-md`. Control heights were the exception to this until they had a scale: Button, Input and Select set `min-height` in raw pixels, and `min-height` is now in stylelint's strict-value list so the next one cannot. This separation is what a theme swap will rest on, but it does not yet deliver one: the brand and the roles are the same file today, so a swap is not the single-file change this paragraph used to promise. [Decision 0003](docs/decisions/0003-brand-and-roles-are-separate-layers.md) records the contract that makes it true and what it costs. It also enforces a discipline: if you can't name what a token *does*, it shouldn't exist.
+Primitives hold raw values (no meaning, just numbers). Semantics hold intent: role names like `--haus-color-surface-default` that alias primitives. Components consume semantics for colour, padding, gap, margin, radius, elevation and motion, and no component reads a colour, radius, shadow or motion primitive. Two kinds of primitive read remain, both deliberate and both tested: 31 declarations take a size off the space ladder (avatar sizes, the checkbox and radio boxes, the toggle track and thumb, a few min/max bounds), because a size is a value rather than a role; and 61 read a primitive whose own name already is the role, such as `--haus-font-sans`, `--haus-border-width-default` and `--haus-control-height-md`. Control heights were the exception to this until they had a scale: Button, Input and Select set `min-height` in raw pixels, and `min-height` is now in stylelint's strict-value list so the next one cannot. This separation is what a theme swap will rest on, but it does not yet deliver one: the brand and the roles are the same file today, so a swap is not the single-file change this paragraph used to promise. [Decision 0003](docs/decisions/0003-brand-and-roles-are-separate-layers.md) records the contract that makes it true and what it costs. It also enforces a discipline: if you can't name what a token *does*, it shouldn't exist.
 
 ## Role-based type system over a heading scale
 
@@ -53,7 +53,7 @@ Component CSS uses CSS Modules. The token layer is plain CSS custom properties, 
 
 ## Semantic `on-*` pairing for every surface token
 
-Every surface token has a corresponding `on-*` text token: `--color-success-subtle` is paired with `--color-success-on-subtle`. Surface and text contrast are specified together, so a component author never works out a pairing at the call site. The approach is Material Design 3's. It also makes contrast failures impossible to accidentally introduce: use the paired token and the contrast is guaranteed by construction.
+Every surface token has a corresponding `on-*` text token: `--haus-color-success-subtle` is paired with `--haus-color-success-on-subtle`. Surface and text contrast are specified together, so a component author never works out a pairing at the call site. The approach is Material Design 3's. It also makes contrast failures impossible to accidentally introduce: use the paired token and the contrast is guaranteed by construction.
 
 ## W3C Design Tokens JSON as the canonical export format
 
@@ -79,10 +79,10 @@ For an open-source design system, Storybook is what consumers actually read. A t
 
 ## `prefers-reduced-motion` policy
 
-All animated components respect `prefers-reduced-motion: reduce` by overriding `transition-duration` and `animation-duration` to `--duration-reduced`.
+All animated components respect `prefers-reduced-motion: reduce` by overriding `transition-duration` and `animation-duration` to `--haus-duration-reduced`.
 
 The override targets duration rather than using `transition: none` because:
 - Some transforms carry positional meaning (Toggle thumb, Modal entry offset) and need to apply even without animation
 - A control that snaps instantly to its new position still communicates state; one that doesn't move at all is ambiguous
 
-`--duration-reduced` is a named token rather than a hardcoded `0ms` so it stays tunable and reads as intentional in the source.
+`--haus-duration-reduced` is a named token rather than a hardcoded `0ms` so it stays tunable and reads as intentional in the source.
