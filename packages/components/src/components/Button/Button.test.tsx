@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createRef } from 'react'
@@ -95,6 +97,48 @@ describe('Button', () => {
     expect(screen.getByRole('button', { name: 'Save' }).className).not.toContain('error')
   })
 
+  it.each(['info', 'success', 'warning', 'error'] as const)(
+    'carries the %s tone class',
+    (tone) => {
+      // Button narrowed the shared union to neutral | error on the premise that
+      // the other three had no design. semantics.css and Badge both said
+      // otherwise, so the union is whole again and each tone must arrive.
+      render(<Button tone={tone}>Act</Button>)
+      expect(screen.getByRole('button', { name: 'Act' }).className).toContain(tone)
+    },
+  )
+
+  it('tone and variant compose, rather than one winning outright', () => {
+    // The defect this guards is a CSS one and jsdom runs with `css: false`, so
+    // asserting it through the DOM is not possible: both classes always landed
+    // on the element, and the bug was that `.error` set background, border and
+    // colour outright and won on source order whatever the variant said —
+    // `variant="ghost" tone="error"` rendered solid. Reading the stylesheet is
+    // the assertion that can actually fail, and the rule it encodes is the one
+    // the design depends on: a tone rule may remap custom properties and may
+    // decide nothing else.
+    const css = readFileSync(join(process.cwd(), 'src/components/Button/Button.module.css'), 'utf8')
+    const rules = [...css.matchAll(/([^{}]+)\{([^}]*)\}/g)].map((m) => ({
+      selectors: m[1].split(',').map((sel) => sel.trim()),
+      body: m[2],
+    }))
+
+    for (const tone of ['info', 'success', 'warning', 'error']) {
+      // Every rule that names the tone on its own — the grouped one and the
+      // solitary one both count, and matching only the first is how an earlier
+      // version of this test passed while the defect was present.
+      const toneRules = rules.filter((rule) => rule.selectors.includes(`.${tone}`))
+      expect(toneRules.length, `no rule selects .${tone} alone`).toBeGreaterThan(0)
+
+      for (const rule of toneRules) {
+        const declared = [...rule.body.matchAll(/(?:^|;)\s*([\w-]+)\s*:/g)].map((m) => m[1])
+        expect(declared.length).toBeGreaterThan(0)
+        const direct = declared.filter((prop) => !prop.startsWith('--'))
+        expect(direct, `.${tone} sets ${direct.join(', ')} directly`).toEqual([])
+      }
+    }
+  })
+
   it('external is behaviour, so it stacks on any weight', () => {
     // It used to be a variant that silently forced the text weight. A primary
     // button that opens elsewhere is now expressible.
@@ -138,7 +182,11 @@ describe('Button', () => {
         <Button variant="primary">Primary</Button>
         <Button variant="secondary">Secondary</Button>
         <Button variant="ghost">Ghost</Button>
+        <Button tone="info">Info</Button>
+        <Button tone="success">Success</Button>
+        <Button tone="warning">Warning</Button>
         <Button tone="error">Error</Button>
+        <Button variant="ghost" tone="error">Ghost error</Button>
         <Button variant="text">Text</Button>
         <Button external href="https://example.com">External</Button>
         <Button disabled>Disabled</Button>

@@ -57,6 +57,30 @@ const PAIRS: Array<[surface: string, ink: string, min: number]> = [
   ['--haus-color-warning-default', '--haus-color-warning-on-default', 4.5],
   ['--haus-color-error-subtle', '--haus-color-error-on-subtle', 4.5],
   ['--haus-color-error-default', '--haus-color-error-on-default', 4.5],
+
+  // The solid roles. success and warning exist at 700 precisely because their
+  // 500s fail with white ink, and the comments in semantics.css recording that
+  // were the only thing asserting it — Badge's solid appearance has spent both
+  // since it was written, and Button's tone palette now does too.
+  ['--haus-color-success-solid', '--haus-color-ink-inverse', 4.5],
+  ['--haus-color-warning-solid', '--haus-color-ink-inverse', 4.5],
+
+  // Hover. Every tone moves to `emphasis` at 900 under the same ink, so these
+  // should only ever gain contrast — which is worth asserting rather than
+  // assuming, because it is the ramp that guarantees it and a rebrand may
+  // rewrite the ramp.
+  ['--haus-color-info-emphasis', '--haus-color-info-on-default', 4.5],
+  ['--haus-color-success-emphasis', '--haus-color-ink-inverse', 4.5],
+  ['--haus-color-warning-emphasis', '--haus-color-ink-inverse', 4.5],
+  ['--haus-color-error-emphasis', '--haus-color-error-on-default', 4.5],
+
+  // `on-subtle` sitting on the page rather than on its own tint. Button's
+  // ghost and text weights are transparent, so a toned one puts this ink
+  // straight onto surface-default; nothing else in the system did that before.
+  ['--haus-color-surface-default', '--haus-color-info-on-subtle', 4.5],
+  ['--haus-color-surface-default', '--haus-color-success-on-subtle', 4.5],
+  ['--haus-color-surface-default', '--haus-color-warning-on-subtle', 4.5],
+  ['--haus-color-surface-default', '--haus-color-error-on-subtle', 4.5],
 ]
 
 describe('contrast', () => {

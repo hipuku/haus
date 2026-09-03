@@ -1,4 +1,34 @@
 .button {
+  /* Solid fill, and the ink that sits on it. */
+  --btn-solid:         var(--haus-color-primary-default);
+  --btn-solid-hover:   var(--haus-color-primary-hover);
+  --btn-solid-pressed: var(--haus-color-primary-pressed);
+  --btn-on-solid:      var(--haus-color-ink-on-aronia);
+
+  /* Tinted fill, for the weights that sit on the page rather than above it. */
+  --btn-bg:            var(--haus-color-surface-subtle);
+  --btn-bg-hover:      var(--haus-color-surface-sunken);
+
+  /* Three border roles because neutral genuinely uses three steps: an outline
+     at rest, a stronger one on hover, and a fainter one for ghost's hover. */
+  --btn-border:        var(--haus-color-border-default);
+  --btn-border-hover:  var(--haus-color-border-strong);
+  --btn-border-ghost:  var(--haus-color-border-subtle);
+
+  /* Ink on the page's own surface. `text` inherits by default and the tones
+     give it a colour, which is the one place the two inks differ. */
+  --btn-ink:           var(--haus-color-ink-primary);
+  --btn-text-ink:      inherit;
+
+  /* Pressed-state luminance, for the weights with no darker token to move to.
+     Two properties rather than one declared per variant: a variant rule sits
+     after the tone rules at equal specificity, so anything it declared would
+     have won on source order and silently unmade the tone's value. Neutral's
+     solid weight has a real `primary-pressed` token and needs no shade; its
+     tinted weights press onto `surface-sunken`, which is already the hover
+     fill, so luminance is the only thing left to move. */
+  --btn-shade:      none;
+  --btn-shade-soft: brightness(0.97);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -54,66 +84,145 @@
   min-height: var(--haus-control-height-lg);
 }
 
+/* ── Tones ──────────────────────────────────────────────────────────
+   Tone and variant compose. A tone remaps these thirteen properties and decides
+   nothing about weight; a variant reads the subset its weight calls for and
+   decides nothing about meaning. A short block per tone rather than a
+   4 x 5 cross product of rules, and every combination works because no rule
+   ever names both.
+
+   This replaces a flat `.error` block that set background, border and colour
+   outright. Written that way it won its declarations on source order whatever
+   the variant said, so `<Button variant="ghost" tone="error">` rendered as a
+   solid button — weight and meaning were meant to compose and did not.
+
+   Neutral is the untoned default and its values are the ones the variants used
+   to hold literally, so an untoned Button renders exactly as before.
+
+   Every colour here already existed. `semantics.css` carries the full six-role
+   set for info, success, warning and error, and Badge already spends all five
+   tones across both appearances — this finishes a design that was specified,
+   it does not invent one. */
+
+
+/* info and error take white ink on their 500 (`on-default`). success and
+   warning cannot: their 500s fail with white, which is why `semantics.css`
+   carries a `solid` role at 700 and why Badge's solid appearance already
+   reaches for it. Hover moves to `emphasis` at 900 in every tone, so the ink
+   only ever gains contrast. */
+
+.info,
+.success,
+.warning,
+.error {
+  --btn-shade:      brightness(0.94);
+  --btn-shade-soft: brightness(0.94);
+}
+
+.info {
+  --btn-solid:         var(--haus-color-info-default);
+  --btn-solid-hover:   var(--haus-color-info-emphasis);
+  --btn-solid-pressed: var(--haus-color-info-emphasis);
+  --btn-on-solid:      var(--haus-color-info-on-default);
+  --btn-bg:            var(--haus-color-info-subtle);
+  --btn-bg-hover:      var(--haus-color-info-border);
+  --btn-border:        var(--haus-color-info-border);
+  --btn-border-hover:  var(--haus-color-info-default);
+  --btn-border-ghost:  var(--haus-color-info-border);
+  --btn-ink:           var(--haus-color-info-on-subtle);
+  --btn-text-ink:      var(--haus-color-info-on-subtle);
+}
+
+.success {
+  --btn-solid:         var(--haus-color-success-solid);
+  --btn-solid-hover:   var(--haus-color-success-emphasis);
+  --btn-solid-pressed: var(--haus-color-success-emphasis);
+  --btn-on-solid:      var(--haus-color-ink-inverse);
+  --btn-bg:            var(--haus-color-success-subtle);
+  --btn-bg-hover:      var(--haus-color-success-border);
+  --btn-border:        var(--haus-color-success-border);
+  --btn-border-hover:  var(--haus-color-success-solid);
+  --btn-border-ghost:  var(--haus-color-success-border);
+  --btn-ink:           var(--haus-color-success-on-subtle);
+  --btn-text-ink:      var(--haus-color-success-on-subtle);
+}
+
+.warning {
+  --btn-solid:         var(--haus-color-warning-solid);
+  --btn-solid-hover:   var(--haus-color-warning-emphasis);
+  --btn-solid-pressed: var(--haus-color-warning-emphasis);
+  --btn-on-solid:      var(--haus-color-ink-inverse);
+  --btn-bg:            var(--haus-color-warning-subtle);
+  --btn-bg-hover:      var(--haus-color-warning-border);
+  --btn-border:        var(--haus-color-warning-border);
+  --btn-border-hover:  var(--haus-color-warning-solid);
+  --btn-border-ghost:  var(--haus-color-warning-border);
+  --btn-ink:           var(--haus-color-warning-on-subtle);
+  --btn-text-ink:      var(--haus-color-warning-on-subtle);
+}
+
+.error {
+  --btn-solid:         var(--haus-color-error-default);
+  --btn-solid-hover:   var(--haus-color-error-emphasis);
+  --btn-solid-pressed: var(--haus-color-error-emphasis);
+  --btn-on-solid:      var(--haus-color-error-on-default);
+  --btn-bg:            var(--haus-color-error-subtle);
+  --btn-bg-hover:      var(--haus-color-error-border);
+  --btn-border:        var(--haus-color-error-border);
+  --btn-border-hover:  var(--haus-color-error-default);
+  --btn-border-ghost:  var(--haus-color-error-border);
+  --btn-ink:           var(--haus-color-error-on-subtle);
+  --btn-text-ink:      var(--haus-color-error-on-subtle);
+}
+
 /* ── Variants ── */
 
 .primary {
-  background-color: var(--haus-color-primary-default);
-  border-color: var(--haus-color-primary-default);
-  color: var(--haus-color-ink-on-aronia);
+  background-color: var(--btn-solid);
+  border-color: var(--btn-solid);
+  color: var(--btn-on-solid);
 }
 .primary:hover:not(:disabled) {
-  background-color: var(--haus-color-primary-hover);
-  border-color: var(--haus-color-primary-hover);
+  background-color: var(--btn-solid-hover);
+  border-color: var(--btn-solid-hover);
 }
 .primary:active:not(:disabled) {
-  background-color: var(--haus-color-primary-pressed);
-  border-color: var(--haus-color-primary-pressed);
+  background-color: var(--btn-solid-pressed);
+  border-color: var(--btn-solid-pressed);
+  filter: var(--btn-shade);
 }
 
 .secondary {
-  background-color: var(--haus-color-surface-subtle);
-  border-color: var(--haus-color-border-default);
-  color: var(--haus-color-ink-primary);
+  background-color: var(--btn-bg);
+  border-color: var(--btn-border);
+  color: var(--btn-ink);
 }
 .secondary:hover:not(:disabled) {
-  background-color: var(--haus-color-surface-sunken);
-  border-color: var(--haus-color-border-strong);
+  background-color: var(--btn-bg-hover);
+  border-color: var(--btn-border-hover);
 }
 .secondary:active:not(:disabled) {
-  background-color: var(--haus-color-surface-sunken);
-  filter: brightness(0.97);
+  background-color: var(--btn-bg-hover);
+  filter: var(--btn-shade-soft);
 }
 
 .ghost {
   background-color: transparent;
   border-color: transparent;
-  color: var(--haus-color-ink-primary);
+  color: var(--btn-ink);
 }
 .ghost:hover:not(:disabled) {
-  background-color: var(--haus-color-surface-subtle);
-  border-color: var(--haus-color-border-subtle);
+  background-color: var(--btn-bg);
+  border-color: var(--btn-border-ghost);
 }
 .ghost:active:not(:disabled) {
-  background-color: var(--haus-color-surface-sunken);
-}
-
-.error {
-  background-color: var(--haus-color-error-default);
-  border-color: var(--haus-color-error-default);
-  color: var(--haus-color-error-on-default);
-}
-.error:hover:not(:disabled) {
-  background-color: var(--haus-color-error-emphasis);
-  border-color: var(--haus-color-error-emphasis);
-}
-.error:active:not(:disabled) {
-  filter: brightness(0.9);
+  background-color: var(--btn-bg-hover);
 }
 
 .text {
   background-color: transparent;
   border-color: transparent;
-  color: inherit;
+  color: var(--btn-text-ink);
   padding-inline: var(--haus-space-inset-2xs);
   text-decoration: underline;
   text-underline-offset: 3px;

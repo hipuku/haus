@@ -34,6 +34,10 @@ rather than two so a consumer migrates once.
   cascade order declared once; `brands/ruby.css`, a complete second brand;
   `BrandMap` and `brandRoles`, generated from `brand.css`.
 - Added: a `require` condition and a `./package.json` export.
+- **Button takes all five tones.** `ButtonTone` was `neutral | error`; it is the
+  whole `Tone` union now, and every tone composes with every weight. Widening a
+  union is not itself breaking, but it is listed here because the colours a
+  toned Button paints are new and Chromatic will treat them as such.
 - Fixed: `controlHeight` reaches the JS export, which it never did.
 
 ### `haus-components`, breaking
@@ -53,6 +57,10 @@ rather than two so a consumer migrates once.
   claimed. `as` on Card and Badge. `initialFocus` and `dismissOnBackdrop` on
   Modal.
 - Added: a `require` condition and a `./package.json` export.
+- **Button takes all five tones.** `ButtonTone` was `neutral | error`; it is the
+  whole `Tone` union now, and every tone composes with every weight. Widening a
+  union is not itself breaking, but it is listed here because the colours a
+  toned Button paints are new and Chromatic will treat them as such.
 
 ### `haus-components`, fixed
 
@@ -70,3 +78,9 @@ rather than two so a consumer migrates once.
   focus indicator at all.
 - Components are written in logical properties, so the library works in a
   right-to-left document.
+- `<Button variant="ghost" tone="error">` rendered as a solid button, and so did
+  the `secondary` and `text` weights: the tone set background, border and colour
+  outright and won on source order whatever the variant asked for. Tone is a
+  palette of custom properties now, per
+  [decision 0012](docs/decisions/0012-a-tone-declares-custom-properties-only.md),
+  so weight and meaning compose. An untoned Button is unchanged.

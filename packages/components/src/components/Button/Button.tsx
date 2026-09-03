@@ -12,11 +12,14 @@ import styles from './Button.module.css'
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'text'
 
 /**
- * Button implements two of the five tones, because two are what it has designs
- * for. Narrowing the shared union is the honest move; inventing an info,
- * success and warning button to satisfy a type would be design by type error.
+ * All five tones, since 1.1. The narrowing this replaced was written on the
+ * premise that the other three had no design, and the premise was wrong:
+ * `semantics.css` already carried the full six-role set for info, success and
+ * warning — including the `solid` roles that exist precisely because those two
+ * 500s fail with white ink — and Badge already spent every one of them. The
+ * design was specified; only Button had not adopted it.
  */
-export type ButtonTone = Extract<Tone, 'neutral' | 'error'>
+export type ButtonTone = Tone
 
 export type ButtonSize = Size
 

@@ -35,9 +35,9 @@ const meta = {
     },
     tone: {
       control: 'inline-radio',
-      options: ['neutral', 'error'],
+      options: ['neutral', 'info', 'success', 'warning', 'error'],
       description:
-        'What it means. Two of the five shared tones, because two are what Button has designs for.',
+        'What it means. All five shared tones, composing freely with every weight.',
       table: { defaultValue: { summary: 'neutral' } },
     },
     size: {
@@ -81,14 +81,70 @@ export const Weights: Story = {
   ),
 }
 
+const TONES = ['neutral', 'info', 'success', 'warning', 'error'] as const
+const WEIGHTS = ['primary', 'secondary', 'ghost', 'text'] as const
+
 export const Tones: Story = {
   name: 'Tone is separate from weight',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The whole grid, because the point is that every cell of it works. A tone remaps ' +
+          'a set of custom properties and decides nothing about weight; a weight reads the ' +
+          'ones it needs and decides nothing about meaning. Before this, `tone="error"` set ' +
+          'background, border and colour outright and won on source order, so the ghost and ' +
+          'text columns below rendered as solid buttons.',
+      },
+    },
+  },
   render: (args) => (
-    <div style={{ display: 'flex', gap: 'var(--haus-space-3)', flexWrap: 'wrap' }}>
-      <Button {...args} variant="primary" tone="error">Delete</Button>
-      <Button {...args} variant="secondary" tone="error">Delete</Button>
-      <Button {...args} variant="ghost" tone="error">Delete</Button>
-    </div>
+    <table style={{ borderCollapse: 'separate', borderSpacing: 'var(--haus-space-3)' }}>
+      <thead>
+        <tr>
+          <th />
+          {WEIGHTS.map((weight) => (
+            <th
+              key={weight}
+              style={{
+                font: 'inherit',
+                fontSize: 'var(--haus-type-label-xs-size)',
+                color: 'var(--haus-color-ink-secondary)',
+                textAlign: 'start',
+                textTransform: 'uppercase',
+              }}
+            >
+              {weight}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {TONES.map((tone) => (
+          <tr key={tone}>
+            <th
+              scope="row"
+              style={{
+                font: 'inherit',
+                fontSize: 'var(--haus-type-label-xs-size)',
+                color: 'var(--haus-color-ink-secondary)',
+                textAlign: 'start',
+                textTransform: 'uppercase',
+              }}
+            >
+              {tone}
+            </th>
+            {WEIGHTS.map((weight) => (
+              <td key={weight}>
+                <Button {...args} variant={weight} tone={tone}>
+                  Delete
+                </Button>
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
   ),
 }
 
