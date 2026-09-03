@@ -45,6 +45,15 @@ rather than two so a consumer migrates once.
 - **`variant` is visual weight only.** Badge and Toast take `tone`; Button takes
   `variant` for weight, `tone` for meaning, and `external` as its own prop.
   `danger` is `tone="error"`. The old type names remain as deprecated aliases.
+- **Toast takes `appearance`, and `tone="neutral"` is now tinted.** It always had
+  two appearances and no word for them: `neutral` painted a dark solid surface
+  while the other four painted tinted ones, so which you got was decided by the
+  tone you happened to pick. `appearance` is `subtle | solid`, defaulting to
+  `subtle` as it does on Badge — so **the dark neutral toast is
+  `appearance="solid"` now**, and a plain `<Toast>` is tinted where it used to be
+  dark. Every tone has both. A solid toast's description also takes full-strength
+  ink instead of the old 0.8 opacity, which was tuned against one dark surface
+  and would have dropped white text under AA over two of the five.
 - **`className` lands on the root, everywhere.** The five components that put it
   elsewhere gained a named second target: `controlClassName` on the text
   controls and Checkbox, `dialogClassName` on Modal.

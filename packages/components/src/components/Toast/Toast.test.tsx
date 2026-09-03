@@ -56,6 +56,27 @@ describe('Toast', () => {
     expect(container.innerHTML).not.toContain('fa-')
   })
 
+  it.each(['neutral', 'info', 'success', 'warning', 'error'] as const)(
+    'is subtle by default, at the %s tone',
+    (tone) => {
+      // Toast already had two appearances and no word for them: neutral painted
+      // a dark solid surface while the other four painted tinted ones, so which
+      // one you got was decided by the tone you happened to pick.
+      render(<Toast tone={tone} title="Saved" />)
+      const cls = screen.getByRole('status').className
+      expect(cls).toContain(tone)
+      expect(cls).toContain('subtle')
+      expect(cls).not.toContain('solid')
+    },
+  )
+
+  it('takes a solid appearance at any tone', () => {
+    render(<Toast tone="warning" appearance="solid" title="Saved" />)
+    const cls = screen.getByRole('status').className
+    expect(cls).toContain('warning')
+    expect(cls).toContain('solid')
+  })
+
   it('applies the variant class', () => {
     render(<Toast title="Failed" tone="error" />)
     expect(screen.getByRole('status').className).toContain('error')
@@ -68,6 +89,8 @@ describe('Toast', () => {
         <Toast title="Success" tone="success" description="All good" />
         <Toast title="Error" tone="error" onClose={vi.fn()} />
         <Toast title="With action" action={<button>Undo</button>} />
+        <Toast title="Solid" tone="warning" appearance="solid" description="Check this" />
+        <Toast title="Solid neutral" appearance="solid" onClose={vi.fn()} />
       </>,
     )
     expect((await axe(container)).violations).toEqual([])

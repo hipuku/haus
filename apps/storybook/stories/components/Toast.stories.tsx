@@ -22,10 +22,24 @@ const meta = {
   },
   argTypes: {
     tone: { control: 'inline-radio', options: ['neutral', 'info', 'success', 'warning', 'error'] },
+    appearance: {
+      control: 'inline-radio',
+      options: ['subtle', 'solid'],
+      description:
+        'How solidly the tone is expressed. Toast already had both and no word ' +
+        'for them: `neutral` painted a dark solid surface while the other four ' +
+        'painted tinted ones. Ruling A5.',
+      table: { defaultValue: { summary: 'subtle' } },
+    },
     title: { control: 'text' },
     description: { control: 'text' },
   },
-  args: { tone: 'success', title: 'Saved', description: 'Your changes are live.' },
+  args: {
+    tone: 'success',
+    appearance: 'subtle',
+    title: 'Saved',
+    description: 'Your changes are live.',
+  },
 } satisfies Meta<typeof Toast>
 
 export default meta
@@ -39,6 +53,47 @@ export const Tones: Story = {
       {(['neutral', 'info', 'success', 'warning', 'error'] as const).map((tone) => (
         <Toast key={tone} {...args} tone={tone} title={tone} />
       ))}
+    </div>
+  ),
+}
+
+export const Appearances: Story = {
+  name: 'Appearance is separate from tone',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Both columns, because the point is that the choice is now yours to make. ' +
+          'A `neutral` toast used to be the dark one and the other four tinted, with ' +
+          'no way to ask for the opposite. `subtle` is the default, matching Badge.\n\n' +
+          'The accent edge only appears on the tinted appearance: a stripe of the ' +
+          'same colour family against a solid surface reads as an artefact, so the ' +
+          'icon carries the tone there instead.',
+      },
+    },
+  },
+  render: (args) => (
+    // Column-major: the flat list below is appearance-then-tone, so the rows
+    // have to be fixed and the flow turned, or the two appearances interleave.
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateRows: 'repeat(5, auto)',
+        gridAutoFlow: 'column',
+        gap: 'var(--haus-space-3)',
+      }}
+    >
+      {(['subtle', 'solid'] as const).map((appearance) =>
+        (['neutral', 'info', 'success', 'warning', 'error'] as const).map((tone) => (
+          <Toast
+            key={`${appearance}-${tone}`}
+            {...args}
+            tone={tone}
+            appearance={appearance}
+            title={`${tone} ${appearance}`}
+          />
+        )),
+      )}
     </div>
   ),
 }

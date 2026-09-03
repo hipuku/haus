@@ -11,6 +11,7 @@
   max-width: 360px;
   width: 100%;
   font-family: var(--haus-font-sans);
+  color: var(--haus-color-ink-primary);
   animation: slideIn var(--haus-motion-slide-in);
 }
 
@@ -19,40 +20,86 @@
   to   { transform: translateY(0);   opacity: 1; }
 }
 
-/* ── Variants ── */
+/* ── Tones ─────────────────────────────────────────────────────────────────
+   Decision 0012: a tone rule remaps custom properties and declares nothing
+   else; the appearance rules below read them. Toast is the second component in
+   this shape after Button, and the reason it needed the treatment is visible in
+   what this replaced — `neutral` painted a dark solid surface while the other
+   four painted tinted ones, so the component already had two appearances and
+   no prop to say which you wanted. `appearance` is that prop, per decision
+   0005, and neutral's dark surface is `appearance="solid"` now.
+
+   The tinted ink is deliberately `ink-primary` rather than each tone's
+   `on-subtle`: on a notice the body copy is copy, and the tone is carried by
+   the icon and the accent edge. That was the existing design and it survives
+   the refactor unchanged. */
 
 .neutral {
-  background-color: var(--haus-color-surface-inverse);
-  border-color: var(--haus-color-surface-inverse);
-  color: var(--haus-color-ink-inverse);
+  --haus-toast-bg:        var(--haus-color-surface-subtle);
+  --haus-toast-border:    var(--haus-color-border-default);
+  --haus-toast-accent:    var(--haus-color-border-strong);
+  --haus-toast-icon:      var(--haus-color-ink-secondary);
+  --haus-toast-solid-bg:  var(--haus-color-surface-inverse);
+  --haus-toast-solid-ink: var(--haus-color-ink-inverse);
 }
 
 .info {
-  background-color: var(--haus-color-info-subtle);
-  border-color: var(--haus-color-info-border);
-  border-inline-start-color: var(--haus-color-info-default);
-  color: var(--haus-color-ink-primary);
+  --haus-toast-bg:        var(--haus-color-info-subtle);
+  --haus-toast-border:    var(--haus-color-info-border);
+  --haus-toast-accent:    var(--haus-color-info-default);
+  --haus-toast-icon:      var(--haus-color-info-on-subtle);
+  --haus-toast-solid-bg:  var(--haus-color-info-default);
+  --haus-toast-solid-ink: var(--haus-color-info-on-default);
 }
 
+/* success and warning take their `solid` role at 700 rather than `default` at
+   500, because those two 500s fail with white ink — the same reach Badge and
+   Button make, for the same measured reason. */
+
 .success {
-  background-color: var(--haus-color-success-subtle);
-  border-color: var(--haus-color-success-border);
-  border-inline-start-color: var(--haus-color-success-default);
-  color: var(--haus-color-ink-primary);
+  --haus-toast-bg:        var(--haus-color-success-subtle);
+  --haus-toast-border:    var(--haus-color-success-border);
+  --haus-toast-accent:    var(--haus-color-success-default);
+  --haus-toast-icon:      var(--haus-color-success-on-subtle);
+  --haus-toast-solid-bg:  var(--haus-color-success-solid);
+  --haus-toast-solid-ink: var(--haus-color-ink-inverse);
 }
 
 .warning {
-  background-color: var(--haus-color-warning-subtle);
-  border-color: var(--haus-color-warning-border);
-  border-inline-start-color: var(--haus-color-warning-default);
-  color: var(--haus-color-ink-primary);
+  --haus-toast-bg:        var(--haus-color-warning-subtle);
+  --haus-toast-border:    var(--haus-color-warning-border);
+  --haus-toast-accent:    var(--haus-color-warning-default);
+  --haus-toast-icon:      var(--haus-color-warning-on-subtle);
+  --haus-toast-solid-bg:  var(--haus-color-warning-solid);
+  --haus-toast-solid-ink: var(--haus-color-ink-inverse);
 }
 
 .error {
-  background-color: var(--haus-color-error-subtle);
-  border-color: var(--haus-color-error-border);
-  border-inline-start-color: var(--haus-color-error-default);
-  color: var(--haus-color-ink-primary);
+  --haus-toast-bg:        var(--haus-color-error-subtle);
+  --haus-toast-border:    var(--haus-color-error-border);
+  --haus-toast-accent:    var(--haus-color-error-default);
+  --haus-toast-icon:      var(--haus-color-error-on-subtle);
+  --haus-toast-solid-bg:  var(--haus-color-error-default);
+  --haus-toast-solid-ink: var(--haus-color-error-on-default);
+}
+
+/* ── Appearances ── */
+
+.subtle {
+  background-color: var(--haus-toast-bg);
+  border-color: var(--haus-toast-border);
+  border-inline-start-color: var(--haus-toast-accent);
+}
+
+/* The accent edge is the tone's own fill here, which is to say there is no
+   visible accent: a stripe of the same colour family against a solid surface
+   reads as a rendering artefact rather than as an indicator. The icon carries
+   the tone instead, as it does at every appearance. */
+.solid {
+  background-color: var(--haus-toast-solid-bg);
+  border-color: var(--haus-toast-solid-bg);
+  border-inline-start-color: var(--haus-toast-solid-bg);
+  color: var(--haus-toast-solid-ink);
 }
 
 /* ── Icon ── */
@@ -67,11 +114,11 @@
   aspect-ratio: 1;
 }
 
-.neutral .icon  { color: var(--haus-color-ink-inverse);        }
-.info    .icon  { color: var(--haus-color-info-on-subtle);      }
-.success .icon  { color: var(--haus-color-success-on-subtle);   }
-.warning .icon  { color: var(--haus-color-warning-on-subtle);   }
-.error   .icon  { color: var(--haus-color-error-on-subtle);     }
+/* One rule per appearance rather than one per tone: the tinted appearance puts
+   the tone's own ink on the icon, and the solid one has the tone in the surface
+   already, so the icon takes the surface's ink. */
+.subtle .icon { color: var(--haus-toast-icon); }
+.solid  .icon { color: inherit; }
 
 /* ── Body ── */
 
@@ -97,10 +144,14 @@
   color: var(--haus-color-ink-secondary);
 }
 
-.neutral .description { color: var(--haus-color-ink-inverse); opacity: 0.8; }
-
-/* Neutral (dark) toast: action inherits inverse ink colour via cascade */
-.neutral .action { color: var(--haus-color-ink-inverse); }
+/* Full-strength ink on a solid surface, where the tinted appearance can afford
+   a secondary grey. The 0.8 opacity this replaced was tuned against one dark
+   surface and would now sit over five, including two coloured 500s where it
+   drops white ink under AA — and an opacity ramp is exactly the thing the
+   contrast suite cannot measure. Title and description still separate, by
+   weight and size, which is how the rest of the system does it. */
+.solid .description,
+.solid .action { color: inherit; }
 
 .titleRow {
   display: flex;

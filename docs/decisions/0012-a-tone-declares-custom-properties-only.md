@@ -1,6 +1,6 @@
 # 0012 · A tone rule declares custom properties only
 
-**Accepted**, 2026-09-03. **Implemented on Button.**
+**Accepted**, 2026-09-03. **Implemented on Button and Toast.**
 
 ## Context
 
@@ -48,7 +48,9 @@ of custom properties rather than a row of rules per variant. A `:hover` or
 — Button's suite parses its own stylesheet and fails if any rule selecting a
 tone declares a non-custom property, which is the assertion that actually
 catches the regression, since components test under `css: false` and the DOM
-shows both classes present either way.
+shows both classes present either way. The check lives in `stylesheet.test.ts`
+and runs over every component stylesheet in the package, so a component adopting
+this shape is held to it without writing a test of its own.
 
 Harder: the indirection is real. Reading `.primary` no longer tells you what
 colour it is, and the answer is one hop away in the palette block. Twelve
@@ -61,5 +63,13 @@ missing, decide it" — which is the right place for it, and is why the contrast
 suite grew the `solid`, `emphasis` and `on-subtle`-on-`surface-default` pairs
 that the toned weights now depend on.
 
-Applies to Button today. Toast, Badge and any future toned component should be
-brought to the same shape rather than each inventing one.
+Applies to Button and Toast. Toast is where the rule paid for itself a second
+time: it already had two appearances — `neutral` painting a dark solid surface
+while the other four painted tinted ones — and no prop to say which you wanted,
+which is the same fusion in a different disguise. `appearance` is that prop, per
+decision 0005, and the tone rules stopped deciding it.
+
+Badge is the remaining one. It reads correctly today because it writes compound
+selectors, `.neutral.subtle`, which name both things and so cannot be outvoted
+by source order — but that is a 5 x 2 grid of rules where this is 5 blocks plus
+2, and it will not survive a third axis. Worth converting, not urgent.

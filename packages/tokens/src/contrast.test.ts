@@ -81,6 +81,19 @@ const PAIRS: Array<[surface: string, ink: string, min: number]> = [
   ['--haus-color-surface-default', '--haus-color-success-on-subtle', 4.5],
   ['--haus-color-surface-default', '--haus-color-warning-on-subtle', 4.5],
   ['--haus-color-surface-default', '--haus-color-error-on-subtle', 4.5],
+
+  // Toast's tinted appearance puts `ink-primary` on each tone's subtle fill
+  // rather than that tone's `on-subtle`, because on a notice the body copy is
+  // copy and the tone is carried by the icon and the accent edge. It is a
+  // deliberate pairing the `on-*` rows above do not cover.
+  ['--haus-color-info-subtle', '--haus-color-ink-primary', 4.5],
+  ['--haus-color-success-subtle', '--haus-color-ink-primary', 4.5],
+  ['--haus-color-warning-subtle', '--haus-color-ink-primary', 4.5],
+  ['--haus-color-error-subtle', '--haus-color-ink-primary', 4.5],
+
+  // The inverse surface, which Toast's solid neutral and Badge's solid neutral
+  // both paint and nothing asserted.
+  ['--haus-color-surface-inverse', '--haus-color-ink-inverse', 4.5],
 ]
 
 describe('contrast', () => {

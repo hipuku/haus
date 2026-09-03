@@ -1,8 +1,17 @@
 import React from 'react'
-import type { Tone } from '../../types'
+import type { Appearance, Tone } from '../../types'
 import styles from './Toast.module.css'
 
 export type ToastTone = Tone
+
+/**
+ * How solidly the tone is expressed, per ruling A5. Toast already had both
+ * appearances and no word for them: `neutral` painted a dark solid surface
+ * while the other four painted tinted ones, so which you got was decided by
+ * the tone you happened to pick. `subtle` is the default because it is Badge's
+ * default and because four of the five tones already behaved that way.
+ */
+export type ToastAppearance = Appearance
 
 /** @deprecated Renamed to `ToastTone` in 1.0, ruling A5. */
 export type ToastVariant = ToastTone
@@ -51,6 +60,7 @@ const ICONS: Record<ToastTone, React.ReactNode> = {
 
 export interface ToastProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
   tone?:        ToastTone
+  appearance?:  ToastAppearance
   /** Named rather than spread: it is the visible heading, not the tooltip the
    *  native title attribute would give. */
   title:        string
@@ -79,12 +89,13 @@ export interface ToastProps extends Omit<React.HTMLAttributes<HTMLDivElement>, '
  * undocumented until this was written, which is the whole of what B4 settled.
  */
 export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(function Toast(
-  { tone = 'neutral', title, description, action, onClose, className, ...rest },
+  { tone = 'neutral', appearance = 'subtle', title, description, action, onClose, className, ...rest },
   ref,
 ) {
   const cls = [
     styles.toast,
     styles[tone],
+    styles[appearance],
     className,
   ].filter(Boolean).join(' ')
 
