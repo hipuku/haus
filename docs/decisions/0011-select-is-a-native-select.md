@@ -50,3 +50,19 @@ one of them, designed against two migrations that have actually happened rather
 than two that have not. Building it now would mean designing for consumers whose
 adoption has not yet tested the contract, and would widen the twelve-component
 scope on a guess.
+
+---
+
+## Update, 2026-09-05
+
+`Popover` shipped (haus#31, decision 0013), which changes what the escape hatch
+costs rather than what this decision says.
+
+The reason core carries a bespoke 100-line `Dropdown` is this decision: a native
+`<select>` cannot be themed, so a product that needs a themed one has to build
+the whole thing. With a `Popover` in the system that becomes a composition of
+two haus parts — a trigger and a panel with `role="listbox"` — rather than a
+component haus has no answer for.
+
+`Select` stays native. What has changed is that the deliberate absence is now
+survivable without leaving the system.
