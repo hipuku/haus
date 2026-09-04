@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "31,900 named colours as data, for pairing with a perceptual matcher.",
   "license": "MIT",
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "author": "hipuku",
   "homepage": "https://github.com/hipuku/haus/tree/main/packages/colour-names#readme",
   "repository": {

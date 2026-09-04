@@ -3,6 +3,9 @@
   "version": "0.2.1",
   "description": "Read a rendered element's design decisions: in-browser computed-style extraction plus pure, testable normalisation into typed token values.",
   "license": "MIT",
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "author": "hipuku",
   "homepage": "https://github.com/hipuku/haus/tree/main/packages/style-probe#readme",
   "repository": {

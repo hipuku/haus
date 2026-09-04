@@ -3,6 +3,9 @@
   "version": "0.2.1",
   "description": "haus design tokens: OKLCH colour, type, spacing, radius, shadow and motion, as W3C-DTCG JSON, CSS custom properties, and typed JS constants.",
   "license": "MIT",
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "author": "hipuku",
   "homepage": "https://github.com/hipuku/haus/tree/main/packages/tokens#readme",
   "repository": {
