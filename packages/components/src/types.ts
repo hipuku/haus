@@ -12,9 +12,14 @@
  * What a thing *means*. Never how heavy it looks.
  *
  * The union is the whole vocabulary. A component narrows it to the tones it has
- * a design for, and says so in its own type — `neutral | error` on Button today,
- * because the other three do not exist as button styles yet. Narrowing is
- * honest; inventing three more button colours to satisfy a type is not.
+ * a design for, and says so in its own type: `Toggle` takes `sm | md` of the
+ * size scale for the same reason. Narrowing is honest; inventing a colour to
+ * satisfy a type is not.
+ *
+ * Button took `neutral | error` until it was checked. `semantics.css` already
+ * carried the full six-role set for info, success and warning, so the narrowing
+ * described a design that existed. It takes all five now, and its stylesheet
+ * remaps eleven to thirteen properties per tone.
  */
 export type Tone = 'neutral' | 'info' | 'success' | 'warning' | 'error'
 
