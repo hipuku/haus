@@ -1,0 +1,43 @@
+/* An inline-flex wrapper rather than a block: a tooltip goes on a control that
+   is usually sitting inside a line of other controls, and a block wrapper
+   silently changes that layout. The wrapper is also what the pointer stays
+   inside while travelling from the trigger to the bubble, which is the
+   "hoverable" half of WCAG 1.4.13. */
+.root {
+  position: relative;
+  display: inline-flex;
+}
+
+.bubble {
+  position: absolute;
+  z-index: var(--haus-z-tooltip);
+  /* Pinned to the trigger's leading edge rather than centred on it.
+     Centring wants translateX(-50%), and CSS has no logical transform — so it
+     would need an [dir='rtl'] counterpart that restates the same value, since
+     a centring offset is symmetric and does not actually flip. A rule that
+     exists only to satisfy a check is worse than the alignment it buys.
+     `start` is also what Popover does, so the two floating surfaces in the
+     package sit the same way, and re-centring is a positioning-engine problem
+     of the kind Popover already declines. */
+  inset-inline-start: 0;
+  max-inline-size: 240px;
+  inline-size: max-content;
+  padding: var(--haus-space-inset-2xs) var(--haus-space-inset-xs);
+  border-radius: var(--haus-radius-control);
+  background-color: var(--haus-color-surface-inverse);
+  color: var(--haus-color-ink-inverse);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-label-sm-size);
+  line-height: var(--haus-type-label-sm-leading);
+  text-align: center;
+  box-shadow: var(--haus-elevation-floating);
+  /* Reads, does not block. The bubble sits over live content and the pointer
+     needs to reach what is beneath it. The travel path from trigger to bubble
+     stays inside .root, so `hoverable` still holds. */
+  pointer-events: none;
+}
+
+/* The gap is a gap, not a margin on the bubble: a margin would sit inside the
+   hover region and leave a dead strip the pointer crosses on its way in. */
+.top    { inset-block-end:   calc(100% + var(--haus-space-gap-2xs)); }
+.bottom { inset-block-start: calc(100% + var(--haus-space-gap-2xs)); }

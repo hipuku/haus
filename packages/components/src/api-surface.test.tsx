@@ -36,6 +36,7 @@ const REQUIRED: Record<string, Record<string, unknown>> = {
   Textarea: { label: 'Notes' },
   Toast: { title: 'Saved' },
   Toggle: { label: 'Wifi' },
+  Tooltip: { content: 'Copies the hex value', children: <button>Copy</button> },
 }
 
 const components = Object.entries(haus).filter(

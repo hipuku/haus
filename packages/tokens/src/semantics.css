@@ -13,7 +13,7 @@
      entry offsets, the textarea's minimum height and the select chevron's
      offset. A size is a value, not a role, and calling a 16px checkbox
      --haus-space-inset-md would say something untrue.
-   · 75 read a primitive that has no alias here because its own name already
+   · 77 read a primitive that has no alias here because its own name already
      is the role: --haus-font-sans, --haus-weight-*, --haus-border-width-*, --haus-tracking-normal,
      --haus-opacity-disabled, --haus-icon-sm, --haus-z-modal.
 

@@ -52,3 +52,6 @@ export type {
 
 export { Tabs }       from './components/Tabs'
 export type { TabsProps, TabsSize, TabItem } from './components/Tabs'
+
+export { Tooltip }    from './components/Tooltip'
+export type { TooltipProps, TooltipPlacement } from './components/Tooltip'

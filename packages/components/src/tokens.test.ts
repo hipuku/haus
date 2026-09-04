@@ -108,8 +108,11 @@ describe('components read roles, not primitives', () => {
     // reads the primitive that drift and vault each rewrote by hand. The gap
     // stopped being a tidiness argument the moment the system itself hit it.
     //
-    // Fourteen in one step, on six components. If this number is still growing
+    // 77 with Tooltip, which reads --haus-z-tooltip: the second of the six to
+    // need a stacking order, and the second to find no role for one.
+    //
+    // Sixteen in one step, on six components. If this number is still growing
     // at the 1.0 cut, the role layer lost the argument.
-    expect(PAST.length - sizes.length).toBe(75)
+    expect(PAST.length - sizes.length).toBe(77)
   })
 })
