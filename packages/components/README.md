@@ -1,6 +1,6 @@
 # haus-components
 
-Twelve accessible React components built on [`haus-tokens`](../tokens).
+Eighteen accessible React components built on [`haus-tokens`](../tokens).
 
 ## Install
 
@@ -49,13 +49,24 @@ import { Button, Card, Badge } from 'haus-components'
 
 ## Components
 
-`Avatar` · `Badge` · `Button` · `Card` · `Checkbox` · `Input` · `Modal` ·
-`Radio` · `Select` · `Textarea` · `Toast` · `Toggle`
+**Forms and content** — `Avatar` · `Badge` · `Button` · `Callout` · `Card` ·
+`Checkbox` · `Divider` · `EmptyState` · `Input` · `Radio` · `Select` ·
+`Textarea` · `Toast` · `Toggle`
+
+**Overlays and navigation** — `Modal` · `Popover` · `Tabs` · `Tooltip`
+
+The second group is new, and it exists because the first group was the whole
+library. haus was complete for forms and empty for overlays, which is the half
+a product cannot avoid writing itself and the half with the accessibility
+contracts worth centralising. The six added in 1.0 — `Callout`, `Divider`,
+`EmptyState`, `Popover`, `Tabs`, `Tooltip` — were not chosen. They were
+measured: each one had already been built independently in more than one of the
+three products consuming this system, and the measurements are on the issues.
 
 Every component forwards its ref and spreads the remaining props onto the
 underlying element, so anything not modelled as a prop is still reachable. That
 sentence is asserted over the barrel in `src/api-surface.test.tsx`, so a
-thirteenth component is held to it by existing.
+nineteenth component is held to it by existing.
 
 The ref goes to the element a caller would want: the control on the form
 components, the dialog on `Modal`, the root elsewhere.

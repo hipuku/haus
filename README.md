@@ -18,7 +18,7 @@ repo.
 | Package | Description | Used by |
 |---|---|---|
 | `haus-tokens` | Design tokens as CSS custom properties and W3C Design Tokens JSON | `haus-components`, drift |
-| `haus-components` | React component library (12 components) built on the token layer | this repo's Storybook, drift |
+| `haus-components` | React component library (18 components) built on the token layer | this repo's Storybook, drift |
 | `haus-colour-utils` | Colour science: OKLCH analysis, perceptual clustering, CIEDE2000 distance, WCAG contrast | drift, vault, hexicon |
 | `haus-style-probe` | Reads what a browser actually computed for an element, normalised into one shape | drift |
 | `haus-colour-names` | 31,900 named colours as data, for pairing with the matcher in `haus-colour-utils` | vault, and `haus-colour-utils` for the hue-family test; hexicon still carries its own copy |
