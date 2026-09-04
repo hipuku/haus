@@ -73,6 +73,14 @@ which is the one the rest of the roadmap hangs off.
 npm install haus-tokens haus-components
 ```
 
+## Visual regression
+
+Chromatic runs on pushes to `main` and on pull requests. `main` is the baseline
+and accepts automatically; a pull request does not, so a visual change is a diff
+a human reads before it becomes the baseline. A change never fails the build:
+`exitZeroOnChanges` is on, because an intentional redesign arriving as a red
+tick is how a team learns to merge past the job.
+
 ## Status
 
 Active development. All five packages are published to npm. `haus-colour-utils` and

@@ -1,12 +1,20 @@
 name: Chromatic
 
-# Pull requests only, and deliberately not pushes to main.
+# Both events, because Chromatic needs both to work at all.
 #
-# Chromatic bills by snapshot — one per story, per browser, per run — and this
-# Storybook has roughly forty stories. Running on both events doubles that for
-# no extra signal: the diff a reviewer needs is the one against the base branch,
-# and a push to main that came through a pull request has already been diffed.
+# A baseline is promoted when Chromatic builds the base branch. Running on pull
+# requests alone means main is never built, no baseline is ever promoted, and
+# every pull request re-reports the same changes against nothing. This ran that
+# way and produced no visual diff at any point, which was invisible because the
+# job also skipped for a missing token.
+#
+# Direct pushes to main are the normal workflow here, so main is where the
+# baseline has to come from. Snapshots cost one per story per browser per run;
+# this Storybook has eighteen story files on one browser, which is a small bill
+# for the only visual regression in the portfolio.
 on:
+  push:
+    branches: [main]
   pull_request:
     branches: [main]
 
@@ -17,7 +25,10 @@ jobs:
     # Skips cleanly rather than failing red when the token is absent — on a fork,
     # or before anyone has set it. A visual-regression job that fails for people
     # who cannot possibly fix it teaches everyone to ignore a red tick.
-    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    #
+    # The fork guard applies to pull requests only: a push event has no
+    # `pull_request` context, so testing it there would skip every push.
+    if: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -54,8 +65,12 @@ jobs:
           # on one would mean every intentional design change arrives as a red
           # tick, which is how teams learn to merge past this job.
           exitZeroOnChanges: true
-          # A story that no longer exists should stop being billed for.
-          autoAcceptChanges: false
+          # On main, accept: main is the baseline, and whatever is on it is by
+          # definition what the system looks like now. On a pull request, do not:
+          # that is the diff a human is meant to read before it becomes the
+          # baseline. Getting this the wrong way round is how a team ends up
+          # accepting regressions in review and re-reviewing them forever.
+          autoAcceptChanges: ${{ github.ref == 'refs/heads/main' }}
 
       - name: Say why this was skipped
         if: ${{ env.CHROMATIC_PROJECT_TOKEN == '' }}
