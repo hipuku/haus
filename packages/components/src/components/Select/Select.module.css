@@ -30,7 +30,7 @@
   background-color: var(--haus-color-surface-default);
   border: var(--haus-border-width-default) solid var(--haus-color-border-default);
   border-radius: var(--haus-radius-control);
-  padding: var(--haus-space-inset-xs) var(--haus-space-inset-2xl) var(--haus-space-inset-xs) var(--haus-space-inset-sm);
+  padding: var(--haus-space-inset-xs) var(--haus-space-inset-3xl) var(--haus-space-inset-xs) var(--haus-space-inset-sm);
   font-family: var(--haus-font-sans);
   font-size: var(--haus-type-body-sm-size);
   font-weight: var(--haus-type-body-sm-weight);

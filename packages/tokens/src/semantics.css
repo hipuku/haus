@@ -188,31 +188,69 @@
     /* ── Spacing ─────────────────────────────────────────────────────────────
        Three roles over one ladder: inset is padding, gap is space between
        siblings, stack is margin. A step is the same size whichever role reads
-       it, so the roles stay comparable. Splitting them is what lets padding be
-       retuned later without moving page rhythm, and without first working out
-       which --haus-space-3 meant which.
+       it, so the roles stay comparable, and `semantics.test.ts` fails the build
+       if two families ever disagree about what a step means. Splitting them is
+       what lets padding be retuned later without moving page rhythm, and without
+       first working out which --haus-space-3 meant which.
 
-       Only the steps components use are named. Add one when a component needs
-       it, rather than reaching past this layer.                              */
+       All three families run the full ladder, and the earlier rule that only
+       the steps components use are named is withdrawn (haus#26). It was a
+       reasonable policy and it did not survive a consumer. drift declared
+       eleven space roles haus does not have, all of them aliases of primitives
+       haus already ships, filling positions this layer skipped; and five of the
+       twelve primitives -- 7, 10, 12, 16 and 20 -- were reachable by no role at
+       all, so a product wanting 28px of padding had to read past this layer.
+       A consumer reading a primitive is the tier break `stylesheet.test.ts`
+       fails the build over for components, one layer out, and nothing checks
+       it. Naming a step nobody uses costs one line; making a consumer invent
+       one costs the contract.
+
+       The ladder is drift's, step for step, because drift is the only real
+       consumer and it worked its own out in practice. That also closes a fork:
+       2xl meant 28px there and 32px here, which is the same name carrying two
+       values across the system, and nothing reported it.                     */
 
     /* Padding: space inside a component, between its edge and its content. */
-    --haus-space-inset-2xs:  var(--haus-space-1);   /* 4px  */
-    --haus-space-inset-xs:   var(--haus-space-2);   /* 8px  */
-    --haus-space-inset-sm:   var(--haus-space-3);   /* 12px */
-    --haus-space-inset-md:   var(--haus-space-4);   /* 16px */
-    --haus-space-inset-lg:   var(--haus-space-5);   /* 20px */
-    --haus-space-inset-xl:   var(--haus-space-6);   /* 24px */
-    --haus-space-inset-2xl:  var(--haus-space-8);   /* 32px */
+    --haus-space-inset-2xs:  var(--haus-space-1);  /* 4px */
+    --haus-space-inset-xs:   var(--haus-space-2);  /* 8px */
+    --haus-space-inset-sm:   var(--haus-space-3);  /* 12px */
+    --haus-space-inset-md:   var(--haus-space-4);  /* 16px */
+    --haus-space-inset-lg:   var(--haus-space-5);  /* 20px */
+    --haus-space-inset-xl:   var(--haus-space-6);  /* 24px */
+    --haus-space-inset-2xl:  var(--haus-space-7);  /* 28px */
+    --haus-space-inset-3xl:  var(--haus-space-8);  /* 32px */
+    --haus-space-inset-4xl:  var(--haus-space-10); /* 40px */
+    --haus-space-inset-5xl:  var(--haus-space-12); /* 48px */
+    --haus-space-inset-6xl:  var(--haus-space-16); /* 64px */
+    --haus-space-inset-7xl:  var(--haus-space-20); /* 80px */
 
     /* Gap: space between siblings, set by the parent. */
-    --haus-space-gap-2xs:    var(--haus-space-1);   /* 4px  */
-    --haus-space-gap-xs:     var(--haus-space-2);   /* 8px  */
-    --haus-space-gap-sm:     var(--haus-space-3);   /* 12px */
-    --haus-space-gap-md:     var(--haus-space-4);   /* 16px */
+    --haus-space-gap-2xs:  var(--haus-space-1);  /* 4px */
+    --haus-space-gap-xs:   var(--haus-space-2);  /* 8px */
+    --haus-space-gap-sm:   var(--haus-space-3);  /* 12px */
+    --haus-space-gap-md:   var(--haus-space-4);  /* 16px */
+    --haus-space-gap-lg:   var(--haus-space-5);  /* 20px */
+    --haus-space-gap-xl:   var(--haus-space-6);  /* 24px */
+    --haus-space-gap-2xl:  var(--haus-space-7);  /* 28px */
+    --haus-space-gap-3xl:  var(--haus-space-8);  /* 32px */
+    --haus-space-gap-4xl:  var(--haus-space-10); /* 40px */
+    --haus-space-gap-5xl:  var(--haus-space-12); /* 48px */
+    --haus-space-gap-6xl:  var(--haus-space-16); /* 64px */
+    --haus-space-gap-7xl:  var(--haus-space-20); /* 80px */
 
     /* Stack: margin, space a component asks for around itself. */
-    --haus-space-stack-2xs:  var(--haus-space-1);   /* 4px  */
-    --haus-space-stack-xs:   var(--haus-space-2);   /* 8px  */
+    --haus-space-stack-2xs:  var(--haus-space-1);  /* 4px */
+    --haus-space-stack-xs:   var(--haus-space-2);  /* 8px */
+    --haus-space-stack-sm:   var(--haus-space-3);  /* 12px */
+    --haus-space-stack-md:   var(--haus-space-4);  /* 16px */
+    --haus-space-stack-lg:   var(--haus-space-5);  /* 20px */
+    --haus-space-stack-xl:   var(--haus-space-6);  /* 24px */
+    --haus-space-stack-2xl:  var(--haus-space-7);  /* 28px */
+    --haus-space-stack-3xl:  var(--haus-space-8);  /* 32px */
+    --haus-space-stack-4xl:  var(--haus-space-10); /* 40px */
+    --haus-space-stack-5xl:  var(--haus-space-12); /* 48px */
+    --haus-space-stack-6xl:  var(--haus-space-16); /* 64px */
+    --haus-space-stack-7xl:  var(--haus-space-20); /* 80px */
 
     /* ── Radius ──────────────────────────────────────────────────────────────
        Named for what is rounded, so a component asks for the shape of the
