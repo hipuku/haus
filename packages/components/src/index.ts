@@ -38,3 +38,6 @@ export type { ToggleProps, ToggleSize } from './components/Toggle'
 
 export { Divider }    from './components/Divider'
 export type { DividerProps, DividerOrientation, DividerSpacing } from './components/Divider'
+
+export { Callout }    from './components/Callout'
+export type { CalloutProps, CalloutTone, CalloutLive } from './components/Callout'

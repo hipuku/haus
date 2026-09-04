@@ -18,6 +18,7 @@ const REQUIRED: Record<string, Record<string, unknown>> = {
   Avatar: { name: 'Ada Lovelace' },
   Badge: { children: 'New' },
   Button: { children: 'Save' },
+  Callout: { children: 'Heads up' },
   Card: { children: 'Body' },
   Checkbox: { label: 'Accept' },
   Divider: {},

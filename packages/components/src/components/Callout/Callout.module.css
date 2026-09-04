@@ -1,0 +1,74 @@
+.callout {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--haus-space-gap-sm);
+  padding: var(--haus-space-inset-sm) var(--haus-space-inset-md);
+  border-radius: var(--haus-radius-surface);
+  border: var(--haus-border-width-default) solid var(--haus-callout-border);
+  background-color: var(--haus-callout-bg);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-body-sm-size);
+  line-height: var(--haus-type-body-sm-leading);
+  color: var(--haus-color-ink-primary);
+}
+
+/* ── Tones ─────────────────────────────────────────────────────────────────
+   Decision 0012: a tone rule remaps custom properties and declares nothing
+   else. Callout has one appearance, so there is only the one set of rules
+   above reading them — but written the other way, a tone setting background
+   and border outright would sit at equal specificity to the base rule and the
+   later one would win whatever the caller asked for. The shape is the point,
+   not the current number of consumers of it.
+
+   The ink stays `ink-primary` in every tone, as it does on Toast: in a notice
+   the body copy is copy. The tone is carried by the icon and the edge, which
+   is also what keeps the text contrast identical across all five. */
+
+.neutral {
+  --haus-callout-bg:     var(--haus-color-surface-subtle);
+  --haus-callout-border: var(--haus-color-border-default);
+  --haus-callout-icon:   var(--haus-color-ink-secondary);
+}
+
+.info {
+  --haus-callout-bg:     var(--haus-color-info-subtle);
+  --haus-callout-border: var(--haus-color-info-border);
+  --haus-callout-icon:   var(--haus-color-info-on-subtle);
+}
+
+.success {
+  --haus-callout-bg:     var(--haus-color-success-subtle);
+  --haus-callout-border: var(--haus-color-success-border);
+  --haus-callout-icon:   var(--haus-color-success-on-subtle);
+}
+
+.warning {
+  --haus-callout-bg:     var(--haus-color-warning-subtle);
+  --haus-callout-border: var(--haus-color-warning-border);
+  --haus-callout-icon:   var(--haus-color-warning-on-subtle);
+}
+
+.error {
+  --haus-callout-bg:     var(--haus-color-error-subtle);
+  --haus-callout-border: var(--haus-color-error-border);
+  --haus-callout-icon:   var(--haus-color-error-on-subtle);
+}
+
+/* Sized against the body step it sits beside rather than against the callout,
+   and nudged down by the difference between the line box and the glyph so the
+   mark reads as aligned to the first line of text rather than to the box. */
+.icon {
+  display: flex;
+  flex-shrink: 0;
+  color: var(--haus-callout-icon);
+  margin-block-start: 2px;
+}
+
+.icon > svg {
+  inline-size: var(--haus-icon-sm);
+  block-size: var(--haus-icon-sm);
+}
+
+.body {
+  min-inline-size: 0;
+}
