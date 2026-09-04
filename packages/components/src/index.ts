@@ -44,3 +44,8 @@ export type { CalloutProps, CalloutTone, CalloutLive } from './components/Callou
 
 export { EmptyState } from './components/EmptyState'
 export type { EmptyStateProps, EmptyStateHeadingLevel, EmptyStateLive } from './components/EmptyState'
+
+export { Popover }    from './components/Popover'
+export type {
+  PopoverProps, PopoverAlign, PopoverPlacement, PopoverWidth, PopoverRole,
+} from './components/Popover'

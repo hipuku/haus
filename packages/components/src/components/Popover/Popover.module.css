@@ -1,0 +1,40 @@
+/* Positioned against the nearest positioned ancestor, which the caller owns.
+   Documented on the component rather than assumed: the wrapper holding the
+   trigger and the panel needs `position: relative`, and there is no way for a
+   child to establish that for its own parent.
+
+   There is deliberately no collision detection — no flipping when the panel
+   would leave the viewport, and no shifting along the cross axis. That needs a
+   positioning engine measuring rects on scroll and resize, and this package
+   declares haus-tokens and the two React peers and nothing else. Adding
+   @floating-ui to a design system's component package makes it a dependency of
+   every consumer of every component. `placement` is the caller's answer to the
+   same problem, one level up, where the layout is actually known. */
+.panel {
+  position: absolute;
+  z-index: var(--haus-z-dropdown);
+  background-color: var(--haus-color-surface-overlay);
+  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  border-radius: var(--haus-radius-overlay);
+  box-shadow: var(--haus-elevation-floating);
+  padding: var(--haus-space-inset-xs);
+  font-family: var(--haus-font-sans);
+  color: var(--haus-color-ink-primary);
+  min-inline-size: max-content;
+}
+
+/* Logical, so the panel pins to the side the text starts on and flips with the
+   writing direction rather than staying on the left. */
+.start   { inset-inline-start: 0; }
+.end     { inset-inline-end: 0; }
+.stretch { inset-inline: 0; }
+
+.bottom { inset-block-start: calc(100% + var(--haus-space-gap-2xs)); }
+.top    { inset-block-end:   calc(100% + var(--haus-space-gap-2xs)); }
+
+/* `trigger` is the stretch case sized by the anchor; the fixed steps are for
+   panels holding a form, where content width is not a useful measure. */
+.w-trigger { inline-size: 100%; min-inline-size: 0; }
+.w-sm { inline-size: 180px; }
+.w-md { inline-size: 260px; }
+.w-lg { inline-size: 340px; }
