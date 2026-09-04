@@ -1,0 +1,75 @@
+.tabs {
+  font-family: var(--haus-font-sans);
+}
+
+.list {
+  display: flex;
+  align-items: stretch;
+  gap: var(--haus-space-gap-2xs);
+  border-block-end: var(--haus-border-width-default) solid var(--haus-color-border-default);
+}
+
+.tab {
+  appearance: none;
+  background: none;
+  border: 0;
+  /* The selected tab is marked with a rule under it, and an unselected one
+     carries the same rule in a transparent colour rather than no rule at all.
+     A border that appears on selection moves every tab by its width, which
+     reads as the row twitching. */
+  border-block-end: var(--haus-border-width-thick) solid transparent;
+  margin-block-end: calc(-1 * var(--haus-border-width-default));
+  color: var(--haus-color-ink-secondary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--haus-space-gap-2xs);
+  white-space: nowrap;
+  font-family: inherit;
+  font-weight: var(--haus-type-label-weight);
+}
+
+.tab:hover:not(:disabled) {
+  color: var(--haus-color-ink-primary);
+}
+
+/* The focus ring is drawn inside the tab rather than around it: a tab sits
+   flush against the rule beneath the list, and an outset ring is clipped by it
+   on the bottom edge, which is WCAG 2.4.11 in the one place it is easy to
+   miss. */
+.tab:focus-visible {
+  outline: none;
+  box-shadow: var(--haus-shadow-focus);
+  border-radius: var(--haus-radius-control);
+}
+
+.tab:disabled {
+  color: var(--haus-color-ink-disabled);
+  cursor: not-allowed;
+}
+
+.selected {
+  color: var(--haus-color-ink-primary);
+  border-block-end-color: var(--haus-color-primary-default);
+}
+
+.sm { font-size: var(--haus-type-label-sm-size); }
+.sm .tab { padding: var(--haus-space-inset-xs) var(--haus-space-inset-sm); }
+
+.md { font-size: var(--haus-type-label-size); }
+.md .tab { padding: var(--haus-space-inset-sm) var(--haus-space-inset-md); }
+
+.lg { font-size: var(--haus-type-body-size); }
+.lg .tab { padding: var(--haus-space-inset-md) var(--haus-space-inset-lg); }
+
+.panel {
+  padding-block-start: var(--haus-space-inset-md);
+}
+
+/* The panel is focusable so it can be read, but it is not a control and should
+   not look like one. The ring is still drawn for keyboard users. */
+.panel:focus-visible {
+  outline: none;
+  box-shadow: var(--haus-shadow-focus);
+  border-radius: var(--haus-radius-surface);
+}

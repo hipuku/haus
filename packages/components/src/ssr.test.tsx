@@ -31,6 +31,8 @@ const REQUIRED: Record<string, Record<string, unknown>> = {
              'aria-label': 'Options', children: 'Body' },
   RadioGroup: { name: 'size', options: [{ value: 'sm', label: 'Small' }] },
   Select: { label: 'Role', options: [{ value: 'a', label: 'A' }] },
+  Tabs: { items: [{ value: 'a', label: 'A' }], value: 'a', onValueChange: () => {},
+          'aria-label': 'Sections', children: 'Panel' },
   Textarea: { label: 'Notes' },
   Toast: { title: 'Saved' },
   Toggle: { label: 'Wifi' },

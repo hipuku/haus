@@ -98,15 +98,18 @@ describe('components read roles, not primitives', () => {
     // If a component legitimately gains or loses one, update them together.
     const sizes = PAST.filter((d) => d.primitives.some((t) => /^--haus-space-\d+$/.test(t)))
     expect(sizes.length).toBe(31)
-    // 61 to 63 when Divider landed, to 67 with Callout, to 68 with EmptyState,
-    // to 71 with Popover: border widths, font families, icon sizes, and — the
-    // sharp one — --haus-z-dropdown. Every one is a primitive with no role to
-    // read instead, which is haus#27.
+    // 61 before step 7. 63 with Divider, 67 with Callout, 68 with EmptyState,
+    // 71 with Popover, 75 with Tabs: border widths, font families, shadows and
+    // — the sharp one — --haus-z-dropdown. Every one is a primitive with no
+    // role to read instead, which is haus#27.
     //
     // Popover is worth pausing on. It is the first component here that has to
     // sit above something, and there is no z role for it to ask for, so it
     // reads the primitive that drift and vault each rewrote by hand. The gap
     // stopped being a tidiness argument the moment the system itself hit it.
-    expect(PAST.length - sizes.length).toBe(71)
+    //
+    // Fourteen in one step, on six components. If this number is still growing
+    // at the 1.0 cut, the role layer lost the argument.
+    expect(PAST.length - sizes.length).toBe(75)
   })
 })

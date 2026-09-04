@@ -49,3 +49,6 @@ export { Popover }    from './components/Popover'
 export type {
   PopoverProps, PopoverAlign, PopoverPlacement, PopoverWidth, PopoverRole,
 } from './components/Popover'
+
+export { Tabs }       from './components/Tabs'
+export type { TabsProps, TabsSize, TabItem } from './components/Tabs'
