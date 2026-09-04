@@ -41,3 +41,6 @@ export type { DividerProps, DividerOrientation, DividerSpacing } from './compone
 
 export { Callout }    from './components/Callout'
 export type { CalloutProps, CalloutTone, CalloutLive } from './components/Callout'
+
+export { EmptyState } from './components/EmptyState'
+export type { EmptyStateProps, EmptyStateHeadingLevel, EmptyStateLive } from './components/EmptyState'

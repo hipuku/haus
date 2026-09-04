@@ -20,6 +20,7 @@ const REQUIRED: Record<string, Record<string, unknown>> = {
   Card: { children: 'Body' },
   Checkbox: { label: 'Accept' },
   Divider: {},
+  EmptyState: { title: 'Nothing yet' },
   Input: { label: 'Name' },
   // Closed: an open Modal is a portal, and a portal has nowhere to go on a
   // server. That is the point of the second test rather than a gap in this one.

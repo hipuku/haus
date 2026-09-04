@@ -22,6 +22,7 @@ const REQUIRED: Record<string, Record<string, unknown>> = {
   Card: { children: 'Body' },
   Checkbox: { label: 'Accept' },
   Divider: {},
+  EmptyState: { title: 'Nothing yet' },
   Input: { label: 'Name' },
   Modal: { open: true, onClose: () => {}, title: 'Confirm', children: 'Body' },
   RadioGroup: { name: 'size', options: [{ value: 'sm', label: 'Small' }] },

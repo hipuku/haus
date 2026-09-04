@@ -98,11 +98,11 @@ describe('components read roles, not primitives', () => {
     // If a component legitimately gains or loses one, update them together.
     const sizes = PAST.filter((d) => d.primitives.some((t) => /^--haus-space-\d+$/.test(t)))
     expect(sizes.length).toBe(31)
-    // 61 to 63 when Divider landed, 63 to 67 with Callout: a border width, a
-    // font family and an icon size in each axis. Every one of them is a
-    // primitive with no role to read instead, which is haus#27, and this
-    // counter is the thing that keeps noticing it — the number goes up with
-    // each component the gap touches rather than staying an old finding.
-    expect(PAST.length - sizes.length).toBe(67)
+    // 61 to 63 when Divider landed, to 67 with Callout, to 68 with EmptyState:
+    // border widths, font families and icon sizes. Every one is a primitive
+    // with no role to read instead, which is haus#27, and this counter is the
+    // thing that keeps noticing it — the number goes up with each component the
+    // gap touches rather than staying an old finding.
+    expect(PAST.length - sizes.length).toBe(68)
   })
 })

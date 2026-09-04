@@ -1,0 +1,42 @@
+/* Centred on both axes and given a floor rather than a fixed height: it stands
+   in the space content would have taken, and that space is the parent's to
+   decide. A fixed height would be right for a table and wrong for a drawer. */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: var(--haus-space-gap-xs);
+  padding: var(--haus-space-inset-2xl) var(--haus-space-inset-lg);
+  font-family: var(--haus-font-sans);
+}
+
+.icon {
+  display: flex;
+  color: var(--haus-color-ink-tertiary);
+  margin-block-end: var(--haus-space-stack-2xs);
+}
+
+/* The heading is deliberately not display-sized. An empty state is a quiet
+   state: it explains an absence, and shouting about it makes the absence feel
+   like a fault. */
+.title {
+  margin: 0;
+  font-size: var(--haus-type-heading-sm-size);
+  font-weight: var(--haus-type-heading-sm-weight);
+  line-height: var(--haus-type-heading-sm-leading);
+  color: var(--haus-color-ink-primary);
+}
+
+.description {
+  margin: 0;
+  max-inline-size: 44ch;
+  font-size: var(--haus-type-body-sm-size);
+  line-height: var(--haus-type-body-sm-leading);
+  color: var(--haus-color-ink-secondary);
+}
+
+.action {
+  margin-block-start: var(--haus-space-stack-sm);
+}
