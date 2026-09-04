@@ -98,6 +98,9 @@ describe('components read roles, not primitives', () => {
     // If a component legitimately gains or loses one, update them together.
     const sizes = PAST.filter((d) => d.primitives.some((t) => /^--haus-space-\d+$/.test(t)))
     expect(sizes.length).toBe(31)
-    expect(PAST.length - sizes.length).toBe(61)
+    // 61 to 63 when Divider landed: it draws a rule in each orientation and
+    // both read --haus-border-width-default, which has no role to read instead.
+    // haus#27 is that gap, and this counter is the thing that keeps noticing it.
+    expect(PAST.length - sizes.length).toBe(63)
   })
 })

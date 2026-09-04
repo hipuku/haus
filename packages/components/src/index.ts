@@ -35,3 +35,6 @@ export type { RadioGroupProps, RadioOption } from './components/Radio'
 
 export { Toggle }     from './components/Toggle'
 export type { ToggleProps, ToggleSize } from './components/Toggle'
+
+export { Divider }    from './components/Divider'
+export type { DividerProps, DividerOrientation, DividerSpacing } from './components/Divider'

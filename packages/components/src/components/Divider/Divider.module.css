@@ -1,0 +1,34 @@
+/* The browser's own <hr> arrives with a border on all four sides, a default
+   margin and, in some engines, a colour that is not currentColor. Every one of
+   those has to be cleared before a single side can be drawn, which is most of
+   why three products each rewrote this. */
+.divider {
+  border: 0;
+  margin: 0;
+  flex-shrink: 0;
+  background-color: var(--haus-color-border-default);
+}
+
+.horizontal {
+  block-size: var(--haus-border-width-default);
+  inline-size: 100%;
+}
+
+/* Stretches to its flex parent rather than declaring a height. A vertical rule
+   is always between two things laid out in a row, and its length is theirs; a
+   fixed height would be right once. */
+.vertical {
+  inline-size: var(--haus-border-width-default);
+  align-self: stretch;
+  min-block-size: var(--haus-space-inset-md);
+}
+
+.horizontal.space-sm { margin-block: var(--haus-space-stack-sm); }
+.horizontal.space-md { margin-block: var(--haus-space-stack-md); }
+.horizontal.space-lg { margin-block: var(--haus-space-stack-lg); }
+
+/* The inline axis for a vertical rule, so the space sits either side of it and
+   flips with the writing direction rather than staying on the left. */
+.vertical.space-sm { margin-inline: var(--haus-space-stack-sm); }
+.vertical.space-md { margin-inline: var(--haus-space-stack-md); }
+.vertical.space-lg { margin-inline: var(--haus-space-stack-lg); }

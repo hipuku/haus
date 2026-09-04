@@ -20,6 +20,7 @@ const REQUIRED: Record<string, Record<string, unknown>> = {
   Button: { children: 'Save' },
   Card: { children: 'Body' },
   Checkbox: { label: 'Accept' },
+  Divider: {},
   Input: { label: 'Name' },
   Modal: { open: true, onClose: () => {}, title: 'Confirm', children: 'Body' },
   RadioGroup: { name: 'size', options: [{ value: 'sm', label: 'Small' }] },
