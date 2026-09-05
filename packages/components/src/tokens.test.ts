@@ -98,21 +98,24 @@ describe('components read roles, not primitives', () => {
     // If a component legitimately gains or loses one, update them together.
     const sizes = PAST.filter((d) => d.primitives.some((t) => /^--haus-space-\d+$/.test(t)))
     expect(sizes.length).toBe(31)
-    // 61 before step 7. 63 with Divider, 67 with Callout, 68 with EmptyState,
-    // 71 with Popover, 75 with Tabs: border widths, font families, shadows and
-    // — the sharp one — --haus-z-dropdown. Every one is a primitive with no
-    // role to read instead, which is haus#27.
+    // 61 before step 7, rising to 77 as the six new components landed: border
+    // widths, font families, shadows and — the sharp one — --haus-z-dropdown.
+    // Popover and Tooltip are the pair worth pausing on. They are the first
+    // components here that have to sit above something, and there is no z role
+    // to ask for, so the system itself now reads the primitive that drift and
+    // vault each rewrote by hand. That is haus#27, and it stopped being a
+    // tidiness argument the moment the system hit its own gap.
     //
-    // Popover is worth pausing on. It is the first component here that has to
-    // sit above something, and there is no z role for it to ask for, so it
-    // reads the primitive that drift and vault each rewrote by hand. The gap
-    // stopped being a tidiness argument the moment the system itself hit it.
+    // Then 77 to 71 with haus#34, and that is the number coming down for the
+    // right reason rather than by relabelling. Four field labels stopped
+    // assembling a role by hand — --haus-type-field-label-* is that role — and
+    // Button and Avatar took --haus-weight-emphasis and --haus-weight-strong,
+    // which are weight-only because both hold one weight across three and five
+    // size steps and so have no single role to take it from.
     //
-    // 77 with Tooltip, which reads --haus-z-tooltip: the second of the six to
-    // need a stacking order, and the second to find no role for one.
-    //
-    // Sixteen in one step, on six components. If this number is still growing
-    // at the 1.0 cut, the role layer lost the argument.
-    expect(PAST.length - sizes.length).toBe(77)
+    // There is no --haus-weight-* read left in the components at all. What is
+    // left in this number is families, border widths, icon sizes and the two
+    // z-index reads, and haus#27 is the whole of the second half.
+    expect(PAST.length - sizes.length).toBe(71)
   })
 })

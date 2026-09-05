@@ -13,7 +13,7 @@
      entry offsets, the textarea's minimum height and the select chevron's
      offset. A size is a value, not a role, and calling a 16px checkbox
      --haus-space-inset-md would say something untrue.
-   · 77 read a primitive that has no alias here because its own name already
+   · 71 read a primitive that has no alias here because its own name already
      is the role: --haus-font-sans, --haus-weight-*, --haus-border-width-*, --haus-tracking-normal,
      --haus-opacity-disabled, --haus-icon-sm, --haus-z-modal.
 
@@ -139,6 +139,29 @@
     --haus-type-label-sm-leading:  var(--haus-leading-normal);
     --haus-type-label-sm-tracking: var(--haus-tracking-wide);
 
+    /* A field label is not a small label.
+
+       haus#34. Input, Select, Textarea and Radio all wrote the same five lines:
+       label-sm's size, leading and tracking, and semibold where label-sm says
+       medium. Four files, four times, byte-identical — and
+       `--haus-type-label-sm-weight` had no consumer at all, because every
+       component reaching for the role disagreed with one third of it.
+
+       The first instinct was to change label-sm's weight to semibold and delete
+       the four overrides. That is wrong: label-xs, label-sm and label are one
+       scale at one weight, and both of the others have consumers reading their
+       weight — Badge takes label-xs's, Tabs and Toast take label's. Making the
+       middle step heavier to serve a use that is not "a small label" would
+       break the family to fix the call sites.
+
+       The text above a form control is its own typographic role, and it sets
+       all four properties, so it is a role of the ordinary shape rather than
+       another exception. */
+    --haus-type-field-label-size:     var(--haus-text-12);
+    --haus-type-field-label-weight:   var(--haus-weight-semibold);
+    --haus-type-field-label-leading:  var(--haus-leading-normal);
+    --haus-type-field-label-tracking: var(--haus-tracking-wide);
+
     --haus-type-label-size:        var(--haus-text-13);
     --haus-type-label-weight:      var(--haus-weight-medium);
     --haus-type-label-leading:     var(--haus-leading-normal);
@@ -178,6 +201,21 @@
     --haus-type-display-weight:      var(--haus-weight-bold);
     --haus-type-display-leading:     var(--haus-leading-tight);
     --haus-type-display-tracking:    var(--haus-tracking-tight);
+
+    /* Weight on its own, for text that is not on a type role at all.
+
+       haus#34, and the shape drift settled as drift#25. Button holds one weight
+       across three sizes and Avatar across five — both take their size from a
+       different role per size step, so neither can take "the role's weight"
+       because there is no single role to take it from. What they are choosing
+       is a weight, and nothing else.
+
+       Aliases, in the shape --haus-radius-control: var(--haus-radius-md)
+       already uses: the role says why, the primitive says what. Not a licence
+       to unbundle the typeset roles — a role carries the properties the thing
+       actually chooses, and prose chooses all four. */
+    --haus-weight-emphasis: var(--haus-weight-medium);
+    --haus-weight-strong:   var(--haus-weight-semibold);
 
     --haus-type-mono-size:           var(--haus-text-13);
     --haus-type-mono-weight:         var(--haus-weight-regular);

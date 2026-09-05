@@ -6,10 +6,10 @@
 
 .groupLabel {
   font-family: var(--haus-font-sans);
-  font-size: var(--haus-type-label-sm-size);
-  font-weight: var(--haus-weight-semibold);
-  line-height: var(--haus-type-label-sm-leading);
-  letter-spacing: var(--haus-type-label-sm-tracking);
+  font-size: var(--haus-type-field-label-size);
+  font-weight: var(--haus-type-field-label-weight);
+  line-height: var(--haus-type-field-label-leading);
+  letter-spacing: var(--haus-type-field-label-tracking);
   color: var(--haus-color-ink-primary);
   margin-block-end: var(--haus-space-stack-xs);
 }
