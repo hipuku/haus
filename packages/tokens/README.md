@@ -44,11 +44,16 @@ Two kinds of primitive read are documented rather than hidden. Sizes: 31
 declarations across the haus components take a size off the space ladder, on
 `height`, `width`, `min-*`/`max-*` and `transform` offsets, because a size is a
 value rather than a role. They are the avatar sizes, the checkbox and radio
-boxes, the toggle track and thumb, and a few min/max bounds. And 61 read a primitive that has no semantic alias
+boxes, the toggle track and thumb, and a few min/max bounds. And 77 read a primitive that has no semantic alias
 because the primitive's own name already is the role: `--haus-font-sans`,
 `--weight-*`, `--border-width-*`, `--haus-opacity-disabled`, `--haus-icon-sm`,
-`--haus-z-modal`. No component reads a colour, radius, shadow or motion primitive,
+`--haus-z-dropdown`. No component reads a colour, radius, shadow or motion primitive,
 and a test in `haus-components` holds that line.
+
+That second number went from 61 to 77 when the six overlay components landed,
+and it is worth watching rather than only recording: `Popover` and `Tooltip`
+both had to read `--haus-z-*` directly, because eight z-index primitives have
+no role between them. See haus#27.
 
 ## Typed constants
 
@@ -79,6 +84,64 @@ numbers, a composite is an alias:
 "easing": { "enter":  { "$type": "cubicBezier", "$value": [0.0, 0.0, 0.2, 1.0] } },
 "motion": { "fade-in": { "$type": "string", "$value": "{duration.normal} {easing.enter}" } }
 ```
+
+## The guard
+
+`var(--x)` for an undefined `--x` is invalid at computed-value time: the
+declaration is dropped and the property inherits. No console warning, no build
+error, nothing in review — a focus ring is simply absent, and a missing duration
+looks like a design choice.
+
+That makes *have you loaded what my components read* a question worth failing a
+build over, and it is a question this package can answer because this package
+defines the contract. Import it from your own suite:
+
+```ts
+import { readFileSync } from 'node:fs'
+import { findUndefinedTokens } from 'haus-tokens/guard'
+
+const read = (p: string) => readFileSync(p, 'utf8')
+
+it('reads no role this app does not load', () => {
+  const { missing, read: reads } = findUndefinedTokens({
+    reads: [read('node_modules/haus-components/dist/styles.css')],
+    defines: [
+      read('node_modules/haus-tokens/dist/primitives.css'),
+      read('node_modules/haus-tokens/dist/motion.css'),
+      read('node_modules/haus-tokens/dist/semantics.css'),
+      read('src/tokens/overrides.css'),
+    ],
+  })
+
+  // Assert the floor as well as the failure: a wrong path makes the check pass
+  // by finding nothing.
+  expect(reads.length).toBeGreaterThan(50)
+  expect(missing).toEqual([])
+})
+```
+
+It is **pure and does no file reading**, so it runs anywhere and this package
+gains no dependency on `node:fs`. You know which files you load; it only knows
+what the contract is.
+
+`alsoDefined` takes properties set outside CSS — a component doing
+`style={{ '--haus-avatar-bg': v }}` defines one that no stylesheet will show.
+
+A read carrying a fallback, `var(--x, 0.2s)`, is a real value either way and is
+not a failure. `findFallbackTokens` lists those separately, because a fallback
+that never loses is a hardcoded value wearing a token's clothes and that is
+worth reading occasionally rather than failing a build over.
+
+**Why it exists.** drift wrote this check for itself and it caught five roles
+before they reached a screen: `--color-ink-on-aronia`, `--elevation-floating`,
+`--motion-duration-emphasis`, `--radius-marker` and `--shadow-focus-error`.
+Every consumer after it would have written the same test or shipped the same
+silent hole.
+
+It is also run against this package. `src/guard.test.ts` checks `semantics.css`
+and `brands/ruby.css` resolve against the layers below them — which is how the
+guard's own regex bug was found, a missing `m` flag that reported 41 undefined
+roles in a file that has none.
 
 ## Three copies, one truth
 

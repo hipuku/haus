@@ -35,6 +35,11 @@
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
     },
+    "./guard": {
+      "types": "./dist/guard.d.ts",
+      "import": "./dist/guard.js",
+      "require": "./dist/guard.cjs"
+    },
     "./index.css": "./dist/index.css",
     "./layers.css": "./dist/layers.css",
     "./primitives.css": "./dist/primitives.css",
