@@ -37,20 +37,24 @@ const radius = [
   { name: 'radius-full', value: '9999px',  px: '∞'    },
 ]
 
-const spaceRoles = [
-  { name: 'space-inset-2xs', alias: 'space-1', px: '4px',  use: 'Button' },
-  { name: 'space-inset-xs',  alias: 'space-2', px: '8px',  use: 'Badge, Button, Checkbox, Input, Select, Textarea' },
-  { name: 'space-inset-sm',  alias: 'space-3', px: '12px', use: 'Button, Input, Select, Textarea, Toast' },
-  { name: 'space-inset-md',  alias: 'space-4', px: '16px', use: 'Button, Checkbox, Modal, Toast' },
-  { name: 'space-inset-lg',  alias: 'space-5', px: '20px', use: 'Button, Card, Modal' },
-  { name: 'space-inset-xl',  alias: 'space-6', px: '24px', use: 'Modal' },
-  { name: 'space-inset-2xl', alias: 'space-8', px: '32px', use: 'Select' },
-  { name: 'space-gap-2xs',   alias: 'space-1', px: '4px',  use: 'Badge, Input, Radio, Select, Textarea, Toast' },
-  { name: 'space-gap-xs',    alias: 'space-2', px: '8px',  use: 'Button, Checkbox, Input, Radio' },
-  { name: 'space-gap-sm',    alias: 'space-3', px: '12px', use: 'Modal, Radio, Toast, Toggle' },
-  { name: 'space-gap-md',    alias: 'space-4', px: '16px', use: 'Modal, Radio' },
-  { name: 'space-stack-2xs', alias: 'space-1', px: '4px',  use: 'Checkbox, Input, Radio, Select, Textarea' },
-  { name: 'space-stack-xs',  alias: 'space-2', px: '8px',  use: 'Radio' },
+/* The ladder all three families run, since haus#26. Twelve steps rather than
+   the seven, four and two this table used to list — and `2xl` is space-7 now
+   rather than space-8, because the ladder is drift's and drift's is contiguous.
+   One row per step, three columns of role name, rather than thirty-six rows:
+   the whole point of the change is that the families no longer differ. */
+const spaceLadder = [
+  { step: '2xs', alias: 'space-1',  px: '4px'  },
+  { step: 'xs',  alias: 'space-2',  px: '8px'  },
+  { step: 'sm',  alias: 'space-3',  px: '12px' },
+  { step: 'md',  alias: 'space-4',  px: '16px' },
+  { step: 'lg',  alias: 'space-5',  px: '20px' },
+  { step: 'xl',  alias: 'space-6',  px: '24px' },
+  { step: '2xl', alias: 'space-7',  px: '28px' },
+  { step: '3xl', alias: 'space-8',  px: '32px' },
+  { step: '4xl', alias: 'space-10', px: '40px' },
+  { step: '5xl', alias: 'space-12', px: '48px' },
+  { step: '6xl', alias: 'space-16', px: '64px' },
+  { step: '7xl', alias: 'space-20', px: '80px' },
 ]
 
 const radiusRoles = [
@@ -138,19 +142,25 @@ function SpaceRolesPage() {
       <p style={pageDescStyle}>
         Three roles over one ladder. <code style={{ fontFamily: 'var(--haus-font-mono)' }}>inset</code> is padding, the space inside a component between its edge and its content. <code style={{ fontFamily: 'var(--haus-font-mono)' }}>gap</code> is space between siblings, set by the parent. <code style={{ fontFamily: 'var(--haus-font-mono)' }}>stack</code> is margin, space a component asks for around itself. A step is the same size whichever role reads it, so the roles stay comparable, and splitting them is what lets padding be retuned later without moving page rhythm. Components read these; the ladder below them is for sizes.
       </p>
+      <p style={pageDescStyle}>
+        All three families run the same twelve steps. They did not until haus#26: <code style={{ fontFamily: 'var(--haus-font-mono)' }}>inset</code> had seven, <code style={{ fontFamily: 'var(--haus-font-mono)' }}>gap</code> four and <code style={{ fontFamily: 'var(--haus-font-mono)' }}>stack</code> two, and five of the twelve primitives were reachable by no role at all — so a product wanting 28px of padding had to read past this layer, which is the tier break the build fails over one layer in. The ladder is drift&rsquo;s, step for step, because drift is the only real consumer and worked its own out in practice.
+      </p>
 
       <TableGrid columns={ROLE_COLS}>
-        <TH><ColLabel icon="fa-solid fa-tag">Token</ColLabel></TH>
         <TH><ColLabel icon="fa-solid fa-arrow-down-long">Aliases</ColLabel></TH>
         <TH><ColLabel icon="fa-solid fa-hashtag">Value</ColLabel></TH>
-        <TH><ColLabel icon="fa-solid fa-circle-info">Use</ColLabel></TH>
+        <TH><ColLabel icon="fa-solid fa-tag">Padding</ColLabel></TH>
+        <TH><ColLabel icon="fa-solid fa-tag">Gap and stack</ColLabel></TH>
         <TableDivider />
-        {spaceRoles.map(({ name, alias, px, use }) => (
-          <React.Fragment key={name}>
-            <TD><CopyChip name={name} /></TD>
+        {spaceLadder.map(({ step, alias, px }) => (
+          <React.Fragment key={step}>
             <TD><span style={{ ...tokenValueStyle, whiteSpace: 'nowrap' }}>{alias}</span></TD>
             <TD><span style={{ ...tokenValueStyle, whiteSpace: 'nowrap' }}>{px}</span></TD>
-            <TD><span style={{ fontSize: 'var(--haus-type-body-sm-size)', color: 'var(--haus-color-ink-secondary)' }}>{use}</span></TD>
+            <TD><CopyChip name={`space-inset-${step}`} /></TD>
+            <TD style={{ display: 'flex', gap: 'var(--haus-space-gap-2xs)', flexWrap: 'wrap' }}>
+              <CopyChip name={`space-gap-${step}`} />
+              <CopyChip name={`space-stack-${step}`} />
+            </TD>
           </React.Fragment>
         ))}
       </TableGrid>
