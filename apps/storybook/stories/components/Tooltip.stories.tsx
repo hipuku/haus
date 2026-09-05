@@ -13,11 +13,11 @@ const meta = {
           'promotions and the easiest to get wrong.\n\n' +
           'WCAG 1.4.13 in full: dismissible with Escape without moving focus, ' +
           'hoverable so the pointer can reach the bubble, and persistent with no ' +
-          'timeout. Plus the part that is not WCAG and is the most common bug — it ' +
+          'timeout. Plus the part that is not WCAG and is the most common bug: it ' +
           'appears on **focus** as well as hover. Tab to the button below rather ' +
           'than hovering it.\n\n' +
           '**A tooltip is not a Popover.** If it takes focus, holds a link, or runs ' +
-          'past a line, it is a Popover — `content` is typed `string` so that stays ' +
+          'past a line, it is a Popover: `content` is typed `string` so that stays ' +
           'true rather than being a convention. And it must never be the only place ' +
           'a piece of information lives: touch users have no hover.',
       },

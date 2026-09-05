@@ -36,6 +36,12 @@ jobs:
       - name: Lint CSS (design tokens)
         run: pnpm run lint:css
 
+      # House style does not use an em dash. Ratcheted against a baseline rather
+      # than absolute: a rule that could only pass after a mechanical rewrite of
+      # every file would have been turned off instead of adopted.
+      - name: Lint prose
+        run: pnpm run lint:prose
+
       # Packages resolve through dist/, which is gitignored, and workspace:^ links
       # them to each other, so nothing can typecheck across a package boundary
       # until the workspace is built. This used to sit after Typecheck and passed

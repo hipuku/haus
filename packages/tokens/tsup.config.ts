@@ -20,7 +20,7 @@ const BRANDS = ['ruby.css']
  * Dual output, ESM and CJS.
  *
  * The package advertised `main` pointing at the ESM entry, so a bundler falling
- * back to `main` in a CJS context got ESM and failed on the import statement —
+ * back to `main` in a CJS context got ESM and failed on the import statement -
  * an advertised entry point that does not work in the context it advertises for.
  *
  * The dual-package hazard is the usual objection and does not apply here: these

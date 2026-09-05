@@ -43,7 +43,7 @@ export const Playground: Story = {
     return (
       <div style={{ maxWidth: 560 }}>
         <Tabs {...args} value={value} onValueChange={setValue}>
-          The {value} panel. Tab once more to reach it — the tablist is a single stop.
+          The {value} panel. Tab once more to reach it: the tablist is a single stop.
         </Tabs>
       </div>
     )

@@ -8,7 +8,7 @@
 haus shipped twelve components and every one was a form control, a text
 primitive or `Modal`. That was not a plan. It was the order things happened to
 get built in, and it left the library complete for forms and empty for
-overlays — which is the half a product cannot avoid writing itself, and the
+overlays: which is the half a product cannot avoid writing itself, and the
 half carrying the accessibility contracts worth centralising.
 
 The usual way out is to look at what other design systems ship and copy the
@@ -55,7 +55,7 @@ visible. Both reasons are written on their issues.
 
 **The promotion argument turned into an audit.** Reading three implementations
 before writing one found a real accessibility defect in a shipped product in
-four of the six cases, and **axe flags none of them** — every one is markup
+four of the six cases, and **axe flags none of them**, every one is markup
 that is valid and wrong in context:
 
 - Three tablists across three products, and **zero** `role="tabpanel"`, **zero**
@@ -66,7 +66,7 @@ that is valid and wrong in context:
   validation message is never announced.
 - vault's `Popover` leaves focus return to the caller and none of its six call
   sites does it, so <kbd>Escape</kbd> drops focus onto `<body>`. WCAG 2.4.3.
-- vault's `EmptyState` renders load failures — "Couldn't open your library"
+- vault's `EmptyState` renders load failures: "Couldn't open your library"
   reads as *there is nothing here* when the truth is *we could not look*, and
   reaches assistive technology as nothing at all. Its title is a `<p>`, so
   heading navigation skips the only sentence explaining the absence.

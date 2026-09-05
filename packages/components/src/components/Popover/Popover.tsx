@@ -35,7 +35,7 @@ interface PopoverBaseProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'r
    *
    * Required, and that is the point of the component. vault's version leaves
    * this to the caller and none of its six call sites does it, so dismissing a
-   * menu with Escape drops focus onto `<body>` — the keyboard user is back at
+   * menu with Escape drops focus onto `<body>`: the keyboard user is back at
    * the top of the document with no way to know it moved.
    */
   triggerRef: React.RefObject<HTMLElement | null>
@@ -83,7 +83,7 @@ export const Popover = React.forwardRef<HTMLDivElement, PopoverProps>(function P
    *
    * The second half is the part every hand-rolled popover forgets. Escape that
    * only sets `open` to false leaves focus on an element that has just been
-   * removed from the document, and the browser's fallback is `<body>` — so the
+   * removed from the document, and the browser's fallback is `<body>`, so the
    * next Tab starts from the top of the page. WCAG 2.4.3.
    *
    * Only restored when focus is actually inside the panel. A popover dismissed
@@ -126,7 +126,7 @@ export const Popover = React.forwardRef<HTMLDivElement, PopoverProps>(function P
 
   /* Tabbing out of the last control closes the panel rather than trapping.
    *
-   * Deliberately not a focus trap, which is what Modal has. A modal is modal —
+   * Deliberately not a focus trap, which is what Modal has. A modal is modal -
    * the page behind it is inert and Tab has nowhere else to go. A popover is
    * not: the content behind it is live, and trapping focus in a small menu the
    * user can leave by looking away is a worse experience than closing. */

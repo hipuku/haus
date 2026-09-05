@@ -34,7 +34,7 @@
 
  /* :has(:focus-visible) rather than :focus-within. The ring is drawn on the
    wrapper, which is not itself focusable, so :focus-visible cannot go directly
-   on it — but :focus-within also fires for a pointer, where every other control
+   on it, but :focus-within also fires for a pointer, where every other control
    in the system rings only for the keyboard. This keeps the ring where it has to
    be drawn and the rule everything else follows. Text fields still ring on click,
    because :focus-visible matches them there by the browser's own heuristic. */

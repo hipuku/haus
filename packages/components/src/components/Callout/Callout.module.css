@@ -15,7 +15,7 @@
 /* ── Tones ─────────────────────────────────────────────────────────────────
    Decision 0012: a tone rule remaps custom properties and declares nothing
    else. Callout has one appearance, so there is only the one set of rules
-   above reading them — but written the other way, a tone setting background
+   above reading them, but written the other way, a tone setting background
    and border outright would sit at equal specificity to the base rule and the
    later one would win whatever the caller asked for. The shape is the point,
    not the current number of consumers of it.

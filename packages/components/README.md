@@ -49,17 +49,17 @@ import { Button, Card, Badge } from 'haus-components'
 
 ## Components
 
-**Forms and content** — `Avatar` · `Badge` · `Button` · `Callout` · `Card` ·
+**Forms and content**, `Avatar` · `Badge` · `Button` · `Callout` · `Card` ·
 `Checkbox` · `Divider` · `EmptyState` · `Input` · `Radio` · `Select` ·
 `Textarea` · `Toast` · `Toggle`
 
-**Overlays and navigation** — `Modal` · `Popover` · `Tabs` · `Tooltip`
+**Overlays and navigation**, `Modal` · `Popover` · `Tabs` · `Tooltip`
 
 The second group is new, and it exists because the first group was the whole
 library. haus was complete for forms and empty for overlays, which is the half
 a product cannot avoid writing itself and the half with the accessibility
-contracts worth centralising. The six added in 1.0 — `Callout`, `Divider`,
-`EmptyState`, `Popover`, `Tabs`, `Tooltip` — were not chosen. They were
+contracts worth centralising. The six added in 1.0: `Callout`, `Divider`,
+`EmptyState`, `Popover`, `Tabs`, `Tooltip`: were not chosen. They were
 measured: each one had already been built independently in more than one of the
 three products consuming this system, and the measurements are on the issues.
 

@@ -27,8 +27,8 @@ describe('EmptyState', () => {
   })
 
   it('announces politely when it appeared in response to something', () => {
-    // vault renders load failures through its EmptyState — "Couldn't open your
-    // library" — and they reach assistive technology as nothing at all.
+    // vault renders load failures through its EmptyState: "Couldn't open your
+    // library" and they reach assistive technology as nothing at all.
     render(<EmptyState title="Couldn’t open your library" live="polite" />)
     expect(screen.getByRole('status')).toBeInTheDocument()
   })
@@ -73,7 +73,7 @@ describe('EmptyState', () => {
     const { container } = render(
       // Level 2 rather than the default 3, because these sit directly under the
       // h1. Written with the default first, and axe failed it for heading-order
-      // — which is the whole argument for the prop: the right level is a fact
+      //, which is the whole argument for the prop: the right level is a fact
       // about the page, the component cannot know it, and getting it wrong is
       // invisible until something checks.
       <main>

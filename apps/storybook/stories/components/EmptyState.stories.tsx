@@ -14,7 +14,7 @@ const meta = {
           'It belongs in a system because an empty state is mostly a *writing* ' +
           'decision, and the three situations below want three different sentences. ' +
           'vault renders all three through one component with no way to tell them ' +
-          'apart, including load failures — which read as "there is nothing here" ' +
+          'apart, including load failures: which read as "there is nothing here" ' +
           'when the truth is "we could not look".',
       },
     },

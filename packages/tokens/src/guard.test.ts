@@ -114,10 +114,10 @@ describe('the guard against this package itself', () => {
       reads: [read('semantics.css')],
       // motion.css too: semantics.css reads --haus-duration-slow, which lives
       // there. Leaving it out is what a consumer importing three of the four
-      // layers would do, and this reported exactly that — one undefined role.
+      // layers would do, and this reported exactly that: one undefined role.
       defines: ['primitives.css', 'brand.css', 'motion.css', 'semantics.css'].map(read),
     })
-    expect(reads.length, 'no reads found — the paths are wrong').toBeGreaterThan(50)
+    expect(reads.length, 'no reads found: the paths are wrong').toBeGreaterThan(50)
     expect(missing).toEqual([])
   })
 

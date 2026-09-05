@@ -58,7 +58,7 @@ describe('Tooltip', () => {
     expect(screen.getByRole('button')).not.toHaveAttribute('aria-describedby')
   })
 
-  it('is dismissible with Escape, and focus does not move — WCAG 1.4.13', async () => {
+  it('is dismissible with Escape, and focus does not move. WCAG 1.4.13', async () => {
     const user = userEvent.setup()
     render(<Tooltip content="Copy to clipboard"><button>Copy</button></Tooltip>)
     await user.tab()

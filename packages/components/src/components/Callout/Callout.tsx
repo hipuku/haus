@@ -11,15 +11,15 @@ export type CalloutTone = Tone
  * This is the prop the component exists for. drift and vault both built a
  * Callout and each hardcoded a different answer: drift puts `role="alert"` on
  * every one, vault puts `role="note"` on every one. `alert` is an assertive
- * live region — a screen reader abandons what it is saying and reads it — so
+ * live region, a screen reader abandons what it is saying and reads it, so
  * drift's static "this audit ran against a cached crawl" notice announces
  * itself, unprompted, on every render. axe does not flag that, because nothing
  * in the markup is invalid; it is only wrong in context.
  *
- * · `off` — the notice was always on the page. `role="note"`.
- * · `polite` — it appeared in response to something, and can wait for a pause.
+ * · `off`: the notice was always on the page. `role="note"`.
+ * · `polite`: it appeared in response to something, and can wait for a pause.
  *   `role="status"`. This is the right answer for most form and save feedback.
- * · `assertive` — it appeared and waiting would cost the reader something.
+ * · `assertive`: it appeared and waiting would cost the reader something.
  *   `role="alert"`. Rare, and worth having to type.
  */
 export type CalloutLive = 'off' | 'polite' | 'assertive'

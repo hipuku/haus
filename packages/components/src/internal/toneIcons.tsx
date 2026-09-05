@@ -15,7 +15,7 @@ import type { Tone } from '../types'
  * the promotions in step 7 exist to remove, and introducing it while removing
  * it elsewhere would be hard to defend.
  *
- * One stroke idiom throughout — `currentColor`, 1.5 units, round caps — so the
+ * One stroke idiom throughout, `currentColor`, 1.5 units, round caps, so the
  * colour is set by whatever `.icon` rule the component declares, and no glyph
  * carries a fill of its own.
  */

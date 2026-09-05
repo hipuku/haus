@@ -1,7 +1,7 @@
 // @vitest-environment node
 /**
  * The README says these render under react-dom/server with no DOM present.
- * Nothing checked it, and `renderToString` appeared nowhere in the package —
+ * Nothing checked it, and `renderToString` appeared nowhere in the package -
  * so the claim was true by assertion only, and the first consumer to server
  * render would have been the test.
  *

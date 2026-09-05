@@ -13,7 +13,7 @@ export interface TooltipProps extends Omit<React.HTMLAttributes<HTMLSpanElement>
   content: string
   placement?: TooltipPlacement
   /**
-   * Milliseconds to wait before showing on hover. Never applied to focus — a
+   * Milliseconds to wait before showing on hover. Never applied to focus: a
    * keyboard user has already committed to the element, and a delay there is
    * just a description that arrives late.
    *
@@ -39,11 +39,11 @@ export interface TooltipProps extends Omit<React.HTMLAttributes<HTMLSpanElement>
  *
  * **WCAG 1.4.13, Content on Hover or Focus**, all three parts:
  *
- * · *Dismissible* — Escape hides it without moving focus, so it cannot obscure
+ * · *Dismissible*. Escape hides it without moving focus, so it cannot obscure
  *   content the user is trying to read.
- * · *Hoverable* — the pointer can travel from the trigger into the bubble
+ * · *Hoverable*. The pointer can travel from the trigger into the bubble
  *   without it vanishing, which is what makes the text selectable.
- * · *Persistent* — it stays until the pointer leaves, focus leaves, or Escape.
+ * · *Persistent*. It stays until the pointer leaves, focus leaves, or Escape.
  *   No timeout.
  *
  * And the part that is not WCAG but is the most common bug: it appears on
@@ -51,7 +51,7 @@ export interface TooltipProps extends Omit<React.HTMLAttributes<HTMLSpanElement>
  * tooltip, it is a hover effect.
  *
  * **A tooltip is not a Popover.** If it takes focus, holds a link or a button,
- * or runs to more than a line, it is a Popover — and the content here is typed
+ * or runs to more than a line, it is a Popover, and the content here is typed
  * `string` so that stays true rather than being a convention. The other half of
  * the rule: a tooltip must never be the only place a piece of information
  * lives, because touch users have no hover and may never see it.
@@ -82,7 +82,7 @@ export const Tooltip = React.forwardRef<HTMLSpanElement, TooltipProps>(function 
 
   /* Escape hides it and leaves focus where it is. Listening on the document
      rather than on the trigger because the pointer case has no focused element
-     to receive the key at all — a tooltip opened by hover and dismissed by
+     to receive the key at all: a tooltip opened by hover and dismissed by
      Escape is the exact scenario 1.4.13 was written for. */
   React.useEffect(() => {
     if (!open) return
@@ -97,8 +97,8 @@ export const Tooltip = React.forwardRef<HTMLSpanElement, TooltipProps>(function 
 
   /* The one place this package reaches for cloneElement.
    *
-   * aria-describedby has to land on the interactive element itself — on a
-   * wrapper it describes nothing — and the trigger is the caller's element.
+   * aria-describedby has to land on the interactive element itself: on a
+   * wrapper it describes nothing, and the trigger is the caller's element.
    * Card's note rejects the *generic-polymorphic* `as` pattern, which costs a
    * page of conditional types for props nobody passes; adding one attribute to
    * one child is a different thing. The alternative is asking every caller to

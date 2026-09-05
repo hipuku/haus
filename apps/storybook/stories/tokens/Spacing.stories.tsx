@@ -38,7 +38,7 @@ const radius = [
 ]
 
 /* The ladder all three families run, since haus#26. Twelve steps rather than
-   the seven, four and two this table used to list — and `2xl` is space-7 now
+   the seven, four and two this table used to list, and `2xl` is space-7 now
    rather than space-8, because the ladder is drift's and drift's is contiguous.
    One row per step, three columns of role name, rather than thirty-six rows:
    the whole point of the change is that the families no longer differ. */
@@ -143,7 +143,7 @@ function SpaceRolesPage() {
         Three roles over one ladder. <code style={{ fontFamily: 'var(--haus-font-mono)' }}>inset</code> is padding, the space inside a component between its edge and its content. <code style={{ fontFamily: 'var(--haus-font-mono)' }}>gap</code> is space between siblings, set by the parent. <code style={{ fontFamily: 'var(--haus-font-mono)' }}>stack</code> is margin, space a component asks for around itself. A step is the same size whichever role reads it, so the roles stay comparable, and splitting them is what lets padding be retuned later without moving page rhythm. Components read these; the ladder below them is for sizes.
       </p>
       <p style={pageDescStyle}>
-        All three families run the same twelve steps. They did not until haus#26: <code style={{ fontFamily: 'var(--haus-font-mono)' }}>inset</code> had seven, <code style={{ fontFamily: 'var(--haus-font-mono)' }}>gap</code> four and <code style={{ fontFamily: 'var(--haus-font-mono)' }}>stack</code> two, and five of the twelve primitives were reachable by no role at all — so a product wanting 28px of padding had to read past this layer, which is the tier break the build fails over one layer in. The ladder is drift&rsquo;s, step for step, because drift is the only real consumer and worked its own out in practice.
+        All three families run the same twelve steps. They did not until haus#26: <code style={{ fontFamily: 'var(--haus-font-mono)' }}>inset</code> had seven, <code style={{ fontFamily: 'var(--haus-font-mono)' }}>gap</code> four and <code style={{ fontFamily: 'var(--haus-font-mono)' }}>stack</code> two, and five of the twelve primitives were reachable by no role at all, so a product wanting 28px of padding had to read past this layer, which is the tier break the build fails over one layer in. The ladder is drift&rsquo;s, step for step, because drift is the only real consumer and worked its own out in practice.
       </p>
 
       <TableGrid columns={ROLE_COLS}>

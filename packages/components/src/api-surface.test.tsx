@@ -61,8 +61,8 @@ describe('the API the README promises', () => {
 
   it.each(components)('%s lands className on the same node as its ref', (name, Component) => {
     // Ruling B5. className used to land on a different node in almost every
-    // component — the root on six, an inner label on Checkbox so its outer div
-    // was unreachable, .inputWrap on Input, the dialog on Modal — with no
+    // component: the root on six, an inner label on Checkbox so its outer div
+    // was unreachable, .inputWrap on Input, the dialog on Modal: with no
     // documented rule, so a consumer had to read the source of each one.
     //
     // Deliberately not tied to the ref. The two rules point at different nodes

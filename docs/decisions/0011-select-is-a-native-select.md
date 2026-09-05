@@ -61,7 +61,7 @@ costs rather than what this decision says.
 The reason core carries a bespoke 100-line `Dropdown` is this decision: a native
 `<select>` cannot be themed, so a product that needs a themed one has to build
 the whole thing. With a `Popover` in the system that becomes a composition of
-two haus parts — a trigger and a panel with `role="listbox"` — rather than a
+two haus parts, a trigger and a panel with `role="listbox"`, rather than a
 component haus has no answer for.
 
 `Select` stays native. What has changed is that the deliberate absence is now

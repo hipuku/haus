@@ -39,7 +39,7 @@ export interface DividerProps extends Omit<React.HTMLAttributes<HTMLHRElement>, 
  * still a break in a document read with styles off.
  *
  * vault has one of these; core and drift each write `border-top` inline
- * (haus#32). The component is one element and its value is not the element —
+ * (haus#32). The component is one element and its value is not the element -
  * it is that the width, the colour and the space around it stop being decided
  * three times.
  */

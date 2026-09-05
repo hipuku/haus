@@ -12,7 +12,7 @@
   position: absolute;
   z-index: var(--haus-z-tooltip);
   /* Pinned to the trigger's leading edge rather than centred on it.
-     Centring wants translateX(-50%), and CSS has no logical transform — so it
+     Centring wants translateX(-50%), and CSS has no logical transform, so it
      would need an [dir='rtl'] counterpart that restates the same value, since
      a centring offset is symmetric and does not actually flip. A rule that
      exists only to satisfy a check is worse than the alignment it buys.

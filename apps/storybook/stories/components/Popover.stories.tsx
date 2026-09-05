@@ -17,7 +17,7 @@ const meta = {
           '`triggerRef` is required, and that is the point. vault\'s version leaves ' +
           'focus to the caller and none of its six call sites does it, so Escape ' +
           'drops focus onto `<body>` and the next Tab starts at the top of the ' +
-          'document — WCAG 2.4.3, invisible to axe.\n\n' +
+          'document. WCAG 2.4.3, invisible to axe.\n\n' +
           'Not a focus trap. A modal is modal and the page behind it is inert; a ' +
           'popover sits over live content, so tabbing off the end closes it. There ' +
           'is no collision detection either: that needs a positioning engine, and ' +

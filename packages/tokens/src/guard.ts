@@ -5,7 +5,7 @@
  * CSS fails silently here, which is what makes this worth shipping. `var(--x)`
  * for an undefined `--x` is invalid at computed-value time: the declaration is
  * dropped and the property inherits. No console warning, no build error,
- * nothing in review — a focus ring is simply absent, and a missing duration
+ * nothing in review: a focus ring is simply absent, and a missing duration
  * looks like a design choice.
  *
  * drift wrote this check for itself and it caught five roles before they
@@ -46,7 +46,7 @@
 /**
  * `var(--x)` with no fallback.
  *
- * A reference with a fallback — `var(--x, 0.2s)` — is a real value whether or
+ * A reference with a fallback, `var(--x, 0.2s)`, is a real value whether or
  * not the property is set, so it cannot fail at computed-value time and is
  * excluded. It is still usually a sign the name is wrong: a fallback that never
  * loses is a hardcoded value wearing a token's clothes. `findFallbackTokens`
@@ -58,7 +58,7 @@ const READ_WITH_FALLBACK = /var\(\s*(--[a-zA-Z0-9-]+)\s*,/g
 // `m` is load-bearing: without it `^` only matches the start of the whole
 // string, so every declaration on its own indented line after a newline is
 // missed and only the first in each block is seen. Caught by this package's
-// own guard test — semantics.css came back with 41 undefined roles.
+// own guard test: semantics.css came back with 41 undefined roles.
 const DECLARATION = /(?:^|[;{])\s*(--[a-zA-Z0-9-]+)\s*:/gm
 
 export interface TokenGuardInput {
@@ -97,7 +97,7 @@ function collect(sources: string[], pattern: RegExp): Set<string> {
  * Which properties are read but never defined.
  *
  * An empty `missing` is the assertion. The other two fields are for a consumer
- * that wants to report rather than fail — `read.length` is also worth asserting
+ * that wants to report rather than fail: `read.length` is also worth asserting
  * as a floor, because a wrong path makes every check pass by finding nothing.
  */
 export function findUndefinedTokens(input: TokenGuardInput): TokenGuardResult {

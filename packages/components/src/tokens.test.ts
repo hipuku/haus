@@ -70,7 +70,7 @@ describe('components read roles, not primitives', () => {
     // properties that happened to exist when it was written. The allowlist
     // version failed on `inset-inline-end` and on a custom property the moment
     // the components were converted to logical properties, neither of which is
-    // padding, gap or margin — it was reporting the arrival of new CSS as
+    // padding, gap or margin: it was reporting the arrival of new CSS as
     // misuse.
     //
     // Known limit, unchanged by the rewrite: a value laundered through a custom
@@ -99,7 +99,7 @@ describe('components read roles, not primitives', () => {
     const sizes = PAST.filter((d) => d.primitives.some((t) => /^--haus-space-\d+$/.test(t)))
     expect(sizes.length).toBe(31)
     // 61 before step 7, rising to 77 as the six new components landed: border
-    // widths, font families, shadows and — the sharp one — --haus-z-dropdown.
+    // widths, font families, shadows and, the sharp one, --haus-z-dropdown.
     // Popover and Tooltip are the pair worth pausing on. They are the first
     // components here that have to sit above something, and there is no z role
     // to ask for, so the system itself now reads the primitive that drift and
@@ -108,7 +108,7 @@ describe('components read roles, not primitives', () => {
     //
     // Then 77 to 71 with haus#34, and that is the number coming down for the
     // right reason rather than by relabelling. Four field labels stopped
-    // assembling a role by hand — --haus-type-field-label-* is that role — and
+    // assembling a role by hand, --haus-type-field-label-* is that role, and
     // Button and Avatar took --haus-weight-emphasis and --haus-weight-strong,
     // which are weight-only because both hold one weight across three and five
     // size steps and so have no single role to take it from.

@@ -89,7 +89,7 @@ numbers, a composite is an alias:
 
 `var(--x)` for an undefined `--x` is invalid at computed-value time: the
 declaration is dropped and the property inherits. No console warning, no build
-error, nothing in review — a focus ring is simply absent, and a missing duration
+error, nothing in review: a focus ring is simply absent, and a missing duration
 looks like a design choice.
 
 That makes *have you loaded what my components read* a question worth failing a
@@ -124,7 +124,7 @@ It is **pure and does no file reading**, so it runs anywhere and this package
 gains no dependency on `node:fs`. You know which files you load; it only knows
 what the contract is.
 
-`alsoDefined` takes properties set outside CSS — a component doing
+`alsoDefined` takes properties set outside CSS, a component doing
 `style={{ '--haus-avatar-bg': v }}` defines one that no stylesheet will show.
 
 A read carrying a fallback, `var(--x, 0.2s)`, is a real value either way and is
@@ -139,7 +139,7 @@ Every consumer after it would have written the same test or shipped the same
 silent hole.
 
 It is also run against this package. `src/guard.test.ts` checks `semantics.css`
-and `brands/ruby.css` resolve against the layers below them — which is how the
+and `brands/ruby.css` resolve against the layers below them: which is how the
 guard's own regex bug was found, a missing `m` flag that reported 41 undefined
 roles in a file that has none.
 

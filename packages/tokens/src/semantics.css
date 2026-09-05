@@ -143,14 +143,14 @@
 
        haus#34. Input, Select, Textarea and Radio all wrote the same five lines:
        label-sm's size, leading and tracking, and semibold where label-sm says
-       medium. Four files, four times, byte-identical — and
+       medium. Four files, four times, byte-identical: and
        `--haus-type-label-sm-weight` had no consumer at all, because every
        component reaching for the role disagreed with one third of it.
 
        The first instinct was to change label-sm's weight to semibold and delete
        the four overrides. That is wrong: label-xs, label-sm and label are one
        scale at one weight, and both of the others have consumers reading their
-       weight — Badge takes label-xs's, Tabs and Toast take label's. Making the
+       weight. Badge takes label-xs's, Tabs and Toast take label's. Making the
        middle step heavier to serve a use that is not "a small label" would
        break the family to fix the call sites.
 
@@ -205,14 +205,14 @@
     /* Weight on its own, for text that is not on a type role at all.
 
        haus#34, and the shape drift settled as drift#25. Button holds one weight
-       across three sizes and Avatar across five — both take their size from a
+       across three sizes and Avatar across five: both take their size from a
        different role per size step, so neither can take "the role's weight"
        because there is no single role to take it from. What they are choosing
        is a weight, and nothing else.
 
        Aliases, in the shape --haus-radius-control: var(--haus-radius-md)
        already uses: the role says why, the primitive says what. Not a licence
-       to unbundle the typeset roles — a role carries the properties the thing
+       to unbundle the typeset roles: a role carries the properties the thing
        actually chooses, and prose chooses all four. */
     --haus-weight-emphasis: var(--haus-weight-medium);
     --haus-weight-strong:   var(--haus-weight-semibold);

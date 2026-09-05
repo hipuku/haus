@@ -36,7 +36,7 @@ export type TabsProps = TabsBaseProps & TabsLabel
  * across core, drift and vault on 2026-09-05 there are three tablists, **zero
  * `role="tabpanel"`, zero `aria-controls` from a tab to its panel, and zero
  * arrow-key handling.** Every one announces itself as a tablist and then
- * delivers none of what that word promises — the keys do nothing, and the
+ * delivers none of what that word promises: the keys do nothing, and the
  * region that changes is not identified as the thing the tab controls.
  *
  * drift's is the one that matters: its audit screen *is* a tablist, seven tabs
@@ -54,7 +54,7 @@ export type TabsProps = TabsBaseProps & TabsLabel
  * also the shape drift already wrote by hand.
  *
  * Selection follows focus. The APG allows either, and automatic activation is
- * right when showing a panel is cheap — which it is here, because the caller
+ * right when showing a panel is cheap: which it is here, because the caller
  * renders only the active one. If a panel ever costs a fetch, that is the
  * moment to add manual activation, not before.
  */
@@ -132,7 +132,7 @@ export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(function Tabs(
               disabled={item.disabled}
               /* Roving tabindex. Without it every tab is its own tab stop, so a
                  keyboard user crosses drift's seven one at a time to reach the
-                 panel — which is the behaviour all three products ship today,
+                 panel: which is the behaviour all three products ship today,
                  and the opposite of what the pattern is for. */
               tabIndex={selected ? 0 : -1}
               className={[styles.tab, selected ? styles.selected : ''].filter(Boolean).join(' ')}

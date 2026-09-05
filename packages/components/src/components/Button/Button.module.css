@@ -100,14 +100,14 @@
    This replaces a flat `.error` block that set background, border and colour
    outright. Written that way it won its declarations on source order whatever
    the variant said, so `<Button variant="ghost" tone="error">` rendered as a
-   solid button — weight and meaning were meant to compose and did not.
+   solid button: weight and meaning were meant to compose and did not.
 
    Neutral is the untoned default and its values are the ones the variants used
    to hold literally, so an untoned Button renders exactly as before.
 
    Every colour here already existed. `semantics.css` carries the full six-role
    set for info, success, warning and error, and Badge already spends all five
-   tones across both appearances — this finishes a design that was specified,
+   tones across both appearances: this finishes a design that was specified,
    it does not invent one. */
 
 

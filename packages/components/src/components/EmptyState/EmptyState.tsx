@@ -11,7 +11,7 @@ import styles from './EmptyState.module.css'
  * A level rather than a fixed element, because the right one depends entirely
  * on what the empty state is nested inside, and a component cannot know. `3` is
  * the default because an empty state almost always sits inside a page with an
- * `h1` and a section with an `h2` — right often enough to be useful, and named
+ * `h1` and a section with an `h2`: right often enough to be useful, and named
  * so the times it is wrong are one prop away.
  */
 export type EmptyStateHeadingLevel = 2 | 3 | 4 | 5 | 6
@@ -42,7 +42,7 @@ export interface EmptyStateProps extends React.HTMLAttributes<HTMLDivElement> {
    *  would: a filtered-to-nothing state wants "clear the filter", and a
    *  permissions one wants no button at all. */
   action?: React.ReactNode
-  /** An illustration or glyph. Decorative — the title carries the meaning. */
+  /** An illustration or glyph. Decorative: the title carries the meaning. */
   icon?: React.ReactNode
   headingLevel?: EmptyStateHeadingLevel
   live?: EmptyStateLive
@@ -58,12 +58,12 @@ export interface EmptyStateProps extends React.HTMLAttributes<HTMLDivElement> {
  *
  * It belongs in a design system because an empty state is mostly a *writing*
  * decision, and a shared component is where the writing rules live. vault
- * proves the point in the wrong direction — it renders three different
+ * proves the point in the wrong direction: it renders three different
  * situations through one component with no way to tell them apart:
  *
- *   "Add your first colour"            — nothing yet, and here is how to start
- *   "No colours match this filter"     — plenty here, your filter is too narrow
- *   "Couldn't open your library"       — we could not look
+ *   "Add your first colour"            nothing yet, and here is how to start
+ *   "No colours match this filter"     plenty here, your filter is too narrow
+ *   "Couldn't open your library"       we could not look
  *
  * The third is not an empty state at all. It reads as *there is nothing here*
  * when the truth is *this failed*, and it is announced to nobody. That is what

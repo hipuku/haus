@@ -15,7 +15,7 @@ const meta = {
           'every callout it renders, so a static notice interrupts a screen reader on ' +
           'every render; vault puts `role="note"` on every one, so a validation ' +
           'message that appears after a failed save is never announced. axe flags ' +
-          'neither — the markup is valid and wrong in context.',
+          'neither: the markup is valid and wrong in context.',
       },
     },
   },

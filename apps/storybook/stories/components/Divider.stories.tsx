@@ -11,7 +11,7 @@ const meta = {
         component:
           'A rule between things. Always an `<hr>`, including when vertical: it ' +
           'carries `separator` implicitly and stays a break when the document is ' +
-          'read with styles off. `decorative` is the interesting prop — the markup ' +
+          'read with styles off. `decorative` is the interesting prop: the markup ' +
           'cannot tell a structural break from a line drawn because a panel looked ' +
           'crowded, so the caller says which this is.',
       },
