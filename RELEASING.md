@@ -75,8 +75,15 @@ published version came from.
 Actions runs the workflow **as it existed at the tagged commit**, not as it exists on `main`. So a
 tag written onto a commit from before the skip check will still run the old workflow and fail at
 npm with "cannot publish over the previously published versions". The tag is created correctly
-either way; the run is noise, and the run can be deleted from the Actions page. `tokens-v0.1.2` and
-`style-probe-v0.2.1` are both in that state. Any tag written from here on gets the skip.
+either way; the run is noise, and the run can be deleted from the Actions page. `tokens-v0.1.2` is
+in that state, run #11. Any tag written from here on gets the skip.
+
+**Corrected 2026-09-07.** This paragraph used to name `style-probe-v0.2.1` as the second one, and
+it is not. Run #10 failed on `Error: error occurred in dts build`, which is a different fault with
+a different fix, and calling it publish-over noise would have had the next person delete the run
+rather than read it. `haus-style-probe@0.2.1` reached npm by hand. The build passes now and the
+whole-workspace build added in #17 is why, so a re-tag of that version would skip on the version
+check before it ever reached the build.
 
 ## Order matters
 
