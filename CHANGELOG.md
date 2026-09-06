@@ -31,8 +31,24 @@ rather than two so a consumer migrates once.
 - **Roles are declared on `:root, [data-haus-theme]`.** A named brand applies at
   `[data-haus-theme="<name>"]` and nests.
 - Added: `index.css`, the four files in the right order; `layers.css`, the
-  cascade order declared once; `brands/ruby.css`, a complete second brand;
+  cascade order declared once; `brands/vault.css`, a complete second brand;
   `BrandMap` and `brandRoles`, generated from `brand.css`.
+- **`--haus-color-ink-on-aronia` is `--haus-color-ink-on-primary`**, and so is
+  the `--haus-brand-` entry behind it. A role named the palette it sat on, which
+  is the one thing `semantics.css` is not allowed to do. The test that enforces
+  that rule carried an exemption for this property; the exemption is gone.
+- **The second brand's ramp is `--haus-ruby-*`, not `--ruby-*`.** Ten steps, the
+  only unprefixed custom properties left in the system. An unprefixed
+  `--ruby-500` collides with a consumer running Tailwind, which is why the
+  prefix exists at all.
+- **The theme is `vault`, not `ruby`**, and the file is `brands/vault.css`.
+  `<div data-haus-theme="vault">`. The brand is a shipped product's rather than
+  an invention, and the attribute now says so. The **ramp keeps the name
+  `ruby`**: brand answers whose, ramp answers which colour, and vault ships six
+  gemstone ramps, so `--haus-vault-500` would claim it has one.
+- Added: `--haus-aronia-850`, `oklch(22% 0.066 300)`. It existed in the Figma
+  library and in neither `tokens.json` nor `primitives.css`. Promoted rather
+  than deleted, at the ramp's own convention rather than Figma's float noise.
 - Added: a `require` condition and a `./package.json` export.
 - **Button takes all five tones.** `ButtonTone` was `neutral | error`; it is the
   whole `Tone` union now, and every tone composes with every weight. Widening a

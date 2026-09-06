@@ -1,6 +1,6 @@
 {
   "name": "haus-colour-names",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "31,900 named colours as data, for pairing with a perceptual matcher.",
   "license": "MIT",
   "engines": {

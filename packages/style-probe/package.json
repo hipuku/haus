@@ -1,6 +1,6 @@
 {
   "name": "haus-style-probe",
-  "version": "0.2.1",
+  "version": "1.0.0",
   "description": "Read a rendered element's design decisions: in-browser computed-style extraction plus pure, testable normalisation into typed token values.",
   "license": "MIT",
   "engines": {
