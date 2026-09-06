@@ -66,10 +66,11 @@ describe('semantics.css', () => {
         if (SEMANTIC.has(surface) && !SEMANTIC.has(ink)) unpaired.push(surface)
       }
     }
-    // primary-default's paired ink is --color-ink-on-aronia, named for the
-    // palette it sits on rather than the role, because it is shared.
+    // primary-default's paired ink is --color-ink-on-primary, named for the
+    // role it sits on rather than the palette, because it is shared across
+    // brands: the ink is the same white whichever ramp primary comes from.
     expect(unpaired).toEqual(['--haus-color-primary-default'])
-    expect(SEMANTIC.has('--haus-color-ink-on-aronia')).toBe(true)
+    expect(SEMANTIC.has('--haus-color-ink-on-primary')).toBe(true)
   })
 
   it('gives every interactive scale a disabled state', () => {
@@ -79,12 +80,13 @@ describe('semantics.css', () => {
   })
 
   it('names no palette in a colour role', () => {
-    // "aronia" is allowed in --color-ink-on-aronia only: it names the surface
-    // the text sits on. Every other palette name belongs to primitives.css.
-    const palettes = ['aronia', 'damson', 'elderberry', 'greengage', 'mango', 'cherry']
-    const offenders = [...SEMANTIC].filter(
-      (t) => t !== '--haus-color-ink-on-aronia' && palettes.some((p) => t.includes(p)),
-    )
+    // The rule is absolute since the 1.0 cut. It used to carry one exemption,
+    // --color-ink-on-aronia, which named the palette its text sat on; drift had
+    // already renamed its copy to ink-on-primary, so haus was behind its own
+    // consumer on its own rule. Renaming it removed the only exception, and an
+    // assertion with no exceptions is the one worth keeping.
+    const palettes = ['aronia', 'damson', 'elderberry', 'greengage', 'mango', 'cherry', 'ruby']
+    const offenders = [...SEMANTIC].filter((t) => palettes.some((p) => t.includes(p)))
     expect(offenders).toEqual([])
   })
 

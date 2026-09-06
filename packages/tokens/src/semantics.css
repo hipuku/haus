@@ -36,7 +36,7 @@
      load-bearing rather than defensive. A custom property is substituted where it
      is *declared*: a role resolved once at :root inherits its computed value down,
      so a nested brand override would never re-trigger it. Redeclaring the roles on
-     the themed element is what makes `<div data-haus-theme="ruby">` work, and what
+     the themed element is what makes `<div data-haus-theme="vault">` work, and what
      makes nesting work. */
   :root,
   [data-haus-theme] {
@@ -57,7 +57,7 @@
     --haus-color-ink-disabled:   var(--haus-brand-ink-disabled);
     --haus-color-ink-inverse:    var(--haus-brand-ink-inverse);
     --haus-color-ink-link:       var(--haus-brand-ink-link);
-    --haus-color-ink-on-aronia:  var(--haus-brand-ink-on-aronia);
+    --haus-color-ink-on-primary:  var(--haus-brand-ink-on-primary);
 
     /* ── Border ───────────────────────────────────────────────────────────── */
     --haus-color-border-subtle:   var(--haus-brand-border-subtle);

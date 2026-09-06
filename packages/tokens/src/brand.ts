@@ -30,7 +30,7 @@ export interface BrandMap {
   '--haus-brand-ink-disabled': string
   '--haus-brand-ink-inverse': string
   '--haus-brand-ink-link': string
-  '--haus-brand-ink-on-aronia': string
+  '--haus-brand-ink-on-primary': string
   '--haus-brand-border-subtle': string
   '--haus-brand-border-default': string
   '--haus-brand-border-strong': string
@@ -88,7 +88,7 @@ export const brandRoles = [
   '--haus-brand-ink-disabled',
   '--haus-brand-ink-inverse',
   '--haus-brand-ink-link',
-  '--haus-brand-ink-on-aronia',
+  '--haus-brand-ink-on-primary',
   '--haus-brand-border-subtle',
   '--haus-brand-border-default',
   '--haus-brand-border-strong',

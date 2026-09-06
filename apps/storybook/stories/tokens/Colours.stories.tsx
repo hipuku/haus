@@ -194,7 +194,7 @@ const semanticGroups: SemGroup[] = [
     { token: 'ink-disabled',   resolvedTo: 'damson-400'  },
     { token: 'ink-inverse',    resolvedTo: 'damson-0'    },
     { token: 'ink-link',       resolvedTo: 'aronia-500'  },
-    { token: 'ink-on-aronia',  resolvedTo: 'damson-0'    },
+    { token: 'ink-on-primary',  resolvedTo: 'damson-0'    },
   ]},
   { heading: 'Border', tokens: [
     { token: 'border-subtle',   resolvedTo: 'damson-100'        },

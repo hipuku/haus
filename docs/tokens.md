@@ -54,8 +54,8 @@ no structure. 54 entries, and it is the one file a consumer replaces. A brand
 author reads a flat list of choices, and a component author never sees this file
 at all.
 
-`brands/ruby.css` is a complete second brand, applied by
-`<div data-haus-theme="ruby">` and nesting because custom properties inherit.
+`brands/vault.css` is a complete second brand, applied by
+`<div data-haus-theme="vault">` and nesting because custom properties inherit.
 `BrandMap` in the TypeScript export is generated from this file, so a brand that
 omits a role or misnames one fails a build rather than rendering an unresolved
 `var()`.
@@ -221,7 +221,7 @@ to a palette step:
 ```css
 .cta {
   background: var(--color-primary-default);
-  color: var(--color-ink-on-aronia);
+  color: var(--color-ink-on-primary);
   padding: var(--space-inset-sm) var(--space-inset-lg);
   border-radius: var(--radius-control);
   transition: background var(--motion-interactive);
@@ -263,7 +263,7 @@ tokens.motion['fade-in']     // '200ms cubic-bezier(0.00, 0.00, 0.20, 1.00)'
 |---|---|
 | `packages/tokens/src/primitives.css` | Raw palette, type scale, space, radius, shadow, z-index, border, opacity, icon sizes |
 | `packages/tokens/src/brand.css` | Which primitive each role takes. The file a consumer replaces |
-| `packages/tokens/src/brands/ruby.css` | A complete second brand, applied by `data-haus-theme` |
+| `packages/tokens/src/brands/vault.css` | A complete second brand, applied by `data-haus-theme` |
 | `packages/tokens/src/semantics.css` | Role meanings: surface, ink, border, primary, feedback, focus, type roles, spacing, radius, elevation, motion |
 | `packages/tokens/src/motion.css` | Durations, easings, composite motion tokens, reduced-motion |
 | `packages/tokens/src/tokens.json` | W3C DTCG export of the same values |

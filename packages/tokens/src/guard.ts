@@ -9,7 +9,7 @@
  * looks like a design choice.
  *
  * drift wrote this check for itself and it caught five roles before they
- * reached a screen: `--color-ink-on-aronia`, `--elevation-floating`,
+ * reached a screen: `--color-ink-on-primary`, `--elevation-floating`,
  * `--motion-duration-emphasis`, `--radius-marker` and `--shadow-focus-error`.
  * The contract is defined in this package, so the check belongs here rather
  * than being rewritten by every consumer (haus#19). Shipping it is also the

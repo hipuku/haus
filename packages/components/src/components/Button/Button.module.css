@@ -9,7 +9,7 @@
   --haus-btn-solid:         var(--haus-color-primary-default);
   --haus-btn-solid-hover:   var(--haus-color-primary-hover);
   --haus-btn-solid-pressed: var(--haus-color-primary-pressed);
-  --haus-btn-on-solid:      var(--haus-color-ink-on-aronia);
+  --haus-btn-on-solid:      var(--haus-color-ink-on-primary);
 
   /* Tinted fill, for the weights that sit on the page rather than above it. */
   --haus-btn-bg:            var(--haus-color-surface-subtle);

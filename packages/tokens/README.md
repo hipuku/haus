@@ -133,13 +133,13 @@ that never loses is a hardcoded value wearing a token's clothes and that is
 worth reading occasionally rather than failing a build over.
 
 **Why it exists.** drift wrote this check for itself and it caught five roles
-before they reached a screen: `--color-ink-on-aronia`, `--elevation-floating`,
+before they reached a screen: `--color-ink-on-primary`, `--elevation-floating`,
 `--motion-duration-emphasis`, `--radius-marker` and `--shadow-focus-error`.
 Every consumer after it would have written the same test or shipped the same
 silent hole.
 
 It is also run against this package. `src/guard.test.ts` checks `semantics.css`
-and `brands/ruby.css` resolve against the layers below them: which is how the
+and `brands/vault.css` resolve against the layers below them: which is how the
 guard's own regex bug was found, a missing `m` flag that reported 41 undefined
 roles in a file that has none.
 

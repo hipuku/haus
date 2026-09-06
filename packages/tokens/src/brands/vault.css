@@ -1,16 +1,28 @@
-/* ─── haus / brands / ruby ───────────────────────────────────────────────────
-   A second, complete brand — and the reason it exists is that **a contract with
+/* ─── haus / brands / vault ──────────────────────────────────────────────────
+   A second, complete brand, and the reason it exists is that **a contract with
    one implementation is not a contract**. The split in brand.css only proves
    anything if a different brand can be written against it without touching
    semantics.css or a single component, and this is that proof.
 
    It is vault's ruby, not an invention. vault is a shipped product with its own
-   palette that declared 159 custom properties rather than take haus's, and Wave
-   F migrates it, so writing the brand here is rehearsal rather than decoration.
+   palette that declared 159 custom properties rather than take haus's, and its
+   migration is a later step, so writing the brand here is rehearsal rather than
+   decoration.
+
+   **The brand is `vault` and the ramp stays `ruby`, renamed at the 1.0 cut.**
+   Brand answers *whose* and ramp answers *which colour*. vault ships six
+   gemstone ramps, ruby among them, so naming the ramp `--haus-vault-500` would
+   claim vault has one colour. `[data-haus-theme='vault']` holding
+   `--haus-ruby-500` reads correctly in both directions.
+
+   The ten ramp steps gained the `--haus-` prefix in the same cut. They were the
+   only unprefixed custom properties in the system, and the prefix is not
+   tidiness: an unprefixed `--ruby-500` collides with a consumer running
+   Tailwind.
 
    Applied by attribute, and it nests:
 
-     <div data-haus-theme="ruby"> … </div>
+     <div data-haus-theme="vault"> … </div>
 
    Every entry brand.css declares appears here. That is not tidiness: `BrandMap`
    is generated from brand.css, so an omission is a type error rather than an
@@ -19,22 +31,22 @@
 
 @layer haus.brand {
 
-  [data-haus-theme='ruby'] {
+  [data-haus-theme='vault'] {
 
     /* ── The ruby palette ──────────────────────────────────────────────────
        Declared here rather than in primitives.css: a brand brings its own ramp.
        Values are vault's, unchanged — this is a real brand rather than a
        plausible one, which is the point of shipping it. */
-    --ruby-100: oklch(96.5% 0.016 3);
-    --ruby-200: oklch(91%   0.044 3);
-    --ruby-300: oklch(82%   0.082 3);
-    --ruby-400: oklch(64%   0.15  3);
-    --ruby-500: oklch(48.2% 0.186 2.5);
-    --ruby-600: oklch(44%   0.176 1.7);
-    --ruby-700: oklch(40.5% 0.164 0.9);
-    --ruby-800: oklch(33%   0.116 0);
-    --ruby-900: oklch(23%   0.09  358);
-    --ruby-950: oklch(15%   0.056 356);
+    --haus-ruby-100: oklch(96.5% 0.016 3);
+    --haus-ruby-200: oklch(91%   0.044 3);
+    --haus-ruby-300: oklch(82%   0.082 3);
+    --haus-ruby-400: oklch(64%   0.15  3);
+    --haus-ruby-500: oklch(48.2% 0.186 2.5);
+    --haus-ruby-600: oklch(44%   0.176 1.7);
+    --haus-ruby-700: oklch(40.5% 0.164 0.9);
+    --haus-ruby-800: oklch(33%   0.116 0);
+    --haus-ruby-900: oklch(23%   0.09  358);
+    --haus-ruby-950: oklch(15%   0.056 356);
 
 
     /* ── Surface ───────────────────────────────────────────────────────── */
@@ -53,8 +65,8 @@
     --haus-brand-ink-tertiary:           var(--haus-damson-500);
     --haus-brand-ink-disabled:           var(--haus-damson-400);
     --haus-brand-ink-inverse:            var(--haus-damson-0);
-    --haus-brand-ink-link:               var(--ruby-500);
-    --haus-brand-ink-on-aronia:          var(--haus-damson-0);
+    --haus-brand-ink-link:               var(--haus-ruby-500);
+    --haus-brand-ink-on-primary:          var(--haus-damson-0);
 
     /* ── Border ────────────────────────────────────────────────────────── */
     --haus-brand-border-subtle:          var(--haus-damson-100);
@@ -65,11 +77,11 @@
     --haus-brand-border-inverse-hover:   oklch(from var(--haus-damson-0) l c h / 0.50);
 
     /* ── Primary ───────────────────────────────────────────────────────── */
-    --haus-brand-primary-default:        var(--ruby-500);
-    --haus-brand-primary-hover:          var(--ruby-600);
-    --haus-brand-primary-pressed:        var(--ruby-700);
-    --haus-brand-primary-subtle:         var(--ruby-100);
-    --haus-brand-primary-on-subtle:      var(--ruby-700);
+    --haus-brand-primary-default:        var(--haus-ruby-500);
+    --haus-brand-primary-hover:          var(--haus-ruby-600);
+    --haus-brand-primary-pressed:        var(--haus-ruby-700);
+    --haus-brand-primary-subtle:         var(--haus-ruby-100);
+    --haus-brand-primary-on-subtle:      var(--haus-ruby-700);
     --haus-brand-primary-disabled:       var(--haus-damson-200);
 
     /* ── Info ──────────────────────────────────────────────────────────── */

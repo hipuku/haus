@@ -47,7 +47,7 @@ function resolve(name: string, seen = new Set<string>()): string | null {
 
 /** The `on-*` ink for each surface, as semantics.css pairs them. */
 const PAIRS: Array<[surface: string, ink: string, min: number]> = [
-  ['--haus-color-primary-default', '--haus-color-ink-on-aronia', 4.5],
+  ['--haus-color-primary-default', '--haus-color-ink-on-primary', 4.5],
   ['--haus-color-primary-subtle', '--haus-color-primary-on-subtle', 4.5],
   ['--haus-color-info-subtle', '--haus-color-info-on-subtle', 4.5],
   ['--haus-color-info-default', '--haus-color-info-on-default', 4.5],

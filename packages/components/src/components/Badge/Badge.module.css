@@ -54,7 +54,7 @@
 
 .primary.solid {
   background-color: var(--haus-color-primary-default);
-  color: var(--haus-color-ink-on-aronia);
+  color: var(--haus-color-ink-on-primary);
 }
 
 .info.solid {

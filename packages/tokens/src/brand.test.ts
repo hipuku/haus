@@ -72,12 +72,19 @@ describe('the brand map', () => {
 
   it.each(readdirSync(join(SRC, 'brands')))('%s changes nothing but the brand', (file) => {
     const css = read(join('brands', file))
-    // A brand may declare its own palette and the brand entries. A role, a
+    // A brand may declare its own ramp and the brand entries. A role, a
     // component class or a raw override is out of bounds: it would mean the
     // brand had reached past the contract, which is exactly what the running
     // note in the acceptance test is for.
+    //
+    // The ramp is matched rather than assumed unprefixed. Until the 1.0 cut
+    // vault.css declared `--ruby-500`, and this assertion passed only because
+    // that name did not begin with `--haus-`: the very naming bug the cut fixed
+    // was what let the contract look kept. Prefixing the ten steps failed this
+    // test, which is the test doing its job a release late.
+    const RAMP_STEP = /^--haus-[a-z]+-\d+$/
     const strays = [...declaredIn(css)].filter(
-      (n) => !n.startsWith('--haus-brand-') && n.startsWith('--haus-'),
+      (n) => n.startsWith('--haus-') && !n.startsWith('--haus-brand-') && !RAMP_STEP.test(n),
     )
     expect(strays).toEqual([])
   })

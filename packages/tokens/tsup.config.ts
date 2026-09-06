@@ -14,7 +14,7 @@ const ASSETS = [
   'tokens.json',
 ]
 /** Brands ship as their own directory so a consumer can point at one by name. */
-const BRANDS = ['ruby.css']
+const BRANDS = ['vault.css']
 
 /**
  * Dual output, ESM and CJS.

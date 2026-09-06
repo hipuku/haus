@@ -34,7 +34,7 @@
   "packages/tokens/scripts/build-tokens.ts": 3,
   "packages/tokens/src/brand.css": 1,
   "packages/tokens/src/brand.test.ts": 2,
-  "packages/tokens/src/brands/ruby.css": 2,
+  "packages/tokens/src/brands/vault.css": 1,
   "packages/tokens/src/contrast.test.ts": 3,
   "packages/tokens/src/index.css": 2,
   "vitest.shared.ts": 1

@@ -33,9 +33,9 @@ beats them without a specificity fight.**
 To theme a subtree, put a brand on it:
 
 ```tsx
-import 'haus-tokens/brands/ruby.css'
+import 'haus-tokens/brands/vault.css'
 
-<div data-haus-theme="ruby">…</div>
+<div data-haus-theme="vault">…</div>
 ```
 
 ```tsx

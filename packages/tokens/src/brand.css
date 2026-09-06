@@ -14,7 +14,7 @@
 
    The default brand applies at :root, so the common case needs no attribute. A
    named brand applies at [data-haus-theme="<name>"] and nests, because custom
-   properties inherit. See brands/ruby.css for a complete second brand.
+   properties inherit. See brands/vault.css for a complete second brand.
    ─────────────────────────────────────────────────────────────────────────── */
 
 @layer haus.brand {
@@ -38,7 +38,7 @@
     --haus-brand-ink-disabled:   var(--haus-damson-400);
     --haus-brand-ink-inverse:    var(--haus-damson-0);
     --haus-brand-ink-link:       var(--haus-aronia-500);
-    --haus-brand-ink-on-aronia:  var(--haus-damson-0);
+    --haus-brand-ink-on-primary:  var(--haus-damson-0);
 
     /* ── Borders ─────────────────────────────────────────────────────────── */
     --haus-brand-border-subtle:         var(--haus-damson-100);

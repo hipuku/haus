@@ -121,10 +121,10 @@ describe('the guard against this package itself', () => {
     expect(missing).toEqual([])
   })
 
-  it('finds no undefined role in the ruby brand', () => {
+  it('finds no undefined role in the vault brand', () => {
     const { missing } = findUndefinedTokens({
-      reads: [read('brands/ruby.css')],
-      defines: [read('primitives.css'), read('brands/ruby.css')],
+      reads: [read('brands/vault.css')],
+      defines: [read('primitives.css'), read('brands/vault.css')],
     })
     expect(missing).toEqual([])
   })
