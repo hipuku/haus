@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import React from 'react'
+import { tokens } from 'haus-tokens'
 import {
   CopyChip, ColLabel,
   pageWrap, pageTitleStyle, pageDescStyle,
@@ -134,43 +135,25 @@ function SemRow({ token, resolvedTo }: { token: string; resolvedTo: string }) {
 
 /* ─── Primitive data ─────────────────────────────────────────────────────── */
 
-const aronia: [string, string][] = [
-  ['aronia-100', 'oklch(97% 0.012 300)'], ['aronia-200', 'oklch(92% 0.028 300)'],
-  ['aronia-300', 'oklch(84% 0.058 300)'], ['aronia-400', 'oklch(72% 0.100 300)'],
-  ['aronia-500', 'oklch(52% 0.138 300)'], ['aronia-600', 'oklch(43% 0.125 300)'],
-  ['aronia-700', 'oklch(35% 0.105 300)'], ['aronia-800', 'oklch(26% 0.080 300)'],
-  ['aronia-900', 'oklch(18% 0.052 300)'], ['aronia-950', 'oklch(12% 0.032 300)'],
-]
-const damson: [string, string][] = [
-  ['damson-0',   'oklch(100% 0 0)'      ], ['damson-50',  'oklch(99% 0.003 290)'],
-  ['damson-100', 'oklch(97% 0.006 290)' ], ['damson-200', 'oklch(93% 0.008 290)'],
-  ['damson-300', 'oklch(86% 0.010 290)' ], ['damson-400', 'oklch(74% 0.010 290)'],
-  ['damson-500', 'oklch(60% 0.008 290)' ], ['damson-600', 'oklch(48% 0.007 290)'],
-  ['damson-700', 'oklch(37% 0.006 290)' ], ['damson-800', 'oklch(27% 0.005 290)'],
-  ['damson-900', 'oklch(18% 0.003 290)' ], ['damson-950', 'oklch(11% 0.002 290)'],
-]
+/* Read from the package rather than restated here. Until the 1.0 cut these
+   three blocks were a hand-typed second copy of primitives.css, and the cut
+   proved the point: aronia gained an 850 and the four feedback ramps lost their
+   400, and this page would have gone on drawing the old ramps and naming four
+   tokens that no longer exist. Nothing could have caught it, because a
+   hardcoded swatch renders the same whatever the tokens say. It is the same
+   class of problem drift was built to find, in the design system's own
+   documentation. */
+const ramp = (family: keyof typeof tokens.color): [string, string][] =>
+  Object.entries(tokens.color[family]).map(([step, value]) => [`${family}-${step}`, value as string])
+
+const aronia = ramp('aronia')
+const damson = ramp('damson')
 
 const feedback: { heading: string; steps: [string, string][] }[] = [
-  { heading: 'Elderberry · H=265°, info', steps: [
-    ['elderberry-100', 'oklch(97% 0.020 265)'], ['elderberry-200', 'oklch(93% 0.040 265)'],
-    ['elderberry-400', 'oklch(74% 0.160 265)'], ['elderberry-500', 'oklch(55% 0.200 265)'],
-    ['elderberry-700', 'oklch(42% 0.160 265)'], ['elderberry-900', 'oklch(30% 0.120 265)'],
-  ]},
-  { heading: 'Greengage · H=148°, success', steps: [
-    ['greengage-100', 'oklch(97% 0.030 148)'], ['greengage-200', 'oklch(93% 0.055 148)'],
-    ['greengage-400', 'oklch(75% 0.150 148)'], ['greengage-500', 'oklch(58% 0.185 148)'],
-    ['greengage-700', 'oklch(45% 0.150 148)'], ['greengage-900', 'oklch(33% 0.110 148)'],
-  ]},
-  { heading: 'Mango · H=65°, warning', steps: [
-    ['mango-100', 'oklch(97% 0.025 65)'], ['mango-200', 'oklch(93% 0.045 65)'],
-    ['mango-400', 'oklch(76% 0.145 65)'], ['mango-500', 'oklch(60% 0.175 65)'],
-    ['mango-700', 'oklch(47% 0.142 65)'], ['mango-900', 'oklch(38% 0.110 65)'],
-  ]},
-  { heading: 'Cherry · H=27°, error', steps: [
-    ['cherry-100', 'oklch(97% 0.030 27)'], ['cherry-200', 'oklch(93% 0.055 27)'],
-    ['cherry-400', 'oklch(74% 0.160 27)'], ['cherry-500', 'oklch(58% 0.200 27)'],
-    ['cherry-700', 'oklch(44% 0.168 27)'], ['cherry-900', 'oklch(33% 0.110 27)'],
-  ]},
+  { heading: 'Elderberry · H=265°, info',    steps: ramp('elderberry') },
+  { heading: 'Greengage · H=148°, success',  steps: ramp('greengage')  },
+  { heading: 'Mango · H=65°, warning',       steps: ramp('mango')      },
+  { heading: 'Cherry · H=27°, error',        steps: ramp('cherry')     },
 ]
 
 /* ─── Semantic data ──────────────────────────────────────────────────────── */
@@ -252,7 +235,7 @@ function PrimitivesPage() {
     <div style={pageWrap}>
       <h1 style={pageTitleStyle}>Primitives</h1>
       <p style={pageDescStyle}>
-        OKLCH throughout: perceptually uniform and wide-gamut. Aronia runs 100–950 in ten even steps; the 500 anchor is the source value for each ramp. Feedback palettes use six targeted steps: 100 (bg), 200 (border), 400 (icon), 500 (default), 700 (on-subtle text), 900 (emphasis). Never reference primitives from a component. Use the semantic layer.
+        OKLCH throughout: perceptually uniform and wide-gamut. Aronia runs 100–950, eleven steps since 850 was promoted to match the Figma library; the 500 anchor is the source value for each ramp. Feedback palettes use five targeted steps: 100 (bg), 200 (border), 500 (default), 700 (on-subtle text and icons), 900 (emphasis). There was a 400 for icons and it was deleted at the 1.0 cut: it cleared under 2.5:1 against its own 100, where non-text UI needs 3:1, so Callout paints its icon with the 700 like its text. Never reference primitives from a component. Use the semantic layer.
       </p>
 
       <SectionHead accent="var(--haus-color-primary-default)">Aronia · H=300° · dusty purple</SectionHead>
