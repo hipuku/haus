@@ -55,11 +55,21 @@ rather than two so a consumer migrates once.
   `--haus-z-600`, `--haus-border-width-1` and `-2`, `--haus-opacity-40` and
   `-60`. `semantics.css` holds the names, unchanged: `--haus-z-modal`,
   `--haus-border-width-default`, `--haus-opacity-disabled` and the rest.
-  **A consumer reading a role name needs no change** — the same twelve names
+  **A consumer reading a role name needs no change**: the same twelve names
   resolve, one layer higher. Breaking only if you read the *primitive*, which
   until now was the only way to get the stacking order at all, and is why drift
   and vault each settled one themselves. The JS export's keys move with it:
   `tokens.zIndex.modal` is `tokens.zIndex['400']`, and the role is CSS-side.
+- **Removed: the `400` step in all four status ramps** (`haus#35`). cherry,
+  mango, greengage and elderberry each declared one, `primitives.css`
+  documented every one as "Icon on subtle background", and no role consumed
+  any of them. The reason nothing consumed them is that the documented use
+  fails: measured against its own `100` background, `400` clears 2.20:1,
+  2.01:1, 1.95:1 and 2.20:1, and WCAG 1.4.11 wants 3:1 for non-text UI.
+  `Callout` draws exactly that, a tone icon on a subtle background, and it
+  reaches for `-on-subtle`, the `700`, which lands between 6.31:1 and 8.01:1.
+  The component was right and the comment was wrong. Status ramps are
+  `100 · 200 · 500 · 700 · 900` now, and every step has a consumer.
 - Added: `--haus-aronia-850`, `oklch(22% 0.066 300)`. It existed in the Figma
   library and in neither `tokens.json` nor `primitives.css`. Promoted rather
   than deleted, at the ramp's own convention rather than Figma's float noise.
