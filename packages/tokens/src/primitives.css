@@ -134,14 +134,14 @@
     --haus-shadow-xl:    0 20px 25px -5px oklch(18% 0.003 290 / 0.10), 0 8px 10px -6px oklch(18% 0.003 290 / 0.10);   /* Full-page overlays */
 
     /* ── Z-index ─────────────────────────────────────────────────────────────── */
-    --haus-z-base:      0;   /* Default page flow */
-    --haus-z-raised:    10;   /* Inline elevated elements */
-    --haus-z-dropdown:  100;   /* Menus, selects, popovers */
-    --haus-z-sticky:    200;   /* Sticky headers, fixed toolbars */
-    --haus-z-overlay:   300;   /* Sheet backgrounds, scrim */
-    --haus-z-modal:     400;   /* Dialogs, modals */
-    --haus-z-toast:     500;   /* Toast notifications */
-    --haus-z-tooltip:   600;   /* Tooltips, always on top */
+    --haus-z-0:    0;
+    --haus-z-10:   10;
+    --haus-z-100:  100;
+    --haus-z-200:  200;
+    --haus-z-300:  300;
+    --haus-z-400:  400;
+    --haus-z-500:  500;
+    --haus-z-600:  600;
 
     /* ── Control heights ─────────────────────────────────────────────────────── */
     /* A scale of its own: 36px and 44px are not steps on the 4px spacing ladder. */
@@ -150,12 +150,12 @@
     --haus-control-height-lg:  2.75rem;   /* 44px, Button lg. The WCAG 2.5.8 AAA target size, and Apple's HIG minimum. */
 
     /* ── Border width ────────────────────────────────────────────────────────── */
-    --haus-border-width-default:  1px;   /* Borders, dividers, inputs */
-    --haus-border-width-thick:    2px;   /* Focus rings, active emphasis */
+    --haus-border-width-1:  1px;
+    --haus-border-width-2:  2px;
 
     /* ── Opacity ─────────────────────────────────────────────────────────────── */
-    --haus-opacity-disabled:  0.4;   /* Disabled elements */
-    --haus-opacity-overlay:   0.6;   /* Scrim / backdrop */
+    --haus-opacity-40:  0.4;
+    --haus-opacity-60:  0.6;
 
     /* ── Icon sizes (Font Awesome, paired with the type scale) ───────────────── */
     --haus-icon-xs:  0.75rem;   /* 12px, with label-xs */

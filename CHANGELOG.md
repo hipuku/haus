@@ -50,6 +50,16 @@ rather than two so a consumer migrates once.
   named its mechanism rather than its job: it is a focus ring, and box-shadow is
   merely how it is drawn, the way `--haus-elevation-floating` is not called
   `shadow-lg`. Ten components read it.
+- **Stacking, border width and opacity have a role layer** (`haus#27`).
+  `primitives.css` holds the ladders and nothing else: `--haus-z-0` through
+  `--haus-z-600`, `--haus-border-width-1` and `-2`, `--haus-opacity-40` and
+  `-60`. `semantics.css` holds the names, unchanged: `--haus-z-modal`,
+  `--haus-border-width-default`, `--haus-opacity-disabled` and the rest.
+  **A consumer reading a role name needs no change** — the same twelve names
+  resolve, one layer higher. Breaking only if you read the *primitive*, which
+  until now was the only way to get the stacking order at all, and is why drift
+  and vault each settled one themselves. The JS export's keys move with it:
+  `tokens.zIndex.modal` is `tokens.zIndex['400']`, and the role is CSS-side.
 - Added: `--haus-aronia-850`, `oklch(22% 0.066 300)`. It existed in the Figma
   library and in neither `tokens.json` nor `primitives.css`. Promoted rather
   than deleted, at the ramp's own convention rather than Figma's float noise.

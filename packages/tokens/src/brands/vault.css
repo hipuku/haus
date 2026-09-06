@@ -119,7 +119,7 @@
     --haus-brand-error-emphasis:         var(--haus-cherry-900);
 
     /* ── Backdrop ──────────────────────────────────────────────────────── */
-    --haus-brand-backdrop:               oklch(from var(--haus-damson-950) l c h / var(--haus-opacity-overlay));
+    --haus-brand-backdrop:               oklch(from var(--haus-damson-950) l c h / var(--haus-opacity-60));
 
   }
 }

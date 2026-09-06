@@ -86,7 +86,9 @@ describe('components read roles, not primitives', () => {
 
   it('reads no primitive outside the documented set', () => {
     // Primitives whose own name already is the role, so no alias exists.
-    const NAMED_ROLE = /^--haus-(font-|weight-|border-width-|tracking-|opacity-|icon-|z-|control-height-)/
+    // border-width, opacity and z-index left this list with haus#27: they are
+    // roles in semantics.css now, so a component reading one is reading a role.
+    const NAMED_ROLE = /^--haus-(font-|weight-|tracking-|icon-|control-height-)/
     const undocumented = PAST.flatMap((d) =>
       d.primitives.filter((t) => !/^--haus-space-\d+$/.test(t) && !NAMED_ROLE.test(t)).map((t) => `${d.file}: ${t}`),
     )
@@ -113,9 +115,20 @@ describe('components read roles, not primitives', () => {
     // which are weight-only because both hold one weight across three and five
     // size steps and so have no single role to take it from.
     //
-    // There is no --haus-weight-* read left in the components at all. What is
-    // left in this number is families, border widths, icon sizes and the two
-    // z-index reads, and haus#27 is the whole of the second half.
-    expect(PAST.length - sizes.length).toBe(71)
+    // There is no --haus-weight-* read left in the components at all.
+    //
+    // Then 71 to 41 with haus#27, and none of it was component work: not one
+    // declaration in this package changed. The eight z-index names, the two
+    // border widths and the two opacities were primitives carrying role names,
+    // so a product that wanted the stacking order had to read primitives.css,
+    // which is why drift and vault each fixed their own. primitives.css holds
+    // the ladders now (0 to 600, 1px and 2px, 0.4 and 0.6) and semantics.css
+    // holds the names, so the same 30 declarations resolve through the role
+    // layer without moving.
+    //
+    // What is left is genuinely nameless: 32 reads of --haus-font-sans, five
+    // control heights, three --haus-icon-sm and one --haus-tracking-normal. A
+    // font family is not a role and there is no honest alias to invent for it.
+    expect(PAST.length - sizes.length).toBe(41)
   })
 })

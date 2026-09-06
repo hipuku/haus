@@ -13,11 +13,18 @@
      entry offsets, the textarea's minimum height and the select chevron's
      offset. A size is a value, not a role, and calling a 16px checkbox
      --haus-space-inset-md would say something untrue.
-   · 71 read a primitive that has no alias here because its own name already
-     is the role: --haus-font-sans, --haus-weight-*, --haus-border-width-*, --haus-tracking-normal,
-     --haus-opacity-disabled, --haus-icon-sm, --haus-z-modal.
+   · 41 read a primitive that has no alias here because its own name already
+     is the role: 32 --haus-font-sans, five control heights, three
+     --haus-icon-sm and one --haus-tracking-normal. A font family is not a
+     role and there is no honest alias to invent for it.
 
-   No component reads a colour, radius, shadow or motion primitive.
+     This was 71 before haus#27. Stacking, border width and opacity used to be
+     primitives wearing role names, so a product that wanted the stacking order
+     had to read primitives.css, and drift and vault each decided one for
+     themselves. The ladders moved down and the names moved here; no component
+     declaration changed.
+
+   No component reads a colour, radius, shadow, stacking or motion primitive.
 
    Naming rules:
    · Brand colour uses a role name at this layer: primary (aronia).
@@ -304,6 +311,33 @@
     --haus-elevation-raised:  var(--haus-shadow-sm);   /* Toggle knob            */
     --haus-elevation-floating: var(--haus-shadow-lg);  /* Card, Toast            */
     --haus-elevation-overlay: var(--haus-shadow-xl);   /* Modal                  */
+
+    /* ── Stacking ────────────────────────────────────────────────────────────
+       Named for what sits at each height, rather than for the number. The
+       ladder itself is in primitives.css: 0, 10, 100, 200, 300, 400, 500, 600.
+       Before haus#27 these eight names were the primitives, so a product that
+       wanted the order had to read primitives.css and drift and vault each
+       decided the stack for themselves. This is the layer they can adopt.     */
+    --haus-z-base:      var(--haus-z-0);     /* Default page flow              */
+    --haus-z-raised:    var(--haus-z-10);    /* Inline elevated elements       */
+    --haus-z-dropdown:  var(--haus-z-100);   /* Menus, selects, Popover        */
+    --haus-z-sticky:    var(--haus-z-200);   /* Sticky headers, toolbars       */
+    --haus-z-overlay:   var(--haus-z-300);   /* Sheet backgrounds, scrim       */
+    --haus-z-modal:     var(--haus-z-400);   /* Modal                          */
+    --haus-z-toast:     var(--haus-z-500);   /* Toast                          */
+    --haus-z-tooltip:   var(--haus-z-600);   /* Tooltip, always on top         */
+
+    /* ── Border width ────────────────────────────────────────────────────────
+       Named for the job, not the pixel count.                                */
+    --haus-border-width-default:  var(--haus-border-width-1);  /* Borders, dividers, inputs  */
+    --haus-border-width-thick:    var(--haus-border-width-2);  /* Focus rings, emphasis      */
+
+    /* ── Opacity ─────────────────────────────────────────────────────────────
+       Named for the state, not the alpha. brand.css reads --haus-opacity-60
+       directly rather than the overlay role below it: the brand layer sits
+       under this one and chooses primitives, which is the whole of its job.  */
+    --haus-opacity-disabled:  var(--haus-opacity-40);  /* Disabled elements    */
+    --haus-opacity-overlay:   var(--haus-opacity-60);  /* Scrim / backdrop     */
 
     /* ── Motion ──────────────────────────────────────────────────────────────
        Named for what moves. The curves and the reduced-motion duration are

@@ -44,16 +44,21 @@ Two kinds of primitive read are documented rather than hidden. Sizes: 31
 declarations across the haus components take a size off the space ladder, on
 `height`, `width`, `min-*`/`max-*` and `transform` offsets, because a size is a
 value rather than a role. They are the avatar sizes, the checkbox and radio
-boxes, the toggle track and thumb, and a few min/max bounds. And 77 read a primitive that has no semantic alias
-because the primitive's own name already is the role: `--haus-font-sans`,
-`--weight-*`, `--border-width-*`, `--haus-opacity-disabled`, `--haus-icon-sm`,
-`--haus-z-dropdown`. No component reads a colour, radius, shadow or motion primitive,
-and a test in `haus-components` holds that line.
+boxes, the toggle track and thumb, and a few min/max bounds. And 41 read a primitive that has no semantic
+alias because the primitive's own name already is the role: 32 read
+`--haus-font-sans`, five a control height, three `--haus-icon-sm` and one
+`--haus-tracking-normal`. A font family is not a role and there is no honest
+alias to invent for it. No component reads a colour, radius, shadow, stacking or
+motion primitive, and a test in `haus-components` holds that line.
 
-That second number went from 61 to 77 when the six overlay components landed,
-and it is worth watching rather than only recording: `Popover` and `Tooltip`
-both had to read `--haus-z-*` directly, because eight z-index primitives have
-no role between them. See haus#27.
+That second number went 61 to 77 when the six overlay components landed, then
+**77 to 41 at the 1.0 cut**, and the fall is the part worth reading. `Popover`
+and `Tooltip` had to reach for `--haus-z-*` directly because eight z-index
+primitives had no role between them, and a product wanting the stacking order
+had to read `primitives.css` for it, which is why drift and vault each settled
+one for themselves. haus#27 put the ladders in `primitives.css` and the names in
+`semantics.css`. **No component declaration changed**: the same reads resolve
+one layer higher.
 
 ## Typed constants
 
