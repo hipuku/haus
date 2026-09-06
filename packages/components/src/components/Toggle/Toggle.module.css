@@ -38,7 +38,7 @@
 }
 
 .input:focus-visible ~ .track {
-  box-shadow: var(--haus-shadow-focus);
+  box-shadow: var(--haus-focus-ring);
   outline: none;
 }
 

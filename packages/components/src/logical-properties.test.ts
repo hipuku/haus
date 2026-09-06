@@ -82,7 +82,7 @@ describe('components are written in logical properties', () => {
     // components draw the ring on a sibling of a visually hidden input, so a
     // blanket :focus-visible outline would land on an element nobody can see.
     const offenders = CODE.filter(
-      ([, css]) => css.includes('--shadow-focus') && !css.includes('forced-colors: active'),
+      ([, css]) => css.includes('--haus-focus-ring') && !css.includes('forced-colors: active'),
     ).map(([file]) => file)
     expect(offenders).toEqual([])
   })

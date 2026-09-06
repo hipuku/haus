@@ -84,7 +84,7 @@
 }
 
 .input:focus-visible ~ .circle {
-  box-shadow: var(--haus-shadow-focus);
+  box-shadow: var(--haus-focus-ring);
   outline: none;
 }
 

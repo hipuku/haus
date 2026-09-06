@@ -46,19 +46,19 @@
 .select:focus-visible {
   outline: none;
   border-color: var(--haus-color-border-focus);
-  box-shadow: var(--haus-shadow-focus);
+  box-shadow: var(--haus-focus-ring);
 }
 
 .select.error {
   border-color: var(--haus-color-error-default);
 }
 
-/* --haus-shadow-focus-error existed and nothing read it here: an invalid Select rang
+/* --haus-focus-ring-error existed and nothing read it here: an invalid Select rang
    in the ordinary focus colour, so the error state disappeared the moment it was
    focused. Input and Textarea both had this rule. */
 .select.error:focus-visible {
   border-color: var(--haus-color-error-default);
-  box-shadow: var(--haus-shadow-focus-error);
+  box-shadow: var(--haus-focus-ring-error);
 }
 
 .select:disabled {

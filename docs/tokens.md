@@ -87,7 +87,7 @@ Semantic groups:
   syntax, e.g. `oklch(from var(--damson-950) l c h / var(--opacity-overlay))`.
   These reference a primitive and apply an opacity token, so they are computation,
   not raw values.
-- **Focus ring**: `--haus-shadow-focus` (a two-ring shadow: surface-coloured gap,
+- **Focus ring**: `--haus-focus-ring` (a two-ring shadow: surface-coloured gap,
   then focus-coloured ring).
 - **Typography roles**: see below.
 - **Spacing**: three roles over one ladder. `--space-inset-*` is padding, the
@@ -227,7 +227,7 @@ to a palette step:
   transition: background var(--motion-interactive);
 }
 .cta:hover  { background: var(--color-primary-hover); }
-.cta:focus-visible { box-shadow: var(--shadow-focus); }
+.cta:focus-visible { box-shadow: var(--haus-focus-ring); }
 ```
 
 Because the tokens are plain custom properties, a consuming project can use them

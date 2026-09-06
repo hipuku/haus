@@ -187,7 +187,7 @@
 .close:hover { opacity: 1; }
 .close:focus-visible {
   outline: none;
-  box-shadow: var(--haus-shadow-focus);
+  box-shadow: var(--haus-focus-ring);
 }
 
 @media (prefers-reduced-motion: reduce) {

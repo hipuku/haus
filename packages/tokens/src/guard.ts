@@ -10,7 +10,7 @@
  *
  * drift wrote this check for itself and it caught five roles before they
  * reached a screen: `--color-ink-on-primary`, `--elevation-floating`,
- * `--motion-duration-emphasis`, `--radius-marker` and `--shadow-focus-error`.
+ * `--motion-duration-emphasis`, `--radius-marker` and `--haus-focus-ring-error`.
  * The contract is defined in this package, so the check belongs here rather
  * than being rewritten by every consumer (haus#19). Shipping it is also the
  * point: a design system that can say *you have not loaded what my components

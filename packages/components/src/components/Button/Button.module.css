@@ -57,7 +57,7 @@
 
 .button:focus-visible {
   outline: none;
-  box-shadow: var(--haus-shadow-focus);
+  box-shadow: var(--haus-focus-ring);
 }
 
 .button:disabled,

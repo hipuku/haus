@@ -21,7 +21,7 @@ const shadows = [
   { name: 'shadow-md',    css: 'var(--haus-shadow-md)',    use: 'Dropdowns, select menus' },
   { name: 'shadow-lg',    css: 'var(--haus-shadow-lg)',    use: 'Modals, dialogs' },
   { name: 'shadow-xl',    css: 'var(--haus-shadow-xl)',    use: 'Full-page overlays' },
-  { name: 'shadow-focus', css: 'var(--haus-shadow-focus)', use: 'Keyboard focus ring, all interactive elements' },
+  { name: 'focus-ring', css: 'var(--haus-focus-ring)', use: 'Keyboard focus ring, all interactive elements' },
 ]
 
 const elevationRoles = [
@@ -33,7 +33,7 @@ const elevationRoles = [
 const ELEV_COLS = 'auto auto auto 1fr'
 
 function ShadowDemo({ name, css }: { name: string; css: string }) {
-  if (name === 'shadow-focus') {
+  if (name === 'focus-ring') {
     return (
       <div style={{ width: 112, display: 'flex', alignItems: 'center' }}>
         <input

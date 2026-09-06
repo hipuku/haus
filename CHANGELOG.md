@@ -46,6 +46,10 @@ rather than two so a consumer migrates once.
   an invention, and the attribute now says so. The **ramp keeps the name
   `ruby`**: brand answers whose, ramp answers which colour, and vault ships six
   gemstone ramps, so `--haus-vault-500` would claim it has one.
+- **`--haus-shadow-focus` is `--haus-focus-ring`**, and `-error` with it. A role
+  named its mechanism rather than its job: it is a focus ring, and box-shadow is
+  merely how it is drawn, the way `--haus-elevation-floating` is not called
+  `shadow-lg`. Ten components read it.
 - Added: `--haus-aronia-850`, `oklch(22% 0.066 300)`. It existed in the Figma
   library and in neither `tokens.json` nor `primitives.css`. Promoted rather
   than deleted, at the ramp's own convention rather than Figma's float noise.
@@ -88,6 +92,12 @@ rather than two so a consumer migrates once.
   toned Button paints are new and Chromatic will treat them as such.
 
 ### `haus-components`, fixed
+
+- **Tabs had no forced-colors fallback**, so its focus ring, on both the tab and
+  the panel, disappeared entirely in Windows High Contrast: the ring is a
+  box-shadow and forced-colors drops those. Found by repairing the assertion
+  that was supposed to prevent exactly this, which had been matching the wrong
+  string and passing on an empty set.
 
 - RadioGroup never moved its drawn selection when uncontrolled: the dot stayed on
   `defaultValue` while the native input flipped.

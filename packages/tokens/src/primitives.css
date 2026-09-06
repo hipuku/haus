@@ -126,7 +126,7 @@
     --haus-radius-full:  9999px;
 
     /* ── Shadows, tinted with damson H=290° ──────────────────────────────────── */
-    /* --haus-shadow-focus is in semantics.css, because it references semantic colour tokens. */
+    /* --haus-focus-ring is in semantics.css, because it references semantic colour tokens. */
     --haus-shadow-none:  none;
     --haus-shadow-sm:    0 1px 2px oklch(18% 0.003 290 / 0.06);   /* Subtle card lift, form inputs */
     --haus-shadow-md:    0 4px 6px -1px oklch(18% 0.003 290 / 0.10), 0 2px 4px -2px oklch(18% 0.003 290 / 0.10);   /* Dropdowns, select menus */

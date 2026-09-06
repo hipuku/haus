@@ -12,7 +12,7 @@
  *
  * Scope is deliberately the *primitive* layer only. `semantics.css` is authored,
  * not generated: 44 of its custom properties are typography roles that
- * `tokens.json` does not model, along with `--shadow-focus`, `color-scheme`, and
+ * `tokens.json` does not model, along with `--haus-focus-ring`, `color-scheme`, and
  * the relative-colour-syntax alpha tokens. Generating it would mean inventing a
  * source for all of that first. Semantic drift is caught by loom's audit
  * instead: generation prevents primitive drift, and the audit detects the rest.
@@ -90,7 +90,7 @@ const SCALES: Array<{
   { heading: 'Radius', prefix: '--radius', path: ['radius'] },
   {
     heading: 'Shadows, tinted with damson H=290°',
-    note: '--haus-shadow-focus is in semantics.css, because it references semantic colour tokens.',
+    note: '--haus-focus-ring is in semantics.css, because it references semantic colour tokens.',
     prefix: '--shadow',
     path: ['shadow'],
     // shadow.focus resolves through semantic colour tokens, so it is declared

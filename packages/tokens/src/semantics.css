@@ -121,10 +121,10 @@
 
     /* ── Focus ring ───────────────────────────────────────────────────────── */
     /* Inner ring matches surface (creates gap), outer ring is focus colour   */
-    --haus-shadow-focus: 0 0 0 2px var(--haus-color-surface-default), 0 0 0 4px var(--haus-color-border-focus);
+    --haus-focus-ring: 0 0 0 2px var(--haus-color-surface-default), 0 0 0 4px var(--haus-color-border-focus);
     /* Same ring in the error state, with the outer band carrying the error colour  */
     /* so an invalid field stays legible as invalid while focused.             */
-    --haus-shadow-focus-error: 0 0 0 2px var(--haus-color-surface-default), 0 0 0 4px var(--haus-color-error-default);
+    --haus-focus-ring-error: 0 0 0 2px var(--haus-color-surface-default), 0 0 0 4px var(--haus-color-error-default);
 
     /* ── Typography roles ─────────────────────────────────────────────────── */
     /* Use all four props together. Components must not mix roles.            */

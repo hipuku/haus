@@ -40,7 +40,7 @@
    because :focus-visible matches them there by the browser's own heuristic. */
 .inputWrap:has(:focus-visible) {
   border-color: var(--haus-color-border-focus);
-  box-shadow: var(--haus-shadow-focus);
+  box-shadow: var(--haus-focus-ring);
   outline: none;
 }
 
@@ -49,7 +49,7 @@
 }
 
 .inputWrap.error:has(:focus-visible) {
-  box-shadow: var(--haus-shadow-focus-error);
+  box-shadow: var(--haus-focus-ring-error);
 }
 
 .inputWrap.disabled {

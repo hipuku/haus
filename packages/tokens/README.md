@@ -134,7 +134,7 @@ worth reading occasionally rather than failing a build over.
 
 **Why it exists.** drift wrote this check for itself and it caught five roles
 before they reached a screen: `--color-ink-on-primary`, `--elevation-floating`,
-`--motion-duration-emphasis`, `--radius-marker` and `--shadow-focus-error`.
+`--motion-duration-emphasis`, `--radius-marker` and `--haus-focus-ring-error`.
 Every consumer after it would have written the same test or shipped the same
 silent hole.
 
