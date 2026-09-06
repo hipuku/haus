@@ -400,7 +400,15 @@ nav a { color: var(--haus-color-ink-secondary); }
 nav a:hover { background: var(--haus-color-surface-default); color: var(--haus-color-ink-primary); }
 .nav-here { background: var(--haus-color-primary-default); color: var(--haus-color-ink-on-primary); font-weight: 500; }
 .wide { grid-column: 1 / -1; }
-.wide .stage { min-height: 12rem; align-items: flex-start; }
+/* Modal's backdrop and Popover's panel are position: fixed, which on a page of
+   previews means every one of them covers the viewport and the last one wins.
+   A transform on the stage makes it the containing block for fixed descendants,
+   so each overlay is trapped inside its own card. The contain and isolation
+   properties both leave position: fixed alone; a transform is the one that works.
+   There is no JS here, so an escaped backdrop cannot be dismissed either. */
+.wide .stage { min-height: 16rem; align-items: stretch; padding: 0;
+               transform: translateZ(0); position: relative; overflow: hidden; }
+.wide .stage > * { position: absolute; inset: 0; }
 body { margin: 0; padding: 0 2.5rem 6rem; background: var(--haus-color-surface-subtle);
        font-family: var(--haus-font-sans); color: var(--haus-color-ink-primary); }
 header { max-width: 60rem; margin-bottom: 3rem; }
