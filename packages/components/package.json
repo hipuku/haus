@@ -47,7 +47,8 @@
     "prepublishOnly": "npm run build && npm run test",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "variant-sheet": "node scripts/variant-sheet.mjs"
   },
   "dependencies": {
     "haus-tokens": "workspace:^"
