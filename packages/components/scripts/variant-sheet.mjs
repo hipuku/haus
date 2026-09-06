@@ -260,6 +260,7 @@ const PORTALLED = [
   {
     name: "Modal",
     dom: true,
+    stage: "stage-fill",
     note:
       "Reads --haus-elevation-overlay for the panel and the backdrop role for the scrim, so both effect styles have to exist before this is built. In Figma: the panel at three widths, with a title slot, a body slot and an optional footer slot. The backdrop is a separate rectangle at the backdrop colour, not a shadow.",
     props: { Size: SIZE },
@@ -287,30 +288,40 @@ const PORTALLED = [
   {
     name: "Popover",
     dom: true,
+    stage: "stage-anchor",
     note:
-      "The primitive under vault's five menus and core's Dropdown. Align and Placement are variant properties; Width is too, and `trigger` means match the trigger's width. Role is a prop rather than a variant, because dialog, menu, listbox and group draw identically and announce differently: one component set, four accessible roles.",
-    props: { Placement: ["bottom", "top"], Align: ["start", "end", "stretch"], Width: ["sm", "md"] },
-    render: ({ Placement, Align, Width }) => {
-      const triggerRef = { current: document.createElement("button") };
+      "The primitive under vault's five menus and core's Dropdown. Placement and Align are the two variant properties and they are pure CSS against the trigger, so the preview draws a real trigger button under each one: without it every value renders in the same place and the properties look inert. Placement puts the panel above or below. Align pins the panel's start edge, its end edge, or stretches it to the trigger's width. Role is a prop rather than a variant, because dialog, menu, listbox and group draw identically and announce differently: one component set, four accessible roles. There is deliberately no collision detection, and the component says so: no flipping at the viewport edge and no shifting along the cross axis. Placement is the caller's answer, one level up, where the layout is known.",
+    props: { Placement: ["bottom", "top"], Align: ["start", "end", "stretch"] },
+    render: ({ Placement, Align }) => {
+      const triggerRef = { current: null };
       return h(
-        C.Popover,
-        {
-          open: true,
-          onClose: () => {},
-          triggerRef,
-          placement: Placement,
-          align: Align,
-          width: Width,
-          role: "dialog",
-          label: "Popover",
-        },
-        h("div", { style: { padding: ".25rem 0" } }, "Popover content"),
+        "span",
+        { className: "anchor" },
+        h(C.Button, { variant: "secondary", size: "md", ref: triggerRef }, "A wide trigger button"),
+        h(
+          C.Popover,
+          {
+            open: true,
+            onClose: () => {},
+            triggerRef,
+            placement: Placement,
+            align: Align,
+            role: "dialog",
+            label: "Popover",
+          },
+          /* Narrower than the trigger on purpose. `stretch` is inset-inline: 0, so
+             the panel takes the trigger's width, and a panel whose content is
+             already wider than the trigger cannot shrink to show it: stretch then
+             renders identically to start and the property looks inert. */
+          h("div", { style: { whiteSpace: "nowrap" } }, "Item"),
+        ),
       );
     },
   },
   {
     name: "Tooltip",
     dom: true,
+    stage: "stage-anchor",
     open: "button",
     note:
       "One product built it, and it has the hardest accessibility contract of the six: it must not be the only place information lives, it has to survive keyboard focus as well as hover, and it is not a Popover. The file should say that last part out loud. Placement is the only variant property; the delay is a prop and has no drawing.",
@@ -368,7 +379,8 @@ for (const set of [...SETS, ...PORTALLED]) {
       markup = `<span class="err">${esc(error.message)}</span>`;
     }
     const cls = set.dom ? "figure wide" : "figure";
-    body += `<figure class="${cls}"><figcaption>${esc(label(row))}</figcaption><div class="stage">${markup}</div></figure>`;
+    const stageCls = ["stage", set.stage ?? ""].filter(Boolean).join(" ");
+    body += `<figure class="${cls}"><figcaption>${esc(label(row))}</figcaption><div class="${stageCls}">${markup}</div></figure>`;
   }
   body += `</div></section>`;
 }
@@ -406,9 +418,17 @@ nav a:hover { background: var(--haus-color-surface-default); color: var(--haus-c
    so each overlay is trapped inside its own card. The contain and isolation
    properties both leave position: fixed alone; a transform is the one that works.
    There is no JS here, so an escaped backdrop cannot be dismissed either. */
-.wide .stage { min-height: 16rem; align-items: stretch; padding: 0;
-               transform: translateZ(0); position: relative; overflow: hidden; }
-.wide .stage > * { position: absolute; inset: 0; }
+.wide .stage { min-height: 16rem; transform: translateZ(0); position: relative; overflow: hidden; }
+/* Modal fills its card: the backdrop is the scrim and should read as one. */
+.stage-fill { align-items: stretch; padding: 0; }
+.stage-fill > * { position: absolute; inset: 0; }
+/* Popover and Tooltip are positioned against a trigger the caller owns, so the
+   preview has to supply one. Without it every placement and align value renders
+   in the same spot and the properties look like they do nothing, which is
+   exactly how the first version of this sheet read. */
+.stage-anchor { align-items: center; justify-content: center; padding: 4rem 1.25rem; }
+.anchor { position: relative; display: inline-block; }
+.anchor > button { pointer-events: none; }
 body { margin: 0; padding: 0 2.5rem 6rem; background: var(--haus-color-surface-subtle);
        font-family: var(--haus-font-sans); color: var(--haus-color-ink-primary); }
 header { max-width: 60rem; margin-bottom: 3rem; }
