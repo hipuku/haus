@@ -44,6 +44,49 @@ const SIZE = ["sm", "md", "lg"];
 
 const h = React.createElement;
 
+/* ── a DOM, for the three that portal ────────────────────────────────────────
+   Modal, Popover and Tooltip render their panel through createPortal, and a
+   portal never appears in a renderToStaticMarkup string: it goes to a DOM node
+   that does not exist on the server. So those three are rendered into jsdom and
+   read back off document.body, which is the only way to print the thing being
+   built. The old sheet left all three out, and a Figma library missing its
+   overlay half is missing the half a product cannot avoid writing itself. */
+const { JSDOM } = await import("jsdom");
+const dom = new JSDOM("<!doctype html><html><body></body></html>", { pretendToBeVisual: true });
+const w = dom.window;
+w.matchMedia ??= () => ({ matches: false, addEventListener() {}, removeEventListener() {}, addListener() {}, removeListener() {} });
+for (const key of ["window", "document", "navigator", "HTMLElement", "Element", "Node",
+                   "getComputedStyle", "requestAnimationFrame", "cancelAnimationFrame",
+                   "MutationObserver", "matchMedia", "CSS", "DOMRect"]) {
+  if (w[key] === undefined) continue;
+  try { Object.defineProperty(globalThis, key, { value: w[key], configurable: true, writable: true }); } catch {}
+}
+globalThis.IS_REACT_ACT_ENVIRONMENT = true;
+const { createRoot } = await import("react-dom/client");
+const { flushSync } = await import("react-dom");
+
+/** Render into a real document and return what landed in the body, portals and
+ *  all. The host div is dropped from the output because it is scaffolding. */
+const renderInDom = (element, { open } = {}) => {
+  const host = document.createElement("div");
+  document.body.appendChild(host);
+  flushSync(() => createRoot(host).render(element));
+  /* Tooltip has no `open` prop, deliberately: it is shown by hover or focus and
+     nothing else, so the only way to print one is to do what a reader does.
+     `open` names the selector to point at. */
+  if (open) {
+    const trigger = document.querySelector(open);
+    /* Focus rather than hover: onFocusCapture listens for focusin, which
+       bubbles, and React maps onPointerEnter through pointerover with logic a
+       synthetic dispatch does not satisfy. Focus is also the path that matters:
+       a tooltip only reachable by pointer is not reachable. */
+    if (trigger) flushSync(() => trigger.dispatchEvent(new w.FocusEvent("focusin", { bubbles: true })));
+  }
+  const html = document.body.innerHTML;
+  document.body.innerHTML = "";
+  return html.replace(/^<div><\/div>/, "");
+};
+
 /**
  * Every component set to build, in the order they are worth building.
  *
@@ -207,24 +250,77 @@ const SETS = [
   },
 ];
 
-/* Modal, Popover and Tooltip render into a portal or on a trigger, so they have
-   no static markup worth printing here. Their variant properties still need
-   building, and they are listed so the sheet is not silently short of three. */
+/**
+ * The three that portal, rendered into a document rather than described.
+ *
+ * `dom: true` sends the set through jsdom. Popover additionally needs a
+ * trigger element to anchor to, which is what `trigger` builds.
+ */
 const PORTALLED = [
   {
     name: "Modal",
-    props: "Size: sm | md | lg",
-    note: "Reads --haus-elevation-overlay and the backdrop role. Build the panel at three widths with a title slot, a body slot and a footer slot.",
+    dom: true,
+    note:
+      "Reads --haus-elevation-overlay for the panel and the backdrop role for the scrim, so both effect styles have to exist before this is built. In Figma: the panel at three widths, with a title slot, a body slot and an optional footer slot. The backdrop is a separate rectangle at the backdrop colour, not a shadow.",
+    props: { Size: SIZE },
+    booleans: { footer: [false, true] },
+    render: ({ Size, footer }) =>
+      h(
+        C.Modal,
+        {
+          open: true,
+          onClose: () => {},
+          title: "Modal title",
+          size: Size,
+          footer: footer
+            ? h(
+                "div",
+                { style: { display: "flex", gap: ".5rem", justifyContent: "flex-end" } },
+                h(C.Button, { variant: "text", size: "md" }, "Cancel"),
+                h(C.Button, { variant: "primary", size: "md" }, "Confirm"),
+              )
+            : undefined,
+        },
+        "One paragraph of body copy, so the panel has something to size against.",
+      ),
   },
   {
     name: "Popover",
-    props: "Align: start | end | stretch  ·  Placement: bottom | top  ·  Width: auto | trigger | sm | md | lg",
-    note: "The primitive under vault's five menus and core's Dropdown. Role is a prop rather than a variant: dialog, menu, listbox and group draw identically and announce differently.",
+    dom: true,
+    note:
+      "The primitive under vault's five menus and core's Dropdown. Align and Placement are variant properties; Width is too, and `trigger` means match the trigger's width. Role is a prop rather than a variant, because dialog, menu, listbox and group draw identically and announce differently: one component set, four accessible roles.",
+    props: { Placement: ["bottom", "top"], Align: ["start", "end", "stretch"], Width: ["sm", "md"] },
+    render: ({ Placement, Align, Width }) => {
+      const triggerRef = { current: document.createElement("button") };
+      return h(
+        C.Popover,
+        {
+          open: true,
+          onClose: () => {},
+          triggerRef,
+          placement: Placement,
+          align: Align,
+          width: Width,
+          role: "dialog",
+          label: "Popover",
+        },
+        h("div", { style: { padding: ".25rem 0" } }, "Popover content"),
+      );
+    },
   },
   {
     name: "Tooltip",
-    props: "Placement: top | bottom",
-    note: "One product built it and it has the hardest accessibility contract of the six. A tooltip is not a Popover, and the file should say so.",
+    dom: true,
+    open: "button",
+    note:
+      "One product built it, and it has the hardest accessibility contract of the six: it must not be the only place information lives, it has to survive keyboard focus as well as hover, and it is not a Popover. The file should say that last part out loud. Placement is the only variant property; the delay is a prop and has no drawing.",
+    props: { Placement: ["top", "bottom"] },
+    render: ({ Placement }) =>
+      h(
+        C.Tooltip,
+        { content: "A short tooltip", placement: Placement, delay: 0 },
+        h(C.Button, { variant: "secondary", size: "md" }, "Trigger"),
+      ),
   },
 ];
 
@@ -253,7 +349,7 @@ const label = (row) =>
 let body = "";
 let total = 0;
 
-for (const set of SETS) {
+for (const set of [...SETS, ...PORTALLED]) {
   const rows = combos(set.props, set.booleans);
   total += rows.length;
   const propList = [
@@ -267,20 +363,15 @@ for (const set of SETS) {
   for (const row of rows) {
     let markup;
     try {
-      markup = renderToStaticMarkup(set.render(row));
+      markup = set.dom ? renderInDom(set.render(row), { open: set.open }) : renderToStaticMarkup(set.render(row));
     } catch (error) {
       markup = `<span class="err">${esc(error.message)}</span>`;
     }
-    body += `<figure><figcaption>${esc(label(row))}</figcaption><div class="stage">${markup}</div></figure>`;
+    const cls = set.dom ? "figure wide" : "figure";
+    body += `<figure class="${cls}"><figcaption>${esc(label(row))}</figcaption><div class="stage">${markup}</div></figure>`;
   }
   body += `</div></section>`;
 }
-
-body += `<section><h2>Portalled, and built without a static preview</h2>`;
-for (const p of PORTALLED) {
-  body += `<div class="portalled"><h3>${esc(p.name)}</h3><p class="props">${esc(p.props)}</p><p class="note">${esc(p.note)}</p></div>`;
-}
-body += `</section>`;
 
 const css = (f, dir = TOKENS) => readFileSync(join(dir, f), "utf8");
 const tokenCss = ["layers.css", "primitives.css", "brand.css", "motion.css", "semantics.css"]
@@ -302,7 +393,15 @@ const html = `<!doctype html>
 ${tokenCss}
 ${componentCss}
 /* the sheet's own chrome, deliberately outside every haus layer */
-body { margin: 0; padding: 2rem 2.5rem 6rem; background: var(--haus-color-surface-subtle);
+nav { position: sticky; top: 0; display: flex; gap: .25rem; padding: .75rem 0; margin-bottom: 2rem;
+      background: var(--haus-color-surface-subtle); border-bottom: 1px solid var(--haus-color-border-subtle); z-index: 10; }
+nav a, .nav-here { font-size: .8125rem; padding: .375rem .75rem; border-radius: var(--haus-radius-control); text-decoration: none; }
+nav a { color: var(--haus-color-ink-secondary); }
+nav a:hover { background: var(--haus-color-surface-default); color: var(--haus-color-ink-primary); }
+.nav-here { background: var(--haus-color-primary-default); color: var(--haus-color-ink-on-primary); font-weight: 500; }
+.wide { grid-column: 1 / -1; }
+.wide .stage { min-height: 12rem; align-items: flex-start; }
+body { margin: 0; padding: 0 2.5rem 6rem; background: var(--haus-color-surface-subtle);
        font-family: var(--haus-font-sans); color: var(--haus-color-ink-primary); }
 header { max-width: 60rem; margin-bottom: 3rem; }
 h1 { font: var(--haus-type-display-weight, 700) 2rem/1.15 var(--haus-font-sans); margin: 0 0 .75rem; }
@@ -325,10 +424,16 @@ figcaption { font-family: var(--haus-font-mono); font-size: .6875rem; padding: .
              border-radius: var(--haus-radius-surface); padding: 1.25rem; margin-bottom: 1rem; max-width: 50rem; }
 .err { color: var(--haus-color-error-default); font-family: var(--haus-font-mono); font-size: .75rem; }
 </style>
+<nav>
+  <span class="nav-here">Variants</span>
+  <a href="FIGMA-DOCS-tokens.html">Page 1 &middot; Tokens</a>
+  <a href="FIGMA-DOCS-motion.html">Page 2 &middot; Motion</a>
+  <a href="FIGMA-DOCS-getting-started.html">Page 3 &middot; Getting started</a>
+</nav>
 <header>
   <h1>haus variants, for the Figma build</h1>
   <p>Every variant of every component in <code>haus-components@${esc(version)}</code>, rendered by the
-     package itself. ${total} variants across ${SETS.length} component sets, plus three that portal.</p>
+     package itself. ${total} variants across ${SETS.length + PORTALLED.length} component sets, including the three that portal.</p>
   <p>Each caption is the Figma variant-property combination to name the variant. The stylesheets are
      the published ones, so the colours, spacing and type here are the tokens already in your Figma
      file: bind a fill to the variable rather than matching the hex by eye.</p>
@@ -341,4 +446,4 @@ ${body}
 
 const out = process.argv[2] ?? join(ROOT, "..", "FIGMA-VARIANTS-haus.html");
 writeFileSync(out, html);
-console.log(`${total} variants across ${SETS.length} sets -> ${out}`);
+console.log(`${total} variants across ${SETS.length + PORTALLED.length} sets -> ${out}`);

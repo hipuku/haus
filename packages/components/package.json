@@ -48,7 +48,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "variant-sheet": "node scripts/variant-sheet.mjs"
+    "variant-sheet": "node scripts/variant-sheet.mjs",
+    "figma-docs": "node scripts/figma-docs.mjs",
+    "figma": "npm run variant-sheet && npm run figma-docs"
   },
   "dependencies": {
     "haus-tokens": "workspace:^"
