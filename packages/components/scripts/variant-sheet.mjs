@@ -184,7 +184,7 @@ const SETS = [
   },
   {
     name: "Checkbox",
-    figma: "15 variants, Selection x State. Selection is Unchecked, Checked, Indeterminate; State is Default, Hover, Focus, Error, Disabled. This component has a hover rule, which the three text controls do not. Disabled is 40% opacity on the whole frame, so it cannot be a boolean either.",
+    figma: "18 variants, Selection x State. Selection is Unchecked, Checked, Indeterminate; State is Default, Hover, Focus, Error, Error focus, Disabled. This component has a hover rule, which the three text controls do not. Disabled is 40% opacity on the whole frame, so it cannot be a boolean either.",
     props: {},
     booleans: { checked: [false, true], disabled: [false, true] },
     render: ({ checked, disabled }) =>
@@ -234,7 +234,7 @@ const SETS = [
   },
   {
     name: "RadioGroup",
-    figma: "Two components. The Radio item is 10 variants, Selection x State, the same State values as Checkbox. RadioGroup is 2, Orientation vertical or horizontal, and holds instances of the item.",
+    figma: "Two components. The Radio item is 12 variants, Selection x State, the same six State values as Checkbox. RadioGroup is 2, Orientation vertical or horizontal, and holds instances of the item.",
     props: {},
     booleans: { disabled: [false, true] },
     render: ({ disabled }) =>
