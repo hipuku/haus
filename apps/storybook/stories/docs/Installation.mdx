@@ -1,0 +1,89 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Getting started/Installation" />
+
+# Installation
+
+haus ships as **compiled packages on npm**, each versioned and released
+independently. There is no build step for a consumer and no source alias: install
+the two you need, import two stylesheets, and use the components.
+
+## 1. Install
+
+`haus-components` reads its tokens from `haus-tokens`, so a consumer that wants
+components takes both. Each is released on its own line under a caret.
+
+```bash
+npm install haus-components haus-tokens
+```
+
+The other three packages are the colour and measurement libraries the auditing
+tools were written against, and they stand alone:
+
+| Package | What it is |
+|---|---|
+| `haus-tokens` | The tokens, as CSS custom properties and W3C Design Tokens JSON |
+| `haus-components` | The eighteen React components |
+| `haus-colour-utils` | OKLCH analysis, perceptual clustering, CIEDE2000, WCAG contrast |
+| `haus-style-probe` | What a browser actually computed for an element, in one shape |
+| `haus-colour-names` | 31,900 named colours as data |
+
+## 2. Import the two stylesheets, in order
+
+Both are required and the order matters: the tokens declare the custom
+properties the component styles read, so they load first.
+
+```ts
+// once, at your app root
+import 'haus-tokens/index.css'
+import 'haus-components/styles.css'
+```
+
+`haus-tokens/index.css` is the barrel over the four token layers (primitives,
+brand, semantics, motion) in the order they have to load. `haus-components/styles.css`
+is the compiled component CSS: importing the package no longer pulls CSS modules
+in as a side effect, so this line is how the components get their styles.
+
+## 3. Use a component
+
+```tsx
+import { Button } from 'haus-components'
+
+export function Save() {
+  return <Button tone="success">Save changes</Button>
+}
+```
+
+Every component reads the semantic roles, so it inherits whatever brand is in
+scope. The props follow one vocabulary across the library: `variant` is visual
+weight, `tone` is meaning (`neutral info success warning error`), `appearance` is
+`subtle` or `solid`, and `size` is `sm md lg`. A component narrows that vocabulary
+to what it actually offers, and the narrowing is in the type.
+
+## 4. Theme with a brand
+
+The default brand is haus's own. To apply another, set `data-haus-theme` on any
+element and every role inside that subtree resolves through the brand's map. The
+attribute nests, so two brands can sit on one page.
+
+```tsx
+<div data-haus-theme="vault">
+  {/* every haus component here takes vault's brand */}
+  <Button>Themed</Button>
+</div>
+```
+
+`brands/vault.css` is a complete second brand shipped in the token package, built
+against the same contract as the default, and `BrandMap` is generated from the
+brand file so a missing role is a type error rather than an unresolved `var()`.
+
+## Peer dependencies
+
+`react` and `react-dom`, both **>= 19**. React 19 is required because haus's
+components take `ref` as an ordinary prop rather than through `forwardRef`.
+
+<div style={{ height: '1px', background: 'var(--haus-color-border-subtle)', margin: 'var(--haus-space-8) 0' }} />
+
+<p style={{ font: 'var(--haus-type-body-sm-weight) var(--haus-type-body-sm-size)/var(--haus-type-body-sm-leading) var(--haus-font-sans)', color: 'var(--haus-color-ink-tertiary)' }}>
+  Releases are per package, tagged <code style={{ fontFamily: 'var(--haus-font-mono)' }}>{'<'}directory{'>'}-v{'<'}version{'>'}</code>, with tokens published before the components that depend on them. Provenance is signed to the Sigstore transparency log.
+</p>

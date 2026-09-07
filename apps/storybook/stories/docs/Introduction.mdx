@@ -1,0 +1,90 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+import { Badge } from 'haus-components'
+
+<Meta title="Getting started/Introduction" />
+
+<div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--haus-space-3)', marginBottom: 'var(--haus-space-6)' }}>
+  <h1 style={{ font: 'var(--haus-type-display-weight) var(--haus-type-display-size)/var(--haus-type-display-leading) var(--haus-font-sans)', letterSpacing: 'var(--haus-type-display-tracking)', color: 'var(--haus-color-ink-primary)', margin: 0 }}>haus</h1>
+  <p style={{ font: 'var(--haus-type-body-lg-weight) var(--haus-type-body-lg-size)/var(--haus-type-body-lg-leading) var(--haus-font-sans)', color: 'var(--haus-color-ink-secondary)', maxWidth: '62ch', margin: 0 }}>
+    A token-first, light-mode, OKLCH design system: four cascade layers, a brand
+    map split from the roles, and eighteen React components built on top. It is
+    published to npm and it has real consumers.
+  </p>
+</div>
+
+## What this is
+
+haus is the centre of the hipuku portfolio, and the argument it makes is
+adoption rather than surface. Three products build on it, and each found a
+different half of it useful: <strong>drift</strong> takes the token layer
+wholesale and re-themes it, <strong>vault</strong> is haus's complete second
+brand, and <strong>core</strong> is migrating onto the scales it never had. The
+gaps in haus were found by measuring it against those three, not by guessing.
+
+It is deliberately not a general-purpose kit. Every component here earns its
+place by being something the products actually share, and every token resolves
+through the four layers below so that a brand change is one file rather than a
+search-and-replace.
+
+## The four layers
+
+Colour, space, type, radius, motion: every value enters at the bottom and is
+renamed on the way up, so a component never reads a raw number and a brand never
+touches a component.
+
+<div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--haus-space-2)', margin: 'var(--haus-space-5) 0' }}>
+  {[
+    ['Primitives', 'The raw values, with no meaning. --haus-aronia-500, --haus-space-4. No component reads these.'],
+    ['Brand', 'Which primitive each role takes. The one file a consumer replaces. brands/vault.css is a complete second brand.'],
+    ['Semantics', 'What each role means, named for the decision and never the palette. --haus-color-surface-default, --haus-type-heading-tracking.'],
+    ['Components', 'Eighteen React components that read the semantic roles and nothing below them.'],
+  ].map(([name, description]) => (
+    <div key={name} style={{ display: 'flex', gap: 'var(--haus-space-4)', alignItems: 'baseline' }}>
+      <span style={{ font: 'var(--haus-type-field-label-weight) var(--haus-type-field-label-size)/1 var(--haus-font-sans)', letterSpacing: 'var(--haus-type-field-label-tracking)', textTransform: 'uppercase', color: 'var(--haus-color-ink-primary)', width: '7rem', flexShrink: 0 }}>{name}</span>
+      <span style={{ font: 'var(--haus-type-body-sm-weight) var(--haus-type-body-sm-size)/var(--haus-type-body-sm-leading) var(--haus-font-sans)', color: 'var(--haus-color-ink-secondary)' }}>{description}</span>
+    </div>
+  ))}
+</div>
+
+The direction is strict and it is what a theme swap rests on: a component reads
+`--haus-color-primary-default`, the semantic layer says that role is the brand's
+primary, and the brand layer says which ramp step the brand primary is. Change
+the brand file and every component follows, with no component edited. Roles are
+declared on `:root, [data-haus-theme]`, so a brand can apply to a subtree and
+nest, which is how one page shows two brands at once.
+
+## What is already decided
+
+These are settled, recorded here so a new component does not re-open them. The
+decision records in `docs/decisions/` carry the reasoning and the cost.
+
+<div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--haus-space-2)', margin: 'var(--haus-space-4) 0' }}>
+  {[
+    ['Light only', 'Surface polarity is fixed by the contract, so a dark theme cannot arrive as a brand map. White cards on a subtle page, always.'],
+    ['Brand is a layer', 'Not a theme toggle. The brand map is the fourth cascade layer, with a generated TypeScript type so an omission is a compile error.'],
+    ['Tone, weight and behaviour are separate props', 'variant is visual weight, tone is meaning (neutral, info, success, warning, error), and things like a Button being a link are their own prop. They used to be one word.'],
+    ['One focus mechanism', 'A double ring, :focus-visible only, with a forced-colors fallback because every ring is a box-shadow.'],
+    ['Tokens only', 'Colour, motion, spacing, radius, z-index and elevation are tokens. A hardcoded value fails the stylelint gate.'],
+  ].map(([name, description]) => (
+    <div key={name} style={{ display: 'flex', gap: 'var(--haus-space-4)', alignItems: 'baseline' }}>
+      <span style={{ font: 'var(--haus-type-field-label-weight) var(--haus-type-field-label-size)/1.4 var(--haus-font-sans)', letterSpacing: 'var(--haus-type-field-label-tracking)', color: 'var(--haus-color-ink-primary)', width: '13rem', flexShrink: 0 }}>{name}</span>
+      <span style={{ font: 'var(--haus-type-body-sm-weight) var(--haus-type-body-sm-size)/var(--haus-type-body-sm-leading) var(--haus-font-sans)', color: 'var(--haus-color-ink-secondary)' }}>{description}</span>
+    </div>
+  ))}
+</div>
+
+<div style={{ display: 'flex', alignItems: 'center', gap: 'var(--haus-space-2)', flexWrap: 'wrap', padding: 'var(--haus-space-4)', margin: 'var(--haus-space-5) 0', border: '1px solid var(--haus-color-border-subtle)', borderRadius: 'var(--haus-radius-surface)', background: 'var(--haus-color-surface-subtle)' }}>
+  <Badge tone="info" appearance="subtle">Tokens</Badge>
+  <Badge tone="success" appearance="subtle">Components</Badge>
+  <Badge tone="neutral" appearance="subtle">Published to npm</Badge>
+  <span style={{ font: 'var(--haus-type-body-sm-weight) var(--haus-type-body-sm-size)/var(--haus-type-body-sm-leading) var(--haus-font-sans)', color: 'var(--haus-color-ink-secondary)' }}>
+    Those three chips are haus's own Badge, reading the semantic tone roles. Every page here is built from the thing it documents.
+  </span>
+</div>
+
+<div style={{ height: '1px', background: 'var(--haus-color-border-subtle)', margin: 'var(--haus-space-8) 0' }} />
+
+<p style={{ font: 'var(--haus-type-body-sm-weight) var(--haus-type-body-sm-size)/var(--haus-type-body-sm-leading) var(--haus-font-sans)', color: 'var(--haus-color-ink-tertiary)' }}>
+  Source on <a href="https://github.com/hipuku/haus" style={{ color: 'var(--haus-color-ink-link)' }}>GitHub</a>.
+  The architecture and the reasoning behind these decisions are in <code style={{ fontFamily: 'var(--haus-font-mono)' }}>DESIGN.md</code> and <code style={{ fontFamily: 'var(--haus-font-mono)' }}>docs/decisions/</code>.
+</p>

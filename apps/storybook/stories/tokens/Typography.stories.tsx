@@ -32,6 +32,7 @@ type TypeEntry = {
 const typeScale: TypeEntry[] = [
   { token: 'label-xs',   size: 'var(--haus-type-label-xs-size)',   weight: 'var(--haus-type-label-xs-weight)',   lineHeight: 'var(--haus-type-label-xs-leading)',   tracking: 'var(--haus-type-label-xs-tracking)',   trackingDisplay: '0.08em',  sample: 'REQUIRED' },
   { token: 'label-sm',   size: 'var(--haus-type-label-sm-size)',   weight: 'var(--haus-type-label-sm-weight)',   lineHeight: 'var(--haus-type-label-sm-leading)',   tracking: 'var(--haus-type-label-sm-tracking)',   trackingDisplay: '0.02em',  sample: 'Sort by date' },
+  { token: 'label-eyebrow', size: 'var(--haus-type-label-eyebrow-size)', weight: 'var(--haus-type-label-eyebrow-weight)', lineHeight: 'var(--haus-type-label-eyebrow-leading)', tracking: 'var(--haus-type-label-eyebrow-tracking)', trackingDisplay: '0.04em', sample: 'SECTION LABEL' },
   { token: 'field-label', size: 'var(--haus-type-field-label-size)', weight: 'var(--haus-type-field-label-weight)', lineHeight: 'var(--haus-type-field-label-leading)', tracking: 'var(--haus-type-field-label-tracking)', trackingDisplay: '0.02em',  sample: 'Email address' },
   { token: 'label',      size: 'var(--haus-type-label-size)',      weight: 'var(--haus-type-label-weight)',      lineHeight: 'var(--haus-type-label-leading)',      tracking: 'var(--haus-type-label-tracking)',      trackingDisplay: '-',       sample: 'Email address' },
   { token: 'body-sm',    size: 'var(--haus-type-body-sm-size)',    weight: 'var(--haus-type-body-sm-weight)',    lineHeight: 'var(--haus-type-body-sm-leading)',    tracking: 'var(--haus-type-body-sm-tracking)',    trackingDisplay: '-',       sample: 'You have 3 unread messages.' },
@@ -39,14 +40,16 @@ const typeScale: TypeEntry[] = [
   { token: 'body-lg',    size: 'var(--haus-type-body-lg-size)',    weight: 'var(--haus-type-body-lg-weight)',    lineHeight: 'var(--haus-type-body-lg-leading)',    tracking: 'var(--haus-type-body-lg-tracking)',    trackingDisplay: '-',       sample: 'Designed for teams who ship fast.' },
   { token: 'heading-sm', size: 'var(--haus-type-heading-sm-size)', weight: 'var(--haus-type-heading-sm-weight)', lineHeight: 'var(--haus-type-heading-sm-leading)', tracking: 'var(--haus-type-heading-sm-tracking)', trackingDisplay: '−0.01em', sample: 'Recent activity' },
   { token: 'heading',    size: 'var(--haus-type-heading-size)',    weight: 'var(--haus-type-heading-weight)',    lineHeight: 'var(--haus-type-heading-leading)',    tracking: 'var(--haus-type-heading-tracking)',    trackingDisplay: '−0.01em', sample: 'Settings' },
-  { token: 'heading-lg', size: 'var(--haus-type-heading-lg-size)', weight: 'var(--haus-type-heading-lg-weight)', lineHeight: 'var(--haus-type-heading-lg-leading)', tracking: 'var(--haus-type-heading-lg-tracking)', trackingDisplay: '−0.01em', sample: 'Welcome back' },
-  { token: 'display',    size: 'var(--haus-type-display-size)',    weight: 'var(--haus-type-display-weight)',    lineHeight: 'var(--haus-type-display-leading)',    tracking: 'var(--haus-type-display-tracking)',    trackingDisplay: '−0.01em', sample: 'Haus.' },
+  { token: 'heading-lg', size: 'var(--haus-type-heading-lg-size)', weight: 'var(--haus-type-heading-lg-weight)', lineHeight: 'var(--haus-type-heading-lg-leading)', tracking: 'var(--haus-type-heading-lg-tracking)', trackingDisplay: '−0.02em', sample: 'Welcome back' },
+  { token: 'display',    size: 'var(--haus-type-display-size)',    weight: 'var(--haus-type-display-weight)',    lineHeight: 'var(--haus-type-display-leading)',    tracking: 'var(--haus-type-display-tracking)',    trackingDisplay: '−0.03em', sample: 'Haus.' },
   { token: 'mono',       size: 'var(--haus-type-mono-size)',       weight: 'var(--haus-type-mono-weight)',       lineHeight: 'var(--haus-type-mono-leading)',       tracking: 'var(--haus-type-mono-tracking)',       trackingDisplay: '-',       sample: 'var(--haus-color-ink-primary)', family: 'mono' },
 ]
 
 const typeMetaLabels: Record<string, string> = {
   'label-xs':   '11px · 500 · lh 1.4',
   'label-sm':   '12px · 500 · lh 1.4',
+  'label-eyebrow': '12px · 600 · lh 1.4',
+  'field-label': '12px · 600 · lh 1.4',
   'label':      '13px · 500 · lh 1.4',
   'body-sm':    '13px · 400 · lh 1.5',
   'body':       '14px · 400 · lh 1.5',

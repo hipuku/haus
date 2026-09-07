@@ -1,4 +1,5 @@
 import type { Preview } from '@storybook/react-vite'
+import { hausTheme } from './theme'
 // The barrel, in the order the four token files have to load. Storybook is a
 // consumer like any other, so it takes the import a consumer is told to take.
 import 'haus-tokens/index.css'
@@ -28,7 +29,12 @@ const preview: Preview = {
     },
     options: {
       storySort: {
+        // Docs first as the front door, then the system: tokens, then the
+        // components. The nested arrays pin the order inside a group; without
+        // them the sidebar falls back to alphabetical, which buries the
+        // Introduction behind Contributing.
         order: [
+          'Getting started', ['Introduction', 'Installation', 'Composition', 'Contributing'],
           'Tokens', ['Colours', 'Typography', 'Spacing', 'Elevation', 'Motion', 'Layout'],
           'Components',
         ],
@@ -37,6 +43,9 @@ const preview: Preview = {
     /* The addon was installed and never ran. Every story is checked now, and a
        violation is reported rather than being available to look for. */
     a11y: { test: 'error' },
+    // Without an explicit theme the docs pages render in Storybook's default
+    // light palette rather than in haus's own chrome.
+    docs: { theme: hausTheme },
   },
 }
 

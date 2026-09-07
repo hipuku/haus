@@ -1,0 +1,86 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Getting started/Contributing" />
+
+# Contributing
+
+These are the rules a new component is held to. They are recorded here so a
+change does not re-litigate them, and most are enforced by a gate rather than a
+review, which is the point: the system should make the right thing the easy one.
+The full version is in [`CONTRIBUTING.md`](https://github.com/hipuku/haus/blob/main/CONTRIBUTING.md);
+the reasoning is in `DESIGN.md` and `docs/decisions/`.
+
+## Where a component lives
+
+Every component is `Name/Name.tsx` plus `Name/Name.module.css`, co-located. The
+styles are CSS Modules, `camelCase` class names, and the component reads semantic
+roles only.
+
+## Tokens, never values
+
+Colour, motion, spacing, radius, z-index and elevation come from tokens. A
+component reads the **semantic** role (`--haus-color-surface-default`), never a
+primitive (`--haus-aronia-500`). A hardcoded value fails the stylelint
+strict-value gate, and a component reaching past the semantic layer to a
+primitive fails a test written to catch exactly that.
+
+- No `transition: all`. Name the properties.
+- One focus mechanism: `:focus-visible`, the double ring, with a `forced-colors`
+  fallback because the ring is a `box-shadow`.
+- Type comes from a role, and a role sets all four of size, weight, leading and
+  tracking. Setting one and inferring the rest is what the role exists to prevent.
+
+## The shared vocabulary
+
+If your component has meaning, it is `tone` (`neutral info success warning
+error`). If it has visual weight, that is `variant`. Surface treatment is
+`appearance` (`subtle solid`), and size is `sm md lg`. Narrow each to what the
+component actually offers, in the type, using the shared `Tone` / `Appearance` /
+`Size` unions in `types.ts`. Do not invent a second word for a thing that already
+has one.
+
+## Tests
+
+- **axe runs in every component suite.** A new component without an accessibility
+  assertion is not finished.
+- **Test the hardest logic first.** A test that only asserts a `<span>` renders a
+  string is not a test of the claim. Probe the boundaries, encode the
+  counterintuitive case.
+- If the component paints a focus ring and takes an `error` prop, it paints the
+  error ring, and there is a cross-component test that asserts this from the prop
+  side rather than the class side.
+- The brand contract is parameterised: `brand.test.ts` runs every brand in
+  `brands/` against the same 54 roles, so a new brand is held to the contract on
+  the day it lands.
+
+## Prose
+
+Every surface a reader meets follows the house voice: a working engineer
+explaining a decision, specific and unhurried. **No em dashes in any tracked
+file**, enforced by `npm run lint:prose`, and **no mention of AI tooling**
+anywhere tracked. That applies to JSX copy, aria-labels and Storybook front
+matter, not only Markdown.
+
+## Before you commit
+
+<div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--haus-space-2)', margin: 'var(--haus-space-4) 0' }}>
+  {[
+    'Does every number in the docs still match the code?',
+    'Any new hardcoded value that should be a token?',
+    'Does the new code follow the prevailing pattern, or invent a second way?',
+    'Is the hardest logic tested, or only the easiest?',
+    'Have you run the repo’s own scripts: lint, lint:css, lint:tokens, lint:prose, typecheck, test?',
+    'Any em dash, and is it pushed?',
+  ].map((line) => (
+    <div key={line} style={{ display: 'flex', gap: 'var(--haus-space-3)', alignItems: 'baseline' }}>
+      <span style={{ color: 'var(--haus-color-ink-tertiary)', fontFamily: 'var(--haus-font-mono)', flexShrink: 0 }}>{'☐'}</span>
+      <span style={{ font: 'var(--haus-type-body-sm-weight) var(--haus-type-body-sm-size)/var(--haus-type-body-sm-leading) var(--haus-font-sans)', color: 'var(--haus-color-ink-secondary)' }}>{line}</span>
+    </div>
+  ))}
+</div>
+
+<div style={{ height: '1px', background: 'var(--haus-color-border-subtle)', margin: 'var(--haus-space-8) 0' }} />
+
+<p style={{ font: 'var(--haus-type-body-sm-weight) var(--haus-type-body-sm-size)/var(--haus-type-body-sm-leading) var(--haus-font-sans)', color: 'var(--haus-color-ink-tertiary)' }}>
+  Decisions are recorded one file each in <code style={{ fontFamily: 'var(--haus-font-mono)' }}>docs/decisions/</code>, including the ones that are settled and not yet built.
+</p>

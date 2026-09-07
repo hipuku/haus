@@ -15,9 +15,17 @@ const config: StorybookConfig = {
   // is now an error rather than a no-op.
   addons: [
     '@storybook/addon-links',
+    '@storybook/addon-docs',
     '@storybook/addon-a11y',
     '@chromatic-com/storybook',
   ],
+  // A published reference site, not a working Storybook: suppress the onboarding
+  // checklist and update toasts, which are noise for a visitor here to read the
+  // system and have no local project to onboard to.
+  core: {
+    disableWhatsNewNotifications: true,
+    disableTelemetry: true,
+  },
   framework: {
     name: '@storybook/react-vite',
     options: {},

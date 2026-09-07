@@ -6,12 +6,13 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
-    "haus-tokens": "workspace:*",
-    "haus-components": "workspace:*"
+    "haus-components": "workspace:*",
+    "haus-tokens": "workspace:*"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^5.3.0",
     "@storybook/addon-a11y": "^10.5.10",
+    "@storybook/addon-docs": "^10.5.10",
     "@storybook/addon-links": "^10.5.10",
     "@storybook/react": "^10.5.10",
     "@storybook/react-vite": "^10.5.10",

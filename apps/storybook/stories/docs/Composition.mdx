@@ -1,0 +1,91 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+import { Input, Checkbox, Button, Callout, Badge } from 'haus-components'
+
+<Meta title="Getting started/Composition" />
+
+<div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--haus-space-3)', marginBottom: 'var(--haus-space-6)' }}>
+  <h1 style={{ font: 'var(--haus-type-heading-lg-weight) var(--haus-type-heading-lg-size)/var(--haus-type-heading-lg-leading) var(--haus-font-sans)', letterSpacing: 'var(--haus-type-heading-lg-tracking)', color: 'var(--haus-color-ink-primary)', margin: 0 }}>Composition</h1>
+  <p style={{ font: 'var(--haus-type-body-lg-weight) var(--haus-type-body-lg-size)/var(--haus-type-body-lg-leading) var(--haus-font-sans)', color: 'var(--haus-color-ink-secondary)', maxWidth: '62ch', margin: 0 }}>
+    haus is a flat set of components rather than an atomic hierarchy, so they do
+    not nest inside each other. What makes them compose is a shared vocabulary:
+    the same words mean the same thing in every component, so a screen built from
+    several of them reads as one system. This page builds a sign-in form to show
+    it, every element below is a live haus component.
+  </p>
+</div>
+
+## A form, from real components
+
+Each control owns its own label, hint and error, so the composition is just
+placing them. Nothing here re-implements a field, a label or a validation line.
+
+<div style={{ maxWidth: 380, display: 'flex', flexDirection: 'column', gap: 'var(--haus-space-4)', padding: 'var(--haus-space-6)', margin: 'var(--haus-space-5) 0', border: '1px solid var(--haus-color-border-subtle)', borderRadius: 'var(--haus-radius-surface)', background: 'var(--haus-color-surface-default)' }}>
+  <Callout tone="error">That email and password do not match.</Callout>
+  <Input label="Email" placeholder="you@example.com" />
+  <Input label="Password" type="password" hint="At least 8 characters." />
+  <Checkbox label="Keep me signed in" />
+  <Button tone="neutral">Sign in</Button>
+</div>
+
+The `Callout` carries meaning through `tone="error"`, the same `tone` word a
+`Button` or `Badge` takes. The `Input` and `Checkbox` each render their own label
+and reserve room for an error, so a form is composed by arrangement, not by
+wiring accessibility together by hand.
+
+## The vocabulary that makes it cohere
+
+Four prop names carry the same meaning everywhere. A component narrows each to
+what it offers and the narrowing lives in the type, so the compiler tells you
+which values a given component accepts.
+
+<div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--haus-space-2)', margin: 'var(--haus-space-4) 0' }}>
+  {[
+    ['tone', 'What it means. neutral, info, success, warning, error. Shared by Button, Badge, Callout, Toast and the form controls.'],
+    ['variant', 'Visual weight only, never meaning. On Button: primary, secondary, ghost, text.'],
+    ['appearance', 'subtle or solid. The same surface treatment across Badge and Toast.'],
+    ['size', 'sm, md, lg. Avatar keeps xs and xl as a documented extension.'],
+  ].map(([name, description]) => (
+    <div key={name} style={{ display: 'flex', gap: 'var(--haus-space-4)', alignItems: 'baseline' }}>
+      <code style={{ fontFamily: 'var(--haus-font-mono)', fontSize: 'var(--haus-type-mono-size)', color: 'var(--haus-color-ink-primary)', width: '7rem', flexShrink: 0 }}>{name}</code>
+      <span style={{ font: 'var(--haus-type-body-sm-weight) var(--haus-type-body-sm-size)/var(--haus-type-body-sm-leading) var(--haus-font-sans)', color: 'var(--haus-color-ink-secondary)' }}>{description}</span>
+    </div>
+  ))}
+</div>
+
+Because `tone` means the same thing everywhere, one row of components reads as a
+set rather than as five unrelated widgets:
+
+<div style={{ display: 'flex', alignItems: 'center', gap: 'var(--haus-space-2)', flexWrap: 'wrap', padding: 'var(--haus-space-4)', margin: 'var(--haus-space-4) 0', border: '1px solid var(--haus-color-border-subtle)', borderRadius: 'var(--haus-radius-surface)', background: 'var(--haus-color-surface-subtle)' }}>
+  <Badge tone="neutral">neutral</Badge>
+  <Badge tone="info">info</Badge>
+  <Badge tone="success">success</Badge>
+  <Badge tone="warning">warning</Badge>
+  <Badge tone="error">error</Badge>
+</div>
+
+## Why it holds: roles, not values
+
+None of those components names a colour. `tone="error"` resolves to
+`--haus-color-error-*`, a semantic role, which the brand layer points at a
+palette step. So the red in the error Callout, the error Badge and an invalid
+Input is the same decision resolved once, and a brand can move it without
+touching a component.
+
+<div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--haus-space-2)', alignItems: 'center', margin: 'var(--haus-space-4) 0', font: 'var(--haus-type-body-sm-weight) var(--haus-type-body-sm-size)/1.6 var(--haus-font-sans)', color: 'var(--haus-color-ink-secondary)' }}>
+  {['tone="error"', 'semantic/color-error-default', 'brand: which ramp step', 'primitive: --haus-cherry-500'].map((step, i) => (
+    <span key={step} style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--haus-space-2)' }}>
+      <code style={{ fontFamily: 'var(--haus-font-mono)', fontSize: 'var(--haus-type-mono-size)', padding: '2px var(--haus-space-2)', borderRadius: 'var(--haus-radius-sm)', background: 'var(--haus-color-surface-subtle)', color: 'var(--haus-color-ink-primary)' }}>{step}</code>
+      {i < 3 && <span style={{ color: 'var(--haus-color-ink-tertiary)' }}>{'→'}</span>}
+    </span>
+  ))}
+</div>
+
+That is the return on building down through the layers instead of across: the
+form above is not styled, it is composed, and it would re-tint as a whole the
+moment it is placed inside another brand.
+
+<div style={{ height: '1px', background: 'var(--haus-color-border-subtle)', margin: 'var(--haus-space-8) 0' }} />
+
+<p style={{ font: 'var(--haus-type-body-sm-weight) var(--haus-type-body-sm-size)/var(--haus-type-body-sm-leading) var(--haus-font-sans)', color: 'var(--haus-color-ink-tertiary)' }}>
+  Each component here has its own page under <strong>Components</strong>, with every prop as a live control.
+</p>
