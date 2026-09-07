@@ -251,6 +251,7 @@ const SETS = [
   },
   {
     name: "Divider",
+    figma: "8 variants, Orientation x Spacing. Only the horizontal half is drawn here, because a vertical rule stretches to a flex parent and has nothing to stretch to on this page. Build both.",
     note: "One line of CSS that three products had each redrawn. Spacing is a variant property, orientation is the other.",
     props: { Orientation: ["horizontal"], Spacing: ["none", ...SIZE] },
     render: ({ Orientation, Spacing }) =>
@@ -271,6 +272,7 @@ const SETS = [
   },
   {
     name: "Tabs",
+    figma: "Two components. The Tab item is 18 variants, Size x State, where State is Default, Hover, Focus, Selected, Selected focus and Disabled. The Tabs container is 3, Size, and holds instances. There is no Selected hover: hover only takes the text to ink-primary and a selected tab is already there.",
     note: "All three products built one and none of them was haus's.",
     props: { Size: SIZE },
     render: ({ Size }) =>
