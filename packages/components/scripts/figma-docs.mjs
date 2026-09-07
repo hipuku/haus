@@ -617,7 +617,15 @@ const startedPage = shell(
   <div class="callout"><p><b>This covers three components.</b> Select and Textarea have the
   identical five selectors, so the same <code>State</code> property with the same five values.
   Select trades the Prefix and Suffix booleans for a fixed chevron; Textarea drops both and gains a
-  resize handle.</p></div>
+  resize handle. Two differences are worth knowing before you assume they are the same component
+  three times: <b>Textarea's min height is 80px</b> against 36px, and it is the only one of the
+  three whose height has a variable at all (<code>spacing/20</code>); and <b>Select has no
+  placeholder</b>, because its placeholder is a disabled option in the operating system's menu and
+  carries no colour of its own.</p>
+  <p>All three have a build prompt written out, beside these pages:
+  <b>FIGMA-PROMPT-input.md</b>, <b>FIGMA-PROMPT-select.md</b>, <b>FIGMA-PROMPT-textarea.md</b>.
+  Every variable and style name in them was checked against the generated collections, so a name
+  that is in a prompt is a name the picker will offer.</p></div>
 </div>
 
 <div class="frame">
