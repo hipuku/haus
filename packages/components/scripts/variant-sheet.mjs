@@ -116,17 +116,24 @@ const SETS = [
   {
     name: "Input",
     figma: "5 variants. One variant property, State, with these five values.",
-    note: "The five states are the five selectors in Input.module.css and there is no hover or active rule in the file. Everything else about this component is a boolean or a text property and costs no frames: Label, Required, Prefix, Suffix, Hint, and Filled, which swaps two stacked text layers because placeholder against value is a fill change. Hint and error are mutually exclusive, the component renders {hint && !error}, so the hint is hidden in both Error states. Disabled beats error on source order, which is why this is one property with five values rather than State crossed with Error.",
+    note: "The five states are the five selectors in Input.module.css and there is no hover or active rule in the file. Drawn with every layer present, because that is the master variant and the booleans hide them from there: label, required, the two adornments, and the hint or the error line. Note where the adornments sit, inside the border, so they are inside whatever the state does to it. Everything else costs no frames: Label, Required, Prefix, Suffix, Hint, and Filled, which swaps two stacked text layers because placeholder against value is a fill change. Hint and error are mutually exclusive, the component renders {hint && !error}, so the hint is hidden in both Error states. Disabled beats error on source order, which is why this is one property with five values rather than State crossed with Error.",
     props: { State: ["Default", "Focus", "Error", "Error focus", "Disabled"] },
     force: ({ State }) => State === "Focus" || State === "Error focus",
+    /* Every layer present, because that is how the master variant is built: the
+       booleans hide them, so a variant drawn without them has nowhere to hide
+       them from. It also shows the thing a bare field cannot, which is that the
+       adornments sit inside the border and therefore inside whatever the state
+       does to it. */
     render: ({ State }) =>
       h(C.Input, {
-        label: "Label",
+        label: "Amount",
         required: true,
-        hint: State.startsWith("Error") ? undefined : "A hint under the field",
-        error: State.startsWith("Error") ? "Something is wrong" : undefined,
+        prefix: "$",
+        suffix: "AUD",
+        hint: State.startsWith("Error") ? undefined : "Including GST",
+        error: State.startsWith("Error") ? "Enter an amount over zero" : undefined,
         disabled: State === "Disabled",
-        defaultValue: "Value",
+        defaultValue: "1250.00",
       }),
   },
   {
