@@ -65,12 +65,23 @@ jobs:
           # on one would mean every intentional design change arrives as a red
           # tick, which is how teams learn to merge past this job.
           exitZeroOnChanges: true
-          # On main, accept: main is the baseline, and whatever is on it is by
-          # definition what the system looks like now. On a pull request, do not:
-          # that is the diff a human is meant to read before it becomes the
-          # baseline. Getting this the wrong way round is how a team ends up
-          # accepting regressions in review and re-reviewing them forever.
-          autoAcceptChanges: ${{ github.ref == 'refs/heads/main' }}
+          # Nothing is auto-accepted, and that is a deliberate departure from the
+          # usual setting of this flag.
+          #
+          # The textbook configuration accepts on main and reviews on a pull
+          # request, because main is the baseline and the PR is where a human
+          # reads the diff. That reasoning is sound and its premise is not met
+          # here: every pull request ever merged into this repository is
+          # Dependabot's. Design work goes straight to main. So the branch that
+          # reviewed only ever ran on dependency bumps, and the branch that
+          # accepted silently got all of the component work. Three changes were
+          # accepted unseen during the 1.0 push and nobody was offered the diff.
+          #
+          # Turning it off does not block anything: exitZeroOnChanges above keeps
+          # the build green either way. Changes wait in the Chromatic UI to be
+          # accepted or rejected, which makes accepting an act rather than a side
+          # effect of pushing. haus#36.
+          autoAcceptChanges: false
 
       - name: Say why this was skipped
         if: ${{ env.CHROMATIC_PROJECT_TOKEN == '' }}
