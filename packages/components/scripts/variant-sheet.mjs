@@ -299,6 +299,7 @@ const SETS = [
 const PORTALLED = [
   {
     name: "Modal",
+    figma: "3 variants, Size, which only caps the dialog width at 400, 560 or 720. Header, Close and Footer are boolean properties. 9 if you also build the close button's hover and focus, which is worth deferring.",
     figma: "3 variants, Size. `footer` is a boolean property, the footer is a layer, so the six rows below are three variants with it on and off.",
     dom: true,
     stage: "stage-fill",
@@ -361,6 +362,7 @@ const PORTALLED = [
   },
   {
     name: "Tooltip",
+    figma: "2 variants, Placement. The bubble is pinned to the trigger's leading edge rather than centred on it, deliberately, and that is the thing most likely to be corrected while building.",
     dom: true,
     stage: "stage-anchor",
     open: "button",
