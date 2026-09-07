@@ -190,6 +190,13 @@ const tokensPage = shell(
      eleven text styles you already have</b>, so this frame is a specimen: one line of real text per
      role, labelled with the style name.</p>
   <p class="mono">${typeRoles.map((t) => esc(t.replace("--haus-type-", ""))).join(" · ")}</p>
+  <div class="callout"><p><b>Line height is a percentage in Figma, and has no variable.</b>
+  CSS writes it unitless, <code>1.4</code>, meaning 1.4&times; the font size. Figma has no unitless
+  multiplier: typing <code>1.4</code> sets 1.4&nbsp;<em>pixels</em>, and binding a number variable to
+  that field does the same, because a number bound to line height is read as pixels. So
+  <code>1.4</code> is <b>140%</b>, and it lives in the text style rather than in a variable. The
+  seven <code>line-height/*</code> variables were removed for that reason: nothing aliased them and
+  the only way to reach one was to bind it and get collapsed text with no warning.</p></div>
   <div class="callout"><p><b>The rule:</b> a role carries the properties the thing actually chooses.
   Prose chooses all four, which is why the typeset roles bundle. Emphasis chooses weight alone,
   so <code>weight-emphasis</code> carries nothing else. A role that carries more than the decision
