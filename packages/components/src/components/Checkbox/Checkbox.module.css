@@ -74,6 +74,15 @@
   border-color: var(--haus-color-error-default);
 }
 
+/* Input, Textarea and Select each have this rule; Checkbox and Radio did not, so
+   an invalid box rang in the brand colour and the error signal disappeared the
+   moment it took focus. The token audit that found it in Select could not find it
+   here, because a component that never reads a role never appears in the list of
+   components reading it wrongly. */
+.error .input:focus-visible ~ .box {
+  box-shadow: var(--haus-focus-ring-error);
+}
+
 .error.checked .box {
   background-color: var(--haus-color-error-default);
   border-color: var(--haus-color-error-default);

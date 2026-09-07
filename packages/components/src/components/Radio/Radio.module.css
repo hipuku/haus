@@ -112,6 +112,12 @@
   background-color: var(--haus-color-error-default);
 }
 
+/* The pair of the rule in Checkbox: without it an invalid radio rings in the brand
+   colour the moment it takes focus, and the ring is the loudest part of the control. */
+.error .input:focus-visible ~ .circle {
+  box-shadow: var(--haus-focus-ring-error);
+}
+
 .radioContent {
   display: flex;
   flex-direction: column;
