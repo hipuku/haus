@@ -159,6 +159,32 @@ const tokensPage = shell(
 </div>
 
 <div class="frame">
+  <h3>Frame 2b · What an <code>on-*</code> role is, and what may take it</h3>
+  <p><b>The rule:</b> an <code>on-*</code> role is <em>the ink for that surface</em>, and a mark
+     sitting on the same surface takes the same ink. A dot, an icon, a small glyph. Not just text.</p>
+  <table>
+    <tr><th>Component</th><th>Non-text mark</th><th>Takes</th></tr>
+    <tr><td>Badge</td><td>the dot</td><td><code>currentColor</code>, which is the label's ink</td></tr>
+    <tr><td>Callout</td><td>the icon</td><td><code>color-&lt;tone&gt;-on-subtle</code></td></tr>
+    <tr><td>Toast</td><td>the icon</td><td><code>color-&lt;tone&gt;-on-subtle</code>, and <code>ink-secondary</code> when neutral</td></tr>
+  </table>
+  <div class="callout"><p><b>haus tried the alternative and deleted it.</b> Each status ramp carried a
+  <code>400</code> step documented "Icon on subtle background", exactly the dedicated icon colour this
+  rule seems to want. Measured against its own <code>100</code>: cherry 2.20:1, mango 2.01:1,
+  greengage 1.95:1, elderberry 2.20:1. WCAG 1.4.11 wants <b>3:1</b> for non-text UI and every one
+  failed, while the component that had the use case was already reaching past it for the
+  <code>on-subtle</code> ink at 6.31:1 to 8.01:1. The component was right and the token was wrong.
+  Deleted in <code>haus#35</code>.</p></div>
+  <p><b>Why it is safe rather than sloppy:</b> an <code>on-*</code> role is built to clear 4.5:1
+     because it carries text. A mark needs 3:1. Painting a dot with the ink over-delivers, and it
+     guarantees the dot cannot drift from the label beside it.</p>
+  <p><b>In Figma:</b> there is no <code>currentColor</code>, so bind the mark's fill to the same
+     variable as the text layer's fill. That is the faithful translation, not a workaround. The
+     <code>ink/*</code> and <code>*/on-*</code> roles are scoped to text, shape and frame fills so
+     both layers can reach them; surfaces stay fills and borders stay strokes.</p>
+</div>
+
+<div class="frame">
   <h3>Frame 3 · Type roles</h3>
   <p>${typeRoles.length} roles, each bundling size, weight, leading and tracking. <b>These are the
      eleven text styles you already have</b>, so this frame is a specimen: one line of real text per
