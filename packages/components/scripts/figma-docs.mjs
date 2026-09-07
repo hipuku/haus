@@ -181,7 +181,68 @@ const tokensPage = shell(
   <p><b>In Figma:</b> there is no <code>currentColor</code>, so bind the mark's fill to the same
      variable as the text layer's fill. That is the faithful translation, not a workaround. The
      <code>ink/*</code> and <code>*/on-*</code> roles are scoped to text, shape and frame fills so
-     both layers can reach them; surfaces stay fills and borders stay strokes.</p>
+     both layers can reach them.</p>
+</div>
+
+<div class="frame">
+  <h3>Frame 2c &middot; Scopes, and why a role appears in one picker and not another</h3>
+  <p>A Figma scope decides which fields offer a variable. It reads like a hint and behaves like a
+     wall: <b>a role scoped to fills is absent from the stroke picker</b>, so the failure looks like
+     the variable not existing rather than like a setting on it.</p>
+  <div class="callout"><p><b>This was assigned from the name twice and was wrong twice.</b> The
+  second rule was <i>surfaces stay fills and borders stay strokes</i>, which sounds obviously true.
+  Every part of it fails against the components:</p>
+  <table>
+    <tr><th>Role</th><th>The name says</th><th>The components do</th></tr>
+    <tr><td class="mono">border/default</td><td>stroke</td><td><b>fill.</b> Divider and Toggle draw a hairline as a filled rect, not as a stroke on something else</td></tr>
+    <tr><td class="mono">primary/default</td><td>fill</td><td><b>stroke.</b> Checkbox and Radio draw the checked box's edge in the brand colour</td></tr>
+    <tr><td class="mono">error/default</td><td>fill</td><td><b>stroke</b>, at five components: the invalid ring on Input, Textarea, Select, Checkbox and Radio</td></tr>
+    <tr><td class="mono">*/border</td><td>fill, because these four are not under <code>border/</code> at all</td><td><b>stroke.</b> Toast, Callout and Button every one of them</td></tr>
+    <tr><td class="mono">surface/default</td><td>fill</td><td><b>stroke.</b> Avatar rings itself in the page colour so a stack reads as separate</td></tr>
+  </table>
+  <p>So the rule is gone. <code>figma/role-usage.py</code> walks the stylesheets of haus and its
+  three consumers, records which CSS property every <code>var(--haus-color-*)</code> lands on,
+  resolves the component-local indirection that Button and Toast theme themselves through, and the
+  property decides the scope, <b>because the property is the field</b>. Measured: <b>30 of the 55
+  colour roles gained a scope they were missing, and none lost one.</b> The old rule was not
+  approximately right, it was uniformly too narrow.</p></div>
+  <p><b>What this means when you are building.</b> Every role is now offered wherever its own
+     components use it. Two consequences worth knowing:</p>
+  <ul>
+    <li><b>A solid button needs no stroke in Figma.</b> The CSS sets
+        <code>border-color</code> to the same colour as the background, but that border is a
+        <em>sizing</em> device: it keeps solid, outline and ghost the same height. Auto layout
+        already does that. Adding a same-colour stroke is a faithful copy of the code and the wrong
+        drawing.</li>
+    <li><b>An outline button's stroke is a real role</b>, and it is not the fill. Neutral takes
+        <code>border/default</code>; the four status tones take <code>&lt;tone&gt;/border</code>,
+        which is a step lighter than <code>&lt;tone&gt;/default</code> and is what the code uses.</li>
+  </ul>
+  <div class="callout"><p><b>One variable had no consumer at all, and that is how it was found.</b>
+  <code>semantic/ink/on-aronia</code> is a name haus renamed to <code>ink/on-primary</code> in
+  <code>haus#24</code>, on the rule that a role may not carry a palette name. haus has not shipped
+  it since. Nothing could report it: an orphan variable resolves perfectly well and is only wrong
+  because nothing will ever bind it. The plugin renames it in place, which keeps any layer already
+  using it.</p></div>
+</div>
+
+<div class="frame">
+  <h3>Frame 2d &middot; Two numbers that are not the number CSS writes</h3>
+  <p>Figma's numeric fields carry units that CSS's do not, and a value copied across rather than
+     translated is silently wrong in both of these.</p>
+  <table>
+    <tr><th>Field</th><th>CSS</th><th>Figma</th><th>What a straight copy does</th></tr>
+    <tr><td>Opacity</td><td class="mono">0.4</td><td class="mono">40</td><td>sets the layer to <b>0.4%</b> and it disappears</td></tr>
+    <tr><td>Line height</td><td class="mono">1.4</td><td class="mono">140%</td><td>sets <b>1.4px</b> and collapses the paragraph to a line</td></tr>
+  </table>
+  <p>Opacity has an exact translation, so <code>opacity/disabled</code> and
+     <code>opacity/overlay</code> stay variables and hold <b>40</b> and <b>60</b>. Their
+     <code>codeSyntax</code> still reads <code>0.4</code>, because that is what the code says.</p>
+  <p>Line height has none: Figma has no unitless multiplier and has declined percentage support for
+     variables bound to that field since 2024. So the seven <code>line-height/*</code> variables
+     were deleted rather than shipped wrong, and line height lives in the eleven text styles as a
+     percentage. Same reasoning as <code>haus#35</code> deleting the <code>400</code> step: a token
+     whose only available use is wrong is a trap, not headroom.</p>
 </div>
 
 <div class="frame">
