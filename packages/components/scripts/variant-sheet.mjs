@@ -97,6 +97,7 @@ const renderInDom = (element, { open } = {}) => {
 const SETS = [
   {
     name: "Badge",
+    figma: "12 variants, Tone x Appearance. `dot` is a boolean property: it only shows and hides a layer, which is the one thing a Figma boolean can do.",
     note: "The cheapest complete demo of the shared vocabulary, and the one to build first. Tone carries meaning, Appearance carries how solidly it is expressed.",
     props: { Tone: [...TONE, "primary"], Appearance: APPEARANCE },
     booleans: { dot: [false, true] },
@@ -105,6 +106,7 @@ const SETS = [
   },
   {
     name: "Button",
+    figma: "120 variants, Variant x Tone x Size x Disabled. Disabled cannot be a boolean here because it sets opacity on the root and a boolean binds to layer visibility alone. `loading` can be a boolean, the spinner is a layer, but it also forces the disabled treatment, so a loading instance is the Disabled variant with that boolean on. Build Variant x Size at neutral first if time-boxed.",
     note: "The flagship, and ruling A5 in one component set: `variant` is visual weight, `tone` is meaning, and every tone composes with every weight. 60 variants. If time-boxed, build Variant x Size complete first, then the five tones at primary/md.",
     props: { Variant: ["primary", "secondary", "ghost", "text"], Tone: TONE, Size: SIZE },
     booleans: { loading: [false, true], disabled: [false, true] },
@@ -113,20 +115,41 @@ const SETS = [
   },
   {
     name: "Input",
-    note: "Eight rows here, five variants in Figma, and the two lists are not the same list. A Figma boolean property can only show and hide a layer, so `error` cannot be one: it changes the stroke colour. The component has exactly five container appearances, from .inputWrap, :has(:focus-visible), .error, .error:has(:focus-visible) and .disabled, and no hover or active rule at all. Three render statically and two do not, which is why this sheet shows eight rows of content rather than five of state. Select and Textarea have the identical five.",
-    props: {},
-    booleans: { hint: [false, true], error: [false, true], required: [false, true] },
-    render: ({ hint, error, required }) =>
+    figma: "5 variants. One variant property, State, with these five values.",
+    note: "The five states are the five selectors in Input.module.css and there is no hover or active rule in the file. Everything else about this component is a boolean or a text property and costs no frames: Label, Required, Prefix, Suffix, Hint, and Filled, which swaps two stacked text layers because placeholder against value is a fill change. Hint and error are mutually exclusive, the component renders {hint && !error}, so the hint is hidden in both Error states. Disabled beats error on source order, which is why this is one property with five values rather than State crossed with Error.",
+    props: { State: ["Default", "Focus", "Error", "Error focus", "Disabled"] },
+    force: ({ State }) => State === "Focus" || State === "Error focus",
+    render: ({ State }) =>
       h(C.Input, {
         label: "Label",
-        required,
-        hint: hint ? "A hint under the field" : undefined,
-        error: error ? "Something is wrong" : undefined,
+        required: true,
+        hint: State.startsWith("Error") ? undefined : "A hint under the field",
+        error: State.startsWith("Error") ? "Something is wrong" : undefined,
+        disabled: State === "Disabled",
         defaultValue: "Value",
       }),
   },
   {
+    name: "Input, the booleans",
+    figma: "No new variants. Every row here is the same five State variants with a layer shown or hidden, which is the one thing a Figma boolean property can do.",
+    note: "Prefix and suffix are slots inside the field's border, before and after the text, each a span carrying ink-secondary at body-sm. They are what a currency symbol, a unit, a protocol or a small icon goes in, and nothing in this repository had ever rendered one, which is a fair reason for them to be puzzling. Build both as hidden layers in all five variants and expose them as booleans. Filled is the pair of stacked text layers: hiding one shows the other.",
+    props: {
+      Property: ["Label off", "Required on", "Prefix", "Suffix", "Prefix and suffix", "Hint on", "Placeholder"],
+    },
+    render: ({ Property }) =>
+      h(C.Input, {
+        label: Property === "Label off" ? undefined : "Amount",
+        required: Property === "Required on",
+        prefix: Property === "Prefix" || Property === "Prefix and suffix" ? "$" : undefined,
+        suffix: Property === "Suffix" || Property === "Prefix and suffix" ? "AUD" : undefined,
+        hint: Property === "Hint on" ? "Including GST" : undefined,
+        placeholder: Property === "Placeholder" ? "0.00" : undefined,
+        defaultValue: Property === "Placeholder" ? undefined : "1250.00",
+      }),
+  },
+  {
     name: "Card",
+    figma: "6 variants, Variant x Padding. Padding has to be a variant rather than a boolean: it changes the frame padding, and a boolean only shows and hides a layer.",
     note: "The elevation roles. `elevated` reads --haus-elevation-floating, which is why the effect styles had to exist first.",
     props: { Variant: ["default", "elevated", "outlined"] },
     booleans: { padding: [true, false] },
@@ -154,6 +177,7 @@ const SETS = [
   },
   {
     name: "Checkbox",
+    figma: "4 variants, Checked x Disabled. Both change fill and border, so neither can be a boolean.",
     props: {},
     booleans: { checked: [false, true], disabled: [false, true] },
     render: ({ checked, disabled }) =>
@@ -161,6 +185,7 @@ const SETS = [
   },
   {
     name: "Toggle",
+    figma: "8 variants, Size x Checked x Disabled. Checked moves the thumb and repaints the track; disabled sets opacity. Neither is a layer toggle.",
     note: "Narrowed to sm and md. There is no lg design, so there is no lg option.",
     props: { Size: ["sm", "md"] },
     booleans: { checked: [false, true], disabled: [false, true] },
@@ -169,15 +194,17 @@ const SETS = [
   },
   {
     name: "Select",
-    props: {},
-    booleans: { error: [false, true], disabled: [false, true] },
-    render: ({ error, disabled }) =>
+    figma: "5 variants, the same State property as Input.",
+    note: "The identical five selectors. Select has no Prefix or Suffix boolean; the chevron is a fixed layer.",
+    props: { State: ["Default", "Focus", "Error", "Error focus", "Disabled"] },
+    force: ({ State }) => State === "Focus" || State === "Error focus",
+    render: ({ State }) =>
       h(
         C.Select,
         {
           label: "Select",
-          disabled,
-          error: error ? "Pick one" : undefined,
+          disabled: State === "Disabled",
+          error: State.startsWith("Error") ? "Pick one" : undefined,
           defaultValue: "a",
         },
         h("option", { value: "a" }, "Option A"),
@@ -186,18 +213,21 @@ const SETS = [
   },
   {
     name: "Textarea",
-    props: {},
-    booleans: { error: [false, true], disabled: [false, true] },
-    render: ({ error, disabled }) =>
+    figma: "5 variants, the same State property as Input.",
+    note: "The identical five selectors. No adornment booleans; it gains a resize handle instead.",
+    props: { State: ["Default", "Focus", "Error", "Error focus", "Disabled"] },
+    force: ({ State }) => State === "Focus" || State === "Error focus",
+    render: ({ State }) =>
       h(C.Textarea, {
         label: "Textarea",
-        disabled,
-        error: error ? "Too short" : undefined,
+        disabled: State === "Disabled",
+        error: State.startsWith("Error") ? "Too short" : undefined,
         defaultValue: "Some text",
       }),
   },
   {
     name: "RadioGroup",
+    figma: "2 variants. Disabled sets opacity, so it is a variant rather than a boolean.",
     props: {},
     booleans: { disabled: [false, true] },
     render: ({ disabled }) =>
@@ -221,6 +251,7 @@ const SETS = [
   },
   {
     name: "EmptyState",
+    figma: "1 variant. `action` is a boolean property: the slot is a layer, so both rows below are the same component.",
     note: "Twenty-five references across three products before haus owned it. The heading level is a prop, not a variant: it changes the document outline, not the drawing.",
     props: {},
     booleans: { action: [false, true] },
@@ -259,6 +290,7 @@ const SETS = [
 const PORTALLED = [
   {
     name: "Modal",
+    figma: "3 variants, Size. `footer` is a boolean property, the footer is a layer, so the six rows below are three variants with it on and off.",
     dom: true,
     stage: "stage-fill",
     note:
@@ -367,7 +399,13 @@ for (const set of [...SETS, ...PORTALLED]) {
     ...Object.entries(set.props ?? {}).map(([k, v]) => `<b>${esc(k)}</b>: ${v.map(esc).join(" | ")}`),
     ...Object.keys(set.booleans ?? {}).map((k) => `<b>${esc(k)}</b>: boolean`),
   ];
-  body += `<section><h2>${esc(set.name)} <span class="count">${rows.length} variants</span></h2>`;
+  /* The count on the heading is how many stages are drawn below, which is not
+     always how many component variants Figma needs. `figma` says the second
+     number in words wherever the two differ, because a reader counts what is on
+     the page: Input showed eight rows of content while needing five states, and
+     the page never said so. */
+  body += `<section><h2>${esc(set.name)} <span class="count">${rows.length} shown</span></h2>`;
+  body += `<p class="figma"><b>In Figma:</b> ${esc(set.figma ?? `${rows.length} variants.`)}</p>`;
   if (set.note) body += `<p class="note">${esc(set.note)}</p>`;
   if (propList.length) body += `<p class="props">${propList.join(" &nbsp;·&nbsp; ")}</p>`;
   body += `<div class="grid">`;
@@ -379,7 +417,11 @@ for (const set of [...SETS, ...PORTALLED]) {
       markup = `<span class="err">${esc(error.message)}</span>`;
     }
     const cls = set.dom ? "figure wide" : "figure";
-    const stageCls = ["stage", set.stage ?? ""].filter(Boolean).join(" ");
+    const stageCls = [
+      "stage",
+      set.stage ?? "",
+      set.force?.(row) ? "force-focus" : "",
+    ].filter(Boolean).join(" ");
     body += `<figure class="${cls}"><figcaption>${esc(label(row))}</figcaption><div class="${stageCls}">${markup}</div></figure>`;
   }
   body += `</div></section>`;
@@ -390,6 +432,94 @@ const tokenCss = ["layers.css", "primitives.css", "brand.css", "motion.css", "se
   .map((f) => css(f))
   .join("\n");
 const componentCss = css("styles.css", COMPONENTS);
+
+/**
+ * The focus states, rendered.
+ *
+ * Three of a text control's five states come from props and render on their
+ * own: default, error and disabled. The other two are `:focus-visible`, and a
+ * string of static markup has no focus, so this page used to omit them. That is
+ * how it came to show eight rows for Input, which are content combinations,
+ * while Figma needs five, which are states. Somebody reading the page counted
+ * the rows.
+ *
+ * So the focus rules are re-applied under a `.force-focus` ancestor, and
+ * **generated from the shipped stylesheet rather than restated**. A hand-written
+ * copy of `box-shadow: var(--haus-focus-ring)` here would be a second place for
+ * the focus treatment to live, and this repository has already paid for one of
+ * those: `Colours.stories.tsx` typed the ramps by hand and went on drawing the
+ * old ones for a day after the 1.0 cut changed them.
+ *
+ * Every rule whose selector mentions `:focus-visible` is emitted again with
+ * that pseudo-class removed and `.force-focus` prepended, so the declarations
+ * are the same characters the browser would have applied. If the component
+ * stops using `:focus-visible`, nothing matches and the stage renders
+ * unfocused, which is visible rather than silent.
+ */
+function forcedFocusCss(sheet, components) {
+  /* Re-apply a component's whole cascade with `:focus-visible` satisfied.
+   *
+   * Brace-aware rather than a regex over the file, because the first version was
+   * a regex and it lifted the `@media (forced-colors: active)` rules out of
+   * their media query. Those set `outline: 2px solid Highlight`, correct inside
+   * Windows High Contrast and a stray outline on every focused stage anywhere
+   * else.
+   *
+   * And *every* rule of the component, not only the ones mentioning focus,
+   * which the second version got wrong. Input's error border works by source
+   * order: `.inputWrap:has(:focus-visible)` sets `border-color` to the focus
+   * role, and `.inputWrap.error` sets it to the error role three rules later at
+   * equal specificity, so the error colour wins. Forcing only the focus rule
+   * lifts it out of that ordering and above every layered rule, and the Error
+   * focus stage rendered with a purple border where the component draws a red
+   * one. Copying the component's rules in their original order reproduces the
+   * cascade among themselves, because every selector gains the same one class.
+   *
+   * Caught by rendering the page in a real browser and reading the computed
+   * border colour, which is the only thing that could have caught it: the
+   * markup was correct, the generated CSS was correct rule by rule, and the
+   * result was wrong.
+   */
+  const out = [];
+  const wanted = (selector) =>
+    [...components].some((name) => selector.includes(`haus-${name}-`));
+  const emit = (selector, body) => {
+    if (!wanted(selector)) return;
+    const forced = selector
+      .split(",")
+      .map((one) => `.force-focus ${one.trim().replace(/:has\(:focus-visible\)/g, "").replace(/:focus-visible/g, "")}`)
+      .join(", ");
+    out.push(`${forced} { ${body.trim()} }`);
+  };
+  const scan = (text) => {
+    let cursor = 0;
+    while (cursor < text.length) {
+      const open = text.indexOf("{", cursor);
+      if (open === -1) return;
+      const prelude = text.slice(cursor, open).trim();
+      let depth = 1;
+      let close = open + 1;
+      for (; close < text.length && depth > 0; close++) {
+        if (text[close] === "{") depth++;
+        else if (text[close] === "}") depth--;
+      }
+      const body = text.slice(open + 1, close - 1);
+      if (prelude.startsWith("@layer") || prelude.startsWith("@supports")) scan(body);
+      else if (!prelude.startsWith("@")) emit(prelude, body);
+      cursor = close;
+    }
+  };
+  scan(sheet);
+  if (!out.length) throw new Error("the forced-focus pass matched nothing");
+  const stray = out.filter((r) => /highlight/i.test(r));
+  if (stray.length) throw new Error(`forced-colors rules escaped their media query: ${stray[0]}`);
+  return `/* Generated from styles.css by variant-sheet.mjs. See forcedFocusCss. */\n${out.join("\n")}`;
+}
+
+const focusCss = forcedFocusCss(
+  componentCss,
+  new Set([...SETS, ...PORTALLED].filter((set) => set.force).map((set) => set.name)),
+);
 
 const version = JSON.parse(
   readFileSync(join(PKG, "package.json"), "utf8"),
@@ -404,6 +534,7 @@ const html = `<!doctype html>
 <style>
 ${tokenCss}
 ${componentCss}
+${focusCss}
 /* the sheet's own chrome, deliberately outside every haus layer */
 nav { position: sticky; top: 0; display: flex; gap: .25rem; padding: .75rem 0; margin-bottom: 2rem;
       background: var(--haus-color-surface-subtle); border-bottom: 1px solid var(--haus-color-border-subtle); z-index: 10; }
@@ -439,6 +570,10 @@ h2 { font-size: 1.25rem; margin: 0 0 .35rem; display: flex; align-items: baselin
 h3 { font-size: 1rem; margin: 0 0 .25rem; }
 .count { font-size: .75rem; font-weight: 500; color: var(--haus-color-ink-tertiary); }
 .note { max-width: 46rem; line-height: 1.6; color: var(--haus-color-ink-secondary); margin: 0 0 .5rem; }
+.figma { max-width: 46rem; line-height: 1.6; margin: 0 0 .5rem; padding: .5rem .75rem;
+         border-inline-start: 3px solid var(--haus-color-primary-default);
+         background: var(--haus-color-primary-subtle); color: var(--haus-color-ink-primary);
+         border-radius: 0 var(--haus-radius-control) var(--haus-radius-control) 0; }
 .props { font-family: var(--haus-font-mono); font-size: .75rem; color: var(--haus-color-ink-secondary);
          margin: 0 0 1.25rem; line-height: 1.7; }
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: 1rem; }

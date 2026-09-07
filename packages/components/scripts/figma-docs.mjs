@@ -540,8 +540,8 @@ const startedPage = shell(
     <tr><th>Boolean</th><th>Shows and hides</th></tr>
     <tr><td class="mono">Label</td><td>the label row</td></tr>
     <tr><td class="mono">Required</td><td>the <code>*</code>, nested inside the label</td></tr>
-    <tr><td class="mono">Prefix</td><td>the leading adornment slot</td></tr>
-    <tr><td class="mono">Suffix</td><td>the trailing adornment slot</td></tr>
+    <tr><td class="mono">Prefix</td><td>a slot <em>inside</em> the field's border, before the text. A currency symbol, a protocol, a small icon</td></tr>
+    <tr><td class="mono">Suffix</td><td>the same slot after the text. A unit, a currency code, a clear or reveal control</td></tr>
     <tr><td class="mono">Hint</td><td>the hint text</td></tr>
     <tr><td class="mono">Filled</td><td>two stacked text layers, one visible at a time: <b>Placeholder</b> at <code>semantic/ink/tertiary</code> and <b>Value</b> at <code>semantic/ink/primary</code></td></tr>
   </table>
@@ -550,6 +550,13 @@ const startedPage = shell(
      layers keep it a boolean. In the Disabled variant bind that layer to
      <code>semantic/ink/disabled</code> instead: a variant may differ internally, so it costs
      nothing.</p>
+
+  <p>Both adornments render as a <code>span</code> carrying
+     <code>semantic/ink/secondary</code> at <code>type/body-sm</code>, laid out in the same row as
+     the field with <code>semantic/space/gap-xs</code> between. Draw them in every variant and
+     leave them hidden; the boolean shows them. The variants page has a row for each, because
+     nothing in the repository had ever rendered one and a slot nobody has seen is hard to
+     picture.</p>
 
   <h4>Five text properties</h4>
   <p class="mono">Label &middot; Value &middot; Placeholder &middot; Hint &middot; Error message</p>
