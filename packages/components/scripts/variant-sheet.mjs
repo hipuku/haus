@@ -184,7 +184,7 @@ const SETS = [
   },
   {
     name: "Checkbox",
-    figma: "4 variants, Checked x Disabled. Both change fill and border, so neither can be a boolean.",
+    figma: "15 variants, Selection x State. Selection is Unchecked, Checked, Indeterminate; State is Default, Hover, Focus, Error, Disabled. This component has a hover rule, which the three text controls do not. Disabled is 40% opacity on the whole frame, so it cannot be a boolean either.",
     props: {},
     booleans: { checked: [false, true], disabled: [false, true] },
     render: ({ checked, disabled }) =>
@@ -192,7 +192,7 @@ const SETS = [
   },
   {
     name: "Toggle",
-    figma: "8 variants, Size x Checked x Disabled. Checked moves the thumb and repaints the track; disabled sets opacity. Neither is a layer toggle.",
+    figma: "16 variants, Size x Checked x State, where State is Default, Hover, Focus, Disabled. Checked moves the thumb and repaints the track, disabled sets opacity on the whole frame, and neither is a layer toggle. 32 if you also build the Label position axis, which is worth deferring.",
     note: "Narrowed to sm and md. There is no lg design, so there is no lg option.",
     props: { Size: ["sm", "md"] },
     booleans: { checked: [false, true], disabled: [false, true] },
@@ -234,7 +234,7 @@ const SETS = [
   },
   {
     name: "RadioGroup",
-    figma: "2 variants. Disabled sets opacity, so it is a variant rather than a boolean.",
+    figma: "Two components. The Radio item is 10 variants, Selection x State, the same State values as Checkbox. RadioGroup is 2, Orientation vertical or horizontal, and holds instances of the item.",
     props: {},
     booleans: { disabled: [false, true] },
     render: ({ disabled }) =>
