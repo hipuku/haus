@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Toast } from 'haus-components'
+import { Toast, Button } from 'haus-components'
 
 const meta = {
   title: 'Components/Toast',
@@ -100,3 +100,37 @@ export const Appearances: Story = {
 
 export const TitleOnly: Story = { args: { description: undefined } }
 export const Dismissable: Story = { args: { onClose: () => {} } }
+
+export const WithAction: Story = {
+  name: 'With an action',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The `action` slot renders in the title row, beside the title, baseline ' +
+          'aligned. It is the one place the button goes, and until this story the ' +
+          'only place in the repository it had ever been drawn was the variant ' +
+          'sheet, by hand. On a `solid` toast a `.solid .action` override keeps the ' +
+          'button legible against the filled surface, which is why both are shown.',
+      },
+    },
+  },
+  render: (args) => (
+    <div style={{ display: 'grid', gap: 'var(--haus-space-3)', maxWidth: 380 }}>
+      <Toast
+        {...args}
+        appearance="subtle"
+        title="Message archived"
+        description={undefined}
+        action={<Button size="sm" variant="ghost">Undo</Button>}
+      />
+      <Toast
+        {...args}
+        appearance="solid"
+        title="Message archived"
+        description={undefined}
+        action={<Button size="sm" variant="ghost">Undo</Button>}
+      />
+    </div>
+  ),
+}
