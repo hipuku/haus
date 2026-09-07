@@ -509,7 +509,112 @@ const startedPage = shell(
 </div>
 
 <div class="frame">
-  <h3>Frame 3c &middot; Where the code and the file disagree, and what to do about each</h3>
+  <h3>Frame 3c &middot; Input, and how many variants a component actually needs</h3>
+  <p>Button is the widest component in the file. Input is the one whose <b>variant structure</b> is
+     easiest to get wrong, because the number of rows on the variants page is not the number of
+     variants. <b>Five variants, one variant property.</b> Everything else is a boolean or a text
+     property, and those cost no frames.</p>
+
+  <div class="callout"><p><b>A Figma boolean property binds to layer visibility and nothing else.</b>
+  That single fact decides most of this frame. <code>error</code> changes the container's stroke
+  colour, so it cannot be a boolean however much it reads like one; <code>hint</code> only shows and
+  hides a line of text, so it can.</p></div>
+
+  <h4>The one variant property</h4>
+  <p><code>State</code>, and these five are exactly the five selectors in
+     <code>Input.module.css</code>. <b>There is no hover and no active rule in the file.</b> Do not
+     build them.</p>
+  <table>
+    <tr><th>State</th><th>Stroke</th><th>Fill</th><th>Effect</th></tr>
+    <tr><td><b>Default</b></td><td class="mono">semantic/border/default</td><td class="mono">semantic/surface/default</td><td>none</td></tr>
+    <tr><td><b>Focus</b></td><td class="mono">semantic/border/focus</td><td class="mono">semantic/surface/default</td><td class="mono">focus/ring</td></tr>
+    <tr><td><b>Error</b></td><td class="mono">semantic/error/default</td><td class="mono">semantic/surface/default</td><td>none</td></tr>
+    <tr><td><b>Error focus</b></td><td class="mono">semantic/error/default</td><td class="mono">semantic/surface/default</td><td class="mono">focus/ring-error</td></tr>
+    <tr><td><b>Disabled</b></td><td class="mono">semantic/border/disabled</td><td class="mono">semantic/surface/disabled</td><td>none</td></tr>
+  </table>
+  <p>On the fourth row the stroke stays <code>semantic/error/default</code>. It does <em>not</em>
+     become <code>semantic/border/focus</code>: only the ring swaps.</p>
+
+  <h4>Six boolean properties, no extra frames</h4>
+  <table>
+    <tr><th>Boolean</th><th>Shows and hides</th></tr>
+    <tr><td class="mono">Label</td><td>the label row</td></tr>
+    <tr><td class="mono">Required</td><td>the <code>*</code>, nested inside the label</td></tr>
+    <tr><td class="mono">Prefix</td><td>the leading adornment slot</td></tr>
+    <tr><td class="mono">Suffix</td><td>the trailing adornment slot</td></tr>
+    <tr><td class="mono">Hint</td><td>the hint text</td></tr>
+    <tr><td class="mono">Filled</td><td>two stacked text layers, one visible at a time: <b>Placeholder</b> at <code>semantic/ink/tertiary</code> and <b>Value</b> at <code>semantic/ink/primary</code></td></tr>
+  </table>
+  <p><code>Filled</code> is the one worth explaining. Placeholder against value is a <em>fill</em>
+     change, which normally forces a variant and would take this component to ten. Two stacked text
+     layers keep it a boolean. In the Disabled variant bind that layer to
+     <code>semantic/ink/disabled</code> instead: a variant may differ internally, so it costs
+     nothing.</p>
+
+  <h4>Five text properties</h4>
+  <p class="mono">Label &middot; Value &middot; Placeholder &middot; Hint &middot; Error message</p>
+
+  <h4>Two behaviours to build in, both taken from the code</h4>
+  <p><b>Hint and error message are mutually exclusive.</b> The component renders
+     <code>{hint &amp;&amp; !error}</code>, so the hint disappears entirely when there is an error.
+     Hide the hint layer in the two Error variants and let the <code>Hint</code> boolean do nothing
+     there. That is not a wart, it mirrors the component.</p>
+  <p><b>Disabled beats error.</b> <code>.disabled</code> comes after <code>.error</code> in source
+     order and wins on <code>border-color</code>. That is why <code>State</code> is one property
+     with five values rather than <code>State</code> crossed with <code>Error</code>: the composed
+     version needs a Disabled-and-Error frame that claims to be an error and does not look like
+     one.</p>
+
+  <h4>The container</h4>
+  <table>
+    <tr><th>Property</th><th>Bind to</th><th>Resolves to</th></tr>
+    <tr><td>Corner radius</td><td class="mono">semantic/radius/control</td><td>8px</td></tr>
+    <tr><td>Stroke width</td><td class="mono">border-width/default</td><td>1px</td></tr>
+    <tr><td>Padding, horizontal</td><td class="mono">semantic/space/inset-sm</td><td>12px</td></tr>
+    <tr><td>Padding, vertical</td><td>none. The field pads itself, <code>semantic/space/inset-xs</code></td><td>8px</td></tr>
+    <tr><td>Gap, adornment to field</td><td class="mono">semantic/space/gap-xs</td><td>8px</td></tr>
+    <tr><td>Gap, label to field to hint</td><td class="mono">semantic/space/gap-2xs</td><td>4px</td></tr>
+    <tr><td>Min height</td><td><b>no variable.</b> Type <b>36px</b></td><td><code>haus#38</code></td></tr>
+  </table>
+
+  <h4>Text layers, and the two that need an override</h4>
+  <table>
+    <tr><th>Layer</th><th>Text style</th><th>Colour</th><th>Override</th></tr>
+    <tr><td>Label</td><td class="mono">type/field-label</td><td class="mono">semantic/ink/primary</td><td><b>the style does not exist yet</b></td></tr>
+    <tr><td>Required <code>*</code></td><td>inherits</td><td class="mono">semantic/error/default</td><td>4px inline start</td></tr>
+    <tr><td>Field text</td><td class="mono">type/body-sm</td><td class="mono">semantic/ink/primary</td><td><b>none, takes it clean</b></td></tr>
+    <tr><td>Prefix, suffix</td><td>13px</td><td class="mono">semantic/ink/secondary</td><td></td></tr>
+    <tr><td>Hint</td><td class="mono">type/label-xs</td><td class="mono">semantic/ink/secondary</td><td><b>weight 400, tracking 0</b></td></tr>
+    <tr><td>Error message</td><td class="mono">type/label-xs</td><td class="mono">semantic/error/default</td><td><b>weight 400, tracking 0</b></td></tr>
+  </table>
+
+  <div class="callout"><p><b>Why the hint needs two overrides.</b> <code>.hint</code> and
+  <code>.errorMessage</code> read only <code>--haus-type-label-xs-size</code> and
+  <code>-leading</code>. The style carries four properties and the component takes two, so applying
+  it clean gives Medium 500 and 0.88px of tracking where the component renders 400 and 0. Nothing
+  between those layers and the document sets either, so both inherit.</p>
+  <p>That is the same shape as <code>haus#34</code>, one role over, and it is not one component:
+  <b>every hint and every error message in the system does it</b>, eleven blocks across Input,
+  Select, Textarea, Radio, Checkbox and Toggle. Only Badge reads <code>label-xs</code>'s weight and
+  tracking, which is why nobody noticed. Filed as <code>haus#40</code>; until it settles, the
+  override above is what to apply. Tooltip, Tabs, EmptyState and Avatar have smaller versions of
+  the same thing, listed there.</p></div>
+
+  <h4>Why five, when the variants page shows eight</h4>
+  <p>The eight on that page are <code>hint</code> &times; <code>error</code> &times;
+     <code>required</code>, which are <em>content</em> combinations. A statically rendered page
+     cannot produce <code>:focus-visible</code> or a disabled attribute, so it under-represents
+     state and over-represents content. Five is what Figma needs; eight is what the page could
+     draw.</p>
+
+  <div class="callout"><p><b>This covers three components.</b> Select and Textarea have the
+  identical five selectors, so the same <code>State</code> property with the same five values.
+  Select trades the Prefix and Suffix booleans for a fixed chevron; Textarea drops both and gains a
+  resize handle.</p></div>
+</div>
+
+<div class="frame">
+  <h3>Frame 3d &middot; Where the code and the file disagree, and what to do about each</h3>
   <p><code>figma/reconcile.py</code> reads all 18 component stylesheets, resolves the
      component-local indirection they theme themselves through, and asks one question per token:
      <b>what does a designer bind for this?</b> 131 distinct tokens. 90 are a variable, 24 are a
