@@ -19,7 +19,7 @@ import { Input, Checkbox, Button, Callout, Badge } from 'haus-components'
 Each control owns its own label, hint and error, so the composition is just
 placing them. Nothing here re-implements a field, a label or a validation line.
 
-<div style={{ maxWidth: 380, display: 'flex', flexDirection: 'column', gap: 'var(--haus-space-4)', padding: 'var(--haus-space-6)', margin: 'var(--haus-space-5) 0', border: '1px solid var(--haus-color-border-subtle)', borderRadius: 'var(--haus-radius-surface)', background: 'var(--haus-color-surface-default)' }}>
+<div className="sb-unstyled" style={{ maxWidth: 380, display: 'flex', flexDirection: 'column', gap: 'var(--haus-space-4)', padding: 'var(--haus-space-6)', margin: 'var(--haus-space-5) 0', border: '1px solid var(--haus-color-border-subtle)', borderRadius: 'var(--haus-radius-surface)', background: 'var(--haus-color-surface-default)' }}>
   <Callout tone="error">That email and password do not match.</Callout>
   <Input label="Email" placeholder="you@example.com" />
   <Input label="Password" type="password" hint="At least 8 characters." />
@@ -55,7 +55,7 @@ which values a given component accepts.
 Because `tone` means the same thing everywhere, one row of components reads as a
 set rather than as five unrelated widgets:
 
-<div style={{ display: 'flex', alignItems: 'center', gap: 'var(--haus-space-2)', flexWrap: 'wrap', padding: 'var(--haus-space-4)', margin: 'var(--haus-space-4) 0', border: '1px solid var(--haus-color-border-subtle)', borderRadius: 'var(--haus-radius-surface)', background: 'var(--haus-color-surface-subtle)' }}>
+<div className="sb-unstyled" style={{ display: 'flex', alignItems: 'center', gap: 'var(--haus-space-2)', flexWrap: 'wrap', padding: 'var(--haus-space-4)', margin: 'var(--haus-space-4) 0', border: '1px solid var(--haus-color-border-subtle)', borderRadius: 'var(--haus-radius-surface)', background: 'var(--haus-color-surface-subtle)' }}>
   <Badge tone="neutral">neutral</Badge>
   <Badge tone="info">info</Badge>
   <Badge tone="success">success</Badge>
