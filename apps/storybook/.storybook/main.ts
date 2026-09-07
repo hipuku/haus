@@ -26,6 +26,12 @@ const config: StorybookConfig = {
     disableWhatsNewNotifications: true,
     disableTelemetry: true,
   },
+  features: {
+    // Hide the onboarding checklist and its sidebar progress meter: a visitor
+    // reading the published site has no local project to onboard to.
+    sidebarOnboardingChecklist: false,
+    menuOnboardingChecklist: false,
+  },
   framework: {
     name: '@storybook/react-vite',
     options: {},
