@@ -430,6 +430,74 @@ const startedPage = shell(
 </div>
 
 <div class="frame">
+  <h3>Frame 3b &middot; One component end to end, with the names spelled exactly</h3>
+  <p>Button, because it has the most variants and every trap in the file. <b>Every name below is the
+     name Figma shows.</b> The path matters: a role is <code>semantic/primary/default</code>, three
+     segments, inside the collection <code>haus/semantics</code>. Writing it
+     <code>color/primary-default</code> finds nothing.</p>
+
+  <h4>Base, shared by all 18 variants</h4>
+  <table>
+    <tr><th>Property</th><th>Bind to</th><th>Resolves to</th></tr>
+    <tr><td>Corner radius</td><td class="mono">semantic/radius/control</td><td><b>8px</b></td></tr>
+    <tr><td>Gap, icon to label</td><td class="mono">semantic/space/gap-xs</td><td><b>8px</b></td></tr>
+    <tr><td>Font family</td><td class="mono">font-family/sans</td><td>Manrope</td></tr>
+    <tr><td>Letter spacing</td><td class="mono">tracking/normal</td><td><b>0</b></td></tr>
+    <tr><td>Stroke width, where there is a stroke</td><td class="mono">border-width/default</td><td><b>1px</b></td></tr>
+    <tr><td>Disabled opacity</td><td class="mono">opacity/disabled</td><td><b>40</b></td></tr>
+    <tr><td>Font weight</td><td><b>no variable.</b> Set <b>500</b></td><td>see below</td></tr>
+  </table>
+  <p>The last four are in <code>haus/primitives</code>, which is hidden from publishing but bindable
+     in this file. They are primitives because haus has no semantic role for a font family, a
+     tracking step or a stroke width, and inventing one to make the layer tidy is the thing the
+     token rules forbid.</p>
+
+  <h4>Size</h4>
+  <table>
+    <tr><th></th><th>Text style</th><th>Padding, v &middot; h</th><th>Min height</th></tr>
+    <tr><td><b>sm</b></td><td class="mono">label-sm</td><td class="mono">semantic/space/inset-2xs &middot; semantic/space/inset-sm</td><td><b>28px</b></td></tr>
+    <tr><td><b>md</b></td><td class="mono">label</td><td class="mono">semantic/space/inset-xs &middot; semantic/space/inset-md</td><td><b>36px</b></td></tr>
+    <tr><td><b>lg</b></td><td class="mono">body</td><td class="mono">semantic/space/inset-sm &middot; semantic/space/inset-lg</td><td><b>44px</b></td></tr>
+  </table>
+
+  <div class="callout"><p><b>Two of the three text styles need an override, and this is the one
+  thing on this page that cannot be read off a variable name.</b> Button sets weight and tracking on
+  itself, not per size, so it overrides whatever the text style carries:</p>
+  <table>
+    <tr><th>Size</th><th>Style gives</th><th>Button needs</th><th></th></tr>
+    <tr><td><b>sm</b></td><td>tracking <code>wide</code>, 0.02em</td><td>tracking <b>0</b></td><td>override</td></tr>
+    <tr><td><b>md</b></td><td>13px, weight 500, tracking 0</td><td>the same</td><td><b>exact match</b></td></tr>
+    <tr><td><b>lg</b></td><td>weight <code>regular</code>, 400</td><td>weight <b>500</b></td><td>override</td></tr>
+  </table>
+  <p>So <code>md</code> takes its style clean, and <code>sm</code> and <code>lg</code> take the style
+  and then change one field. A Figma build that applies all three styles untouched is wrong at two
+  sizes out of three, in a way nothing in the file will report.</p></div>
+
+  <div class="callout"><p><b>Min height has no variable.</b> haus declares
+  <code>--haus-control-height-{sm,md,lg}</code> at 28, 36 and 44px and none of the three is in the
+  Figma file, so the number is typed by hand and drifts silently. 44px is the WCAG 2.5.8 AAA target
+  size and Apple's HIG minimum, which makes it the worst of the three to lose. Filed.</p></div>
+
+  <h4>Variant, at Tone = neutral</h4>
+  <table>
+    <tr><th>Variant</th><th>Fill</th><th>Stroke</th><th>Label</th></tr>
+    <tr><td><b>primary</b></td><td class="mono">semantic/primary/default</td><td><b>none</b></td><td class="mono">semantic/ink/on-primary</td></tr>
+    <tr><td><b>secondary</b></td><td class="mono">semantic/surface/subtle</td><td class="mono">semantic/border/default</td><td class="mono">semantic/ink/primary</td></tr>
+    <tr><td><b>ghost</b></td><td>none</td><td>none</td><td class="mono">semantic/ink/primary</td></tr>
+    <tr><td><b>text</b></td><td>none</td><td>none</td><td>inherits; underlined</td></tr>
+  </table>
+  <div class="callout"><p><b><code>primary</code> takes no stroke, and that is a correction.</b> The
+  CSS does set <code>border-color</code> on it, to the same colour as the background. That border is
+  not an edge, it is a <em>sizing</em> device: it keeps primary, secondary and ghost the same height
+  when only one of them has a visible outline. Auto layout already does that, so copying the
+  declaration faithfully gives you a same-colour stroke that changes the drawing and buys nothing.
+  <b>Read what a declaration is for, not only what it says.</b></p></div>
+  <p>The four status tones change only the three colours, never the geometry. Their stroke is
+     <code>semantic/&lt;tone&gt;/border</code>, a step lighter than
+     <code>semantic/&lt;tone&gt;/default</code>, which is the fill.</p>
+</div>
+
+<div class="frame">
   <h3>Frame 4 · What is in the file, and what is not</h3>
   <table>
     <tr><th>Page</th><th>Holds</th></tr>
