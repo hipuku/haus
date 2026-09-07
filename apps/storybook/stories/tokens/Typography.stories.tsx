@@ -31,6 +31,7 @@ type TypeEntry = {
 
 const typeScale: TypeEntry[] = [
   { token: 'label-xs',   size: 'var(--haus-type-label-xs-size)',   weight: 'var(--haus-type-label-xs-weight)',   lineHeight: 'var(--haus-type-label-xs-leading)',   tracking: 'var(--haus-type-label-xs-tracking)',   trackingDisplay: '0.08em',  sample: 'REQUIRED' },
+  { token: 'caption',    size: 'var(--haus-type-caption-size)',    weight: 'var(--haus-type-caption-weight)',    lineHeight: 'var(--haus-type-caption-leading)',    tracking: 'var(--haus-type-caption-tracking)',    trackingDisplay: '-',       sample: 'We only use it to sign you in.' },
   { token: 'label-sm',   size: 'var(--haus-type-label-sm-size)',   weight: 'var(--haus-type-label-sm-weight)',   lineHeight: 'var(--haus-type-label-sm-leading)',   tracking: 'var(--haus-type-label-sm-tracking)',   trackingDisplay: '0.02em',  sample: 'Sort by date' },
   { token: 'label-eyebrow', size: 'var(--haus-type-label-eyebrow-size)', weight: 'var(--haus-type-label-eyebrow-weight)', lineHeight: 'var(--haus-type-label-eyebrow-leading)', tracking: 'var(--haus-type-label-eyebrow-tracking)', trackingDisplay: '0.04em', sample: 'SECTION LABEL' },
   { token: 'field-label', size: 'var(--haus-type-field-label-size)', weight: 'var(--haus-type-field-label-weight)', lineHeight: 'var(--haus-type-field-label-leading)', tracking: 'var(--haus-type-field-label-tracking)', trackingDisplay: '0.02em',  sample: 'Email address' },
@@ -47,6 +48,7 @@ const typeScale: TypeEntry[] = [
 
 const typeMetaLabels: Record<string, string> = {
   'label-xs':   '11px · 500 · lh 1.4',
+  'caption':    '11px · 400 · lh 1.4',
   'label-sm':   '12px · 500 · lh 1.4',
   'label-eyebrow': '12px · 600 · lh 1.4',
   'field-label': '12px · 600 · lh 1.4',

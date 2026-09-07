@@ -143,6 +143,19 @@
     --haus-type-label-xs-leading:  var(--haus-leading-normal);
     --haus-type-label-xs-tracking: var(--haus-tracking-widest);
 
+    /* Caption: the hint and error text under a form control. haus#40, and the
+       same shape as haus#34 and the eyebrow one role over. Eleven blocks across
+       six components read label-xs's size and leading and set neither its weight
+       nor its tracking, so they rendered 11px regular with no tracking against a
+       role that says medium and 0.08em, which Badge is the only real consumer
+       of. Caption is the role they were reaching for: 11px, regular, normal
+       tracking, the voice a control explains itself in. The colour is not part
+       of it, so a hint stays ink-secondary and an error message error. */
+    --haus-type-caption-size:      var(--haus-text-11);
+    --haus-type-caption-weight:    var(--haus-weight-regular);
+    --haus-type-caption-leading:   var(--haus-leading-normal);
+    --haus-type-caption-tracking:  var(--haus-tracking-normal);
+
     --haus-type-label-sm-size:     var(--haus-text-12);
     --haus-type-label-sm-weight:   var(--haus-weight-medium);
     --haus-type-label-sm-leading:  var(--haus-leading-normal);

@@ -114,8 +114,10 @@
 .hint {
   display: block;
   font-family: var(--haus-font-sans);
-  font-size: var(--haus-type-label-xs-size);
-  line-height: var(--haus-type-label-xs-leading);
+  font-size: var(--haus-type-caption-size);
+  font-weight: var(--haus-type-caption-weight);
+  line-height: var(--haus-type-caption-leading);
+  letter-spacing: var(--haus-type-caption-tracking);
   color: var(--haus-color-ink-secondary);
   margin-block-start: var(--haus-space-stack-2xs);
   /* Sits outside the label now, so it carries the same indent the error message
@@ -131,8 +133,10 @@
 .errorMessage {
   display: block;
   font-family: var(--haus-font-sans);
-  font-size: var(--haus-type-label-xs-size);
-  line-height: var(--haus-type-label-xs-leading);
+  font-size: var(--haus-type-caption-size);
+  font-weight: var(--haus-type-caption-weight);
+  line-height: var(--haus-type-caption-leading);
+  letter-spacing: var(--haus-type-caption-tracking);
   color: var(--haus-color-error-default);
   margin-block-start: var(--haus-space-stack-2xs);
   padding-inline-start: calc(var(--haus-space-inset-md) + var(--haus-space-inset-xs)); /* indent past checkbox + gap */

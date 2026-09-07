@@ -101,8 +101,10 @@
 
 .description {
   font-family: var(--haus-font-sans);
-  font-size: var(--haus-type-label-xs-size);
-  line-height: var(--haus-type-label-xs-leading);
+  font-size: var(--haus-type-caption-size);
+  font-weight: var(--haus-type-caption-weight);
+  line-height: var(--haus-type-caption-leading);
+  letter-spacing: var(--haus-type-caption-tracking);
   color: var(--haus-color-ink-secondary);
 }
 
