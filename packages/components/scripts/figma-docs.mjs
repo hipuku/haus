@@ -215,15 +215,18 @@ const tokensPage = shell(
         already does that. Adding a same-colour stroke is a faithful copy of the code and the wrong
         drawing.</li>
     <li><b>An outline button's stroke is a real role</b>, and it is not the fill. Neutral takes
-        <code>border/default</code>; the four status tones take <code>&lt;tone&gt;/border</code>,
+        <code>semantic/border/default</code>; the four status tones take
+        <code>semantic/&lt;tone&gt;/border</code>,
         which is a step lighter than <code>&lt;tone&gt;/default</code> and is what the code uses.</li>
   </ul>
-  <div class="callout"><p><b>One variable had no consumer at all, and that is how it was found.</b>
-  <code>semantic/ink/on-aronia</code> is a name haus renamed to <code>ink/on-primary</code> in
-  <code>haus#24</code>, on the rule that a role may not carry a palette name. haus has not shipped
-  it since. Nothing could report it: an orphan variable resolves perfectly well and is only wrong
-  because nothing will ever bind it. The plugin renames it in place, which keeps any layer already
-  using it.</p></div>
+  <div class="callout"><p><b>One name in the generator was stale, and the file was already right.</b>
+  <code>haus-variables.json</code>, the export this pipeline reads, still carries
+  <code>semantic/ink/on-aronia</code>, a name haus renamed to
+  <code>semantic/ink/on-primary</code> in <code>haus#24</code> on the rule that a role may not carry
+  a palette name. The generator was copying it forward. The Figma file itself has the correct name,
+  proven by the plugin's scope pass finding all 207 names without a miss, so the rename pass it
+  carries is a guard with nothing to guard against. Kept anyway, because the next stale name in that
+  export will not announce itself either.</p></div>
 </div>
 
 <div class="frame">
@@ -247,9 +250,17 @@ const tokensPage = shell(
 
 <div class="frame">
   <h3>Frame 3 · Type roles</h3>
-  <p>${typeRoles.length} roles, each bundling size, weight, leading and tracking. <b>These are the
-     eleven text styles you already have</b>, so this frame is a specimen: one line of real text per
-     role, labelled with the style name.</p>
+  <p>${typeRoles.length} roles, each bundling size, weight, leading and tracking, and there is
+     <b>one text style per role</b>. This frame is a specimen: one line of real text per role,
+     labelled with the style name.</p>
+  <div class="callout"><p><b>There were eleven styles for twelve roles, and the missing one is the
+  one every form label reads.</b> This paragraph used to say "12 roles" and "these are the eleven
+  text styles you already have" in consecutive sentences, and <code>STYLES.md</code> listed eleven.
+  The absentee is <code>type/field-label</code>. Input, Radio, Select and Textarea all read
+  <code>--haus-type-field-label-*</code>, so building any of them meant reaching for the nearest
+  style, and the nearest is <code>label-sm</code>: <b>identical at 12px, 140% and 0.24px, and wrong
+  by one step of weight</b>, 500 against 600. Create it. That is the least visible kind of
+  disagreement and the most durable, because nothing looks broken.</p></div>
   <p class="mono">${typeRoles.map((t) => esc(t.replace("--haus-type-", ""))).join(" · ")}</p>
   <div class="callout"><p><b>Line height is a percentage in Figma, and has no variable.</b>
   CSS writes it unitless, <code>1.4</code>, meaning 1.4&times; the font size. Figma has no unitless
@@ -419,7 +430,7 @@ const startedPage = shell(
   <table>
     <tr><th>Do</th><th>Not</th></tr>
     <tr><td>Bind a fill to a variable from <code>haus/semantics</code></td><td>Match a hex by eye</td></tr>
-    <tr><td>Pick a role: <code>surface/default</code>, <code>ink/secondary</code></td><td>Pick a primitive: <code>damson/100</code></td></tr>
+    <tr><td>Pick a role: <code>semantic/surface/default</code>, <code>semantic/ink/secondary</code></td><td>Pick a primitive: <code>color/damson/100</code></td></tr>
     <tr><td>Apply a text style</td><td>Set size and weight by hand</td></tr>
     <tr><td>Apply <code>elevation/*</code></td><td>Draw a shadow</td></tr>
     <tr><td>Detach only to propose a change</td><td>Detach to get past a missing variant</td></tr>
@@ -495,6 +506,58 @@ const startedPage = shell(
   <p>The four status tones change only the three colours, never the geometry. Their stroke is
      <code>semantic/&lt;tone&gt;/border</code>, a step lighter than
      <code>semantic/&lt;tone&gt;/default</code>, which is the fill.</p>
+</div>
+
+<div class="frame">
+  <h3>Frame 3c &middot; Where the code and the file disagree, and what to do about each</h3>
+  <p><code>figma/reconcile.py</code> reads all 18 component stylesheets, resolves the
+     component-local indirection they theme themselves through, and asks one question per token:
+     <b>what does a designer bind for this?</b> 131 distinct tokens. 90 are a variable, 24 are a
+     style, 6 are motion and have no Figma object of any type, and <b>11 have nothing</b>.</p>
+
+  <h4>Nothing to bind, 11</h4>
+  <table>
+    <tr><th>Tokens</th><th>Read by</th><th>What to do</th></tr>
+    <tr><td class="mono">type/field-label &times;4</td><td>Input, Radio, Select, Textarea</td><td><b>Create the text style.</b> 12px, SemiBold 600, 140%, 0.24px. See Frame 3 on the tokens page</td></tr>
+    <tr><td class="mono">control-height-{sm,md,lg}</td><td>Button, Input, Select</td><td>No variable. Type 28 / 36 / 44. <code>haus#38</code></td></tr>
+    <tr><td class="mono">weight-emphasis, weight-strong</td><td>Button, Avatar</td><td>No variable. They resolve to <code>font-weight/medium</code> (500) and <code>font-weight/semibold</code> (600); bind those</td></tr>
+    <tr><td class="mono">avatar-bg, avatar-fg</td><td>Avatar</td><td>Set from code per initials. The default is <code>semantic/primary/subtle</code> and <code>semantic/primary/on-subtle</code>; bind those</td></tr>
+  </table>
+  <p>Only the first is a build error waiting to happen. The other three are documented values a
+     designer can reach, once someone says which.</p>
+
+  <h4>Bindable, but under a different name, 16</h4>
+  <p>These resolve. A designer reading the code and searching the picker for the name they just read
+     does not find them, which is the same cost as missing with extra steps.</p>
+  <table>
+    <tr><th>The code says</th><th>Figma says</th></tr>
+    <tr><td class="mono">--haus-font-sans</td><td class="mono">font-family/sans</td></tr>
+    <tr><td class="mono">--haus-icon-sm</td><td class="mono">icon-size/sm</td></tr>
+    <tr><td class="mono">--haus-space-4</td><td class="mono">spacing/4</td></tr>
+    <tr><td class="mono">--haus-z-modal</td><td class="mono">z-index/modal</td></tr>
+  </table>
+  <p>The last one is not only a name. <code>haus#27</code> moved the eight stacking <em>roles</em>
+     into <code>semantics.css</code> and left a raw ladder behind in the primitives, and the Figma
+     file predates that: it still holds the role names in <code>haus/primitives</code>. So
+     <code>z-index/modal</code> is in the collection a consumer is not supposed to pick from. The
+     second collection pass fixes it.</p>
+
+  <div class="callout"><p><b>Twelve components size things with the spacing scale, because there is
+  no size scale.</b> Checkbox and Radio are <code>--haus-space-4</code> square, Avatar's five sizes
+  are <code>space-6</code> through <code>space-16</code>, Toggle's track is
+  <code>space-7</code> by <code>space-4</code>. The semantic space families are inset, gap and
+  stack, all of which are about the room <em>around</em> something, so a component sizing itself has
+  to drop to the raw scale. It resolves and it is consistent, and it is the same shape of gap as the
+  control heights: a real decision with no role to carry it.</p></div>
+
+  <h4>In the file, read by nothing</h4>
+  <p>Five text styles (<code>body-lg</code>, <code>heading</code>, <code>heading-lg</code>,
+     <code>display</code>, <code>mono</code>), the <code>shadow/md</code> effect style, and 26
+     semantic variables, of which 23 are the upper reaches of the three space ladders. <b>None of
+     this is a defect.</b> A design system ships a vocabulary wider than its own components use, and
+     a heading style with no component reading it is what a product page is built from. It is listed
+     so the difference between "unused" and "missing" stays visible, because the two look identical
+     in a picker.</p>
 </div>
 
 <div class="frame">
