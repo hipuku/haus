@@ -230,13 +230,14 @@ const tokensPage = shell(
 </div>
 
 <div class="frame">
-  <h3>Frame 2d &middot; Two numbers that are not the number CSS writes</h3>
+  <h3>Frame 2d &middot; Three numbers that are not the number CSS writes</h3>
   <p>Figma's numeric fields carry units that CSS's do not, and a value copied across rather than
-     translated is silently wrong in both of these.</p>
+     translated is silently wrong in all three of these.</p>
   <table>
     <tr><th>Field</th><th>CSS</th><th>Figma</th><th>What a straight copy does</th></tr>
     <tr><td>Opacity</td><td class="mono">0.4</td><td class="mono">40</td><td>sets the layer to <b>0.4%</b> and it disappears</td></tr>
     <tr><td>Line height</td><td class="mono">1.4</td><td class="mono">140%</td><td>sets <b>1.4px</b> and collapses the paragraph to a line</td></tr>
+    <tr><td>Letter spacing</td><td class="mono">0.08em</td><td class="mono">8%</td><td>sets <b>0.08%</b> and nothing moves</td></tr>
   </table>
   <p>Opacity has an exact translation, so <code>opacity/disabled</code> and
      <code>opacity/overlay</code> stay variables and hold <b>40</b> and <b>60</b>. Their
@@ -246,6 +247,13 @@ const tokensPage = shell(
      were deleted rather than shipped wrong, and line height lives in the eleven text styles as a
      percentage. Same reasoning as <code>haus#35</code> deleting the <code>400</code> step: a token
      whose only available use is wrong is a trap, not headroom.</p>
+  <p>Letter spacing was the last of the three to be caught, in <code>haus#45</code>, because
+     <code>STYLES.md</code> had asserted it was the exception on the claim that <code>tracking/*</code>
+     held pixels. It holds the em value, <code>0.08</code>, and Figma reads a number bound to letter
+     spacing as <code>0.08px</code> or <code>0.08%</code> depending on the field's unit, where the em
+     means <code>8%</code>. So the four <code>tracking/*</code> variables were deleted like the seven
+     line-height ones, and letter spacing lives in the text styles, in px, per style, which is the one
+     place it is exact.</p>
 </div>
 
 <div class="frame">
@@ -262,6 +270,15 @@ const tokensPage = shell(
   by one step of weight</b>, 500 against 600. Create it. That is the least visible kind of
   disagreement and the most durable, because nothing looks broken.</p></div>
   <p class="mono">${typeRoles.map((t) => esc(t.replace("--haus-type-", ""))).join(" · ")}</p>
+  <div class="callout"><p><b>label-eyebrow is new in haus#37 and has no text style yet. Create
+  it.</b> 12px, SemiBold 600, 140%, letter-spacing <code>0.48px</code> (0.04em times 12px). It is the
+  uppercase section label a product writes above a panel or group, and it is the second time a role
+  landed here without a style, after <code>field-label</code>: no haus component reads it, so
+  <code>reconcile.py</code>, which scans the components, cannot report it missing. The type ramp is
+  the only place it shows, which is why it is called out here. Same change haus#37 makes to the two
+  headings: <code>display</code> takes letter-spacing <code>-0.9px</code> (-0.03em) and
+  <code>heading-lg</code> takes <code>-0.48px</code> (-0.02em), where both used to read
+  <code>-0.01em</code>, because one negative step is too loose at the top of the scale.</p></div>
   <div class="callout"><p><b>Line height is a percentage in Figma, and has no variable.</b>
   CSS writes it unitless, <code>1.4</code>, meaning 1.4&times; the font size. Figma has no unitless
   multiplier: typing <code>1.4</code> sets 1.4&nbsp;<em>pixels</em>, and binding a number variable to
@@ -632,7 +649,7 @@ const startedPage = shell(
   <h3>Frame 3d &middot; Where the code and the file disagree, and what to do about each</h3>
   <p><code>figma/reconcile.py</code> reads all 18 component stylesheets, resolves the
      component-local indirection they theme themselves through, and asks one question per token:
-     <b>what does a designer bind for this?</b> 131 distinct tokens. 90 are a variable, 24 are a
+     <b>what does a designer bind for this?</b> 130 distinct tokens. 89 are a variable, 24 are a
      style, 6 are motion and have no Figma object of any type, and <b>11 have nothing</b>.</p>
 
   <h4>Nothing to bind, 11</h4>
