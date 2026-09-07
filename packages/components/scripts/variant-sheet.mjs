@@ -113,7 +113,7 @@ const SETS = [
   },
   {
     name: "Input",
-    note: "The focus ring role and the error state. Label, hint and error are boolean properties in Figma with text layers behind them, not variants.",
+    note: "Eight rows here, five variants in Figma, and the two lists are not the same list. A Figma boolean property can only show and hide a layer, so `error` cannot be one: it changes the stroke colour. The component has exactly five container appearances, from .inputWrap, :has(:focus-visible), .error, .error:has(:focus-visible) and .disabled, and no hover or active rule at all. Three render statically and two do not, which is why this sheet shows eight rows of content rather than five of state. Select and Textarea have the identical five.",
     props: {},
     booleans: { hint: [false, true], error: [false, true], required: [false, true] },
     render: ({ hint, error, required }) =>
