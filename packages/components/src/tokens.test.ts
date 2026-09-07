@@ -88,7 +88,10 @@ describe('components read roles, not primitives', () => {
     // Primitives whose own name already is the role, so no alias exists.
     // border-width, opacity and z-index left this list with haus#27: they are
     // roles in semantics.css now, so a component reading one is reading a role.
-    const NAMED_ROLE = /^--haus-(font-|weight-|tracking-|icon-|control-height-)/
+    // tracking- left this list with haus#37: tracking is carried by the type
+    // roles now, so a component reading a --haus-tracking-* primitive is
+    // reaching past the role layer, which is the thing this test is for.
+    const NAMED_ROLE = /^--haus-(font-|weight-|icon-|control-height-)/
     const undocumented = PAST.flatMap((d) =>
       d.primitives.filter((t) => !/^--haus-space-\d+$/.test(t) && !NAMED_ROLE.test(t)).map((t) => `${d.file}: ${t}`),
     )
@@ -126,9 +129,13 @@ describe('components read roles, not primitives', () => {
     // holds the names, so the same 30 declarations resolve through the role
     // layer without moving.
     //
+    // Then 41 to 40 with haus#37: Button was the one component reading a
+    // tracking primitive (--haus-tracking-normal), and it moved onto
+    // --haus-type-label-tracking, so tracking is a role everywhere.
+    //
     // What is left is genuinely nameless: 32 reads of --haus-font-sans, five
-    // control heights, three --haus-icon-sm and one --haus-tracking-normal. A
-    // font family is not a role and there is no honest alias to invent for it.
-    expect(PAST.length - sizes.length).toBe(41)
+    // control heights and three --haus-icon-sm. A font family is not a role and
+    // there is no honest alias to invent for it.
+    expect(PAST.length - sizes.length).toBe(40)
   })
 })

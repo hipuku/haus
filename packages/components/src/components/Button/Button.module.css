@@ -41,7 +41,7 @@
   gap: var(--haus-space-gap-xs);
   font-family: var(--haus-font-sans);
   font-weight: var(--haus-weight-emphasis);
-  letter-spacing: var(--haus-tracking-normal);
+  letter-spacing: var(--haus-type-label-tracking);
   border-radius: var(--haus-radius-control);
   border: var(--haus-border-width-default) solid transparent;
   cursor: pointer;

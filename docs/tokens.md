@@ -128,10 +128,11 @@ size. Button reads all three, Input and Select read the middle one, and
 `min-height` is in stylelint's strict-value list so the next control cannot
 invent a fourth height.
 
-Sixty-one read a primitive that has no semantic alias because the primitive's
-own name already is the role: `--haus-font-sans`, `--weight-*`, `--border-width-*`,
-`--haus-tracking-normal`, `--haus-opacity-disabled`, `--haus-icon-sm`, `--haus-z-modal`,
-`--control-height-*`.
+Forty read a primitive that has no semantic alias because the primitive's own
+name already is the role: `--haus-font-sans`, `--control-height-*` and
+`--haus-icon-sm`. Border width, opacity and the stacking order left this list
+with haus#27, which gave each a role layer, and Button's `--haus-tracking-normal`
+left it with haus#37, which moved tracking onto the type roles.
 
 No component reads a colour, radius, shadow or motion primitive. `tokens.test.ts`
 in `haus-components` checks all of this on every run, so the counts above are

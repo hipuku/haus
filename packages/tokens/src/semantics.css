@@ -13,10 +13,12 @@
      entry offsets, the textarea's minimum height and the select chevron's
      offset. A size is a value, not a role, and calling a 16px checkbox
      --haus-space-inset-md would say something untrue.
-   · 41 read a primitive that has no alias here because its own name already
-     is the role: 32 --haus-font-sans, five control heights, three
-     --haus-icon-sm and one --haus-tracking-normal. A font family is not a
-     role and there is no honest alias to invent for it.
+   · 40 read a primitive that has no alias here because its own name already
+     is the role: 32 --haus-font-sans, five control heights and three
+     --haus-icon-sm. A font family is not a role and there is no honest alias
+     to invent for it. Button used to read --haus-tracking-normal here too;
+     haus#37 moved it onto --haus-type-label-tracking, so tracking is a role
+     everywhere now and no component reads the primitive ladder.
 
      This was 71 before haus#27. Stacking, border width and opacity used to be
      primitives wearing role names, so a product that wanted the stacking order
@@ -146,6 +148,23 @@
     --haus-type-label-sm-leading:  var(--haus-leading-normal);
     --haus-type-label-sm-tracking: var(--haus-tracking-wide);
 
+    /* An uppercase section label is not a small label either.
+
+       haus#37, the same shape as haus#34 below. core writes this role nine
+       times, at 12px semibold with 0.04em tracking, for the uppercase eyebrows
+       that head a panel or group: .eyebrow, .propLabel, .docLabel and the rest.
+       label-sm is the same size but medium and half the tracking, because it is
+       set in sentence case, and uppercase needs the extra spacing to read as
+       words rather than a block. field-label shares the size and the weight and
+       is also sentence case, so neither is the role. The tracking is 0.04em
+       here rather than label-xs's 0.08em because that step is tuned for 11px;
+       at 12px it is too loose. This is the role core lands on for its tracking
+       instead of picking a step off a ladder. */
+    --haus-type-label-eyebrow-size:     var(--haus-text-12);
+    --haus-type-label-eyebrow-weight:   var(--haus-weight-semibold);
+    --haus-type-label-eyebrow-leading:  var(--haus-leading-normal);
+    --haus-type-label-eyebrow-tracking: var(--haus-tracking-wider);
+
     /* A field label is not a small label.
 
        haus#34. Input, Select, Textarea and Radio all wrote the same five lines:
@@ -202,12 +221,12 @@
     --haus-type-heading-lg-size:     var(--haus-text-24);
     --haus-type-heading-lg-weight:   var(--haus-weight-semibold);
     --haus-type-heading-lg-leading:  var(--haus-leading-tighter);
-    --haus-type-heading-lg-tracking: var(--haus-tracking-tight);
+    --haus-type-heading-lg-tracking: var(--haus-tracking-tighter);
 
     --haus-type-display-size:        var(--haus-text-30);
     --haus-type-display-weight:      var(--haus-weight-bold);
     --haus-type-display-leading:     var(--haus-leading-tight);
-    --haus-type-display-tracking:    var(--haus-tracking-tight);
+    --haus-type-display-tracking:    var(--haus-tracking-tightest);
 
     /* Weight on its own, for text that is not on a type role at all.
 

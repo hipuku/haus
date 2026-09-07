@@ -93,10 +93,13 @@
     --haus-leading-relaxed:  1.5;   /* Body */
     --haus-leading-loose:    1.6;   /* Body-lg, code */
 
-    --haus-tracking-tight:   -0.01em;
-    --haus-tracking-normal:  0em;
-    --haus-tracking-wide:    0.02em;
-    --haus-tracking-widest:  0.08em;
+    --haus-tracking-tightest:  -0.03em;   /* Display */
+    --haus-tracking-tighter:   -0.02em;   /* heading-lg */
+    --haus-tracking-tight:     -0.01em;   /* Heading, heading-sm */
+    --haus-tracking-normal:    0em;   /* Body, labels, mono */
+    --haus-tracking-wide:      0.02em;   /* label-sm, field-label */
+    --haus-tracking-wider:     0.04em;   /* label-eyebrow, uppercase */
+    --haus-tracking-widest:    0.08em;   /* label-xs */
 
     /* ── Spacing scale (4px base) ────────────────────────────────────────────── */
     --haus-space-1:   0.25rem;   /* 4px */

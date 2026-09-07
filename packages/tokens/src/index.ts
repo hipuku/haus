@@ -99,9 +99,12 @@ export const tokens = {
       loose: 1.6,
     },
     tracking: {
+      tightest: "-0.03em",
+      tighter: "-0.02em",
       tight: "-0.01em",
       normal: "0em",
       wide: "0.02em",
+      wider: "0.04em",
       widest: "0.08em",
     },
   },
