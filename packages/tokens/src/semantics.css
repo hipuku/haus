@@ -6,19 +6,22 @@
    radius, elevation and motion. Two kinds of primitive read remain in the
    components, both deliberate:
 
-   · 31 declarations take a size off the space ladder, on height, width,
+   · 29 declarations take a size off the space ladder, on height, width,
      min/max and transform offsets: the avatar sizes and its status dot, the
      checkbox and radio boxes, the toggle track and thumb and the thumb's
-     travel, the modal's close button and max height, the toast and modal
-     entry offsets, the textarea's minimum height and the select chevron's
-     offset. A size is a value, not a role, and calling a 16px checkbox
-     --haus-space-inset-md would say something untrue.
-   · 40 read a primitive that has no alias here because its own name already
-     is the role: 32 --haus-font-sans, five control heights and three
-     --haus-icon-sm. A font family is not a role and there is no honest alias
-     to invent for it. Button used to read --haus-tracking-normal here too;
-     haus#37 moved it onto --haus-type-label-tracking, so tracking is a role
-     everywhere now and no component reads the primitive ladder.
+     travel, the modal's max height, the toast and modal entry offsets, the
+     textarea's minimum height and the select chevron's offset. A size is a
+     value, not a role, and calling a 16px checkbox --haus-space-inset-md
+     would say something untrue.
+   · 50 read a primitive that has no alias here because its own name already
+     is the role: 32 --haus-font-sans, five control heights, and thirteen icon
+     sizes (three --haus-icon-sm, four --haus-icon-lg, six --haus-icon-xs). A
+     font family is not a role and there is no honest alias to invent for it.
+     Button used to read --haus-tracking-normal here too; haus#37 moved it onto
+     --haus-type-label-tracking, so tracking is a role everywhere and no
+     component reads the tracking ladder. haus#43 added the icon reads: the
+     chevron and the two close buttons bind their box and glyph to the icon
+     scale rather than a raw size.
 
      This was 71 before haus#27. Stacking, border width and opacity used to be
      primitives wearing role names, so a product that wanted the stacking order

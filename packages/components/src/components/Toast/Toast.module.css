@@ -171,8 +171,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
+  /* haus#43: the close button is an icon box, so it binds. 24px is icon-lg. */
+  width: var(--haus-icon-lg);
+  height: var(--haus-icon-lg);
   border-radius: var(--haus-radius-marker);
   border: none;
   background: transparent;
@@ -182,6 +183,13 @@
   transition: opacity var(--haus-motion-micro);
   padding: 0;
   align-self: flex-start;
+}
+
+/* haus#43: the glyph is icon-xs (12), sized here rather than on the SVG so the
+   size is a token, not an attribute the strict-value rule cannot see. */
+.close svg {
+  width: var(--haus-icon-xs);
+  height: var(--haus-icon-xs);
 }
 
 .close:hover { opacity: 1; }

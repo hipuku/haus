@@ -198,8 +198,8 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(function Modal
               onClick={onClose}
               aria-label="Close modal"
             >
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
-                <path d="M2 2L12 12M12 2L2 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+              <svg viewBox="0 0 12 12" fill="none" aria-hidden>
+                <path d="M2 2L10 10M10 2L2 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
               </svg>
             </button>
           </div>

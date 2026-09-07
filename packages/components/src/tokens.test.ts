@@ -102,7 +102,7 @@ describe('components read roles, not primitives', () => {
     // docs/tokens.md, DESIGN.md and the semantics.css header all quote these.
     // If a component legitimately gains or loses one, update them together.
     const sizes = PAST.filter((d) => d.primitives.some((t) => /^--haus-space-\d+$/.test(t)))
-    expect(sizes.length).toBe(31)
+    expect(sizes.length).toBe(29)
     // 61 before step 7, rising to 77 as the six new components landed: border
     // widths, font families, shadows and, the sharp one, --haus-z-dropdown.
     // Popover and Tooltip are the pair worth pausing on. They are the first
@@ -133,9 +133,18 @@ describe('components read roles, not primitives', () => {
     // tracking primitive (--haus-tracking-normal), and it moved onto
     // --haus-type-label-tracking, so tracking is a role everywhere.
     //
+    // Then 40 to 50 with haus#43, and this one went up on purpose: Select's
+    // chevron, Toast's close and Modal's close were icon boxes drawn at raw
+    // sizes, one of them a literal the strict-value rule cannot see, and they
+    // bind to the icon scale now. icon-size is a named-role primitive like
+    // font family, so reading it is reading a role. Modal's close also stopped
+    // reading --haus-space-7 for its box, which is why the size count fell 31
+    // to 29 in the same change.
+    //
     // What is left is genuinely nameless: 32 reads of --haus-font-sans, five
-    // control heights and three --haus-icon-sm. A font family is not a role and
-    // there is no honest alias to invent for it.
-    expect(PAST.length - sizes.length).toBe(40)
+    // control heights, and thirteen icon sizes (three icon-sm, four icon-lg,
+    // six icon-xs). A font family is not a role and there is no honest alias to
+    // invent for it.
+    expect(PAST.length - sizes.length).toBe(50)
   })
 })

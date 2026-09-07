@@ -77,6 +77,12 @@
   align-items: center;
 }
 
+/* haus#43: the chevron is icon-xs (12), bound here rather than on the SVG. */
+.chevron svg {
+  width: var(--haus-icon-xs);
+  height: var(--haus-icon-xs);
+}
+
 /* haus#41: the chevron dims with the control. The select carries the disabled
    state and the chevron is its sibling, so it kept full strength on a field
    meant to look unavailable. */

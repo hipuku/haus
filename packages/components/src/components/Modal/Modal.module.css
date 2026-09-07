@@ -64,8 +64,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: var(--haus-space-7);
-  height: var(--haus-space-7);
+  /* haus#43: the same close affordance as Toast, so the same icon box. Was
+     space-7 (28px) with a 14px glyph, which was drift rather than a decision;
+     now icon-lg (24) with an icon-xs glyph, both bound. */
+  width: var(--haus-icon-lg);
+  height: var(--haus-icon-lg);
   border-radius: var(--haus-radius-marker);
   border: none;
   background: transparent;
@@ -74,6 +77,12 @@
   transition: color var(--haus-motion-micro), background-color var(--haus-motion-micro);
   padding: 0;
   margin-block-start: -2px;
+}
+
+/* haus#43: the glyph is icon-xs (12), the same as Toast's, sized here as a token. */
+.close svg {
+  width: var(--haus-icon-xs);
+  height: var(--haus-icon-xs);
 }
 
 .close:hover {
