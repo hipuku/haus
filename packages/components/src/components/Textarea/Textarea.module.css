@@ -39,7 +39,10 @@
 }
 
 .textarea::placeholder {
-  color: var(--haus-color-ink-secondary);
+  /* haus#42: the placeholder role, the same one Input reads. ink-secondary
+     rendered a placeholder as dark as a real value, which is the one thing the
+     colour exists to prevent. */
+  color: var(--haus-color-ink-tertiary);
 }
 
 .textarea:focus-visible {

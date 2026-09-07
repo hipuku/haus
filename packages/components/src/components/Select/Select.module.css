@@ -77,6 +77,13 @@
   align-items: center;
 }
 
+/* haus#41: the chevron dims with the control. The select carries the disabled
+   state and the chevron is its sibling, so it kept full strength on a field
+   meant to look unavailable. */
+.select:disabled ~ .chevron {
+  color: var(--haus-color-ink-disabled);
+}
+
 .hint {
   font-family: var(--haus-font-sans);
   font-size: var(--haus-type-label-xs-size);

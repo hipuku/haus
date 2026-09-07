@@ -89,6 +89,13 @@
   font-size: var(--haus-type-body-sm-size);
 }
 
+/* haus#41: the adornments dim with the field. Without this the value dropped to
+   ink-disabled and the prefix and suffix stayed at ink-secondary, so a $ and an
+   AUD became the brightest text in a control meant to look unavailable. */
+.inputWrap.disabled .adornment {
+  color: var(--haus-color-ink-disabled);
+}
+
 .hint {
   font-family: var(--haus-font-sans);
   font-size: var(--haus-type-label-xs-size);
