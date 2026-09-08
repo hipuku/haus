@@ -10,18 +10,18 @@
     "haus-tokens": "workspace:*"
   },
   "devDependencies": {
-    "@chromatic-com/storybook": "^5.3.0",
-    "@storybook/addon-a11y": "^10.5.10",
-    "@storybook/addon-docs": "^10.5.10",
-    "@storybook/addon-links": "^10.5.10",
-    "@storybook/react": "^10.5.10",
-    "@storybook/react-vite": "^10.5.10",
+    "@chromatic-com/storybook": "^5.3.1",
+    "@storybook/addon-a11y": "^10.6.0",
+    "@storybook/addon-docs": "^10.6.0",
+    "@storybook/addon-links": "^10.6.0",
+    "@storybook/react": "^10.6.0",
+    "@storybook/react-vite": "^10.6.0",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
     "@vitejs/plugin-react": "^6.1.1",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "storybook": "^10.5.10",
+    "storybook": "^10.6.0",
     "vite": "^8.2.2"
   }
 }
