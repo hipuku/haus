@@ -79,30 +79,67 @@ removal**, and core is exactly that consumer today. Under
 Filed separately rather than smuggled in. A tier that is right and a version that
 is wrong is still wrong.
 
-## Half of this tier cannot exist in Figma, and that is structural
+## Half of this tier looked inexpressible in Figma, and is not
 
-Recorded here rather than discovered later. In code the seven form entries behave
-identically. In Figma they split exactly down the middle:
+**The first version of this section was wrong and is withdrawn.** It said elevation
+cannot follow a Figma mode, so a second brand would need its own effect styles or
+the difference would stay code-only.
 
-| Form tier | In Figma | Can a mode change it? |
-|---|---|---|
-| 4 radius roles | semantic variables, aliasing primitives | **yes** |
-| 3 elevation roles | effect styles | **no** |
+**Tested against the live file on 2026-09-08 by the user's Figma agent: every field
+of a drop shadow binds to a variable, and the binding works on an effect style, not
+only on a node.** Colour, blur, spread, offsetX and offsetY. A node using the style
+inherits the bindings and resolves them per mode. Confirmed on `elevation/raised`,
+then reverted.
 
-**Figma has no shadow variable type at all**, which is why shadows are styles, and
-`figma/STYLES.md` already measures the consequence: effect styles cannot reference
-one another, where variables carry 184 aliases. Styles have no modes either.
+**So a mode changes a shadow the same way it changes a colour**, and the three
+styles stay three.
 
-So when `brands/drift.css` states its own shadow ramp, the Figma file cannot
-express that as a fourth mode. It needs separate effect styles, or the difference
-stays code-only and documented. The question is open in
-`FIGMA-CHANGES-haus53.md` and is worth answering before `D2`, because it decides
-what a brand *is* in the Figma file as against in the package.
+### How the wrong claim was reached, because that is the useful part
 
-This is the second asymmetry of its kind, after 0014's, and both point the same
-way: **a Figma mode and a `data-haus-theme` value are the same object only for
-variables.** The claim in `theming.md` that they are simply the same object is
-true of colour and radius and false of elevation.
+`figma/STYLES.md` states two true things:
+
+> Can one reference another? **no, none**
+
+> Figma has no shadow variable type at all [...] collection 1 holds `FLOAT`,
+> `STRING` and `COLOR` and nothing else.
+
+Both are correct. **The inference from them was not.** Style-to-style aliasing is
+one axis; binding a style's individual fields to variables is a different one, and
+nothing in that document speaks to it.
+
+**The answer was inside the sentence used to reach the wrong conclusion.** A drop
+shadow is five numbers and a colour. `FLOAT` and `COLOR` are exactly the two types
+that sentence says collection 1 holds. Reading "there is no shadow variable type"
+as "shadows cannot be variable-driven" skipped the step where a shadow is made of
+things that do have types.
+
+**A claim reasoned from a document rather than run.** That is the same shape as the
+drift measurement earlier the same day, which compared a consumer against a version
+it does not install, and the same shape as every finding in section 10 of
+`PORTFOLIO.md`, only inverted: the usual defect is a check nobody has watched fail,
+and this is an assertion nobody has watched run.
+
+### The asymmetry that does survive, smaller than claimed
+
+Code and Figma still brand elevation at different granularities, and this part was
+not wrong:
+
+| | What a brand states |
+|---|---|
+| **Code** | one alias per role, `--haus-brand-elevation-raised: var(--haus-shadow-sm)` |
+| **Figma** | five bound values per shadow layer, because there is no shadow variable to alias |
+
+Same result, different shape, and it is a mechanism difference rather than a
+meaning one. `theming.md`'s claim that a Figma mode and a `data-haus-theme` value
+are the same object holds.
+
+### Not built yet, deliberately
+
+Binding the three styles costs roughly 25 variables, and **there is no second
+shadow ramp in the file to use them.** drift's is the first, and it arrives with
+`D2`. Building the bindings before a second brand exists is a speculative 25
+variables, so this is recorded as the chosen approach and scheduled with `D2`
+rather than done now.
 
 ## Consequences
 
