@@ -15,6 +15,65 @@ Versioning follows [decision 0004](docs/decisions/0004-versioning-is-1-x.md): a
 token rename is a major at an identical value, and a contrast change is a major
 even when the hex barely moves.
 
+## haus-components 2.1.0
+
+*2026-09-08. Two new components, `asChild`, a segmented Tabs, and a Modal fix.*
+
+A minor: everything is additive, and no existing call site renders differently.
+Requires `haus-tokens@^3.2.0`, which `IconButton` needs for its smaller size.
+
+**Added** · **`IconButton`**, the twentieth component, `haus#58`. Promoted on
+evidence, and the evidence had to be found by behaviour rather than by name:
+`PORTFOLIO.md` 13.5 recorded core as having none because core's is a CSS class
+and not a component file. Measured properly, core has 7 sites and vault a full
+`.icon-btn` set, and both independently grew a size axis and a tone axis.
+**Both sizes are measured, and the smaller one is a rule**: `md` is 28px, which
+is what both products already draw and is already `--haus-control-height-sm`;
+`sm` is 24px, the **WCAG 2.5.8 AA minimum target size**, which makes core's 22px
+and vault's 20px both under the floor and not worth porting up. `label` is
+required, because an SVG contributes nothing to the accessible name.
+
+**Added** · **`Listbox`**, the twenty-first, `haus#61`,
+[decision 0020](docs/decisions/0020-listbox-and-select-both-stay.md). Two
+products replaced the native `Select` and wrote down the same reason, and core's
+hook already said it was written to stay diffable with vault's *"until one of
+them moves to haus"*. An option carries a `hint`, a second line the platform's
+own popup cannot draw, and that field is the whole argument for the component.
+It composes `Popover`, keeps focus on the trigger, and announces the active row
+through `aria-activedescendant`. **It does not replace `Select`**, and 0020
+records that `Select` currently has no consumers rather than leaving that to be
+discovered.
+
+**Added** · **`Button` takes `asChild`**, `haus#57`. Renders the single child
+with Button's classes merged in, so a router's link can be a Button: `href`
+renders haus's own anchor, which costs client-side navigation and prefetch.
+Deliberately not a polymorphic `as`, which Card's own documentation argues
+against. `ButtonProps` is a union, so `loading`, `href` and `target` are
+**compile errors** alongside `asChild` rather than silent no-ops. Both refs are
+called, Button's and the child's.
+
+**Added** · **`Tabs` takes an appearance**, `haus#60`.
+`'underline' | 'segmented'`, defaulting to underline so nothing existing moves.
+Its own type rather than the shared `Appearance`, which is `'subtle' | 'solid'`
+and means fill weight.
+
+**Fixed** · **`Modal` closed on a press that started inside it**, `haus#56`. A
+click's target is the nearest common ancestor of its pointerdown and pointerup,
+so selecting text to the edge of a dialog and releasing outside dispatched a
+click whose target was the backdrop, and the dialog dismissed. It now requires
+both ends of the press on the backdrop. The existing suite could not express
+this: `fireEvent.click` synthesises neither the pointerdown nor the ordering.
+
+## haus-tokens 3.2.0
+
+*2026-09-08. A fourth control height.*
+
+**Added** · **`--haus-control-height-xs`, 1.5rem**. The floor for a target that
+has no spacing exception, and the size `IconButton` takes for `sm`. It is the
+fourth step `PORTFOLIO.md` 13.6 already listed as a gap a consumer had filled
+locally: vault declares `--control-height-xs` at exactly this value. Added to
+`tokens.json`, which generates `primitives.css`.
+
 ## haus-tokens 3.1.0
 
 *2026-09-08. core's brand takes the radius form group.*
