@@ -51,6 +51,27 @@ rather than two so a consumer migrates once.
 
 ---
 
+## haus-tokens 2.2.0
+
+*2026-09-08. The exports 2.1.0's own notes promised and did not ship.*
+
+**Fixed** · `brandRolesBase`, `brandRolesFeedback` and `brandRolesForm` are
+re-exported from the package root. 2.1.0 generated all four lists in `./brand`
+and re-exported only `brandRoles`, so decision 0014 and 0015 described an API a
+consumer could not reach.
+
+**The types hid it.** `BrandMapBase`, `-Feedback` and `-Form` came through
+anyway, because `BrandMap` is an intersection that references them, so
+`import type { BrandMapForm }` worked while the matching value did not. A gap
+that only shows up in one of the two import forms is one nobody trips over until
+they need it.
+
+`brand.test.ts` now imports the package root and asserts all four are reachable,
+which is a different question from whether they are generated and is the one that
+was never asked.
+
+---
+
 ## haus-tokens 2.1.0
 
 *2026-09-08. Additive throughout: every 54-entry brand still satisfies the

@@ -143,3 +143,17 @@ describe('the brand map', () => {
     expect(strays).toEqual([])
   })
 })
+
+describe('what a consumer can actually reach', () => {
+  it('re-exports every brand list from the package root', async () => {
+    // 2.1.0 shipped brandRolesBase, -Feedback and -Form from ./brand and never
+    // re-exported them, so the package root offered one of the four and the
+    // decision records said it offered all four. The types came through anyway,
+    // because BrandMap references them, which is exactly what made the gap hard
+    // to see: `import type { BrandMapForm }` worked and the value did not.
+    const root = await import('./index')
+    for (const name of ['brandRoles', 'brandRolesBase', 'brandRolesFeedback', 'brandRolesForm']) {
+      expect(root, `${name} is not reachable from the package root`).toHaveProperty(name)
+    }
+  })
+})
