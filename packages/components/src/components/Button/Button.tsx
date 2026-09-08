@@ -24,7 +24,7 @@ export type ButtonTone = Tone
 
 export type ButtonSize = Size
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonBaseProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?:  ButtonVariant
   /** What it means. `error` is what `variant="danger"` used to say. */
   tone?:     ButtonTone
@@ -32,29 +32,101 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   /** Opens elsewhere: appends the glyph and, with `href`, is the honest signal
    *  that the destination leaves this app. Behaviour, so not a variant. */
   external?: boolean
-  loading?:  boolean
-  /** Renders as an anchor when provided */
-  href?:     string
-  target?:   string
+}
+
+/**
+ * The two ways Button can render, kept apart by the type so the combinations
+ * that have no meaning cannot be written.
+ *
+ * `asChild` renders the single child element with Button's own class merged in,
+ * rather than rendering a `<button>` or an `<a>`. It exists because a router's
+ * link is a component, not an element: Next's `Link`, React Router's `Link` and
+ * TanStack's all need to be the thing that renders, and `href` cannot reach
+ * them. haus#57 was filed when core's five navigation buttons could not move
+ * without losing client-side navigation and prefetch.
+ *
+ * Deliberately `asChild` and not a polymorphic `as`. Card's `as` is a union of
+ * intrinsic element names and says why: the generic-polymorphic kind "costs a
+ * page of conditional types, makes every error message about the component
+ * unreadable". Cloning one child needs none of that and takes components as
+ * well as elements.
+ *
+ * `loading` is absent from the `asChild` half, so `<Button asChild loading>` is
+ * a compile error rather than a silent nothing. A spinner would be a second
+ * child, which `asChild` has nowhere to put, and the state it announces is a
+ * form submitting: a link has no such state, and `aria-busy` on an anchor
+ * describes a wait that will never end. `href` and `target` are absent for the
+ * same reason: the child carries its own destination.
+ */
+export type ButtonProps =
+  | (ButtonBaseProps & {
+      asChild?: false
+      loading?: boolean
+      /** Renders as an anchor when provided */
+      href?:    string
+      target?:  string
+    })
+  | (ButtonBaseProps & {
+      asChild:  true
+      loading?: never
+      href?:    never
+      target?:  never
+      children: React.ReactElement
+    })
+
+/**
+ * Applies a node to however many refs were aimed at it.
+ *
+ * `asChild` has two: the one the caller put on `<Button>` and the one they put
+ * on the child. Cloning with only Button's silently discards the child's, which
+ * is what the ref test caught. Neither is more entitled than the other, so both
+ * are called.
+ *
+ * React 19 passes `ref` as an ordinary prop and React 18 keeps it on the
+ * element, and this package's peer range allows both, so the child's ref is
+ * read from whichever place holds it.
+ */
+function mergeRefs<T>(...refs: Array<React.Ref<T> | undefined>): React.RefCallback<T> {
+  return (node) => {
+    for (const ref of refs) {
+      if (!ref) continue
+      if (typeof ref === 'function') ref(node)
+      else (ref as React.MutableRefObject<T | null>).current = node
+    }
+  }
 }
 
 export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
   function Button(
-    {
+    props,
+    ref
+  ) {
+    const {
       variant  = 'primary',
       tone     = 'neutral',
       size     = 'md',
       external = false,
-      loading  = false,
       disabled,
-      href,
-      target,
       children,
       className,
       ...rest
-    },
-    ref
-  ) {
+    } = props
+    // Read off the union rather than destructured above: the `asChild` half
+    // types them as `never`, and a default in the pattern would widen it back.
+    const asChild = props.asChild === true
+    const loading = props.asChild === true ? false : props.loading ?? false
+    const href    = props.asChild === true ? undefined : props.href
+    const target  = props.asChild === true ? undefined : props.target
+    // `rest` still holds the discriminant and the props read off the union, and
+    // every one of them would land on the DOM as an unknown attribute.
+    const {
+      asChild: _asChild,
+      loading: _loading,
+      href:    _href,
+      target:  _target,
+      ...domProps
+    } = rest as Record<string, unknown>
+
     const cls = [
       styles.button,
       styles[variant],
@@ -69,6 +141,30 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
     const externalIcon = external
       ? <span className={styles.externalIcon} aria-hidden="true">↗</span>
       : null
+
+    if (asChild) {
+      const child = React.Children.only(children as React.ReactElement)
+      const childProps = child.props as { className?: string; ref?: React.Ref<unknown> }
+      // React 19 puts the child's ref in props; React 18 keeps it on the
+      // element. The peer range allows both, so look in both.
+      const childRef =
+        childProps.ref ?? (child as unknown as { ref?: React.Ref<unknown> }).ref
+      return React.cloneElement(
+        child,
+        {
+          // Button's classes first so the child's own className wins a
+          // collision: the caller is closer to the problem than the system is.
+          className: [cls, childProps.className].filter(Boolean).join(' '),
+          ref: mergeRefs(ref as React.Ref<unknown>, childRef),
+          ...domProps,
+        } as Partial<unknown> & React.Attributes,
+        // The child keeps its own children, and the glyph is appended after
+        // them, which is where the other two branches put it too.
+        ...(external
+          ? [(child.props as { children?: React.ReactNode }).children, externalIcon]
+          : [(child.props as { children?: React.ReactNode }).children]),
+      )
+    }
 
     if (href) {
       return (
@@ -87,7 +183,7 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
           className={cls}
           aria-disabled={isDisabled}
           aria-busy={loading || undefined}
-          {...(rest as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
+          {...(domProps as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
         >
           {loading && <Spinner size="text" announcedBy="the button's aria-busy state" />}
           {children}
@@ -103,7 +199,7 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
         disabled={isDisabled}
         aria-disabled={isDisabled}
         aria-busy={loading || undefined}
-        {...rest}
+        {...(domProps as React.ButtonHTMLAttributes<HTMLButtonElement>)}
       >
         {loading && <Spinner size="text" announcedBy="the button's aria-busy state" />}
         {children}

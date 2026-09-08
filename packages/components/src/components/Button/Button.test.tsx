@@ -190,3 +190,87 @@ describe('Button', () => {
     expect((await axe(container)).violations).toEqual([])
   })
 })
+
+describe('asChild', () => {
+  it('renders the child element instead of a button, and merges the class', () => {
+    render(
+      <Button asChild variant="secondary">
+        <a href="/somewhere" className="mine">Go</a>
+      </Button>,
+    )
+    // The child is what rendered: no button in the tree at all.
+    expect(screen.queryByRole('button')).toBeNull()
+    const link = screen.getByRole('link', { name: 'Go' })
+    expect(link).toHaveAttribute('href', '/somewhere')
+    // Both classes survive. This is the whole point: haus supplies the look and
+    // the caller's own class is still there to override it.
+    expect(link.className).toMatch(/mine/)
+    expect(link.className.split(' ').length).toBeGreaterThan(1)
+  })
+
+  it('keeps the child as the ref target', () => {
+    const ref = createRef<HTMLAnchorElement>()
+    render(
+      <Button asChild>
+        <a href="/x" ref={ref}>Go</a>
+      </Button>,
+    )
+    expect(ref.current?.tagName).toBe('A')
+  })
+
+  it('gives the node to both refs, Button own and the child own', () => {
+    // The first version of asChild passed only Button's ref into cloneElement,
+    // which silently threw the child's away. Neither is more entitled.
+    const onButton = createRef<HTMLAnchorElement>()
+    const onChild  = createRef<HTMLAnchorElement>()
+    render(
+      <Button asChild ref={onButton}>
+        <a href="/x" ref={onChild}>Go</a>
+      </Button>,
+    )
+    expect(onButton.current?.tagName).toBe('A')
+    expect(onChild.current?.tagName).toBe('A')
+    expect(onButton.current).toBe(onChild.current)
+  })
+
+  it('does not typecheck with loading, href or target', () => {
+    // The guard is the type, so this is the only place it can be asserted.
+    // If any of these ever start compiling, tsc fails on the unused directive
+    // and this test file is what reports it.
+    // @ts-expect-error asChild has no busy state to announce
+    const a = <Button asChild loading><a href="/x">Go</a></Button>
+    // @ts-expect-error the child carries its own destination
+    const b = <Button asChild href="/x"><a href="/x">Go</a></Button>
+    // @ts-expect-error the child carries its own target
+    const c = <Button asChild target="_blank"><a href="/x">Go</a></Button>
+    expect([a, b, c]).toHaveLength(3)
+  })
+
+  it('appends the external glyph after the child own children', () => {
+    render(
+      <Button asChild external>
+        <a href="https://example.com">Out</a>
+      </Button>,
+    )
+    // The label is still readable, and the glyph is aria-hidden so it does not
+    // reach the accessible name.
+    expect(screen.getByRole('link', { name: 'Out' })).toBeInTheDocument()
+  })
+
+  it('puts no asChild-only prop on the DOM', () => {
+    render(
+      <Button asChild>
+        <a href="/x">Go</a>
+      </Button>,
+    )
+    const link = screen.getByRole('link')
+    for (const attr of ['aschild', 'loading', 'target']) {
+      expect(link.hasAttribute(attr)).toBe(false)
+    }
+  })
+
+  it('still renders a button when asChild is not set', () => {
+    render(<Button>Save</Button>)
+    expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument()
+  })
+})
