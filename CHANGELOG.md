@@ -51,6 +51,31 @@ rather than two so a consumer migrates once.
 
 ---
 
+## haus-tokens 2.3.0
+
+*2026-09-08. A third brand, and nothing else.*
+
+**Added** · `brands/drift.css`, drift's palette as brand inputs. Fifty-four
+entries, the base tier and the whole feedback tier, because drift has all four
+notification semantics and uses them on the audit screen.
+
+Until now these lived in drift's own `semantics.css` as **role overrides resolved
+through cascade order**, a shape that had already produced one defect on the
+record: Badge and Input rendered in haus's aronia purple inside a cool blue
+product, because the two sides named different properties and the cascade order
+decided nothing.
+
+It invents no colour. Every value is a step of a haus ramp, which is what makes it
+a brand rather than a second palette. `backdrop` reads `--haus-opacity-60` where
+drift read the `--haus-opacity-overlay` role: **a brand supplies inputs and may
+not read the layer it feeds.** Same value, correct layer.
+
+**Purely additive.** The file applies at `[data-haus-theme='drift']`, which
+nothing set before this release. `brand.test.ts` now runs its per-brand contract
+over two brands instead of one, which is what makes a contract a contract.
+
+---
+
 ## haus-tokens 2.2.1
 
 *2026-09-08. 2.2.0's tag went red and never published.*
