@@ -15,6 +15,27 @@ Versioning follows [decision 0004](docs/decisions/0004-versioning-is-1-x.md): a
 token rename is a major at an identical value, and a contrast change is a major
 even when the hex barely moves.
 
+## haus-components 2.2.1
+
+*2026-09-09. `asChild` no longer throws in a Server Component.*
+
+**Fixed** · **`<Button asChild>` rendered from a React Server Component threw**
+*"Refs cannot be used in Server Components, nor passed to Client Components."*
+`haus#71`. The ref merge always returned a callback, even when neither Button
+nor the child had a ref, so every cloned child got one it never asked for. On
+the client that is wasteful; in a Server Component a ref is illegal, and
+`asChild` is the one path in this package that can attach one without the caller
+doing anything. It returns `undefined` when there is nothing to merge now.
+
+**Worth knowing:** this package ships no `"use client"` directive, so a Server
+Component can render a haus component directly, and for the ones holding no
+state that is a feature rather than an oversight. It also means the
+presentational components are on the RSC path and nothing was testing that. No
+unit test here can reproduce the throw, because neither jsdom nor
+`renderToString` enforces the RSC rules, so the new tests assert the cause: that
+`cloneElement` is given no `ref` key when neither side has one, and is given one
+when a ref genuinely exists.
+
 ## haus-components 2.2.0
 
 *2026-09-09. A Popover can escape what clips it.*

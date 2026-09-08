@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { createRef } from 'react'
+import React, { createRef } from 'react'
 import { axe } from 'vitest-axe'
 import { Button } from './Button'
 
@@ -216,6 +216,42 @@ describe('asChild', () => {
       </Button>,
     )
     expect(ref.current?.tagName).toBe('A')
+  })
+
+  it('attaches no ref at all when neither side has one', () => {
+    /* A ref is illegal in a Server Component, and asChild is the one path that
+       could attach one unasked. The first version always did, via a merge
+       callback that closed over nothing, and core's two server pages threw
+       "Refs cannot be used in Server Components". haus#71.
+
+       Asserted on the clone rather than on the DOM, deliberately. jsdom does
+       not enforce the RSC rules and `renderToString` does not either, so no
+       unit test here can reproduce the throw. What can be checked is the thing
+       that caused it: whether a ref was handed to the child at all. */
+    const clone = vi.spyOn(React, 'cloneElement')
+    render(
+      <Button asChild>
+        <a href="/x">Go</a>
+      </Button>,
+    )
+    const props = clone.mock.calls[0]?.[1] as { ref?: unknown }
+    expect(props).toBeDefined()
+    expect(props.ref).toBeUndefined()
+    clone.mockRestore()
+  })
+
+  it('still merges when a ref is actually present', () => {
+    const clone = vi.spyOn(React, 'cloneElement')
+    const ref = createRef<HTMLAnchorElement>()
+    render(
+      <Button asChild ref={ref}>
+        <a href="/x">Go</a>
+      </Button>,
+    )
+    const props = clone.mock.calls[0]?.[1] as { ref?: unknown }
+    expect(typeof props.ref).toBe('function')
+    expect(ref.current?.tagName).toBe('A')
+    clone.mockRestore()
   })
 
   it('gives the node to both refs, Button own and the child own', () => {

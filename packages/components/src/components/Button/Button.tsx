@@ -86,10 +86,19 @@ export type ButtonProps =
  * element, and this package's peer range allows both, so the child's ref is
  * read from whichever place holds it.
  */
-function mergeRefs<T>(...refs: Array<React.Ref<T> | undefined>): React.RefCallback<T> {
+function mergeRefs<T>(
+  ...refs: Array<React.Ref<T> | undefined>
+): React.RefCallback<T> | undefined {
+  const real = refs.filter(Boolean)
+  /* Nothing to merge means no ref at all, not a callback that does nothing.
+     A ref is illegal in a Server Component, and `asChild` is the one path that
+     could attach one without being asked: core renders `<Button asChild>` from
+     two server pages, where neither Button nor the child has a ref, and an
+     unconditional callback made both throw "Refs cannot be used in Server
+     Components". haus#71. */
+  if (real.length === 0) return undefined
   return (node) => {
-    for (const ref of refs) {
-      if (!ref) continue
+    for (const ref of real) {
       if (typeof ref === 'function') ref(node)
       else (ref as React.MutableRefObject<T | null>).current = node
     }
