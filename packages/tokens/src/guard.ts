@@ -125,3 +125,148 @@ export function findFallbackTokens(input: Pick<TokenGuardInput, 'reads' | 'defin
   const defined = collect(input.defines, DECLARATION)
   return [...withFallback].filter((name) => !defined.has(name)).sort()
 }
+
+/* ─── Restatement: a consumer keeping its own copy of a value we ship ────────
+ *
+ * The second failure this package can see and a consumer cannot. An unresolved
+ * var() at least renders wrong; a restated value renders perfectly, and is only
+ * wrong from the moment one of the two sides moves.
+ *
+ * vault carried 141 of them and closed it as `vault#25`, then wrote this rule by
+ * hand so it could not come back. drift has 89 and never had the rule: it was
+ * written in the repository next door and never ported, which is why it ships
+ * from here now (haus#53).
+ *
+ * TWO KINDS, and the second is the one a hand-written version missed.
+ *
+ *   identical  the declaration is the same text on both sides.
+ *              `--haus-space-inset-md: var(--haus-space-4)` written twice.
+ *              77 of drift's.
+ *
+ *   resolved   the text differs and the value does not. `--haus-z-modal: 400`
+ *              against this package's `var(--haus-z-400)`, where `--haus-z-400`
+ *              is `400`. 12 of drift's, and vault's hand-written rule compares
+ *              declaration text so it would have found none of them.
+ *
+ * The second kind is worth the resolver: hardcoding the number a token resolves
+ * to is how a consumer opts out of a scale while appearing to be on it.
+ */
+
+/** One `--x: value` declaration, in source order. */
+type Declaration = { name: string; value: string }
+
+/** Comments out, whitespace flattened, so two spellings of one value compare equal. */
+function normalise(value: string): string {
+  return value
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function declarations(sources: string[]): Declaration[] {
+  const out: Declaration[] = []
+  for (const css of sources) {
+    for (const m of css.matchAll(/(?:^|[;{])\s*(--[a-zA-Z0-9-]+)\s*:\s*([^;}]+)/gm)) {
+      out.push({ name: m[1]!, value: normalise(m[2]!) })
+    }
+  }
+  return out
+}
+
+/**
+ * Follow `var()` references until nothing is left to follow.
+ *
+ * Depth-limited rather than cycle-tracked: a token graph is shallow, and a
+ * limit is one line where a visited-set is five. Hitting the limit returns the
+ * partially resolved value, which compares unequal and so reports nothing,
+ * because a guard that guesses is worse than one that misses.
+ */
+function resolve(value: string, table: Map<string, string>, depth = 0): string {
+  if (depth > 10) return value
+  const next = value.replace(/var\(\s*(--[a-zA-Z0-9-]+)\s*\)/g, (whole, name: string) => {
+    const found = table.get(name)
+    return found === undefined ? whole : found
+  })
+  return next === value ? value : resolve(next, table, depth + 1)
+}
+
+export interface Restatement {
+  /** The custom property the consumer declares. */
+  name: string
+  /** `identical` if the declaration matches ours as text, `resolved` if only the value does. */
+  kind: 'identical' | 'resolved'
+  /** What the consumer wrote. */
+  value: string
+  /** What this package already says, as written. */
+  upstream: string
+}
+
+export interface RestatementInput {
+  /** The consumer's own token CSS: the file where it overrides or adds. */
+  defines: string[]
+  /** This package's layers, as the consumer actually loads them. */
+  upstream: string[]
+}
+
+/**
+ * Which of a consumer's declarations this package already ships.
+ *
+ * An empty array is the assertion. A consumer may override any role it likes,
+ * and several should: what it may not do is override a role to the value the
+ * package already gives, because that is not an override, it is a copy, and a
+ * copy is correct only until one side moves.
+ *
+ * Read the package from `node_modules` rather than a fixture. The point is to
+ * compare against the value that will actually load.
+ *
+ * WHICH FILES TO PASS AS `upstream`, because it changes the question asked.
+ *
+ * Include `brand.css` and the answer is *does this consumer restate anything we
+ * ship, including our brand's choices*. Leave it out and the answer is *does it
+ * restate anything structural*, with its own colour choices treated as its
+ * business.
+ *
+ * Measured against drift, whose colour overrides are a brand written as role
+ * overrides: **143 with `brand.css`, 89 without.** The 54 in the gap are exactly
+ * its brand. So a consumer that has a brand file, or intends one, leaves
+ * `brand.css` out and gets only the copies; a consumer with no brand of its own
+ * puts it in and is told that its colour overrides agree with ours, which is a
+ * different and also useful thing to know.
+ *
+ * @example
+ * ```ts
+ * import { findRestatedTokens } from 'haus-tokens/guard'
+ *
+ * it('restates no value haus already ships', () => {
+ *   const copies = findRestatedTokens({
+ *     defines:  [read('src/tokens/semantics.css')],
+ *     upstream: HAUS_FILES.map(read),
+ *   })
+ *   expect(copies.map((c) => `${c.name} (${c.kind})`)).toEqual([])
+ * })
+ * ```
+ */
+export function findRestatedTokens(input: RestatementInput): Restatement[] {
+  const table = new Map<string, string>()
+  for (const { name, value } of declarations(input.upstream)) {
+    // First declaration wins, matching the cascade order the consumer loads in.
+    if (!table.has(name)) table.set(name, value)
+  }
+
+  const seen = new Set<string>()
+  const found: Restatement[] = []
+  for (const { name, value } of declarations(input.defines)) {
+    const upstream = table.get(name)
+    if (upstream === undefined || seen.has(name)) continue
+
+    let kind: Restatement['kind'] | undefined
+    if (value === upstream) kind = 'identical'
+    else if (resolve(value, table) === resolve(upstream, table)) kind = 'resolved'
+
+    if (kind) {
+      seen.add(name)
+      found.push({ name, kind, value, upstream })
+    }
+  }
+  return found.sort((a, b) => a.name.localeCompare(b.name))
+}

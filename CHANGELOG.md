@@ -48,6 +48,22 @@ and the space ladder are deliberately not brandable: nobody re-decides them.
 the new entries to the primitives they read before, checked by walking the chain.
 `vault.css` supplies none of the tier and passes, because none is a legal amount.
 
+**Added** · `findRestatedTokens` in `haus-tokens/guard`, `haus#53`,
+[decision 0016](docs/decisions/0016-a-restated-value-is-a-copy-and-the-package-says-so.md).
+Reports every declaration a consumer makes that this package already ships,
+tagged `identical` (the same text) or `resolved` (different text, same value once
+`var()` chains are followed).
+
+The second tag is the one a text comparison cannot see: `--haus-z-modal: 400`
+against `var(--haus-z-400)`, where `--haus-z-400` is `400`. That is how a
+consumer opts out of a scale while appearing to be on it.
+
+vault wrote this rule by hand after `vault#25` and drift never got it, so it
+ships from the package now. Run against drift it reproduces, independently, the
+89 arrived at by hand: 77 identical, 12 resolved.
+
+Pure, like the rest of the guard: it takes CSS as strings and reads no files.
+
 The 1.0 cut. Everything below is breaking, deliberately, and lands in one major
 rather than two so a consumer migrates once.
 

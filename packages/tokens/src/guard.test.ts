@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { findFallbackTokens, findUndefinedTokens } from './guard'
+import { findFallbackTokens, findUndefinedTokens, findRestatedTokens } from './guard'
 
 const read = (f: string) => readFileSync(join(__dirname, f), 'utf8')
 
@@ -127,5 +127,84 @@ describe('the guard against this package itself', () => {
       defines: [read('primitives.css'), read('brands/vault.css')],
     })
     expect(missing).toEqual([])
+  })
+})
+
+describe('findRestatedTokens', () => {
+  const HAUS = [
+    `:root {
+       --haus-z-400: 400;
+       --haus-space-4: 1rem;
+       --haus-z-modal: var(--haus-z-400);
+       --haus-space-inset-md: var(--haus-space-4);
+       --haus-radius-control: var(--haus-radius-md);
+     }`,
+  ]
+
+  it('finds a declaration restated as the same text', () => {
+    // 77 of drift's 148 are this: haus's own line, retyped.
+    const found = findRestatedTokens({
+      defines: [`:root { --haus-space-inset-md: var(--haus-space-4); }`],
+      upstream: HAUS,
+    })
+    expect(found.map((f) => [f.name, f.kind])).toEqual([['--haus-space-inset-md', 'identical']])
+  })
+
+  it('finds a value hardcoded to what our chain resolves to', () => {
+    // The kind vault's hand-written rule could not see, because it compares
+    // declaration text and this text differs. 12 of drift's are this shape:
+    // --haus-z-modal: 400 against var(--haus-z-400), where --haus-z-400 is 400.
+    const found = findRestatedTokens({
+      defines: [`:root { --haus-z-modal: 400; }`],
+      upstream: HAUS,
+    })
+    expect(found.map((f) => [f.name, f.kind])).toEqual([['--haus-z-modal', 'resolved']])
+  })
+
+  it('says nothing about a real override', () => {
+    // The assertion that stops this being a rule against overriding at all. A
+    // consumer may hold any role at a different value, and three of vault's do.
+    const found = findRestatedTokens({
+      defines: [`:root { --haus-z-modal: 900; --haus-space-inset-md: var(--haus-space-8); }`],
+      upstream: HAUS,
+    })
+    expect(found).toEqual([])
+  })
+
+  it('says nothing about a property we do not ship', () => {
+    const found = findRestatedTokens({
+      defines: [`:root { --drift-shadow-sm: 0 1px 2px black; }`],
+      upstream: HAUS,
+    })
+    expect(found).toEqual([])
+  })
+
+  it('is not fooled by spelling: a copy stays a copy through comments and spacing', () => {
+    // The whole value of normalising. Written with inner spaces and a trailing
+    // comment, this is still haus's declaration, and a comparison that only
+    // matched exact text would call it an override and say nothing.
+    const found = findRestatedTokens({
+      defines: [`:root {\n  --haus-space-inset-md:   var( --haus-space-4 ) /* same */ ;\n}`],
+      upstream: HAUS,
+    })
+    expect(found.map((f) => f.name)).toEqual(['--haus-space-inset-md'])
+  })
+
+  it('reports each property once, however often it is declared', () => {
+    const found = findRestatedTokens({
+      defines: [`:root { --haus-z-modal: 400; } .x { --haus-z-modal: 400; }`],
+      upstream: HAUS,
+    })
+    expect(found).toHaveLength(1)
+  })
+
+  it('survives a reference cycle rather than hanging', () => {
+    // Depth-limited rather than cycle-tracked. A partially resolved value
+    // compares unequal, so a cycle reports nothing instead of guessing.
+    const found = findRestatedTokens({
+      defines: [`:root { --a: var(--b); }`],
+      upstream: [`:root { --a: var(--b); --b: var(--a); }`],
+    })
+    expect(found.map((f) => f.kind)).toEqual(['identical'])
   })
 })

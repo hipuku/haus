@@ -129,6 +129,44 @@ It is **pure and does no file reading**, so it runs anywhere and this package
 gains no dependency on `node:fs`. You know which files you load; it only knows
 what the contract is.
 
+### The second check: values you already have
+
+A property you declare that this package also declares, at the value this package
+already gives, is not an override. It is a copy, and it renders perfectly until
+one of the two moves.
+
+```ts
+import { findRestatedTokens } from 'haus-tokens/guard'
+
+it('restates no value haus already ships', () => {
+  const copies = findRestatedTokens({
+    defines: [read('src/tokens/semantics.css')],
+    upstream: [
+      read('node_modules/haus-tokens/dist/primitives.css'),
+      read('node_modules/haus-tokens/dist/motion.css'),
+      read('node_modules/haus-tokens/dist/semantics.css'),
+    ],
+  })
+
+  expect(copies.map((c) => `${c.name} (${c.kind})`)).toEqual([])
+})
+```
+
+Each result is tagged. `identical` is the same declaration text on both sides.
+**`resolved` is the one worth having**: the text differs and the value does not,
+once `var()` chains are followed. `--haus-z-modal: 400` against our
+`var(--haus-z-400)`, where `--haus-z-400` is `400`, is how a consumer opts out of
+a scale while still appearing to be on it.
+
+**Which files you pass as `upstream` decides the question.** Include `brand.css`
+and you are asking *do I restate anything haus ships, its colour choices
+included*. Leave it out and you are asking *do I restate anything structural*,
+with your palette treated as your business. Against drift the two answers are 143
+and 89, and the 54 in the gap are exactly its brand.
+
+Overriding a role is fine and several consumers should. Overriding it to our
+value is the thing this reports.
+
 `alsoDefined` takes properties set outside CSS, a component doing
 `style={{ '--haus-avatar-bg': v }}` defines one that no stylesheet will show.
 
