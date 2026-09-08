@@ -51,6 +51,23 @@ rather than two so a consumer migrates once.
 
 ---
 
+## haus-tokens 2.4.0
+
+*2026-09-08. drift's brand grows its radius group.*
+
+**Added** · Four `radius` entries in `brands/drift.css`, taking it to 58. drift
+sits one step tighter than haus at all three sizes, and states `radius-marker` at
+haus's own value because the form tier is all or nothing per group.
+
+**`elevation` is deliberately absent, and that is a limitation worth naming.**
+drift's two elevation roles point at its own `--shadow-*` ramp, which haus does
+not ship, and **a brand may only reference what haus ships**. So the form tier
+carries drift's radius and cannot carry its shadows: those two stay in the
+product. A brand file living inside the design system can only express the parts
+of a product's identity the system already has vocabulary for.
+
+---
+
 ## haus-tokens 2.3.1
 
 *2026-09-08. 2.3.0 announced a brand the package did not contain.*

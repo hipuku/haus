@@ -100,5 +100,19 @@
     --haus-brand-error-on-default:  var(--haus-damson-0);
     --haus-brand-error-emphasis:    var(--haus-cherry-900);  /* ── Backdrop (Modal, Drawer, etc.) ──────────────────────────────────── */
 
+    /* ── Radius, the form tier ───────────────────────────────────────────── */
+    /* Drift sits one step tighter than haus at all three sizes: a 6px control
+       against 8px, an 8px surface against 12px, a 12px overlay against 16px.
+       That is the whole of its shape difference and it is deliberate.
+
+       marker is stated at haus's own value because the form tier is all or
+       nothing per group. Drift does not disagree about a checkbox's corner; the
+       rule exists so that a brand cannot supply half a group and leave the other
+       half inheriting, which renders as two shapes with nothing reporting it. */
+    --haus-brand-radius-control:  var(--haus-radius-sm);
+    --haus-brand-radius-surface:  var(--haus-radius-md);
+    --haus-brand-radius-overlay:  var(--haus-radius-lg);
+    --haus-brand-radius-marker:   var(--haus-radius-sm);   /* haus's value, stated by the group rule */
+
   }
 }
