@@ -5,7 +5,7 @@
  * `var(--x)` for an undefined `--x` drops the declaration with no warning, no
  * build error, and a component that renders unstyled.
  */
-import { readFileSync, readdirSync } from 'node:fs'
+import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { brandRoles, brandRolesBase, brandRolesFeedback, brandRolesForm } from './brand'
@@ -155,5 +155,23 @@ describe('what a consumer can actually reach', () => {
     for (const name of ['brandRoles', 'brandRolesBase', 'brandRolesFeedback', 'brandRolesForm']) {
       expect(root, `${name} is not reachable from the package root`).toHaveProperty(name)
     }
+  })
+})
+
+describe('what the artefact actually contains', () => {
+  const DIST = join(process.cwd(), 'dist', 'brands')
+
+  it.skipIf(!existsSync(DIST))('ships every brand in src/brands', () => {
+    // haus#53. tsup carried a hardcoded BRANDS list beside the directory, so
+    // brands/drift.css was added, contract-tested and published while the build
+    // copied only vault.css: 2.3.0 announced a brand the artefact did not
+    // contain. Every assertion above reads the source directory and passed.
+    //
+    // The list is read from the directory now, and this asserts the thing that
+    // was never asserted: not that a brand satisfies the contract, but that a
+    // consumer can get it.
+    const src = readdirSync(join(SRC, 'brands')).filter((f) => f.endsWith('.css')).sort()
+    const shipped = readdirSync(DIST).filter((f) => f.endsWith('.css')).sort()
+    expect(shipped).toEqual(src)
   })
 })

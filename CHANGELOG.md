@@ -51,6 +51,27 @@ rather than two so a consumer migrates once.
 
 ---
 
+## haus-tokens 2.3.1
+
+*2026-09-08. 2.3.0 announced a brand the package did not contain.*
+
+**Fixed** · `brands/drift.css` is actually shipped. `tsup.config.ts` carried a
+hardcoded `BRANDS = ['vault.css']` beside the directory, so the new brand was
+added, contract-tested and published while the build copied only vault's. **A
+consumer installing 2.3.0 and importing `haus-tokens/brands/drift.css` got
+nothing.**
+
+`brand.test.ts` reads `src/brands` with `readdirSync` and passed on all of it. The
+build read the list. **Every assertion in the package was about the source and
+none was about the artefact**, which is the same gap that let 2.1.0 ship three
+generated exports the root never re-exported.
+
+The list is read from the directory now, and a new assertion compares
+`dist/brands` against `src/brands` when a build is present. Verified by removing
+the file from `dist` and watching it fail.
+
+---
+
 ## haus-tokens 2.3.0
 
 *2026-09-08. A third brand, and nothing else.*

@@ -1,4 +1,4 @@
-import { copyFile, mkdir } from 'node:fs/promises'
+import { copyFile, mkdir, readdir } from 'node:fs/promises'
 import { defineConfig } from 'tsup'
 
 // The CSS files and tokens.json are shipped as-is. They are the source form,
@@ -13,8 +13,17 @@ const ASSETS = [
   'index.css',
   'tokens.json',
 ]
-/** Brands ship as their own directory so a consumer can point at one by name. */
-const BRANDS = ['vault.css']
+/**
+ * Brands ship as their own directory so a consumer can point at one by name.
+ *
+ * Read from the directory rather than listed, since haus#53. The list was
+ * `['vault.css']` and `brands/drift.css` was added, tested and published without
+ * it: `brand.test.ts` reads the directory and passed, and the build read this
+ * list and shipped nothing, so 2.3.0 announced a brand the artefact did not
+ * contain. A hand-maintained list beside a directory is a second place for the
+ * same fact, and this package has now produced that defect four times.
+ */
+const BRANDS = (await readdir('src/brands')).filter((f) => f.endsWith('.css'))
 
 /**
  * Dual output, ESM and CJS.
