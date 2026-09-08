@@ -30,8 +30,17 @@ const meta = {
       },
     },
   },
-  argTypes: { size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] } },
-  args: { items: ITEMS, value: 'overview', size: 'md', 'aria-label': 'Audit sections' },
+  argTypes: {
+    size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] },
+    appearance: { control: 'inline-radio', options: ['underline', 'segmented'] },
+  },
+  args: {
+    items: ITEMS,
+    value: 'overview',
+    size: 'md',
+    appearance: 'underline',
+    'aria-label': 'Audit sections',
+  },
 } satisfies Meta<typeof Tabs>
 
 export default meta
@@ -62,5 +71,41 @@ export const Sizes: Story = {
         ))}
       </div>
     )
+  },
+}
+
+export const Segmented: Story = {
+  render: function Segmented() {
+    const [value, setValue] = useState('write')
+    return (
+      <Tabs
+        items={[
+          { value: 'write', label: 'Write' },
+          { value: 'preview', label: 'Preview' },
+        ]}
+        value={value}
+        onValueChange={setValue}
+        appearance="segmented"
+        aria-label="Editor mode"
+      />
+    )
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'A second appearance (haus#60), and it is a shape rather than a ' +
+          'weight. `underline` stays the default so nothing existing moves. ' +
+          '\n\n' +
+          '`segmented` exists because a two-way mode switch is not a set of ' +
+          "sections. core's editor toggles between Write and Preview, and a row " +
+          'of underlined words does not say *these are the two states of one ' +
+          'control* the way a filled segment does. ' +
+          '\n\n' +
+          'It is deliberately **not** the shared `Appearance` union, which is ' +
+          '`subtle | solid` and means fill weight on Badge and Toast. Reusing ' +
+          'that name would put two unrelated meanings on one type.',
+      },
+    },
   },
 }
