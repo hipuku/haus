@@ -282,7 +282,7 @@ function buildBrandTypes(): string {
   if (names.length === 0) throw new Error('brand.css declares no --haus-brand- properties')
 
   // The tier a role belongs to is its ramp, not its position in the file, so the
-  // split survives someone reordering brand.css. haus#47.
+  // split survives someone reordering brand.css. haus#52.
   const FEEDBACK = ['info', 'success', 'warning', 'error']
   const rampOf = (n: string) => n.replace('--haus-brand-', '').split('-')[0]
   const isFeedback = (n: string) => FEEDBACK.includes(rampOf(n))

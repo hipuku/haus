@@ -23,7 +23,7 @@ const BRAND = declaredIn(brand)
 const BRAND_ENTRIES = [...BRAND].filter((n) => n.startsWith('--haus-brand-'))
 
 /**
- * The tier split, haus#47. A role's tier is its ramp, so the rule survives
+ * The tier split, haus#52. A role's tier is its ramp, so the rule survives
  * someone reordering brand.css.
  */
 const FEEDBACK_RAMPS = ['info', 'success', 'warning', 'error'] as const
@@ -73,7 +73,7 @@ describe('the brand map', () => {
   })
 
   it('splits into a required tier and an optional one', () => {
-    // haus#47. Both halves have to be non-empty or the split has collapsed and
+    // haus#52. Both halves have to be non-empty or the split has collapsed and
     // every assertion below it passes vacuously.
     expect(BASE_ENTRIES.length).toBe(28)
     expect(FEEDBACK_ENTRIES.length).toBe(26)
@@ -89,7 +89,7 @@ describe('the brand map', () => {
     // A contract with one implementation is not a contract. This is what makes
     // the second brand a proof rather than a decoration.
     //
-    // The base tier only, since haus#47. A brand omitting the feedback tier is
+    // The base tier only, since haus#52. A brand omitting the feedback tier is
     // legitimate and inherits it from :root: custom properties inherit, and a
     // named brand overrides only what it declares. Omitting a base entry is not
     // legitimate, because nothing upstream is a sensible substitute for a

@@ -8,7 +8,7 @@
    meant taking haus's palette, and two products declared their own tokens rather
    than do that.
 
-   TWO TIERS, since haus#47. The base tier is required: every product has
+   TWO TIERS, since haus#52. The base tier is required: every product has
    surfaces, text, borders and one primary colour, and a brand that omits any of
    them renders unstyled. The feedback tier is optional: info, success, warning
    and error are the four semantics of a notification, and a product whose

@@ -19,7 +19,7 @@ even when the hex barely moves.
 
 ### haus-tokens
 
-**Added** · The brand contract is tiered, `haus#47`, [decision 0014](docs/decisions/0014-the-brand-contract-is-tiered.md).
+**Added** · The brand contract is tiered, `haus#52`, [decision 0014](docs/decisions/0014-the-brand-contract-is-tiered.md).
 `brand.css`'s 54 entries split into a required base of 28 (surfaces, ink, borders,
 primary, backdrop) and an optional feedback tier of 26 (`info`, `success`,
 `warning`, `error`). A brand may now supply the base alone and inherit the rest

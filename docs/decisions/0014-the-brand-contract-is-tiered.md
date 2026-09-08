@@ -1,7 +1,12 @@
 # 0014 · The brand contract is tiered: a base every product has, and a feedback tier only some do
 
 **Accepted**, 2026-09-08. **Implemented in `brand.css`, `brand.test.ts` and the
-generated `brand.ts`.** `haus#47`.
+generated `brand.ts`.** `haus#52`.
+
+*The implementing commit's message says `haus#47`, which is wrong. The issue was
+written before it was filed and came back as #52. The commit is on `main` and is
+not being rewritten to correct a reference; the number here is the right one, and
+this note is the correction.*
 
 ## Context
 
@@ -112,5 +117,5 @@ the one place the two sides do not match by construction.
 
 It does not make the brand cover anything but colour. drift carries 19 deliberate
 non-colour departures, in radius, elevation, z-index, opacity, border-width and
-type, and none of them has an input to supply. That is `haus#48`, and it is the
+type, and none of them has an input to supply. That is `haus#53`, and it is the
 other half of the same problem.
