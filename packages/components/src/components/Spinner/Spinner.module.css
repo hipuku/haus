@@ -1,60 +1,58 @@
-@layer haus.components {
+.spinner {
   /* A ring with one segment removed, rotating. Drawn with a border rather than
-     an SVG so it takes currentColor and needs no fill plumbing: a spinner
-     inside a Button is the button's text colour, whatever tone that is. */
+     an SVG so it takes currentColor and needs no fill plumbing: a spinner inside
+     a Button is the button's text colour, whatever tone that is. */
+  display: inline-block;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  border: var(--haus-border-width-thick) solid currentColor;
+  border-block-start-color: transparent;
+  border-radius: var(--haus-radius-pill);
+  animation: haus-spinner-rotate var(--haus-motion-duration-emphasis)
+    var(--haus-ease-linear) infinite;
+}
+
+/* 1em, so a spinner in a line of text matches the text. Button's was already
+   this and is the reason the size exists. */
+.text {
+  inline-size: 1em;
+  block-size: 1em;
+}
+
+.sm {
+  inline-size: var(--haus-icon-sm);
+  block-size: var(--haus-icon-sm);
+}
+
+.md {
+  inline-size: var(--haus-icon-lg);
+  block-size: var(--haus-icon-lg);
+}
+
+@keyframes haus-spinner-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* An indefinite animation is the case prefers-reduced-motion is most clearly
+   for, and it is also the one case where stopping outright is wrong: a still
+   ring reads as a broken graphic rather than as waiting. It slows to the
+   reduced duration and keeps turning, which is the same treatment Button's
+   spinner already had. */
+@media (prefers-reduced-motion: reduce) {
   .spinner {
-    display: inline-block;
-    flex-shrink: 0;
-    box-sizing: border-box;
-    border: var(--haus-border-width-thick) solid currentColor;
+    animation-duration: var(--haus-duration-reduced);
+  }
+}
+
+/* forced-colors drops currentColor borders to the system text colour, which
+   is correct here: the ring stays visible and takes the user's own palette.
+   Stated rather than left to chance, because every other component in this
+   package has an explicit forced-colors position. */
+@media (forced-colors: active) {
+  .spinner {
+    border-color: CanvasText;
     border-block-start-color: transparent;
-    border-radius: var(--haus-radius-pill);
-    animation: haus-spinner-rotate var(--haus-motion-duration-emphasis)
-      var(--haus-ease-linear) infinite;
-  }
-
-  /* 1em, so a spinner in a line of text matches the text. Button's was already
-     this and is the reason the size exists. */
-  .text {
-    inline-size: 1em;
-    block-size: 1em;
-  }
-
-  .sm {
-    inline-size: var(--haus-icon-sm);
-    block-size: var(--haus-icon-sm);
-  }
-
-  .md {
-    inline-size: var(--haus-icon-lg);
-    block-size: var(--haus-icon-lg);
-  }
-
-  @keyframes haus-spinner-rotate {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
-  /* An indefinite animation is the case prefers-reduced-motion is most clearly
-     for, and it is also the one case where stopping outright is wrong: a still
-     ring reads as a broken graphic rather than as waiting. It slows to the
-     reduced duration and keeps turning, which is the same treatment Button's
-     spinner already had. */
-  @media (prefers-reduced-motion: reduce) {
-    .spinner {
-      animation-duration: var(--haus-duration-reduced);
-    }
-  }
-
-  /* forced-colors drops currentColor borders to the system text colour, which
-     is correct here: the ring stays visible and takes the user's own palette.
-     Stated rather than left to chance, because every other component in this
-     package has an explicit forced-colors position. */
-  @media (forced-colors: active) {
-    .spinner {
-      border-color: CanvasText;
-      border-block-start-color: transparent;
-    }
   }
 }
