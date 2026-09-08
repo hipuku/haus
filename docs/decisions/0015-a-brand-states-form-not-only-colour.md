@@ -79,6 +79,31 @@ removal**, and core is exactly that consumer today. Under
 Filed separately rather than smuggled in. A tier that is right and a version that
 is wrong is still wrong.
 
+## Half of this tier cannot exist in Figma, and that is structural
+
+Recorded here rather than discovered later. In code the seven form entries behave
+identically. In Figma they split exactly down the middle:
+
+| Form tier | In Figma | Can a mode change it? |
+|---|---|---|
+| 4 radius roles | semantic variables, aliasing primitives | **yes** |
+| 3 elevation roles | effect styles | **no** |
+
+**Figma has no shadow variable type at all**, which is why shadows are styles, and
+`figma/STYLES.md` already measures the consequence: effect styles cannot reference
+one another, where variables carry 184 aliases. Styles have no modes either.
+
+So when `brands/drift.css` states its own shadow ramp, the Figma file cannot
+express that as a fourth mode. It needs separate effect styles, or the difference
+stays code-only and documented. The question is open in
+`FIGMA-CHANGES-haus53.md` and is worth answering before `D2`, because it decides
+what a brand *is* in the Figma file as against in the package.
+
+This is the second asymmetry of its kind, after 0014's, and both point the same
+way: **a Figma mode and a `data-haus-theme` value are the same object only for
+variables.** The claim in `theming.md` that they are simply the same object is
+true of colour and radius and false of elevation.
+
 ## Consequences
 
 **Additive, and nothing renders differently.** All seven roles resolve through the
