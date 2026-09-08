@@ -51,9 +51,9 @@
     "haus-colour-utils": "workspace:^"
   },
   "devDependencies": {
-    "happy-dom": "^20.11.15",
+    "happy-dom": "^20.14.0",
     "tsup": "^8.5.1",
     "typescript": "^5.4.5",
-    "vitest": "^4.1.11"
+    "vitest": "^5.0.0"
   }
 }
