@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@vitest/coverage-v8": "^4.1.11",
+    "@vitest/coverage-v8": "^5.0.0",
     "chromatic": "^18.7.2",
     "eslint": "^10.10.0",
     "eslint-plugin-react-hooks": "^7.1.1",
