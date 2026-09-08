@@ -15,6 +15,33 @@ Versioning follows [decision 0004](docs/decisions/0004-versioning-is-1-x.md): a
 token rename is a major at an identical value, and a contrast change is a major
 even when the hex barely moves.
 
+## haus-tokens 3.1.0
+
+*2026-09-08. core's brand takes the radius form group.*
+
+A minor: four additive entries in `brands/core.css`, no existing declaration
+moved, and no consumer outside the `core` brand mode renders differently.
+
+**Added** · **The radius form group in `brands/core.css`**, taking core off the
+base tier alone. `C1` gave core the base tier only, so it inherited
+`radius-control` at 8px while its own controls, panels and icon buttons were
+drawn at 5px. `C3` slice 2 put haus Buttons beside them and the mismatch became
+visible in the product.
+
+**core is not drift's shape**, which is the part worth recording. drift's `D3`
+sits one step tighter than haus at all three sizes, and assuming core did the
+same would have moved a rung nothing asked to move. Measured against what core
+renders: controls at 5px against haus's 8px, one step tighter; `.panel` at 11px,
+which is haus's own surface rung; the modal at 11px against haus's 16px, one
+step tighter again. **core departs on control and overlay and agrees on
+surface**, so a second brand joining a group is not evidence about the shape of
+the group.
+
+`radius-marker` is stated at haus's own value because the form tier is all or
+nothing per group. core has no checkbox of its own to measure, so it takes
+haus's rung rather than inventing one. The guard was checked by breaking it:
+deleting that line fails `core.css supplies whole optional groups or none`.
+
 ## haus-components 2.0.0
 
 *2026-09-08. The nineteenth component, the `aria-busy` fix, and a `haus-tokens 3.0.0` floor.*
