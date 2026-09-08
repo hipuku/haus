@@ -4,6 +4,22 @@ import styles from './Tabs.module.css'
 
 export type TabsSize = Size
 
+/**
+ * The two shapes a tablist takes, and they are shapes rather than weights.
+ *
+ * `underline` is haus's original and stays the default, so nothing existing
+ * moves. `segmented` is a bordered group with the selected tab filled, which is
+ * what a two- or three-way mode switch reads as: core's editor toggles between
+ * Write and Preview, and a row of underlined words does not say "these are the
+ * two states of one control" the way a filled segment does.
+ *
+ * Deliberately **not** the shared `Appearance` union. That is
+ * `'subtle' | 'solid'` and Badge and Toast spend it on fill weight. Reusing the
+ * name here would put two unrelated meanings on one type and the compiler would
+ * accept every wrong combination of them.
+ */
+export type TabsAppearance = 'underline' | 'segmented'
+
 export interface TabItem {
   /** Stable identity, and what `onValueChange` hands back. */
   value: string
@@ -16,6 +32,7 @@ interface TabsBaseProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onCh
   value: string
   onValueChange: (value: string) => void
   size?: TabsSize
+  appearance?: TabsAppearance
   /** Lands on the tablist rather than the wrapper, so the label a screen reader
    *  reads for the tab group is the one the caller wrote. */
   tabListClassName?: string
@@ -64,6 +81,7 @@ export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(function Tabs(
     value,
     onValueChange,
     size = 'md',
+    appearance = 'underline',
     className,
     tabListClassName,
     children,
@@ -117,7 +135,7 @@ export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(function Tabs(
         role="tablist"
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledBy}
-        className={[styles.list, styles[size], tabListClassName].filter(Boolean).join(' ')}
+        className={[styles.list, styles[appearance], styles[size], tabListClassName].filter(Boolean).join(' ')}
       >
         {items.map((item) => {
           const selected = item.value === value

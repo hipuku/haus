@@ -6,19 +6,33 @@
   display: flex;
   align-items: stretch;
   gap: var(--haus-space-gap-2xs);
+}
+
+/* ── Appearances ─────────────────────────────────────────────────────────────
+   The rule under the row and the filled group are alternatives, not layers, so
+   each appearance owns its own decoration and the shared `.tab` carries none of
+   it. Written this way because the underline treatment used to sit on `.tab`
+   itself, where a second appearance would have inherited a border it does not
+   want and had to unset it. */
+
+.underline {
   border-block-end: var(--haus-border-width-default) solid var(--haus-color-border-default);
+}
+
+/* A bordered group with the selected tab filled: a mode switch rather than a
+   set of sections. The inset is one step so the filled tab sits inside the
+   track rather than against its edge. */
+.segmented {
+  padding: var(--haus-space-inset-2xs);
+  border-radius: var(--haus-radius-control);
+  background: var(--haus-color-surface-sunken);
+  align-self: flex-start;
 }
 
 .tab {
   appearance: none;
   background: none;
   border: 0;
-  /* The selected tab is marked with a rule under it, and an unselected one
-     carries the same rule in a transparent colour rather than no rule at all.
-     A border that appears on selection moves every tab by its width, which
-     reads as the row twitching. */
-  border-block-end: var(--haus-border-width-thick) solid transparent;
-  margin-block-end: calc(-1 * var(--haus-border-width-default));
   color: var(--haus-color-ink-secondary);
   cursor: pointer;
   display: inline-flex;
@@ -48,9 +62,27 @@
   cursor: not-allowed;
 }
 
-.selected {
+/* The selected tab is marked with a rule under it, and an unselected one
+   carries the same rule in a transparent colour rather than no rule at all. A
+   border that appears on selection moves every tab by its width, which reads as
+   the row twitching. */
+.underline .tab {
+  border-block-end: var(--haus-border-width-thick) solid transparent;
+  margin-block-end: calc(-1 * var(--haus-border-width-default));
+}
+
+.underline .selected {
   color: var(--haus-color-ink-primary);
   border-block-end-color: var(--haus-color-primary-default);
+}
+
+.segmented .tab {
+  border-radius: var(--haus-radius-marker);
+}
+
+.segmented .selected {
+  color: var(--haus-color-ink-primary);
+  background: var(--haus-color-surface-raised);
 }
 
 .sm { font-size: var(--haus-type-label-sm-size); }
