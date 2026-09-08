@@ -118,6 +118,26 @@
     /* ── Backdrop ──────────────────────────────────────────────────────────── */
     --haus-brand-backdrop:  oklch(from var(--haus-paper-950) l c h / var(--haus-opacity-60));
 
+    /* ── Radius, the form tier ───────────────────────────────────────────────
+       core's scale is 5px / 7px / 11px under a comment reading "radii: tight,
+       paper-like", so the tightness is stated intent rather than an accident.
+
+       Unlike drift, core is *not* uniformly one step tighter, and assuming it
+       was would have moved a rung nothing asked to move. Measured against what
+       core actually renders: its controls are 5px against haus's 8px, one step
+       tighter; its `.panel` is 11px, which is haus's own surface rung; and its
+       modal was 11px against haus's 16px, one step tighter again. So core
+       departs on control and overlay and agrees on surface.
+
+       marker is stated at haus's own value because the form tier is all or
+       nothing per group: a brand cannot supply half a group and leave the rest
+       inheriting, which renders as two shapes with nothing reporting it. core
+       has no checkbox of its own to measure, so it takes haus's rung. */
+    --haus-brand-radius-control:  var(--haus-radius-sm);   /* 5px measured -> 4px */
+    --haus-brand-radius-surface:  var(--haus-radius-lg);   /* 11px measured -> 12px, haus's own rung */
+    --haus-brand-radius-overlay:  var(--haus-radius-lg);   /* 11px measured -> 12px, one rung under haus */
+    --haus-brand-radius-marker:   var(--haus-radius-sm);   /* haus's value, stated by the group rule */
+
     /* ── Typeface (form tier, haus#54) ─────────────────────────────────────────
        core's faces, delivered by next/font: `--font-gabarito` and
        `--font-geist-mono` are the hashed families the app registers, so the
