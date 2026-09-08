@@ -183,5 +183,24 @@
     --haus-brand-modal-width-md:  var(--haus-overlay-width-md);    /* 560px: the default              */
     --haus-brand-modal-width-lg:  var(--haus-overlay-width-lg);    /* 720px: code, tables, previews   */
 
+    /* ── Typeface ────────────────────────────────────────────────────────── */
+    /* haus#54. Until now `--haus-font-sans` and `--haus-font-mono` were
+       primitives that 32 components read directly, exempt from the primitive-read
+       rule because their own name was the role. That reasoning held for exactly
+       as long as there was one brand, and two consumers already disagree: vault
+       forks sans to Manrope Variable, drift keeps system-ui for all three of its
+       faces. By decision 0015's own argument typeface is one of the four things
+       that make two products look different (colour, shadow, radius, type), so
+       it belongs in the form tier beside the other three.
+
+       The value is a raw stack, not a `var()`, because there is no primitive left
+       to point at: the whole of haus#54 is that the primitive moved out of
+       primitives.css to here, which is a removal for a primitives-only consumer
+       and so a major under decision 0004. `semantics.css` exposes the unchanged
+       role name `--haus-font-sans` reading this entry, so no component read
+       moved. */
+    --haus-brand-font-sans:  'Manrope', system-ui, sans-serif;
+    --haus-brand-font-mono:  'Fira Code', ui-monospace, monospace;
+
   }
 }

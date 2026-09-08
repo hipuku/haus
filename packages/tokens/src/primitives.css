@@ -68,9 +68,6 @@
     --haus-cherry-900:  oklch(33% 0.110 27);   /* Emphasis / high-contrast text */
 
     /* ── Type scale ──────────────────────────────────────────────────────────── */
-    --haus-font-sans:  'Manrope', system-ui, sans-serif;
-    --haus-font-mono:  'Fira Code', ui-monospace, monospace;
-
     --haus-text-11:  0.6875rem;
     --haus-text-12:  0.75rem;
     --haus-text-13:  0.8125rem;

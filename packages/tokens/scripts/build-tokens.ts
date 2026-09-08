@@ -81,8 +81,10 @@ const SCALES: Array<{
   /** Leaves that belong to another layer and must not be emitted here. */
   omit?: string[]
 }> = [
-  { heading: 'Type scale', prefix: '--font', path: ['font', 'family'] },
-  { heading: '', prefix: '--text', path: ['font', 'size'] },
+  // font.family left the primitive layer with haus#54: typeface is brandable now
+  // (a form-tier brand entry read by --haus-font-sans in semantics.css), so it is
+  // no longer a raw value and no longer generated here.
+  { heading: 'Type scale', prefix: '--text', path: ['font', 'size'] },
   { heading: '', prefix: '--weight', path: ['font', 'weight'] },
   { heading: '', prefix: '--leading', path: ['font', 'lineHeight'] },
   { heading: '', prefix: '--tracking', path: ['font', 'tracking'] },
@@ -296,7 +298,7 @@ function buildBrandTypes(): string {
   // The tier a role belongs to is its group, not its position in the file, so the
   // split survives someone reordering brand.css. haus#52 and haus#53.
   const FEEDBACK = ['info', 'success', 'warning', 'error']
-  const FORM = ['radius', 'elevation', 'modal']
+  const FORM = ['radius', 'elevation', 'modal', 'font']
   const groupOf = (n: string) => n.replace('--haus-brand-', '').split('-')[0]
   const isFeedback = (n: string) => FEEDBACK.includes(groupOf(n))
   const isForm = (n: string) => FORM.includes(groupOf(n))
@@ -337,10 +339,11 @@ function buildBrandTypes(): string {
     '/**',
     ' * The other optional half: what a product re-decides that is not a colour.',
     ' *',
-    ' * Radius and elevation, taken from what drift and vault actually changed. Not',
-    ' * z-index, opacity, border-width or spacing: nobody re-decides those, and the',
-    ' * overrides that looked like it were the literal values of haus\'s own',
-    ' * primitives typed out. All-or-nothing per group, in brand.test.ts.',
+    ' * Radius, elevation, modal width and typeface, taken from what drift and vault',
+    ' * actually changed. Not z-index, opacity, border-width or spacing: nobody',
+    ' * re-decides those, and the overrides that looked like it were the literal',
+    ' * values of haus\'s own primitives typed out. All-or-nothing per group, in',
+    ' * brand.test.ts.',
     ' */',
     'export interface BrandMapForm {',
     ...form.map((n) => `  '${n}': string`),
@@ -364,7 +367,7 @@ function buildBrandTypes(): string {
     ...feedback.map((n) => `  '${n}',`),
     '] as const',
     '',
-    '/** The optional non-colour half: radius and elevation. */',
+    '/** The optional non-colour half: radius, elevation, modal width and typeface. */',
     `export const brandRolesForm = [`,
     ...form.map((n) => `  '${n}',`),
     '] as const',
@@ -455,9 +458,7 @@ export const tokens = {
 ${colour}
   },
   font: {
-    family: {
-${jsObject(entries(group(['font', 'family'])), '      ')}
-    },
+    // family removed with haus#54; it is a brand entry now, not a primitive.
     size: {
 ${jsObject(entries(group(['font', 'size'])), '      ')}
     },

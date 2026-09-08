@@ -91,7 +91,10 @@ describe('components read roles, not primitives', () => {
     // tracking- left this list with haus#37: tracking is carried by the type
     // roles now, so a component reading a --haus-tracking-* primitive is
     // reaching past the role layer, which is the thing this test is for.
-    const NAMED_ROLE = /^--haus-(font-|weight-|icon-|control-height-)/
+    // font- left this list with haus#54: typeface is brandable now, so
+    // --haus-font-sans is a role in semantics.css reading --haus-brand-font-sans,
+    // and a component reading it is reading a role, not a primitive.
+    const NAMED_ROLE = /^--haus-(weight-|icon-|control-height-)/
     const undocumented = PAST.flatMap((d) =>
       d.primitives.filter((t) => !/^--haus-space-\d+$/.test(t) && !NAMED_ROLE.test(t)).map((t) => `${d.file}: ${t}`),
     )
@@ -147,10 +150,16 @@ describe('components read roles, not primitives', () => {
     // hand-rolled spinner came out in the same change and cost nothing here,
     // because everything it read was a role or lives in motion.css.
     //
-    // What is left is genuinely nameless: 32 reads of --haus-font-sans, five
-    // control heights, and seventeen icon sizes (five icon-sm, six icon-lg,
-    // six icon-xs). A font family is not a role and there is no honest alias to
-    // invent for it, which is haus#54.
-    expect(PAST.length - sizes.length).toBe(54)
+    // Then 54 to 22 with haus#54, and this one came down for the right reason:
+    // the 32 --haus-font-sans reads did not move, but typeface became brandable,
+    // so --haus-font-sans is now a role in semantics.css reading
+    // --haus-brand-font-sans rather than a primitive. A read that was reaching
+    // past the role layer is now landing on it. Not one component declaration
+    // changed.
+    //
+    // What is left is five control heights and seventeen icon sizes (five
+    // icon-sm, six icon-lg, six icon-xs). A control height and an icon box are
+    // sizes whose own name is already the role, with no honest alias to invent.
+    expect(PAST.length - sizes.length).toBe(22)
   })
 })

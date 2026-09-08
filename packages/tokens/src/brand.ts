@@ -86,10 +86,11 @@ export interface BrandMapFeedback {
 /**
  * The other optional half: what a product re-decides that is not a colour.
  *
- * Radius and elevation, taken from what drift and vault actually changed. Not
- * z-index, opacity, border-width or spacing: nobody re-decides those, and the
- * overrides that looked like it were the literal values of haus's own
- * primitives typed out. All-or-nothing per group, in brand.test.ts.
+ * Radius, elevation, modal width and typeface, taken from what drift and vault
+ * actually changed. Not z-index, opacity, border-width or spacing: nobody
+ * re-decides those, and the overrides that looked like it were the literal
+ * values of haus's own primitives typed out. All-or-nothing per group, in
+ * brand.test.ts.
  */
 export interface BrandMapForm {
   '--haus-brand-radius-control': string
@@ -102,6 +103,8 @@ export interface BrandMapForm {
   '--haus-brand-modal-width-sm': string
   '--haus-brand-modal-width-md': string
   '--haus-brand-modal-width-lg': string
+  '--haus-brand-font-sans': string
+  '--haus-brand-font-mono': string
 }
 
 /** A complete brand: the base tier, and as much of the optional tiers as applies. */
@@ -173,6 +176,8 @@ export const brandRoles = [
   '--haus-brand-modal-width-sm',
   '--haus-brand-modal-width-md',
   '--haus-brand-modal-width-lg',
+  '--haus-brand-font-sans',
+  '--haus-brand-font-mono',
 ] as const
 
 /** The required half. A brand supplying fewer than these renders unstyled. */
@@ -237,7 +242,7 @@ export const brandRolesFeedback = [
   '--haus-brand-error-emphasis',
 ] as const
 
-/** The optional non-colour half: radius and elevation. */
+/** The optional non-colour half: radius, elevation, modal width and typeface. */
 export const brandRolesForm = [
   '--haus-brand-radius-control',
   '--haus-brand-radius-surface',
@@ -249,4 +254,6 @@ export const brandRolesForm = [
   '--haus-brand-modal-width-sm',
   '--haus-brand-modal-width-md',
   '--haus-brand-modal-width-lg',
+  '--haus-brand-font-sans',
+  '--haus-brand-font-mono',
 ] as const

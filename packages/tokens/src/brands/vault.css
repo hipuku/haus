@@ -121,5 +121,13 @@
     /* ── Backdrop ──────────────────────────────────────────────────────── */
     --haus-brand-backdrop:               oklch(from var(--haus-damson-950) l c h / var(--haus-opacity-60));
 
+    /* ── Typeface (form tier, haus#54) ──────────────────────────────────────
+       vault forks sans to Manrope Variable, the fork that lived in vault's own
+       tokens.css as a `--haus-font-sans` override until this became a brand
+       entry. mono is stated at haus's own value because the form tier is all or
+       nothing per group: vault does not re-decide its monospace face. */
+    --haus-brand-font-sans:              'Manrope Variable', 'Manrope', system-ui, sans-serif;
+    --haus-brand-font-mono:              'Fira Code', ui-monospace, monospace;
+
   }
 }

@@ -114,5 +114,15 @@
     --haus-brand-radius-overlay:  var(--haus-radius-lg);
     --haus-brand-radius-marker:   var(--haus-radius-sm);   /* haus's value, stated by the group rule */
 
+    /* ── Typeface, the form tier (haus#54) ───────────────────────────────────
+       Drift's editorial face is system-ui across the board: sans and mono here,
+       and a third, --font-display, that stays a drift primitive because haus has
+       no display role to bind it to. These were three of the six names drift
+       deliberately did not rename in the 1.0 migration, because pointing them at
+       haus's Manrope would have changed the product's face. Stated as brand
+       inputs now rather than local primitives resolved by cascade order. */
+    --haus-brand-font-sans:  system-ui, -apple-system, sans-serif;
+    --haus-brand-font-mono:  ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
   }
 }

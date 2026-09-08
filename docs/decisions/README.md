@@ -31,3 +31,4 @@ yet true of the package, the entry names the wave that makes it true.
 | [0016](0016-a-restated-value-is-a-copy-and-the-package-says-so.md) | A restated value is a copy, and the package is what says so | Accepted · implemented |
 | [0017](0017-the-nineteenth-component-is-a-busy-indicator.md) | The nineteenth component is a busy indicator, and nothing else qualifies | Accepted · build is haus#55 |
 | [0018](0018-vaults-twenty-are-settled-one-at-a-time.md) | vault's twenty local tokens, settled one at a time | Accepted · haus side implemented, vault side is V2 |
+| [0019](0019-typeface-is-a-form-tier-brand-entry.md) | Typeface is a form-tier brand entry, and moving it is a major | Accepted · implemented, ships in haus-tokens 3.0.0 |

@@ -13,15 +13,21 @@
      textarea's minimum height and the select chevron's offset. A size is a
      value, not a role, and calling a 16px checkbox --haus-space-inset-md
      would say something untrue.
-   · 50 read a primitive that has no alias here because its own name already
-     is the role: 32 --haus-font-sans, five control heights, and thirteen icon
-     sizes (three --haus-icon-sm, four --haus-icon-lg, six --haus-icon-xs). A
-     font family is not a role and there is no honest alias to invent for it.
-     Button used to read --haus-tracking-normal here too; haus#37 moved it onto
+   · 22 read a primitive that has no alias here because its own name already
+     is the role: five control heights and seventeen icon sizes (five
+     --haus-icon-sm, six --haus-icon-lg, six --haus-icon-xs). Button used to
+     read --haus-tracking-normal here too; haus#37 moved it onto
      --haus-type-label-tracking, so tracking is a role everywhere and no
      component reads the tracking ladder. haus#43 added the icon reads: the
      chevron and the two close buttons bind their box and glyph to the icon
      scale rather than a raw size.
+
+     This was 54 until haus#54, which took the 32 --haus-font-sans reads out of
+     this count: typeface became brandable, so the font role now lives in this
+     file (reading --haus-brand-font-sans) rather than being a primitive the
+     components reach for, and a role read is not a primitive read. (The header
+     read 50 here until haus#54, stale since haus#55's Spinner took the icon
+     reads from thirteen to seventeen; corrected in the same pass.)
 
      This was 71 before haus#27. Stacking, border width and opacity used to be
      primitives wearing role names, so a product that wanted the stacking order
@@ -137,6 +143,15 @@
     /* Same ring in the error state, with the outer band carrying the error colour  */
     /* so an invalid field stays legible as invalid while focused.             */
     --haus-focus-ring-error: 0 0 0 2px var(--haus-color-surface-default), 0 0 0 4px var(--haus-color-error-default);
+
+    /* ── Typeface ─────────────────────────────────────────────────────────── */
+    /* haus#54. These two kept their names and moved here from primitives.css.
+       The name is unchanged so the 32 component reads did not move; what changed
+       is that they now resolve through a brand entry instead of a primitive, so
+       typeface is brandable and a primitives-only consumer no longer sees them
+       (the removal that makes haus#54 a major). */
+    --haus-font-sans:  var(--haus-brand-font-sans);
+    --haus-font-mono:  var(--haus-brand-font-mono);
 
     /* ── Typography roles ─────────────────────────────────────────────────── */
     /* Use all four props together. Components must not mix roles.            */

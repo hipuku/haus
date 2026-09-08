@@ -4,8 +4,8 @@
    The third brand, and the one that proves the base/feedback split earns its
    keep. vault and drift both supply the feedback tier in full, so until now a
    brand omitting it existed only as a passing test. core is the product that
-   actually omits it: its statuses are the states of a decision — proposed,
-   accepted, rejected, superseded, deprecated — five things that are not the four
+   actually omits it: its statuses are the states of a decision (proposed,
+   accepted, rejected, superseded, deprecated), five things that are not the four
    semantics of a notification, and it cannot fill info / success / warning /
    error without inventing three of them. So this file supplies the twenty-eight
    base entries and nothing else, and the feedback tier inherits from :root
@@ -17,7 +17,7 @@
 
    core brings its own ramps, the way vault brings ruby. It cannot borrow haus's
    damson for neutrals the way vault and drift do: damson is a cool, barely-
-   lavender grey (hue 290) and core is committed warm paper (hue ~82) — "warm
+   lavender grey (hue 290) and core is committed warm paper (hue ~82): "warm
    off-white surfaces, warm-grey ink", the whole of its identity. And its accent
    is cobalt (hue 260), which haus has no ramp for. So two ramps are declared
    here, --haus-paper-* and --haus-cobalt-*, every step a value core already
@@ -26,9 +26,9 @@
    Nothing is restyled. Where core has no value for a base role, the value is
    derived from an adjacent one core does render and marked DERIVED, rather than
    left to fall through to haus's cool grey. Six such steps, each named below.
-   core has fewer rungs than haus in two places — it separates surfaces by fill
+   core has fewer rungs than haus in two places. It separates surfaces by fill
    rather than by borders, and it disables by opacity rather than by a fixed
-   token — and those are the derivations.
+   token, and those are the derivations.
 
    --bg, core's warm-grey "desk" that white cards sit on, is deliberately not a
    role here. It is the app-shell background, set by core's own layout, not a
@@ -117,6 +117,17 @@
 
     /* ── Backdrop ──────────────────────────────────────────────────────────── */
     --haus-brand-backdrop:  oklch(from var(--haus-paper-950) l c h / var(--haus-opacity-60));
+
+    /* ── Typeface (form tier, haus#54) ─────────────────────────────────────────
+       core's faces, delivered by next/font: `--font-gabarito` and
+       `--font-geist-mono` are the hashed families the app registers, so the
+       stack references them and falls back to the literal name. This is the one
+       brand entry that reads an app-provided var rather than a haus primitive or
+       a bare literal, because a next/font face has no stable literal name, and
+       core is the only consumer of the core brand, so the coupling reaches no
+       one else. */
+    --haus-brand-font-sans:  var(--font-gabarito), 'Gabarito', ui-sans-serif, system-ui, sans-serif;
+    --haus-brand-font-mono:  var(--font-geist-mono), ui-monospace, monospace;
 
   }
 }

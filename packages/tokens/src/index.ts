@@ -69,10 +69,7 @@ export const tokens = {
     },
   },
   font: {
-    family: {
-      sans: "'Manrope', system-ui, sans-serif",
-      mono: "'Fira Code', ui-monospace, monospace",
-    },
+    // family removed with haus#54; it is a brand entry now, not a primitive.
     size: {
       "11": "0.6875rem",
       "12": "0.75rem",
