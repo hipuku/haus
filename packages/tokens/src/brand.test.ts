@@ -27,7 +27,7 @@ const BRAND_ENTRIES = [...BRAND].filter((n) => n.startsWith('--haus-brand-'))
  * someone reordering brand.css.
  */
 const FEEDBACK_RAMPS = ['info', 'success', 'warning', 'error'] as const
-const FORM_GROUPS = ['radius', 'elevation'] as const
+const FORM_GROUPS = ['radius', 'elevation', 'modal'] as const
 const rampOf = (n: string) => n.replace('--haus-brand-', '').split('-')[0]
 const isFeedback = (n: string) => (FEEDBACK_RAMPS as readonly string[]).includes(rampOf(n))
 const isForm = (n: string) => (FORM_GROUPS as readonly string[]).includes(rampOf(n))
@@ -83,7 +83,7 @@ describe('the brand map', () => {
     // collapsed and every assertion below it passes vacuously.
     expect(BASE_ENTRIES.length).toBe(28)
     expect(FEEDBACK_ENTRIES.length).toBe(26)
-    expect(FORM_ENTRIES.length).toBe(7)
+    expect(FORM_ENTRIES.length).toBe(10)
     expect(BASE_ENTRIES.length + FEEDBACK_ENTRIES.length + FORM_ENTRIES.length).toBe(
       BRAND_ENTRIES.length,
     )

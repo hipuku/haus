@@ -168,5 +168,20 @@
     --haus-brand-elevation-floating:  var(--haus-shadow-lg);  /* Card, Toast  */
     --haus-brand-elevation-overlay:   var(--haus-shadow-xl);  /* Modal        */
 
+    /* ── Modal width ─────────────────────────────────────────────────────── */
+    /* Modal's three sizes were 400px, 560px and 720px written into
+       Modal.module.css, invisible to the hardcoded-value gate because it has no
+       rule for width at all, the same blind spot haus#43 found for icons.
+
+       A brand entry rather than a primitive, because two products disagree and
+       both are right: haus's are a web app's, and vault ships four narrower
+       steps for a dense desktop app, 360, 420, 480 and 600. A width is a
+       proportion of the product's own layout, which is what makes it brand
+       rather than scale. vault's fourth stays vault's: a contract cannot have an
+       optional member. */
+    --haus-brand-modal-width-sm:  var(--haus-overlay-width-sm);    /* 400px: confirm, short form      */
+    --haus-brand-modal-width-md:  var(--haus-overlay-width-md);    /* 560px: the default              */
+    --haus-brand-modal-width-lg:  var(--haus-overlay-width-lg);    /* 720px: code, tables, previews   */
+
   }
 }

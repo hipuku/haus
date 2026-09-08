@@ -24,7 +24,7 @@
 
 .track {
   flex-shrink: 0;
-  width: 36px;
+  width: var(--haus-toggle-track-width);
   height: var(--haus-space-5);
   border-radius: var(--haus-radius-pill);
   background-color: var(--haus-color-border-strong);

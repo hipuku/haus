@@ -34,9 +34,9 @@
 
 /* ── Sizes ── */
 
-.sm { max-width: 400px; }
-.md { max-width: 560px; }
-.lg { max-width: 720px; }
+.sm { max-width: var(--haus-modal-width-sm); }
+.md { max-width: var(--haus-modal-width-md); }
+.lg { max-width: var(--haus-modal-width-lg); }
 
 /* ── Header ── */
 

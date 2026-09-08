@@ -108,6 +108,18 @@ const SCALES: Array<{
   { heading: 'Border width', prefix: '--border-width', path: ['borderWidth'] },
   { heading: 'Opacity', prefix: '--opacity', path: ['opacity'] },
   { heading: 'Icon sizes (Font Awesome, paired with the type scale)', prefix: '--icon', path: ['iconSize'] },
+  {
+    heading: 'Overlay widths',
+    note: "How wide a floating surface may get. A proportion of the product's own layout, which is why Modal's three are a brand entry.",
+    prefix: '--overlay-width',
+    path: ['overlayWidth'],
+  },
+  {
+    heading: 'Component geometry',
+    note: 'On no ladder and not spacing. Literals inside components until haus#53 put width and height into the hardcoded-value rule.',
+    prefix: '--size',
+    path: ['size'],
+  },
 ]
 
 /** Groups that are JS-only: custom properties cannot be used in @media conditions. */
@@ -284,7 +296,7 @@ function buildBrandTypes(): string {
   // The tier a role belongs to is its group, not its position in the file, so the
   // split survives someone reordering brand.css. haus#52 and haus#53.
   const FEEDBACK = ['info', 'success', 'warning', 'error']
-  const FORM = ['radius', 'elevation']
+  const FORM = ['radius', 'elevation', 'modal']
   const groupOf = (n: string) => n.replace('--haus-brand-', '').split('-')[0]
   const isFeedback = (n: string) => FEEDBACK.includes(groupOf(n))
   const isForm = (n: string) => FORM.includes(groupOf(n))

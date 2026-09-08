@@ -30,3 +30,4 @@ yet true of the package, the entry names the wave that makes it true.
 | [0015](0015-a-brand-states-form-not-only-colour.md) | A brand states form as well as colour, and form is four things | Accepted · implemented |
 | [0016](0016-a-restated-value-is-a-copy-and-the-package-says-so.md) | A restated value is a copy, and the package is what says so | Accepted · implemented |
 | [0017](0017-the-nineteenth-component-is-a-busy-indicator.md) | The nineteenth component is a busy indicator, and nothing else qualifies | Accepted · build is haus#55 |
+| [0018](0018-vaults-twenty-are-settled-one-at-a-time.md) | vault's twenty local tokens, settled one at a time | Accepted · haus side implemented, vault side is V2 |

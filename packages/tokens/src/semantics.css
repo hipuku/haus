@@ -346,6 +346,18 @@
     --haus-elevation-raised:  var(--haus-brand-elevation-raised);   /* Toggle knob            */
     --haus-elevation-floating: var(--haus-brand-elevation-floating);  /* Card, Toast            */
     --haus-elevation-overlay: var(--haus-brand-elevation-overlay);   /* Modal                  */
+  }
+
+  /* ── Overlay width ─────────────────────────────────────────────────────────
+     Modal's three sizes, which lived as literals in the component until haus#53.
+     A role rather than a primitive because a width is a proportion of the
+     product's own layout: haus's suit a web app and vault's four are narrower
+     for a dense desktop one. */
+  :root,
+  [data-haus-theme] {
+    --haus-modal-width-sm: var(--haus-brand-modal-width-sm);
+    --haus-modal-width-md: var(--haus-brand-modal-width-md);
+    --haus-modal-width-lg: var(--haus-brand-modal-width-lg);
 
     /* ── Stacking ────────────────────────────────────────────────────────────
        Named for what sits at each height, rather than for the number. The
@@ -387,7 +399,23 @@
        Control heights are not on that ladder at all: 36px and 44px are not
        steps of it. They are their own primitive scale, --haus-control-height-sm,
        -md and -lg, whose names are already the role, so they are read direct
-       like --haus-border-width-default.  */
+       like --haus-border-width-default.
+
+       Three values were on no ladder and had no name, found by haus#53 when
+       width and height joined the hardcoded-value rule. Each was written into a
+       component and invisible, which is the haus#43 blind spot again: the rule
+       held min-height and not width.  */
+    --haus-toast-width:        var(--haus-overlay-width-xs);    /* 360px. Modal's widths are a brand
+                                               entry because two products disagree;
+                                               this is a plain role because none
+                                               has yet. Promote it if one does.   */
+    --haus-toggle-track-width: var(--haus-size-toggle-track);    /* 36px. Reads as control-height-md by
+                                               coincidence and is not one: it is
+                                               two thumbs and the travel between.  */
+    --haus-marker-dot:         var(--haus-size-marker-dot);   /* 6px. Badge's status dot and Radio's
+                                               inner circle, the same value twice
+                                               with no name, which is haus#34's
+                                               signal.                             */
 
 
   }

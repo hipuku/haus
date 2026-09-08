@@ -99,6 +99,9 @@ export interface BrandMapForm {
   '--haus-brand-elevation-raised': string
   '--haus-brand-elevation-floating': string
   '--haus-brand-elevation-overlay': string
+  '--haus-brand-modal-width-sm': string
+  '--haus-brand-modal-width-md': string
+  '--haus-brand-modal-width-lg': string
 }
 
 /** A complete brand: the base tier, and as much of the optional tiers as applies. */
@@ -167,6 +170,9 @@ export const brandRoles = [
   '--haus-brand-elevation-raised',
   '--haus-brand-elevation-floating',
   '--haus-brand-elevation-overlay',
+  '--haus-brand-modal-width-sm',
+  '--haus-brand-modal-width-md',
+  '--haus-brand-modal-width-lg',
 ] as const
 
 /** The required half. A brand supplying fewer than these renders unstyled. */
@@ -240,4 +246,7 @@ export const brandRolesForm = [
   '--haus-brand-elevation-raised',
   '--haus-brand-elevation-floating',
   '--haus-brand-elevation-overlay',
+  '--haus-brand-modal-width-sm',
+  '--haus-brand-modal-width-md',
+  '--haus-brand-modal-width-lg',
 ] as const

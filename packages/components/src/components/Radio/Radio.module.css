@@ -96,8 +96,8 @@
 
 .checked .circle::after {
   content: '';
-  width: 6px;
-  height: 6px;
+  width: var(--haus-marker-dot);
+  height: var(--haus-marker-dot);
   border-radius: 50%;
   background-color: var(--haus-color-primary-default);
 }

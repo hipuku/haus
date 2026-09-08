@@ -64,6 +64,20 @@ ships from the package now. Run against drift it reproduces, independently, the
 
 Pure, like the rest of the guard: it takes CSS as strings and reads no files.
 
+**Added** · Modal widths become a form-tier brand group, `haus#53`,
+[decision 0018](docs/decisions/0018-vaults-twenty-are-settled-one-at-a-time.md).
+`--haus-brand-modal-width-sm|md|lg`, taking the form tier from 7 entries to 10,
+plus the `overlayWidth` and `size` primitive groups and the roles
+`--haus-toast-width`, `--haus-toggle-track-width` and `--haus-marker-dot`.
+
+**Fixed** · `width`, `height`, `max-width`, `min-width` and `max-height` join the
+hardcoded-value rule, which listed `min-height` and not `width`: the blind spot
+`haus#43` named for icon sizes. It found ten literals, including Modal's three
+widths sitting inside a design system whose CI fails on a hardcoded value.
+
+**Nothing renders differently.** Every converted value was checked rather than
+assumed: `25rem` is `400px`, `22.5rem` is `360px`, `0.375rem` is `6px`.
+
 The 1.0 cut. Everything below is breaking, deliberately, and lands in one major
 rather than two so a consumer migrates once.
 

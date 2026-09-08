@@ -8,7 +8,7 @@
   border: var(--haus-border-width-default) solid;
   border-inline-start-width: 3px;
   box-shadow: var(--haus-elevation-floating);
-  max-width: 360px;
+  max-width: var(--haus-toast-width);
   width: 100%;
   font-family: var(--haus-font-sans);
   color: var(--haus-color-ink-primary);

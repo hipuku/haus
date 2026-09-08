@@ -23,6 +23,11 @@
         "column-gap",
         "border-radius",
         "border-width",
+        "width",
+        "height",
+        "max-width",
+        "min-width",
+        "max-height",
         "min-height",
         "z-index"
       ],
@@ -48,7 +53,9 @@
           "-2px",
           "0.15em",
           "2px var(--space-2)",
-          "/var\\(--/"
+          "/var\\(--/",
+          "/%$/",
+          "/em$/"
         ],
         "disableFix": true,
         "message": "Use a design token: `${property}` must be a var(--\u2026), not a hardcoded value"
