@@ -51,6 +51,38 @@ rather than two so a consumer migrates once.
 
 ---
 
+## haus-tokens 3.0.0
+
+*2026-09-08. Typeface becomes brandable, and core becomes the third brand.*
+
+A major for one reason: a token left `primitives.css`. Everything a consumer
+importing the whole token stack sees is additive; the break is only for a
+consumer importing `primitives.css` alone, which is core, and core does not read
+the font primitives, so nothing breaks in practice. The version says so anyway,
+because [decision 0004](docs/decisions/0004-versioning-is-1-x.md) makes a moved
+token a major at an identical value.
+
+**Removed** · `--haus-font-sans` and `--haus-font-mono` are no longer in
+`primitives.css`. Import the full stack (or `semantics.css`) and the role of the
+same name still resolves; import `primitives.css` alone and they are gone. This
+is the whole of the major. `haus#54`,
+[decision 0019](docs/decisions/0019-typeface-is-a-form-tier-brand-entry.md).
+
+**Added** · `brands/core.css`, the third brand, `C1`. Base tier only: core's
+statuses are the states of a decision, not the four semantics of a notification,
+so it omits the feedback tier and inherits it. It brings its own warm-paper and
+cobalt ramps rather than borrow damson.
+
+**Added** · Typeface joins the form tier: `--haus-brand-font-sans` and
+`--haus-brand-font-mono`, optional and all-or-nothing per group like radius and
+elevation. `BrandMapForm` gains the two, so a brand supplying one supplies both or
+fails the consumer's build. vault states Manrope Variable, drift system-ui, core
+Gabarito.
+
+**Changed** · The `--haus-font-sans` and `--haus-font-mono` *roles* now live in
+`semantics.css` and read the brand entry. The role name is unchanged, so no
+component that reads it moved, and a full-stack consumer renders identically.
+
 ## haus-tokens 2.4.0
 
 *2026-09-08. drift's brand grows its radius group.*
