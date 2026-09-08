@@ -23,6 +23,7 @@ const REQUIRED: Record<string, Record<string, unknown>> = {
   Checkbox: { label: 'Accept' },
   Divider: {},
   EmptyState: { title: 'Nothing yet' },
+  IconButton: { icon: '+', label: 'Add' },
   Input: { label: 'Name' },
   Modal: { open: true, onClose: () => {}, title: 'Confirm', children: 'Body' },
   // An open panel renders a plain div rather than a portal, so unlike Modal

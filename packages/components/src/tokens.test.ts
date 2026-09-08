@@ -157,9 +157,16 @@ describe('components read roles, not primitives', () => {
     // past the role layer is now landing on it. Not one component declaration
     // changed.
     //
-    // What is left is five control heights and seventeen icon sizes (five
-    // icon-sm, six icon-lg, six icon-xs). A control height and an icon box are
-    // sizes whose own name is already the role, with no honest alias to invent.
-    expect(PAST.length - sizes.length).toBe(22)
+    // Then 22 to 28 with haus#58, and this one went up on purpose as well.
+    // IconButton is square, so one token sets both axes and each of its two
+    // sizes costs two declarations: control-height-xs twice for sm, and
+    // control-height-sm twice for md. Its glyph box binds to the icon scale,
+    // one declaration each for icon-sm and icon-md. Six, and every one of them
+    // is the same kind of read the paragraph below already allows.
+    //
+    // What is left is nine control heights and nineteen icon sizes. A control
+    // height and an icon box are sizes whose own name is already the role, with
+    // no honest alias to invent.
+    expect(PAST.length - sizes.length).toBe(28)
   })
 })

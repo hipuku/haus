@@ -1,0 +1,158 @@
+.iconButton {
+  /* Same private-property shape as Button, and the same reason: the shipped
+     stylesheet must read nothing a consumer could also have declared. */
+  --haus-ibtn-solid:        var(--haus-color-primary-default);
+  --haus-ibtn-solid-hover:  var(--haus-color-primary-hover);
+  --haus-ibtn-on-solid:     var(--haus-color-ink-on-primary);
+  --haus-ibtn-bg:           var(--haus-color-surface-subtle);
+  --haus-ibtn-bg-hover:     var(--haus-color-surface-sunken);
+  --haus-ibtn-border:       var(--haus-color-border-default);
+  --haus-ibtn-ink:          var(--haus-color-ink-secondary);
+  --haus-ibtn-ink-hover:    var(--haus-color-ink-primary);
+
+  display: grid;
+  place-items: center;
+  flex: none;
+  padding: 0;
+  border: var(--haus-border-width-default) solid transparent;
+  border-radius: var(--haus-radius-control);
+  cursor: pointer;
+  transition:
+    background-color var(--haus-motion-micro),
+    border-color     var(--haus-motion-micro),
+    color            var(--haus-motion-micro),
+    box-shadow       var(--haus-motion-micro);
+}
+
+.iconButton:focus-visible {
+  outline: none;
+  box-shadow: var(--haus-focus-ring);
+}
+
+.iconButton:disabled,
+.iconButton[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: var(--haus-opacity-disabled);
+  pointer-events: none;
+}
+
+/* The glyph is sized by the button, so a caller passing a 16px or a 20px icon
+   gets the same square either way. */
+.glyph {
+  display: grid;
+  place-items: center;
+  inline-size: 1em;
+  block-size: 1em;
+}
+
+/* ── Sizes ───────────────────────────────────────────────────────────────────
+   Square, so one token sets both axes. */
+
+.sm {
+  inline-size: var(--haus-control-height-xs);
+  block-size: var(--haus-control-height-xs);
+  font-size: var(--haus-icon-sm);
+}
+
+.md {
+  inline-size: var(--haus-control-height-sm);
+  block-size: var(--haus-control-height-sm);
+  font-size: var(--haus-icon-md);
+}
+
+/* ── Tones ───────────────────────────────────────────────────────────────────
+   Tone and variant compose, exactly as they do on Button: a tone remaps these
+   properties and decides no weight, a variant reads them and decides no
+   meaning. */
+
+.info {
+  --haus-ibtn-solid:       var(--haus-color-info-default);
+  --haus-ibtn-solid-hover: var(--haus-color-info-emphasis);
+  --haus-ibtn-on-solid:    var(--haus-color-info-on-default);
+  --haus-ibtn-bg:          var(--haus-color-info-subtle);
+  --haus-ibtn-bg-hover:    var(--haus-color-info-border);
+  --haus-ibtn-border:      var(--haus-color-info-border);
+  --haus-ibtn-ink:         var(--haus-color-info-on-subtle);
+  --haus-ibtn-ink-hover:   var(--haus-color-info-on-subtle);
+}
+
+.success {
+  --haus-ibtn-solid:       var(--haus-color-success-solid);
+  --haus-ibtn-solid-hover: var(--haus-color-success-emphasis);
+  --haus-ibtn-on-solid:    var(--haus-color-ink-inverse);
+  --haus-ibtn-bg:          var(--haus-color-success-subtle);
+  --haus-ibtn-bg-hover:    var(--haus-color-success-border);
+  --haus-ibtn-border:      var(--haus-color-success-border);
+  --haus-ibtn-ink:         var(--haus-color-success-on-subtle);
+  --haus-ibtn-ink-hover:   var(--haus-color-success-on-subtle);
+}
+
+.warning {
+  --haus-ibtn-solid:       var(--haus-color-warning-solid);
+  --haus-ibtn-solid-hover: var(--haus-color-warning-emphasis);
+  --haus-ibtn-on-solid:    var(--haus-color-ink-inverse);
+  --haus-ibtn-bg:          var(--haus-color-warning-subtle);
+  --haus-ibtn-bg-hover:    var(--haus-color-warning-border);
+  --haus-ibtn-border:      var(--haus-color-warning-border);
+  --haus-ibtn-ink:         var(--haus-color-warning-on-subtle);
+  --haus-ibtn-ink-hover:   var(--haus-color-warning-on-subtle);
+}
+
+.error {
+  --haus-ibtn-solid:       var(--haus-color-error-default);
+  --haus-ibtn-solid-hover: var(--haus-color-error-emphasis);
+  --haus-ibtn-on-solid:    var(--haus-color-error-on-default);
+  --haus-ibtn-bg:          var(--haus-color-error-subtle);
+  --haus-ibtn-bg-hover:    var(--haus-color-error-border);
+  --haus-ibtn-border:      var(--haus-color-error-border);
+  --haus-ibtn-ink:         var(--haus-color-error-on-subtle);
+  --haus-ibtn-ink-hover:   var(--haus-color-error-on-subtle);
+}
+
+/* ── Variants ── */
+
+.primary {
+  background-color: var(--haus-ibtn-solid);
+  border-color: var(--haus-ibtn-solid);
+  color: var(--haus-ibtn-on-solid);
+}
+.primary:hover:not(:disabled) {
+  background-color: var(--haus-ibtn-solid-hover);
+  border-color: var(--haus-ibtn-solid-hover);
+}
+
+.secondary {
+  background-color: var(--haus-ibtn-bg);
+  border-color: var(--haus-ibtn-border);
+  color: var(--haus-ibtn-ink);
+}
+.secondary:hover:not(:disabled) {
+  background-color: var(--haus-ibtn-bg-hover);
+  color: var(--haus-ibtn-ink-hover);
+}
+
+/* The weight both products actually use most: a bare glyph that only grows a
+   surface on hover. */
+.ghost {
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--haus-ibtn-ink);
+}
+.ghost:hover:not(:disabled) {
+  background-color: var(--haus-ibtn-bg);
+  color: var(--haus-ibtn-ink-hover);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iconButton {
+    transition-duration: var(--haus-duration-reduced);
+  }
+}
+
+/* forced-colors drops box-shadow, and every ring in this system is one. */
+@media (forced-colors: active) {
+  .iconButton:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+}

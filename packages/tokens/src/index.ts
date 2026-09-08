@@ -159,6 +159,7 @@ export const tokens = {
     xl: "0 20px 25px -5px oklch(18% 0.003 290 / 0.10), 0 8px 10px -6px oklch(18% 0.003 290 / 0.10)",
   },
   controlHeight: {
+    xs: "1.5rem",
     sm: "1.75rem",
     md: "2.25rem",
     lg: "2.75rem",
