@@ -15,29 +15,25 @@ Versioning follows [decision 0004](docs/decisions/0004-versioning-is-1-x.md): a
 token rename is a major at an identical value, and a contrast change is a major
 even when the hex barely moves.
 
-## Unreleased
+## haus-components 2.0.0
 
-### haus-components
+*2026-09-08. The nineteenth component, the `aria-busy` fix, and a `haus-tokens 3.0.0` floor.*
 
-Held back deliberately. `Spinner` and the `Button` `aria-busy` fix are on `main`
-and unpublished, because `Modal` now reads `--haus-modal-width-*` and so this
-package requires `haus-tokens@^2.1.0` where the published 1.0.0 requires
-`^1.0.0`. Raising a dependency across a major is breaking for a consumer, so the
-next `haus-components` is a **2.0.0** rather than a 1.1.0, and that is a decision
-rather than a side effect of shipping tokens.
-
-#### What is waiting
+A major because the dependency crossed one. `Modal` reads `--haus-modal-width-*`
+and the package reads its typeface through a role, so it now requires
+`haus-tokens@^3.0.0` where 1.0.0 required `^1.0.0`. Raising a dependency across a
+major is breaking for a consumer, so it is a 2.0.0 and a consumer migrates once
+rather than twice. Released for `C2`/`C3`, when core became the consumer ready to
+install it.
 
 **Added** · `Spinner`, the nineteenth component, `haus#55`,
 [decision 0017](docs/decisions/0017-the-nineteenth-component-is-a-busy-indicator.md).
 Promoted on evidence: all three products built one and haus's own Button held a
 fourth, and the four gave three different answers to whether the wait is
-announced.
-
-`label` announces by default. **`announcedBy` takes the text that speaks instead
-of a boolean**, so silencing the spinner requires naming what covers it: every
-product that got this wrong got it wrong by hiding the ring and putting nothing
-in its place.
+announced. `label` announces by default. **`announcedBy` takes the text that
+speaks instead of a boolean**, so silencing the spinner requires naming what
+covers it: every product that got this wrong got it wrong by hiding the ring and
+putting nothing in its place.
 
 **Fixed** · **A loading `Button` never set `aria-busy`**, so it was announced
 exactly as a permanently disabled one: *"Saving, dimmed"*, with nothing to say
@@ -45,9 +41,6 @@ the wait was temporary. Its own test had been named *"disables and marks itself
 busy while loading"* since it was written and asserted only `disabled` and
 `aria-disabled`. Button now sets `aria-busy` and draws with `Spinner` rather than
 its own copy.
-
-The 1.0 cut. Everything below is breaking, deliberately, and lands in one major
-rather than two so a consumer migrates once.
 
 ---
 
