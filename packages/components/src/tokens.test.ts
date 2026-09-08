@@ -164,9 +164,13 @@ describe('components read roles, not primitives', () => {
     // one declaration each for icon-sm and icon-md. Six, and every one of them
     // is the same kind of read the paragraph below already allows.
     //
-    // What is left is nine control heights and nineteen icon sizes. A control
+    // Then 28 to 31 with haus#61. Listbox's trigger is deliberately the same
+    // geometry as Select's closed control, so it binds one control height per
+    // size, three declarations. Same category again.
+    //
+    // What is left is twelve control heights and nineteen icon sizes. A control
     // height and an icon box are sizes whose own name is already the role, with
     // no honest alias to invent.
-    expect(PAST.length - sizes.length).toBe(28)
+    expect(PAST.length - sizes.length).toBe(31)
   })
 })

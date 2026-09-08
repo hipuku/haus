@@ -25,6 +25,7 @@ const REQUIRED: Record<string, Record<string, unknown>> = {
   Input: { label: 'Name' },
   // Closed: an open Modal is a portal, and a portal has nowhere to go on a
   // server. That is the point of the second test rather than a gap in this one.
+  Listbox: { options: [{ value: 'a', label: 'A' }], value: 'a', onChange: () => {}, label: 'Pick' },
   Modal: { open: false, onClose: () => {}, title: 'Confirm', children: 'Body' },
   // An open panel renders a plain div rather than a portal, so unlike Modal
   // it has something to hand back on the server too.

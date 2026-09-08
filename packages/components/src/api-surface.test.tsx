@@ -25,6 +25,7 @@ const REQUIRED: Record<string, Record<string, unknown>> = {
   EmptyState: { title: 'Nothing yet' },
   IconButton: { icon: '+', label: 'Add' },
   Input: { label: 'Name' },
+  Listbox: { options: [{ value: 'a', label: 'A' }], value: 'a', onChange: () => {}, label: 'Pick' },
   Modal: { open: true, onClose: () => {}, title: 'Confirm', children: 'Body' },
   // An open panel renders a plain div rather than a portal, so unlike Modal
   // it has something to hand back on the server too.
