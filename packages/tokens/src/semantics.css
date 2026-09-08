@@ -335,17 +335,17 @@
     /* ── Radius ──────────────────────────────────────────────────────────────
        Named for what is rounded, so a component asks for the shape of the
        thing rather than a size off the ramp.                                 */
-    --haus-radius-control:   var(--haus-radius-md);    /* Button, Input, Select, Textarea */
-    --haus-radius-surface:   var(--haus-radius-lg);    /* Card, Toast                     */
-    --haus-radius-overlay:   var(--haus-radius-xl);    /* Modal                           */
-    --haus-radius-marker:    var(--haus-radius-sm);    /* Checkbox, Modal/Toast icons     */
+    --haus-radius-control:   var(--haus-brand-radius-control);    /* Button, Input, Select, Textarea */
+    --haus-radius-surface:   var(--haus-brand-radius-surface);    /* Card, Toast                     */
+    --haus-radius-overlay:   var(--haus-brand-radius-overlay);    /* Modal                           */
+    --haus-radius-marker:    var(--haus-brand-radius-marker);    /* Checkbox, Modal/Toast icons     */
     --haus-radius-pill:      var(--haus-radius-full);  /* Badge, Toggle track             */
 
     /* ── Elevation ───────────────────────────────────────────────────────────
        Named for how high the thing sits, rather than how large its shadow is. */
-    --haus-elevation-raised:  var(--haus-shadow-sm);   /* Toggle knob            */
-    --haus-elevation-floating: var(--haus-shadow-lg);  /* Card, Toast            */
-    --haus-elevation-overlay: var(--haus-shadow-xl);   /* Modal                  */
+    --haus-elevation-raised:  var(--haus-brand-elevation-raised);   /* Toggle knob            */
+    --haus-elevation-floating: var(--haus-brand-elevation-floating);  /* Card, Toast            */
+    --haus-elevation-overlay: var(--haus-brand-elevation-overlay);   /* Modal                  */
 
     /* ── Stacking ────────────────────────────────────────────────────────────
        Named for what sits at each height, rather than for the number. The

@@ -8,7 +8,7 @@
 import { readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { brandRoles, brandRolesBase, brandRolesFeedback } from './brand'
+import { brandRoles, brandRolesBase, brandRolesFeedback, brandRolesForm } from './brand'
 
 const SRC = join(process.cwd(), 'src')
 const read = (f: string) => readFileSync(join(SRC, f), 'utf8')
@@ -27,10 +27,16 @@ const BRAND_ENTRIES = [...BRAND].filter((n) => n.startsWith('--haus-brand-'))
  * someone reordering brand.css.
  */
 const FEEDBACK_RAMPS = ['info', 'success', 'warning', 'error'] as const
+const FORM_GROUPS = ['radius', 'elevation'] as const
 const rampOf = (n: string) => n.replace('--haus-brand-', '').split('-')[0]
 const isFeedback = (n: string) => (FEEDBACK_RAMPS as readonly string[]).includes(rampOf(n))
-const BASE_ENTRIES = BRAND_ENTRIES.filter((n) => !isFeedback(n))
+const isForm = (n: string) => (FORM_GROUPS as readonly string[]).includes(rampOf(n))
+const BASE_ENTRIES = BRAND_ENTRIES.filter((n) => !isFeedback(n) && !isForm(n))
 const FEEDBACK_ENTRIES = BRAND_ENTRIES.filter(isFeedback)
+const FORM_ENTRIES = BRAND_ENTRIES.filter(isForm)
+
+/** Every optional group, and the rule is the same for all of them. */
+const OPTIONAL_GROUPS = [...FEEDBACK_RAMPS, ...FORM_GROUPS] as readonly string[]
 
 describe('the brand map', () => {
   it('reads the files it is meant to read', () => {
@@ -72,17 +78,21 @@ describe('the brand map', () => {
     expect([...brandRoles].sort()).toEqual([...BRAND_ENTRIES].sort())
   })
 
-  it('splits into a required tier and an optional one', () => {
-    // haus#52. Both halves have to be non-empty or the split has collapsed and
-    // every assertion below it passes vacuously.
+  it('splits into a required tier and two optional ones', () => {
+    // haus#52 and haus#53. Every tier has to be non-empty or the split has
+    // collapsed and every assertion below it passes vacuously.
     expect(BASE_ENTRIES.length).toBe(28)
     expect(FEEDBACK_ENTRIES.length).toBe(26)
-    expect(BASE_ENTRIES.length + FEEDBACK_ENTRIES.length).toBe(BRAND_ENTRIES.length)
+    expect(FORM_ENTRIES.length).toBe(7)
+    expect(BASE_ENTRIES.length + FEEDBACK_ENTRIES.length + FORM_ENTRIES.length).toBe(
+      BRAND_ENTRIES.length,
+    )
   })
 
-  it('generates both tiers from the same file', () => {
+  it('generates all three tiers from the same file', () => {
     expect([...brandRolesBase].sort()).toEqual([...BASE_ENTRIES].sort())
     expect([...brandRolesFeedback].sort()).toEqual([...FEEDBACK_ENTRIES].sort())
+    expect([...brandRolesForm].sort()).toEqual([...FORM_ENTRIES].sort())
   })
 
   it.each(readdirSync(join(SRC, 'brands')))('%s supplies the whole base tier', (file) => {
@@ -99,15 +109,15 @@ describe('the brand map', () => {
     expect(missing).toEqual([])
   })
 
-  it.each(readdirSync(join(SRC, 'brands')))('%s supplies whole feedback ramps or none', (file) => {
+  it.each(readdirSync(join(SRC, 'brands')))('%s supplies whole optional groups or none', (file) => {
     // The rule that holds the optional half honest, and the one a type cannot
     // express. Half a ramp is worse than no ramp: the entries a brand does
     // declare take its hue and the ones it forgets inherit haus's, so an error
     // state renders in two unrelated colours and every check still passes,
     // because each individual var() resolves perfectly well.
     const theme = declaredIn(read(join('brands', file)))
-    const partial = FEEDBACK_RAMPS.map((ramp) => {
-      const entries = FEEDBACK_ENTRIES.filter((n) => rampOf(n) === ramp)
+    const partial = OPTIONAL_GROUPS.map((ramp) => {
+      const entries = BRAND_ENTRIES.filter((n) => rampOf(n) === ramp)
       const supplied = entries.filter((n) => theme.has(n))
       return { ramp, supplied: supplied.length, of: entries.length }
     }).filter((r) => r.supplied > 0 && r.supplied < r.of)

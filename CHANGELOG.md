@@ -34,6 +34,20 @@ renders in two hues with every `var()` resolving and no check firing.
 **Not breaking.** Every 54-entry brand still satisfies the contract, so `vault`
 and any consumer brand keep working unchanged. No value moved.
 
+**Added** · A brand states form as well as colour, `haus#53`, [decision 0015](docs/decisions/0015-a-brand-states-form-not-only-colour.md).
+A third tier of 7 optional entries: `radius` (control, surface, overlay, marker)
+and `elevation` (raised, floating, overlay). `BrandMap` gains
+`Partial<BrandMapForm>` and `brandRolesForm` is exported.
+
+Short on purpose. drift appeared to carry 19 non-colour departures; measured
+against the version it installs, 12 hardcode the literal a haus primitive already
+resolves to and 2 were version skew, leaving 5. So z-index, opacity, border-width
+and the space ladder are deliberately not brandable: nobody re-decides them.
+
+**Not breaking, and nothing renders differently.** All seven roles resolve through
+the new entries to the primitives they read before, checked by walking the chain.
+`vault.css` supplies none of the tier and passes, because none is a legal amount.
+
 The 1.0 cut. Everything below is breaking, deliberately, and lands in one major
 rather than two so a consumer migrates once.
 

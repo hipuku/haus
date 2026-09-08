@@ -83,8 +83,26 @@ export interface BrandMapFeedback {
   '--haus-brand-error-emphasis': string
 }
 
-/** A complete brand: the base tier, and as much of the feedback tier as applies. */
-export type BrandMap = BrandMapBase & Partial<BrandMapFeedback>
+/**
+ * The other optional half: what a product re-decides that is not a colour.
+ *
+ * Radius and elevation, taken from what drift and vault actually changed. Not
+ * z-index, opacity, border-width or spacing: nobody re-decides those, and the
+ * overrides that looked like it were the literal values of haus's own
+ * primitives typed out. All-or-nothing per group, in brand.test.ts.
+ */
+export interface BrandMapForm {
+  '--haus-brand-radius-control': string
+  '--haus-brand-radius-surface': string
+  '--haus-brand-radius-overlay': string
+  '--haus-brand-radius-marker': string
+  '--haus-brand-elevation-raised': string
+  '--haus-brand-elevation-floating': string
+  '--haus-brand-elevation-overlay': string
+}
+
+/** A complete brand: the base tier, and as much of the optional tiers as applies. */
+export type BrandMap = BrandMapBase & Partial<BrandMapFeedback> & Partial<BrandMapForm>
 
 /** The role names themselves, for anyone generating a brand rather than writing one. */
 export const brandRoles = [
@@ -142,6 +160,13 @@ export const brandRoles = [
   '--haus-brand-error-on-subtle',
   '--haus-brand-error-on-default',
   '--haus-brand-error-emphasis',
+  '--haus-brand-radius-control',
+  '--haus-brand-radius-surface',
+  '--haus-brand-radius-overlay',
+  '--haus-brand-radius-marker',
+  '--haus-brand-elevation-raised',
+  '--haus-brand-elevation-floating',
+  '--haus-brand-elevation-overlay',
 ] as const
 
 /** The required half. A brand supplying fewer than these renders unstyled. */
@@ -176,7 +201,7 @@ export const brandRolesBase = [
   '--haus-brand-backdrop',
 ] as const
 
-/** The optional half, grouped by the ramp that has to be complete or absent. */
+/** The optional colour half, grouped by the ramp that has to be complete or absent. */
 export const brandRolesFeedback = [
   '--haus-brand-info-subtle',
   '--haus-brand-info-border',
@@ -204,4 +229,15 @@ export const brandRolesFeedback = [
   '--haus-brand-error-on-subtle',
   '--haus-brand-error-on-default',
   '--haus-brand-error-emphasis',
+] as const
+
+/** The optional non-colour half: radius and elevation. */
+export const brandRolesForm = [
+  '--haus-brand-radius-control',
+  '--haus-brand-radius-surface',
+  '--haus-brand-radius-overlay',
+  '--haus-brand-radius-marker',
+  '--haus-brand-elevation-raised',
+  '--haus-brand-elevation-floating',
+  '--haus-brand-elevation-overlay',
 ] as const

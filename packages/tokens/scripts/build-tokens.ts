@@ -281,16 +281,19 @@ function buildBrandTypes(): string {
   const names = [...css.matchAll(/^\s*(--haus-brand-[a-z0-9-]+)\s*:/gm)].map((m) => m[1])
   if (names.length === 0) throw new Error('brand.css declares no --haus-brand- properties')
 
-  // The tier a role belongs to is its ramp, not its position in the file, so the
-  // split survives someone reordering brand.css. haus#52.
+  // The tier a role belongs to is its group, not its position in the file, so the
+  // split survives someone reordering brand.css. haus#52 and haus#53.
   const FEEDBACK = ['info', 'success', 'warning', 'error']
-  const rampOf = (n: string) => n.replace('--haus-brand-', '').split('-')[0]
-  const isFeedback = (n: string) => FEEDBACK.includes(rampOf(n))
+  const FORM = ['radius', 'elevation']
+  const groupOf = (n: string) => n.replace('--haus-brand-', '').split('-')[0]
+  const isFeedback = (n: string) => FEEDBACK.includes(groupOf(n))
+  const isForm = (n: string) => FORM.includes(groupOf(n))
 
-  const base = names.filter((n) => !isFeedback(n))
+  const base = names.filter((n) => !isFeedback(n) && !isForm(n))
   const feedback = names.filter(isFeedback)
-  if (base.length === 0 || feedback.length === 0)
-    throw new Error('brand.css lost one of its two tiers')
+  const form = names.filter(isForm)
+  if (base.length === 0 || feedback.length === 0 || form.length === 0)
+    throw new Error('brand.css lost one of its three tiers')
 
   return [
     BANNER,
@@ -319,8 +322,20 @@ function buildBrandTypes(): string {
     ...feedback.map((n) => `  '${n}': string`),
     '}',
     '',
-    '/** A complete brand: the base tier, and as much of the feedback tier as applies. */',
-    'export type BrandMap = BrandMapBase & Partial<BrandMapFeedback>',
+    '/**',
+    ' * The other optional half: what a product re-decides that is not a colour.',
+    ' *',
+    ' * Radius and elevation, taken from what drift and vault actually changed. Not',
+    ' * z-index, opacity, border-width or spacing: nobody re-decides those, and the',
+    ' * overrides that looked like it were the literal values of haus\'s own',
+    ' * primitives typed out. All-or-nothing per group, in brand.test.ts.',
+    ' */',
+    'export interface BrandMapForm {',
+    ...form.map((n) => `  '${n}': string`),
+    '}',
+    '',
+    '/** A complete brand: the base tier, and as much of the optional tiers as applies. */',
+    'export type BrandMap = BrandMapBase & Partial<BrandMapFeedback> & Partial<BrandMapForm>',
     '',
     '/** The role names themselves, for anyone generating a brand rather than writing one. */',
     `export const brandRoles = [`,
@@ -332,9 +347,14 @@ function buildBrandTypes(): string {
     ...base.map((n) => `  '${n}',`),
     '] as const',
     '',
-    '/** The optional half, grouped by the ramp that has to be complete or absent. */',
+    '/** The optional colour half, grouped by the ramp that has to be complete or absent. */',
     `export const brandRolesFeedback = [`,
     ...feedback.map((n) => `  '${n}',`),
+    '] as const',
+    '',
+    '/** The optional non-colour half: radius and elevation. */',
+    `export const brandRolesForm = [`,
+    ...form.map((n) => `  '${n}',`),
     '] as const',
     '',
   ].join('\n')

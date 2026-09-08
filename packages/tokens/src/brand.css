@@ -31,6 +31,14 @@
    worse than none, because the half that is missing falls back to haus's hue and
    the result is a two-coloured error state nothing reports.
 
+   A THIRD TIER, form, since haus#53. Colour is not the only thing that makes two
+   products look different. Measured across drift and vault, the things a consumer
+   actually re-decides are its palette, its typeface, its shadow ramp and its
+   corner radii, and nothing else: neither product re-decides the spacing rhythm
+   or the stacking order, and drift's apparent overrides of those were the literal
+   values of haus's own primitives, typed out. So form is radius and elevation,
+   optional like feedback, and all or nothing per group for the same reason.
+
    See brands/vault.css for a complete second brand.
    ─────────────────────────────────────────────────────────────────────────── */
 
@@ -124,6 +132,41 @@
     --haus-brand-error-on-subtle:   var(--haus-cherry-700);
     --haus-brand-error-on-default:  var(--haus-damson-0);
     --haus-brand-error-emphasis:    var(--haus-cherry-900);
+
+    /* ══ FORM TIER, optional ═══════════════════════════════════════════════
+       Seven entries. What a product re-decides that is not a colour, taken
+       from what drift and vault actually changed rather than from what a brand
+       contract could theoretically cover.
+
+       drift sits one radius step tighter than haus at all three sizes and puts
+       elevation on its own four-step shadow ramp, which is two of the six names
+       it deliberately did not rename in the 1.0 migration, because pointing them
+       at haus's would have changed the product's face and its shadow ramp while
+       every test stayed green.
+
+       Not here, deliberately: z-index, opacity, border-width and the space
+       ladder. drift appeared to override twelve of those and every one resolved
+       to the value haus's own primitive already gives, so the override was
+       typing rather than a decision. Nobody re-decides the spacing rhythm.
+
+       All or nothing per group.
+       ════════════════════════════════════════════════════════════════════ */
+
+    /* ── Radius ──────────────────────────────────────────────────────────── */
+    --haus-brand-radius-control:  var(--haus-radius-md);   /* Button, Input, Select, Textarea */
+    --haus-brand-radius-surface:  var(--haus-radius-lg);   /* Card, Toast                     */
+    --haus-brand-radius-overlay:  var(--haus-radius-xl);   /* Modal                           */
+    --haus-brand-radius-marker:   var(--haus-radius-sm);   /* Checkbox, Modal/Toast icons     */
+
+    /* radius-pill stays out of the brand: it is var(--haus-radius-full), which
+       is not a step on a scale but "as round as the box allows". A brand that
+       set it to something else would not have a rounder pill, it would have a
+       Badge that is no longer a pill. */
+
+    /* ── Elevation ───────────────────────────────────────────────────────── */
+    --haus-brand-elevation-raised:    var(--haus-shadow-sm);  /* Toggle knob  */
+    --haus-brand-elevation-floating:  var(--haus-shadow-lg);  /* Card, Toast  */
+    --haus-brand-elevation-overlay:   var(--haus-shadow-xl);  /* Modal        */
 
   }
 }
