@@ -155,3 +155,46 @@ describe('Popover', () => {
     expect((await axe(container)).violations).toEqual([])
   })
 })
+
+describe('portal (haus#68)', () => {
+  function Harness({ portal }: { portal?: boolean }) {
+    const triggerRef = React.useRef<HTMLButtonElement>(null)
+    return (
+      // A scrolling ancestor, which is what Modal's body is and what clips.
+      <div data-testid="scroller" style={{ overflowY: 'auto', height: 100, position: 'relative' }}>
+        <button ref={triggerRef}>Open</button>
+        <Popover open onClose={() => {}} triggerRef={triggerRef} portal={portal} aria-label="Menu">
+          <div data-testid="content">Body</div>
+        </Popover>
+      </div>
+    )
+  }
+
+  it('stays inside the scrolling ancestor by default', () => {
+    // Today's behaviour, unchanged: the panel is a descendant of the wrapper,
+    // which is what makes `placement` the caller's answer to collisions.
+    const { getByTestId } = render(<Harness />)
+    expect(getByTestId('scroller')).toContainElement(getByTestId('content'))
+  })
+
+  it('escapes the scrolling ancestor when portalled', () => {
+    // The defect: Modal's body is overflow-y auto, so an absolute panel is cut
+    // off at its edge and no `placement` can help, because flipping clips at
+    // the other edge instead.
+    const { getByTestId } = render(<Harness portal />)
+    expect(getByTestId('scroller')).not.toContainElement(getByTestId('content'))
+    expect(document.body).toContainElement(getByTestId('content'))
+  })
+
+  it('positions from the trigger rect rather than the ancestor', () => {
+    const { getByRole } = render(<Harness portal />)
+    const panel = getByRole('dialog')
+    expect(panel).toHaveStyle({ position: 'fixed' })
+  })
+
+  it('keeps its role and label through the portal', () => {
+    // A portalled panel is easy to render correctly and label wrongly.
+    const { getByRole } = render(<Harness portal />)
+    expect(getByRole('dialog', { name: 'Menu' })).toBeInTheDocument()
+  })
+})

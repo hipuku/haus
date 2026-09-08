@@ -38,3 +38,14 @@
 .w-sm { inline-size: 180px; }
 .w-md { inline-size: 260px; }
 .w-lg { inline-size: 340px; }
+
+/* Portalled, haus#68. The panel is in `document.body` now, so the rules that
+   placed it against the caller's ancestor have nothing to measure from: the
+   inline style carries viewport coordinates instead. These reset the absolute
+   placement so the two cannot both apply. */
+.portalled {
+  position: fixed;
+  inset-inline: auto;
+  inset-block: auto;
+  margin: 0;
+}

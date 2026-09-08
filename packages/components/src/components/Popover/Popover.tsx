@@ -1,4 +1,5 @@
 import React from 'react'
+import { createPortal } from 'react-dom'
 import styles from './Popover.module.css'
 
 /** Which edge of the trigger the panel lines up with. */
@@ -42,6 +43,21 @@ interface PopoverBaseProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'r
   align?: PopoverAlign
   placement?: PopoverPlacement
   width?: PopoverWidth
+  /**
+   * Render the panel into `document.body` and position it from the trigger's
+   * rect, rather than absolutely against the caller's positioned ancestor.
+   *
+   * **Off by default, and it stays a caller's decision.** Today's behaviour
+   * needs no measuring and no dependency, and is right whenever nothing
+   * between the trigger and the page clips. It is wrong the moment something
+   * does: `Modal`'s body is `overflow-y: auto`, so a panel inside a dialog is
+   * cut off at its edge, and `placement` cannot answer that. Flipping to `top`
+   * clips at the other edge instead. haus#68.
+   *
+   * The consumer knows whether it is inside a scrolling container; the panel
+   * cannot. That is the same division `placement` already makes.
+   */
+  portal?: boolean
   role?: PopoverRole
 }
 
@@ -63,6 +79,7 @@ export const Popover = React.forwardRef<HTMLDivElement, PopoverProps>(function P
     placement = 'bottom',
     width = 'auto',
     role = 'dialog',
+    portal = false,
     className,
     children,
     ...rest
@@ -142,6 +159,31 @@ export const Popover = React.forwardRef<HTMLDivElement, PopoverProps>(function P
     return () => document.removeEventListener('focusin', onFocusIn)
   }, [open, onClose, triggerRef])
 
+  /* Measured only while portalled and open. A portalled panel has left its
+     positioned ancestor behind, so the CSS that placed it no longer applies and
+     the rect is the only thing left to place it by. Recomputed on scroll and
+     resize because both move the trigger under a fixed panel.
+
+     This is not the positioning engine this package declined. There is still no
+     collision detection: nothing flips, nothing shifts, and the panel goes
+     exactly where `placement` and `align` say. It is the same placement, in
+     viewport coordinates instead of the ancestor's. */
+  const [rect, setRect] = React.useState<DOMRect | null>(null)
+  React.useEffect(() => {
+    if (!portal || !open) return
+    const measure = () => {
+      const node = triggerRef.current
+      if (node) setRect(node.getBoundingClientRect())
+    }
+    measure()
+    window.addEventListener('scroll', measure, true)
+    window.addEventListener('resize', measure)
+    return () => {
+      window.removeEventListener('scroll', measure, true)
+      window.removeEventListener('resize', measure)
+    }
+  }, [portal, open, triggerRef])
+
   if (!open) return null
 
   const cls = [
@@ -150,11 +192,31 @@ export const Popover = React.forwardRef<HTMLDivElement, PopoverProps>(function P
     styles[placement],
     width === 'auto' ? '' : styles[`w-${width}`],
     className,
+    portal ? styles.portalled : '',
   ].filter(Boolean).join(' ')
 
-  return (
-    <div ref={setPanel} role={role} className={cls} {...rest}>
+  /* Viewport coordinates, so the panel sits where the absolute rules would have
+     put it: below or above the trigger, aligned to the edge `align` names. The
+     width cases that read the ancestor's box read the trigger's instead, which
+     is the same element the ancestor was wrapping. */
+  const fixedStyle: React.CSSProperties | undefined = rect
+    ? {
+        position: 'fixed',
+        top: placement === 'bottom' ? rect.bottom : undefined,
+        bottom: placement === 'top' ? window.innerHeight - rect.top : undefined,
+        left: align === 'end' ? undefined : rect.left,
+        right: align === 'end' ? window.innerWidth - rect.right : undefined,
+        ...(align === 'stretch' || width === 'trigger'
+          ? { inlineSize: rect.width }
+          : {}),
+      }
+    : { position: 'fixed', visibility: 'hidden' }
+
+  const panel = (
+    <div ref={setPanel} role={role} className={cls} style={portal ? fixedStyle : undefined} {...rest}>
       {children}
     </div>
   )
+
+  return portal ? createPortal(panel, document.body) : panel
 })

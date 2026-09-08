@@ -15,6 +15,31 @@ Versioning follows [decision 0004](docs/decisions/0004-versioning-is-1-x.md): a
 token rename is a major at an identical value, and a contrast change is a major
 even when the hex barely moves.
 
+## haus-components 2.2.0
+
+*2026-09-09. A Popover can escape what clips it.*
+
+**Added** · **`Popover` takes `portal`**, and `Listbox` passes it through.
+`haus#68`. A Popover inside a Modal was clipped at the dialog's edge: `Modal`'s
+body is `overflow-y: auto`, which is a clipping context, and the panel is
+`position: absolute` against the caller's ancestor inside it.
+
+**`placement` could not answer this one.** The stylesheet already declines
+collision detection and says `placement` is the caller's answer to it, which is
+right, but clipping is not collision: flipping to `top` clips at the other edge
+instead. A consumer cannot remove the modal's `overflow-y` either, because long
+dialogs need it.
+
+**Off by default**, so nothing existing moves and the package still ships no
+positioning engine. When on, the panel goes through `createPortal` and is placed
+from the trigger's rect, remeasured on scroll and resize **while open only**.
+There is still no collision detection: nothing flips and nothing shifts, and the
+panel goes exactly where `placement` and `align` say. It is the same placement
+in viewport coordinates rather than the ancestor's.
+
+`portal` is a caller's decision for the same reason `placement` is: the consumer
+knows whether it sits inside a scrolling container, and the panel cannot.
+
 ## haus-components 2.1.1
 
 *2026-09-08. A glyph two steps too large, and a type nobody could import.*

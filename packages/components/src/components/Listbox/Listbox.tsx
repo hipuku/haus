@@ -34,6 +34,12 @@ interface ListboxBaseProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'o
   name?: string
   /** Lands on the trigger rather than the root. Ruling B5. */
   controlClassName?: string
+  /**
+   * Render the panel into `document.body`, for a Listbox inside something that
+   * clips: a `Modal` body is `overflow-y: auto`, and an absolute panel is cut
+   * off at its edge. Passed straight to `Popover`. haus#68.
+   */
+  portal?: boolean
   className?: string
 }
 
@@ -83,6 +89,7 @@ export const Listbox = React.forwardRef<HTMLDivElement, ListboxProps>(
       name,
       className,
       controlClassName,
+      portal = false,
       label,
       'aria-labelledby': labelledBy,
       ...rest
@@ -162,6 +169,7 @@ export const Listbox = React.forwardRef<HTMLDivElement, ListboxProps>(
           triggerRef={triggerRef}
           role="listbox"
           width="trigger"
+          portal={portal}
           {...panelLabel}
           id={listbox.listId}
           className={styles.panel}
