@@ -51,9 +51,28 @@ rather than two so a consumer migrates once.
 
 ---
 
+## haus-tokens 2.2.1
+
+*2026-09-08. 2.2.0's tag went red and never published.*
+
+**Fixed** · An empty `src/index.test.ts`, left behind by a stray shell redirect,
+which vitest fails on because a test file with no suite in it is more likely a
+mistake than an intention. The publish workflow runs the suite before it
+publishes, so nothing reached npm and 2.2.0 does not exist.
+
+Worth recording because the local gate had already run and reported green. It
+grepped for `Tests N passed` and vitest prints the file-level result on a
+separate `Test Files N failed` line, so a whole file failing to load was
+invisible to the check that was supposed to catch it. **A gate that reads only
+half the summary is a gate with a blind spot**, which is the third one of those
+today.
+
+---
+
 ## haus-tokens 2.2.0
 
-*2026-09-08. The exports 2.1.0's own notes promised and did not ship.*
+*Tagged and never published: the run went red before the publish step. Its
+contents ship as 2.2.1. The exports 2.1.0's own notes promised and did not ship.*
 
 **Fixed** · `brandRolesBase`, `brandRolesFeedback` and `brandRolesForm` are
 re-exported from the package root. 2.1.0 generated all four lists in `./brand`
