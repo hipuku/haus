@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { axe } from 'vitest-axe'
 import { Modal } from './Modal'
@@ -225,5 +225,66 @@ describe('Modal', () => {
     )
     // The modal portals out of the container, so assert on baseElement.
     expect((await axe(baseElement)).violations).toEqual([])
+  })
+})
+
+describe('the backdrop dismiss guard (haus#56)', () => {
+  /**
+   * `fireEvent.click` synthesises neither the pointerdown nor the ordering, so
+   * these dispatch the two halves separately. That is also why the original
+   * defect survived a suite that already covered backdrop dismissal.
+   */
+  const press = (down: Element, up: Element) => {
+    fireEvent.pointerDown(down)
+    fireEvent.click(up)
+  }
+
+  it('closes when the press starts and ends on the backdrop', () => {
+    const onClose = vi.fn()
+    const { container } = render(
+      <Modal open onClose={onClose} title="Confirm">Body</Modal>,
+    )
+    const backdrop = container.ownerDocument.querySelector('[class*="backdrop"]')!
+    press(backdrop, backdrop)
+    expect(onClose).toHaveBeenCalledTimes(1)
+  })
+
+  it('does not close when the press starts inside the dialog and ends on the backdrop', () => {
+    const onClose = vi.fn()
+    const { container } = render(
+      <Modal open onClose={onClose} title="Confirm">Body</Modal>,
+    )
+    const backdrop = container.ownerDocument.querySelector('[class*="backdrop"]')!
+    const dialog = screen.getByRole('dialog')
+    // Selecting text to the edge of the dialog and releasing outside. The click
+    // target is the backdrop, which is exactly what the old guard accepted.
+    press(dialog, backdrop)
+    expect(onClose).not.toHaveBeenCalled()
+  })
+
+  it('does not leave a stale latch behind for the next click', () => {
+    const onClose = vi.fn()
+    const { container } = render(
+      <Modal open onClose={onClose} title="Confirm">Body</Modal>,
+    )
+    const backdrop = container.ownerDocument.querySelector('[class*="backdrop"]')!
+    const dialog = screen.getByRole('dialog')
+    // A qualifying press, consumed.
+    press(backdrop, backdrop)
+    expect(onClose).toHaveBeenCalledTimes(1)
+    // Then one that must not qualify. Without the reset the first press's true
+    // would still be sitting there.
+    press(dialog, backdrop)
+    expect(onClose).toHaveBeenCalledTimes(1)
+  })
+
+  it('stays shut off when dismissOnBackdrop is false', () => {
+    const onClose = vi.fn()
+    const { container } = render(
+      <Modal open onClose={onClose} title="Confirm" dismissOnBackdrop={false}>Body</Modal>,
+    )
+    const backdrop = container.ownerDocument.querySelector('[class*="backdrop"]')!
+    press(backdrop, backdrop)
+    expect(onClose).not.toHaveBeenCalled()
   })
 })

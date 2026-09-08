@@ -74,6 +74,21 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(function Modal
   ref,
 ) {
   const dialogRef = React.useRef<HTMLDivElement>(null)
+  /**
+   * Whether the press that is about to become a click started on the backdrop.
+   *
+   * A `click` event's target is the nearest common ancestor of its `pointerdown`
+   * and its `pointerup`, so a press that begins inside the dialog and ends on
+   * the backdrop dispatches a click whose target *is* the backdrop. Guarding
+   * only the click therefore closes the dialog when someone selects text to the
+   * edge of it and releases outside, which in a dialog holding unsaved work
+   * discards it. haus#56, found by migrating core, whose own modal shell
+   * carried this latch and haus did not.
+   *
+   * `pointerdown` rather than `mousedown` so pen and touch are covered without
+   * relying on emulated mouse events.
+   */
+  const pressedBackdrop = React.useRef(false)
   // The dialog is the node a caller wants: className already lands there, and
   // the focus trap needs the same element, so both refs are assigned rather
   // than one replacing the other.
@@ -173,9 +188,21 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(function Modal
   return createPortal(
     <div
       className={[styles.backdrop, className].filter(Boolean).join(' ')}
+      onPointerDown={
+        dismissOnBackdrop
+          ? e => { pressedBackdrop.current = e.target === e.currentTarget }
+          : undefined
+      }
       onClick={
         dismissOnBackdrop
-          ? e => { if (e.target === e.currentTarget) onClose() }
+          ? e => {
+              // Both ends of the press have to be on the backdrop.
+              const both = pressedBackdrop.current && e.target === e.currentTarget
+              // Reset first: a press that produces no qualifying click must not
+              // leave a true behind for the next one.
+              pressedBackdrop.current = false
+              if (both) onClose()
+            }
           : undefined
       }
     >
