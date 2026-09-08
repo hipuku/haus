@@ -8,14 +8,14 @@
    ─────────────────────────────────────────────────────────────────────────── */
 
 /**
- * Every entry a brand must supply, generated from brand.css.
+ * The entries every brand must supply, generated from brand.css.
  *
  * A brand file is CSS, so this cannot check it directly. What it does check is
  * the object form: build a brand in TypeScript, satisfy this type, and a missing
  * or misspelled role is a compile error rather than an unresolved var() that
  * drops a declaration with no warning at all.
  */
-export interface BrandMap {
+export interface BrandMapBase {
   '--haus-brand-surface-default': string
   '--haus-brand-surface-subtle': string
   '--haus-brand-surface-raised': string
@@ -43,6 +43,18 @@ export interface BrandMap {
   '--haus-brand-primary-subtle': string
   '--haus-brand-primary-on-subtle': string
   '--haus-brand-primary-disabled': string
+  '--haus-brand-backdrop': string
+}
+
+/**
+ * The optional half: info, success, warning and error.
+ *
+ * A product whose statuses are not those four semantics omits this tier and
+ * inherits haus's from :root, because custom properties inherit and a named
+ * brand only overrides what it declares. Optional here, and all-or-nothing per
+ * ramp in brand.test.ts, which types cannot express.
+ */
+export interface BrandMapFeedback {
   '--haus-brand-info-subtle': string
   '--haus-brand-info-border': string
   '--haus-brand-info-default': string
@@ -69,8 +81,10 @@ export interface BrandMap {
   '--haus-brand-error-on-subtle': string
   '--haus-brand-error-on-default': string
   '--haus-brand-error-emphasis': string
-  '--haus-brand-backdrop': string
 }
+
+/** A complete brand: the base tier, and as much of the feedback tier as applies. */
+export type BrandMap = BrandMapBase & Partial<BrandMapFeedback>
 
 /** The role names themselves, for anyone generating a brand rather than writing one. */
 export const brandRoles = [
@@ -101,6 +115,7 @@ export const brandRoles = [
   '--haus-brand-primary-subtle',
   '--haus-brand-primary-on-subtle',
   '--haus-brand-primary-disabled',
+  '--haus-brand-backdrop',
   '--haus-brand-info-subtle',
   '--haus-brand-info-border',
   '--haus-brand-info-default',
@@ -127,5 +142,66 @@ export const brandRoles = [
   '--haus-brand-error-on-subtle',
   '--haus-brand-error-on-default',
   '--haus-brand-error-emphasis',
+] as const
+
+/** The required half. A brand supplying fewer than these renders unstyled. */
+export const brandRolesBase = [
+  '--haus-brand-surface-default',
+  '--haus-brand-surface-subtle',
+  '--haus-brand-surface-raised',
+  '--haus-brand-surface-overlay',
+  '--haus-brand-surface-sunken',
+  '--haus-brand-surface-inverse',
+  '--haus-brand-surface-disabled',
+  '--haus-brand-surface-inverse-hover',
+  '--haus-brand-ink-primary',
+  '--haus-brand-ink-secondary',
+  '--haus-brand-ink-tertiary',
+  '--haus-brand-ink-disabled',
+  '--haus-brand-ink-inverse',
+  '--haus-brand-ink-link',
+  '--haus-brand-ink-on-primary',
+  '--haus-brand-border-subtle',
+  '--haus-brand-border-default',
+  '--haus-brand-border-strong',
+  '--haus-brand-border-disabled',
+  '--haus-brand-border-inverse',
+  '--haus-brand-border-inverse-hover',
+  '--haus-brand-primary-default',
+  '--haus-brand-primary-hover',
+  '--haus-brand-primary-pressed',
+  '--haus-brand-primary-subtle',
+  '--haus-brand-primary-on-subtle',
+  '--haus-brand-primary-disabled',
   '--haus-brand-backdrop',
+] as const
+
+/** The optional half, grouped by the ramp that has to be complete or absent. */
+export const brandRolesFeedback = [
+  '--haus-brand-info-subtle',
+  '--haus-brand-info-border',
+  '--haus-brand-info-default',
+  '--haus-brand-info-on-subtle',
+  '--haus-brand-info-on-default',
+  '--haus-brand-info-emphasis',
+  '--haus-brand-success-subtle',
+  '--haus-brand-success-border',
+  '--haus-brand-success-default',
+  '--haus-brand-success-on-subtle',
+  '--haus-brand-success-on-default',
+  '--haus-brand-success-solid',
+  '--haus-brand-success-emphasis',
+  '--haus-brand-warning-subtle',
+  '--haus-brand-warning-border',
+  '--haus-brand-warning-default',
+  '--haus-brand-warning-on-subtle',
+  '--haus-brand-warning-on-default',
+  '--haus-brand-warning-solid',
+  '--haus-brand-warning-emphasis',
+  '--haus-brand-error-subtle',
+  '--haus-brand-error-border',
+  '--haus-brand-error-default',
+  '--haus-brand-error-on-subtle',
+  '--haus-brand-error-on-default',
+  '--haus-brand-error-emphasis',
 ] as const

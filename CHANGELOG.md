@@ -17,6 +17,23 @@ even when the hex barely moves.
 
 ## Unreleased
 
+### haus-tokens
+
+**Added** · The brand contract is tiered, `haus#47`, [decision 0014](docs/decisions/0014-the-brand-contract-is-tiered.md).
+`brand.css`'s 54 entries split into a required base of 28 (surfaces, ink, borders,
+primary, backdrop) and an optional feedback tier of 26 (`info`, `success`,
+`warning`, `error`). A brand may now supply the base alone and inherit the rest
+from `:root`, which the cascade already did and the contract previously forbade.
+`BrandMap` becomes `BrandMapBase & Partial<BrandMapFeedback>`, and
+`brandRolesBase` and `brandRolesFeedback` are exported beside `brandRoles`.
+
+`brand.test.ts` gains the rule the types cannot express: a brand supplying any
+entry of a status ramp supplies all of that ramp, because a half-supplied ramp
+renders in two hues with every `var()` resolving and no check firing.
+
+**Not breaking.** Every 54-entry brand still satisfies the contract, so `vault`
+and any consumer brand keep working unchanged. No value moved.
+
 The 1.0 cut. Everything below is breaking, deliberately, and lands in one major
 rather than two so a consumer migrates once.
 

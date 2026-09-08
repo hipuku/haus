@@ -26,3 +26,4 @@ yet true of the package, the entry names the wave that makes it true.
 | [0011](0011-select-is-a-native-select.md) | `Select` is a native `<select>` | Accepted · listbox scheduled for Wave F |
 | [0012](0012-a-tone-declares-custom-properties-only.md) | A tone rule declares custom properties only | Accepted · Button and Toast; Badge pending |
 | [0013](0013-a-component-is-promoted-on-evidence.md) | A component is promoted on evidence, not on taste | Accepted · implemented as the six added in 1.0 |
+| [0014](0014-the-brand-contract-is-tiered.md) | The brand contract is tiered: base required, feedback optional | Accepted · implemented |

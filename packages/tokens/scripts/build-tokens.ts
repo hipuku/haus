@@ -281,24 +281,60 @@ function buildBrandTypes(): string {
   const names = [...css.matchAll(/^\s*(--haus-brand-[a-z0-9-]+)\s*:/gm)].map((m) => m[1])
   if (names.length === 0) throw new Error('brand.css declares no --haus-brand- properties')
 
+  // The tier a role belongs to is its ramp, not its position in the file, so the
+  // split survives someone reordering brand.css. haus#47.
+  const FEEDBACK = ['info', 'success', 'warning', 'error']
+  const rampOf = (n: string) => n.replace('--haus-brand-', '').split('-')[0]
+  const isFeedback = (n: string) => FEEDBACK.includes(rampOf(n))
+
+  const base = names.filter((n) => !isFeedback(n))
+  const feedback = names.filter(isFeedback)
+  if (base.length === 0 || feedback.length === 0)
+    throw new Error('brand.css lost one of its two tiers')
+
   return [
     BANNER,
     '',
     '/**',
-    ' * Every entry a brand must supply, generated from brand.css.',
+    ' * The entries every brand must supply, generated from brand.css.',
     ' *',
     ' * A brand file is CSS, so this cannot check it directly. What it does check is',
     ' * the object form: build a brand in TypeScript, satisfy this type, and a missing',
     ' * or misspelled role is a compile error rather than an unresolved var() that',
     ' * drops a declaration with no warning at all.',
     ' */',
-    'export interface BrandMap {',
-    ...names.map((n) => `  '${n}': string`),
+    'export interface BrandMapBase {',
+    ...base.map((n) => `  '${n}': string`),
     '}',
+    '',
+    '/**',
+    ' * The optional half: info, success, warning and error.',
+    ' *',
+    ' * A product whose statuses are not those four semantics omits this tier and',
+    ' * inherits haus\'s from :root, because custom properties inherit and a named',
+    ' * brand only overrides what it declares. Optional here, and all-or-nothing per',
+    ' * ramp in brand.test.ts, which types cannot express.',
+    ' */',
+    'export interface BrandMapFeedback {',
+    ...feedback.map((n) => `  '${n}': string`),
+    '}',
+    '',
+    '/** A complete brand: the base tier, and as much of the feedback tier as applies. */',
+    'export type BrandMap = BrandMapBase & Partial<BrandMapFeedback>',
     '',
     '/** The role names themselves, for anyone generating a brand rather than writing one. */',
     `export const brandRoles = [`,
     ...names.map((n) => `  '${n}',`),
+    '] as const',
+    '',
+    '/** The required half. A brand supplying fewer than these renders unstyled. */',
+    `export const brandRolesBase = [`,
+    ...base.map((n) => `  '${n}',`),
+    '] as const',
+    '',
+    '/** The optional half, grouped by the ramp that has to be complete or absent. */',
+    `export const brandRolesFeedback = [`,
+    ...feedback.map((n) => `  '${n}',`),
     '] as const',
     '',
   ].join('\n')

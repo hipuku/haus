@@ -8,7 +8,7 @@
 import { readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { brandRoles } from './brand'
+import { brandRoles, brandRolesBase, brandRolesFeedback } from './brand'
 
 const SRC = join(process.cwd(), 'src')
 const read = (f: string) => readFileSync(join(SRC, f), 'utf8')
@@ -21,6 +21,16 @@ const declaredIn = (css: string) =>
 
 const BRAND = declaredIn(brand)
 const BRAND_ENTRIES = [...BRAND].filter((n) => n.startsWith('--haus-brand-'))
+
+/**
+ * The tier split, haus#47. A role's tier is its ramp, so the rule survives
+ * someone reordering brand.css.
+ */
+const FEEDBACK_RAMPS = ['info', 'success', 'warning', 'error'] as const
+const rampOf = (n: string) => n.replace('--haus-brand-', '').split('-')[0]
+const isFeedback = (n: string) => (FEEDBACK_RAMPS as readonly string[]).includes(rampOf(n))
+const BASE_ENTRIES = BRAND_ENTRIES.filter((n) => !isFeedback(n))
+const FEEDBACK_ENTRIES = BRAND_ENTRIES.filter(isFeedback)
 
 describe('the brand map', () => {
   it('reads the files it is meant to read', () => {
@@ -62,12 +72,46 @@ describe('the brand map', () => {
     expect([...brandRoles].sort()).toEqual([...BRAND_ENTRIES].sort())
   })
 
-  it.each(readdirSync(join(SRC, 'brands')))('%s supplies every entry', (file) => {
+  it('splits into a required tier and an optional one', () => {
+    // haus#47. Both halves have to be non-empty or the split has collapsed and
+    // every assertion below it passes vacuously.
+    expect(BASE_ENTRIES.length).toBe(28)
+    expect(FEEDBACK_ENTRIES.length).toBe(26)
+    expect(BASE_ENTRIES.length + FEEDBACK_ENTRIES.length).toBe(BRAND_ENTRIES.length)
+  })
+
+  it('generates both tiers from the same file', () => {
+    expect([...brandRolesBase].sort()).toEqual([...BASE_ENTRIES].sort())
+    expect([...brandRolesFeedback].sort()).toEqual([...FEEDBACK_ENTRIES].sort())
+  })
+
+  it.each(readdirSync(join(SRC, 'brands')))('%s supplies the whole base tier', (file) => {
     // A contract with one implementation is not a contract. This is what makes
     // the second brand a proof rather than a decoration.
+    //
+    // The base tier only, since haus#47. A brand omitting the feedback tier is
+    // legitimate and inherits it from :root: custom properties inherit, and a
+    // named brand overrides only what it declares. Omitting a base entry is not
+    // legitimate, because nothing upstream is a sensible substitute for a
+    // product's own surface or ink.
     const theme = declaredIn(read(join('brands', file)))
-    const missing = BRAND_ENTRIES.filter((n) => !theme.has(n))
+    const missing = BASE_ENTRIES.filter((n) => !theme.has(n))
     expect(missing).toEqual([])
+  })
+
+  it.each(readdirSync(join(SRC, 'brands')))('%s supplies whole feedback ramps or none', (file) => {
+    // The rule that holds the optional half honest, and the one a type cannot
+    // express. Half a ramp is worse than no ramp: the entries a brand does
+    // declare take its hue and the ones it forgets inherit haus's, so an error
+    // state renders in two unrelated colours and every check still passes,
+    // because each individual var() resolves perfectly well.
+    const theme = declaredIn(read(join('brands', file)))
+    const partial = FEEDBACK_RAMPS.map((ramp) => {
+      const entries = FEEDBACK_ENTRIES.filter((n) => rampOf(n) === ramp)
+      const supplied = entries.filter((n) => theme.has(n))
+      return { ramp, supplied: supplied.length, of: entries.length }
+    }).filter((r) => r.supplied > 0 && r.supplied < r.of)
+    expect(partial).toEqual([])
   })
 
   it.each(readdirSync(join(SRC, 'brands')))('%s changes nothing but the brand', (file) => {

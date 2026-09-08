@@ -8,18 +8,40 @@
    meant taking haus's palette, and two products declared their own tokens rather
    than do that.
 
-   Every entry here is required. `BrandMap` in the package's TypeScript export is
-   generated from this file, so a brand that omits a role or misnames one fails a
-   consumer's build instead of rendering an unresolved var().
+   TWO TIERS, since haus#47. The base tier is required: every product has
+   surfaces, text, borders and one primary colour, and a brand that omits any of
+   them renders unstyled. The feedback tier is optional: info, success, warning
+   and error are the four semantics of a notification, and a product whose
+   statuses are not those four should not be made to invent them.
 
-   The default brand applies at :root, so the common case needs no attribute. A
-   named brand applies at [data-haus-theme="<name>"] and nests, because custom
-   properties inherit. See brands/vault.css for a complete second brand.
+   The optional half needs no machinery, because the cascade already does it. The
+   default brand applies at :root and a named brand at [data-haus-theme="<name>"],
+   and custom properties inherit, so a brand declaring only the base tier inherits
+   these feedback entries from :root. That was true before it was named. What was
+   missing is that nothing said so, `BrandMap` demanded all 54, and brand.test.ts
+   failed a brand that supplied 28. The mechanism worked and the contract around
+   it did not.
+
+   `BrandMap` in the package's TypeScript export is generated from this file:
+   base entries required, feedback entries optional, so a brand omitting a base
+   role fails a consumer's build instead of rendering an unresolved var().
+
+   One rule holds the optional half honest, in brand.test.ts: a brand that
+   supplies any entry of a status ramp supplies all of that ramp. Half a ramp is
+   worse than none, because the half that is missing falls back to haus's hue and
+   the result is a two-coloured error state nothing reports.
+
+   See brands/vault.css for a complete second brand.
    ─────────────────────────────────────────────────────────────────────────── */
 
 @layer haus.brand {
 
   :root {
+
+    /* ══ BASE TIER, required ═══════════════════════════════════════════════
+       Twenty-eight entries. Every product has these, whatever it is for. A
+       brand must supply all of them.
+       ════════════════════════════════════════════════════════════════════ */
 
     /* ── Surfaces ────────────────────────────────────────────────────────── */
     --haus-brand-surface-default:        var(--haus-damson-0);
@@ -56,6 +78,19 @@
     --haus-brand-primary-on-subtle:  var(--haus-aronia-700);
     --haus-brand-primary-disabled:   var(--haus-damson-200);
 
+    /* ── Backdrop ────────────────────────────────────────────────────────── */
+    --haus-brand-backdrop:  oklch(from var(--haus-damson-950) l c h / var(--haus-opacity-60));
+
+    /* ══ FEEDBACK TIER, optional ═══════════════════════════════════════════
+       Twenty-six entries across four ramps. These are the four semantics of a
+       notification, and not every product has them: core's statuses are the
+       states of a decision, proposed, accepted, rejected, superseded and
+       deprecated, which are five things that are not these four. A brand may
+       omit this tier and inherit it from here.
+
+       All or nothing PER RAMP. Supply every entry of `warning` or none of them.
+       ════════════════════════════════════════════════════════════════════ */
+
     /* ── Info ────────────────────────────────────────────────────────────── */
     --haus-brand-info-subtle:      var(--haus-elderberry-100);
     --haus-brand-info-border:      var(--haus-elderberry-200);
@@ -89,9 +124,6 @@
     --haus-brand-error-on-subtle:   var(--haus-cherry-700);
     --haus-brand-error-on-default:  var(--haus-damson-0);
     --haus-brand-error-emphasis:    var(--haus-cherry-900);
-
-    /* ── Everything else ─────────────────────────────────────────────────── */
-    --haus-brand-backdrop:  oklch(from var(--haus-damson-950) l c h / var(--haus-opacity-60));
 
   }
 }
