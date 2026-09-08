@@ -15,6 +15,30 @@ Versioning follows [decision 0004](docs/decisions/0004-versioning-is-1-x.md): a
 token rename is a major at an identical value, and a contrast change is a major
 even when the hex barely moves.
 
+## haus-components 2.1.1
+
+*2026-09-08. A glyph two steps too large, and a type nobody could import.*
+
+**Fixed** · **`IconButton` drew its glyph from the wrong rung.** `md` took
+`icon-md` (20px) inside a 28px box and `sm` took `icon-sm` (16px) inside 24px.
+The scale's own documentation pairs `icon-md` with *"body-lg and heading-sm"*
+and `icon-sm` with *"label and body-sm"*, and this control's type role is label,
+so both were one step high. Measurement agrees: core draws **13px and 14px**
+glyphs in its 28px icon button, so 20px was larger than any consumer had asked
+for. Now `icon-sm` at `md` and `icon-xs` at `sm`, which also gives both sizes the
+same 6px of clearance.
+
+**Fixed** · **`ToastAppearance` was not exported from either barrel**, so it
+could not be imported by name. Found by the new check below, on its first run,
+and it predates 2.1.0.
+
+**Added** · **A check that every exported type is reachable from the package
+root**, `haus#65`. `TabsAppearance` shipped in 2.1.0 unreachable, past build,
+typecheck, lint and 373 tests. `api-surface.test.tsx` could not see it, because
+that asserts over values and a type has no runtime presence. The new test reads
+the components directory rather than a list, so it cannot become the next list
+beside a directory, which is the shape this defect belongs to.
+
 ## haus-components 2.1.0
 
 *2026-09-08. Two new components, `asChild`, a segmented Tabs, and a Modal fix.*

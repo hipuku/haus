@@ -48,16 +48,23 @@
 /* ── Sizes ───────────────────────────────────────────────────────────────────
    Square, so one token sets both axes. */
 
+/* The glyph is paired with the control's own type role, not with its box. haus's
+   scale says icon-sm goes "with label and body-sm" and icon-md "with body-lg and
+   heading-sm", and this control's text role is label, so sm is the honest pair.
+   Both products agree by measurement too: core draws 13px and 14px glyphs in its
+   28px button, so a 20px one is larger than either ever asked for. Each size
+   keeps 6px of clearance on every side. */
+
 .sm {
   inline-size: var(--haus-control-height-xs);
   block-size: var(--haus-control-height-xs);
-  font-size: var(--haus-icon-sm);
+  font-size: var(--haus-icon-xs);
 }
 
 .md {
   inline-size: var(--haus-control-height-sm);
   block-size: var(--haus-control-height-sm);
-  font-size: var(--haus-icon-md);
+  font-size: var(--haus-icon-sm);
 }
 
 /* ── Tones ───────────────────────────────────────────────────────────────────
