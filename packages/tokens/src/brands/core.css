@@ -1,0 +1,122 @@
+/* ─── haus / brand · core ─────────────────────────────────────────────────────
+   core's palette, stated as brand inputs. C1 of the theming overhaul.
+
+   The third brand, and the one that proves the base/feedback split earns its
+   keep. vault and drift both supply the feedback tier in full, so until now a
+   brand omitting it existed only as a passing test. core is the product that
+   actually omits it: its statuses are the states of a decision — proposed,
+   accepted, rejected, superseded, deprecated — five things that are not the four
+   semantics of a notification, and it cannot fill info / success / warning /
+   error without inventing three of them. So this file supplies the twenty-eight
+   base entries and nothing else, and the feedback tier inherits from :root
+   exactly as brand.css says it will. That is not a gap in core; the five
+   decision states are core's own domain vocabulary, consumed as one seed ink
+   each and composed inline, and they stay in core because no sibling product
+   re-decides them. They are the reason a product still owns something after the
+   system has done its half.
+
+   core brings its own ramps, the way vault brings ruby. It cannot borrow haus's
+   damson for neutrals the way vault and drift do: damson is a cool, barely-
+   lavender grey (hue 290) and core is committed warm paper (hue ~82) — "warm
+   off-white surfaces, warm-grey ink", the whole of its identity. And its accent
+   is cobalt (hue 260), which haus has no ramp for. So two ramps are declared
+   here, --haus-paper-* and --haus-cobalt-*, every step a value core already
+   renders in app/globals.css. It invents no colour it did not already ship.
+
+   Nothing is restyled. Where core has no value for a base role, the value is
+   derived from an adjacent one core does render and marked DERIVED, rather than
+   left to fall through to haus's cool grey. Six such steps, each named below.
+   core has fewer rungs than haus in two places — it separates surfaces by fill
+   rather than by borders, and it disables by opacity rather than by a fixed
+   token — and those are the derivations.
+
+   --bg, core's warm-grey "desk" that white cards sit on, is deliberately not a
+   role here. It is the app-shell background, set by core's own layout, not a
+   surface a haus component reads. surface-default is the card.
+
+   Applied by attribute, and it nests:
+
+     <div data-haus-theme="core"> … </div>
+
+   backdrop reads --haus-opacity-60 rather than any role: a brand supplies inputs
+   and may not read the role layer it feeds. Same rule as drift's.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+@layer haus.brand {
+
+  [data-haus-theme='core'] {
+
+    /* ── The warm-paper neutral ramp ───────────────────────────────────────
+       core's own greys, warm where haus's damson is cool. Every step is a value
+       from app/globals.css except the two marked DERIVED, which fill a rung core
+       renders by other means (opacity, a scrim) and has no standing token for. */
+    --haus-paper-0:    oklch(99.8% 0.002 85);   /* --surface: the white card        */
+    --haus-paper-100:  oklch(97.2% 0.006 83);   /* --surface-2: subtle fill         */
+    --haus-paper-200:  oklch(94%   0.009 83);   /* --surface-3: sunken              */
+    --haus-paper-300:  oklch(90%   0.008 80);   /* --border                         */
+    --haus-paper-400:  oklch(85%   0.010 80);   /* --border-strong                  */
+    --haus-paper-500:  oklch(74%   0.011 70);   /* DERIVED: muted / disabled ink    */
+    --haus-paper-600:  oklch(60%   0.012 65);   /* --text-faint: tertiary           */
+    --haus-paper-700:  oklch(46%   0.012 60);   /* --text-dim: secondary            */
+    --haus-paper-900:  oklch(27%   0.012 60);   /* --text: primary ink              */
+    --haus-paper-950:  oklch(15%   0.010 60);   /* DERIVED: backdrop base, near-black */
+
+    /* ── The cobalt accent ramp ────────────────────────────────────────────
+       core's retro cobalt. 500 and 600 are --accent and --accent-hover; core
+       ships no pressed step and no opaque subtle fill (it tints with alpha), so
+       those two are DERIVED one step past what it renders. */
+    --haus-cobalt-100:  oklch(95% 0.03 260);   /* DERIVED: subtle bg, --accent-tint made opaque on white */
+    --haus-cobalt-500:  oklch(50% 0.16 260);   /* --accent                         */
+    --haus-cobalt-600:  oklch(44% 0.16 260);   /* --accent-hover                   */
+    --haus-cobalt-700:  oklch(38% 0.15 260);   /* DERIVED: pressed, one step past hover */
+
+
+    /* ── Surface ───────────────────────────────────────────────────────────
+       core separates surfaces by fill: the desk is grey, cards are white. So the
+       card is the default and everything else steps off it, the inverse of
+       haus's white-default ramp, but the role names land on the same intents. */
+    --haus-brand-surface-default:        var(--haus-paper-0);     /* the white card         */
+    --haus-brand-surface-subtle:         var(--haus-paper-100);
+    --haus-brand-surface-raised:         var(--haus-paper-0);     /* elevation via shadow, not colour */
+    --haus-brand-surface-overlay:        var(--haus-paper-0);     /* core does not tint modals/popovers */
+    --haus-brand-surface-sunken:         var(--haus-paper-200);
+    --haus-brand-surface-inverse:        var(--haus-paper-900);   /* DERIVED: core has no inverse surface; its darkest ink stands in */
+    --haus-brand-surface-disabled:       var(--haus-paper-100);
+    --haus-brand-surface-inverse-hover:  oklch(from var(--haus-paper-0) l c h / 0.10);
+
+    /* ── Ink ───────────────────────────────────────────────────────────────── */
+    --haus-brand-ink-primary:     var(--haus-paper-900);   /* --text      */
+    --haus-brand-ink-secondary:   var(--haus-paper-700);   /* --text-dim  */
+    --haus-brand-ink-tertiary:    var(--haus-paper-600);   /* --text-faint */
+    --haus-brand-ink-disabled:    var(--haus-paper-500);   /* DERIVED: core disables by opacity */
+    --haus-brand-ink-inverse:     var(--haus-paper-0);
+    --haus-brand-ink-link:        var(--haus-cobalt-500);  /* --accent: links are the accent */
+    --haus-brand-ink-on-primary:  var(--haus-paper-0);     /* --accent-fg: white on cobalt */
+
+    /* ── Border ──────────────────────────────────────────────────────────────
+       Three rungs from core's own neutrals. core leans on fill over borders, so
+       the subtle rung is its faintest surface tone pressed into service; default
+       and strong are --border and --border-strong verbatim. */
+    --haus-brand-border-subtle:          var(--haus-paper-200);   /* faint divider */
+    --haus-brand-border-default:         var(--haus-paper-300);   /* --border        */
+    --haus-brand-border-strong:          var(--haus-paper-400);   /* --border-strong */
+    --haus-brand-border-disabled:        var(--haus-paper-300);
+    --haus-brand-border-inverse:         oklch(from var(--haus-paper-0) l c h / 0.30);
+    --haus-brand-border-inverse-hover:   oklch(from var(--haus-paper-0) l c h / 0.50);
+
+    /* ── Primary ─────────────────────────────────────────────────────────────
+       Cobalt. default and hover are core's; pressed and the subtle pairing are
+       derived because core tints its accent with alpha rather than shipping the
+       opaque steps a ramp needs. */
+    --haus-brand-primary-default:        var(--haus-cobalt-500);  /* --accent       */
+    --haus-brand-primary-hover:          var(--haus-cobalt-600);  /* --accent-hover */
+    --haus-brand-primary-pressed:        var(--haus-cobalt-700);  /* DERIVED */
+    --haus-brand-primary-subtle:         var(--haus-cobalt-100);  /* DERIVED: --accent-tint made opaque */
+    --haus-brand-primary-on-subtle:      var(--haus-cobalt-700);  /* dark cobalt text on the subtle tint */
+    --haus-brand-primary-disabled:       var(--haus-paper-200);   /* neutral resting grey */
+
+    /* ── Backdrop ──────────────────────────────────────────────────────────── */
+    --haus-brand-backdrop:  oklch(from var(--haus-paper-950) l c h / var(--haus-opacity-60));
+
+  }
+}
