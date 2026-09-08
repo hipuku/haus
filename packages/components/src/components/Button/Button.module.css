@@ -259,28 +259,12 @@
   padding-inline-start: 0.15em;
 }
 
-/* ── Loading spinner ── */
-
-.spinner {
-  width: 1em;
-  height: 1em;
-  border: var(--haus-border-width-thick) solid currentColor;
-  border-top-color: transparent;
-  border-radius: 50%;
-  animation: spin var(--haus-motion-duration-emphasis) var(--haus-ease-linear) infinite;
-  flex-shrink: 0;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
+/* The loading spinner moved to the Spinner component with haus#55. It was the
+   fourth independent one in the portfolio and the one inside the design system. */
 
 @media (prefers-reduced-motion: reduce) {
   .button {
     transition-duration: var(--haus-duration-reduced);
-  }
-  .spinner {
-    animation-duration: var(--haus-duration-reduced);
   }
 }
 

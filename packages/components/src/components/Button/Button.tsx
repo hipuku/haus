@@ -1,5 +1,6 @@
 import React from 'react'
 import type { Size, Tone } from '../../types'
+import { Spinner } from '../Spinner'
 import styles from './Button.module.css'
 
 /**
@@ -85,9 +86,10 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
           rel={!isDisabled && target === '_blank' ? 'noopener noreferrer' : undefined}
           className={cls}
           aria-disabled={isDisabled}
+          aria-busy={loading || undefined}
           {...(rest as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
         >
-          {loading && <span className={styles.spinner} aria-hidden />}
+          {loading && <Spinner size="text" announcedBy="the button's aria-busy state" />}
           {children}
           {externalIcon}
         </a>
@@ -100,9 +102,10 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
         className={cls}
         disabled={isDisabled}
         aria-disabled={isDisabled}
+        aria-busy={loading || undefined}
         {...rest}
       >
-        {loading && <span className={styles.spinner} aria-hidden />}
+        {loading && <Spinner size="text" announcedBy="the button's aria-busy state" />}
         {children}
         {externalIcon}
       </button>

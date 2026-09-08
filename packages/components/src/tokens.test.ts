@@ -141,10 +141,16 @@ describe('components read roles, not primitives', () => {
     // reading --haus-space-7 for its box, which is why the size count fell 31
     // to 29 in the same change.
     //
+    // Then 50 to 54 with haus#55, and this one went up on purpose too: Spinner
+    // is the nineteenth component and binds its two drawn sizes to the icon
+    // scale, two declarations each for icon-sm and icon-lg. Button's own
+    // hand-rolled spinner came out in the same change and cost nothing here,
+    // because everything it read was a role or lives in motion.css.
+    //
     // What is left is genuinely nameless: 32 reads of --haus-font-sans, five
-    // control heights, and thirteen icon sizes (three icon-sm, four icon-lg,
+    // control heights, and seventeen icon sizes (five icon-sm, six icon-lg,
     // six icon-xs). A font family is not a role and there is no honest alias to
-    // invent for it.
-    expect(PAST.length - sizes.length).toBe(50)
+    // invent for it, which is haus#54.
+    expect(PAST.length - sizes.length).toBe(54)
   })
 })

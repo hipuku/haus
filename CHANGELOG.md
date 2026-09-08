@@ -78,6 +78,26 @@ widths sitting inside a design system whose CI fails on a hardcoded value.
 **Nothing renders differently.** Every converted value was checked rather than
 assumed: `25rem` is `400px`, `22.5rem` is `360px`, `0.375rem` is `6px`.
 
+### haus-components
+
+**Added** · `Spinner`, the nineteenth component, `haus#55`,
+[decision 0017](docs/decisions/0017-the-nineteenth-component-is-a-busy-indicator.md).
+Promoted on evidence: all three products built one and haus's own Button held a
+fourth, and the four gave three different answers to whether the wait is
+announced.
+
+`label` announces by default. **`announcedBy` takes the text that speaks instead
+of a boolean**, so silencing the spinner requires naming what covers it: every
+product that got this wrong got it wrong by hiding the ring and putting nothing
+in its place.
+
+**Fixed** · **A loading `Button` never set `aria-busy`**, so it was announced
+exactly as a permanently disabled one: *"Saving, dimmed"*, with nothing to say
+the wait was temporary. Its own test had been named *"disables and marks itself
+busy while loading"* since it was written and asserted only `disabled` and
+`aria-disabled`. Button now sets `aria-busy` and draws with `Spinner` rather than
+its own copy.
+
 The 1.0 cut. Everything below is breaking, deliberately, and lands in one major
 rather than two so a consumer migrates once.
 

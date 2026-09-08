@@ -55,3 +55,6 @@ export type { TabsProps, TabsSize, TabItem } from './components/Tabs'
 
 export { Tooltip }    from './components/Tooltip'
 export type { TooltipProps, TooltipPlacement } from './components/Tooltip'
+
+export { Spinner }    from './components/Spinner'
+export type { SpinnerProps, SpinnerSize } from './components/Spinner'

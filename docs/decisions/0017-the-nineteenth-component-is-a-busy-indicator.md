@@ -1,7 +1,22 @@
 # 0017 · The nineteenth component is a busy indicator, and nothing else qualifies
 
-**Accepted**, 2026-09-08. **Measured, not proposed.** `haus#55`.
-Applies [0013](0013-a-component-is-promoted-on-evidence.md).
+**Accepted**, 2026-09-08. **Measured, not proposed. Built the same day.**
+`haus#55`. Applies [0013](0013-a-component-is-promoted-on-evidence.md).
+
+**Building it found a fourth implementation and a defect, both inside haus.**
+`Button` held its own spinner, which makes the count four products rather than
+three. And **a loading `Button` never set `aria-busy`**: it was announced exactly
+as a permanently disabled one, *"Saving, dimmed"*, with nothing to say the wait
+was temporary. The spinner could not fill the gap because it is `aria-hidden`,
+correctly, so the button was the only thing that could speak and did not.
+
+Its own test had been called *"disables and marks itself busy while loading"*
+since it was written, and asserted `disabled` and `aria-disabled` and nothing
+else. **A test name that claims more than its body is the same defect as
+`brand.test.ts`'s `startsWith('--haus-')` and the forced-colors filter that
+matched nothing**, and this one had been read as coverage for as long as it
+existed. Both halves are asserted now, and the new one was verified by reverting
+the fix.
 
 ## Context
 

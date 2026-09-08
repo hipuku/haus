@@ -39,10 +39,37 @@ describe('Button', () => {
   it('disables and marks itself busy while loading', () => {
     // loading must imply disabled: a spinner that still accepts clicks lets a
     // user fire the same request twice.
+    //
+    // The aria-busy half of this test's name was missing until haus#55, and the
+    // name had claimed it since the test was written. Without it a loading
+    // button is announced exactly as a permanently disabled one: "Saving,
+    // dimmed", with nothing to say the wait is temporary. The spinner could not
+    // fill the gap because it is aria-hidden, correctly, so the button was the
+    // only thing that could speak and did not.
     render(<Button loading>Saving</Button>)
     const button = screen.getByRole('button', { name: 'Saving' })
     expect(button).toBeDisabled()
     expect(button).toHaveAttribute('aria-disabled', 'true')
+    expect(button).toHaveAttribute('aria-busy', 'true')
+  })
+
+  it('is not busy when it is merely disabled', () => {
+    // The negative case, without which the assertion above passes on any button
+    // that sets aria-busy unconditionally.
+    render(<Button disabled>Nope</Button>)
+    expect(screen.getByRole('button', { name: 'Nope' })).not.toHaveAttribute('aria-busy')
+  })
+
+  it('draws its spinner with the shared component, not its own', () => {
+    // Button was the fourth independent spinner in the portfolio and the one
+    // inside the design system. It is silent, which is right, because the
+    // button's own aria-busy is what announces; announcedBy records that in the
+    // markup rather than leaving a bare aria-hidden nobody can account for.
+    render(<Button loading>Saving</Button>)
+    expect(document.querySelector('[data-announced-by]')).toHaveAttribute(
+      'data-announced-by',
+      "the button's aria-busy state",
+    )
   })
 
   it('marks an anchor aria-disabled, since href cannot be disabled', () => {

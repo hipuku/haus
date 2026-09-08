@@ -41,7 +41,17 @@
           "unset",
           "revert",
           "none",
-          "auto"
+          "auto",
+          "CanvasText",
+          "Canvas",
+          "Highlight",
+          "HighlightText",
+          "ButtonText",
+          "ButtonFace",
+          "GrayText",
+          "LinkText",
+          "FieldText",
+          "Field"
         ],
         "ignoreValues": [
           "0",
