@@ -103,6 +103,11 @@ export interface BrandMapForm {
   '--haus-brand-modal-width-sm': string
   '--haus-brand-modal-width-md': string
   '--haus-brand-modal-width-lg': string
+  '--haus-brand-modal-width-xl': string
+  '--haus-brand-popover-width-sm': string
+  '--haus-brand-popover-width-md': string
+  '--haus-brand-popover-width-lg': string
+  '--haus-brand-popover-width-xl': string
   '--haus-brand-font-sans': string
   '--haus-brand-font-mono': string
 }
@@ -176,6 +181,11 @@ export const brandRoles = [
   '--haus-brand-modal-width-sm',
   '--haus-brand-modal-width-md',
   '--haus-brand-modal-width-lg',
+  '--haus-brand-modal-width-xl',
+  '--haus-brand-popover-width-sm',
+  '--haus-brand-popover-width-md',
+  '--haus-brand-popover-width-lg',
+  '--haus-brand-popover-width-xl',
   '--haus-brand-font-sans',
   '--haus-brand-font-mono',
 ] as const
@@ -254,6 +264,11 @@ export const brandRolesForm = [
   '--haus-brand-modal-width-sm',
   '--haus-brand-modal-width-md',
   '--haus-brand-modal-width-lg',
+  '--haus-brand-modal-width-xl',
+  '--haus-brand-popover-width-sm',
+  '--haus-brand-popover-width-md',
+  '--haus-brand-popover-width-lg',
+  '--haus-brand-popover-width-xl',
   '--haus-brand-font-sans',
   '--haus-brand-font-mono',
 ] as const

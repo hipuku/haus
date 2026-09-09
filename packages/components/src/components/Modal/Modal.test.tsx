@@ -217,6 +217,11 @@ describe('Modal', () => {
     expect(screen.getByRole('dialog').className).toContain('lg')
   })
 
+  it('applies the xl size class', () => {
+    render(<Modal open onClose={vi.fn()} title="Wider" size="xl">Body</Modal>)
+    expect(screen.getByRole('dialog').className).toContain('xl')
+  })
+
   it('has no axe violations', async () => {
     const { baseElement } = render(
       <Modal open onClose={vi.fn()} title="Settings" footer={<button>Save</button>}>

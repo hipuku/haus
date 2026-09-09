@@ -373,6 +373,14 @@
     --haus-modal-width-sm: var(--haus-brand-modal-width-sm);
     --haus-modal-width-md: var(--haus-brand-modal-width-md);
     --haus-modal-width-lg: var(--haus-brand-modal-width-lg);
+    --haus-modal-width-xl: var(--haus-brand-modal-width-xl);
+
+    /* Popover width, the popover-scale sibling of modal width. Read by Popover
+       and by the Listbox popup; themeable through the brand entry above. */
+    --haus-popover-width-sm: var(--haus-brand-popover-width-sm);
+    --haus-popover-width-md: var(--haus-brand-popover-width-md);
+    --haus-popover-width-lg: var(--haus-brand-popover-width-lg);
+    --haus-popover-width-xl: var(--haus-brand-popover-width-xl);
 
     /* ── Stacking ────────────────────────────────────────────────────────────
        Named for what sits at each height, rather than for the number. The

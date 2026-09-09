@@ -112,9 +112,15 @@ const SCALES: Array<{
   { heading: 'Icon sizes (Font Awesome, paired with the type scale)', prefix: '--icon', path: ['iconSize'] },
   {
     heading: 'Overlay widths',
-    note: "How wide a floating surface may get. A proportion of the product's own layout, which is why Modal's three are a brand entry.",
+    note: "How wide a floating surface may get. A proportion of the product's own layout, which is why Modal's four are a brand entry.",
     prefix: '--overlay-width',
     path: ['overlayWidth'],
+  },
+  {
+    heading: 'Panel widths',
+    note: "The popover-scale sibling of overlay widths: Popover and the Listbox popup. A brand entry too, for the same reason, read through --haus-popover-width-*.",
+    prefix: '--panel-width',
+    path: ['panelWidth'],
   },
   {
     heading: 'Component geometry',
@@ -298,7 +304,7 @@ function buildBrandTypes(): string {
   // The tier a role belongs to is its group, not its position in the file, so the
   // split survives someone reordering brand.css. haus#52 and haus#53.
   const FEEDBACK = ['info', 'success', 'warning', 'error']
-  const FORM = ['radius', 'elevation', 'modal', 'font']
+  const FORM = ['radius', 'elevation', 'modal', 'popover', 'font']
   const groupOf = (n: string) => n.replace('--haus-brand-', '').split('-')[0]
   const isFeedback = (n: string) => FEEDBACK.includes(groupOf(n))
   const isForm = (n: string) => FORM.includes(groupOf(n))

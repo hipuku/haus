@@ -29,7 +29,7 @@ const meta = {
   argTypes: {
     align: { control: 'inline-radio', options: ['start', 'end', 'stretch'] },
     placement: { control: 'inline-radio', options: ['bottom', 'top'] },
-    width: { control: 'inline-radio', options: ['auto', 'trigger', 'sm', 'md', 'lg'] },
+    width: { control: 'inline-radio', options: ['auto', 'trigger', 'sm', 'md', 'lg', 'xl'] },
     role: { control: 'inline-radio', options: ['dialog', 'menu', 'listbox', 'group'] },
   },
   args: { align: 'start', placement: 'bottom', width: 'auto', role: 'dialog' },

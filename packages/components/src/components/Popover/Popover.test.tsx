@@ -148,6 +148,13 @@ describe('Popover', () => {
     expect(panel.className).toContain('w-md')
   })
 
+  it('applies the xl width class', async () => {
+    const user = userEvent.setup()
+    render(<Harness width="xl" />)
+    await user.click(screen.getByRole('button', { name: 'Options' }))
+    expect(screen.getByRole('dialog').className).toContain('w-xl')
+  })
+
   it('has no axe violations while open', async () => {
     const user = userEvent.setup()
     const { container } = render(<Harness />)

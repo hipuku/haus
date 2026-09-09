@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom'
 import type { Size } from '../../types'
 import styles from './Modal.module.css'
 
-export type ModalSize = Size
+export type ModalSize = Size | 'xl'
 
 interface ModalBaseProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title' | 'aria-label' | 'onClick'> {

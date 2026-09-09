@@ -37,6 +37,7 @@
 .sm { max-width: var(--haus-modal-width-sm); }
 .md { max-width: var(--haus-modal-width-md); }
 .lg { max-width: var(--haus-modal-width-lg); }
+.xl { max-width: var(--haus-modal-width-xl); }
 
 /* ── Header ── */
 

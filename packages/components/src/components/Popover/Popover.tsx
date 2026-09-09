@@ -12,10 +12,11 @@ export type PopoverPlacement = 'bottom' | 'top'
  * How wide the panel is.
  *
  * `trigger` matches the anchor, which is what a select-like menu wants; `auto`
- * takes its content's width, which is what a small action menu wants. The three
- * fixed steps are for panels holding a form.
+ * takes its content's width, which is what a small action menu wants. The four
+ * fixed steps are for panels holding a form, and read the `--haus-popover-width-*`
+ * roles rather than the literals they once were, so a brand can restate them.
  */
-export type PopoverWidth = 'auto' | 'trigger' | 'sm' | 'md' | 'lg'
+export type PopoverWidth = 'auto' | 'trigger' | 'sm' | 'md' | 'lg' | 'xl'
 
 /**
  * What the panel *is*.

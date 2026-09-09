@@ -22,7 +22,7 @@ const meta = {
   },
   argTypes: {
     title: { control: 'text' },
-    size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] },
+    size: { control: 'inline-radio', options: ['sm', 'md', 'lg', 'xl'] },
     dismissOnBackdrop: { control: 'boolean' },
   },
   args: { title: 'Delete workspace', size: 'md', dismissOnBackdrop: true, open: true },

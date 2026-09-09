@@ -15,6 +15,38 @@ Versioning follows [decision 0004](docs/decisions/0004-versioning-is-1-x.md): a
 token rename is a major at an identical value, and a contrast change is a major
 even when the hex barely moves.
 
+## haus-components 2.7.0
+
+*2026-09-09. Modal gains an xl size; Popover reads width tokens and gains xl.*
+
+**Added** · **`ModalSize` gains `'xl'`**, 896px through `--haus-modal-width-xl`, for
+wide dashboards and side-by-side previews.
+
+**Added** · **`PopoverWidth` gains `'xl'`**, 420px, the width the two-line option
+rows a Listbox draws want.
+
+**Changed** · **Popover's three fixed widths read `--haus-popover-width-*`** rather
+than the 180/260/340 they had hardcoded, so a brand can restate them the way it
+already can restate a modal's. No visual change at the default brand. Needs
+`haus-tokens` 4.1.0.
+
+## haus-tokens 4.1.0
+
+*2026-09-09. A fourth modal width, and popover widths become tokens.*
+
+**Added** · **`--haus-overlay-width-xl` (896px) and `--haus-modal-width-xl`**, so
+Modal is four sizes not three. A second consumer shipped a four-step modal scale
+against haus's three; rather than leave the fourth as a consumer's local, a group
+the brand contract cannot hold as an optional member, haus took it. The values
+stay haus's web-app proportions and a denser product restates all four through
+`--haus-brand-modal-width-*`.
+
+**Added** · **the `--haus-popover-width-*` roles (180 / 260 / 340 / 420)**, with
+their `--haus-panel-width-*` primitives and `--haus-brand-popover-width-*` brand
+entries. Popover's widths were literals in the component; they are the
+popover-scale sibling of modal width now, themeable through the brand tier the
+same way. `popover` is a fifth optional form group in the brand contract.
+
 ## haus-components 2.6.0
 
 *2026-09-09. A clickable card can be a router link.*
