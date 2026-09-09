@@ -11,7 +11,6 @@ export type AvatarSize = Size | 'xs' | 'xl'
 export type AvatarStatus = 'online' | 'away' | 'busy' | 'offline'
 
 export interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
-  src?:    string
   alt?:    string
   name?:   string
   size?:   AvatarSize
@@ -45,7 +44,7 @@ function initials(name: string): string {
 }
 
 export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(function Avatar(
-  { src, alt, name, size = 'md', status, className, ...rest },
+  { alt, name, size = 'md', status, className, ...rest },
   ref,
 ) {
   const [bg, fg] = name ? PALETTE[nameHash(name)] : PALETTE[0]
@@ -57,13 +56,11 @@ export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(function Ava
     <div ref={ref} className={wrapperCls} {...rest}>
       <div
         className={styles.avatar}
-        style={!src ? { '--haus-avatar-bg': bg, '--haus-avatar-fg': fg } as React.CSSProperties : undefined}
+        style={{ '--haus-avatar-bg': bg, '--haus-avatar-fg': fg } as React.CSSProperties}
         role="img"
         aria-label={alt ?? (name ? `${name}${statusLabel}` : 'Avatar')}
       >
-        {src ? (
-          <img src={src} alt="" className={styles.image} />
-        ) : name ? (
+        {name ? (
           <span aria-hidden>{initials(name)}</span>
         ) : (
           <svg aria-hidden viewBox="0 0 24 24" fill="currentColor" width="60%" height="60%">

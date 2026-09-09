@@ -107,11 +107,13 @@ export const WithAction: Story = {
     docs: {
       description: {
         story:
-          'The `action` slot renders in the title row, beside the title, baseline ' +
-          'aligned. It is the one place the button goes, and until this story the ' +
-          'only place in the repository it had ever been drawn was the variant ' +
-          'sheet, by hand. On a `solid` toast a `.solid .action` override keeps the ' +
-          'button legible against the filled surface, which is why both are shown.',
+          'The `action` slot renders in the title row and is pushed to the far ' +
+          'end by `justify-content: space-between`, so the button sits opposite ' +
+          'the title rather than crowding it. It is a `text` button, the quietest ' +
+          'one, because a notice is already competing for attention and its action ' +
+          'should read as a link, not a second surface. On a `solid` toast a ' +
+          '`.solid .action` override keeps the button legible against the filled ' +
+          'surface, which is why both are shown.',
       },
     },
   },
@@ -122,14 +124,14 @@ export const WithAction: Story = {
         appearance="subtle"
         title="Message archived"
         description={undefined}
-        action={<Button size="sm" variant="ghost">Undo</Button>}
+        action={<Button size="sm" variant="text">Undo</Button>}
       />
       <Toast
         {...args}
         appearance="solid"
         title="Message archived"
         description={undefined}
-        action={<Button size="sm" variant="ghost">Undo</Button>}
+        action={<Button size="sm" variant="text">Undo</Button>}
       />
     </div>
   ),

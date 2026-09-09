@@ -29,14 +29,6 @@
 .lg { width: var(--haus-space-12); height: var(--haus-space-12); font-size: var(--haus-type-label-size); }
 .xl { width: var(--haus-space-16); height: var(--haus-space-16); font-size: var(--haus-type-body-size); }
 
-/* ── Image ── */
-
-.image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 /* ── Status indicator, on the wrapper so it is never clipped ── */
 
 .status {

@@ -9,8 +9,8 @@ const meta = {
     docs: {
       description: {
         component:
-          'Initials from a name, an image when there is one, and a fallback ' +
-          'glyph when there is neither. The colour is derived from the name, so ' +
+          'Initials from a name, and a fallback glyph when there is none. ' +
+          'The colour is derived from the name, so ' +
           'the same person is the same colour everywhere without anyone storing ' +
           'a choice. Keeps `xs` and `xl` beyond the shared size scale: an avatar ' +
           'is a picture rather than a control, and a 16px one has a use a 16px ' +
@@ -20,7 +20,6 @@ const meta = {
   },
   argTypes: {
     name: { control: 'text', description: 'Drives the initials and the colour.' },
-    src: { control: 'text', description: 'An image, which wins over initials.' },
     size: { control: 'inline-radio', options: ['xs', 'sm', 'md', 'lg', 'xl'] },
     status: {
       control: 'inline-radio',

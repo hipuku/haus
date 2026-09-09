@@ -25,18 +25,9 @@ describe('Avatar', () => {
     expect(screen.getByRole('img', { name: 'Ada, online' })).toBeInTheDocument()
   })
 
-  it('shows initials when there is no image', () => {
+  it('shows initials when there is a name', () => {
     render(<Avatar name="Ada Lovelace" />)
     expect(screen.getByText('AL')).toBeInTheDocument()
-  })
-
-  it('renders the image with an empty alt when src is given', () => {
-    // The wrapper already carries the accessible name; a second one on the img
-    // makes screen readers announce the person twice.
-    const { container } = render(<Avatar src="/ada.jpg" name="Ada" />)
-    const img = container.querySelector('img')!
-    expect(img).toHaveAttribute('src', '/ada.jpg')
-    expect(img).toHaveAttribute('alt', '')
   })
 
   it('gives the same name the same colour every time', () => {
@@ -68,7 +59,7 @@ describe('Avatar', () => {
       <>
         <Avatar name="Ada Lovelace" size="xs" />
         <Avatar name="Grace Hopper" size="lg" status="online" />
-        <Avatar src="/x.jpg" alt="A photo of Ada" />
+        <Avatar alt="A photo of Ada" />
         <Avatar />
       </>,
     )

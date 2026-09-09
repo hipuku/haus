@@ -156,6 +156,7 @@
 .titleRow {
   display: flex;
   align-items: baseline;
+  justify-content: space-between;
   gap: var(--haus-space-gap-sm);
   flex-wrap: wrap;
 }

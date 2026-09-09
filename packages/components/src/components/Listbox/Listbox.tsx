@@ -173,6 +173,7 @@ export const Listbox = React.forwardRef<HTMLDivElement, ListboxProps>(
           {...panelLabel}
           id={listbox.listId}
           className={styles.panel}
+          data-size={size}
         >
           <ul className={styles.options} role="none">
             {options.map((o, i) => (

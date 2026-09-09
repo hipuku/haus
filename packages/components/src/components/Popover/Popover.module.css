@@ -17,7 +17,8 @@
   border: var(--haus-border-width-default) solid var(--haus-color-border-default);
   border-radius: var(--haus-radius-overlay);
   box-shadow: var(--haus-elevation-floating);
-  padding: var(--haus-space-inset-xs);
+  padding-block: var(--haus-space-inset-xs);
+  padding-inline: var(--haus-space-inset-2xs);
   font-family: var(--haus-font-sans);
   color: var(--haus-color-ink-primary);
   min-inline-size: max-content;

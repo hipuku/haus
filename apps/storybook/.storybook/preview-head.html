@@ -2,3 +2,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Fira+Code:wght@300..700&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
+<style>
+  /* A consumer's app root sets the base font; the story canvas is that root.
+     Without this, any text not styled by a component (story markup, a Card's
+     children, Input adornments, Spinner and axis labels) inherits the browser
+     default, which is serif. Set the sans role so the canvas reads like a real
+     product and no serif leaks through. */
+  body { font-family: var(--haus-font-sans); }
+</style>
