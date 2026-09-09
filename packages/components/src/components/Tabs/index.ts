@@ -1,2 +1,9 @@
-export { Tabs } from './Tabs'
-export type { TabsProps, TabsSize, TabsAppearance, TabItem } from './Tabs'
+export { Tabs, tabIdFor } from './Tabs'
+export type {
+  TabsProps,
+  TabsOwnPanelProps,
+  TabsRemotePanelProps,
+  TabsSize,
+  TabsAppearance,
+  TabItem,
+} from './Tabs'

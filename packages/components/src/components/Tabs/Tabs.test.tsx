@@ -2,7 +2,7 @@ import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { axe } from 'vitest-axe'
-import { Tabs, type TabItem } from './Tabs'
+import { Tabs, tabIdFor, type TabItem } from './Tabs'
 
 const ITEMS: TabItem[] = [
   { value: 'overview', label: 'Overview' },
@@ -180,5 +180,124 @@ describe('appearance (haus#60)', () => {
     expect(tabs[1]).toHaveAttribute('aria-selected', 'false')
     fireEvent.click(tabs[1])
     expect(onValueChange).toHaveBeenCalledWith('preview')
+  })
+})
+
+const THREE: TabItem[] = [
+  { value: 'a', label: 'A' },
+  { value: 'b', label: 'B' },
+  { value: 'c', label: 'C' },
+]
+
+describe('aria-controls resolves', () => {
+  it('points every tab at an element that exists', () => {
+    // Only the active panel is ever rendered, so every inactive tab used to
+    // point at an id that was not in the document: three tabs, one panel, two
+    // dangling IDREFs, in the component that exists to own this wiring.
+    render(
+      <Tabs aria-label="Sections" value="a" onValueChange={() => {}} items={THREE}>
+        body
+      </Tabs>,
+    )
+    const dangling = screen
+      .getAllByRole('tab')
+      .map(t => t.getAttribute('aria-controls'))
+      .filter((id): id is string => id !== null)
+      .filter(id => !document.getElementById(id))
+    expect(dangling, 'aria-controls pointing at absent elements').toEqual([])
+  })
+
+  it('sets aria-controls on the selected tab and omits it elsewhere', () => {
+    // An omitted aria-controls is valid; a broken IDREF is not.
+    render(
+      <Tabs aria-label="Sections" value="b" onValueChange={() => {}} items={THREE}>
+        body
+      </Tabs>,
+    )
+    const [a, b, c] = screen.getAllByRole('tab')
+    expect(b).toHaveAttribute('aria-controls')
+    expect(document.getElementById(b!.getAttribute('aria-controls')!)).toHaveAttribute('role', 'tabpanel')
+    expect(a).not.toHaveAttribute('aria-controls')
+    expect(c).not.toHaveAttribute('aria-controls')
+  })
+})
+
+describe('panelId, a panel the caller renders', () => {
+  const Remote = ({ value = 'a' }: { value?: string }) => (
+    <>
+      <Tabs
+        id="editor"
+        aria-label="Editor mode"
+        value={value}
+        onValueChange={() => {}}
+        items={THREE}
+        panelId="editor-sheet"
+      />
+      <div>an entire editor form in between</div>
+      <div id="editor-sheet" role="tabpanel" tabIndex={0} aria-labelledby={tabIdFor('editor', value)}>
+        sheet body
+      </div>
+    </>
+  )
+
+  it('renders no panel of its own', () => {
+    render(<Remote />)
+    // One panel, and it is the caller's.
+    const panels = screen.getAllByRole('tabpanel')
+    expect(panels).toHaveLength(1)
+    expect(panels[0]).toHaveAttribute('id', 'editor-sheet')
+  })
+
+  it('points the selected tab at the caller panel', () => {
+    render(<Remote value="b" />)
+    const [a, b] = screen.getAllByRole('tab')
+    expect(b).toHaveAttribute('aria-controls', 'editor-sheet')
+    expect(a).not.toHaveAttribute('aria-controls')
+    expect(document.getElementById('editor-sheet')).toBeInTheDocument()
+  })
+
+  it('gives the caller a computable tab id for aria-labelledby', () => {
+    // tabIdFor is published rather than documented as a string template,
+    // because a template in prose is a contract nothing checks.
+    render(<Remote value="c" />)
+    const labelledBy = screen.getByRole('tabpanel').getAttribute('aria-labelledby')!
+    expect(labelledBy).toBe(tabIdFor('editor', 'c'))
+    expect(document.getElementById(labelledBy)).toHaveAttribute('role', 'tab')
+  })
+
+  it('keeps the arrow keys and the roving tabindex', () => {
+    // The part worth having, and the part every product gets wrong. It must not
+    // be what a consumer gives up to own its own panel.
+    const onValueChange = vi.fn()
+    render(
+      <Tabs
+        id="editor"
+        aria-label="Editor mode"
+        value="a"
+        onValueChange={onValueChange}
+        items={THREE}
+        panelId="sheet"
+      />,
+    )
+    const [a, b, c] = screen.getAllByRole('tab')
+    expect(a).toHaveAttribute('tabindex', '0')
+    expect(b).toHaveAttribute('tabindex', '-1')
+    expect(c).toHaveAttribute('tabindex', '-1')
+
+    fireEvent.keyDown(a!, { key: 'ArrowRight' })
+    expect(onValueChange).toHaveBeenCalledWith('b')
+    fireEvent.keyDown(a!, { key: 'End' })
+    expect(onValueChange).toHaveBeenCalledWith('c')
+  })
+
+  it('has no axe violations with a remote panel', async () => {
+    const { container } = render(<Remote />)
+    expect((await axe(container)).violations).toEqual([])
+  })
+
+  it('does not typecheck with both children and panelId', () => {
+    // @ts-expect-error a panel the caller renders has no children to give Tabs
+    const x = <Tabs id="e" aria-label="E" value="a" onValueChange={() => {}} items={THREE} panelId="p">body</Tabs>
+    expect(x).toBeTruthy()
   })
 })

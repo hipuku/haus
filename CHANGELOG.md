@@ -15,6 +15,56 @@ Versioning follows [decision 0004](docs/decisions/0004-versioning-is-1-x.md): a
 token rename is a major at an identical value, and a contrast change is a major
 even when the hex barely moves.
 
+## haus-components 2.5.0
+
+*2026-09-09. Two of every three tabs pointed at nothing.*
+
+**Fixed** · **`aria-controls` referenced panels that were not in the document.**
+Only the active panel is ever rendered, and every tab pointed at its own
+generated panel id, so a three-tab group shipped one panel and **two dangling
+IDREFs**.
+
+In the component whose stated reason for owning both ends is that *"the wiring
+between a tab and its panel is precisely what all three products got wrong"*.
+
+**Nothing caught it.** The suite runs axe and passes, because
+`aria-valid-attr-value` does not resolve `aria-controls` against the document
+here, and the component's own tests asserted the attribute was *present* rather
+than that it *resolved*. Present and correct are different assertions and only
+one was being made. Found while building `panelId`, by writing the assertion the
+other way round.
+
+An omitted `aria-controls` is valid and a broken IDREF is not, so it is set on
+the selected tab and left off the rest. If you assert on that attribute for
+inactive tabs, that assertion was testing a bug.
+
+**Added** · **`panelId`, for a consumer whose two halves are not adjacent.**
+`haus#67`, and the second thing built on decision
+[0022](docs/decisions/0022-ownership-is-stated-in-both-directions.md).
+
+core's decision editor puts the Write / Preview switch in a sticky toolbar and
+the content it controls in the document sheet, with the whole editor form in
+between. Adopting `Tabs` meant moving the entire editor body inside the
+toolbar's wrapper, so core kept a hand-rolled tablist and none of the contract.
+
+With `panelId`, `Tabs` renders no panel and the selected tab points at the
+element the caller renders. **The roving tabindex, the arrow keys, Home and End
+are unchanged**, which is the part worth having and the part every product gets
+wrong: owning your own panel must not cost you the contract.
+
+**The generated panel stays the default.** A consumer who has not thought about
+it still gets a correct one, which is the whole argument for this component.
+
+**Added** · **`tabIdFor(id, value)`**, exported, for wiring `aria-labelledby` on
+a caller's panel. A published function rather than a documented string template,
+because a template in prose is a contract nothing checks: the caller writes it
+once, `Tabs` changes its scheme, and the panel silently stops being labelled.
+`id` is required alongside `panelId` for the same reason, since tab ids are
+otherwise `useId`-generated and uncomputable.
+
+**Added** · `TabsOwnPanelProps` and `TabsRemotePanelProps`, per decision
+[0023](docs/decisions/0023-a-union-prop-type-exports-its-halves.md).
+
 ## haus-components 2.4.0
 
 *2026-09-09. An icon-only link can be one.*

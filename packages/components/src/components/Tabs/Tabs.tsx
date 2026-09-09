@@ -44,7 +44,68 @@ type TabsLabel =
   | { 'aria-label': string; 'aria-labelledby'?: never }
   | { 'aria-label'?: never; 'aria-labelledby': string }
 
-export type TabsProps = TabsBaseProps & TabsLabel
+/**
+ * Who renders the panel.
+ *
+ * The default is that Tabs does, and that stays the default: a consumer who has
+ * not thought about it should get a correct one, which is the whole argument for
+ * this component existing.
+ *
+ * `panelId` is for a consumer whose two halves are not adjacent, and that is not
+ * an exotic layout. core's decision editor puts the Write / Preview switch in a
+ * **sticky toolbar** and the content it controls in the **document sheet**
+ * further down the page, with the whole editor form in between. Adopting Tabs
+ * meant moving the entire editor body inside the toolbar's wrapper, a real
+ * layout change for a component whose job is two buttons and an `aria-controls`,
+ * so core kept a hand-rolled tablist and none of the contract. haus#67.
+ *
+ * With `panelId`, Tabs renders no panel and the selected tab's `aria-controls`
+ * points at the element the caller renders. The roving tabindex, the arrow keys,
+ * Home and End, and the wiring are unchanged, which is the part worth having and
+ * the part every product gets wrong.
+ *
+ * The caller then owns `role="tabpanel"`, `aria-labelledby` pointing back at the
+ * selected tab, and `tabIndex={0}`. That is stated in the prop docs rather than
+ * assumed, because a consumer who takes the panel and gives it no role has
+ * bought the same nothing they had before.
+ *
+ * Decision 0022: a component may own a subtree only when it owns every part of
+ * it. Decision 0023 is why the two halves are exported by name.
+ */
+export type TabsOwnPanelProps = TabsBaseProps & {
+  panelId?: never
+  /** What the panel Tabs renders contains. */
+  children?: React.ReactNode
+}
+
+export type TabsRemotePanelProps = TabsBaseProps & {
+  /**
+   * The id of a panel the caller renders. Tabs renders none, and the selected
+   * tab's `aria-controls` points here.
+   *
+   * The caller's element must carry `role="tabpanel"`, `tabIndex={0}` and
+   * `aria-labelledby` pointing at the selected tab. Use `tabIdFor(id, value)`
+   * for that last one, which is why `id` is required on this half: tab ids are
+   * `useId`-generated otherwise and a caller cannot know them.
+   */
+  panelId: string
+  /** Required here, so the tab ids are computable. See `tabIdFor`. */
+  id: string
+  children?: never
+}
+
+export type TabsProps = (TabsOwnPanelProps | TabsRemotePanelProps) & TabsLabel
+
+/**
+ * The id of one tab, for a caller wiring `aria-labelledby` on its own panel.
+ *
+ * A published function rather than a documented string template, because a
+ * template in prose is a contract nothing checks: the caller writes it once,
+ * Tabs changes its scheme, and the panel silently stops being labelled. This is
+ * the same reasoning as exporting a union's halves rather than letting each
+ * consumer write the same `Extract`.
+ */
+export const tabIdFor = (id: string, value: string) => `${id}-tab-${value}`
 
 /**
  * A tablist, and the panel it controls.
@@ -85,15 +146,20 @@ export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(function Tabs(
     className,
     tabListClassName,
     children,
+    panelId: remotePanelId,
+    id,
     'aria-label': ariaLabel,
     'aria-labelledby': ariaLabelledBy,
     ...rest
   },
   ref,
 ) {
-  const base = React.useId()
-  const tabId = (v: string) => `${base}-tab-${v}`
-  const panelId = (v: string) => `${base}-panel-${v}`
+  const generated = React.useId()
+  /* `id` is required alongside `panelId` precisely so this is stable and the
+     caller can compute the same tab ids with `tabIdFor`. */
+  const base = id ?? generated
+  const tabId = (v: string) => tabIdFor(base, v)
+  const ownPanelId = (v: string) => `${base}-panel-${v}`
 
   const enabled = items.filter((t) => !t.disabled)
   const active = items.find((t) => t.value === value)
@@ -129,8 +195,34 @@ export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(function Tabs(
     document.getElementById(tabId(target.value))?.focus()
   }
 
+  /* Which panel a given tab controls, or nothing.
+
+     Only the active panel is ever in the document, so every inactive tab used
+     to point `aria-controls` at an id that did not exist: three tabs, one
+     panel, two dangling IDREFs. In the component whose stated reason for owning
+     both ends is that "the wiring between a tab and its panel is precisely what
+     all three products got wrong".
+
+     Nothing caught it. axe passes the suite, because `aria-valid-attr-value`
+     does not resolve `aria-controls` against the document here, and the
+     component's own tests asserted the attribute was present rather than that
+     it resolved. Present and correct are different assertions and only one of
+     them was being made.
+
+     An omitted `aria-controls` is valid; a broken IDREF is not. So it is set
+     where the panel exists and left off where it does not. */
+  const controls = (v: string): string | undefined => {
+    if (remotePanelId) return v === value ? remotePanelId : undefined
+    return v === active?.value ? ownPanelId(v) : undefined
+  }
+
   return (
-    <div ref={ref} className={[styles.tabs, className].filter(Boolean).join(' ')} {...rest}>
+    <div
+      ref={ref}
+      id={id}
+      className={[styles.tabs, className].filter(Boolean).join(' ')}
+      {...rest}
+    >
       <div
         role="tablist"
         aria-label={ariaLabel}
@@ -146,7 +238,7 @@ export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(function Tabs(
               type="button"
               role="tab"
               aria-selected={selected}
-              aria-controls={panelId(item.value)}
+              aria-controls={controls(item.value)}
               disabled={item.disabled}
               /* Roving tabindex. Without it every tab is its own tab stop, so a
                  keyboard user crosses drift's seven one at a time to reach the
@@ -163,10 +255,10 @@ export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(function Tabs(
         })}
       </div>
 
-      {active && (
+      {active && !remotePanelId && (
         <div
           role="tabpanel"
-          id={panelId(active.value)}
+          id={ownPanelId(active.value)}
           aria-labelledby={tabId(active.value)}
           /* Focusable so that a panel holding no controls is still reachable
              after Tab leaves the tablist. A tabpanel with nothing tabbable in

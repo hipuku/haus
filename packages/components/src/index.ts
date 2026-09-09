@@ -68,8 +68,15 @@ export type {
   PopoverProps, PopoverAlign, PopoverPlacement, PopoverWidth, PopoverRole,
 } from './components/Popover'
 
-export { Tabs }       from './components/Tabs'
-export type { TabsProps, TabsSize, TabsAppearance, TabItem } from './components/Tabs'
+export { Tabs, tabIdFor } from './components/Tabs'
+export type {
+  TabsProps,
+  TabsOwnPanelProps,
+  TabsRemotePanelProps,
+  TabsSize,
+  TabsAppearance,
+  TabItem,
+} from './components/Tabs'
 
 export { Tooltip }    from './components/Tooltip'
 export type { TooltipProps, TooltipPlacement } from './components/Tooltip'
