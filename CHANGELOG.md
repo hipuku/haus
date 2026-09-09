@@ -15,6 +15,26 @@ Versioning follows [decision 0004](docs/decisions/0004-versioning-is-1-x.md): a
 token rename is a major at an identical value, and a contrast change is a major
 even when the hex barely moves.
 
+## haus-components 2.2.2
+
+*2026-09-09. A portalled Popover was behind the thing it escaped.*
+
+**Fixed** · **`Popover portal` rendered the panel underneath its own Modal.**
+`haus#73`. Portalling is what a caller reaches for when something clips, and the
+thing that clips is usually a `Modal`, whose backdrop sits at `z-modal` (400).
+An un-portalled panel is a descendant of that backdrop and stacks inside it; a
+portalled one is a sibling, so `z-dropdown` (100) put it **behind the dialog it
+was opened from**. 2.2.0 traded a clipping bug for a stacking one.
+
+The portalled panel takes `z-modal` now, not something above it: it is rendered
+into `document.body` after the modal, and equal z-indexes are decided by
+document order, so it clears the dialog while still sitting under `z-toast` and
+`z-tooltip`. A toast about what just happened belongs over an open menu.
+
+Asserted in `stylesheet.test.ts` against the built artefact rather than in
+Popover's own suite, because jsdom does not compute CSS modules: a component
+test can only see that the class was applied, and the class is not the claim.
+
 ## haus-components 2.2.1
 
 *2026-09-09. `asChild` no longer throws in a Server Component.*

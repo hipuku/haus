@@ -19,6 +19,21 @@ describe.skipIf(built === null)('the built stylesheet', () => {
     expect(built!.trimEnd().endsWith('}')).toBe(true)
   })
 
+  it('gives a portalled Popover the modal layer, not the dropdown layer', () => {
+    /* haus#73, and asserted here rather than in Popover's own suite because
+       jsdom does not compute CSS modules: the component test can only see that
+       the class was applied, and the class is not the claim.
+
+       Portalling is what a caller reaches for when something clips, and the
+       thing that clips is usually a Modal at `z-modal`. An un-portalled panel
+       is a descendant of that backdrop and stacks inside it; a portalled one is
+       a sibling, so `z-dropdown` at 100 renders it behind the dialog it was
+       opened from. The first fix for the clipping traded it for that. */
+    const rule = built!.match(/\.[A-Za-z0-9_-]*portalled[A-Za-z0-9_-]*\{[^}]*\}/)
+    expect(rule, 'no .portalled rule in the built stylesheet').not.toBeNull()
+    expect(rule![0]).toContain('z-index:var(--haus-z-modal)')
+  })
+
   it('keeps every @import above the layer block', () => {
     // An @import after any other rule is dropped by the parser, so hoisting is
     // not tidiness. There are none today and this is what says so.

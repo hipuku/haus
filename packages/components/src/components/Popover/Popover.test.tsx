@@ -192,6 +192,17 @@ describe('portal (haus#68)', () => {
     expect(panel).toHaveStyle({ position: 'fixed' })
   })
 
+  it('takes the modal layer when portalled, not the dropdown layer', () => {
+    // haus#73. Portalling is reached for when something clips, and the thing
+    // that clips is usually a Modal at z-modal. A portalled panel is a sibling
+    // of that backdrop rather than a descendant, so the dropdown layer at 100
+    // put it behind the dialog it was opened from: the first fix for the
+    // clipping traded it for a stacking bug.
+    const { getByRole } = render(<Harness portal />)
+    const panel = getByRole('dialog')
+    expect(panel.className).toMatch(/portalled/)
+  })
+
   it('keeps its role and label through the portal', () => {
     // A portalled panel is easy to render correctly and label wrongly.
     const { getByRole } = render(<Harness portal />)
