@@ -7,7 +7,7 @@ import { Badge } from 'haus-components'
   <h1 style={{ font: 'var(--haus-type-display-weight) var(--haus-type-display-size)/var(--haus-type-display-leading) var(--haus-font-sans)', letterSpacing: 'var(--haus-type-display-tracking)', color: 'var(--haus-color-ink-primary)', margin: 0 }}>haus</h1>
   <p style={{ font: 'var(--haus-type-body-lg-weight) var(--haus-type-body-lg-size)/var(--haus-type-body-lg-leading) var(--haus-font-sans)', color: 'var(--haus-color-ink-secondary)', maxWidth: '62ch', margin: 0 }}>
     A token-first, light-mode, OKLCH design system: four cascade layers, a brand
-    map split from the roles, and eighteen React components built on top. It is
+    map split from the roles, and twenty-one React components built on top. It is
     published to npm and it has real consumers.
   </p>
 </div>
@@ -37,7 +37,7 @@ touches a component.
     ['Primitives', 'The raw values, with no meaning. --haus-aronia-500, --haus-space-4. No component reads these.'],
     ['Brand', 'Which primitive each role takes. The one file a consumer replaces. brands/vault.css is a complete second brand.'],
     ['Semantics', 'What each role means, named for the decision and never the palette. --haus-color-surface-default, --haus-type-heading-tracking.'],
-    ['Components', 'Eighteen React components that read the semantic roles and nothing below them.'],
+    ['Components', 'Twenty-one React components that read the semantic roles and nothing below them.'],
   ].map(([name, description]) => (
     <div key={name} style={{ display: 'flex', gap: 'var(--haus-space-4)', alignItems: 'baseline' }}>
       <span style={{ font: 'var(--haus-type-field-label-weight) var(--haus-type-field-label-size)/1 var(--haus-font-sans)', letterSpacing: 'var(--haus-type-field-label-tracking)', textTransform: 'uppercase', color: 'var(--haus-color-ink-primary)', width: '7rem', flexShrink: 0 }}>{name}</span>
