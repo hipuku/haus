@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 import React, { createRef } from 'react'
 import { axe } from 'vitest-axe'
 import { Button } from './Button'
+import type { ButtonAsChildProps, ButtonOwnProps } from './Button'
 
 describe('Button', () => {
   it('renders as a button by default and as an anchor when given href', () => {
@@ -280,6 +281,30 @@ describe('asChild', () => {
     // @ts-expect-error the child carries its own target
     const c = <Button asChild target="_blank"><a href="/x">Go</a></Button>
     expect([a, b, c]).toHaveLength(3)
+  })
+
+  it('lets a wrapper accept ButtonOwnProps where ButtonProps does not compile', () => {
+    // haus#66. The whole union is hard to accept: a wrapper spreading it is
+    // rejected because the compiler cannot rule out the asChild branch, whose
+    // children is a single element. core wrote Extract<ButtonProps,{asChild?:false}>
+    // twice; ButtonOwnProps is that type with a name.
+    function SubmitButton({ children, pendingLabel, ...rest }: ButtonOwnProps & { pendingLabel?: string }) {
+      return <Button {...rest}>{pendingLabel ?? children}</Button>
+    }
+
+    // Two children beside each other, which the asChild half forbids and this
+    // half must allow. That is the shape core's ConnectGithubButton needs.
+    render(
+      <SubmitButton pendingLabel="Saving">
+        <span>mark</span>
+        <span>label</span>
+      </SubmitButton>,
+    )
+    expect(screen.getByRole('button')).toHaveTextContent('Saving')
+
+    // And the other half still names the cloned-child case.
+    const cloned: ButtonAsChildProps = { asChild: true, children: <a href="/x">Go</a> }
+    expect(cloned.asChild).toBe(true)
   })
 
   it('appends the external glyph after the child own children', () => {

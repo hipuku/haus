@@ -15,6 +15,41 @@ Versioning follows [decision 0004](docs/decisions/0004-versioning-is-1-x.md): a
 token rename is a major at an identical value, and a contrast change is a major
 even when the hex barely moves.
 
+## haus-components 2.3.0
+
+*2026-09-09. The two halves of `ButtonProps` have names.*
+
+**Added** · **`ButtonOwnProps` and `ButtonAsChildProps`**, exported beside
+`ButtonProps` from the component barrel and the package root. `haus#66`.
+
+`ButtonProps` has been a discriminated union since 2.1.0, so that `asChild` could
+forbid `loading`, `href` and `target`. That works for callers and **breaks
+wrappers**: a component that accepts the whole union and spreads it does not
+compile, because the compiler cannot rule out the `asChild` branch, whose
+`children` is a single element. A wrapper rendering an icon beside a label is
+rejected even though it never passes `asChild` and could not.
+
+Both of core's wrappers hit this on 2.1.1 and got out with
+`Extract<ButtonProps, { asChild?: false }>`. That is the right meaning and the
+wrong place for it: every consumer writing a wrapper would rediscover the same
+`Extract` and keep it in step by hand. **`ButtonOwnProps` is that type with a
+name**, and the union is now written from the halves rather than the halves being
+extracted back out of it.
+
+Purely additive; `ButtonProps` is unchanged and no existing code needs editing.
+Decision [0023](docs/decisions/0023-a-union-prop-type-exports-its-halves.md).
+
+**Added** · A self-test on `barrel.test.ts`, which had none. The check that every
+exported type reaches both barrels is the one thing standing between a new type
+and the gap `haus#65` describes, and **it had never been seen to fail.** Its two
+helpers now take source strings rather than paths, so the self-test drives the
+real code rather than a copy of its regexes, and a renaming re-export
+(`export type { A as B }`) is covered because the filter keys on the local name.
+
+The check earned itself on this change: the two new type names passed it without
+it being edited, and removing either from `src/index.ts` fails it by component
+name.
+
 ## haus-tokens 4.0.0
 
 *2026-09-09. The drift brand is gone, because drift is gone.*

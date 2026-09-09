@@ -23,9 +23,10 @@ import { join } from 'node:path'
 const SRC = join(process.cwd(), 'src')
 const COMPONENTS = join(SRC, 'components')
 
-/** Exported type and interface names declared in a file. */
-function exportedTypes(file: string): string[] {
-  const source = readFileSync(file, 'utf8')
+const read = (file: string) => readFileSync(file, 'utf8')
+
+/** Exported type and interface names declared in a source string. */
+function exportedTypes(source: string): string[] {
   const names: string[] = []
   for (const m of source.matchAll(/^export\s+(?:type|interface)\s+([A-Za-z0-9_]+)/gm)) {
     names.push(m[1])
@@ -34,8 +35,7 @@ function exportedTypes(file: string): string[] {
 }
 
 /** Type names a barrel re-exports, from its `export type { ... }` clauses. */
-function reExportedTypes(file: string): Set<string> {
-  const source = readFileSync(file, 'utf8')
+function reExportedTypes(source: string): Set<string> {
   const names = new Set<string>()
   for (const m of source.matchAll(/export\s+type\s*\{([^}]*)\}/g)) {
     for (const raw of m[1].split(',')) {
@@ -51,21 +51,51 @@ const dirs = readdirSync(COMPONENTS, { withFileTypes: true })
   .map(d => d.name)
 
 describe('every exported type is reachable from the package root', () => {
-  const root = reExportedTypes(join(SRC, 'index.ts'))
+  const root = reExportedTypes(read(join(SRC, 'index.ts')))
 
   it.each(dirs)('%s re-exports its own types from its folder barrel', dir => {
     const impl = join(COMPONENTS, dir, `${dir}.tsx`)
     if (!existsSync(impl)) return
-    const barrel = join(COMPONENTS, dir, 'index.ts')
-    const own = reExportedTypes(barrel)
-    const missing = exportedTypes(impl).filter(t => !own.has(t))
+    const own = reExportedTypes(read(join(COMPONENTS, dir, 'index.ts')))
+    const missing = exportedTypes(read(impl)).filter(t => !own.has(t))
     expect(missing, `${dir}/index.ts does not re-export: ${missing.join(', ')}`).toEqual([])
   })
 
   it.each(dirs)('%s types reach src/index.ts', dir => {
     const impl = join(COMPONENTS, dir, `${dir}.tsx`)
     if (!existsSync(impl)) return
-    const missing = exportedTypes(impl).filter(t => !root.has(t))
+    const missing = exportedTypes(read(impl)).filter(t => !root.has(t))
     expect(missing, `src/index.ts does not re-export: ${missing.join(', ')}`).toEqual([])
+  })
+
+  /**
+   * The guard proves it can fail, through its own helpers rather than a copy
+   * of their regexes.
+   *
+   * This package has now shipped checks that were green while the thing they
+   * guarded was broken, and each was trusted because it was green. A guard whose
+   * failure has never been seen is a guard on trust. Removing `ButtonOwnProps`
+   * from `src/index.ts` really does fail the case above; this asserts the same
+   * thing without editing a file, and it calls `exportedTypes` and
+   * `reExportedTypes` themselves, so a bug in either fails here too.
+   */
+  it('catches a type that a barrel does not re-export', () => {
+    const impl = 'export type Kept = string\nexport interface Dropped { a: 1 }\n'
+    const forgetful = "export type { Kept } from './X'\n"
+    const complete = "export type { Kept, Dropped } from './X'\n"
+
+    expect(exportedTypes(impl)).toEqual(['Kept', 'Dropped'])
+
+    const forgot = reExportedTypes(forgetful)
+    expect(exportedTypes(impl).filter(t => !forgot.has(t))).toEqual(['Dropped'])
+
+    const all = reExportedTypes(complete)
+    expect(exportedTypes(impl).filter(t => !all.has(t))).toEqual([])
+  })
+
+  it('reads through a renaming re-export', () => {
+    // `export type { A as B }` forwards A. The filter keys on the local name,
+    // so an alias must not read as a missing export.
+    expect([...reExportedTypes("export type { Kept as Renamed } from './X'\n")]).toEqual(['Kept'])
   })
 })

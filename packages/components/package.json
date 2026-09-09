@@ -1,6 +1,6 @@
 {
   "name": "haus-components",
-  "version": "2.2.2",
+  "version": "2.3.0",
   "description": "haus design system components: 21 accessible React primitives built on haus-tokens.",
   "license": "MIT",
   "engines": {

@@ -34,3 +34,5 @@ yet true of the package, the entry names the wave that makes it true.
 | [0019](0019-typeface-is-a-form-tier-brand-entry.md) | Typeface is a form-tier brand entry, and moving it is a major | Accepted · implemented, ships in haus-tokens 3.0.0 |
 | [0020](0020-listbox-and-select-both-stay.md) | Listbox and Select both stay, and Select's lack of consumers is recorded | Accepted · implemented, ships in haus-components 2.1.0 |
 | [0021](0021-decision-states-are-badge-tones.md) | A product's domain states spend Badge's tones, superseding C1 | Accepted · haus side needs nothing, core side is C3 |
+| [0022](0022-ownership-is-stated-in-both-directions.md) | Ownership is stated, in both directions | Accepted · `asChild` on Button is the first instance |
+| [0023](0023-a-union-prop-type-exports-its-halves.md) | A union prop type exports its halves | Accepted · implemented for Button in haus-components |

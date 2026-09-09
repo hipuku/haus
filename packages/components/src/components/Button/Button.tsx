@@ -58,21 +58,38 @@ interface ButtonBaseProps extends React.ButtonHTMLAttributes<HTMLButtonElement> 
  * describes a wait that will never end. `href` and `target` are absent for the
  * same reason: the child carries its own destination.
  */
-export type ButtonProps =
-  | (ButtonBaseProps & {
-      asChild?: false
-      loading?: boolean
-      /** Renders as an anchor when provided */
-      href?:    string
-      target?:  string
-    })
-  | (ButtonBaseProps & {
-      asChild:  true
-      loading?: never
-      href?:    never
-      target?:  never
-      children: React.ReactElement
-    })
+export type ButtonOwnProps = ButtonBaseProps & {
+  asChild?: false
+  loading?: boolean
+  /** Renders as an anchor when provided */
+  href?:    string
+  target?:  string
+}
+
+export type ButtonAsChildProps = ButtonBaseProps & {
+  asChild:  true
+  loading?: never
+  href?:    never
+  target?:  never
+  children: React.ReactElement
+}
+
+/**
+ * The two halves are exported by name because a union is hard to accept and
+ * easy to produce, and a wrapper component has to accept one.
+ *
+ * `function Submit(p: ButtonProps) { return <Button {...p} /> }` does not
+ * compile. The compiler cannot rule out the `asChild` branch, whose `children`
+ * is a single `React.ReactElement`, so a wrapper that renders an icon beside a
+ * label is rejected **even though it never passes `asChild` and could not**.
+ *
+ * core hit this on both of its wrappers and wrote
+ * `Extract<ButtonProps, { asChild?: false }>` to get out. That is the right
+ * meaning: a wrapper is a button, never a cloned child. It is also a type this
+ * package should have shipped rather than every consumer rediscovering the same
+ * `Extract`. `ButtonOwnProps` is that type with a name. haus#66.
+ */
+export type ButtonProps = ButtonOwnProps | ButtonAsChildProps
 
 /**
  * Applies a node to however many refs were aimed at it.
