@@ -15,6 +15,36 @@ Versioning follows [decision 0004](docs/decisions/0004-versioning-is-1-x.md): a
 token rename is a major at an identical value, and a contrast change is a major
 even when the hex barely moves.
 
+## haus-tokens 4.0.0
+
+*2026-09-09. The drift brand is gone, because drift is gone.*
+
+**Removed** · **`brands/drift.css`.** drift took its whole token layer in-house
+on 2026-09-09 and no longer installs this package, so the file was a brand for a
+consumer that does not exist. Its reasoning is drift's and it is a good one: a
+tool whose subject is reading a product's shipped CSS and reporting what its
+token layer actually does should not be wearing the design system it sits beside.
+
+**This is a breaking change for anyone importing `haus-tokens/brands/drift.css`,
+and the honest position is that nobody was.** It shipped from 2.3.0 with exactly
+one consumer, and that consumer left. It is a major under decision 0004 anyway,
+because a removed export is a removed export whether or not the removal is
+observed.
+
+**What is not removed, and why.** The form tier stays at seven entries. drift is
+the measurement that produced it: 19 apparent non-colour departures, of which 12
+hardcoded a literal a haus primitive already resolves to and 2 were version skew,
+leaving five real ones. That measurement does not become wrong because the
+consumer left, and `docs/decisions/0015` still rests on it. Likewise `guard.ts`
+and `brand.ts` still cite drift's 89 restatements, which happened.
+
+**The contract still has two implementations.** `brands/core.css` and
+`brands/vault.css` remain, so the claim a second brand exists to prove, that the
+base and feedback tiers hold across more than one palette, is still proven.
+`brand.test.ts` and the build both read `src/brands` as a directory rather than a
+list, so nothing needed editing to drop the file: **the fix for haus#53 is what
+made this a one-line removal instead of a fifth instance of the same defect.**
+
 ## haus-components 2.2.2
 
 *2026-09-09. A portalled Popover was behind the thing it escaped.*
