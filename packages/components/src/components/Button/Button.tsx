@@ -1,4 +1,5 @@
 import React from 'react'
+import { childRefOf, mergeRefs } from '../../internal/asChild'
 import type { Size, Tone } from '../../types'
 import { Spinner } from '../Spinner'
 import styles from './Button.module.css'
@@ -91,37 +92,6 @@ export type ButtonAsChildProps = ButtonBaseProps & {
  */
 export type ButtonProps = ButtonOwnProps | ButtonAsChildProps
 
-/**
- * Applies a node to however many refs were aimed at it.
- *
- * `asChild` has two: the one the caller put on `<Button>` and the one they put
- * on the child. Cloning with only Button's silently discards the child's, which
- * is what the ref test caught. Neither is more entitled than the other, so both
- * are called.
- *
- * React 19 passes `ref` as an ordinary prop and React 18 keeps it on the
- * element, and this package's peer range allows both, so the child's ref is
- * read from whichever place holds it.
- */
-function mergeRefs<T>(
-  ...refs: Array<React.Ref<T> | undefined>
-): React.RefCallback<T> | undefined {
-  const real = refs.filter(Boolean)
-  /* Nothing to merge means no ref at all, not a callback that does nothing.
-     A ref is illegal in a Server Component, and `asChild` is the one path that
-     could attach one without being asked: core renders `<Button asChild>` from
-     two server pages, where neither Button nor the child has a ref, and an
-     unconditional callback made both throw "Refs cannot be used in Server
-     Components". haus#71. */
-  if (real.length === 0) return undefined
-  return (node) => {
-    for (const ref of real) {
-      if (typeof ref === 'function') ref(node)
-      else (ref as React.MutableRefObject<T | null>).current = node
-    }
-  }
-}
-
 export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
   function Button(
     props,
@@ -170,11 +140,8 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
 
     if (asChild) {
       const child = React.Children.only(children as React.ReactElement)
-      const childProps = child.props as { className?: string; ref?: React.Ref<unknown> }
-      // React 19 puts the child's ref in props; React 18 keeps it on the
-      // element. The peer range allows both, so look in both.
-      const childRef =
-        childProps.ref ?? (child as unknown as { ref?: React.Ref<unknown> }).ref
+      const childProps = child.props as { className?: string }
+      const childRef = childRefOf(child)
       return React.cloneElement(
         child,
         {

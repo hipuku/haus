@@ -1,4 +1,5 @@
 import React from 'react'
+import { childRefOf, mergeRefs } from '../../internal/asChild'
 import type { Tone } from '../../types'
 import { Spinner } from '../Spinner'
 import styles from './IconButton.module.css'
@@ -27,7 +28,7 @@ export type IconButtonTone = Tone
  */
 export type IconButtonSize = 'sm' | 'md'
 
-export interface IconButtonProps
+interface IconButtonBaseProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
   /**
    * The icon. Required, and the only child: an icon button with a label is a
@@ -46,8 +47,47 @@ export interface IconButtonProps
   variant?: IconButtonVariant
   tone?:    IconButtonTone
   size?:    IconButtonSize
+}
+
+export type IconButtonOwnProps = IconButtonBaseProps & {
+  asChild?: false
   loading?: boolean
 }
+
+export type IconButtonAsChildProps = IconButtonBaseProps & {
+  asChild:  true
+  loading?: never
+  children: React.ReactElement
+}
+
+/**
+ * `asChild` renders the caller's single child element with IconButton's class
+ * and its glyph, rather than a `<button>`.
+ *
+ * Decision 0022: a component owns its box and never its element. core's
+ * workspace-settings gear is a 36px square, icon only, inside a Next `<Link>`,
+ * and it was the last element keeping `.btn` and `.btn--icon` alive in core's
+ * `globals.css` because neither workaround was acceptable. `Button asChild`
+ * plus a class to square it is a consumer overriding haus's geometry, which is
+ * what that migration existed to delete, and it silently disagrees with this
+ * component about what an icon button's box is. haus#70.
+ *
+ * `loading` is absent from the `asChild` half, exactly as on Button: the
+ * spinner replaces the glyph, and a link that is permanently busy announces a
+ * wait that will never end.
+ *
+ * **The glyph replaces the child's children rather than being appended to
+ * them**, which is the question haus#70 raised and Button never had to answer.
+ * Button's children are the caller's, so it appends. Here they are not: `icon`
+ * is the content and this component's whole contract is that it is the *only*
+ * content, which `Omit<..., 'children'>` already states for the other half. A
+ * caller who puts text in the child wants a Button.
+ *
+ * `label` still applies and still lands as `aria-label`. The child supplies the
+ * element, not the name, and an anchor wrapping an SVG has no accessible name
+ * without it.
+ */
+export type IconButtonProps = IconButtonOwnProps | IconButtonAsChildProps
 
 /**
  * A control that is an icon and nothing else.
@@ -63,21 +103,34 @@ export interface IconButtonProps
  * 36px minimum, and an icon passed as its only child gives the wrong box and
  * the wrong target size.
  */
-export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
-  function IconButton(
-    {
+export const IconButton = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, IconButtonProps>(
+  function IconButton(props, ref) {
+    const {
       icon,
       label,
       variant = 'secondary',
       tone    = 'neutral',
       size    = 'md',
-      loading = false,
       disabled,
       className,
       ...rest
-    },
-    ref,
-  ) {
+    } = props
+
+    // Read off the union rather than destructured above: the `asChild` half
+    // types `loading` as `never`, and a default in the pattern would widen it
+    // back. Same shape as Button.
+    const asChild = props.asChild === true
+    const loading = props.asChild === true ? false : props.loading ?? false
+
+    // `rest` still holds the discriminant and the props read off the union, and
+    // every one of them would land on the DOM as an unknown attribute.
+    const {
+      asChild:  _asChild,
+      loading:  _loading,
+      children: _children,
+      ...domProps
+    } = rest as Record<string, unknown>
+
     const cls = [
       styles.iconButton,
       styles[variant],
@@ -88,9 +141,34 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
 
     const isDisabled = disabled || loading
 
+    const glyph = <span className={styles.glyph} aria-hidden="true">{icon}</span>
+
+    if (asChild) {
+      const child = React.Children.only(props.children as React.ReactElement)
+      const childProps = child.props as { className?: string }
+      return React.cloneElement(
+        child,
+        {
+          // IconButton's classes first so the child's own className wins a
+          // collision: the caller is closer to the problem than the system is.
+          className: [cls, childProps.className].filter(Boolean).join(' '),
+          ref: mergeRefs(ref as React.Ref<unknown>, childRefOf(child)),
+          // The child supplies the element, not the name. An anchor wrapping an
+          // SVG announces as a link and nothing else without this.
+          'aria-label': label,
+          ...domProps,
+        } as Partial<unknown> & React.Attributes,
+        // The glyph *replaces* the child's children rather than being appended.
+        // Button appends because its children are the caller's; here they are
+        // not. `icon` is the content, and the other half of this union states
+        // that by omitting `children` from the element attributes entirely.
+        glyph,
+      )
+    }
+
     return (
       <button
-        ref={ref}
+        ref={ref as React.Ref<HTMLButtonElement>}
         type="button"
         className={cls}
         disabled={isDisabled}
@@ -98,11 +176,11 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
         aria-busy={loading || undefined}
         // The name comes from here, never from the icon.
         aria-label={label}
-        {...rest}
+        {...domProps}
       >
         {loading
           ? <Spinner size="text" announcedBy="the button's aria-busy state" />
-          : <span className={styles.glyph} aria-hidden="true">{icon}</span>}
+          : glyph}
       </button>
     )
   },

@@ -11,7 +11,14 @@ export type {
 } from './components/Button'
 
 export { IconButton } from './components/IconButton'
-export type { IconButtonProps, IconButtonVariant, IconButtonTone, IconButtonSize } from './components/IconButton'
+export type {
+  IconButtonProps,
+  IconButtonOwnProps,
+  IconButtonAsChildProps,
+  IconButtonVariant,
+  IconButtonTone,
+  IconButtonSize,
+} from './components/IconButton'
 export { Input }      from './components/Input'
 export type { InputProps } from './components/Input'
 

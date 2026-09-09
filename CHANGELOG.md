@@ -15,6 +15,46 @@ Versioning follows [decision 0004](docs/decisions/0004-versioning-is-1-x.md): a
 token rename is a major at an identical value, and a contrast change is a major
 even when the hex barely moves.
 
+## haus-components 2.4.0
+
+*2026-09-09. An icon-only link can be one.*
+
+**Added** · **`asChild` on `IconButton`**, plus `IconButtonOwnProps` and
+`IconButtonAsChildProps`. `haus#70`, the first thing built on decision
+[0022](docs/decisions/0022-ownership-is-stated-in-both-directions.md).
+
+core's workspace-settings gear is a 36px square, icon only, inside a Next
+`<Link>`. It was the last element keeping `.btn` and `.btn--icon` alive in core's
+`globals.css`, because both workarounds were worse: `Button asChild` plus a class
+to square it is a consumer overriding haus's geometry, which is exactly what that
+migration existed to delete, and it silently disagrees with `IconButton` about
+what an icon button's box is.
+
+**The glyph replaces the child's children rather than being appended to them.**
+That is the question `haus#70` raised and `Button` never had to answer. Button's
+children are the caller's, so it appends; here they are not. `icon` is the
+content and this component's contract is that it is the *only* content, which the
+other half of the union already states by omitting `children` from the element
+attributes. A caller who puts text in the child wants a `Button`.
+
+`label` still lands as `aria-label`: the child supplies the element, not the
+name, and an anchor wrapping an SVG announces as a link and nothing else without
+it. `loading` is absent from the `asChild` half for the same reason it is absent
+from Button's.
+
+**Changed (internal)** · `mergeRefs` moved to `internal/asChild.ts` and both
+components call it. Copying it per component would have restated the exact
+function `haus#71` shipped a defect in, with nothing keeping the copies in step,
+which is the defect this design system exists to detect. `childRefOf` moved with
+it, since reading a ref from props or from the element depending on the React
+version is the same knowledge.
+
+**The guard added in 2.3.1 earned itself on the first change after it.**
+`rsc-rules.test.tsx` reads the `asChild` components from the directory, so
+`IconButton` was covered the moment it gained the prop, and its props map failed
+by name until an entry was added. That is the list-beside-a-directory defect not
+happening, for once.
+
 ## haus-components 2.3.1
 
 *2026-09-09. The RSC row is not blank any more.*
