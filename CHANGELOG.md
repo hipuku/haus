@@ -15,6 +15,15 @@ Versioning follows [decision 0004](docs/decisions/0004-versioning-is-1-x.md): a
 token rename is a major at an identical value, and a contrast change is a major
 even when the hex barely moves.
 
+## haus-tokens 4.2.0
+
+*2026-09-09. A 28px step, where the type ladder skipped from 24 to 30.*
+
+**Added** · **`--haus-text-28` (28px / 1.75rem)**, between `--haus-text-24` and
+`--haus-text-30`. The ladder jumped 6px there against 1-to-2px steps lower down, and a
+second product's largest specimen sample landed in the gap and carried a local for it.
+Additive: no role reads it yet, and nothing moves.
+
 ## haus-components 2.7.0
 
 *2026-09-09. Modal gains an xl size; Popover reads width tokens and gains xl.*

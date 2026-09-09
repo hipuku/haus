@@ -75,6 +75,7 @@
     --haus-text-16:  1rem;
     --haus-text-20:  1.25rem;
     --haus-text-24:  1.5rem;
+    --haus-text-28:  1.75rem;   /* 28px. The step between 24 and 30, added when a second product's largest specimen landed in the gap the ladder skipped. */
     --haus-text-30:  1.875rem;
 
     --haus-weight-regular:   400;

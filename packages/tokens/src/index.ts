@@ -78,6 +78,7 @@ export const tokens = {
       "16": "1rem",
       "20": "1.25rem",
       "24": "1.5rem",
+      "28": "1.75rem",
       "30": "1.875rem",
     },
     weight: {
