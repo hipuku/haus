@@ -110,7 +110,11 @@
   flex-direction: column;
   gap: var(--haus-space-gap-2xs);
   padding: var(--haus-space-inset-2xs) var(--haus-space-inset-xs);
-  border-radius: var(--haus-radius-marker);
+  /* Concentric with the panel: the panel corner is radius-overlay and the panel
+     insets its options by inset-2xs, so the highlight matches the container's
+     curve (overlay - inset) instead of a tighter marker radius that pokes inside
+     the panel's rounded corner on the first and last row. */
+  border-radius: calc(var(--haus-radius-overlay) - var(--haus-space-inset-2xs));
   cursor: pointer;
   color: var(--haus-color-ink-primary);
 }
