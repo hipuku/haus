@@ -57,6 +57,35 @@ ring at all for the people who need it most.
 per component lets the thirteenth arrive without it. `api-surface.test.ts` is
 the pattern.
 
+**This package has no `use client`, so every stateless component is on the React
+Server Component path, and that path has no test.** Not an oversight in either
+half: a Server Component rendering `Button`, `Badge` or `Card` directly, with no
+client bundle, is a feature, and core relies on it in two pages. But
+`ssr.test.tsx` covers `renderToString`, which is **not** RSC and enforces
+different rules: it accepts a ref happily where an RSC render rejects one.
+
+`haus#71` shipped through that blank. `asChild` attached a ref to every cloned
+child, including when neither side had one, which is legal on the client,
+invisible to `renderToString`, and throws in a Server Component. Thirty suites
+were green and the first consumer to use it hit the error immediately.
+
+So, until `haus#72` closes that row:
+
+- **A component may not pass a `ref`, an event handler or anything else across a
+  boundary it was not given one for.** The rule is narrower than "support RSC":
+  do not attach what nobody asked for.
+- **A change to a stateless component asks whether a Server Component could
+  render it.** Ten can: `Avatar`, `Badge`, `Button`, `Callout`, `Card`,
+  `Divider`, `EmptyState`, `IconButton`, `Spinner`, `Toast`. The list is in the
+  README and is derived from the source, not maintained by hand, so check it
+  there rather than trusting this sentence.
+- **A new prop that clones, forwards or injects into a caller's element is the
+  shape to be suspicious of.** `asChild` is currently the only one, and it is
+  the only one that has broken this way.
+
+**A supported path with no test is how the last defect shipped**, and naming it
+here is what stops it being rediscovered by the next consumer instead of by us.
+
 ## Visual regression
 
 Chromatic runs on pull requests only. It bills by

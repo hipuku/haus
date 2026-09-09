@@ -38,6 +38,27 @@ Every property carries `--haus-`, and roles are declared on `:root, [data-haus-t
 
 haus is light-mode only. That is a consequence of [decision 0002](docs/decisions/0002-surface-polarity-is-fixed.md) rather than a deferred layer: surface polarity is fixed by the contract, so a dark theme cannot arrive as a brand map.
 
+## Server Components
+
+This package ships **no `use client` directive**, so a React Server Component can
+import and render a haus component directly. For the stateless ones that is a
+feature: no client bundle for a `Button` that never had state.
+
+**RSC-safe**, ten, no client boundary needed: `Avatar`, `Badge`, `Button`,
+`Callout`, `Card`, `Divider`, `EmptyState`, `IconButton`, `Spinner`, `Toast`.
+
+**Needs a client boundary**, eleven, because each holds state, an effect, a
+generated id or a portal: `Checkbox`, `Input`, `Listbox`, `Modal`, `Popover`,
+`Radio`, `Select`, `Tabs`, `Textarea`, `Toggle`, `Tooltip`.
+
+`Input` is on the second list for `useId` alone, which React does allow in a
+Server Component; it is grouped with the rest because the reason is incidental
+and a future change to it would not be.
+
+Stated because a consumer would otherwise have to derive it by reading each file
+for hooks, and because the RSC path has no test yet (`haus#72`). See
+`CONTRIBUTING.md` for what that means for a change.
+
 ## Decisions
 
 The rulings this system is built on are recorded one file each in
