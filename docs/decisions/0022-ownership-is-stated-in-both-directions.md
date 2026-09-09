@@ -58,8 +58,8 @@ So **a component that renders an interactive element ships `asChild`**, which
 clones the caller's single child and merges `className` and both refs, and never
 a closed `as` union of element names.
 
-`Card`'s comment argues against *generic polymorphism* — the kind that infers a
-whole prop set from `as` — and that argument is right and is not overturned here.
+`Card`'s comment argues against *generic polymorphism*, the kind that infers a
+whole prop set from `as`, and that argument is right and is not overturned here.
 It costs a page of conditional types and makes every error message unreadable.
 **`asChild` is not that pattern.** It takes no type parameter and infers nothing;
 the child's props are the child's, already typed by whoever wrote it. Card's `as`
@@ -75,7 +75,7 @@ what that union owes its consumers.
 ### 2. A component may own a subtree only when it owns every part of it
 
 `Tabs` renders the panel because the `aria-controls` wiring is the part every
-product gets wrong, and that is a real argument — all three products here built a
+product gets wrong, and that is a real argument: all three products here built a
 tablist and none built the contract.
 
 It is also what makes `Tabs` unusable when the two halves are not adjacent, which
@@ -85,8 +85,8 @@ page is a common editor shape, and it is what core has.
 **When a subtree can legitimately be split across a consumer's layout, the
 component exposes the contract rather than the container.** For `Tabs` that is a
 `panelId` prop: the caller renders the panel, `Tabs` renders none, and the roving
-tabindex, the arrow keys and the `aria-controls` wiring — the part worth having —
-are unchanged.
+tabindex, the arrow keys and the `aria-controls` wiring, which is the part worth
+having, are unchanged.
 
 **The generated panel stays the default.** A consumer who has not thought about
 it should get a correct one, and this decision is about not forcing the choice on
@@ -125,8 +125,8 @@ optional once this decision is acted on.
 **`haus#68`, the Popover clipping case, is not fixed by stating ownership.** A
 panel positioned against a scrolling ancestor is a layout fact, not an ownership
 question, and `portal` already exists as the answer. It is in the table above
-because it was found the same way — by a consumer, not by review — and that is
-the part worth generalising.
+because it was found the same way, by a consumer rather than by review, and that
+is the part worth generalising.
 
 **The test gap stays open.** Every instance here was found by a consumer, and
 nothing in this record changes that haus has no consumer inside itself. A
@@ -144,5 +144,5 @@ alone, which is the evidence that it does not scale.
 
 **Ship `asChild` on all 21 components.** Rejected. Twenty-one discriminated
 unions and twenty-one clone paths, for five known cases, is the "variable nothing
-reads" defect in another form — and it multiplies the `haus#71` risk by twenty-one
+reads" defect in another form, and it multiplies the `haus#71` risk by twenty-one
 against a test suite that cannot yet see it.

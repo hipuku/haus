@@ -36,3 +36,4 @@ yet true of the package, the entry names the wave that makes it true.
 | [0021](0021-decision-states-are-badge-tones.md) | A product's domain states spend Badge's tones, superseding C1 | Accepted · haus side needs nothing, core side is C3 |
 | [0022](0022-ownership-is-stated-in-both-directions.md) | Ownership is stated, in both directions | Accepted · `asChild` on Button is the first instance |
 | [0023](0023-a-union-prop-type-exports-its-halves.md) | A union prop type exports its halves | Accepted · implemented for Button in haus-components |
+| [0024](0024-the-rsc-path-is-guarded-by-its-rule.md) | The RSC path is guarded by its rule, not by a harness | Accepted · implemented |

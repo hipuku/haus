@@ -15,6 +15,40 @@ Versioning follows [decision 0004](docs/decisions/0004-versioning-is-1-x.md): a
 token rename is a major at an identical value, and a contrast change is a major
 even when the hex barely moves.
 
+## haus-components 2.3.1
+
+*2026-09-09. The RSC row is not blank any more.*
+
+**Added** · **`rsc-rules.test.tsx`**, which asserts that no component attaches a
+ref it was not given. `haus#72`. No runtime change; this release is a test and a
+decision.
+
+`haus#71` shipped because nothing here could see it. The 30 component suites
+render on a client, where a stray ref is legal, and `ssr.test.tsx` renders
+through `renderToString`, which is server *rendering* and not React Server
+Components: it accepts a ref happily and an RSC render rejects it. **The RSC row
+of that table was blank, and the blank row was the finding.**
+
+The guard renders each `asChild` component with no ref on either side and fails
+if one arrives, and a second case gives a ref and requires it to arrive, because
+the way to get the `haus#71` fix wrong in the other direction is to drop the
+merge entirely. The component list is **read from the directory** rather than
+typed, so a component that gains `asChild` is covered the day it gains it, and
+the props map is checked in both directions so it cannot silently go stale.
+
+It was proved able to fail: deleting the `real.length === 0` guard from
+`mergeRefs` fails it with *"Button attached a ref nobody asked for"*.
+
+**The limit is stated rather than implied.** This catches a ref attached unasked
+and nothing else. A real RSC harness would also catch a hook where none is
+allowed or an event handler in a server tree, and it is a dependency this package
+has refused before; decision
+[0024](docs/decisions/0024-the-rsc-path-is-guarded-by-its-rule.md) records why
+the narrow option was taken and what would justify revisiting it. What tips it is
+that `asChild` is the only path here that can attach a ref unasked, and
+[0022](docs/decisions/0022-ownership-is-stated-in-both-directions.md) is about to
+put `asChild` on two more components.
+
 ## haus-components 2.3.0
 
 *2026-09-09. The two halves of `ButtonProps` have names.*
