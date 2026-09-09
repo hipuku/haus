@@ -1,6 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import { axe } from 'vitest-axe'
+import React, { createRef } from 'react'
 import { Card } from './Card'
+import type { CardAsChildProps, CardOwnProps } from './Card'
 
 describe('Card', () => {
   it('renders the element the document needs', () => {
@@ -80,6 +82,98 @@ describe('Card', () => {
         <Card variant="outlined"><h2>Outlined</h2></Card>
         <Card padding={false}><h2>Flush</h2></Card>
       </>,
+    )
+    expect((await axe(container)).violations).toEqual([])
+  })
+})
+
+describe('asChild', () => {
+  it('renders the caller element, which as cannot reach', () => {
+    // The case that made haus#69 a pattern: a clickable card is a router link,
+    // and `as="a"` would render haus's anchor rather than the router's.
+    render(
+      <Card asChild>
+        <a href="/decisions/1">
+          <h3>A decision</h3>
+        </a>
+      </Card>,
+    )
+    const link = screen.getByRole('link')
+    expect(link).toHaveAttribute('href', '/decisions/1')
+    expect(screen.getByRole('heading', { name: 'A decision' })).toBeInTheDocument()
+  })
+
+  it('keeps the child own children, unlike IconButton', () => {
+    // A Card is a wrapper around content and the content is the caller's. That
+    // is the opposite of IconButton, where the component supplies the only
+    // child it has, and the two components answer it differently on purpose.
+    render(
+      <Card asChild>
+        <a href="/x">
+          <span>one</span>
+          <span>two</span>
+        </a>
+      </Card>,
+    )
+    const link = screen.getByRole('link')
+    expect(link).toHaveTextContent('one')
+    expect(link).toHaveTextContent('two')
+  })
+
+  it('gives the child the card box, and lets the child className win', () => {
+    render(
+      <Card asChild variant="elevated" className="sys">
+        <a href="/x" className="mine">body</a>
+      </Card>,
+    )
+    const link = screen.getByRole('link')
+    expect(link.className).toContain('sys')
+    expect(link.className).toContain('mine')
+    expect(link.className.indexOf('mine')).toBeGreaterThan(link.className.indexOf('sys'))
+  })
+
+  it('gives the node to both refs', () => {
+    const own = createRef<HTMLElement>()
+    const child = createRef<HTMLAnchorElement>()
+    render(
+      <Card asChild ref={own}>
+        <a href="/x" ref={child}>body</a>
+      </Card>,
+    )
+    expect(own.current).toBe(screen.getByRole('link'))
+    expect(child.current).toBe(screen.getByRole('link'))
+  })
+
+  it('puts no asChild-only prop on the DOM', () => {
+    render(<Card asChild><a href="/x">body</a></Card>)
+    const link = screen.getByRole('link')
+    expect(link).not.toHaveAttribute('asChild')
+    expect(link).not.toHaveAttribute('as')
+  })
+
+  it('does not typecheck with as', () => {
+    // The child supplies the element and `as` names one. Both is a contradiction.
+    // @ts-expect-error the child is the element, so there is no element to name
+    const x = <Card asChild as="article"><a href="/x">body</a></Card>
+    expect(x).toBeTruthy()
+  })
+
+  it('keeps as for the outline cases it was built for', () => {
+    // asChild does not replace `as`. Decision 0022 keeps both, and the argument
+    // in CardElement's comment against a generic polymorphic `as` still stands.
+    render(<Card as="article">body</Card>)
+    expect(document.querySelector('article')).toBeInTheDocument()
+  })
+
+  it('exports both halves of the union by name', () => {
+    const own: CardOwnProps = { as: 'li', children: 'body' }
+    const cloned: CardAsChildProps = { asChild: true, children: <a href="/x">body</a> }
+    expect([own.as, cloned.asChild]).toEqual(['li', true])
+  })
+
+  it('has no axe violations as a link', async () => {
+    const { container } = render(
+      <Card asChild><a href="/x"><h3>Title</h3></a></Card>,
     )
     expect((await axe(container)).violations).toEqual([])
   })

@@ -15,6 +15,40 @@ Versioning follows [decision 0004](docs/decisions/0004-versioning-is-1-x.md): a
 token rename is a major at an identical value, and a contrast change is a major
 even when the hex barely moves.
 
+## haus-components 2.6.0
+
+*2026-09-09. A clickable card can be a router link.*
+
+**Added** · **`asChild` on `Card`**, plus `CardOwnProps` and `CardAsChildProps`.
+The third and last component decision
+[0022](docs/decisions/0022-ownership-is-stated-in-both-directions.md) names, and
+the one it reopened rather than filed.
+
+`as` stays, and the two are not the same tool twice. `as` covers what it was
+built for, where the right element is a plain intrinsic one and the reason is the
+document outline: `article`, `li`, `section`, `aside`. The argument in
+`CardElement`'s comment against a *generic polymorphic* `as` is still right and
+is not overturned.
+
+**`asChild` covers what `as` cannot reach**: a clickable card that is a router
+link. `as="a"` renders haus's anchor, and the whole point is that the router's
+`Link` is the thing that must render. Widening `CardElement` to every element
+name would not help, because the element was never the problem.
+
+They are mutually exclusive: the child supplies the element and `as` names one.
+
+**The child keeps its own children**, which is the opposite of `IconButton` in
+2.4.0. A Card is a wrapper around content and the content is the caller's; an
+icon button's only child is the icon the component was given. The two answer the
+same question differently on purpose, and each has a test saying so.
+
+**Both guards fired on this change before it was finished.** `barrel.test.ts`
+reported the two new type names missing from `src/index.ts`, and
+`rsc-rules.test.tsx` reported `Card` gaining `asChild` with no entry in its props
+map. Neither was noticed by reading the diff. That is two components running
+(`IconButton`, `Card`) where the guards caught the omission first, one commit
+apart.
+
 ## haus-components 2.5.0
 
 *2026-09-09. Two of every three tabs pointed at nothing.*

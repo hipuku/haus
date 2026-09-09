@@ -23,7 +23,13 @@ export { Input }      from './components/Input'
 export type { InputProps } from './components/Input'
 
 export { Card }       from './components/Card'
-export type { CardProps, CardVariant, CardElement } from './components/Card'
+export type {
+  CardProps,
+  CardOwnProps,
+  CardAsChildProps,
+  CardVariant,
+  CardElement,
+} from './components/Card'
 
 export { Select }     from './components/Select'
 export type { SelectProps, SelectOption } from './components/Select'

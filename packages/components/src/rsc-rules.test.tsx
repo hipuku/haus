@@ -61,16 +61,16 @@ const asChildComponents = readdirSync(COMPONENTS, { withFileTypes: true })
 /**
  * Props each component needs beyond `asChild` and its child.
  *
- * `Card` will want `{}` when decision 0022 gives it `asChild`. It is
- * deliberately not pre-filled: the check below fails on a component that gains
- * `asChild` without an entry here, so the person adding it is told rather than
- * getting a confusing render failure. That is not theoretical, it is how
- * `IconButton` got its line: this file was written a commit before haus#70 and
- * the check reported it by name on the first run afterwards.
+ * Entries are added when a component gains `asChild`, never before: the check
+ * below fails on a component that gains it without a line here, so the person
+ * adding it is told rather than getting a confusing render failure. Both
+ * entries below arrived that way, one commit apart, which is the check doing
+ * the only job it has.
  */
 const REQUIRED: Record<string, Record<string, unknown>> = {
   Button: {},
   IconButton: { icon: '+', label: 'Settings' },
+  Card: {},
 }
 
 describe('no component attaches a ref it was not given', () => {
