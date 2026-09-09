@@ -250,11 +250,9 @@
 }
 
 /* No longer composes .text: external is behaviour now, so it stacks on whatever
-   weight the caller chose rather than silently forcing the text weight. */
-.external {
-  display: inline;
-}
-
+   weight the caller chose rather than silently forcing the text weight. It keeps
+   the base inline-flex: forcing display:inline dropped the button out of flex
+   layout, so an external button sat off the baseline next to a plain one. */
 .externalIcon {
   padding-inline-start: 0.15em;
 }

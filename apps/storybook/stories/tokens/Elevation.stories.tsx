@@ -9,7 +9,7 @@ import {
 
 /* ─── Local constants ────────────────────────────────────────────────────── */
 
-const SHADOW_COLS  = 'auto auto 1fr'
+const SHADOW_COLS  = 'auto auto 1fr auto'
 const Z_COLS       = 'auto auto 1fr'
 const OP_COLS      = 'auto auto auto 1fr'
 
@@ -106,6 +106,22 @@ const opacities = [
 
 /* ─── Pages ──────────────────────────────────────────────────────────────── */
 
+/* Reads the resolved value off the running document, so the column shows what
+   the token actually is rather than a copy that can drift from src. */
+function CssVarValue({ name }: { name: string }) {
+  const [value, setValue] = React.useState('')
+  React.useEffect(() => {
+    setValue(
+      getComputedStyle(document.documentElement).getPropertyValue(`--haus-${name}`).trim(),
+    )
+  }, [name])
+  return (
+    <span style={{ ...tokenValueStyle, whiteSpace: 'normal', wordBreak: 'break-word' }}>
+      {value}
+    </span>
+  )
+}
+
 function ShadowsPage() {
   return (
     <div style={pageWrap}>
@@ -117,12 +133,14 @@ function ShadowsPage() {
       <TableGrid columns={SHADOW_COLS}>
         <TH><ColLabel icon="fa-solid fa-eye">Demo</ColLabel></TH>
         <TH><ColLabel icon="fa-solid fa-tag">Token</ColLabel></TH>
+        <TH><ColLabel icon="fa-solid fa-hashtag">Value</ColLabel></TH>
         <TH><ColLabel icon="fa-solid fa-circle-info">Use</ColLabel></TH>
         <TableDivider />
         {shadows.map(s => (
           <React.Fragment key={s.name}>
             <TD style={{ padding: 'var(--haus-space-3) 0' }}><ShadowDemo name={s.name} css={s.css} /></TD>
             <TD style={{ padding: 'var(--haus-space-3) 0' }}><CopyChip name={s.name} /></TD>
+            <TD style={{ padding: 'var(--haus-space-3) 0' }}><CssVarValue name={s.name} /></TD>
             <TD style={{ padding: 'var(--haus-space-3) 0' }}><span style={{ fontSize: 'var(--haus-type-body-sm-size)', color: 'var(--haus-color-ink-secondary)', whiteSpace: 'nowrap' }}>{s.use}</span></TD>
           </React.Fragment>
         ))}
@@ -148,12 +166,18 @@ function ElevationRolesPage() {
         {elevationRoles.map(({ name, alias, use }) => (
           <React.Fragment key={name}>
             <TD style={{ padding: 'var(--haus-space-3) 0' }}>
-              <div style={{
-                width: 72, height: 40,
-                background: 'var(--haus-color-surface-raised)',
+              <div style={{ width: 112, height: 72, flexShrink: 0,
+                background: 'var(--haus-color-surface-sunken)',
                 borderRadius: 'var(--haus-radius-lg)',
-                boxShadow: `var(--${name})`,
-              }} />
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>
+                <div style={{
+                  width: 76, height: 40,
+                  background: 'var(--haus-color-surface-default)',
+                  borderRadius: 'var(--haus-radius-md)',
+                  boxShadow: `var(--haus-${name})`,
+                }} />
+              </div>
             </TD>
             <TD style={{ padding: 'var(--haus-space-3) 0' }}><CopyChip name={name} /></TD>
             <TD style={{ padding: 'var(--haus-space-3) 0' }}><span style={{ ...tokenValueStyle, whiteSpace: 'nowrap' }}>{alias}</span></TD>
