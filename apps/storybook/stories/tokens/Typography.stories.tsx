@@ -30,12 +30,12 @@ type TypeEntry = {
 }
 
 const typeScale: TypeEntry[] = [
-  { token: 'label-xs',   size: 'var(--haus-type-label-xs-size)',   weight: 'var(--haus-type-label-xs-weight)',   lineHeight: 'var(--haus-type-label-xs-leading)',   tracking: 'var(--haus-type-label-xs-tracking)',   trackingDisplay: '0.08em',  sample: 'REQUIRED' },
-  { token: 'caption',    size: 'var(--haus-type-caption-size)',    weight: 'var(--haus-type-caption-weight)',    lineHeight: 'var(--haus-type-caption-leading)',    tracking: 'var(--haus-type-caption-tracking)',    trackingDisplay: '-',       sample: 'We only use it to sign you in.' },
-  { token: 'label-sm',   size: 'var(--haus-type-label-sm-size)',   weight: 'var(--haus-type-label-sm-weight)',   lineHeight: 'var(--haus-type-label-sm-leading)',   tracking: 'var(--haus-type-label-sm-tracking)',   trackingDisplay: '0.02em',  sample: 'Sort by date' },
-  { token: 'label-eyebrow', size: 'var(--haus-type-label-eyebrow-size)', weight: 'var(--haus-type-label-eyebrow-weight)', lineHeight: 'var(--haus-type-label-eyebrow-leading)', tracking: 'var(--haus-type-label-eyebrow-tracking)', trackingDisplay: '0.04em', sample: 'SECTION LABEL' },
-  { token: 'field-label', size: 'var(--haus-type-field-label-size)', weight: 'var(--haus-type-field-label-weight)', lineHeight: 'var(--haus-type-field-label-leading)', tracking: 'var(--haus-type-field-label-tracking)', trackingDisplay: '0.02em',  sample: 'Email address' },
-  { token: 'label',      size: 'var(--haus-type-label-size)',      weight: 'var(--haus-type-label-weight)',      lineHeight: 'var(--haus-type-label-leading)',      tracking: 'var(--haus-type-label-tracking)',      trackingDisplay: '-',       sample: 'Email address' },
+  { token: 'label-xs',      size: 'var(--haus-type-label-xs-size)',      weight: 'var(--haus-type-label-xs-weight)',      lineHeight: 'var(--haus-type-label-xs-leading)',      tracking: 'var(--haus-type-label-xs-tracking)',      trackingDisplay: '0.08em',  sample: 'REQUIRED' },
+  { token: 'label-sm',      size: 'var(--haus-type-label-sm-size)',      weight: 'var(--haus-type-label-sm-weight)',      lineHeight: 'var(--haus-type-label-sm-leading)',      tracking: 'var(--haus-type-label-sm-tracking)',      trackingDisplay: '0.02em',  sample: 'Sort by date' },
+  { token: 'label-md',      size: 'var(--haus-type-label-md-size)',      weight: 'var(--haus-type-label-md-weight)',      lineHeight: 'var(--haus-type-label-md-leading)',      tracking: 'var(--haus-type-label-md-tracking)',      trackingDisplay: '-',       sample: 'Email address' },
+  { token: 'label-field',   size: 'var(--haus-type-label-field-size)',   weight: 'var(--haus-type-label-field-weight)',   lineHeight: 'var(--haus-type-label-field-leading)',   tracking: 'var(--haus-type-label-field-tracking)',   trackingDisplay: '0.02em',  sample: 'Email address' },
+  { token: 'label-eyebrow', size: 'var(--haus-type-label-eyebrow-size)', weight: 'var(--haus-type-label-eyebrow-weight)', lineHeight: 'var(--haus-type-label-eyebrow-leading)', tracking: 'var(--haus-type-label-eyebrow-tracking)', trackingDisplay: '0.04em',  sample: 'SECTION LABEL' },
+  { token: 'label-caption', size: 'var(--haus-type-label-caption-size)', weight: 'var(--haus-type-label-caption-weight)', lineHeight: 'var(--haus-type-label-caption-leading)', tracking: 'var(--haus-type-label-caption-tracking)', trackingDisplay: '-',       sample: 'We only use it to sign you in.' },
   { token: 'body-sm',    size: 'var(--haus-type-body-sm-size)',    weight: 'var(--haus-type-body-sm-weight)',    lineHeight: 'var(--haus-type-body-sm-leading)',    tracking: 'var(--haus-type-body-sm-tracking)',    trackingDisplay: '-',       sample: 'You have 3 unread messages.' },
   { token: 'body',       size: 'var(--haus-type-body-size)',       weight: 'var(--haus-type-body-weight)',       lineHeight: 'var(--haus-type-body-leading)',       tracking: 'var(--haus-type-body-tracking)',       trackingDisplay: '-',       sample: 'The quick brown fox jumps over the lazy dog.' },
   { token: 'body-lg',    size: 'var(--haus-type-body-lg-size)',    weight: 'var(--haus-type-body-lg-weight)',    lineHeight: 'var(--haus-type-body-lg-leading)',    tracking: 'var(--haus-type-body-lg-tracking)',    trackingDisplay: '-',       sample: 'Designed for teams who ship fast.' },
@@ -47,12 +47,12 @@ const typeScale: TypeEntry[] = [
 ]
 
 const typeMetaLabels: Record<string, string> = {
-  'label-xs':   '11px · 500 · lh 1.4',
-  'caption':    '11px · 400 · lh 1.4',
-  'label-sm':   '12px · 500 · lh 1.4',
+  'label-xs':      '11px · 500 · lh 1.4',
+  'label-sm':      '12px · 500 · lh 1.4',
+  'label-md':      '13px · 500 · lh 1.4',
+  'label-field':   '12px · 600 · lh 1.4',
   'label-eyebrow': '12px · 600 · lh 1.4',
-  'field-label': '12px · 600 · lh 1.4',
-  'label':      '13px · 500 · lh 1.4',
+  'label-caption': '11px · 400 · lh 1.4',
   'body-sm':    '13px · 400 · lh 1.5',
   'body':       '14px · 400 · lh 1.5',
   'body-lg':    '16px · 400 · lh 1.6',

@@ -131,10 +131,10 @@
 }
 
 .title {
-  font-size: var(--haus-type-label-size);
-  font-weight: var(--haus-type-label-weight);
-  line-height: var(--haus-type-label-leading);
-  letter-spacing: var(--haus-type-label-tracking);
+  font-size: var(--haus-type-label-md-size);
+  font-weight: var(--haus-type-label-md-weight);
+  line-height: var(--haus-type-label-md-leading);
+  letter-spacing: var(--haus-type-label-md-tracking);
 }
 
 .description {

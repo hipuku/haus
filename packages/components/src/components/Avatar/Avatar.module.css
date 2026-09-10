@@ -26,7 +26,7 @@
 .xs { width: var(--haus-space-6);  height: var(--haus-space-6);  font-size: var(--haus-type-label-xs-size); }
 .sm { width: var(--haus-space-8);  height: var(--haus-space-8);  font-size: var(--haus-type-label-xs-size); }
 .md { width: var(--haus-space-10); height: var(--haus-space-10); font-size: var(--haus-type-label-sm-size); }
-.lg { width: var(--haus-space-12); height: var(--haus-space-12); font-size: var(--haus-type-label-size); }
+.lg { width: var(--haus-space-12); height: var(--haus-space-12); font-size: var(--haus-type-label-md-size); }
 .xl { width: var(--haus-space-16); height: var(--haus-space-16); font-size: var(--haus-type-body-size); }
 
 /* ── Status indicator, on the wrapper so it is never clipped ── */

@@ -40,7 +40,7 @@
   gap: var(--haus-space-gap-2xs);
   white-space: nowrap;
   font-family: inherit;
-  font-weight: var(--haus-type-label-weight);
+  font-weight: var(--haus-type-label-md-weight);
 }
 
 .tab:hover:not(:disabled) {
@@ -88,7 +88,7 @@
 .sm { font-size: var(--haus-type-label-sm-size); }
 .sm .tab { padding: var(--haus-space-inset-xs) var(--haus-space-inset-sm); }
 
-.md { font-size: var(--haus-type-label-size); }
+.md { font-size: var(--haus-type-label-md-size); }
 .md .tab { padding: var(--haus-space-inset-sm) var(--haus-space-inset-md); }
 
 .lg { font-size: var(--haus-type-body-size); }

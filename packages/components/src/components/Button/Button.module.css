@@ -41,7 +41,7 @@
   gap: var(--haus-space-gap-xs);
   font-family: var(--haus-font-sans);
   font-weight: var(--haus-weight-emphasis);
-  letter-spacing: var(--haus-type-label-tracking);
+  letter-spacing: var(--haus-type-label-md-tracking);
   border-radius: var(--haus-radius-control);
   border: var(--haus-border-width-default) solid transparent;
   cursor: pointer;
@@ -77,8 +77,8 @@
 }
 
 .md {
-  font-size: var(--haus-type-label-size);
-  line-height: var(--haus-type-label-leading);
+  font-size: var(--haus-type-label-md-size);
+  line-height: var(--haus-type-label-md-leading);
   padding: var(--haus-space-inset-xs) var(--haus-space-inset-md);
   min-height: var(--haus-control-height-md);
 }

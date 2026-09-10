@@ -116,7 +116,7 @@ describe('components read roles, not primitives', () => {
     //
     // Then 77 to 71 with haus#34, and that is the number coming down for the
     // right reason rather than by relabelling. Four field labels stopped
-    // assembling a role by hand, --haus-type-field-label-* is that role, and
+    // assembling a role by hand, --haus-type-label-field-* is that role, and
     // Button and Avatar took --haus-weight-emphasis and --haus-weight-strong,
     // which are weight-only because both hold one weight across three and five
     // size steps and so have no single role to take it from.
@@ -134,7 +134,7 @@ describe('components read roles, not primitives', () => {
     //
     // Then 41 to 40 with haus#37: Button was the one component reading a
     // tracking primitive (--haus-tracking-normal), and it moved onto
-    // --haus-type-label-tracking, so tracking is a role everywhere.
+    // --haus-type-label-md-tracking, so tracking is a role everywhere.
     //
     // Then 40 to 50 with haus#43, and this one went up on purpose: Select's
     // chevron, Toast's close and Modal's close were icon boxes drawn at raw

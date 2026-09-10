@@ -17,7 +17,7 @@
      is the role: five control heights and seventeen icon sizes (five
      --haus-icon-sm, six --haus-icon-lg, six --haus-icon-xs). Button used to
      read --haus-tracking-normal here too; haus#37 moved it onto
-     --haus-type-label-tracking, so tracking is a role everywhere and no
+     --haus-type-label-md-tracking, so tracking is a role everywhere and no
      component reads the tracking ladder. haus#43 added the icon reads: the
      chevron and the two close buttons bind their box and glyph to the icon
      scale rather than a raw size.
@@ -169,10 +169,10 @@
        of. Caption is the role they were reaching for: 11px, regular, normal
        tracking, the voice a control explains itself in. The colour is not part
        of it, so a hint stays ink-secondary and an error message error. */
-    --haus-type-caption-size:      var(--haus-text-11);
-    --haus-type-caption-weight:    var(--haus-weight-regular);
-    --haus-type-caption-leading:   var(--haus-leading-normal);
-    --haus-type-caption-tracking:  var(--haus-tracking-normal);
+    --haus-type-label-caption-size:      var(--haus-text-11);
+    --haus-type-label-caption-weight:    var(--haus-weight-regular);
+    --haus-type-label-caption-leading:   var(--haus-leading-normal);
+    --haus-type-label-caption-tracking:  var(--haus-tracking-normal);
 
     --haus-type-label-sm-size:     var(--haus-text-12);
     --haus-type-label-sm-weight:   var(--haus-weight-medium);
@@ -214,15 +214,15 @@
        The text above a form control is its own typographic role, and it sets
        all four properties, so it is a role of the ordinary shape rather than
        another exception. */
-    --haus-type-field-label-size:     var(--haus-text-12);
-    --haus-type-field-label-weight:   var(--haus-weight-semibold);
-    --haus-type-field-label-leading:  var(--haus-leading-normal);
-    --haus-type-field-label-tracking: var(--haus-tracking-wide);
+    --haus-type-label-field-size:     var(--haus-text-12);
+    --haus-type-label-field-weight:   var(--haus-weight-semibold);
+    --haus-type-label-field-leading:  var(--haus-leading-normal);
+    --haus-type-label-field-tracking: var(--haus-tracking-wide);
 
-    --haus-type-label-size:        var(--haus-text-13);
-    --haus-type-label-weight:      var(--haus-weight-medium);
-    --haus-type-label-leading:     var(--haus-leading-normal);
-    --haus-type-label-tracking:    var(--haus-tracking-normal);
+    --haus-type-label-md-size:        var(--haus-text-13);
+    --haus-type-label-md-weight:      var(--haus-weight-medium);
+    --haus-type-label-md-leading:     var(--haus-leading-normal);
+    --haus-type-label-md-tracking:    var(--haus-tracking-normal);
 
     --haus-type-body-sm-size:      var(--haus-text-13);
     --haus-type-body-sm-weight:    var(--haus-weight-regular);

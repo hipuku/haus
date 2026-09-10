@@ -100,7 +100,7 @@ function SemRow({ token, resolvedTo }: { token: string; resolvedTo: string }) {
         border: `1px solid var(--haus-color-${base}-border)`,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}>
-        <span style={{ fontFamily: 'var(--haus-font-sans)', fontSize: 'var(--haus-type-label-size)', fontWeight: 700, color: `var(--haus-color-${token})`, lineHeight: 1 }}>Aa</span>
+        <span style={{ fontFamily: 'var(--haus-font-sans)', fontSize: 'var(--haus-type-label-md-size)', fontWeight: 700, color: `var(--haus-color-${token})`, lineHeight: 1 }}>Aa</span>
       </div>
     )
   } else if (isOnDefault) {
@@ -111,7 +111,7 @@ function SemRow({ token, resolvedTo }: { token: string; resolvedTo: string }) {
         background: `var(--haus-color-${base}-default)`,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}>
-        <span style={{ fontFamily: 'var(--haus-font-sans)', fontSize: 'var(--haus-type-label-size)', fontWeight: 700, color: `var(--haus-color-${token})`, lineHeight: 1 }}>Aa</span>
+        <span style={{ fontFamily: 'var(--haus-font-sans)', fontSize: 'var(--haus-type-label-md-size)', fontWeight: 700, color: `var(--haus-color-${token})`, lineHeight: 1 }}>Aa</span>
       </div>
     )
   } else {

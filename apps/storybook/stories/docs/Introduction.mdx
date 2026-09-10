@@ -40,7 +40,7 @@ touches a component.
     ['Components', 'Twenty-one React components that read the semantic roles and nothing below them.'],
   ].map(([name, description]) => (
     <div key={name} style={{ display: 'flex', gap: 'var(--haus-space-4)', alignItems: 'baseline' }}>
-      <span style={{ font: 'var(--haus-type-field-label-weight) var(--haus-type-field-label-size)/1 var(--haus-font-sans)', letterSpacing: 'var(--haus-type-field-label-tracking)', textTransform: 'uppercase', color: 'var(--haus-color-ink-primary)', width: '7rem', flexShrink: 0 }}>{name}</span>
+      <span style={{ font: 'var(--haus-type-label-field-weight) var(--haus-type-label-field-size)/1 var(--haus-font-sans)', letterSpacing: 'var(--haus-type-label-field-tracking)', textTransform: 'uppercase', color: 'var(--haus-color-ink-primary)', width: '7rem', flexShrink: 0 }}>{name}</span>
       <span style={{ font: 'var(--haus-type-body-sm-weight) var(--haus-type-body-sm-size)/var(--haus-type-body-sm-leading) var(--haus-font-sans)', color: 'var(--haus-color-ink-secondary)' }}>{description}</span>
     </div>
   ))}
@@ -67,7 +67,7 @@ decision records in `docs/decisions/` carry the reasoning and the cost.
     ['Tokens only', 'Colour, motion, spacing, radius, z-index and elevation are tokens. A hardcoded value fails the stylelint gate.'],
   ].map(([name, description]) => (
     <div key={name} style={{ display: 'flex', gap: 'var(--haus-space-4)', alignItems: 'baseline' }}>
-      <span style={{ font: 'var(--haus-type-field-label-weight) var(--haus-type-field-label-size)/1.4 var(--haus-font-sans)', letterSpacing: 'var(--haus-type-field-label-tracking)', color: 'var(--haus-color-ink-primary)', width: '13rem', flexShrink: 0 }}>{name}</span>
+      <span style={{ font: 'var(--haus-type-label-field-weight) var(--haus-type-label-field-size)/1.4 var(--haus-font-sans)', letterSpacing: 'var(--haus-type-label-field-tracking)', color: 'var(--haus-color-ink-primary)', width: '13rem', flexShrink: 0 }}>{name}</span>
       <span style={{ font: 'var(--haus-type-body-sm-weight) var(--haus-type-body-sm-size)/var(--haus-type-body-sm-leading) var(--haus-font-sans)', color: 'var(--haus-color-ink-secondary)' }}>{description}</span>
     </div>
   ))}

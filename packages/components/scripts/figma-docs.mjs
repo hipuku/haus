@@ -264,8 +264,8 @@ const tokensPage = shell(
   <div class="callout"><p><b>There were eleven styles for twelve roles, and the missing one is the
   one every form label reads.</b> This paragraph used to say "12 roles" and "these are the eleven
   text styles you already have" in consecutive sentences, and <code>STYLES.md</code> listed eleven.
-  The absentee is <code>type/field-label</code>. Input, Radio, Select and Textarea all read
-  <code>--haus-type-field-label-*</code>, so building any of them meant reaching for the nearest
+  The absentee is <code>type/label-field</code>. Input, Radio, Select and Textarea all read
+  <code>--haus-type-label-field-*</code>, so building any of them meant reaching for the nearest
   style, and the nearest is <code>label-sm</code>: <b>identical at 12px, 140% and 0.24px, and wrong
   by one step of weight</b>, 500 against 600. Create it. That is the least visible kind of
   disagreement and the most durable, because nothing looks broken.</p></div>

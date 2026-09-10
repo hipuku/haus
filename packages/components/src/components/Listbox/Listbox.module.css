@@ -76,8 +76,8 @@
 }
 
 .md {
-  font-size: var(--haus-type-label-size);
-  line-height: var(--haus-type-label-leading);
+  font-size: var(--haus-type-label-md-size);
+  line-height: var(--haus-type-label-md-leading);
   padding: var(--haus-space-inset-xs) var(--haus-space-inset-sm);
   min-block-size: var(--haus-control-height-md);
 }
@@ -150,8 +150,8 @@
   line-height: var(--haus-type-label-sm-leading);
 }
 .panel[data-size='md'] .optionLabel {
-  font-size: var(--haus-type-label-size);
-  line-height: var(--haus-type-label-leading);
+  font-size: var(--haus-type-label-md-size);
+  line-height: var(--haus-type-label-md-leading);
 }
 .panel[data-size='lg'] .optionLabel {
   font-size: var(--haus-type-body-size);

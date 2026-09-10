@@ -6,10 +6,10 @@
 
 .label {
   font-family: var(--haus-font-sans);
-  font-size: var(--haus-type-field-label-size);
-  font-weight: var(--haus-type-field-label-weight);
-  line-height: var(--haus-type-field-label-leading);
-  letter-spacing: var(--haus-type-field-label-tracking);
+  font-size: var(--haus-type-label-field-size);
+  font-weight: var(--haus-type-label-field-weight);
+  line-height: var(--haus-type-label-field-leading);
+  letter-spacing: var(--haus-type-label-field-tracking);
   color: var(--haus-color-ink-primary);
 }
 
@@ -92,19 +92,19 @@
 
 .hint {
   font-family: var(--haus-font-sans);
-  font-size: var(--haus-type-caption-size);
-  font-weight: var(--haus-type-caption-weight);
-  line-height: var(--haus-type-caption-leading);
-  letter-spacing: var(--haus-type-caption-tracking);
+  font-size: var(--haus-type-label-caption-size);
+  font-weight: var(--haus-type-label-caption-weight);
+  line-height: var(--haus-type-label-caption-leading);
+  letter-spacing: var(--haus-type-label-caption-tracking);
   color: var(--haus-color-ink-secondary);
 }
 
 .errorMessage {
   font-family: var(--haus-font-sans);
-  font-size: var(--haus-type-caption-size);
-  font-weight: var(--haus-type-caption-weight);
-  line-height: var(--haus-type-caption-leading);
-  letter-spacing: var(--haus-type-caption-tracking);
+  font-size: var(--haus-type-label-caption-size);
+  font-weight: var(--haus-type-label-caption-weight);
+  line-height: var(--haus-type-label-caption-leading);
+  letter-spacing: var(--haus-type-label-caption-tracking);
   color: var(--haus-color-error-default);
 }
 
