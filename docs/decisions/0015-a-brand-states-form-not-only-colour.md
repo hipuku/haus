@@ -130,8 +130,8 @@ not wrong:
 | **Figma** | five bound values per shadow layer, because there is no shadow variable to alias |
 
 Same result, different shape, and it is a mechanism difference rather than a
-meaning one. `theming.md`'s claim that a Figma mode and a `data-haus-theme` value
-are the same object holds.
+meaning one. The claim that a Figma mode and a `data-haus-theme` value are the
+same object holds.
 
 ### Not built yet, deliberately
 

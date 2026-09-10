@@ -50,12 +50,14 @@ complete ramp for its own sake.
 ### 2. Brand (`brand.css`)
 
 Which primitive each role takes, and nothing else: no new names, no raw values,
-no structure. 54 entries, and it is the one file a consumer replaces. A brand
+no structure. 71 entries, and it is the one file a consumer replaces. A brand
 author reads a flat list of choices, and a component author never sees this file
 at all.
 
-`brands/vault.css` is a complete second brand, applied by
-`<div data-haus-theme="vault">` and nesting because custom properties inherit.
+`brands/vault.css` and `brands/core.css` are the two shipped brands, applied by
+`<div data-haus-theme="vault">` or `"core"` and nesting because custom
+properties inherit. Each states the base tier decision 0014 requires and
+whichever optional tiers it has an opinion on.
 `BrandMap` in the TypeScript export is generated from this file, so a brand that
 omits a role or misnames one fails a build rather than rendering an unresolved
 `var()`.
@@ -72,27 +74,27 @@ re-resolves them.
 
 Semantic groups:
 
-- **Surface**: `--color-surface-default | subtle | raised | overlay | sunken |
+- **Surface**: `--haus-color-surface-default | subtle | raised | overlay | sunken |
   inverse | disabled`. Elevation is expressed with shadow rather than surface colour
   (`raised` is the same value as `default`).
-- **Ink (text)**: `--color-ink-primary | secondary | tertiary | disabled |
-  inverse | link | on-aronia`.
-- **Border**: `--color-border-subtle | default | strong | focus | disabled`.
+- **Ink (text)**: `--haus-color-ink-primary | secondary | tertiary | disabled |
+  inverse | link | on-primary`.
+- **Border**: `--haus-color-border-subtle | default | strong | focus | disabled`.
 - **Primary (aronia)**: `default | hover | pressed | subtle | on-subtle |
   disabled`.
 - **Feedback**: info (elderberry), success (greengage), warning (mango), error
   (cherry). Each provides `subtle | border | default | on-subtle | on-default |
   emphasis`; success and warning additionally provide a `solid` step.
 - **Backdrop and inverse interactions**: computed with CSS relative colour
-  syntax, e.g. `oklch(from var(--damson-950) l c h / var(--opacity-overlay))`.
+  syntax, e.g. `oklch(from var(--haus-damson-950) l c h / var(--haus-opacity-overlay))`.
   These reference a primitive and apply an opacity token, so they are computation,
   not raw values.
 - **Focus ring**: `--haus-focus-ring` (a two-ring shadow: surface-coloured gap,
   then focus-coloured ring).
 - **Typography roles**: see below.
-- **Spacing**: three roles over one ladder. `--space-inset-*` is padding, the
-  space inside a component between its edge and its content; `--space-gap-*` is
-  space between siblings, set by the parent; `--space-stack-*` is margin, space
+- **Spacing**: three roles over one ladder. `--haus-space-inset-*` is padding, the
+  space inside a component between its edge and its content; `--haus-space-gap-*` is
+  space between siblings, set by the parent; `--haus-space-stack-*` is margin, space
   a component asks for around itself. A given step is the same size whichever
   role reads it, so the roles stay comparable, and splitting them is what lets
   padding be retuned later without moving page rhythm. Only the steps components
@@ -113,23 +115,23 @@ Semantic groups:
 
 Two kinds of primitive read remain in the components, and both are deliberate.
 
-Thirty-one declarations take a size off the space ladder, on `height`, `width`,
-`min-*`/`max-*` and `transform` offsets: the avatar sizes and its status dot,
-the checkbox and radio boxes, the toggle track and thumb and the thumb's travel,
-the modal's close button and max height, the toast and modal entry offsets, the
-textarea's minimum height and the select chevron's offset. A size is a value
-rather than a role, and calling a 16px checkbox `--haus-space-inset-md` would say
+Twenty-eight declarations take a size off the space ladder, on `height`, `width`,
+`min-*`/`max-*` and `transform` offsets: the avatar sizes and its bounds, the
+checkbox and radio boxes, the toggle track and thumb and the thumb's travel, the
+modal's max height, the toast and modal entry offsets, and the textarea's minimum
+height. A size is a value rather than a role, and calling a 16px checkbox `--haus-space-inset-md` would say
 something untrue about what it is. No padding, gap or margin does this.
 
 Control heights are a scale of their own rather than a step off the ladder,
-because 36px and 44px are not on it. `--haus-control-height-sm`, `-md` and `-lg` are
-28px, 36px and 44px: pointer density, the default, and the WCAG 2.5.8 AAA target
-size. Button reads all three, Input and Select read the middle one, and
-`min-height` is in stylelint's strict-value list so the next control cannot
-invent a fourth height.
+because 36px and 44px are not on it. `--haus-control-height-xs`, `-sm`, `-md` and
+`-lg` are 24px, 28px, 36px and 44px: the small icon button, pointer density, the
+default, and the WCAG 2.5.8 AAA target size. Button and Select read sm, md and lg,
+Input reads md, and IconButton reads xs, sm and md on both axes because it is
+square. `min-height` is in stylelint's strict-value list so the next control
+cannot invent a fifth height.
 
-Twenty-two read a primitive that has no semantic alias because the primitive's own
-name already is the role: `--control-height-*` and the `--haus-icon-*` sizes.
+Thirty-one read a primitive that has no semantic alias because the primitive's own
+name already is the role: `--haus-control-height-*` and the `--haus-icon-*` sizes.
 Border width, opacity and the stacking order left this list with haus#27, which
 gave each a role layer, and Button's `--haus-tracking-normal` left it with haus#37,
 which moved tracking onto the type roles. haus#43 added ten: Select's chevron and
@@ -138,7 +140,10 @@ rather than drawing at a raw size. haus#55 added four, the nineteenth component
 binding its two drawn sizes to `--haus-icon-sm` and `--haus-icon-lg`. haus#54 then
 took thirty-two away: `--haus-font-sans` was on this list until typeface became
 brandable, and a font role reading a brand entry is a role read, not a primitive
-one. **Twenty-two now**, and the sentence above moves with it.
+one. IconButton then added six and the themed Select three, retiring the native
+select in decision 0025 took four away, and IconButton's lg size added three.
+**Thirty-one now**, thirteen control heights and eighteen icon sizes, and the
+sentence above moves with it.
 
 No component reads a colour, radius, shadow or motion primitive. `tokens.test.ts`
 in `haus-components` checks all of this on every run, so the counts above are
@@ -159,10 +164,11 @@ mango-700) exist for the cases that need white text.
 #### Typography roles
 
 The type system has **roles rather than heading levels**: `display`, `heading-lg`, `heading`,
-`heading-sm`, `body-lg`, `body`, `body-sm`, `label`, `label-sm`, `label-xs`,
-`mono`. Every role declares exactly **four** properties, size, weight, leading and
-tracking, each as its own token (`--type-<role>-size`, `-weight`, `-leading`,
-`-tracking`). Use all four together; setting only `font-size` from a role is
+`heading-sm`, `body-lg`, `body`, `body-sm`, `mono`, and one label family: a size
+ramp, `label-xs`, `label-sm` and `label-md`, and three named variants,
+`label-field`, `label-eyebrow` and `label-caption`. Every role declares exactly
+**four** properties, size, weight, leading and tracking, each as its own token
+(`--haus-type-<role>-size`, `-weight`, `-leading`, `-tracking`). Use all four together; setting only `font-size` from a role is
 using the system wrong.
 
 ### 4. Motion (`motion.css`)
@@ -227,13 +233,13 @@ to a palette step:
 
 ```css
 .cta {
-  background: var(--color-primary-default);
-  color: var(--color-ink-on-primary);
-  padding: var(--space-inset-sm) var(--space-inset-lg);
-  border-radius: var(--radius-control);
-  transition: background var(--motion-interactive);
+  background: var(--haus-color-primary-default);
+  color: var(--haus-color-ink-on-primary);
+  padding: var(--haus-space-inset-sm) var(--haus-space-inset-lg);
+  border-radius: var(--haus-radius-control);
+  transition: background var(--haus-motion-interactive);
 }
-.cta:hover  { background: var(--color-primary-hover); }
+.cta:hover  { background: var(--haus-color-primary-hover); }
 .cta:focus-visible { box-shadow: var(--haus-focus-ring); }
 ```
 
@@ -270,7 +276,8 @@ tokens.motion['fade-in']     // '200ms cubic-bezier(0.00, 0.00, 0.20, 1.00)'
 |---|---|
 | `packages/tokens/src/primitives.css` | Raw palette, type scale, space, radius, shadow, z-index, border, opacity, icon sizes |
 | `packages/tokens/src/brand.css` | Which primitive each role takes. The file a consumer replaces |
-| `packages/tokens/src/brands/vault.css` | A complete second brand, applied by `data-haus-theme` |
+| `packages/tokens/src/brands/vault.css` | vault's brand, applied by `data-haus-theme="vault"` |
+| `packages/tokens/src/brands/core.css` | core's brand, base tier and its own paper and cobalt ramps, applied by `data-haus-theme="core"` |
 | `packages/tokens/src/semantics.css` | Role meanings: surface, ink, border, primary, feedback, focus, type roles, spacing, radius, elevation, motion |
 | `packages/tokens/src/motion.css` | Durations, easings, composite motion tokens, reduced-motion |
 | `packages/tokens/src/tokens.json` | W3C DTCG export of the same values |

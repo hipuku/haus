@@ -1,8 +1,8 @@
 # 0022 · Ownership is stated, in both directions
 
-**Accepted**, 2026-09-09. **Partly implemented**: `asChild` on `Button` (`haus#57`)
-is the first instance. `haus#69`. Governs `haus#67` and `haus#70`, and reopens
-`Card`'s `as`.
+**Accepted**, 2026-09-09. **Implemented**: `asChild` on `Button` (`haus#57`) was the
+first instance, then `IconButton` (`haus#70`, `72cf318`) and `Card` (`44c22fa`),
+and `Tabs` takes a `panelId` (`haus#67`). `haus#69`.
 
 ## Context
 

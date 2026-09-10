@@ -1,6 +1,6 @@
 # 0006 · The component stylesheet declares its own cascade layer
 
-**Accepted**, 2026-09-01. **Not yet implemented.**
+**Accepted**, 2026-09-01. **Implemented** 2026-09-02, `a778658`.
 
 ## Context
 

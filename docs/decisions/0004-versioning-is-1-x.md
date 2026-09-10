@@ -1,6 +1,6 @@
 # 0004 · Versioning goes to 1.x
 
-**Accepted**, 2026-09-01. **Not yet implemented**; the cut lands with the API work.
+**Accepted**, 2026-09-01. **Implemented** 2026-09-06, `57f3088`, the 1.0 cut across the five packages.
 
 ## Context
 

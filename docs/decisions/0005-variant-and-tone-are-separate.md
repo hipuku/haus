@@ -1,6 +1,6 @@
 # 0005 · `variant` and `tone` are separate props
 
-**Accepted**, 2026-09-01. **Not yet implemented.**
+**Accepted**, 2026-09-01. **Implemented** 2026-09-02, `ea7c4c2`.
 
 ## Context
 

@@ -1,6 +1,7 @@
 # 0009 · `className` lands on the root element
 
-**Accepted**, 2026-09-01. **Not yet implemented.**
+**Accepted**, 2026-09-01. **Implemented** 2026-09-02, `bd17249`, and `api-surface.test.tsx`
+holds it for every component.
 
 ## Context
 

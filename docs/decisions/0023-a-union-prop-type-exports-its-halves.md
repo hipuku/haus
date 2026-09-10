@@ -1,6 +1,7 @@
 # 0023 · A union prop type exports its halves
 
-**Accepted**, 2026-09-09. **Implemented** for `Button` in `haus-components`.
+**Accepted**, 2026-09-09. **Implemented** for every union prop type in
+`haus-components`: `Button`, `IconButton`, `Card` and `Tabs`.
 `haus#66`. Follows [0022](0022-ownership-is-stated-in-both-directions.md).
 
 ## Context

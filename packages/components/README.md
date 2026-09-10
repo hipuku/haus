@@ -1,6 +1,6 @@
 # haus-components
 
-Eighteen accessible React components built on [`haus-tokens`](../tokens).
+Twenty accessible React components built on [`haus-tokens`](../tokens).
 
 ## Install
 
@@ -43,15 +43,15 @@ import { Button, Card, Badge } from 'haus-components'
 
 <Card>
   <Button variant="primary" size="lg">Save changes</Button>
-  <Badge variant="success">Clean</Badge>
+  <Badge tone="success">Clean</Badge>
 </Card>
 ```
 
 ## Components
 
 **Forms and content**, `Avatar` · `Badge` · `Button` · `Callout` · `Card` ·
-`Checkbox` · `Divider` · `EmptyState` · `Input` · `Radio` · `Select` ·
-`Textarea` · `Toast` · `Toggle`
+`Checkbox` · `Divider` · `EmptyState` · `IconButton` · `Input` · `Radio` ·
+`Select` · `Spinner` · `Textarea` · `Toast` · `Toggle`
 
 **Overlays and navigation**, `Modal` · `Popover` · `Tabs` · `Tooltip`
 
@@ -66,7 +66,7 @@ three products consuming this system, and the measurements are on the issues.
 Every component forwards its ref and spreads the remaining props onto the
 underlying element, so anything not modelled as a prop is still reachable. That
 sentence is asserted over the barrel in `src/api-surface.test.tsx`, so a
-nineteenth component is held to it by existing.
+twenty-first component is held to it by existing.
 
 The ref goes to the element a caller would want: the control on the form
 components, the dialog on `Modal`, the root elsewhere.
@@ -106,8 +106,11 @@ the mistake the test is looking for.
 portal has nowhere to go on a server, so it throws rather than hydrating wrong.
 Render it closed on the server and open it on the client.
 
-Note there is no `'use client'` directive: under a React Server Components
-setup, import these from a client component.
+There is no `'use client'` directive, so the ten stateless components render in
+a Server Component as they are, and the ten that hold state need a client
+boundary of your own. The haus README lists which is which, and
+[decision 0024](../../docs/decisions/0024-the-rsc-path-is-guarded-by-its-rule.md)
+is the rule that keeps the first list true.
 
 ## Build
 

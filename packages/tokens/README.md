@@ -16,40 +16,41 @@ npm install haus-tokens
 ```
 
 ```ts
-import 'haus-tokens/primitives.css'
-import 'haus-tokens/semantics.css'
-import 'haus-tokens/motion.css'
+import 'haus-tokens/index.css'
 ```
 
-Load them in that order: `primitives` declares raw values, `semantics` gives
-them meaning, `motion` adds duration and easing. All three are wrapped in
-`@layer haus.*`, so your own styles win without a specificity fight.
+`index.css` loads the layer order, then `primitives`, `brand`, `semantics` and
+`motion`, in the order they have to load. They are exported individually too,
+and replacing `brand.css` is the documented case, but leave one out and every
+role that reads it drops silently. All of them are wrapped in `@layer haus.*`,
+so your own styles win without a specificity fight.
 
-## The two layers
+## The layers
 
 ```
-primitives.css   --aronia-500: oklch(52% 0.138 300)
+primitives.css   --haus-aronia-500: oklch(52% 0.138 300)
                         ↓
-semantics.css    --color-primary-default: var(--aronia-500)
+brand.css        --haus-brand-primary-default: var(--haus-aronia-500)
                         ↓
-your component   background: var(--color-primary-default)
+semantics.css    --haus-color-primary-default: var(--haus-brand-primary-default)
+                        ↓
+your component   background: var(--haus-color-primary-default)
 ```
 
-A primitive is a raw value with no opinion; a semantic token carries the
-decision. Components read the semantic layer for colour, type, spacing, radius,
+A primitive is a raw value with no opinion; the brand says which primitive each
+role takes; a semantic token carries the decision. Components read the semantic layer for colour, type, spacing, radius,
 elevation and motion, and reaching past it is what makes a theme swap
 impossible later.
 
-Two kinds of primitive read are documented rather than hidden. Sizes: 31
+Two kinds of primitive read are documented rather than hidden. Sizes: 28
 declarations across the haus components take a size off the space ladder, on
 `height`, `width`, `min-*`/`max-*` and `transform` offsets, because a size is a
 value rather than a role. They are the avatar sizes, the checkbox and radio
-boxes, the toggle track and thumb, and a few min/max bounds. And 41 read a primitive that has no semantic
-alias because the primitive's own name already is the role: 32 read
-`--haus-font-sans`, five a control height, three `--haus-icon-sm` and one
-`--haus-tracking-normal`. A font family is not a role and there is no honest
-alias to invent for it. No component reads a colour, radius, shadow, stacking or
-motion primitive, and a test in `haus-components` holds that line.
+boxes, the toggle track and thumb, and a few min/max bounds. And 31 read a
+primitive that has no semantic alias because the primitive's own name already is
+the role: thirteen control heights and eighteen icon sizes. No component reads a
+colour, radius, shadow, stacking or motion primitive, and a test in
+`haus-components` holds that line.
 
 That second number went 61 to 77 when the six overlay components landed, then
 **77 to 41 at the 1.0 cut**, and the fall is the part worth reading. `Popover`
@@ -58,7 +59,9 @@ primitives had no role between them, and a product wanting the stacking order
 had to read `primitives.css` for it, which is why drift and vault each settled
 one for themselves. haus#27 put the ladders in `primitives.css` and the names in
 `semantics.css`. **No component declaration changed**: the same reads resolve
-one layer higher.
+one layer higher. It fell again when typeface became a brand entry and the 32
+`--haus-font-sans` reads became role reads, and rose with IconButton and the
+themed Select. `tokens.test.ts` in `haus-components` carries the whole ledger.
 
 ## Typed constants
 
@@ -161,8 +164,9 @@ a scale while still appearing to be on it.
 **Which files you pass as `upstream` decides the question.** Include `brand.css`
 and you are asking *do I restate anything haus ships, its colour choices
 included*. Leave it out and you are asking *do I restate anything structural*,
-with your palette treated as your business. Against drift the two answers are 143
-and 89, and the 54 in the gap are exactly its brand.
+with your palette treated as your business. Against drift, while it still
+consumed haus, the two answers were 143 and 89, and the 54 in the gap were
+exactly its brand.
 
 Overriding a role is fine and several consumers should. Overriding it to our
 value is the thing this reports.

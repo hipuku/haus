@@ -1,7 +1,8 @@
 # 0018 · vault's twenty local tokens, settled one at a time
 
 **Accepted**, 2026-09-08. **Implemented in haus for the four that were haus's
-gap.** `haus#53`. The vault-side edits are `V2`.
+gap.** `haus#53`. The vault side, `V2`, landed 2026-09-09 in vault's `d98cc84`
+and `1029bcb`.
 
 ## Context
 
