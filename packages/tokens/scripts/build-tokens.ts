@@ -118,7 +118,7 @@ const SCALES: Array<{
   },
   {
     heading: 'Panel widths',
-    note: "The popover-scale sibling of overlay widths: Popover and the Listbox popup. A brand entry too, for the same reason, read through --haus-popover-width-*.",
+    note: "The popover-scale sibling of overlay widths: Popover and the Select popup. A brand entry too, for the same reason, read through --haus-popover-width-*.",
     prefix: '--panel-width',
     path: ['panelWidth'],
   },

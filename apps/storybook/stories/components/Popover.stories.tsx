@@ -11,9 +11,8 @@ const meta = {
       description: {
         component:
           'A floating panel anchored to a trigger. The primitive several other ' +
-          'things are built on: core\'s bespoke `Dropdown` exists only because ' +
-          'decision 0011 keeps `Select` native, and a native popup cannot be ' +
-          'themed.\n\n' +
+          'things are built on: haus\'s own `Select` panel is one, and so are the ' +
+          'product menus a native popup could never theme.\n\n' +
           '`triggerRef` is required, and that is the point. vault\'s version leaves ' +
           'focus to the caller and none of its six call sites does it, so Escape ' +
           'drops focus onto `<body>` and the next Tab starts at the top of the ' +

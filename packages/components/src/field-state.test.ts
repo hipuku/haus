@@ -53,8 +53,9 @@ describe('adornments dim with the field (haus#41)', () => {
   const ADORNED: Record<string, RegExp> = {
     // Input's prefix and suffix, dimmed through the existing .inputWrap.disabled hook.
     Input: /\.inputWrap\.disabled\s+\.adornment\s*\{[^}]*color:\s*var\(--haus-color-ink-disabled\)/,
-    // Select's chevron is the select's sibling, so it dims off :disabled.
-    Select: /\.select:disabled\s*~\s*\.chevron\s*\{[^}]*color:\s*var\(--haus-color-ink-disabled\)/,
+    // The themed Select dims its whole trigger, chevron included, through
+    // .trigger:disabled opacity rather than a per-adornment colour rule, so it
+    // is not one of the adornments this test guards.
   }
 
   for (const [name, rule] of Object.entries(ADORNED)) {

@@ -171,11 +171,11 @@
     --haus-overlay-width-xl:  56rem;   /* 896px, Modal xl. Wide dashboards and side-by-side previews. Added when a second consumer's four-step scale met haus's three: the fourth is haus's now rather than the consumer's. */
 
     /* ── Panel widths ────────────────────────────────────────────────────────── */
-    /* The popover-scale sibling of overlay widths: Popover and the Listbox popup. A brand entry too, for the same reason, read through --haus-popover-width-*. */
+    /* The popover-scale sibling of overlay widths: Popover and the Select popup. A brand entry too, for the same reason, read through --haus-popover-width-*. */
     --haus-panel-width-sm:  11.25rem;   /* 180px, Popover sm. A short action menu. */
     --haus-panel-width-md:  16.25rem;   /* 260px, Popover md, the default. */
     --haus-panel-width-lg:  21.25rem;   /* 340px, Popover lg. A panel holding a form. */
-    --haus-panel-width-xl:  26.25rem;   /* 420px, Popover xl. The two-line option rows a Listbox draws. */
+    --haus-panel-width-xl:  26.25rem;   /* 420px, Popover xl. The two-line option rows a Select draws. */
 
     /* ── Component geometry ──────────────────────────────────────────────────── */
     /* On no ladder and not spacing. Literals inside components until haus#53 put width and height into the hardcoded-value rule. */

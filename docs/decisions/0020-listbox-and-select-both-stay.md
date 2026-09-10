@@ -1,5 +1,10 @@
 # 0020 · Listbox and Select both stay
 
+> ⏳ **Superseded by [0025](0025-select-is-the-themed-control.md), 2026-09-10.** Both
+> did not stay. The native `Select` still had no consumer two releases on, so it was
+> retired and `Listbox` took the name `Select`. This entry is the record of why they
+> stood together for a while, and of the measurement that ended it.
+
 **Accepted**, 2026-09-08. `haus#61`.
 
 ## Context

@@ -25,14 +25,13 @@ const REQUIRED: Record<string, Record<string, unknown>> = {
   EmptyState: { title: 'Nothing yet' },
   IconButton: { icon: '+', label: 'Add' },
   Input: { label: 'Name' },
-  Listbox: { options: [{ value: 'a', label: 'A' }], value: 'a', onChange: () => {}, label: 'Pick' },
   Modal: { open: true, onClose: () => {}, title: 'Confirm', children: 'Body' },
   // An open panel renders a plain div rather than a portal, so unlike Modal
   // it has something to hand back on the server too.
   Popover: { open: true, onClose: () => {}, triggerRef: { current: null },
              'aria-label': 'Options', children: 'Body' },
   RadioGroup: { name: 'size', options: [{ value: 'sm', label: 'Small' }] },
-  Select: { label: 'Role', options: [{ value: 'a', label: 'A' }] },
+  Select: { options: [{ value: 'a', label: 'A' }], value: 'a', onChange: () => {}, label: 'Pick' },
   Spinner: {},
   Tabs: { items: [{ value: 'a', label: 'A' }], value: 'a', onValueChange: () => {},
           'aria-label': 'Sections', children: 'Panel' },

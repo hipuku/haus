@@ -1,106 +1,202 @@
 import React from 'react'
+import type { Size } from '../../types'
+import { Popover } from '../Popover'
+import { useListbox } from './useListbox'
 import styles from './Select.module.css'
 
+export type SelectSize = Size
+
 export interface SelectOption {
+  /** Stable identity, and what `onChange` hands back. */
   value: string
   label: string
+  /**
+   * A second line under the label. This is the thing a native `<select>`
+   * cannot show, and it is why both products replaced theirs: an `<option>` is
+   * text and the operating system draws it.
+   */
+  hint?: string
   disabled?: boolean
 }
 
-/* `size` is omitted rather than shadowed. The native attribute counts characters
-   or rows, which is not what `size` means anywhere else in this system, and a
-   prop that means one thing here and another everywhere else is worse than an
-   absent one. There is no replacement yet: `sm` and `lg` text controls are a
-   design that does not exist. */
-export interface SelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'size'> {
-  label?:    string
-  hint?:     string
-  error?:    string
-  options?:  SelectOption[]
-  required?: boolean
-  /** Lands on the field itself rather than the root, for the cases where the
-   *  control needs styling and the block around it does not. Ruling B5 put
-   *  `className` on the root of every component; this is the named second
-   *  target that rule asks for rather than redirecting the one everyone
-   *  expects. */
-  controlClassName?: string
+interface SelectBaseProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {
+  options: SelectOption[]
+  value: string
+  onChange: (value: string) => void
+  /** Shown when nothing is selected. */
   placeholder?: string
+  size?: SelectSize
+  disabled?: boolean
+  /**
+   * Renders a hidden input so the control still submits inside a plain
+   * `<form action>`. Omit it for a purely controlled use.
+   */
+  name?: string
+  /** Lands on the trigger rather than the root. Ruling B5. */
+  controlClassName?: string
+  /**
+   * Render the panel into `document.body`, for a Select inside something that
+   * clips: a `Modal` body is `overflow-y: auto`, and an absolute panel is cut
+   * off at its edge. Passed straight to `Popover`. haus#68.
+   */
+  portal?: boolean
+  className?: string
 }
 
-/**
- * A native `<select>` in haus's clothing.
- *
- * The closed control is fully themed: `appearance: none`, then this system's own
- * border, radius, chevron and focus ring. **The open list is not, and cannot be.**
- * The popup is drawn by the operating system and no CSS reaches inside it, so it
- * will look like the platform rather than like haus.
- *
- * That is the trade rather than an omission, and it is the reason this is still a
- * `<select>`: the platform gives back free keyboard handling, a wheel picker on
- * iOS, and assistive-technology behaviour that a custom listbox has to reimplement
- * and keep correct. See `docs/decisions/0011-select-is-a-native-select.md`.
- *
- * If you need the list itself styled, this is the wrong component and haus does
- * not yet ship the right one.
- */
-export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
-  function Select(
-    { label, hint, error, options, required, placeholder, disabled, className, controlClassName, id, children, ...rest },
-    ref
-  ) {
-    // Called unconditionally. See Checkbox for why.
-    const generatedId = React.useId()
-    const selectId  = id ?? generatedId
-    const hintId    = hint  ? `${selectId}-hint`  : undefined
-    const errorId   = error ? `${selectId}-error` : undefined
-    const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined
+/* A combobox's name cannot come from its own contents the way a button's can,
+   and a wrapping <label> does not reach it either, because a button is not a
+   labelable element. So one of these is required, exactly as Modal and Tabs
+   require one. */
+type SelectLabel =
+  | { label: string; 'aria-labelledby'?: never }
+  | { label?: never; 'aria-labelledby': string }
 
-    const selectCls = [
-      styles.select,
-      error ? styles.error : '',
+export type SelectProps = SelectBaseProps & SelectLabel
+
+/**
+ * Select: a trigger, and a panel of options that haus draws.
+ *
+ * This is haus's Select. It was `Listbox` until decision 0025, where the native
+ * `<select>` it now replaces was retired: measured across core, drift, vault and
+ * loom, nothing imported the native one, while two products built this themed
+ * control and wrote down the same reason. core: "a styled listbox standing in
+ * for `<select>`, whose native popup can't be themed". vault: "a custom dropdown
+ * replacing native `<select>`". An option carries a `hint`, a second line an
+ * `<option>` cannot hold, and that is the thing both of them needed.
+ *
+ * Focus stays on the trigger the whole time and the highlighted row is
+ * announced through `aria-activedescendant`, which is what lets the options be
+ * plain `<li role="option">`: `role="option"` has to be a direct child of the
+ * listbox, so anything focusable in between makes the structure invalid.
+ *
+ * Dismissal composes `Popover`, which already owns outside-click and Escape and
+ * is deliberately not a focus trap. Trapping focus in a menu is what a modal
+ * does, and this is not one.
+ */
+export const Select = React.forwardRef<HTMLDivElement, SelectProps>(
+  function Select(
+    {
+      options,
+      value,
+      onChange,
+      placeholder = 'Select…',
+      size = 'md',
+      disabled = false,
+      name,
+      className,
       controlClassName,
-    ].filter(Boolean).join(' ')
+      portal = false,
+      label,
+      'aria-labelledby': labelledBy,
+      ...rest
+    },
+    ref,
+  ) {
+    const [open, setOpen] = React.useState(false)
+    const triggerRef = React.useRef<HTMLButtonElement>(null)
+    const baseId = React.useId()
+
+    // Popover takes exactly one of the two as a union, so it is passed as one
+    // object rather than two maybe-undefined props.
+    const panelLabel = (label !== undefined
+      ? { 'aria-label': label }
+      : { 'aria-labelledby': labelledBy as string })
+
+    const labels = React.useMemo(() => options.map(o => o.label), [options])
+    const selectedIndex = options.findIndex(o => o.value === value)
+    const selected = selectedIndex >= 0 ? options[selectedIndex] : undefined
+
+    const commit = React.useCallback(
+      (index: number) => {
+        const option = options[index]
+        if (!option || option.disabled) return
+        onChange(option.value)
+        setOpen(false)
+        triggerRef.current?.focus()
+      },
+      [options, onChange],
+    )
+
+    const listbox = useListbox({
+      open,
+      labels,
+      selectedIndex,
+      onSelect: commit,
+      onOpenChange: setOpen,
+      baseId,
+    })
 
     return (
-      <div className={[styles.wrapper, className].filter(Boolean).join(' ')}>
-        {label && (
-          <label htmlFor={selectId} className={styles.label}>
-            {label}
-            {required && <span className={styles.required} aria-hidden>*</span>}
-          </label>
-        )}
-
-        <div className={styles.selectWrap}>
-          <select
-            ref={ref}
-            id={selectId}
-            disabled={disabled}
-            aria-required={required}
-            aria-invalid={!!error}
-            aria-describedby={describedBy}
-            className={selectCls}
-            {...rest}
-          >
-            {placeholder && <option value="" disabled>{placeholder}</option>}
-            {options
-              ? options.map(opt => (
-                  <option key={opt.value} value={opt.value} disabled={opt.disabled}>
-                    {opt.label}
-                  </option>
-                ))
-              : children}
-          </select>
-
-          <span className={styles.chevron} aria-hidden>
-            <svg viewBox="0 0 12 12" fill="none">
-              <path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
+      <div
+        ref={ref}
+        className={[styles.listbox, className].filter(Boolean).join(' ')}
+        {...(rest as React.HTMLAttributes<HTMLDivElement>)}
+      >
+        {name && <input type="hidden" name={name} value={value} />}
+        <button
+          ref={triggerRef}
+          type="button"
+          className={[styles.trigger, styles[size], controlClassName].filter(Boolean).join(' ')}
+          disabled={disabled}
+          // A combobox rather than a plain button: it is the role that carries
+          // aria-activedescendant, without which the highlighted row is
+          // announced to nobody.
+          role="combobox"
+          aria-label={label}
+          aria-labelledby={labelledBy}
+          aria-haspopup="listbox"
+          aria-expanded={open}
+          aria-controls={listbox.controls}
+          aria-activedescendant={listbox.activeDescendant}
+          onClick={() => setOpen(o => !o)}
+          onKeyDown={listbox.onKeyDown}
+        >
+          <span className={selected ? styles.value : styles.placeholder}>
+            {selected ? selected.label : placeholder}
           </span>
-        </div>
+          <span className={[styles.chevron, open ? styles.chevronOpen : ''].filter(Boolean).join(' ')} aria-hidden="true">
+            {'▾'}
+          </span>
+        </button>
 
-        {hint  && !error && <span id={hintId}  className={styles.hint}>{hint}</span>}
-        {error && <span id={errorId} className={styles.errorMessage} role="alert">{error}</span>}
+        <Popover
+          open={open}
+          onClose={() => setOpen(false)}
+          triggerRef={triggerRef}
+          role="listbox"
+          width="trigger"
+          portal={portal}
+          {...panelLabel}
+          id={listbox.listId}
+          className={styles.panel}
+          data-size={size}
+        >
+          <ul className={styles.options} role="none">
+            {options.map((o, i) => (
+              <li
+                key={o.value}
+                id={listbox.optionId(i)}
+                role="option"
+                aria-selected={i === selectedIndex}
+                aria-disabled={o.disabled || undefined}
+                className={[
+                  styles.option,
+                  i === selectedIndex ? styles.selected : '',
+                  i === listbox.activeIndex ? styles.active : '',
+                ].filter(Boolean).join(' ')}
+                // The trigger keeps focus, so a press here must not take it
+                // away before the click lands.
+                onMouseDown={e => e.preventDefault()}
+                onMouseEnter={() => listbox.setActiveIndex(i)}
+                onClick={() => commit(i)}
+              >
+                <span className={styles.optionLabel}>{o.label}</span>
+                {o.hint && <span className={styles.optionHint}>{o.hint}</span>}
+              </li>
+            ))}
+          </ul>
+        </Popover>
       </div>
     )
-  }
+  },
 )

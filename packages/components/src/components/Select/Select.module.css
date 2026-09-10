@@ -1,125 +1,180 @@
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: var(--haus-space-gap-2xs);
-}
-
-.label {
-  font-family: var(--haus-font-sans);
-  font-size: var(--haus-type-label-field-size);
-  font-weight: var(--haus-type-label-field-weight);
-  line-height: var(--haus-type-label-field-leading);
-  letter-spacing: var(--haus-type-label-field-tracking);
-  color: var(--haus-color-ink-primary);
-}
-
-.required {
-  color: var(--haus-color-error-default);
-  margin-inline-start: var(--haus-space-stack-2xs);
-}
-
-.selectWrap {
+.listbox {
   position: relative;
+  display: inline-block;
+  inline-size: 100%;
+}
+
+/* ── Trigger ─────────────────────────────────────────────────────────────────
+   Deliberately the same geometry as Select's closed control. The two are
+   alternatives for the same job, and a product that swaps one for the other
+   should not see the control move. */
+
+.trigger {
+  --haus-lb-border: var(--haus-color-border-default);
+
   display: flex;
   align-items: center;
-}
-
-.select {
-  appearance: none;
-  width: 100%;
-  background-color: var(--haus-color-surface-default);
-  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
-  border-radius: var(--haus-radius-control);
-  padding: var(--haus-space-inset-xs) var(--haus-space-inset-3xl) var(--haus-space-inset-xs) var(--haus-space-inset-sm);
+  justify-content: space-between;
+  gap: var(--haus-space-gap-xs);
+  inline-size: 100%;
   font-family: var(--haus-font-sans);
-  font-size: var(--haus-type-body-sm-size);
-  font-weight: var(--haus-type-body-sm-weight);
-  line-height: var(--haus-type-body-sm-leading);
+  text-align: start;
+  background-color: var(--haus-color-surface-default);
+  border: var(--haus-border-width-default) solid var(--haus-lb-border);
+  border-radius: var(--haus-radius-control);
   color: var(--haus-color-ink-primary);
   cursor: pointer;
   transition:
     border-color var(--haus-motion-micro),
     box-shadow   var(--haus-motion-micro);
-  min-height: var(--haus-control-height-md);
 }
 
-.select:focus-visible {
+.trigger:hover:not(:disabled) {
+  --haus-lb-border: var(--haus-color-border-strong);
+}
+
+.trigger:focus-visible {
   outline: none;
-  border-color: var(--haus-color-border-focus);
   box-shadow: var(--haus-focus-ring);
 }
 
-.select.error {
-  border-color: var(--haus-color-error-default);
-}
-
-/* --haus-focus-ring-error existed and nothing read it here: an invalid Select rang
-   in the ordinary focus colour, so the error state disappeared the moment it was
-   focused. Input and Textarea both had this rule. */
-.select.error:focus-visible {
-  border-color: var(--haus-color-error-default);
-  box-shadow: var(--haus-focus-ring-error);
-}
-
-.select:disabled {
-  background-color: var(--haus-color-surface-disabled);
-  border-color: var(--haus-color-border-disabled);
-  color: var(--haus-color-ink-disabled);
+.trigger:disabled {
   cursor: not-allowed;
+  opacity: var(--haus-opacity-disabled);
+}
+
+.value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.placeholder {
+  color: var(--haus-color-ink-tertiary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .chevron {
-  position: absolute;
-  inset-inline-end: var(--haus-space-3);
-  pointer-events: none;
+  flex: none;
   color: var(--haus-color-ink-tertiary);
+  transition: transform var(--haus-motion-micro);
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+/* ── Sizes ── */
+
+.sm {
+  font-size: var(--haus-type-label-sm-size);
+  line-height: var(--haus-type-label-sm-leading);
+  padding: var(--haus-space-inset-2xs) var(--haus-space-inset-sm);
+  min-block-size: var(--haus-control-height-sm);
+}
+
+.md {
+  font-size: var(--haus-type-label-md-size);
+  line-height: var(--haus-type-label-md-leading);
+  padding: var(--haus-space-inset-xs) var(--haus-space-inset-sm);
+  min-block-size: var(--haus-control-height-md);
+}
+
+.lg {
+  font-size: var(--haus-type-body-size);
+  line-height: var(--haus-type-body-leading);
+  padding: var(--haus-space-inset-sm) var(--haus-space-inset-md);
+  min-block-size: var(--haus-control-height-lg);
+}
+
+/* ── Panel ───────────────────────────────────────────────────────────────────
+   Popover supplies the surface, the elevation and the placement. What is left
+   here is the scroll bound and the rows. */
+
+.panel {
+  padding: var(--haus-space-inset-2xs);
+  max-block-size: 16rem;
+  overflow-y: auto;
+}
+
+.options {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.option {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: var(--haus-space-gap-2xs);
+  padding: var(--haus-space-inset-2xs) var(--haus-space-inset-xs);
+  /* Concentric with the panel: the panel corner is radius-overlay and the panel
+     insets its options by inset-2xs, so the highlight matches the container's
+     curve (overlay - inset) instead of a tighter marker radius that pokes inside
+     the panel's rounded corner on the first and last row. */
+  border-radius: calc(var(--haus-radius-overlay) - var(--haus-space-inset-2xs));
+  cursor: pointer;
+  color: var(--haus-color-ink-primary);
 }
 
-/* haus#43: the chevron is icon-xs (12), bound here rather than on the SVG. */
-.chevron svg {
-  width: var(--haus-icon-xs);
-  height: var(--haus-icon-xs);
+/* `active` is the highlighted row, which is not DOM focus: focus stays on the
+   trigger and this is what aria-activedescendant points at. Hover and keyboard
+   both land here, so there is one highlight rather than two competing ones. */
+.active {
+  background-color: var(--haus-color-surface-sunken);
 }
 
-/* haus#41: the chevron dims with the control. The select carries the disabled
-   state and the chevron is its sibling, so it kept full strength on a field
-   meant to look unavailable. */
-.select:disabled ~ .chevron {
-  color: var(--haus-color-ink-disabled);
+.selected {
+  font-weight: var(--haus-weight-emphasis);
 }
 
-.hint {
-  font-family: var(--haus-font-sans);
-  font-size: var(--haus-type-label-caption-size);
-  font-weight: var(--haus-type-label-caption-weight);
-  line-height: var(--haus-type-label-caption-leading);
-  letter-spacing: var(--haus-type-label-caption-tracking);
-  color: var(--haus-color-ink-secondary);
+.option[aria-disabled='true'] {
+  cursor: not-allowed;
+  opacity: var(--haus-opacity-disabled);
 }
 
-.errorMessage {
-  font-family: var(--haus-font-sans);
-  font-size: var(--haus-type-label-caption-size);
-  font-weight: var(--haus-type-label-caption-weight);
-  line-height: var(--haus-type-label-caption-leading);
-  letter-spacing: var(--haus-type-label-caption-tracking);
-  color: var(--haus-color-error-default);
+.optionLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The panel is portalled, so it does not inherit the trigger's size. Carry the
+   size onto it (data-size) and match each option label to the value shown in the
+   field, so a small listbox has small options rather than one fixed size that
+   looks oversized under the smallest trigger. */
+.panel[data-size='sm'] .optionLabel {
+  font-size: var(--haus-type-label-sm-size);
+  line-height: var(--haus-type-label-sm-leading);
+}
+.panel[data-size='md'] .optionLabel {
+  font-size: var(--haus-type-label-md-size);
+  line-height: var(--haus-type-label-md-leading);
+}
+.panel[data-size='lg'] .optionLabel {
+  font-size: var(--haus-type-body-size);
+  line-height: var(--haus-type-body-leading);
+}
+
+/* The second line a native option cannot carry, and the reason this component
+   exists at all. */
+.optionHint {
+  font-size: var(--haus-type-label-sm-size);
+  line-height: var(--haus-type-label-sm-leading);
+  color: var(--haus-color-ink-tertiary);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .select {
+  .trigger,
+  .chevron {
     transition-duration: var(--haus-duration-reduced);
   }
 }
 
-/* forced-colors drops box-shadow entirely, and every ring in this system is one.
-   Without this a Windows High Contrast user gets no focus indicator at all.
-   `Highlight` is the system's own focus colour, so it follows the user's theme
-   rather than ours. */
 @media (forced-colors: active) {
-  .select:focus-visible {
+  .trigger:focus-visible {
     outline: 2px solid Highlight;
     outline-offset: 2px;
   }

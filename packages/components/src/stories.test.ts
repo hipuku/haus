@@ -4,7 +4,7 @@ import { join } from 'node:path'
 /**
  * Every component has a Storybook story.
  *
- * `IconButton` and `Listbox` shipped in 2.1.0 with none, and nothing reported
+ * `IconButton` and `Select` (then `Listbox`) shipped in 2.1.0 with none, and nothing reported
  * it: the stories directory is a list beside a components directory, and the
  * two had been kept in step by hand for nineteen components until they were
  * not.

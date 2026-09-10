@@ -32,7 +32,7 @@ export type {
 } from './components/Card'
 
 export { Select }     from './components/Select'
-export type { SelectProps, SelectOption } from './components/Select'
+export type { SelectProps, SelectOption, SelectSize } from './components/Select'
 
 export { Textarea }   from './components/Textarea'
 export type { TextareaProps } from './components/Textarea'
@@ -46,8 +46,6 @@ export type { AvatarProps, AvatarSize, AvatarStatus } from './components/Avatar'
 export { Toast }      from './components/Toast'
 export type { ToastProps, ToastTone, ToastVariant, ToastAppearance } from './components/Toast'
 
-export { Listbox } from './components/Listbox'
-export type { ListboxProps, ListboxOption, ListboxSize } from './components/Listbox'
 export { Modal }      from './components/Modal'
 export type { ModalProps, ModalSize } from './components/Modal'
 

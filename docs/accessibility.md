@@ -32,12 +32,14 @@ a primary target on touch, and that is a disclosure rather than a defence: the
 right fix is either a floor on the token or a documented spacing requirement
 around the control, and neither has been done.
 
-**`Select`'s open list is not themed and cannot be.** It is a native `<select>`,
-so the popup is drawn by the operating system. That is a deliberate trade, in
-[decision 0011](decisions/0011-select-is-a-native-select.md). What the platform
-gives back is keyboard handling that is correct everywhere, a wheel picker on
-iOS, and assistive behaviour a custom listbox has to reimplement and then keep
-correct.
+**`Select` reimplements what a native `<select>` gives for free.** It was a native
+`<select>` until [decision 0025](decisions/0025-select-is-the-themed-control.md) and
+is a themed control now, so haus draws the popup and owns the keyboard and
+screen-reader behaviour the platform used to provide: focus stays on the trigger,
+the highlighted option is announced through `aria-activedescendant`, and the
+WAI-ARIA listbox pattern lives in `useListbox`, tested rather than assumed. The
+trade the decision took knowingly is that a native picker still wins on touch and on
+lists long enough that the operating system's own popup beats a drawn panel.
 
 ## Two things that are the consumer's
 

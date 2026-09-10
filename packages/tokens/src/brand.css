@@ -191,11 +191,11 @@
        were 180px, 260px and 340px hardcoded in Popover.module.css, read by
        nothing that could theme them. A brand entry for the same reason, since a
        panel width is a proportion of the product's layout, and four steps because
-       the Listbox popup a two-line option row needs is wider than a form panel. */
+       the Select popup a two-line option row needs is wider than a form panel. */
     --haus-brand-popover-width-sm:  var(--haus-panel-width-sm);    /* 180px: a short action menu      */
     --haus-brand-popover-width-md:  var(--haus-panel-width-md);    /* 260px: the default              */
     --haus-brand-popover-width-lg:  var(--haus-panel-width-lg);    /* 340px: a panel holding a form   */
-    --haus-brand-popover-width-xl:  var(--haus-panel-width-xl);    /* 420px: Listbox two-line rows    */
+    --haus-brand-popover-width-xl:  var(--haus-panel-width-xl);    /* 420px: Select two-line rows    */
 
     /* ── Typeface ────────────────────────────────────────────────────────── */
     /* haus#54. Until now `--haus-font-sans` and `--haus-font-mono` were

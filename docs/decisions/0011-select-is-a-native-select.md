@@ -1,5 +1,11 @@
 # 0011 · Select is a native `<select>`
 
+> ⏳ **Superseded by [0025](0025-select-is-the-themed-control.md), 2026-09-10.** The
+> native `<select>` this ships was retired once it was measured to have no consumer,
+> and the themed `Listbox` became `Select`. Kept because the reasoning is still
+> right about where a raw `<select>` beats a drawn one; it is now guidance for a
+> consumer rather than a component haus ships.
+
 **Accepted**, 2026-09-02. Implemented. The listbox that answers its limitation is
 scheduled for Wave F.
 

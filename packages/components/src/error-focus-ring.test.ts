@@ -2,9 +2,9 @@
  * A control that can be invalid must ring in the error colour, not the brand one.
  *
  * `--haus-focus-ring-error` was added when Input and Textarea needed it, and for a
- * while nothing else read it. Select was found later, by asking which components
- * read the token and noticing the list was one short. Checkbox and Radio survived
- * that audit for the reason haus#44 records: a token audit finds a component using
+ * while nothing else read it. Checkbox and Radio were found later, by asking which
+ * components read the token and noticing the list was short. They survived an
+ * earlier audit for the reason haus#44 records: a token audit finds a component using
  * the wrong role, and cannot find a component that should be using a role and is
  * not. Neither of them read the token at all, so neither appeared in the list of
  * components reading it wrongly.
@@ -84,7 +84,6 @@ describe('an invalid control rings in the error colour', () => {
       'Checkbox',
       'Input',
       'Radio',
-      'Select',
       'Textarea',
     ])
   })

@@ -105,7 +105,7 @@ describe('components read roles, not primitives', () => {
     // docs/tokens.md, DESIGN.md and the semantics.css header all quote these.
     // If a component legitimately gains or loses one, update them together.
     const sizes = PAST.filter((d) => d.primitives.some((t) => /^--haus-space-\d+$/.test(t)))
-    expect(sizes.length).toBe(29)
+    expect(sizes.length).toBe(28)
     // 61 before step 7, rising to 77 as the six new components landed: border
     // widths, font families, shadows and, the sharp one, --haus-z-dropdown.
     // Popover and Tooltip are the pair worth pausing on. They are the first
@@ -164,13 +164,19 @@ describe('components read roles, not primitives', () => {
     // one declaration each for icon-sm and icon-md. Six, and every one of them
     // is the same kind of read the paragraph below already allows.
     //
-    // Then 28 to 31 with haus#61. Listbox's trigger is deliberately the same
-    // geometry as Select's closed control, so it binds one control height per
-    // size, three declarations. Same category again.
+    // Then 28 to 31 with haus#61. Select's trigger binds one control height per
+    // size, three declarations, the same heights the other form controls use.
+    // Same category again.
     //
-    // What is left is twelve control heights and nineteen icon sizes. A control
+    // Then 31 to 28, and the size count 29 to 28, with decision 0025: the native
+    // Select was retired and Listbox became Select. The native select's four reads
+    // came out, --haus-space-3 for the chevron inset, --haus-control-height-md, and
+    // --haus-icon-xs twice for the chevron box. The themed Select's own three
+    // control heights stay, because they landed with haus#61 above.
+    //
+    // What is left is eleven control heights and seventeen icon sizes. A control
     // height and an icon box are sizes whose own name is already the role, with
     // no honest alias to invent.
-    expect(PAST.length - sizes.length).toBe(31)
+    expect(PAST.length - sizes.length).toBe(28)
   })
 })

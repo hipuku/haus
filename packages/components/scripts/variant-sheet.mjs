@@ -200,25 +200,6 @@ const SETS = [
       h(C.Toggle, { size: Size, label: "Toggle", defaultChecked: checked, disabled }),
   },
   {
-    name: "Select",
-    figma: "5 variants, the same State property as Input.",
-    note: "The identical five selectors. Select has no Prefix or Suffix boolean; the chevron is a fixed layer.",
-    props: { State: ["Default", "Focus", "Error", "Error focus", "Disabled"] },
-    force: ({ State }) => State === "Focus" || State === "Error focus",
-    render: ({ State }) =>
-      h(
-        C.Select,
-        {
-          label: "Select",
-          disabled: State === "Disabled",
-          error: State.startsWith("Error") ? "Pick one" : undefined,
-          defaultValue: "a",
-        },
-        h("option", { value: "a" }, "Option A"),
-        h("option", { value: "b" }, "Option B"),
-      ),
-  },
-  {
     name: "Textarea",
     figma: "5 variants, the same State property as Input.",
     note: "The identical five selectors. No adornment booleans; it gains a resize handle instead.",
