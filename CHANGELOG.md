@@ -15,6 +15,36 @@ Versioning follows [decision 0004](docs/decisions/0004-versioning-is-1-x.md): a
 token rename is a major at an identical value, and a contrast change is a major
 even when the hex barely moves.
 
+## haus-components 3.0.0
+
+*2026-09-10. The native Select is retired, and Listbox becomes Select.*
+
+**Removed** · **The native `<select>` `Select`.** Measured across every consumer in
+the portfolio, nothing imported it, two releases after decision 0020 recorded the
+same gap ([decision 0025](docs/decisions/0025-select-is-the-themed-control.md)). A raw
+`<select>` is still the right answer on touch and in a form that must work without
+JavaScript; write the element rather than importing a component for it.
+
+**Changed** · **`Listbox` is renamed to `Select`.** The themed control two products
+built takes the name a consumer reaches for. `Listbox`, `ListboxProps`,
+`ListboxOption` and `ListboxSize` become `Select`, `SelectProps`, `SelectOption` and
+`SelectSize`; the native select's own props are gone. Migrate a `Listbox` import to
+`Select`.
+
+**Changed** · **Requires `haus-tokens@^5.0.0`**, for the renamed `label-*` type roles.
+
+## haus-tokens 5.0.0
+
+*2026-09-10. The label roles become one `label-*` family.*
+
+**Changed** · **The three label type roles are renamed** so every label role reads
+`label-<x>`: `--haus-type-label-*` (the default label) becomes
+`--haus-type-label-md-*`, `--haus-type-field-label-*` becomes
+`--haus-type-label-field-*`, and `--haus-type-caption-*` becomes
+`--haus-type-label-caption-*`. `label-xs`, `label-sm` and `label-eyebrow` keep their
+names. The values do not change: a token rename is a major at an identical value
+([decision 0004](docs/decisions/0004-versioning-is-1-x.md)).
+
 ## haus-tokens 4.2.0
 
 *2026-09-09. A 28px step, where the type ladder skipped from 24 to 30.*
