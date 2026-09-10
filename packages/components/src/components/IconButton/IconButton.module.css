@@ -67,6 +67,15 @@
   font-size: var(--haus-icon-sm);
 }
 
+/* Stands the same height as a default Button (control-height-md), for an
+   icon-only action sitting beside a labelled one in a row. The glyph is icon-lg,
+   which keeps the same 6px clearance the smaller sizes have (36 - 24) / 2. */
+.lg {
+  inline-size: var(--haus-control-height-md);
+  block-size: var(--haus-control-height-md);
+  font-size: var(--haus-icon-lg);
+}
+
 /* ── Tones ───────────────────────────────────────────────────────────────────
    Tone and variant compose, exactly as they do on Button: a tone remaps these
    properties and decides no weight, a variant reads them and decides no

@@ -15,6 +15,16 @@ Versioning follows [decision 0004](docs/decisions/0004-versioning-is-1-x.md): a
 token rename is a major at an identical value, and a contrast change is a major
 even when the hex barely moves.
 
+## haus-components 3.1.0
+
+*2026-09-10. IconButton gains a large size, level with a default Button.*
+
+**Added** · **`IconButton` `size="lg"`**, 36px (`--haus-control-height-md`), the
+height of a default `Button`. An icon-only action beside a labelled one, core's
+settings gear next to its New decision button, had no size that stood level with
+it: `md` tops out at 28px. The glyph is `icon-lg`, which keeps the 6px clearance
+the smaller sizes have. Additive: `sm` and `md` do not move.
+
 ## haus-components 3.0.0
 
 *2026-09-10. The native Select is retired, and Listbox becomes Select.*

@@ -13,7 +13,7 @@ export type IconButtonVariant = 'primary' | 'secondary' | 'ghost'
 export type IconButtonTone = Tone
 
 /**
- * Two sizes, and both are measured rather than chosen.
+ * Three sizes, and each is measured rather than chosen.
  *
  * `md` is 28px, `--haus-control-height-sm`, which is what **both** products
  * already draw their default icon button at: core's `.iconbtn` and vault's
@@ -25,8 +25,14 @@ export type IconButtonTone = Tone
  * any of them, so haus takes the one that is also a rule. **24px is the WCAG
  * 2.5.8 AA minimum target size**, so core's 22px and vault's 20px are both
  * under the floor and neither should be ported up into the system.
+ *
+ * `lg` is 36px, `--haus-control-height-md`, the same height as a default
+ * `Button`. Added because an icon-only action beside a labelled button, core's
+ * settings gear next to its New decision button, has no other way to stand level
+ * with it: `md` tops out below `Button`'s `md`, so the pair read as mismatched.
+ * The glyph is `icon-lg`, keeping the 6px clearance the smaller sizes have.
  */
-export type IconButtonSize = 'sm' | 'md'
+export type IconButtonSize = 'sm' | 'md' | 'lg'
 
 interface IconButtonBaseProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {

@@ -41,7 +41,7 @@ const meta = {
   argTypes: {
     variant: { control: 'inline-radio', options: ['primary', 'secondary', 'ghost'] },
     tone: { control: 'inline-radio', options: ['neutral', 'info', 'success', 'warning', 'error'] },
-    size: { control: 'inline-radio', options: ['sm', 'md'] },
+    size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] },
     loading: { control: 'boolean' },
     disabled: { control: 'boolean' },
     label: { control: 'text' },
@@ -59,13 +59,14 @@ export const Sizes: Story = {
     <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
       <IconButton icon={<Plus />} label="Add, small" size="sm" />
       <IconButton icon={<Plus />} label="Add, medium" size="md" />
+      <IconButton icon={<Plus />} label="Add, large" size="lg" />
     </div>
   ),
   parameters: {
     docs: {
       description: {
         story:
-          'Two sizes, and both are measured rather than chosen. `md` is 28px, ' +
+          'Three sizes, and each is measured rather than chosen. `md` is 28px, ' +
           'which is what **both** products already draw their default icon ' +
           'button at, agreeing to the pixel, and is already `control-height-sm`. ' +
           '\n\n' +
@@ -73,7 +74,10 @@ export const Sizes: Story = {
           'Three answers from two products is not evidence for any of them, so ' +
           '`sm` takes the one that is also a rule: **24px, the WCAG 2.5.8 AA ' +
           "minimum target size**. That makes core's 22px and vault's 20px both " +
-          'under the floor, and neither was ported up.',
+          'under the floor, and neither was ported up. ' +
+          '\n\n' +
+          '`lg` is 36px, `control-height-md`, the height of a default `Button`, ' +
+          'so an icon-only action can stand level with a labelled one beside it.',
       },
     },
   },

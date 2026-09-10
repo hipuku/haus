@@ -13,9 +13,9 @@
      textarea's minimum height. A size is a
      value, not a role, and calling a 16px checkbox --haus-space-inset-md
      would say something untrue.
-   · 28 read a primitive that has no alias here because its own name already
-     is the role: eleven control heights and seventeen icon sizes (six
-     --haus-icon-sm, six --haus-icon-lg, five --haus-icon-xs). Button used to
+   · 31 read a primitive that has no alias here because its own name already
+     is the role: thirteen control heights and eighteen icon sizes (six
+     --haus-icon-sm, seven --haus-icon-lg, five --haus-icon-xs). Button used to
      read --haus-tracking-normal here too; haus#37 moved it onto
      --haus-type-label-md-tracking, so tracking is a role everywhere and no
      component reads the tracking ladder. haus#43 added the first icon reads: the
@@ -29,7 +29,8 @@
      Spinner took the icon reads from thirteen to seventeen; haus#58 and haus#61
      added IconButton's and Select's control heights and boxes, to 31; and
      decision 0025 retired the native select, whose four reads left with it, to
-     28. tokens.test.ts holds the ledger.
+     28; and IconButton's lg size, level with a default Button, took it to 31.
+     tokens.test.ts holds the ledger.
 
      This was 71 before haus#27. Stacking, border width and opacity used to be
      primitives wearing role names, so a product that wanted the stacking order

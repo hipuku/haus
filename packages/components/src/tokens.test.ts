@@ -174,9 +174,14 @@ describe('components read roles, not primitives', () => {
     // --haus-icon-xs twice for the chevron box. The themed Select's own three
     // control heights stay, because they landed with haus#61 above.
     //
-    // What is left is eleven control heights and seventeen icon sizes. A control
+    // Then 28 to 31 with IconButton's lg size: an icon button that stands level
+    // with a default Button reads control-height-md on both axes and icon-lg for
+    // its glyph, three declarations. It was added because md tops out below
+    // Button's md, so an icon action beside a labelled one had no way to match it.
+    //
+    // What is left is thirteen control heights and eighteen icon sizes. A control
     // height and an icon box are sizes whose own name is already the role, with
     // no honest alias to invent.
-    expect(PAST.length - sizes.length).toBe(28)
+    expect(PAST.length - sizes.length).toBe(31)
   })
 })
