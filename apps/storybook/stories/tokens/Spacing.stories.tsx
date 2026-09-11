@@ -13,6 +13,8 @@ const SPACE_COLS   = 'auto auto 1fr'
 const BORDER_COLS  = 'auto auto auto 1fr'
 
 const spacing = [
+  { name: 'space-px',  rem: '1px',      px: '1px'  },
+  { name: 'space-0-5', rem: '0.125rem', px: '2px'  },
   { name: 'space-1',  rem: '0.25rem', px: '4px'  },
   { name: 'space-2',  rem: '0.5rem',  px: '8px'  },
   { name: 'space-3',  rem: '0.75rem', px: '12px' },
@@ -77,7 +79,7 @@ function SpacePage() {
     <div style={pageWrap}>
       <h1 style={pageTitleStyle}>Space</h1>
       <p style={pageDescStyle}>
-        4px grid. Every token is a multiple of 4. <code style={{ fontFamily: 'var(--haus-font-mono)' }}>space-1</code> through <code style={{ fontFamily: 'var(--haus-font-mono)' }}>space-6</code> for component internals: gaps, padding, inline spacing. <code style={{ fontFamily: 'var(--haus-font-mono)' }}>space-8</code> and above for layout: section margins, page gutters.
+        4px grid, plus two steps below it: <code style={{ fontFamily: 'var(--haus-font-mono)' }}>space-px</code> (1px) and <code style={{ fontFamily: 'var(--haus-font-mono)' }}>space-0-5</code> (2px), for optical padding inside a small control where 4px is visibly too much. No role reads them. <code style={{ fontFamily: 'var(--haus-font-mono)' }}>space-1</code> through <code style={{ fontFamily: 'var(--haus-font-mono)' }}>space-6</code> for component internals: gaps, padding, inline spacing. <code style={{ fontFamily: 'var(--haus-font-mono)' }}>space-8</code> and above for layout: section margins, page gutters.
       </p>
 
       <TableGrid columns={SPACE_COLS}>
