@@ -34,7 +34,10 @@
   "pnpm": {
     "onlyBuiltDependencies": [
       "esbuild"
-    ]
+    ],
+    "overrides": {
+      "tsup>esbuild": "^0.28.2"
+    }
   },
   "type": "module"
 }
