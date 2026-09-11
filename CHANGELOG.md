@@ -15,6 +15,16 @@ Versioning follows [decision 0004](docs/decisions/0004-versioning-is-1-x.md): a
 token rename is a major at an identical value, and a contrast change is a major
 even when the hex barely moves.
 
+## haus-tokens 5.1.0
+
+*2026-09-11. Two spacing steps below the 4px grid.*
+
+**Added** · **`--haus-space-px`** (1px) and **`--haus-space-0-5`** (2px). Optical padding
+inside a small control, where the smallest step, 4px, is visibly too much: vault's Badge
+pads 1px top and bottom, and its EditableName field 2px. Both were typed literals, so the
+Figma file could not bind them either. drift made the same call for itself, as
+`--space-hairline` and `--space-tight`. Additive: no role reads them and nothing moves.
+
 ## haus-components 3.1.0
 
 *2026-09-10. IconButton gains a large size, level with a default Button.*

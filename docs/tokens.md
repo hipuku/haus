@@ -42,6 +42,10 @@ The colour primitives are six OKLCH palettes:
 | **Mango** (golden) | 65° | warning |
 | **Cherry** (warm red) | 27° | error |
 
+The spacing ramp is 4px steps from `--haus-space-1`, plus two steps below it for optical
+padding inside small controls: `--haus-space-px` (1px) and `--haus-space-0-5` (2px). No role
+reads those two; a component reaches for them where a 4px step is visibly too much.
+
 Aronia is a full 100–950 ramp; Damson runs 0–950 (0 = white). The feedback hues
 (elderberry, greengage, mango, cherry) ship a targeted subset of steps,
 100/200/400/500/700/900, the steps the semantic layer actually consumes rather than a

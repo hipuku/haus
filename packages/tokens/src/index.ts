@@ -119,6 +119,8 @@ export const tokens = {
     "12": "3rem",
     "16": "4rem",
     "20": "5rem",
+    px: "1px",
+    "0-5": "0.125rem",
   },
   radius: {
     none: "0",
