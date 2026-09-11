@@ -1,6 +1,6 @@
 # 0026 · A type role binds all four of its properties in Figma
 
-**Accepted**, 2026-09-11. **Not yet implemented**: the Figma variables and the style bindings are the next change to the haus Figma file. Revises how `haus#45` was resolved for text styles; the generic primitives stay deleted.
+**Accepted**, 2026-09-11. **Implemented** the same day in the haus Figma file: 56 variables in `haus/semantics`, and all fourteen text styles bind size, weight, line height and letter spacing. No style's value moved. Revises how `haus#45` was resolved for text styles; the generic primitives stay deleted.
 
 ## Context
 

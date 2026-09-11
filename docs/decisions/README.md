@@ -39,4 +39,4 @@ yet true of the package, the entry names the wave that makes it true.
 | [0023](0023-a-union-prop-type-exports-its-halves.md) | A union prop type exports its halves | Accepted · implemented for all four union types |
 | [0024](0024-the-rsc-path-is-guarded-by-its-rule.md) | The RSC path is guarded by its rule, not by a harness | Accepted · implemented |
 | [0025](0025-select-is-the-themed-control.md) | Select is the themed control, and the native select is retired | Accepted · supersedes 0011 and 0020 |
-| [0026](0026-a-type-role-binds-all-four-properties-in-figma.md) | A type role binds all four of its properties in Figma | Accepted · not yet implemented; the Figma file is next |
+| [0026](0026-a-type-role-binds-all-four-properties-in-figma.md) | A type role binds all four of its properties in Figma | Accepted · implemented in the Figma file |
