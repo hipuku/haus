@@ -277,10 +277,35 @@
     --haus-weight-emphasis: var(--haus-weight-medium);
     --haus-weight-strong:   var(--haus-weight-semibold);
 
-    --haus-type-mono-size:           var(--haus-text-13);
-    --haus-type-mono-weight:         var(--haus-weight-regular);
-    --haus-type-mono-leading:        var(--haus-leading-loose);
-    --haus-type-mono-tracking:       var(--haus-tracking-normal);
+    /* Mono is a ladder, not a role, for the same reason labels are: 11, 12 and
+       13 are doing different jobs. A token name in a drawer is 11, a hex value
+       in a card is 12, a numeric field is 13, and vault reads --haus-font-mono
+       in 21 places spread over exactly those three sizes with no role fitting
+       any of them (haus#74). The leading loosens as the size grows, because the
+       larger the mono the more block-like the content: a chip wants a tight box,
+       a code panel wants air.
+
+       --haus-type-mono-* is the older single role and stays as md's alias, so
+       nothing that reads it moves. Prefer the ladder in new code. */
+    --haus-type-mono-xs-size:        var(--haus-text-11);
+    --haus-type-mono-xs-weight:      var(--haus-weight-regular);
+    --haus-type-mono-xs-leading:     var(--haus-leading-normal);
+    --haus-type-mono-xs-tracking:    var(--haus-tracking-normal);
+
+    --haus-type-mono-sm-size:        var(--haus-text-12);
+    --haus-type-mono-sm-weight:      var(--haus-weight-regular);
+    --haus-type-mono-sm-leading:     var(--haus-leading-relaxed);
+    --haus-type-mono-sm-tracking:    var(--haus-tracking-normal);
+
+    --haus-type-mono-md-size:        var(--haus-text-13);
+    --haus-type-mono-md-weight:      var(--haus-weight-regular);
+    --haus-type-mono-md-leading:     var(--haus-leading-loose);
+    --haus-type-mono-md-tracking:    var(--haus-tracking-normal);
+
+    --haus-type-mono-size:           var(--haus-type-mono-md-size);
+    --haus-type-mono-weight:         var(--haus-type-mono-md-weight);
+    --haus-type-mono-leading:        var(--haus-type-mono-md-leading);
+    --haus-type-mono-tracking:       var(--haus-type-mono-md-tracking);
 
 
     /* ── Spacing ─────────────────────────────────────────────────────────────

@@ -43,7 +43,9 @@ const typeScale: TypeEntry[] = [
   { token: 'heading',    size: 'var(--haus-type-heading-size)',    weight: 'var(--haus-type-heading-weight)',    lineHeight: 'var(--haus-type-heading-leading)',    tracking: 'var(--haus-type-heading-tracking)',    trackingDisplay: '−0.01em', sample: 'Settings' },
   { token: 'heading-lg', size: 'var(--haus-type-heading-lg-size)', weight: 'var(--haus-type-heading-lg-weight)', lineHeight: 'var(--haus-type-heading-lg-leading)', tracking: 'var(--haus-type-heading-lg-tracking)', trackingDisplay: '−0.02em', sample: 'Welcome back' },
   { token: 'display',    size: 'var(--haus-type-display-size)',    weight: 'var(--haus-type-display-weight)',    lineHeight: 'var(--haus-type-display-leading)',    tracking: 'var(--haus-type-display-tracking)',    trackingDisplay: '−0.03em', sample: 'Haus.' },
-  { token: 'mono',       size: 'var(--haus-type-mono-size)',       weight: 'var(--haus-type-mono-weight)',       lineHeight: 'var(--haus-type-mono-leading)',       tracking: 'var(--haus-type-mono-tracking)',       trackingDisplay: '-',       sample: 'var(--haus-color-ink-primary)', family: 'mono' },
+  { token: 'mono-xs',    size: 'var(--haus-type-mono-xs-size)',    weight: 'var(--haus-type-mono-xs-weight)',    lineHeight: 'var(--haus-type-mono-xs-leading)',    tracking: 'var(--haus-type-mono-xs-tracking)',    trackingDisplay: '-',       sample: 'var(--haus-color-ink-primary)', family: 'mono' },
+  { token: 'mono-sm',    size: 'var(--haus-type-mono-sm-size)',    weight: 'var(--haus-type-mono-sm-weight)',    lineHeight: 'var(--haus-type-mono-sm-leading)',    tracking: 'var(--haus-type-mono-sm-tracking)',    trackingDisplay: '-',       sample: 'var(--haus-color-ink-primary)', family: 'mono' },
+  { token: 'mono-md',    size: 'var(--haus-type-mono-md-size)',    weight: 'var(--haus-type-mono-md-weight)',    lineHeight: 'var(--haus-type-mono-md-leading)',    tracking: 'var(--haus-type-mono-md-tracking)',    trackingDisplay: '-',       sample: 'var(--haus-color-ink-primary)', family: 'mono' },
 ]
 
 const typeMetaLabels: Record<string, string> = {
