@@ -14,7 +14,7 @@ earlier release a commit to point at.
 There is no npm token. The workflow publishes by **trusted publishing**: GitHub mints a
 short-lived OIDC token proving which repository, workflow and commit is asking, and npm
 checks that against a trusted publisher registered on the package. Nothing long-lived is
-stored, so there is no secret to leak and nothing that expires at an inconvenient moment.
+stored, so there is no secret to leak and none to rotate.
 Published releases carry provenance for the same reason: npm can prove where they came from.
 
 Each package needs this configured once, at
@@ -69,8 +69,8 @@ git tag style-probe-v0.2.1 <commit>
 git push --tags
 ```
 
-The tag is the point: it is what lets `git describe` and the npm page agree on which commit a
-published version came from.
+The tag is what lets `git describe` and the npm page agree on which commit a published version
+came from.
 
 Actions runs the workflow **as it existed at the tagged commit**, not as it exists on `main`. So a
 tag written onto a commit from before the skip check will still run the old workflow and fail at

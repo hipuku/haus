@@ -1,6 +1,6 @@
 # Design and Engineering Decisions
 
-Key decisions made during the design and build of haus. Recorded to explain the *why*, not as immutable rules, but so future changes are made with full awareness of what they replace.
+Key decisions made during the design and build of haus, recorded so a later change knows what it replaces.
 
 ---
 
@@ -31,21 +31,21 @@ still Orange, at a cost of 0.002. And purple and magenta cannot be separated at 
 the two is misnamed whatever the boundary does. 328 is Purple, because far more real
 colours at that hue are called purple.
 
-The fit is a test rather than a comment. `hue-families.test.ts` rebuilds the labelled set,
+The fit is held by a test. `hue-families.test.ts` rebuilds the labelled set,
 holds recall above 0.77, and asserts that every declared family is reachable, so a boundary
 moved for one colour that looked wrong cannot quietly cost the other 4,274.
 
 ## Three-layer token architecture: primitives → semantics → components
 
-Primitives hold raw values (no meaning, just numbers). Semantics hold intent: role names like `--haus-color-surface-default` that alias primitives. Components consume semantics for colour, padding, gap, margin, radius, elevation and motion, and no component reads a colour, radius, shadow or motion primitive. Two kinds of primitive read remain, both deliberate and both tested: 28 declarations take a size off the space ladder (avatar sizes, the checkbox and radio boxes, the toggle track and thumb, a few min/max bounds), because a size is a value rather than a role; and 31 read a primitive whose own name already is the role, such as `--haus-control-height-md` and the icon sizes the close buttons and the chevron bind to since haus#43 (this was 54 until haus#54 made typeface brandable and moved the 32 `--haus-font-sans` reads onto a role, then rose and fell with IconButton, Select, the native select's retirement in decision 0025 and IconButton's lg size; tokens.test.ts holds the ledger). That was 71 until haus#27 gave stacking, border width and opacity a role layer, which moved 30 reads up a layer without changing a single component declaration. Control heights were the exception to this until they had a scale: Button, Input and Select set `min-height` in raw pixels, and `min-height` is now in stylelint's strict-value list so the next one cannot. This separation is what a theme swap rests on, and it delivers one: `brand.css` holds which primitive each role takes and nothing else, `brands/vault.css` and `brands/core.css` are two shipped brands against the same contract, and `BrandMap` is generated from `brand.css` so an omission is a type error rather than an unresolved `var()`. [Decision 0003](docs/decisions/0003-brand-and-roles-are-separate-layers.md) records the contract that makes it true and what it costs. It also enforces a discipline: if you can't name what a token *does*, it shouldn't exist.
+Primitives hold raw values (no meaning, just numbers). Semantics hold intent: role names like `--haus-color-surface-default` that alias primitives. Components consume semantics for colour, padding, gap, margin, radius, elevation and motion, and no component reads a colour, radius, shadow or motion primitive. Two kinds of primitive read remain, both deliberate and both tested: 28 declarations take a size off the space ladder (avatar sizes, the checkbox and radio boxes, the toggle track and thumb, a few min/max bounds), because a size is a value rather than a role; and 31 read a primitive whose own name already is the role, such as `--haus-control-height-md` and the icon sizes the close buttons and the chevron bind to since haus#43 (this was 54 until haus#54 made typeface brandable and moved the 32 `--haus-font-sans` reads onto a role, then rose and fell with IconButton, Select, the native select's retirement in decision 0025 and IconButton's lg size; tokens.test.ts holds the ledger). That was 71 until haus#27 gave stacking, border width and opacity a role layer, which moved 30 reads up a layer without changing a single component declaration. Control heights were the exception to this until they had a scale: Button, Input and Select set `min-height` in raw pixels, and `min-height` is now in stylelint's strict-value list so the next one cannot. The separation is what a theme swap runs on: `brand.css` holds which primitive each role takes and nothing else, `brands/vault.css` and `brands/core.css` are two shipped brands against the same contract, and `BrandMap` is generated from `brand.css` so an omission is a type error rather than an unresolved `var()`. [Decision 0003](docs/decisions/0003-brand-and-roles-are-separate-layers.md) records the contract that makes it true and what it costs. A value whose role cannot be named stays a primitive.
 
 ## Role-based type system over a heading scale
 
-The type system has roles rather than heading levels: `display`, `heading-lg`, `heading`, `heading-sm`, `body-lg`, `body`, `body-sm`, `mono`, and one label family, a size ramp (`label-xs`, `label-sm`, `label-md`) and three named variants (`label-field`, `label-eyebrow`, `label-caption`). This decouples visual hierarchy from document semantics. A component author picks the role that fits the content's purpose. Picking by the size that looks right is what produces h1 styles on decorative text.
+The type system has roles rather than heading levels: `display`, `heading-lg`, `heading`, `heading-sm`, `body-lg`, `body`, `body-sm`, `mono`, and one label family, a size ramp (`label-xs`, `label-sm`, `label-md`) and three named variants (`label-field`, `label-eyebrow`, `label-caption`). This decouples visual hierarchy from document semantics. A component author picks the role that fits the content's purpose. Picking by the size that looks right produces h1 styles on decorative text.
 
 ## The four-property rule for type tokens
 
-Every type role defines exactly four properties: size, weight, line-height, and tracking. All four are declared as semantic tokens. Setting only font-size from a type token and inferring the rest introduces inconsistency between components authored by different people. The rule makes "using the system correctly" the path of least resistance.
+Every type role defines exactly four properties: size, weight, line-height, and tracking. All four are declared as semantic tokens. Setting only font-size from a type token and inferring the rest introduces inconsistency between components authored by different people.
 
 ## CSS Modules over Tailwind for components
 
@@ -53,7 +53,7 @@ Component CSS uses CSS Modules. The token layer is plain CSS custom properties, 
 
 ## Semantic `on-*` pairing for every surface token
 
-Every surface token has a corresponding `on-*` text token: `--haus-color-success-subtle` is paired with `--haus-color-success-on-subtle`. Surface and text contrast are specified together, so a component author never works out a pairing at the call site. The approach is Material Design 3's. It also makes contrast failures impossible to accidentally introduce: use the paired token and the contrast is guaranteed by construction.
+Every surface token has a corresponding `on-*` text token: `--haus-color-success-subtle` is paired with `--haus-color-success-on-subtle`. Surface and text contrast are specified together, so a component author never works out a pairing at the call site. The approach is Material Design 3's. Using the paired token gives the contrast the token layer specifies.
 
 ## W3C Design Tokens JSON as the canonical export format
 
@@ -65,17 +65,17 @@ Five packages: `tokens`, `components`, `colour-utils`, `style-probe` and `colour
 
 ## Manrope for UI, Fira Code for mono
 
-Manrope is a variable font with a wide weight range (200-800), which means the full type scale ships in one font load with no fallback weight snapping. Fira Code has programming ligatures and a compact footprint. Both are available on Google Fonts, which removes the self-hosting requirement for a v1 system. A serif display face was tried and rejected: mixing one into UI components fought the type scale, and nothing outside a marketing page wanted it.
+Manrope is a variable font with a wide weight range (200-800), which means the full type scale ships in one font load with no fallback weight snapping. Fira Code has programming ligatures and a compact footprint. Both are available on Google Fonts, which removes the self-hosting requirement for a v1 system. A serif display face was tried and rejected: it did not sit with the rest of the scale inside UI components, and no component needed it.
 
 ## Light mode only
 
-haus is light mode only, and dark mode is out of scope, and not a deferred layer. The semantic layer declares `color-scheme: light` and there is no `light-dark()` usage anywhere in the tokens. Doing dark mode properly would require auditing every semantic token for dark-mode contrast, which doubles the colour decision surface; the system is deliberately scoped to prove the light token structure without that cost. Revisiting it would mean reopening [decision 0002](docs/decisions/0002-surface-polarity-is-fixed.md), which fixes surface polarity in the contract rather than leaving it to a brand: a dark theme is a polarity inversion, so under that decision it cannot arrive as a theme at all.
+haus is light mode only. Dark mode is out of scope, not a deferred layer. The semantic layer declares `color-scheme: light` and there is no `light-dark()` usage anywhere in the tokens. Doing dark mode properly would require auditing every semantic token for dark-mode contrast, which doubles the colour decision surface; the system is deliberately scoped to prove the light token structure without that cost. Revisiting it would mean reopening [decision 0002](docs/decisions/0002-surface-polarity-is-fixed.md), which fixes surface polarity in the contract rather than leaving it to a brand: a dark theme is a polarity inversion, so under that decision it cannot arrive as a theme at all.
 
 Scope is locked in two other ways worth recording here: there is **no MCP server** and **no Figma Code Connect** integration. The product surface is the token packages, the 20 React components, and Storybook, and nothing more.
 
 ## Storybook is the product surface
 
-For an open-source design system, Storybook is what consumers actually read. A token that exists in `primitives.css` but has no story is a token that doesn't exist for the people using the system. The rule enforced here: nothing ships without a corresponding story. The token pages are a design artefact in their own right, and are held to the same visual standard as the components they document.
+Storybook is the published surface, so a token declared in `primitives.css` with no story is one a consumer never sees. The rule enforced here: nothing ships without a corresponding story. The token pages are held to the same visual standard as the components they document.
 
 ## `prefers-reduced-motion` policy
 
@@ -83,6 +83,6 @@ All animated components respect `prefers-reduced-motion: reduce` by overriding `
 
 The override targets duration rather than using `transition: none` because:
 - Some transforms carry positional meaning (Toggle thumb, Modal entry offset) and need to apply even without animation
-- A control that snaps instantly to its new position still communicates state; one that doesn't move at all is ambiguous
+- A control that snaps straight to its new position still shows the state; with `transition: none` the Toggle thumb and the Modal offset would not move at all
 
-`--haus-duration-reduced` is a named token rather than a hardcoded `0ms` so it stays tunable and reads as intentional in the source.
+`--haus-duration-reduced` is a named token rather than a hardcoded `0ms`, so the value is tunable in one place.

@@ -4,11 +4,11 @@ Five packages, released independently. Entries are grouped by package, newest
 first, and only cover what a consumer sees: an internal refactor with no
 observable effect does not appear here.
 
-This file starts at Unreleased. **The releases before it have no entries, and
-that is the honest position.** `haus-components` went 0.2.0 to 0.4.0 with a
-breaking change in between and nothing recorded it, so reconstructing those
-notes now would mean inventing them from commit messages written for a different
-purpose. Everything from here is written as it lands.
+This file starts at Unreleased, and **the releases before it have no entries.**
+`haus-components` went 0.2.0 to 0.4.0 with a breaking change in between and
+nothing recorded it, so reconstructing those notes now would mean inventing them
+from commit messages written for a different purpose. Everything from here is
+written as it lands.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Versioning follows [decision 0004](docs/decisions/0004-versioning-is-1-x.md): a

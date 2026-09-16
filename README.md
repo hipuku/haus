@@ -1,6 +1,6 @@
 # haus
 
-An opinionated, open-source design system. Token-first, light-mode only, OKLCH throughout.
+An open-source design system. Token-first, light-mode only, OKLCH throughout.
 
 ## Scope
 
@@ -41,8 +41,8 @@ haus is light-mode only. That is a consequence of [decision 0002](docs/decisions
 ## Server Components
 
 This package ships **no `use client` directive**, so a React Server Component can
-import and render a haus component directly. For the stateless ones that is a
-feature: no client bundle for a `Button` that never had state.
+import and render a haus component directly. A stateless component such as
+`Button` then adds nothing to the client bundle.
 
 **RSC-safe**, ten, no client boundary needed: `Avatar`, `Badge`, `Button`,
 `Callout`, `Card`, `Divider`, `EmptyState`, `IconButton`, `Spinner`, `Toast`.
@@ -52,8 +52,8 @@ generated id or a portal: `Checkbox`, `Input`, `Modal`, `Popover`,
 `Radio`, `Select`, `Tabs`, `Textarea`, `Toggle`, `Tooltip`.
 
 `Input` is on the second list for `useId` alone, which React does allow in a
-Server Component; it is grouped with the rest because the reason is incidental
-and a future change to it would not be.
+Server Component; it is grouped with the rest because a later change could give
+it a real client dependency.
 
 Stated because a consumer would otherwise have to derive it by reading each file
 for hooks, and because the RSC path has no test yet (`haus#72`). See
@@ -96,11 +96,10 @@ npm install haus-tokens haus-components
 
 ## Visual regression
 
-Chromatic runs on pushes to `main` and on pull requests. `main` is the baseline
-and accepts automatically; a pull request does not, so a visual change is a diff
-a human reads before it becomes the baseline. A change never fails the build:
-`exitZeroOnChanges` is on, because an intentional redesign arriving as a red
-tick is how a team learns to merge past the job.
+Chromatic runs on pushes to `main` and on pull requests. Nothing is
+auto-accepted: every visual change waits in the Chromatic UI for a person to
+accept or reject it (`haus#36`). A change never fails the build either way,
+because `exitZeroOnChanges` is on.
 
 ## Status
 

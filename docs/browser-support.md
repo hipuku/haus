@@ -5,8 +5,7 @@
 **Chrome 119, Edge 119, Safari 16.4, Firefox 128.** Anything older will render
 some part of this system wrong, and mostly it will do so silently.
 
-That floor is set by one feature rather than by a survey, and the feature is
-named below so the decision can be argued with rather than taken on trust.
+One feature sets that floor, not a usage survey. It is named below.
 
 ## What sets it, and what it costs
 
@@ -29,25 +28,24 @@ years. Five uses hold the whole floor up:
 
 **Widening the floor is possible and has a cost.** Those five could be static
 values, which would take the floor back to Firefox 121 and `:has()`, and then to
-113 and OKLCH. What it would cost is the thing relative colour syntax buys: an
-alpha derived from a brand's own colour rather than restated per brand. A brand
-map that has to spell out every translucent variant is a longer file and a place
-for a brand to disagree with itself.
+113 and OKLCH. The cost is what relative colour syntax provides: each alpha is
+derived from the brand's own colour, so a brand map does not restate every
+translucent variant, and the variants cannot disagree with the colour they came
+from.
 
-That trade has not been taken. It is recorded here so it is a decision rather
-than an accident.
+That trade has not been taken. It is recorded here so the floor is a decision.
 
 ## How it fails
 
-Mostly **silently**, which is the part worth knowing. An unsupported
+Mostly **silently**. An unsupported
 `oklch(from …)` is an invalid declaration, and an invalid declaration is dropped:
 no console warning, no build error, and a border that is simply absent. The same
 is true of an unsupported `@layer`: the whole block is skipped, so every token
 disappears at once and components render unstyled rather than badly.
 
 There is no fallback layer and no `@supports` guard. Adding either would mean
-maintaining two colour systems, and a design system with two colour systems has
-the drift problem it exists to solve.
+maintaining two colour systems in one repository, which is the drift this system
+is built to prevent.
 
 ## Not supported
 

@@ -7,7 +7,7 @@ consumer would.
 
 ```
 packages/tokens          the system: primitives, brand, semantics, motion
-packages/components      twelve React components built on it
+packages/components      twenty React components built on it
 packages/colour-utils    contrast, ramps, perceptual distance
 packages/colour-names    a name for a colour
 packages/style-probe     reads computed styles off a live page
@@ -29,8 +29,7 @@ looks like a code problem rather than a version one.
 pnpm run typecheck && pnpm run lint && pnpm run lint:css && pnpm -r run test && pnpm run build
 ```
 
-`lint:css` is the one people forget. It fails a raw value where a token exists,
-which is the rule the whole token layer rests on.
+`lint:css` is the one people forget. It fails a raw value where a token exists.
 
 ## The rules that are not style preferences
 
@@ -50,19 +49,19 @@ role. `packages/components/src/tokens.test.ts` enforces it.
 rename cannot fix: a `translateX` with no `[dir='rtl']` rule to flip it.
 
 **Every focus ring needs a forced-colors fallback.** Same test. A ring is a
-`box-shadow` and forced-colors drops those, so a ring without the fallback is no
-ring at all for the people who need it most.
+`box-shadow` and forced-colors drops those, so without the fallback there is no
+visible ring in that mode.
 
-**A claim about every component wants a test that walks the barrel.** One test
-per component lets the thirteenth arrive without it. `api-surface.test.ts` is
-the pattern.
+**A claim about every component needs a test that walks the barrel.** One test
+per component lets the next component arrive without one. `api-surface.test.ts`
+is the pattern.
 
 **This package has no `use client`, so every stateless component is on the React
-Server Component path, and that path has no test.** Not an oversight in either
-half: a Server Component rendering `Button`, `Badge` or `Card` directly, with no
-client bundle, is a feature, and core relies on it in two pages. But
-`ssr.test.tsx` covers `renderToString`, which is **not** RSC and enforces
-different rules: it accepts a ref happily where an RSC render rejects one.
+Server Component path, and that path has no test.** Both halves are deliberate:
+a Server Component can render `Button`, `Badge` or `Card` directly with no client
+bundle, and core does that in two pages. `ssr.test.tsx` covers `renderToString`,
+which is **not** RSC and enforces different rules: it accepts a ref where an RSC
+render rejects one.
 
 `haus#71` shipped through that blank. `asChild` attached a ref to every cloned
 child, including when neither side had one, which is legal on the client,
@@ -73,32 +72,29 @@ So, until `haus#72` closes that row:
 
 - **A component may not pass a `ref`, an event handler or anything else across a
   boundary it was not given one for.** The rule is narrower than "support RSC":
-  do not attach what nobody asked for.
+  do not attach a prop the caller did not pass.
 - **A change to a stateless component asks whether a Server Component could
   render it.** Ten can: `Avatar`, `Badge`, `Button`, `Callout`, `Card`,
   `Divider`, `EmptyState`, `IconButton`, `Spinner`, `Toast`. The list is in the
   README and is derived from the source, not maintained by hand, so check it
   there rather than trusting this sentence.
 - **A new prop that clones, forwards or injects into a caller's element is the
-  shape to be suspicious of.** `asChild` is currently the only one, and it is
-  the only one that has broken this way.
+  kind that breaks this way.** `asChild` is currently the only one, and the only
+  one that has.
 
-**A supported path with no test is how the last defect shipped**, and naming it
-here is what stops it being rediscovered by the next consumer instead of by us.
+**The RSC path is supported and untested**, which is how `haus#71` reached a
+consumer. It is recorded here so the next change accounts for it.
 
 ## Visual regression
 
-Chromatic runs on pull requests only. It bills by
-snapshot: one per story, per browser, per run. Running on both events doubles
-the cost for no extra signal, since a push that came through a pull request has
-already been diffed.
+Chromatic runs on pushes to `main` and on pull requests. It bills by snapshot:
+one per story, per browser, per run.
 
 It needs `CHROMATIC_PROJECT_TOKEN` as a repository secret. Without it the job
-skips with a notice. A job that fails for people who cannot fix it is a job
-everyone learns to ignore.
+skips with a notice, so a fork does not fail on a secret it cannot set.
 
-A visual change does not fail the build. It is for a human to accept or reject.
-Failing on one would mean every intentional design change arrives as a red tick.
+A visual change does not fail the build, and nothing is auto-accepted. Changes
+wait in the Chromatic UI for a person to accept or reject them (`haus#36`).
 
 ## Decisions
 
@@ -106,8 +102,8 @@ Anything that changes what a consumer sees, or that someone will otherwise
 re-litigate in six months, gets a file in [`docs/decisions/`](docs/decisions/README.md):
 context, decision, consequences, and what it was chosen over.
 
-A decision can be accepted and unimplemented. Several are, and say so. Agreeing
-a contract before writing it is the point of deciding in the open.
+A decision can be accepted and unimplemented. Several are, and say so: a
+contract can be agreed before it is built.
 
 ## Commits and versions
 
@@ -126,8 +122,8 @@ reconstructed honestly now.
 
 ## What not to do
 
-- Do not add a component without deciding to. Twelve is a scope. Widening it
-  should cost a decision the way narrowing it would.
+- Do not add a component without deciding to. Twenty is the scope, and widening
+  it should cost a decision the way narrowing it would.
 - Do not reach past a role to a primitive to get a colour. If the role you want
   does not exist, that is the finding.
 - Do not add a second colour system for older browsers. See

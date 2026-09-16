@@ -6,8 +6,8 @@ Open a [security advisory](https://github.com/hipuku/haus/security/advisories/ne
 rather than a public issue. If that is not available to you, email the address on
 the GitHub profile.
 
-Expect an acknowledgement within a week. This is a solo project, so that is a
-realistic promise rather than a service level.
+Expect an acknowledgement within a week. This is a solo project, so that is an
+estimate and not a service level.
 
 ## What is in scope
 

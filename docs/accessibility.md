@@ -3,14 +3,14 @@
 What this system does, what it does not, and where it is known to fall short.
 
 Written because the opposite was true for a long time: haus did real
-accessibility work and claimed none of it, while also not disclosing the two
-places it fails. A statement that only lists successes is marketing.
+accessibility work, claimed none of it, and disclosed neither of the two places
+it fails.
 
 ## What is checked, and by what
 
 | Claim | Checked by |
 |---|---|
-| Every component has no axe violations | `vitest-axe`, in all 12 component suites |
+| Every component has no axe violations | `vitest-axe`, in all 20 component suites |
 | Every surface pairs with an ink that clears AA | `contrast.test.ts`, measured with `haus-colour-utils` |
 | The focus ring clears SC 1.4.11 at 3:1 | the same file, against three surfaces |
 | Focus is visible in forced-colors mode | `logical-properties.test.ts`, per component |
@@ -19,27 +19,25 @@ places it fails. A statement that only lists successes is marketing.
 | Hints describe rather than rename | `toHaveAccessibleName` / `toHaveAccessibleDescription` |
 | Components render with no DOM | `ssr.test.tsx`, in a node environment |
 
-The point of the table is the second column. Every row is an assertion that
-fails if the claim stops being true, rather than a sentence someone remembered
-to keep updating.
+Every row in the second column is an assertion that fails if the claim in the
+first stops being true.
 
 ## Two known failures, disclosed
 
 **`<Button size="sm">` is below the WCAG 2.5.8 target size.** `--haus-control-height-sm`
 is 28px, and 2.5.8 asks for 24×24 with no spacing exception. It ships by
-default, with no gate. It is a pointer-density size that should not be used for
-a primary target on touch, and that is a disclosure rather than a defence: the
-right fix is either a floor on the token or a documented spacing requirement
-around the control, and neither has been done.
+default, with no gate. It is a pointer-density size and should not carry a
+primary target on touch. The fix is either a floor on the token or a documented
+spacing requirement around the control, and neither has been done.
 
 **`Select` reimplements what a native `<select>` gives for free.** It was a native
 `<select>` until [decision 0025](decisions/0025-select-is-the-themed-control.md) and
 is a themed control now, so haus draws the popup and owns the keyboard and
 screen-reader behaviour the platform used to provide: focus stays on the trigger,
 the highlighted option is announced through `aria-activedescendant`, and the
-WAI-ARIA listbox pattern lives in `useListbox`, tested rather than assumed. The
-trade the decision took knowingly is that a native picker still wins on touch and on
-lists long enough that the operating system's own popup beats a drawn panel.
+WAI-ARIA listbox pattern lives in `useListbox`, with tests. The decision accepts
+that a native picker is still better on touch, and on lists long enough that the
+operating system's own popup beats a drawn panel.
 
 ## Two things that are the consumer's
 
@@ -49,9 +47,8 @@ See [decision 0008](decisions/0008-toast-is-presentational.md). It carries its o
 appears, how many stack and for how long are yours.
 
 **Contrast is decided at the token layer.** Every surface has a paired `on-*`
-ink and those pairs are measured. Reach past a role to a primitive and you have
-left that guarantee behind, which is what the tier guard in `haus-components`
-exists to catch.
+ink and those pairs are measured. Reading a primitive instead of a role leaves
+that guarantee; the tier guard in `haus-components` catches it.
 
 ## Focus
 
@@ -74,8 +71,8 @@ Rings appear for the keyboard. Text fields still ring on click, because
 ## What is not covered
 
 - **No screen reader has been run against this.** Everything above is automated,
-  and automated checks find perhaps a third of what a real audit finds. The tests
-  say the markup is right; they cannot say the experience is good.
+  and automated checks find perhaps a third of what a real audit finds. They cover
+  the markup, not the experience of using it.
 - **No right-to-left rendering test.** The components are written in logical
   properties and a source guard holds them there, but the component suite runs
   with `css: false`, so nothing here reads a computed style. A right-to-left

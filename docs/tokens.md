@@ -100,8 +100,8 @@ Semantic groups:
   space inside a component between its edge and its content; `--haus-space-gap-*` is
   space between siblings, set by the parent; `--haus-space-stack-*` is margin, space
   a component asks for around itself. A given step is the same size whichever
-  role reads it, so the roles stay comparable, and splitting them is what lets
-  padding be retuned later without moving page rhythm. Only the steps components
+  role reads it, so the roles stay comparable, and the split allows padding to be
+  retuned later without moving page rhythm. Only the steps components
   use are named: inset runs `2xs` to `2xl`, gap `2xs` to `md`, stack `2xs` and
   `xs`.
 - **Radius**: `--haus-radius-control` (Button, Input, Select, Textarea),
@@ -151,13 +151,13 @@ sentence above moves with it.
 
 No component reads a colour, radius, shadow or motion primitive. `tokens.test.ts`
 in `haus-components` checks all of this on every run, so the counts above are
-measured rather than remembered.
+measured.
 
 Two rules are enforced structurally:
 
 - **Every surface has a paired `on-*` text token.** `--haus-color-success-subtle` is
-  paired with `--haus-color-success-on-subtle`; the correct contrast is guaranteed by
-  using the pair.
+  paired with `--haus-color-success-on-subtle`, and using the pair gives the
+  contrast the token layer specifies.
 - **Every interactive scale has a disabled state.**
 
 One deliberate asymmetry: `--haus-color-success-on-default` and
@@ -172,8 +172,8 @@ The type system has **roles rather than heading levels**: `display`, `heading-lg
 ramp, `label-xs`, `label-sm` and `label-md`, and three named variants,
 `label-field`, `label-eyebrow` and `label-caption`. Every role declares exactly
 **four** properties, size, weight, leading and tracking, each as its own token
-(`--haus-type-<role>-size`, `-weight`, `-leading`, `-tracking`). Use all four together; setting only `font-size` from a role is
-using the system wrong.
+(`--haus-type-<role>-size`, `-weight`, `-leading`, `-tracking`). All four are used
+together: a component that sets only `font-size` from a role is not on that role.
 
 ### 4. Motion (`motion.css`)
 
