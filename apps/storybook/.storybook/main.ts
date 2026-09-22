@@ -8,6 +8,7 @@ const config: StorybookConfig = {
   staticDirs: [
     { from: '../../../logo.svg', to: '/brand/logo.svg' },
     { from: '../../../wordmark.svg', to: '/brand/wordmark.svg' },
+    { from: '../og.png', to: '/og.png' },
   ],
   // essentials and interactions are gone as packages: controls, actions,
   // viewport, backgrounds, toolbars, measure, outline and the interaction
