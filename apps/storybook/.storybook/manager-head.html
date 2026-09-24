@@ -13,7 +13,7 @@
 <meta property="og:image:alt" content="haus. A token-first, light-mode, OKLCH design system. Made by hipuku." />
 <link rel="canonical" href="https://haus.hipuku.dev/" />
 <meta property="og:site_name" content="haus" />
-<meta property="og:locale" content="en_GB" />
+<meta property="og:locale" content="en_AU" />
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -24,7 +24,7 @@
       "name": "haus",
       "url": "https://haus.hipuku.dev/",
       "description": "W3C DTCG and OKLCH design tokens, accessible React components and a live Storybook. Published to npm.",
-      "inLanguage": "en-GB",
+      "inLanguage": "en-AU",
       "publisher": {
         "@id": "https://hipuku.dev/#person"
       }
@@ -61,6 +61,8 @@
       var next = t === 'storybook - Storybook' || t === 'Storybook' ? home : t.replace('⋅ Storybook', '⋅ ' + name)
       if (next !== t) document.title = next
     }
+    // Storybook writes its own <html lang="en">; the copy is Australian English.
+    document.documentElement.lang = 'en-AU'
     rename()
     new MutationObserver(rename).observe(document.head, { childList: true, subtree: true, characterData: true })
   })()
