@@ -6,6 +6,8 @@ const config: StorybookConfig = {
     '../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)',
   ],
   staticDirs: [
+    // robots.txt and sitemap.xml, served from the site root.
+    { from: './static', to: '/' },
     { from: '../../../logo.svg', to: '/brand/logo.svg' },
     { from: '../../../wordmark.svg', to: '/brand/wordmark.svg' },
     { from: '../og.png', to: '/og.png' },

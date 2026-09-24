@@ -10,6 +10,61 @@
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
+<meta property="og:image:alt" content="haus: a token-first React design system" />
+<link rel="canonical" href="https://haus.hipuku.dev/" />
+<meta property="og:site_name" content="haus" />
+<meta property="og:locale" content="en_GB" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://haus.hipuku.dev/#website",
+      "name": "haus",
+      "url": "https://haus.hipuku.dev/",
+      "description": "W3C DTCG and OKLCH design tokens, accessible React components and a live Storybook. Published to npm.",
+      "inLanguage": "en-GB",
+      "publisher": {
+        "@id": "https://hipuku.dev/#person"
+      }
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "@id": "https://github.com/hipuku/haus",
+      "name": "haus",
+      "description": "W3C DTCG and OKLCH design tokens, accessible React components and a live Storybook. Published to npm.",
+      "codeRepository": "https://github.com/hipuku/haus",
+      "programmingLanguage": "TypeScript",
+      "runtimePlatform": "React",
+      "license": "https://opensource.org/licenses/MIT",
+      "author": {
+        "@type": "Person",
+        "@id": "https://hipuku.dev/#person",
+        "name": "hipuku",
+        "url": "https://hipuku.dev"
+      },
+      "url": "https://haus.hipuku.dev/"
+    }
+  ]
+}
+</script>
+<script>
+  /* Storybook titles every page "<story> - Docs ⋅ Storybook", and the static
+     page "storybook - Storybook", so neither a tab nor a search result says
+     which Storybook this is. Name the system instead, whichever story is open. */
+  (function () {
+    var name = 'haus'
+    var home = 'haus: a token-first React design system'
+    function rename() {
+      var t = document.title
+      var next = t === 'storybook - Storybook' || t === 'Storybook' ? home : t.replace('⋅ Storybook', '⋅ ' + name)
+      if (next !== t) document.title = next
+    }
+    rename()
+    new MutationObserver(rename).observe(document.head, { childList: true, subtree: true, characterData: true })
+  })()
+</script>
 <style>
   /* Match kern's restrained wordmark size in the sidebar header */
   img[src="/brand/wordmark.svg"] { max-height: 22px; width: auto; }
