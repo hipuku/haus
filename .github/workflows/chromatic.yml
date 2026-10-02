@@ -54,7 +54,7 @@ jobs:
         if: ${{ env.CHROMATIC_PROJECT_TOKEN != '' }}
         env:
           CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-        uses: chromaui/action@v13
+        uses: chromaui/action@v18
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           workingDir: apps/storybook
