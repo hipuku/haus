@@ -10,7 +10,7 @@
 ## Context
 
 `Select` renders a native `<select>`, on decision 0011. Measured across core,
-drift, vault and loom on 2026-09-08, **no consumer imports it**: every `Select`
+drift and vault on 2026-09-08, **no consumer imports it**: every `Select`
 import in the portfolio resolves to a product-local component.
 
 Two products built a replacement instead, and both wrote down the same reason.

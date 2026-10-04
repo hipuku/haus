@@ -14,9 +14,9 @@
  *    boundary as JSON; the return value is raw computed-style strings. All
  *    parsing happens later, Node-side, in `normalise.ts`.
  *
- * This is what makes the probe reusable: the same function reads a whole page
- * (drift's crawl) or one mounted component (loom's token read), decided purely
- * by the `root` option.
+ * This is what makes the probe reusable: the same function reads a whole page,
+ * which is drift's crawl, or a single mounted component, decided purely by the
+ * `root` option.
  */
 
 import type { ProbeOptions, RawElement } from "./types.js";

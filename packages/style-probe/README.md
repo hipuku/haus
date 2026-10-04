@@ -98,12 +98,11 @@ than the crawl.
 
 - **[drift](https://github.com/hipuku/drift)**: walks whole sites to describe
   the design system a page actually ships.
-- **loom**: mounts one component and compares its rendered value against the
-  intended design. Private, and the drift-check workflow that runs it here is
-  paused while it is reconsidered.
-
-Descriptive audit and prescriptive comparison are different tools; the
-measurement underneath them should not be written twice.
+The package is deliberately one consumer wide for now. It was split out so a
+second reader, mounting one component rather than crawling a site, would not
+need a copy of the measuring code. That reader does not exist yet, and the
+split is still worth having: drift's crawl and any per-component read are the
+same measurement, and it should not be written twice.
 
 ## Licence
 

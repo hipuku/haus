@@ -38,7 +38,7 @@ const meta = {
           'haus draws this Select: a trigger, and a panel of options. ' +
           '\n\n' +
           '**It was `Listbox` until decision 0025**, where the native `<select>` ' +
-          'it replaces was retired. Measured across core, drift, vault and loom, ' +
+          'it replaces was retired. Measured across core, drift and vault, ' +
           'nothing imported the native one, while two products built this and ' +
           'wrote down the same reason. core: *"a styled listbox standing in for ' +
           "`<select>`, whose native popup can't be themed\"*. vault: *\"a custom " +

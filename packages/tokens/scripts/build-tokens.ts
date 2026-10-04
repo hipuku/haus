@@ -14,8 +14,9 @@
  * not generated: 44 of its custom properties are typography roles that
  * `tokens.json` does not model, along with `--haus-focus-ring`, `color-scheme`, and
  * the relative-colour-syntax alpha tokens. Generating it would mean inventing a
- * source for all of that first. Semantic drift is caught by loom's audit
- * instead: generation prevents primitive drift, and the audit detects the rest.
+ * source for all of that first. So generation prevents drift in the primitive
+ * layer and nothing yet checks the semantic one, which is a known gap rather
+ * than a solved problem.
  */
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'

@@ -7,7 +7,7 @@ and [0020](0020-listbox-and-select-both-stay.md).
 
 Decision 0011 made `Select` a native `<select>`. Decision 0020 kept both it and
 `Listbox`, the themed control two products had built, and recorded that **no
-consumer imported the native one**: measured across core, drift, vault and loom,
+consumer imported the native one**: measured across core, drift and vault,
 every `Select` import resolved to a product-local component.
 
 Re-measured on 2026-09-10, that is still true. Nothing imports the native

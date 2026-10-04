@@ -57,9 +57,9 @@ export type SelectProps = SelectBaseProps & SelectLabel
  * Select: a trigger, and a panel of options that haus draws.
  *
  * This is haus's Select. It was `Listbox` until decision 0025, where the native
- * `<select>` it now replaces was retired: measured across core, drift, vault and
- * loom, nothing imported the native one, while two products built this themed
- * control and wrote down the same reason. core: "a styled listbox standing in
+ * `<select>` it now replaces was retired: measured across core, drift and vault,
+ * nothing imported the native one, while two products built this themed control
+ * and wrote down the same reason. core: "a styled listbox standing in
  * for `<select>`, whose native popup can't be themed". vault: "a custom dropdown
  * replacing native `<select>`". An option carries a `hint`, a second line an
  * `<option>` cannot hold, and that is the thing both of them needed.
