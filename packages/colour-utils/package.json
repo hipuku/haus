@@ -54,7 +54,7 @@
   "devDependencies": {
     "@types/chroma-js": "^3.1.2",
     "haus-colour-names": "workspace:^",
-    "tsup": "^8.5.1",
+    "tsup": "^9.0.0",
     "typescript": "^5.4.5",
     "vitest": "^5.0.3"
   }
