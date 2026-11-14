@@ -169,11 +169,17 @@ export const Popover = React.forwardRef<HTMLDivElement, PopoverProps>(function P
      exactly where `placement` and `align` say. It is the same placement, in
      viewport coordinates instead of the ancestor's. */
   const [rect, setRect] = React.useState<DOMRect | null>(null)
+  /* The trigger's direction, read with its rect. `start` and `end` are the
+     trigger's own edges, and a fixed panel is placed in viewport coordinates,
+     so in a right-to-left layout `start` is the trigger's right edge. */
+  const [rtl, setRtl] = React.useState(false)
   React.useEffect(() => {
     if (!portal || !open) return
     const measure = () => {
       const node = triggerRef.current
-      if (node) setRect(node.getBoundingClientRect())
+      if (!node) return
+      setRect(node.getBoundingClientRect())
+      setRtl(getComputedStyle(node).direction === 'rtl')
     }
     measure()
     window.addEventListener('scroll', measure, true)
@@ -206,8 +212,9 @@ export const Popover = React.forwardRef<HTMLDivElement, PopoverProps>(function P
         position: 'fixed',
         top: placement === 'bottom' ? rect.bottom : undefined,
         bottom: placement === 'top' ? window.innerHeight - rect.top : undefined,
-        left: align === 'end' ? undefined : rect.left,
-        right: align === 'end' ? window.innerWidth - rect.right : undefined,
+        // Which viewport edge the panel is pinned to: the trigger's left edge
+        // when its alignment edge is on the left, otherwise its right edge.
+        ...((align === 'end') === rtl ? { left: rect.left } : { right: window.innerWidth - rect.right }),
         ...(align === 'stretch' || width === 'trigger' ? { inlineSize: rect.width } : {}),
       }
     : { position: 'fixed', visibility: 'hidden' }

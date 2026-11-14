@@ -210,6 +210,48 @@ describe('portal (haus#68)', () => {
     expect(panel.className).toMatch(/portalled/)
   })
 
+  describe('aligns to the right edge when the trigger is right to left', () => {
+    // Fixed panels are placed in viewport coordinates, and the first version put
+    // `start` on the trigger's left edge whatever the direction. In a
+    // right-to-left layout the trigger's start is its right edge.
+    function RtlHarness({ align }: { align: 'start' | 'end' }) {
+      const triggerRef = React.useRef<HTMLButtonElement>(null)
+      return (
+        <>
+          <button ref={triggerRef} style={{ direction: 'rtl' }}>
+            Open
+          </button>
+          <Popover open onClose={() => {}} triggerRef={triggerRef} portal align={align} aria-label="Menu">
+            Body
+          </Popover>
+        </>
+      )
+    }
+    const rect = { left: 100, right: 300, top: 40, bottom: 76, width: 200, height: 36, x: 100, y: 40 }
+    beforeEach(() => {
+      vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue({
+        ...rect,
+        toJSON: () => rect,
+      } as DOMRect)
+      vi.spyOn(window, 'innerWidth', 'get').mockReturnValue(1000)
+    })
+    afterEach(() => vi.restoreAllMocks())
+
+    it('start lines up with the trigger right edge', () => {
+      const { getByRole } = render(<RtlHarness align="start" />)
+      const panel = getByRole('dialog')
+      expect(panel.style.right).toBe('700px')
+      expect(panel.style.left).toBe('')
+    })
+
+    it('end lines up with the trigger left edge', () => {
+      const { getByRole } = render(<RtlHarness align="end" />)
+      const panel = getByRole('dialog')
+      expect(panel.style.left).toBe('100px')
+      expect(panel.style.right).toBe('')
+    })
+  })
+
   it('keeps its role and label through the portal', () => {
     // A portalled panel is easy to render correctly and label wrongly.
     const { getByRole } = render(<Harness portal />)
