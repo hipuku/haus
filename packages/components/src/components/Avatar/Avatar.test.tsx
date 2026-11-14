@@ -41,6 +41,15 @@ describe('Avatar', () => {
     expect(second.getByRole('img').getAttribute('style')).toBe(firstStyle)
   })
 
+  it('colours the avatar from a declared role, not a name that does not exist', () => {
+    // The palette once named unprefixed roles, which resolve to nothing, so
+    // every avatar fell back to primary whatever its name hashed to.
+    const { getByRole } = render(<Avatar name="Ada Lovelace" />)
+    const style = getByRole('img').getAttribute('style') ?? ''
+    expect(style).toMatch(/--haus-avatar-bg:\s*var\(--haus-color-[a-z]+-subtle\)/)
+    expect(style).toMatch(/--haus-avatar-fg:\s*var\(--haus-color-[a-z]+-on-subtle\)/)
+  })
+
   it('renders rather than throwing when the name is empty', () => {
     // initials('') split to [''], so [0][0] was undefined and .toUpperCase()
     // threw. An avatar for a user whose name had not loaded took the page down
