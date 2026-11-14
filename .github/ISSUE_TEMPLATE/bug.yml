@@ -29,7 +29,7 @@ body:
     id: expected
     attributes:
       label: What it should do, and what it does
-      description: The claim it breaks, if there is one: a README line, a docstring, a decision record.
+      description: "The claim it breaks, if there is one: a README line, a docstring, a decision record."
     validations: { required: true }
   - type: textarea
     id: repro
