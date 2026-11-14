@@ -2,10 +2,6 @@
 
 What this system does, what it does not, and where it is known to fall short.
 
-Written because the opposite was true for a long time: haus did real
-accessibility work, claimed none of it, and disclosed neither of the two places
-it fails.
-
 ## What is checked, and by what
 
 | Claim                                          | Checked by                                             |
@@ -22,13 +18,13 @@ it fails.
 Every row in the second column is an assertion that fails if the claim in the
 first stops being true.
 
-## Two known failures, disclosed
+## Known limitations
 
-**`<Button size="sm">` is below the WCAG 2.5.8 target size.** `--haus-control-height-sm`
-is 28px, and 2.5.8 asks for 24×24 with no spacing exception. It ships by
-default, with no gate. It is a pointer-density size and should not carry a
-primary target on touch. The fix is either a floor on the token or a documented
-spacing requirement around the control, and neither has been done.
+**Target size meets AA, not AAA, below `lg`.** WCAG 2.5.8 (AA) asks for a 24 by 24
+pixel target. Button and IconButton meet it at every size: IconButton `sm` is 24px,
+exactly the minimum, and Button `sm` is 28px. The 2.5.5 AAA size is 44px, which only
+`lg` (`--haus-control-height-lg`) reaches; `md` is 36px. `sm` is a pointer-density
+size and should not carry a primary target on touch.
 
 **`Select` reimplements what a native `<select>` gives for free.** It was a native
 `<select>` until [decision 0025](decisions/0025-select-is-the-themed-control.md) and

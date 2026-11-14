@@ -57,33 +57,26 @@ per component lets the next component arrive without one. `api-surface.test.ts`
 is the pattern.
 
 **This package has no `use client`, so every stateless component is on the React
-Server Component path, and that path has no test.** Both halves are deliberate:
-a Server Component can render `Button`, `Badge` or `Card` directly with no client
-bundle, and core does that in two pages. `ssr.test.tsx` covers `renderToString`,
-which is **not** RSC and enforces different rules: it accepts a ref where an RSC
-render rejects one.
+Server Component path.** A Server Component can render `Button`, `Badge` or `Card`
+directly with no client bundle, and core does that in two pages. Ten components
+can be rendered that way: `Avatar`, `Badge`, `Button`, `Callout`, `Card`,
+`Divider`, `EmptyState`, `IconButton`, `Spinner`, `Toast`.
 
-`haus#71` shipped through that blank. `asChild` attached a ref to every cloned
-child, including when neither side had one, which is legal on the client,
-invisible to `renderToString`, and throws in a Server Component. Thirty suites
-were green and the first consumer to use it hit the error immediately.
-
-So, until `haus#72` closes that row:
+That path is guarded by its rule rather than by a render harness
+([decision 0024](docs/decisions/0024-the-rsc-path-is-guarded-by-its-rule.md)):
 
 - **A component may not pass a `ref`, an event handler or anything else across a
   boundary it was not given one for.** The rule is narrower than "support RSC":
   do not attach a prop the caller did not pass.
-- **A change to a stateless component asks whether a Server Component could
-  render it.** Ten can: `Avatar`, `Badge`, `Button`, `Callout`, `Card`,
-  `Divider`, `EmptyState`, `IconButton`, `Spinner`, `Toast`. The list is in the
-  README and is derived from the source, not maintained by hand, so check it
-  there rather than trusting this sentence.
+- `rsc-rules.test.tsx` renders every `asChild` component with no ref on either
+  side and fails if one arrives. That is the one way this package has broken a
+  Server Component (`haus#71`), and the test catches nothing broader: a hook or
+  an event handler in a server tree is not checked.
+- `ssr.test.tsx` covers `renderToString`, which is server rendering, not React
+  Server Components, and accepts a ref where an RSC render rejects one.
 - **A new prop that clones, forwards or injects into a caller's element is the
-  kind that breaks this way.** `asChild` is currently the only one, and the only
-  one that has.
-
-**The RSC path is supported and untested**, which is how `haus#71` reached a
-consumer. It is recorded here so the next change accounts for it.
+  kind that breaks this way.** `asChild` is the only one today, on Button,
+  IconButton and Card.
 
 ## Visual regression
 

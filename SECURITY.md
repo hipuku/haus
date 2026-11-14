@@ -21,9 +21,10 @@ Realistically, that leaves:
   that does not match this source.
 - **A component that renders unescaped input.** The components pass their props
   to DOM attributes; none uses `dangerouslySetInnerHTML`.
-- **A CSS injection** through a value that reaches a custom property.
-  `Avatar` sets two properties from a `style` prop, derived from the `name` it is
-  given, which is worth knowing if a name is attacker-controlled.
+- **A CSS injection** through a value that reaches a custom property. `Avatar`
+  sets two custom properties inline, but only to one of five fixed role pairs
+  that the `name` it is given hashes to. No text from the name reaches the
+  stylesheet.
 
 ## What is not
 
@@ -35,7 +36,8 @@ Realistically, that leaves:
 
 ## What is done about it
 
-Dependabot runs on this repository and every advisory is at zero. Releases are
+Dependabot runs weekly on this repository, with security updates on, and
+`pnpm audit` is checked before a release. Releases are
 published from CI rather than a laptop, and `RELEASING.md` documents the order
 and the gate: `prepublishOnly` runs `tokens:check` and the build, so a published
 artefact cannot disagree with its source.
