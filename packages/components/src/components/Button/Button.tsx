@@ -142,6 +142,12 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
     const child = React.Children.only(children as React.ReactElement)
     const childProps = child.props as { className?: string }
     const childRef = childRefOf(child)
+    // A disabled child is the caller's element, often a router's link, so its
+    // href stays and no click handler is added: a function prop on a host
+    // element throws in a Server Component (decision 0024). It leaves the tab
+    // order, says it is disabled, loses the caller's onClick, and the
+    // [aria-disabled='true'] rule in the stylesheet stops the pointer.
+    const { onClick, ...childDomProps } = domProps
     return React.cloneElement(
       child,
       {
@@ -149,7 +155,11 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
         // collision: the caller is closer to the problem than the system is.
         className: [cls, childProps.className].filter(Boolean).join(' '),
         ref: mergeRefs(ref as React.Ref<unknown>, childRef),
-        ...domProps,
+        ...childDomProps,
+        ...((disabled ? { 'aria-disabled': true, tabIndex: -1 } : onClick ? { onClick } : {}) as Record<
+          string,
+          unknown
+        >),
       } as Partial<unknown> & React.Attributes,
       // The child keeps its own children, and the glyph is appended after
       // them, which is where the other two branches put it too.
@@ -174,7 +184,7 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
         target={isDisabled ? undefined : target}
         rel={!isDisabled && target === '_blank' ? 'noopener noreferrer' : undefined}
         className={cls}
-        aria-disabled={isDisabled}
+        aria-disabled={isDisabled || undefined}
         aria-busy={loading || undefined}
         {...(domProps as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
       >
@@ -185,14 +195,24 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
     )
   }
 
+  /* Loading blocks the button without the native attribute. A button that
+     becomes disabled while focused drops focus to the document, and the
+     keyboard user who just pressed Save loses their place. Instead it stops
+     being a submit button, so neither a click nor Enter can send its form
+     twice, and the caller's onClick is withheld. Nothing is attached that the
+     caller did not pass, so a Server Component can still render it. The
+     stylesheet's [aria-disabled='true'] rule stops the pointer. */
+  const buttonProps = domProps as React.ButtonHTMLAttributes<HTMLButtonElement>
   return (
     <button
       ref={ref as React.Ref<HTMLButtonElement>}
       className={cls}
-      disabled={isDisabled}
-      aria-disabled={isDisabled}
+      disabled={disabled}
+      aria-disabled={isDisabled || undefined}
       aria-busy={loading || undefined}
-      {...(domProps as React.ButtonHTMLAttributes<HTMLButtonElement>)}
+      {...buttonProps}
+      {...(loading ? { type: 'button' as const } : {})}
+      onClick={loading ? undefined : buttonProps.onClick}
     >
       {loading && <Spinner size="text" announcedBy="the button's aria-busy state" />}
       {children}

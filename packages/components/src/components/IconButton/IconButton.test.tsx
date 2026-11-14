@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React, { createRef } from 'react'
 import { axe } from 'vitest-axe'
@@ -52,11 +52,15 @@ describe('IconButton', () => {
     expect(screen.getByRole('button')).toHaveAttribute('type', 'button')
   })
 
-  it('announces the wait while loading, and disables itself', () => {
-    render(<IconButton icon={<Glyph />} label="Saving" loading />)
+  it('announces the wait while loading, and blocks itself without losing focus', () => {
+    const { rerender } = render(<IconButton icon={<Glyph />} label="Saving" />)
     const button = screen.getByRole('button', { name: 'Saving' })
+    button.focus()
+    rerender(<IconButton icon={<Glyph />} label="Saving" loading />)
     expect(button).toHaveAttribute('aria-busy', 'true')
-    expect(button).toBeDisabled()
+    expect(button).toHaveAttribute('aria-disabled', 'true')
+    expect(button).not.toBeDisabled()
+    expect(button).toHaveFocus()
     // The spinner replaces the glyph rather than joining it.
     expect(screen.queryByTestId('glyph')).toBeNull()
   })
@@ -65,6 +69,25 @@ describe('IconButton', () => {
     const onClick = vi.fn()
     render(<IconButton icon={<Glyph />} label="Saving" loading onClick={onClick} />)
     await userEvent.click(screen.getByRole('button')).catch(() => {})
+    expect(onClick).not.toHaveBeenCalled()
+  })
+
+  it('says nothing about being disabled when it is not', () => {
+    render(<IconButton icon={<Glyph />} label="Edit" />)
+    expect(screen.getByRole('button')).not.toHaveAttribute('aria-disabled')
+  })
+
+  it('an asChild IconButton that is disabled cannot be focused or followed', async () => {
+    const onClick = vi.fn()
+    render(
+      <IconButton icon={<Glyph />} label="Edit" asChild disabled onClick={onClick}>
+        <a href="/x" />
+      </IconButton>,
+    )
+    const link = screen.getByRole('link', { name: 'Edit' })
+    expect(link).toHaveAttribute('aria-disabled', 'true')
+    expect(link).toHaveAttribute('tabindex', '-1')
+    fireEvent.click(link)
     expect(onClick).not.toHaveBeenCalled()
   })
 
