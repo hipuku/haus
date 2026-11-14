@@ -98,7 +98,7 @@ describe('components read roles, not primitives', () => {
   })
 
   it('matches the counts the docs state', () => {
-    // docs/tokens.md, DESIGN.md and the semantics.css header all quote these.
+    // docs/tokens.md and the semantics.css header quote these.
     // If a component legitimately gains or loses one, update them together.
     const sizes = PAST.filter(d => d.primitives.some(t => /^--haus-space-\d+$/.test(t)))
     expect(sizes.length).toBe(28)
