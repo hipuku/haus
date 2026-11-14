@@ -3,7 +3,7 @@
  * only thing that can say so.
  *
  * The component tests run with `css: false`, so nothing in this package ever
- * reads a computed style — that is also why every contrast claim is asserted
+ * reads a computed style. That is also why every contrast claim is asserted
  * against token values rather than against a rendered element. A rendered RTL
  * assertion is therefore not available here, and the visual half belongs to a
  * Storybook story under a Chromatic diff. What is available is the source, and
@@ -11,7 +11,7 @@
  * every time someone means "the side the text starts on".
  *
  * Scoped to the inline axis on purpose. Right-to-left flips inline and leaves
- * block alone, so `top` and `bottom` stay legal — the Toggle thumb's `top: 2px`
+ * block alone, so `top` and `bottom` stay legal; the Toggle thumb's `top: 2px`
  * is not a defect. The components are written in `margin-block-*` anyway, for
  * consistency rather than necessity.
  */
@@ -64,7 +64,7 @@ describe('components are written in logical properties', () => {
   it('never leaves a translateX without a direction to follow', () => {
     // The one thing a rename cannot fix: CSS has no logical transform, so a
     // sliding element needs a sign that an [dir='rtl'] rule can flip. Toggle's
-    // thumb is the case — without this it slides out of the wrong end of a
+    // thumb is the case: without this it slides out of the wrong end of a
     // right-to-left track, and no rename would have caught it.
     const offenders = CODE.filter(
       ([, css]) => css.includes('translateX(') && !css.includes("[dir='rtl']") && !css.includes('[dir="rtl"]'),
@@ -74,7 +74,7 @@ describe('components are written in logical properties', () => {
 
   it('gives every focus ring a forced-colors fallback', () => {
     // Every ring in this system is a box-shadow, and forced-colors mode drops
-    // box-shadow entirely — so a ring without this block is no ring at all in
+    // box-shadow entirely, so a ring without this block is no ring at all in
     // Windows High Contrast. The rule cannot be written once globally: three
     // components draw the ring on a sibling of a visually hidden input, so a
     // blanket :focus-visible outline would land on an element nobody can see.
@@ -86,7 +86,7 @@ describe('components are written in logical properties', () => {
 
   it('rings on the keyboard, not the pointer', () => {
     // :focus-within fires for a mouse press too. Input drew its ring on a
-    // wrapper, which is not focusable, and reached for :focus-within to do it —
+    // wrapper, which is not focusable, and reached for :focus-within to do it.
     // :has(:focus-visible) keeps the ring where it has to be drawn and the rule
     // every other control follows.
     const offenders = CODE.filter(([, css]) => css.includes(':focus-within')).map(([file]) => file)

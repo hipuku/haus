@@ -10,11 +10,11 @@ const meta = {
       description: {
         component:
           'The surface of a notice, and deliberately only that. **No provider, ' +
-          'no queue, no positioning, no timer, and there will not be** — a toast ' +
+          'no queue, no positioning, no timer, and there will not be**. A toast ' +
           '*system* is an application concern that owns global state, a portal ' +
           'and a policy about stacking, and a design system that ships one is ' +
           'shipping an opinion most consumers fight. Decision 0008.\n\n' +
-          'What it does own: how one looks, and that it is announced — it carries ' +
+          'What it does own: how one looks, and that it is announced. It carries ' +
           'its own `role="status"`, so a notice dropped into your container is ' +
           'still read out.',
       },

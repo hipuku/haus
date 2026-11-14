@@ -873,7 +873,7 @@ assumed: `25rem` is `400px`, `22.5rem` is `360px`, `0.375rem` is `6px`.
   two appearances and no word for them: `neutral` painted a dark solid surface
   while the other four painted tinted ones, so which you got was decided by the
   tone you happened to pick. `appearance` is `subtle | solid`, defaulting to
-  `subtle` as it does on Badge — so **the dark neutral toast is
+  `subtle` as it does on Badge, so **the dark neutral toast is
   `appearance="solid"` now**, and a plain `<Toast>` is tinted where it used to be
   dark. Every tone has both. A solid toast's description also takes full-strength
   ink instead of the old 0.8 opacity, which was tuned against one dark surface

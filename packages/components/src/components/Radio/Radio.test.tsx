@@ -14,7 +14,7 @@ describe('RadioGroup', () => {
   it('gives every option a usable id, whatever the value is', () => {
     // Ids were `${groupId}-${opt.value}`, so a value with a space, a slash or a
     // percent produced an id that htmlFor still matched but that no CSS or
-    // querySelector could address — and two values differing only in whitespace
+    // querySelector could address, and two values differing only in whitespace
     // collided outright, leaving one label pointing at the other's input.
     render(
       <RadioGroup
@@ -100,7 +100,7 @@ describe('RadioGroup', () => {
 
   it('moves the drawn dot, not only the native input', async () => {
     // The regression this exists for. `toBeChecked()` reads the input, and the
-    // browser updates that itself whatever the component does — so the two
+    // browser updates that itself whatever the component does, so the two
     // assertions above passed for as long as the dot was stuck on defaultValue.
     // The dot is drawn by the `checked` class on the label, so that is what has
     // to be asserted for the visible control to be under test at all.

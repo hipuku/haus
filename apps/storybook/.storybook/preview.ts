@@ -17,7 +17,7 @@ const preview: Preview = {
       },
     },
     /* The default surface is the default. Only damson-100 was offered, so every
-       story rendered on the subtle surface — which is the one place a white card
+       story rendered on the subtle surface, which is the one place a white card
        is invisible, and the surface most components are not on. */
     backgrounds: {
       options: {

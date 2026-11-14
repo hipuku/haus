@@ -215,7 +215,7 @@ function buildPrimitivesCss(): string {
  * `semantic.color` in tokens.json restated brand.css by hand: 55 entries, the
  * same role-to-primitive choices, kept in step by nobody. docs/tokens.md
  * documents tokens.json as the Style Dictionary handoff path, so a consumer
- * reads it — which makes an unverified snapshot worse than none.
+ * reads it, which makes an unverified snapshot worse than none.
  *
  * Derived from brand.css now, which is where those choices live since the split.
  * Descriptions are carried across by key so the prose survives regeneration.
@@ -284,7 +284,7 @@ function buildMotionCss(): string {
  * `BrandMap` is generated from brand.css rather than typed beside it. The
  * contract asks for a type that fails a consumer's build when a brand omits a
  * role or misnames one, and a hand-maintained copy would be the fourth
- * hand-maintained restatement in this package — which is already a filed issue.
+ * hand-maintained restatement in this package, which is already a filed issue.
  */
 function buildBrandTypes(): string {
   const css = readFileSync(join(srcDir, 'brand.css'), 'utf8')
@@ -388,7 +388,7 @@ function jsValue(token: DtcgToken): string {
  * A DTCG alias turned into the `var()` the CSS reads, rather than the literal
  * value: `{duration.fast}` → `var(--haus-duration-fast)`. The composite motion
  * tokens have to point at the duration and easing properties so that overriding
- * one moves everything built on it — inlining the literals would freeze them.
+ * one moves everything built on it; inlining the literals would freeze them.
  */
 function aliasToVar(part: string): string {
   const alias = /^\{([^}]+)\}$/.exec(part)

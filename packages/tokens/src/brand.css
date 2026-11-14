@@ -3,7 +3,7 @@
 
    It contains nothing else: no new names, no raw values, no structure. A brand
    author sees a flat list of ramp choices; a component author sees an unchanged
-   role name in semantics.css. That separation is the whole of ruling A3 — before
+   role name in semantics.css. That separation is the whole of ruling A3. Before
    it, the brand and the role system were the same file, so taking haus's roles
    meant taking haus's palette, and two products declared their own tokens rather
    than do that.

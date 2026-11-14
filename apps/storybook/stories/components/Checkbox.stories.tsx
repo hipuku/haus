@@ -10,7 +10,7 @@ const meta = {
       description: {
         component:
           'Uncontrolled unless you pass `checked`. `onChange` hands back ' +
-          '`(checked, event)` — the boolean because it is what you almost always ' +
+          '`(checked, event)`: the boolean because it is what you almost always ' +
           'want, the event because without it there was no way to read ' +
           '`event.target.name` in a form with many checkboxes.',
       },

@@ -13,7 +13,7 @@ const built = existsSync(DIST) ? readFileSync(DIST, 'utf8') : null
 describe.skipIf(built === null)('the built stylesheet', () => {
   it('declares its own cascade layer', () => {
     // Decision B1. Unlayered, this competed with a consumer's own module CSS by
-    // source order — whether a component's style or an override won depended on
+    // source order: whether a component's style or an override won depended on
     // import order rather than on anything either declared.
     expect(built).toMatch(/^@layer haus\.components \{/)
     expect(built!.trimEnd().endsWith('}')).toBe(true)
@@ -55,8 +55,8 @@ describe.skipIf(built === null)('the built stylesheet', () => {
  * Decision 0012, enforced across the package rather than per component.
  *
  * A tone rule may remap custom properties and may declare nothing else; the
- * variant or appearance rules read them. Written the other way — a tone setting
- * background, border and colour outright — the tone rule sits at equal
+ * variant or appearance rules read them. Written the other way (a tone setting
+ * background, border and colour outright), the tone rule sits at equal
  * specificity to the weight rules setting the same properties, and whichever
  * was written last wins whatever the caller asked for. That is exactly how
  * `<Button variant="ghost" tone="error">` came to render as a solid button.

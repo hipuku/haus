@@ -30,7 +30,7 @@
    Decision 0012: a tone rule remaps custom properties and declares nothing
    else; the appearance rules below read them. Toast is the second component in
    this shape after Button, and the reason it needed the treatment is visible in
-   what this replaced — `neutral` painted a dark solid surface while the other
+   what this replaced: `neutral` painted a dark solid surface while the other
    four painted tinted ones, so the component already had two appearances and
    no prop to say which you wanted. `appearance` is that prop, per decision
    0005, and neutral's dark surface is `appearance="solid"` now.
@@ -59,7 +59,7 @@
 }
 
 /* success and warning take their `solid` role at 700 rather than `default` at
-   500, because those two 500s fail with white ink — the same reach Badge and
+   500, because those two 500s fail with white ink, the same reach Badge and
    Button make, for the same measured reason. */
 
 .success {
@@ -157,7 +157,7 @@
 /* Full-strength ink on a solid surface, where the tinted appearance can afford
    a secondary grey. The 0.8 opacity this replaced was tuned against one dark
    surface and would now sit over five, including two coloured 500s where it
-   drops white ink under AA — and an opacity ramp is exactly the thing the
+   drops white ink under AA, and an opacity ramp is exactly the thing the
    contrast suite cannot measure. Title and description still separate, by
    weight and size, which is how the rest of the system does it. */
 .solid .description,

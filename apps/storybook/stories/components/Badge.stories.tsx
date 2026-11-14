@@ -10,7 +10,7 @@ const meta = {
       description: {
         component:
           'A status word. `tone` is the meaning and `appearance` is how solidly ' +
-          'it is expressed — the pair Button and Toast share. `as` exists because ' +
+          'it is expressed, the pair Button and Toast share. `as` exists because ' +
           'a count in a definition list is a `<dd>` and a live result is an ' +
           '`<output>`, and a `<span>` in either place is a hole in the outline.',
       },

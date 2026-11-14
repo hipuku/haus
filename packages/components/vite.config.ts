@@ -31,7 +31,7 @@ import { defineConfig, type Plugin } from 'vite'
  *
  * In writeBundle rather than generateBundle: Vite emits the stylesheet after
  * generateBundle has run, so a plugin that rewrites the bundle there sees no CSS
- * at all and silently does nothing — which is what the first version of this
+ * at all and silently does nothing, which is what the first version of this
  * did.
  */
 function layerStylesheet(): Plugin {

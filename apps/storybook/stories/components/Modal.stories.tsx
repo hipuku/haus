@@ -15,7 +15,7 @@ const meta = {
           'a `title` or an `aria-label`, because a dialog with no accessible name ' +
           'is announced as nothing.\n\n' +
           '`initialFocus` points focus at the action rather than the container, ' +
-          'and `dismissOnBackdrop` can refuse a backdrop click — worth turning ' +
+          'and `dismissOnBackdrop` can refuse a backdrop click, worth turning ' +
           'off for anything destructive or anything holding unsaved input.',
       },
     },

@@ -10,7 +10,7 @@ const meta = {
       description: {
         component:
           'A switch, announced as one rather than as a checkbox. Two sizes, ' +
-          'because two are what it has designs for — the shared scale is ' +
+          'because two are what it has designs for. The shared scale is ' +
           '`sm md lg` and an `lg` that rendered at `md` would not be a size.',
       },
     },
