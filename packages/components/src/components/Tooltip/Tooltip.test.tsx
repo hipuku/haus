@@ -4,7 +4,7 @@ import { axe } from 'vitest-axe'
 import { Tooltip } from './Tooltip'
 
 describe('Tooltip', () => {
-  it('is not in the document until something asks for it', () => {
+  it('is not shown until something asks for it', () => {
     render(
       <Tooltip content="Copy to clipboard">
         <button>Copy</button>
@@ -69,13 +69,20 @@ describe('Tooltip', () => {
     expect(ids).toHaveLength(2)
   })
 
-  it('has no describedby pointing at a tooltip that is not rendered', () => {
+  it('describes the trigger before it opens, so focus announces it', () => {
+    // The description used to be attached only once the tooltip opened, which
+    // happens in a render after the focus event. A screen reader reads the
+    // focused element on focus, so it could announce "Copy, button" before the
+    // description existed. The bubble is now always rendered, hidden while
+    // closed: a hidden element still supplies an aria-describedby text, and
+    // the IDREF always resolves.
     render(
-      <Tooltip content="Copy">
+      <Tooltip content="Copy to clipboard">
         <button>Copy</button>
       </Tooltip>,
     )
-    expect(screen.getByRole('button')).not.toHaveAttribute('aria-describedby')
+    expect(screen.queryByRole('tooltip')).toBeNull()
+    expect(screen.getByRole('button')).toHaveAccessibleDescription('Copy to clipboard')
   })
 
   it('is dismissible with Escape, and focus does not move. WCAG 1.4.13', async () => {
