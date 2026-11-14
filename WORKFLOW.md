@@ -67,7 +67,9 @@ resolved; the ruleset will not merge a pull request with an open conversation.
 Each package is released on its own by a tag, `<directory>-v<version>` (for example
 `components-v3.1.1`). The pull request that changes a package bumps its version and writes its
 CHANGELOG entry, so the change, the version and the notes land in one commit that passed every
-check; the tag goes on that commit after it merges. Pushing the tag runs `publish.yml`, which checks
+check; the tag goes on that commit after it merges. When several changes ship together, each
+pull request writes its entry under an unreleased heading for that package, and a release pull
+request bumps the version and dates the heading. Pushing the tag runs `publish.yml`, which checks
 the manifest agrees with the tag, builds the workspace, runs the package's tests and publishes to
 npm with provenance through trusted publishing. Every step, and the order packages must be released
 in, is in [`RELEASING.md`](./RELEASING.md).
