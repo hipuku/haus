@@ -1,0 +1,32 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  // A type or helper exported for its own file's use is not dead code.
+  "ignoreExportsUsedInFile": true,
+  // tsup.config.ts in haus-tokens reads src/brands relative to its own package,
+  // which fails when knip loads it from the root. Entries are listed below instead.
+  "tsup": false,
+  "workspaces": {
+    ".": {
+      "entry": ["scripts/*.mjs"],
+    },
+    "packages/*": {
+      "entry": ["src/index.ts", "src/**/*.test.{ts,tsx}"],
+      "project": ["src/**/*.{ts,tsx}"],
+    },
+    "packages/tokens": {
+      "entry": ["src/index.ts", "src/guard.ts", "scripts/*.ts", "src/**/*.test.ts"],
+      "project": ["src/**/*.ts", "scripts/**/*.ts"],
+    },
+    "packages/components": {
+      "entry": ["src/index.ts", "scripts/*.mjs", "src/**/*.test.{ts,tsx}"],
+      "project": ["src/**/*.{ts,tsx}", "scripts/**/*.mjs"],
+      // Read through CSS custom properties, never imported, and still a runtime
+      // dependency: the components render unstyled without it.
+      "ignoreDependencies": ["haus-tokens"],
+    },
+    "apps/storybook": {
+      "entry": [".storybook/*.{ts,tsx}", "stories/**/*.{ts,tsx,mdx}"],
+      "project": [".storybook/**/*.{ts,tsx}", "stories/**/*.{ts,tsx}"],
+    },
+  },
+}

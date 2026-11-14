@@ -52,6 +52,10 @@ jobs:
       - name: Markdown
         run: pnpm run lint:md
 
+      # Unused files, exports and dependencies across the workspace.
+      - name: Knip
+        run: pnpm run knip
+
   # Every relative link and heading anchor in the markdown resolves, .github
   # included (--hidden). Offline, so the check never fails because an outside
   # site is slow.
