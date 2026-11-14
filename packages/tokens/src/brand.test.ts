@@ -16,11 +16,10 @@ const read = (f: string) => readFileSync(join(SRC, f), 'utf8')
 const brand = read('brand.css')
 const semantics = read('semantics.css')
 
-const declaredIn = (css: string) =>
-  new Set([...css.matchAll(/^\s*(--[\w-]+)\s*:/gm)].map((m) => m[1]))
+const declaredIn = (css: string) => new Set([...css.matchAll(/^\s*(--[\w-]+)\s*:/gm)].map(m => m[1]))
 
 const BRAND = declaredIn(brand)
-const BRAND_ENTRIES = [...BRAND].filter((n) => n.startsWith('--haus-brand-'))
+const BRAND_ENTRIES = [...BRAND].filter(n => n.startsWith('--haus-brand-'))
 
 /**
  * The tier split, haus#52. A role's tier is its ramp, so the rule survives
@@ -31,7 +30,7 @@ const FORM_GROUPS = ['radius', 'elevation', 'modal', 'popover', 'font'] as const
 const rampOf = (n: string) => n.replace('--haus-brand-', '').split('-')[0]
 const isFeedback = (n: string) => (FEEDBACK_RAMPS as readonly string[]).includes(rampOf(n))
 const isForm = (n: string) => (FORM_GROUPS as readonly string[]).includes(rampOf(n))
-const BASE_ENTRIES = BRAND_ENTRIES.filter((n) => !isFeedback(n) && !isForm(n))
+const BASE_ENTRIES = BRAND_ENTRIES.filter(n => !isFeedback(n) && !isForm(n))
 const FEEDBACK_ENTRIES = BRAND_ENTRIES.filter(isFeedback)
 const FORM_ENTRIES = BRAND_ENTRIES.filter(isForm)
 
@@ -47,7 +46,7 @@ describe('the brand map', () => {
     // "No new names, no raw values, no structure" — the contract. A brand author
     // reads a flat list of choices, and anything else here is a second place for
     // the role vocabulary to live.
-    const strays = [...BRAND].filter((n) => !n.startsWith('--haus-brand-'))
+    const strays = [...BRAND].filter(n => !n.startsWith('--haus-brand-'))
     expect(strays).toEqual([])
   })
 
@@ -56,22 +55,22 @@ describe('the brand map', () => {
     // the same file, so taking the roles meant taking the palette.
     const palettes = ['aronia', 'damson', 'elderberry', 'greengage', 'mango', 'cherry']
     const offenders = [...semantics.matchAll(/^\s*(--haus-[\w-]+)\s*:\s*([^;]+);/gm)]
-      .filter(([, , value]) => palettes.some((p) => value.includes(`--haus-${p}-`)))
+      .filter(([, , value]) => palettes.some(p => value.includes(`--haus-${p}-`)))
       .map(([, name]) => name)
     expect(offenders).toEqual([])
   })
 
   it('has a brand entry for every role that reads one', () => {
-    const wanted = [...semantics.matchAll(/var\(\s*(--haus-brand-[\w-]+)/g)].map((m) => m[1])
-    const missing = [...new Set(wanted)].filter((n) => !BRAND.has(n))
+    const wanted = [...semantics.matchAll(/var\(\s*(--haus-brand-[\w-]+)/g)].map(m => m[1])
+    const missing = [...new Set(wanted)].filter(n => !BRAND.has(n))
     expect(missing).toEqual([])
   })
 
   it('has a role reading every brand entry', () => {
     // The other direction. An entry nothing reads is a promise to brand authors
     // that costs them a line and buys nothing.
-    const read = new Set([...semantics.matchAll(/var\(\s*(--haus-brand-[\w-]+)/g)].map((m) => m[1]))
-    expect(BRAND_ENTRIES.filter((n) => !read.has(n))).toEqual([])
+    const read = new Set([...semantics.matchAll(/var\(\s*(--haus-brand-[\w-]+)/g)].map(m => m[1]))
+    expect(BRAND_ENTRIES.filter(n => !read.has(n))).toEqual([])
   })
 
   it('generates BrandMap from the same file', () => {
@@ -84,9 +83,7 @@ describe('the brand map', () => {
     expect(BASE_ENTRIES.length).toBe(28)
     expect(FEEDBACK_ENTRIES.length).toBe(26)
     expect(FORM_ENTRIES.length).toBe(17)
-    expect(BASE_ENTRIES.length + FEEDBACK_ENTRIES.length + FORM_ENTRIES.length).toBe(
-      BRAND_ENTRIES.length,
-    )
+    expect(BASE_ENTRIES.length + FEEDBACK_ENTRIES.length + FORM_ENTRIES.length).toBe(BRAND_ENTRIES.length)
   })
 
   it('generates all three tiers from the same file', () => {
@@ -95,7 +92,7 @@ describe('the brand map', () => {
     expect([...brandRolesForm].sort()).toEqual([...FORM_ENTRIES].sort())
   })
 
-  it.each(readdirSync(join(SRC, 'brands')))('%s supplies the whole base tier', (file) => {
+  it.each(readdirSync(join(SRC, 'brands')))('%s supplies the whole base tier', file => {
     // A contract with one implementation is not a contract. This is what makes
     // the second brand a proof rather than a decoration.
     //
@@ -105,26 +102,26 @@ describe('the brand map', () => {
     // legitimate, because nothing upstream is a sensible substitute for a
     // product's own surface or ink.
     const theme = declaredIn(read(join('brands', file)))
-    const missing = BASE_ENTRIES.filter((n) => !theme.has(n))
+    const missing = BASE_ENTRIES.filter(n => !theme.has(n))
     expect(missing).toEqual([])
   })
 
-  it.each(readdirSync(join(SRC, 'brands')))('%s supplies whole optional groups or none', (file) => {
+  it.each(readdirSync(join(SRC, 'brands')))('%s supplies whole optional groups or none', file => {
     // The rule that holds the optional half honest, and the one a type cannot
     // express. Half a ramp is worse than no ramp: the entries a brand does
     // declare take its hue and the ones it forgets inherit haus's, so an error
     // state renders in two unrelated colours and every check still passes,
     // because each individual var() resolves perfectly well.
     const theme = declaredIn(read(join('brands', file)))
-    const partial = OPTIONAL_GROUPS.map((ramp) => {
-      const entries = BRAND_ENTRIES.filter((n) => rampOf(n) === ramp)
-      const supplied = entries.filter((n) => theme.has(n))
+    const partial = OPTIONAL_GROUPS.map(ramp => {
+      const entries = BRAND_ENTRIES.filter(n => rampOf(n) === ramp)
+      const supplied = entries.filter(n => theme.has(n))
       return { ramp, supplied: supplied.length, of: entries.length }
-    }).filter((r) => r.supplied > 0 && r.supplied < r.of)
+    }).filter(r => r.supplied > 0 && r.supplied < r.of)
     expect(partial).toEqual([])
   })
 
-  it.each(readdirSync(join(SRC, 'brands')))('%s changes nothing but the brand', (file) => {
+  it.each(readdirSync(join(SRC, 'brands')))('%s changes nothing but the brand', file => {
     const css = read(join('brands', file))
     // A brand may declare its own ramp and the brand entries. A role, a
     // component class or a raw override is out of bounds: it would mean the
@@ -138,7 +135,7 @@ describe('the brand map', () => {
     // test, which is the test doing its job a release late.
     const RAMP_STEP = /^--haus-[a-z]+-\d+$/
     const strays = [...declaredIn(css)].filter(
-      (n) => n.startsWith('--haus-') && !n.startsWith('--haus-brand-') && !RAMP_STEP.test(n),
+      n => n.startsWith('--haus-') && !n.startsWith('--haus-brand-') && !RAMP_STEP.test(n),
     )
     expect(strays).toEqual([])
   })
@@ -170,8 +167,12 @@ describe('what the artefact actually contains', () => {
     // The list is read from the directory now, and this asserts the thing that
     // was never asserted: not that a brand satisfies the contract, but that a
     // consumer can get it.
-    const src = readdirSync(join(SRC, 'brands')).filter((f) => f.endsWith('.css')).sort()
-    const shipped = readdirSync(DIST).filter((f) => f.endsWith('.css')).sort()
+    const src = readdirSync(join(SRC, 'brands'))
+      .filter(f => f.endsWith('.css'))
+      .sort()
+    const shipped = readdirSync(DIST)
+      .filter(f => f.endsWith('.css'))
+      .sort()
     expect(shipped).toEqual(src)
   })
 })

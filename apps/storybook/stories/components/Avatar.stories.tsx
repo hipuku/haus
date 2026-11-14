@@ -35,9 +35,9 @@ type Story = StoryObj<typeof meta>
 export const Playground: Story = {}
 
 export const Sizes: Story = {
-  render: (args) => (
+  render: args => (
     <div style={{ display: 'flex', gap: 'var(--haus-space-3)', alignItems: 'center' }}>
-      {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((size) => (
+      {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map(size => (
         <Avatar key={size} {...args} size={size} />
       ))}
     </div>
@@ -45,9 +45,9 @@ export const Sizes: Story = {
 }
 
 export const ColourFollowsTheName: Story = {
-  render: (args) => (
+  render: args => (
     <div style={{ display: 'flex', gap: 'var(--haus-space-3)' }}>
-      {['Ada Lovelace', 'Grace Hopper', 'Katherine Johnson', 'Radia Perlman'].map((name) => (
+      {['Ada Lovelace', 'Grace Hopper', 'Katherine Johnson', 'Radia Perlman'].map(name => (
         <Avatar key={name} {...args} name={name} />
       ))}
     </div>
@@ -55,9 +55,9 @@ export const ColourFollowsTheName: Story = {
 }
 
 export const Statuses: Story = {
-  render: (args) => (
+  render: args => (
     <div style={{ display: 'flex', gap: 'var(--haus-space-3)' }}>
-      {(['online', 'away', 'busy', 'offline'] as const).map((status) => (
+      {(['online', 'away', 'busy', 'offline'] as const).map(status => (
         <Avatar key={status} {...args} status={status} />
       ))}
     </div>

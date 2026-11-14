@@ -9,15 +9,14 @@ import styles from './Toggle.module.css'
  */
 export type ToggleSize = Extract<Size, 'sm' | 'md'>
 
-export interface ToggleProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'type' | 'size'> {
+export interface ToggleProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'type' | 'size'> {
   /** `(checked, event)`, matching Checkbox and RadioGroup. See Checkbox for why
    *  the event is there. */
-  onChange?:       (checked: boolean, event: React.ChangeEvent<HTMLInputElement>) => void
-  label?:          string
-  description?:    string
-  size?:           ToggleSize
-  labelPosition?:  'left' | 'right'
+  onChange?: (checked: boolean, event: React.ChangeEvent<HTMLInputElement>) => void
+  label?: string
+  description?: string
+  size?: ToggleSize
+  labelPosition?: 'left' | 'right'
 }
 
 export const Toggle = React.forwardRef<HTMLInputElement, ToggleProps>(function Toggle(
@@ -38,9 +37,9 @@ export const Toggle = React.forwardRef<HTMLInputElement, ToggleProps>(function T
   ref,
 ) {
   // Called unconditionally. See Checkbox for why.
-  const generatedId  = React.useId()
-  const inputId      = id ?? generatedId
-  const labelId       = label ? `${inputId}-label` : undefined
+  const generatedId = React.useId()
+  const inputId = id ?? generatedId
+  const labelId = label ? `${inputId}-label` : undefined
   const descriptionId = description ? `${inputId}-description` : undefined
   const isControlled = checked !== undefined
 
@@ -54,20 +53,28 @@ export const Toggle = React.forwardRef<HTMLInputElement, ToggleProps>(function T
 
   const wrapperCls = [
     styles.wrapper,
-    isOn           ? styles.on        : '',
-    size === 'sm'  ? styles.sm        : '',
-    disabled       ? styles.disabled  : '',
+    isOn ? styles.on : '',
+    size === 'sm' ? styles.sm : '',
+    disabled ? styles.disabled : '',
     labelPosition === 'right' ? styles.labelRight : '',
     className,
-  ].filter(Boolean).join(' ')
+  ]
+    .filter(Boolean)
+    .join(' ')
 
   return (
     <label className={wrapperCls} htmlFor={inputId}>
       {(label || description) && (
         <span className={styles.content}>
-          {label && <span id={labelId} className={styles.label}>{label}</span>}
+          {label && (
+            <span id={labelId} className={styles.label}>
+              {label}
+            </span>
+          )}
           {description && (
-            <span id={descriptionId} className={styles.description}>{description}</span>
+            <span id={descriptionId} className={styles.description}>
+              {description}
+            </span>
           )}
         </span>
       )}

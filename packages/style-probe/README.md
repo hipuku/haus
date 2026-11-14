@@ -12,10 +12,10 @@ you can compare. This package is that something.
 
 Two halves, divided at the browser boundary, and the division is the design:
 
-| | Runs in | Pure? | Job |
-|---|---|---|---|
+|                      | Runs in      | Pure?              | Job                                     |
+| -------------------- | ------------ | ------------------ | --------------------------------------- |
 | `extractRawElements` | the **page** | no (reads the DOM) | return untouched computed-style strings |
-| `normaliseElement` | **Node** | yes | parse those strings into typed values |
+| `normaliseElement`   | **Node**     | yes                | parse those strings into typed values   |
 
 Nothing is parsed inside the page. That keeps the browser half small enough to
 audit by eye, and leaves every parsing decision (colour to hex, line-height to
@@ -53,9 +53,9 @@ const elements = (await page.evaluate(extractRawElements)).map(normaliseElement)
 
 ### Options
 
-| Option | Default | Meaning |
-|---|---|---|
-| `root` | — | CSS selector for the subtree to read: the matched element **and** its descendants, nothing else. Omit to walk the document. |
+| Option        | Default | Meaning                                                                                                                                                                                                    |
+| ------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `root`        | —       | CSS selector for the subtree to read: the matched element **and** its descendants, nothing else. Omit to walk the document.                                                                                |
 | `maxElements` | `12000` | Ceiling on extracted elements. A single animation-heavy page can have tens of thousands of nodes; the design system lives in the shared stylesheet, so the first few thousand already cover the token set. |
 
 A `root` that matches nothing returns `[]` rather than falling back to the
@@ -63,17 +63,17 @@ whole document. A component that never mounted must not read as a clean one.
 
 ## What normalisation decides
 
-| Property | Raw | Normalised |
-|---|---|---|
-| `color`, `backgroundColor` | `oklch()`, `oklab()`, `color(srgb …)`, `rgb()`, named | lowercase hex, alpha pair appended when `< 1`, `null` when fully transparent |
-| `effectiveBackgroundColor` | — | nearest non-transparent ancestor background (the value to pair with `color` for contrast) |
-| `fontFamily` | the whole stack | first family, unquoted |
-| `lineHeight` | `24px` / `normal` | unitless ratio against font-size; `null` for `normal` |
-| `letterSpacing` | `0.4px` / `normal` | em against font-size; `0` for `normal` |
-| `fontWeight` | `bold` | `700` |
-| `borderRadius`, `gap` | four/two sides | distinct values, deduped |
-| `borderColor` | four sides | only sides with non-zero width, because computed border colour defaults to `currentColor` even at width `0` |
-| `motionDurations` | `0.2s, 300ms` | milliseconds, non-zero, distinct |
+| Property                   | Raw                                                   | Normalised                                                                                                  |
+| -------------------------- | ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `color`, `backgroundColor` | `oklch()`, `oklab()`, `color(srgb …)`, `rgb()`, named | lowercase hex, alpha pair appended when `< 1`, `null` when fully transparent                                |
+| `effectiveBackgroundColor` | —                                                     | nearest non-transparent ancestor background (the value to pair with `color` for contrast)                   |
+| `fontFamily`               | the whole stack                                       | first family, unquoted                                                                                      |
+| `lineHeight`               | `24px` / `normal`                                     | unitless ratio against font-size; `null` for `normal`                                                       |
+| `letterSpacing`            | `0.4px` / `normal`                                    | em against font-size; `0` for `normal`                                                                      |
+| `fontWeight`               | `bold`                                                | `700`                                                                                                       |
+| `borderRadius`, `gap`      | four/two sides                                        | distinct values, deduped                                                                                    |
+| `borderColor`              | four sides                                            | only sides with non-zero width, because computed border colour defaults to `currentColor` even at width `0` |
+| `motionDurations`          | `0.2s, 300ms`                                         | milliseconds, non-zero, distinct                                                                            |
 
 ### Colours are not always `rgb()`
 
@@ -98,11 +98,11 @@ than the crawl.
 
 - **[drift](https://github.com/hipuku/drift)**: walks whole sites to describe
   the design system a page actually ships.
-The package is deliberately one consumer wide for now. It was split out so a
-second reader, mounting one component rather than crawling a site, would not
-need a copy of the measuring code. That reader does not exist yet, and the
-split is still worth having: drift's crawl and any per-component read are the
-same measurement, and it should not be written twice.
+  The package is deliberately one consumer wide for now. It was split out so a
+  second reader, mounting one component rather than crawling a site, would not
+  need a copy of the measuring code. That reader does not exist yet, and the
+  split is still worth having: drift's crawl and any per-component read are the
+  same measurement, and it should not be written twice.
 
 ## Licence
 

@@ -1,0 +1,28 @@
+dist
+coverage
+storybook-static
+node_modules
+pnpm-lock.yaml
+*.tgz
+
+# Written by packages/tokens/scripts/build-tokens.ts. tokens:check compares them
+# with what the generator would write, byte for byte, so formatting them here
+# would fail that check. The generator's own output is the format.
+packages/tokens/src/primitives.css
+packages/tokens/src/motion.css
+packages/tokens/src/index.ts
+packages/tokens/src/brand.ts
+packages/tokens/src/tokens.json
+
+# Vendored data, not source. Reformatting a name map one entry per line only makes
+# every future diff on it unreadable.
+packages/colour-names/src/**/*.json
+packages/colour-utils/src/colornames.json
+
+# Prettier cannot parse the Storybook manager and preview head fragments as HTML
+# documents, and they are copied into the page verbatim.
+apps/storybook/.storybook/*.html
+
+# The token stylesheets are hand-aligned in columns, and the generator reads brand.css
+# and semantics.css to write tokens.json, so a reflow changes generated output.
+packages/tokens/src/**/*.css

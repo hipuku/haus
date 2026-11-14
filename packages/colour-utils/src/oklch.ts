@@ -107,11 +107,7 @@ export type HueFamilyName = (typeof HUE_FAMILIES)[number]['name'] | 'Neutral'
  * @param neutralChroma override the neutral cut
  */
 export function hueFamily(hex: string): HueFamilyName | null
-export function hueFamily(
-  hex: string,
-  families: readonly HueFamily[],
-  neutralChroma?: number,
-): string | null
+export function hueFamily(hex: string, families: readonly HueFamily[], neutralChroma?: number): string | null
 export function hueFamily(
   hex: string,
   families: readonly HueFamily[] = HUE_FAMILIES,

@@ -15,7 +15,7 @@ carries its own destination.
 
 ```tsx
 function SubmitButton({ children, ...rest }: ButtonProps & { pendingLabel?: string }) {
-  return <Button {...rest}>{children}</Button>   // does not compile
+  return <Button {...rest}>{children}</Button> // does not compile
 }
 ```
 
@@ -34,7 +34,7 @@ core got out with:
 type ButtonOwnProps = Extract<ButtonProps, { asChild?: false }>
 ```
 
-That is the right *meaning*. A wrapper is a button, never a cloned child. It is
+That is the right _meaning_. A wrapper is a button, never a cloned child. It is
 also **a type this package should have shipped**: every consumer that writes a
 wrapper will rediscover the same `Extract`, spell it differently, and keep it in
 step by hand. A union is easy to produce and hard to accept, and the package that
@@ -45,7 +45,7 @@ produced it is the one that should say what its halves are called.
 **A prop type that is a union exports each half by name, alongside the union.**
 
 `Button` exports `ButtonOwnProps` and `ButtonAsChildProps` beside `ButtonProps`.
-The union is now written *from* the halves rather than the halves being extracted
+The union is now written _from_ the halves rather than the halves being extracted
 back out of it, so there is one declaration per half and no `Extract` on either
 side of the boundary.
 

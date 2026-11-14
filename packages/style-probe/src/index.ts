@@ -24,9 +24,9 @@
  * ```
  */
 
-export { extractRawElements } from "./extract.js";
+export { extractRawElements } from './extract.js'
 
-export { toHex } from "haus-colour-utils";
+export { toHex } from 'haus-colour-utils'
 
 export {
   normaliseElement,
@@ -38,6 +38,6 @@ export {
   normaliseLineHeight,
   normaliseLetterSpacing,
   normaliseBoxShadow,
-} from "./normalise.js";
+} from './normalise.js'
 
-export type { RawElement, ElementStyle, ExtractedElement, ProbeOptions } from "./types.js";
+export type { RawElement, ElementStyle, ExtractedElement, ProbeOptions } from './types.js'

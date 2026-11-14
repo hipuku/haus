@@ -25,7 +25,7 @@ describe('colourNameEntries', () => {
 
   it('keeps a leading zero rather than shortening the hex', () => {
     // "00ffff" is a real key. Trimming it to "0ffff" would shift every channel.
-    const cyan = all.find((e) => e.hex === '#00ffff')
+    const cyan = all.find(e => e.hex === '#00ffff')
     expect(cyan).toBeDefined()
   })
 

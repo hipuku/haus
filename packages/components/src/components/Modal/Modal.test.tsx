@@ -14,7 +14,9 @@ describe('Modal', () => {
       return (
         <Modal open onClose={() => {}} title="Delete" initialFocus={confirm}>
           <button type="button">Cancel</button>
-          <button type="button" ref={confirm}>Delete</button>
+          <button type="button" ref={confirm}>
+            Delete
+          </button>
         </Modal>
       )
     }
@@ -42,7 +44,9 @@ describe('Modal', () => {
     // dismissed by a misplaced click. There was no way to say so.
     const onClose = vi.fn()
     const { container } = render(
-      <Modal open onClose={onClose} title="Delete" dismissOnBackdrop={false}>Body</Modal>,
+      <Modal open onClose={onClose} title="Delete" dismissOnBackdrop={false}>
+        Body
+      </Modal>,
     )
     const backdrop = container.ownerDocument.querySelector('[class*="backdrop"]')!
     await userEvent.click(backdrop as HTMLElement)
@@ -56,7 +60,9 @@ describe('Modal', () => {
     const { rerender } = render(
       <>
         <button type="button">open</button>
-        <Modal open={false} onClose={() => {}} title="Confirm">Body</Modal>
+        <Modal open={false} onClose={() => {}} title="Confirm">
+          Body
+        </Modal>
       </>,
     )
     const opener = screen.getByRole('button', { name: 'open' })
@@ -65,7 +71,9 @@ describe('Modal', () => {
     rerender(
       <>
         <button type="button">open</button>
-        <Modal open onClose={() => {}} title="Confirm">Body</Modal>
+        <Modal open onClose={() => {}} title="Confirm">
+          Body
+        </Modal>
       </>,
     )
     expect(screen.getByRole('dialog')).toHaveFocus()
@@ -73,19 +81,29 @@ describe('Modal', () => {
     rerender(
       <>
         <button type="button">open</button>
-        <Modal open={false} onClose={() => {}} title="Confirm">Body</Modal>
+        <Modal open={false} onClose={() => {}} title="Confirm">
+          Body
+        </Modal>
       </>,
     )
     expect(opener).toHaveFocus()
   })
 
   it('renders nothing while closed', () => {
-    render(<Modal open={false} onClose={vi.fn()} title="Settings">Body</Modal>)
+    render(
+      <Modal open={false} onClose={vi.fn()} title="Settings">
+        Body
+      </Modal>,
+    )
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
   })
 
   it('renders a labelled modal dialog when open', () => {
-    render(<Modal open onClose={vi.fn()} title="Settings">Body</Modal>)
+    render(
+      <Modal open onClose={vi.fn()} title="Settings">
+        Body
+      </Modal>,
+    )
     const dialog = screen.getByRole('dialog', { name: 'Settings' })
     expect(dialog).toHaveAttribute('aria-modal', 'true')
   })
@@ -94,7 +112,11 @@ describe('Modal', () => {
     // The keydown listener is on document, so this also covers the case where
     // focus has moved outside the dialog.
     const onClose = vi.fn()
-    render(<Modal open onClose={onClose} title="Settings">Body</Modal>)
+    render(
+      <Modal open onClose={onClose} title="Settings">
+        Body
+      </Modal>,
+    )
     await userEvent.keyboard('{Escape}')
     expect(onClose).toHaveBeenCalledOnce()
   })
@@ -102,15 +124,27 @@ describe('Modal', () => {
   it('does not listen for Escape once closed', async () => {
     // A listener left attached after unmount closes the next modal too.
     const onClose = vi.fn()
-    const { rerender } = render(<Modal open onClose={onClose} title="Settings">Body</Modal>)
-    rerender(<Modal open={false} onClose={onClose} title="Settings">Body</Modal>)
+    const { rerender } = render(
+      <Modal open onClose={onClose} title="Settings">
+        Body
+      </Modal>,
+    )
+    rerender(
+      <Modal open={false} onClose={onClose} title="Settings">
+        Body
+      </Modal>,
+    )
     await userEvent.keyboard('{Escape}')
     expect(onClose).not.toHaveBeenCalled()
   })
 
   it('closes when the backdrop itself is clicked', async () => {
     const onClose = vi.fn()
-    render(<Modal open onClose={onClose} title="Settings">Body</Modal>)
+    render(
+      <Modal open onClose={onClose} title="Settings">
+        Body
+      </Modal>,
+    )
     const backdrop = screen.getByRole('dialog').parentElement!
     await userEvent.click(backdrop)
     expect(onClose).toHaveBeenCalledOnce()
@@ -120,7 +154,11 @@ describe('Modal', () => {
     // The handler compares target to currentTarget; without that check, any
     // click inside the panel closes the modal.
     const onClose = vi.fn()
-    render(<Modal open onClose={onClose} title="Settings">Body content</Modal>)
+    render(
+      <Modal open onClose={onClose} title="Settings">
+        Body content
+      </Modal>,
+    )
     await userEvent.click(screen.getByText('Body content'))
     expect(onClose).not.toHaveBeenCalled()
   })
@@ -128,16 +166,22 @@ describe('Modal', () => {
   it('names itself from the visible heading rather than repeating it', () => {
     // aria-label would duplicate the h2 the sighted reader already has, and a
     // screen reader would meet the same words twice.
-    render(<Modal open onClose={vi.fn()} title="Settings">Body</Modal>)
+    render(
+      <Modal open onClose={vi.fn()} title="Settings">
+        Body
+      </Modal>,
+    )
     const dialog = screen.getByRole('dialog', { name: 'Settings' })
     expect(dialog).not.toHaveAttribute('aria-label')
-    expect(dialog.getAttribute('aria-labelledby')).toBe(
-      screen.getByRole('heading', { name: 'Settings' }).id,
-    )
+    expect(dialog.getAttribute('aria-labelledby')).toBe(screen.getByRole('heading', { name: 'Settings' }).id)
   })
 
   it('takes an aria-label when there is no visible heading', () => {
-    render(<Modal open onClose={vi.fn()} aria-label="Image viewer">Body</Modal>)
+    render(
+      <Modal open onClose={vi.fn()} aria-label="Image viewer">
+        Body
+      </Modal>,
+    )
     expect(screen.getByRole('dialog', { name: 'Image viewer' })).toBeInTheDocument()
   })
 
@@ -147,8 +191,16 @@ describe('Modal', () => {
     // true if Tab wraps. Three stops here: close, Cancel, Confirm.
     const user = userEvent.setup()
     render(
-      <Modal open onClose={vi.fn()} title="Confirm"
-        footer={<><button>Cancel</button><button>Confirm</button></>}
+      <Modal
+        open
+        onClose={vi.fn()}
+        title="Confirm"
+        footer={
+          <>
+            <button>Cancel</button>
+            <button>Confirm</button>
+          </>
+        }
       >
         Body
       </Modal>,
@@ -168,8 +220,16 @@ describe('Modal', () => {
   it('wraps backwards on Shift+Tab', async () => {
     const user = userEvent.setup()
     render(
-      <Modal open onClose={vi.fn()} title="Confirm"
-        footer={<><button>Cancel</button><button>Confirm</button></>}
+      <Modal
+        open
+        onClose={vi.fn()}
+        title="Confirm"
+        footer={
+          <>
+            <button>Cancel</button>
+            <button>Confirm</button>
+          </>
+        }
       >
         Body
       </Modal>,
@@ -184,7 +244,9 @@ describe('Modal', () => {
     render(
       <>
         <button>Behind the modal</button>
-        <Modal open onClose={vi.fn()} title="Settings">Body</Modal>
+        <Modal open onClose={vi.fn()} title="Settings">
+          Body
+        </Modal>
       </>,
     )
     screen.getByRole('button', { name: 'Behind the modal' }).focus()
@@ -192,14 +254,26 @@ describe('Modal', () => {
   })
 
   it('moves focus to the dialog on open', () => {
-    render(<Modal open onClose={vi.fn()} title="Settings">Body</Modal>)
+    render(
+      <Modal open onClose={vi.fn()} title="Settings">
+        Body
+      </Modal>,
+    )
     expect(screen.getByRole('dialog')).toHaveFocus()
   })
 
   it('locks body scroll while open and restores it on close', () => {
-    const { rerender } = render(<Modal open onClose={vi.fn()} title="Settings">Body</Modal>)
+    const { rerender } = render(
+      <Modal open onClose={vi.fn()} title="Settings">
+        Body
+      </Modal>,
+    )
     expect(document.body.style.overflow).toBe('hidden')
-    rerender(<Modal open={false} onClose={vi.fn()} title="Settings">Body</Modal>)
+    rerender(
+      <Modal open={false} onClose={vi.fn()} title="Settings">
+        Body
+      </Modal>,
+    )
     expect(document.body.style.overflow).not.toBe('hidden')
   })
 
@@ -213,12 +287,20 @@ describe('Modal', () => {
   })
 
   it('applies the size class', () => {
-    render(<Modal open onClose={vi.fn()} title="Wide" size="lg">Body</Modal>)
+    render(
+      <Modal open onClose={vi.fn()} title="Wide" size="lg">
+        Body
+      </Modal>,
+    )
     expect(screen.getByRole('dialog').className).toContain('lg')
   })
 
   it('applies the xl size class', () => {
-    render(<Modal open onClose={vi.fn()} title="Wider" size="xl">Body</Modal>)
+    render(
+      <Modal open onClose={vi.fn()} title="Wider" size="xl">
+        Body
+      </Modal>,
+    )
     expect(screen.getByRole('dialog').className).toContain('xl')
   })
 
@@ -247,7 +329,9 @@ describe('the backdrop dismiss guard (haus#56)', () => {
   it('closes when the press starts and ends on the backdrop', () => {
     const onClose = vi.fn()
     const { container } = render(
-      <Modal open onClose={onClose} title="Confirm">Body</Modal>,
+      <Modal open onClose={onClose} title="Confirm">
+        Body
+      </Modal>,
     )
     const backdrop = container.ownerDocument.querySelector('[class*="backdrop"]')!
     press(backdrop, backdrop)
@@ -257,7 +341,9 @@ describe('the backdrop dismiss guard (haus#56)', () => {
   it('does not close when the press starts inside the dialog and ends on the backdrop', () => {
     const onClose = vi.fn()
     const { container } = render(
-      <Modal open onClose={onClose} title="Confirm">Body</Modal>,
+      <Modal open onClose={onClose} title="Confirm">
+        Body
+      </Modal>,
     )
     const backdrop = container.ownerDocument.querySelector('[class*="backdrop"]')!
     const dialog = screen.getByRole('dialog')
@@ -270,7 +356,9 @@ describe('the backdrop dismiss guard (haus#56)', () => {
   it('does not leave a stale latch behind for the next click', () => {
     const onClose = vi.fn()
     const { container } = render(
-      <Modal open onClose={onClose} title="Confirm">Body</Modal>,
+      <Modal open onClose={onClose} title="Confirm">
+        Body
+      </Modal>,
     )
     const backdrop = container.ownerDocument.querySelector('[class*="backdrop"]')!
     const dialog = screen.getByRole('dialog')
@@ -286,7 +374,9 @@ describe('the backdrop dismiss guard (haus#56)', () => {
   it('stays shut off when dismissOnBackdrop is false', () => {
     const onClose = vi.fn()
     const { container } = render(
-      <Modal open onClose={onClose} title="Confirm" dismissOnBackdrop={false}>Body</Modal>,
+      <Modal open onClose={onClose} title="Confirm" dismissOnBackdrop={false}>
+        Body
+      </Modal>,
     )
     const backdrop = container.ownerDocument.querySelector('[class*="backdrop"]')!
     press(backdrop, backdrop)

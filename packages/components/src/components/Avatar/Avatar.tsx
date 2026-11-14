@@ -11,18 +11,18 @@ export type AvatarSize = Size | 'xs' | 'xl'
 export type AvatarStatus = 'online' | 'away' | 'busy' | 'offline'
 
 export interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
-  alt?:    string
-  name?:   string
-  size?:   AvatarSize
+  alt?: string
+  name?: string
+  size?: AvatarSize
   status?: AvatarStatus
 }
 
 const PALETTE: Array<[string, string]> = [
-  ['var(--color-primary-subtle)',  'var(--color-primary-on-subtle)'],
-  ['var(--color-info-subtle)',     'var(--color-info-on-subtle)'],
-  ['var(--color-success-subtle)',  'var(--color-success-on-subtle)'],
-  ['var(--color-warning-subtle)',  'var(--color-warning-on-subtle)'],
-  ['var(--color-error-subtle)',    'var(--color-error-on-subtle)'],
+  ['var(--color-primary-subtle)', 'var(--color-primary-on-subtle)'],
+  ['var(--color-info-subtle)', 'var(--color-info-on-subtle)'],
+  ['var(--color-success-subtle)', 'var(--color-success-on-subtle)'],
+  ['var(--color-warning-subtle)', 'var(--color-warning-on-subtle)'],
+  ['var(--color-error-subtle)', 'var(--color-error-on-subtle)'],
 ]
 
 function nameHash(name: string): number {
@@ -64,16 +64,11 @@ export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(function Ava
           <span aria-hidden>{initials(name)}</span>
         ) : (
           <svg aria-hidden viewBox="0 0 24 24" fill="currentColor" width="60%" height="60%">
-            <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+            <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z" />
           </svg>
         )}
       </div>
-      {status && (
-        <span
-          className={[styles.status, styles[status]].join(' ')}
-          aria-hidden
-        />
-      )}
+      {status && <span className={[styles.status, styles[status]].join(' ')} aria-hidden />}
     </div>
   )
 })

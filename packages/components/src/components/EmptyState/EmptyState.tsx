@@ -70,27 +70,24 @@ export interface EmptyStateProps extends React.HTMLAttributes<HTMLDivElement> {
  * `live` is for, and why `description` and `action` are both optional: the
  * three cases differ in what they say and what they offer, not in their shape.
  */
-export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
-  function EmptyState(
-    { title, description, action, icon, headingLevel = 3, live = 'off', className, children, ...rest },
-    ref,
-  ) {
-    const Heading = `h${headingLevel}` as 'h2'
-    const cls = [styles.empty, className].filter(Boolean).join(' ')
+export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(function EmptyState(
+  { title, description, action, icon, headingLevel = 3, live = 'off', className, children, ...rest },
+  ref,
+) {
+  const Heading = `h${headingLevel}` as 'h2'
+  const cls = [styles.empty, className].filter(Boolean).join(' ')
 
-    return (
-      <div
-        ref={ref}
-        className={cls}
-        role={live === 'polite' ? 'status' : undefined}
-        {...rest}
-      >
-        {icon && <div className={styles.icon} aria-hidden="true">{icon}</div>}
-        <Heading className={styles.title}>{title}</Heading>
-        {description && <p className={styles.description}>{description}</p>}
-        {children}
-        {action && <div className={styles.action}>{action}</div>}
-      </div>
-    )
-  },
-)
+  return (
+    <div ref={ref} className={cls} role={live === 'polite' ? 'status' : undefined} {...rest}>
+      {icon && (
+        <div className={styles.icon} aria-hidden="true">
+          {icon}
+        </div>
+      )}
+      <Heading className={styles.title}>{title}</Heading>
+      {description && <p className={styles.description}>{description}</p>}
+      {children}
+      {action && <div className={styles.action}>{action}</div>}
+    </div>
+  )
+})

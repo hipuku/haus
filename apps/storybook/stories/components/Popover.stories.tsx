@@ -11,9 +11,9 @@ const meta = {
       description: {
         component:
           'A floating panel anchored to a trigger. The primitive several other ' +
-          'things are built on: haus\'s own `Select` panel is one, and so are the ' +
+          "things are built on: haus's own `Select` panel is one, and so are the " +
           'product menus a native popup could never theme.\n\n' +
-          '`triggerRef` is required, and that is the point. vault\'s version leaves ' +
+          "`triggerRef` is required, and that is the point. vault's version leaves " +
           'focus to the caller and none of its six call sites does it, so Escape ' +
           'drops focus onto `<body>` and the next Tab starts at the top of the ' +
           'document. WCAG 2.4.3, invisible to axe.\n\n' +
@@ -43,19 +43,17 @@ export const Playground: Story = {
     const [open, setOpen] = useState(false)
     return (
       <div style={{ position: 'relative', display: 'inline-block', margin: '80px 0' }}>
-        <Button ref={triggerRef} aria-expanded={open} onClick={() => setOpen((o) => !o)}>
+        <Button ref={triggerRef} aria-expanded={open} onClick={() => setOpen(o => !o)}>
           Options
         </Button>
-        <Popover
-          {...args}
-          open={open}
-          onClose={() => setOpen(false)}
-          triggerRef={triggerRef}
-          aria-label="Options"
-        >
+        <Popover {...args} open={open} onClose={() => setOpen(false)} triggerRef={triggerRef} aria-label="Options">
           <div style={{ display: 'grid', gap: 'var(--haus-space-1)', minWidth: 160 }}>
-            <Button variant="ghost" size="sm">Rename</Button>
-            <Button variant="ghost" size="sm" tone="error">Delete</Button>
+            <Button variant="ghost" size="sm">
+              Rename
+            </Button>
+            <Button variant="ghost" size="sm" tone="error">
+              Delete
+            </Button>
           </div>
         </Popover>
       </div>

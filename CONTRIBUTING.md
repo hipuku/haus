@@ -26,7 +26,7 @@ looks like a code problem rather than a version one.
 ## Before you push
 
 ```bash
-pnpm run typecheck && pnpm run lint && pnpm run lint:css && pnpm -r run test && pnpm run build
+pnpm run typecheck && pnpm run lint && pnpm run lint:css && pnpm run lint:prose && pnpm run format:check && pnpm -r run test && pnpm run build
 ```
 
 `lint:css` is the one people forget. It fails a raw value where a token exists.

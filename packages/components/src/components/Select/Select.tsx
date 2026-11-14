@@ -47,9 +47,7 @@ interface SelectBaseProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'on
    and a wrapping <label> does not reach it either, because a button is not a
    labelable element. So one of these is required, exactly as Modal and Tabs
    require one. */
-type SelectLabel =
-  | { label: string; 'aria-labelledby'?: never }
-  | { label?: never; 'aria-labelledby': string }
+type SelectLabel = { label: string; 'aria-labelledby'?: never } | { label?: never; 'aria-labelledby': string }
 
 export type SelectProps = SelectBaseProps & SelectLabel
 
@@ -73,130 +71,126 @@ export type SelectProps = SelectBaseProps & SelectLabel
  * is deliberately not a focus trap. Trapping focus in a menu is what a modal
  * does, and this is not one.
  */
-export const Select = React.forwardRef<HTMLDivElement, SelectProps>(
-  function Select(
-    {
-      options,
-      value,
-      onChange,
-      placeholder = 'Select…',
-      size = 'md',
-      disabled = false,
-      name,
-      className,
-      controlClassName,
-      portal = false,
-      label,
-      'aria-labelledby': labelledBy,
-      ...rest
-    },
-    ref,
-  ) {
-    const [open, setOpen] = React.useState(false)
-    const triggerRef = React.useRef<HTMLButtonElement>(null)
-    const baseId = React.useId()
-
-    // Popover takes exactly one of the two as a union, so it is passed as one
-    // object rather than two maybe-undefined props.
-    const panelLabel = (label !== undefined
-      ? { 'aria-label': label }
-      : { 'aria-labelledby': labelledBy as string })
-
-    const labels = React.useMemo(() => options.map(o => o.label), [options])
-    const selectedIndex = options.findIndex(o => o.value === value)
-    const selected = selectedIndex >= 0 ? options[selectedIndex] : undefined
-
-    const commit = React.useCallback(
-      (index: number) => {
-        const option = options[index]
-        if (!option || option.disabled) return
-        onChange(option.value)
-        setOpen(false)
-        triggerRef.current?.focus()
-      },
-      [options, onChange],
-    )
-
-    const listbox = useListbox({
-      open,
-      labels,
-      selectedIndex,
-      onSelect: commit,
-      onOpenChange: setOpen,
-      baseId,
-    })
-
-    return (
-      <div
-        ref={ref}
-        className={[styles.listbox, className].filter(Boolean).join(' ')}
-        {...(rest as React.HTMLAttributes<HTMLDivElement>)}
-      >
-        {name && <input type="hidden" name={name} value={value} />}
-        <button
-          ref={triggerRef}
-          type="button"
-          className={[styles.trigger, styles[size], controlClassName].filter(Boolean).join(' ')}
-          disabled={disabled}
-          // A combobox rather than a plain button: it is the role that carries
-          // aria-activedescendant, without which the highlighted row is
-          // announced to nobody.
-          role="combobox"
-          aria-label={label}
-          aria-labelledby={labelledBy}
-          aria-haspopup="listbox"
-          aria-expanded={open}
-          aria-controls={listbox.controls}
-          aria-activedescendant={listbox.activeDescendant}
-          onClick={() => setOpen(o => !o)}
-          onKeyDown={listbox.onKeyDown}
-        >
-          <span className={selected ? styles.value : styles.placeholder}>
-            {selected ? selected.label : placeholder}
-          </span>
-          <span className={[styles.chevron, open ? styles.chevronOpen : ''].filter(Boolean).join(' ')} aria-hidden="true">
-            {'▾'}
-          </span>
-        </button>
-
-        <Popover
-          open={open}
-          onClose={() => setOpen(false)}
-          triggerRef={triggerRef}
-          role="listbox"
-          width="trigger"
-          portal={portal}
-          {...panelLabel}
-          id={listbox.listId}
-          className={styles.panel}
-          data-size={size}
-        >
-          <ul className={styles.options} role="none">
-            {options.map((o, i) => (
-              <li
-                key={o.value}
-                id={listbox.optionId(i)}
-                role="option"
-                aria-selected={i === selectedIndex}
-                aria-disabled={o.disabled || undefined}
-                className={[
-                  styles.option,
-                  i === selectedIndex ? styles.selected : '',
-                  i === listbox.activeIndex ? styles.active : '',
-                ].filter(Boolean).join(' ')}
-                // The trigger keeps focus, so a press here must not take it
-                // away before the click lands.
-                onMouseDown={e => e.preventDefault()}
-                onMouseEnter={() => listbox.setActiveIndex(i)}
-                onClick={() => commit(i)}
-              >
-                <span className={styles.optionLabel}>{o.label}</span>
-                {o.hint && <span className={styles.optionHint}>{o.hint}</span>}
-              </li>
-            ))}
-          </ul>
-        </Popover>
-      </div>
-    )
+export const Select = React.forwardRef<HTMLDivElement, SelectProps>(function Select(
+  {
+    options,
+    value,
+    onChange,
+    placeholder = 'Select…',
+    size = 'md',
+    disabled = false,
+    name,
+    className,
+    controlClassName,
+    portal = false,
+    label,
+    'aria-labelledby': labelledBy,
+    ...rest
   },
-)
+  ref,
+) {
+  const [open, setOpen] = React.useState(false)
+  const triggerRef = React.useRef<HTMLButtonElement>(null)
+  const baseId = React.useId()
+
+  // Popover takes exactly one of the two as a union, so it is passed as one
+  // object rather than two maybe-undefined props.
+  const panelLabel = label !== undefined ? { 'aria-label': label } : { 'aria-labelledby': labelledBy as string }
+
+  const labels = React.useMemo(() => options.map(o => o.label), [options])
+  const selectedIndex = options.findIndex(o => o.value === value)
+  const selected = selectedIndex >= 0 ? options[selectedIndex] : undefined
+
+  const commit = React.useCallback(
+    (index: number) => {
+      const option = options[index]
+      if (!option || option.disabled) return
+      onChange(option.value)
+      setOpen(false)
+      triggerRef.current?.focus()
+    },
+    [options, onChange],
+  )
+
+  const listbox = useListbox({
+    open,
+    labels,
+    selectedIndex,
+    onSelect: commit,
+    onOpenChange: setOpen,
+    baseId,
+  })
+
+  return (
+    <div
+      ref={ref}
+      className={[styles.listbox, className].filter(Boolean).join(' ')}
+      {...(rest as React.HTMLAttributes<HTMLDivElement>)}
+    >
+      {name && <input type="hidden" name={name} value={value} />}
+      <button
+        ref={triggerRef}
+        type="button"
+        className={[styles.trigger, styles[size], controlClassName].filter(Boolean).join(' ')}
+        disabled={disabled}
+        // A combobox rather than a plain button: it is the role that carries
+        // aria-activedescendant, without which the highlighted row is
+        // announced to nobody.
+        role="combobox"
+        aria-label={label}
+        aria-labelledby={labelledBy}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-controls={listbox.controls}
+        aria-activedescendant={listbox.activeDescendant}
+        onClick={() => setOpen(o => !o)}
+        onKeyDown={listbox.onKeyDown}
+      >
+        <span className={selected ? styles.value : styles.placeholder}>{selected ? selected.label : placeholder}</span>
+        <span className={[styles.chevron, open ? styles.chevronOpen : ''].filter(Boolean).join(' ')} aria-hidden="true">
+          {'▾'}
+        </span>
+      </button>
+
+      <Popover
+        open={open}
+        onClose={() => setOpen(false)}
+        triggerRef={triggerRef}
+        role="listbox"
+        width="trigger"
+        portal={portal}
+        {...panelLabel}
+        id={listbox.listId}
+        className={styles.panel}
+        data-size={size}
+      >
+        <ul className={styles.options} role="none">
+          {options.map((o, i) => (
+            <li
+              key={o.value}
+              id={listbox.optionId(i)}
+              role="option"
+              aria-selected={i === selectedIndex}
+              aria-disabled={o.disabled || undefined}
+              className={[
+                styles.option,
+                i === selectedIndex ? styles.selected : '',
+                i === listbox.activeIndex ? styles.active : '',
+              ]
+                .filter(Boolean)
+                .join(' ')}
+              // The trigger keeps focus, so a press here must not take it
+              // away before the click lands.
+              onMouseDown={e => e.preventDefault()}
+              onMouseEnter={() => listbox.setActiveIndex(i)}
+              onClick={() => commit(i)}
+            >
+              <span className={styles.optionLabel}>{o.label}</span>
+              {o.hint && <span className={styles.optionHint}>{o.hint}</span>}
+            </li>
+          ))}
+        </ul>
+      </Popover>
+    </div>
+  )
+})

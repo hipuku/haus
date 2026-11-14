@@ -28,11 +28,11 @@
   padding: 0 var(--haus-space-inset-sm);
   transition:
     border-color var(--haus-motion-micro),
-    box-shadow   var(--haus-motion-micro);
+    box-shadow var(--haus-motion-micro);
   min-height: var(--haus-control-height-md);
 }
 
- /* :has(:focus-visible) rather than :focus-within. The ring is drawn on the
+/* :has(:focus-visible) rather than :focus-within. The ring is drawn on the
    wrapper, which is not itself focusable, so :focus-visible cannot go directly
    on it, but :focus-within also fires for a pointer, where every other control
    in the system rings only for the keyboard. This keeps the ring where it has to

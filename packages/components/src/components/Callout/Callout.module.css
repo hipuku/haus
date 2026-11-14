@@ -25,33 +25,33 @@
    is also what keeps the text contrast identical across all five. */
 
 .neutral {
-  --haus-callout-bg:     var(--haus-color-surface-subtle);
+  --haus-callout-bg: var(--haus-color-surface-subtle);
   --haus-callout-border: var(--haus-color-border-default);
-  --haus-callout-icon:   var(--haus-color-ink-secondary);
+  --haus-callout-icon: var(--haus-color-ink-secondary);
 }
 
 .info {
-  --haus-callout-bg:     var(--haus-color-info-subtle);
+  --haus-callout-bg: var(--haus-color-info-subtle);
   --haus-callout-border: var(--haus-color-info-border);
-  --haus-callout-icon:   var(--haus-color-info-on-subtle);
+  --haus-callout-icon: var(--haus-color-info-on-subtle);
 }
 
 .success {
-  --haus-callout-bg:     var(--haus-color-success-subtle);
+  --haus-callout-bg: var(--haus-color-success-subtle);
   --haus-callout-border: var(--haus-color-success-border);
-  --haus-callout-icon:   var(--haus-color-success-on-subtle);
+  --haus-callout-icon: var(--haus-color-success-on-subtle);
 }
 
 .warning {
-  --haus-callout-bg:     var(--haus-color-warning-subtle);
+  --haus-callout-bg: var(--haus-color-warning-subtle);
   --haus-callout-border: var(--haus-color-warning-border);
-  --haus-callout-icon:   var(--haus-color-warning-on-subtle);
+  --haus-callout-icon: var(--haus-color-warning-on-subtle);
 }
 
 .error {
-  --haus-callout-bg:     var(--haus-color-error-subtle);
+  --haus-callout-bg: var(--haus-color-error-subtle);
   --haus-callout-border: var(--haus-color-error-border);
-  --haus-callout-icon:   var(--haus-color-error-on-subtle);
+  --haus-callout-icon: var(--haus-color-error-on-subtle);
 }
 
 /* Sized against the body step it sits beside rather than against the callout,

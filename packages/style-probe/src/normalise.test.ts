@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from 'vitest'
 import {
   firstFontFamily,
   normaliseBoxShadow,
@@ -8,197 +8,195 @@ import {
   normaliseLineHeight,
   pxToNumber,
   rgbToHex,
-} from "./normalise.js";
-import type { RawElement } from "./types.js";
+} from './normalise.js'
+import type { RawElement } from './types.js'
 
-describe("rgbToHex", () => {
-  it("converts opaque rgb to hex", () => {
-    expect(rgbToHex("rgb(255, 255, 255)")).toBe("#ffffff");
-    expect(rgbToHex("rgb(0, 0, 0)")).toBe("#000000");
-    expect(rgbToHex("rgb(26, 26, 26)")).toBe("#1a1a1a");
-  });
+describe('rgbToHex', () => {
+  it('converts opaque rgb to hex', () => {
+    expect(rgbToHex('rgb(255, 255, 255)')).toBe('#ffffff')
+    expect(rgbToHex('rgb(0, 0, 0)')).toBe('#000000')
+    expect(rgbToHex('rgb(26, 26, 26)')).toBe('#1a1a1a')
+  })
 
-  it("appends an alpha pair for partial alpha", () => {
-    expect(rgbToHex("rgba(255, 0, 0, 0.5)")).toBe("#ff000080");
-    expect(rgbToHex("rgba(0, 0, 0, 1)")).toBe("#000000");
-  });
+  it('appends an alpha pair for partial alpha', () => {
+    expect(rgbToHex('rgba(255, 0, 0, 0.5)')).toBe('#ff000080')
+    expect(rgbToHex('rgba(0, 0, 0, 1)')).toBe('#000000')
+  })
 
-  it("treats fully transparent as no colour", () => {
-    expect(rgbToHex("rgba(0, 0, 0, 0)")).toBeNull();
-    expect(rgbToHex("transparent")).toBeNull();
-  });
+  it('treats fully transparent as no colour', () => {
+    expect(rgbToHex('rgba(0, 0, 0, 0)')).toBeNull()
+    expect(rgbToHex('transparent')).toBeNull()
+  })
 
-  it("rounds and clamps channel values", () => {
-    expect(rgbToHex("rgb(255.6, -3, 128.4)")).toBe("#ff0080");
-  });
+  it('rounds and clamps channel values', () => {
+    expect(rgbToHex('rgb(255.6, -3, 128.4)')).toBe('#ff0080')
+  })
 
-  it("returns null for unparseable input", () => {
-    expect(rgbToHex("")).toBeNull();
-    expect(rgbToHex("none")).toBeNull();
-    expect(rgbToHex("not-a-colour")).toBeNull();
-  });
+  it('returns null for unparseable input', () => {
+    expect(rgbToHex('')).toBeNull()
+    expect(rgbToHex('none')).toBeNull()
+    expect(rgbToHex('not-a-colour')).toBeNull()
+  })
 
-  it("reads the modern colour syntaxes getComputedStyle actually returns", () => {
+  it('reads the modern colour syntaxes getComputedStyle actually returns', () => {
     // Chromium hands back an oklch-authored colour verbatim rather than
     // normalising it to rgb(). Every haus colour arrives in this form.
-    expect(rgbToHex("oklch(0.52 0.138 300)")).toBe("#7653ab");
-    expect(rgbToHex("oklch(1 0 0)")).toBe("#ffffff");
-    expect(rgbToHex("oklab(0.5 0.1 -0.1)")).toBe("#81459a");
-    expect(rgbToHex("color(srgb 0.2 0.4 0.6)")).toBe("#336699");
-  });
-});
+    expect(rgbToHex('oklch(0.52 0.138 300)')).toBe('#7653ab')
+    expect(rgbToHex('oklch(1 0 0)')).toBe('#ffffff')
+    expect(rgbToHex('oklab(0.5 0.1 -0.1)')).toBe('#81459a')
+    expect(rgbToHex('color(srgb 0.2 0.4 0.6)')).toBe('#336699')
+  })
+})
 
-describe("firstFontFamily", () => {
-  it("returns null for an empty stack", () => {
-    expect(firstFontFamily("")).toBeNull()
+describe('firstFontFamily', () => {
+  it('returns null for an empty stack', () => {
+    expect(firstFontFamily('')).toBeNull()
   })
 
-  it("takes the first family and strips quotes", () => {
-    expect(firstFontFamily('"Helvetica Neue", Arial, sans-serif')).toBe("Helvetica Neue");
-    expect(firstFontFamily("Inter, system-ui")).toBe("Inter");
-    expect(firstFontFamily("'Fira Code'")).toBe("Fira Code");
-  });
-
-  it("returns null for empty input", () => {
-    expect(firstFontFamily("")).toBeNull();
-  });
-});
-
-describe("pxToNumber", () => {
-  it("parses px values", () => {
-    expect(pxToNumber("16px")).toBe(16);
-    expect(pxToNumber("0px")).toBe(0);
-    expect(pxToNumber("13.5px")).toBe(13.5);
-  });
-
-  it("returns null for non-numeric", () => {
-    expect(pxToNumber("auto")).toBeNull();
-    expect(pxToNumber("")).toBeNull();
-  });
-});
-
-describe("normaliseFontWeight", () => {
-  it("returns null for an empty value", () => {
-    expect(normaliseFontWeight("")).toBeNull()
+  it('takes the first family and strips quotes', () => {
+    expect(firstFontFamily('"Helvetica Neue", Arial, sans-serif')).toBe('Helvetica Neue')
+    expect(firstFontFamily('Inter, system-ui')).toBe('Inter')
+    expect(firstFontFamily("'Fira Code'")).toBe('Fira Code')
   })
 
-  it("maps keywords and parses numbers", () => {
-    expect(normaliseFontWeight("normal")).toBe(400);
-    expect(normaliseFontWeight("bold")).toBe(700);
-    expect(normaliseFontWeight("600")).toBe(600);
-  });
-});
+  it('returns null for empty input', () => {
+    expect(firstFontFamily('')).toBeNull()
+  })
+})
 
-describe("normaliseLineHeight", () => {
-  it("returns null for an empty value", () => {
-    expect(normaliseLineHeight("", 16)).toBeNull()
+describe('pxToNumber', () => {
+  it('parses px values', () => {
+    expect(pxToNumber('16px')).toBe(16)
+    expect(pxToNumber('0px')).toBe(0)
+    expect(pxToNumber('13.5px')).toBe(13.5)
   })
 
-  it("returns null for normal", () => {
-    expect(normaliseLineHeight("normal", 16)).toBeNull();
-  });
+  it('returns null for non-numeric', () => {
+    expect(pxToNumber('auto')).toBeNull()
+    expect(pxToNumber('')).toBeNull()
+  })
+})
 
-  it("converts px to a unitless ratio against font-size", () => {
-    expect(normaliseLineHeight("24px", 16)).toBe(1.5);
-  });
-
-  it("keeps a bare numeric ratio", () => {
-    expect(normaliseLineHeight("1.5", 16)).toBe(1.5);
-  });
-
-  it("returns null for px without a font-size", () => {
-    expect(normaliseLineHeight("24px", null)).toBeNull();
-  });
-});
-
-describe("normaliseLetterSpacing", () => {
-  it("returns 0 for an empty value", () => {
-    expect(normaliseLetterSpacing("", 16)).toBe(0)
+describe('normaliseFontWeight', () => {
+  it('returns null for an empty value', () => {
+    expect(normaliseFontWeight('')).toBeNull()
   })
 
-  it("returns 0 for normal", () => {
-    expect(normaliseLetterSpacing("normal", 16)).toBe(0);
-  });
+  it('maps keywords and parses numbers', () => {
+    expect(normaliseFontWeight('normal')).toBe(400)
+    expect(normaliseFontWeight('bold')).toBe(700)
+    expect(normaliseFontWeight('600')).toBe(600)
+  })
+})
 
-  it("converts px to em against font-size", () => {
-    expect(normaliseLetterSpacing("1.6px", 16)).toBe(0.1);
-    expect(normaliseLetterSpacing("0.16px", 16)).toBe(0.01);
-  });
-});
-
-describe("normaliseBoxShadow", () => {
-  it("returns null for an empty value", () => {
-    expect(normaliseBoxShadow("")).toBeNull()
+describe('normaliseLineHeight', () => {
+  it('returns null for an empty value', () => {
+    expect(normaliseLineHeight('', 16)).toBeNull()
   })
 
-  it("returns null for none", () => {
-    expect(normaliseBoxShadow("none")).toBeNull();
-  });
+  it('returns null for normal', () => {
+    expect(normaliseLineHeight('normal', 16)).toBeNull()
+  })
 
-  it("keeps a real shadow", () => {
-    expect(normaliseBoxShadow("rgba(0, 0, 0, 0.1) 0px 1px 2px 0px")).toBe(
-      "rgba(0, 0, 0, 0.1) 0px 1px 2px 0px",
-    );
-  });
-});
+  it('converts px to a unitless ratio against font-size', () => {
+    expect(normaliseLineHeight('24px', 16)).toBe(1.5)
+  })
 
-describe("normaliseElement", () => {
+  it('keeps a bare numeric ratio', () => {
+    expect(normaliseLineHeight('1.5', 16)).toBe(1.5)
+  })
+
+  it('returns null for px without a font-size', () => {
+    expect(normaliseLineHeight('24px', null)).toBeNull()
+  })
+})
+
+describe('normaliseLetterSpacing', () => {
+  it('returns 0 for an empty value', () => {
+    expect(normaliseLetterSpacing('', 16)).toBe(0)
+  })
+
+  it('returns 0 for normal', () => {
+    expect(normaliseLetterSpacing('normal', 16)).toBe(0)
+  })
+
+  it('converts px to em against font-size', () => {
+    expect(normaliseLetterSpacing('1.6px', 16)).toBe(0.1)
+    expect(normaliseLetterSpacing('0.16px', 16)).toBe(0.01)
+  })
+})
+
+describe('normaliseBoxShadow', () => {
+  it('returns null for an empty value', () => {
+    expect(normaliseBoxShadow('')).toBeNull()
+  })
+
+  it('returns null for none', () => {
+    expect(normaliseBoxShadow('none')).toBeNull()
+  })
+
+  it('keeps a real shadow', () => {
+    expect(normaliseBoxShadow('rgba(0, 0, 0, 0.1) 0px 1px 2px 0px')).toBe('rgba(0, 0, 0, 0.1) 0px 1px 2px 0px')
+  })
+})
+
+describe('normaliseElement', () => {
   const raw: RawElement = {
-    tag: "button",
+    tag: 'button',
     hasText: true,
     raw: {
-      color: "rgb(255, 255, 255)",
-      backgroundColor: "rgb(0, 31, 63)",
-      effectiveBackgroundColor: "rgb(0, 31, 63)",
-      borderTopColor: "rgb(0, 31, 63)",
-      borderRightColor: "rgb(0, 31, 63)",
-      borderBottomColor: "rgb(0, 31, 63)",
-      borderLeftColor: "rgb(204, 0, 0)",
-      borderTopWidth: "1px",
-      borderRightWidth: "1px",
-      borderBottomWidth: "1px",
-      borderLeftWidth: "0px",
+      color: 'rgb(255, 255, 255)',
+      backgroundColor: 'rgb(0, 31, 63)',
+      effectiveBackgroundColor: 'rgb(0, 31, 63)',
+      borderTopColor: 'rgb(0, 31, 63)',
+      borderRightColor: 'rgb(0, 31, 63)',
+      borderBottomColor: 'rgb(0, 31, 63)',
+      borderLeftColor: 'rgb(204, 0, 0)',
+      borderTopWidth: '1px',
+      borderRightWidth: '1px',
+      borderBottomWidth: '1px',
+      borderLeftWidth: '0px',
       fontFamily: '"Inter", sans-serif',
-      fontSize: "16px",
-      fontWeight: "600",
-      lineHeight: "24px",
-      letterSpacing: "0.16px",
-      borderTopLeftRadius: "8px",
-      borderTopRightRadius: "8px",
-      borderBottomRightRadius: "8px",
-      borderBottomLeftRadius: "8px",
-      boxShadow: "none",
-      paddingTop: "8px",
-      paddingRight: "16px",
-      paddingBottom: "8px",
-      paddingLeft: "16px",
-      marginTop: "0px",
-      marginRight: "12px",
-      marginBottom: "24px",
-      marginLeft: "12px",
-      rowGap: "8px",
-      columnGap: "16px",
+      fontSize: '16px',
+      fontWeight: '600',
+      lineHeight: '24px',
+      letterSpacing: '0.16px',
+      borderTopLeftRadius: '8px',
+      borderTopRightRadius: '8px',
+      borderBottomRightRadius: '8px',
+      borderBottomLeftRadius: '8px',
+      boxShadow: 'none',
+      paddingTop: '8px',
+      paddingRight: '16px',
+      paddingBottom: '8px',
+      paddingLeft: '16px',
+      marginTop: '0px',
+      marginRight: '12px',
+      marginBottom: '24px',
+      marginLeft: '12px',
+      rowGap: '8px',
+      columnGap: '16px',
     },
-  };
+  }
 
-  it("excludes border colours on zero-width sides", () => {
-    const el = normaliseElement(raw);
+  it('excludes border colours on zero-width sides', () => {
+    const el = normaliseElement(raw)
     // Left border is red but 0px wide, so it must not appear.
-    expect(el.styles.borderColor).toEqual(["#001f3f"]);
-    expect(el.styles.borderColor).not.toContain("#cc0000");
-  });
+    expect(el.styles.borderColor).toEqual(['#001f3f'])
+    expect(el.styles.borderColor).not.toContain('#cc0000')
+  })
 
-  it("produces a fully normalised element", () => {
-    const el = normaliseElement(raw);
+  it('produces a fully normalised element', () => {
+    const el = normaliseElement(raw)
     expect(el).toEqual({
-      tag: "button",
+      tag: 'button',
       hasText: true,
       styles: {
-        color: "#ffffff",
-        backgroundColor: "#001f3f",
-        effectiveBackgroundColor: "#001f3f",
-        borderColor: ["#001f3f"],
-        fontFamily: "Inter",
+        color: '#ffffff',
+        backgroundColor: '#001f3f',
+        effectiveBackgroundColor: '#001f3f',
+        borderColor: ['#001f3f'],
+        fontFamily: 'Inter',
         fontSize: 16,
         fontWeight: 600,
         lineHeight: 1.5,
@@ -215,9 +213,9 @@ describe("normaliseElement", () => {
         motionDurations: [],
         motionEasings: [],
       },
-    });
-  });
-});
+    })
+  })
+})
 
 /*
  * The motion, blur and stacking fields. These were the whole of the uncovered
@@ -227,142 +225,137 @@ describe("normaliseElement", () => {
  * whether a page's transitions match the motion tokens, so they are the last
  * ones that should have been going untested.
  */
-describe("normaliseElement: motion, blur and stacking", () => {
-  const base: RawElement["raw"] = {
-    color: "rgb(0, 0, 0)",
-    backgroundColor: "rgb(255, 255, 255)",
-    effectiveBackgroundColor: "rgb(255, 255, 255)",
-    borderTopColor: "rgb(0, 0, 0)",
-    borderRightColor: "rgb(0, 0, 0)",
-    borderBottomColor: "rgb(0, 0, 0)",
-    borderLeftColor: "rgb(0, 0, 0)",
-    borderTopWidth: "0px",
-    borderRightWidth: "0px",
-    borderBottomWidth: "0px",
-    borderLeftWidth: "0px",
-    fontFamily: "sans-serif",
-    fontSize: "16px",
-    fontWeight: "400",
-    lineHeight: "normal",
-    letterSpacing: "normal",
-    borderTopLeftRadius: "0px",
-    borderTopRightRadius: "0px",
-    borderBottomRightRadius: "0px",
-    borderBottomLeftRadius: "0px",
-    boxShadow: "none",
-    paddingTop: "0px",
-    paddingRight: "0px",
-    paddingBottom: "0px",
-    paddingLeft: "0px",
-    marginTop: "0px",
-    marginRight: "0px",
-    marginBottom: "0px",
-    marginLeft: "0px",
-    rowGap: "0px",
-    columnGap: "0px",
+describe('normaliseElement: motion, blur and stacking', () => {
+  const base: RawElement['raw'] = {
+    color: 'rgb(0, 0, 0)',
+    backgroundColor: 'rgb(255, 255, 255)',
+    effectiveBackgroundColor: 'rgb(255, 255, 255)',
+    borderTopColor: 'rgb(0, 0, 0)',
+    borderRightColor: 'rgb(0, 0, 0)',
+    borderBottomColor: 'rgb(0, 0, 0)',
+    borderLeftColor: 'rgb(0, 0, 0)',
+    borderTopWidth: '0px',
+    borderRightWidth: '0px',
+    borderBottomWidth: '0px',
+    borderLeftWidth: '0px',
+    fontFamily: 'sans-serif',
+    fontSize: '16px',
+    fontWeight: '400',
+    lineHeight: 'normal',
+    letterSpacing: 'normal',
+    borderTopLeftRadius: '0px',
+    borderTopRightRadius: '0px',
+    borderBottomRightRadius: '0px',
+    borderBottomLeftRadius: '0px',
+    boxShadow: 'none',
+    paddingTop: '0px',
+    paddingRight: '0px',
+    paddingBottom: '0px',
+    paddingLeft: '0px',
+    marginTop: '0px',
+    marginRight: '0px',
+    marginBottom: '0px',
+    marginLeft: '0px',
+    rowGap: '0px',
+    columnGap: '0px',
   }
 
-  const styles = (over: Partial<RawElement["raw"]>) =>
-    normaliseElement({ tag: "div", hasText: false, raw: { ...base, ...over } }).styles
+  const styles = (over: Partial<RawElement['raw']>) =>
+    normaliseElement({ tag: 'div', hasText: false, raw: { ...base, ...over } }).styles
 
-  describe("durations", () => {
-    it("converts seconds to milliseconds", () => {
-      expect(styles({ transitionDuration: "0.15s" }).motionDurations).toEqual([150])
+  describe('durations', () => {
+    it('converts seconds to milliseconds', () => {
+      expect(styles({ transitionDuration: '0.15s' }).motionDurations).toEqual([150])
     })
 
-    it("keeps a value already in milliseconds", () => {
-      expect(styles({ transitionDuration: "200ms" }).motionDurations).toEqual([200])
+    it('keeps a value already in milliseconds', () => {
+      expect(styles({ transitionDuration: '200ms' }).motionDurations).toEqual([200])
     })
 
-    it("drops zero-duration entries and sorts what is left", () => {
+    it('drops zero-duration entries and sorts what is left', () => {
       // `transition: none` computes to 0s, which is the absence of motion
       // rather than a motion value, so it must not become a token to compare.
-      expect(styles({ transitionDuration: "0.3s, 0s, 0.1s" }).motionDurations).toEqual([100, 300])
+      expect(styles({ transitionDuration: '0.3s, 0s, 0.1s' }).motionDurations).toEqual([100, 300])
     })
 
-    it("deduplicates repeated durations", () => {
-      expect(styles({ transitionDuration: "0.2s, 200ms, 0.2s" }).motionDurations).toEqual([200])
+    it('deduplicates repeated durations', () => {
+      expect(styles({ transitionDuration: '0.2s, 200ms, 0.2s' }).motionDurations).toEqual([200])
     })
 
-    it("is empty when the property is absent", () => {
+    it('is empty when the property is absent', () => {
       expect(styles({}).motionDurations).toEqual([])
     })
   })
 
-  describe("easings", () => {
-    it("splits on top-level commas only, so a cubic-bezier survives whole", () => {
+  describe('easings', () => {
+    it('splits on top-level commas only, so a cubic-bezier survives whole', () => {
       // The reason `splitTopLevel` exists: cubic-bezier() carries three commas
       // of its own, and a naive split would return four fragments of one curve.
       expect(
         styles({
-          transitionDuration: "0.2s, 0.3s",
-          transitionTimingFunction: "cubic-bezier(0.2, 0, 0, 1), ease-out",
+          transitionDuration: '0.2s, 0.3s',
+          transitionTimingFunction: 'cubic-bezier(0.2, 0, 0, 1), ease-out',
         }).motionEasings,
-      ).toEqual(["cubic-bezier(0.2, 0, 0, 1)", "ease-out"])
+      ).toEqual(['cubic-bezier(0.2, 0, 0, 1)', 'ease-out'])
     })
 
-    it("deduplicates a repeated curve", () => {
+    it('deduplicates a repeated curve', () => {
       expect(
         styles({
-          transitionDuration: "0.2s, 0.3s",
-          transitionTimingFunction: "ease-out, ease-out",
+          transitionDuration: '0.2s, 0.3s',
+          transitionTimingFunction: 'ease-out, ease-out',
         }).motionEasings,
-      ).toEqual(["ease-out"])
+      ).toEqual(['ease-out'])
     })
 
-    it("is empty when nothing has a duration", () => {
+    it('is empty when nothing has a duration', () => {
       // An easing with no duration animates nothing. Reporting the curve alone
       // would put an easing token on an element that never moves.
-      expect(
-        styles({ transitionDuration: "0s", transitionTimingFunction: "ease-in-out" })
-          .motionEasings,
-      ).toEqual([])
+      expect(styles({ transitionDuration: '0s', transitionTimingFunction: 'ease-in-out' }).motionEasings).toEqual([])
     })
   })
 
-  describe("blur", () => {
-    it("reads a blur radius out of filter", () => {
-      expect(styles({ filter: "blur(4px)" }).blur).toEqual([4])
+  describe('blur', () => {
+    it('reads a blur radius out of filter', () => {
+      expect(styles({ filter: 'blur(4px)' }).blur).toEqual([4])
     })
 
-    it("reads filter and backdrop-filter together, sorted and deduplicated", () => {
-      expect(
-        styles({ filter: "blur(8px) saturate(1.2)", backdropFilter: "blur(2px) blur(8px)" }).blur,
-      ).toEqual([2, 8])
+    it('reads filter and backdrop-filter together, sorted and deduplicated', () => {
+      expect(styles({ filter: 'blur(8px) saturate(1.2)', backdropFilter: 'blur(2px) blur(8px)' }).blur).toEqual([2, 8])
     })
 
-    it("ignores a zero radius and a filter of none", () => {
-      expect(styles({ filter: "blur(0px)", backdropFilter: "none" }).blur).toEqual([])
+    it('ignores a zero radius and a filter of none', () => {
+      expect(styles({ filter: 'blur(0px)', backdropFilter: 'none' }).blur).toEqual([])
     })
 
-    it("ignores filters that are not blur", () => {
-      expect(styles({ filter: "brightness(0.9) drop-shadow(0 1px 2px black)" }).blur).toEqual([])
+    it('ignores filters that are not blur', () => {
+      expect(styles({ filter: 'brightness(0.9) drop-shadow(0 1px 2px black)' }).blur).toEqual([])
     })
   })
 
-  describe("gradient", () => {
-    it("keeps a background-image that is a gradient", () => {
-      const g = "linear-gradient(rgb(0, 0, 0), rgb(255, 255, 255))"
+  describe('gradient', () => {
+    it('keeps a background-image that is a gradient', () => {
+      const g = 'linear-gradient(rgb(0, 0, 0), rgb(255, 255, 255))'
       expect(styles({ backgroundImage: g }).gradient).toBe(g)
     })
 
-    it("drops a background-image that is not a gradient", () => {
+    it('drops a background-image that is not a gradient', () => {
       expect(styles({ backgroundImage: 'url("hero.png")' }).gradient).toBeNull()
-      expect(styles({ backgroundImage: "none" }).gradient).toBeNull()
+      expect(styles({ backgroundImage: 'none' }).gradient).toBeNull()
     })
   })
 
-  describe("z-index and opacity", () => {
-    it("reads a numeric z-index", () => {
-      expect(styles({ zIndex: "10" }).zIndex).toBe(10)
+  describe('z-index and opacity', () => {
+    it('reads a numeric z-index', () => {
+      expect(styles({ zIndex: '10' }).zIndex).toBe(10)
     })
 
-    it("treats auto as no stacking level", () => {
-      expect(styles({ zIndex: "auto" }).zIndex).toBeNull()
+    it('treats auto as no stacking level', () => {
+      expect(styles({ zIndex: 'auto' }).zIndex).toBeNull()
     })
 
-    it("reads opacity as a number", () => {
-      expect(styles({ opacity: "0.5" }).opacity).toBe(0.5)
+    it('reads opacity as a number', () => {
+      expect(styles({ opacity: '0.5' }).opacity).toBe(0.5)
     })
   })
 })

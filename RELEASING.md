@@ -20,13 +20,13 @@ Published releases carry provenance for the same reason: npm can prove where the
 Each package needs this configured once, at
 `npmjs.com/package/<name>/access` → **Trusted publisher**:
 
-| Field | Value |
-|---|---|
-| Provider | GitHub Actions |
-| Organization or user | `hipuku` |
-| Repository | `haus` |
-| Workflow filename | `publish.yml` |
-| Environment | *(leave empty)* |
+| Field                | Value           |
+| -------------------- | --------------- |
+| Provider             | GitHub Actions  |
+| Organization or user | `hipuku`        |
+| Repository           | `haus`          |
+| Workflow filename    | `publish.yml`   |
+| Environment          | _(leave empty)_ |
 
 A package that does not exist on npm yet cannot be configured this way, because the settings
 page is a property of the package. Publish its first version manually, with `pnpm pack` in the

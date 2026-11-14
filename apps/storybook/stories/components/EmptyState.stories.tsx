@@ -38,7 +38,7 @@ export const Playground: Story = {}
 
 export const TheThreeSituations: Story = {
   name: 'The three situations',
-  render: (args) => (
+  render: args => (
     <div style={{ display: 'grid', gap: 'var(--haus-space-6)', maxWidth: 520 }}>
       <EmptyState
         {...args}

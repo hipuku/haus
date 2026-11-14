@@ -38,22 +38,26 @@ const TONES = ['neutral', 'primary', 'info', 'success', 'warning', 'error'] as c
 export const Playground: Story = {}
 
 export const Tones: Story = {
-  render: (args) => (
+  render: args => (
     <div style={{ display: 'flex', gap: 'var(--haus-space-2)', flexWrap: 'wrap' }}>
-      {TONES.map((tone) => (
-        <Badge key={tone} {...args} tone={tone}>{tone}</Badge>
+      {TONES.map(tone => (
+        <Badge key={tone} {...args} tone={tone}>
+          {tone}
+        </Badge>
       ))}
     </div>
   ),
 }
 
 export const Appearances: Story = {
-  render: (args) => (
+  render: args => (
     <div style={{ display: 'grid', gap: 'var(--haus-space-3)' }}>
-      {(['subtle', 'solid'] as const).map((appearance) => (
+      {(['subtle', 'solid'] as const).map(appearance => (
         <div key={appearance} style={{ display: 'flex', gap: 'var(--haus-space-2)', flexWrap: 'wrap' }}>
-          {TONES.map((tone) => (
-            <Badge key={tone} {...args} tone={tone} appearance={appearance}>{tone}</Badge>
+          {TONES.map(tone => (
+            <Badge key={tone} {...args} tone={tone} appearance={appearance}>
+              {tone}
+            </Badge>
           ))}
         </div>
       ))}

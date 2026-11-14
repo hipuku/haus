@@ -30,20 +30,26 @@ type Story = StoryObj<typeof meta>
 export const Playground: Story = {}
 
 export const Variants: Story = {
-  render: (args) => (
+  render: args => (
     <div style={{ display: 'grid', gap: 'var(--haus-space-4)', maxWidth: 420 }}>
-      {(['default', 'elevated', 'outlined'] as const).map((variant) => (
-        <Card key={variant} {...args} variant={variant}>{variant}</Card>
+      {(['default', 'elevated', 'outlined'] as const).map(variant => (
+        <Card key={variant} {...args} variant={variant}>
+          {variant}
+        </Card>
       ))}
     </div>
   ),
 }
 
 export const AsAListItem: Story = {
-  render: (args) => (
-    <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gap: 'var(--haus-space-3)', maxWidth: 420 }}>
-      {['First', 'Second', 'Third'].map((label) => (
-        <Card key={label} {...args} as="li">{label}</Card>
+  render: args => (
+    <ul
+      style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gap: 'var(--haus-space-3)', maxWidth: 420 }}
+    >
+      {['First', 'Second', 'Third'].map(label => (
+        <Card key={label} {...args} as="li">
+          {label}
+        </Card>
       ))}
     </ul>
   ),

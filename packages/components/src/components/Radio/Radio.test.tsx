@@ -35,9 +35,7 @@ describe('RadioGroup', () => {
   })
 
   it('still labels each option after the id change', () => {
-    render(
-      <RadioGroup name="size" options={[{ value: 'a b', label: 'Spaced' }]} />,
-    )
+    render(<RadioGroup name="size" options={[{ value: 'a b', label: 'Spaced' }]} />)
     // The point of an id here is htmlFor. If that broke, the label would stop
     // naming the radio and this would find nothing.
     expect(screen.getByRole('radio', { name: 'Spaced' })).toBeInTheDocument()
@@ -106,9 +104,7 @@ describe('RadioGroup', () => {
     // assertions above passed for as long as the dot was stuck on defaultValue.
     // The dot is drawn by the `checked` class on the label, so that is what has
     // to be asserted for the visible control to be under test at all.
-    const { container } = render(
-      <RadioGroup name="size" options={OPTIONS} defaultValue="sm" />,
-    )
+    const { container } = render(<RadioGroup name="size" options={OPTIONS} defaultValue="sm" />)
     // Compared against the module's own export rather than the string
     // 'checked': CSS Modules hash the name, so a literal silently matches
     // nothing and the assertion passes for the wrong reason.
@@ -161,9 +157,7 @@ describe('RadioGroup', () => {
   })
 
   it('applies the orientation class', () => {
-    const { container } = render(
-      <RadioGroup name="size" options={OPTIONS} orientation="horizontal" />,
-    )
+    const { container } = render(<RadioGroup name="size" options={OPTIONS} orientation="horizontal" />)
     expect(container.innerHTML).toContain('horizontal')
   })
 

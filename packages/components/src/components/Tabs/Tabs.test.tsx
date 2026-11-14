@@ -140,22 +140,12 @@ describe('appearance (haus#60)', () => {
   ]
 
   it('defaults to underline, so nothing existing moves', () => {
-    render(
-      <Tabs items={items} value="write" onValueChange={() => {}} aria-label="Mode" />,
-    )
+    render(<Tabs items={items} value="write" onValueChange={() => {}} aria-label="Mode" />)
     expect(screen.getByRole('tablist').className).toMatch(/underline/)
   })
 
   it('takes the segmented appearance', () => {
-    render(
-      <Tabs
-        items={items}
-        value="write"
-        onValueChange={() => {}}
-        appearance="segmented"
-        aria-label="Mode"
-      />,
-    )
+    render(<Tabs items={items} value="write" onValueChange={() => {}} appearance="segmented" aria-label="Mode" />)
     const list = screen.getByRole('tablist')
     expect(list.className).toMatch(/segmented/)
     expect(list.className).not.toMatch(/underline/)
@@ -165,15 +155,7 @@ describe('appearance (haus#60)', () => {
     // The appearance is a look. If it ever starts deciding behaviour, this is
     // what says so: same roles, same selection, same handler either way.
     const onValueChange = vi.fn()
-    render(
-      <Tabs
-        items={items}
-        value="write"
-        onValueChange={onValueChange}
-        appearance="segmented"
-        aria-label="Mode"
-      />,
-    )
+    render(<Tabs items={items} value="write" onValueChange={onValueChange} appearance="segmented" aria-label="Mode" />)
     const tabs = screen.getAllByRole('tab')
     expect(tabs).toHaveLength(2)
     expect(tabs[0]).toHaveAttribute('aria-selected', 'true')
@@ -296,8 +278,12 @@ describe('panelId, a panel the caller renders', () => {
   })
 
   it('does not typecheck with both children and panelId', () => {
-    // @ts-expect-error a panel the caller renders has no children to give Tabs
-    const x = <Tabs id="e" aria-label="E" value="a" onValueChange={() => {}} items={THREE} panelId="p">body</Tabs>
+    const x = (
+      // @ts-expect-error a panel the caller renders has no children to give Tabs
+      <Tabs id="e" aria-label="E" value="a" onValueChange={() => {}} items={THREE} panelId="p">
+        body
+      </Tabs>
+    )
     expect(x).toBeTruthy()
   })
 })

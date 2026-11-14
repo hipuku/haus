@@ -10,8 +10,8 @@ permissions:
   contents: read
 
 # One job per check, named exactly as the ruleset on main requires them: Lint,
-# Typecheck, Test and Build. They run in parallel, and Build runs last, after the
-# other three pass, so a red tick names the check that failed rather than a step
+# Format, Typecheck, Test and Build. They run in parallel, and Build runs last,
+# after the other four pass, so a red tick names the check that failed rather than a step
 # inside one long job.
 #
 # Packages resolve each other through dist/, which is gitignored, and workspace:^
@@ -46,6 +46,20 @@ jobs:
       # every file would have been turned off instead of adopted.
       - name: Prose
         run: pnpm run lint:prose
+
+  format:
+    name: Format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Prettier
+        run: pnpm run format:check
 
   typecheck:
     name: Typecheck
@@ -83,7 +97,7 @@ jobs:
 
   build:
     name: Build
-    needs: [lint, typecheck, test]
+    needs: [lint, format, typecheck, test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7

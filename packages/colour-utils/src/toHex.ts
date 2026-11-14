@@ -8,15 +8,18 @@ function parseColorSrgb(value: string): string | null {
   const m = value.match(/^color\(\s*srgb\s+([\d.eE+-]+)\s+([\d.eE+-]+)\s+([\d.eE+-]+)\s*(?:\/\s*([\d.eE+-]+%?)\s*)?\)$/)
   if (!m) return null
 
-  const channels = [m[1], m[2], m[3]].map((c) => parseFloat(c!) * 255)
-  if (channels.some((c) => !Number.isFinite(c))) return null
+  const channels = [m[1], m[2], m[3]].map(c => parseFloat(c!) * 255)
+  if (channels.some(c => !Number.isFinite(c))) return null
 
   const rawAlpha = m[4]
   const alpha = rawAlpha == null ? 1 : rawAlpha.endsWith('%') ? parseFloat(rawAlpha) / 100 : parseFloat(rawAlpha)
   if (!Number.isFinite(alpha) || alpha === 0) return null
 
   try {
-    return chroma(channels as [number, number, number]).alpha(alpha).hex().toLowerCase()
+    return chroma(channels as [number, number, number])
+      .alpha(alpha)
+      .hex()
+      .toLowerCase()
   } catch {
     return null
   }
@@ -34,19 +37,21 @@ function parseLooseRgb(value: string): string | null {
   const parts = m[1]!.split(/[,/\s]+/).filter(Boolean)
   if (parts.length < 3) return null
 
-  const channels = parts.slice(0, 3).map((p) => {
+  const channels = parts.slice(0, 3).map(p => {
     const n = p.endsWith('%') ? (parseFloat(p) / 100) * 255 : parseFloat(p)
     return Number.isFinite(n) ? Math.max(0, Math.min(255, Math.round(n))) : NaN
   })
-  if (channels.some((c) => Number.isNaN(c))) return null
+  if (channels.some(c => Number.isNaN(c))) return null
 
   const rawAlpha = parts[3]
-  const alpha =
-    rawAlpha == null ? 1 : rawAlpha.endsWith('%') ? parseFloat(rawAlpha) / 100 : parseFloat(rawAlpha)
+  const alpha = rawAlpha == null ? 1 : rawAlpha.endsWith('%') ? parseFloat(rawAlpha) / 100 : parseFloat(rawAlpha)
   if (!Number.isFinite(alpha) || alpha === 0) return null
 
   try {
-    return chroma(channels as [number, number, number]).alpha(Math.min(1, alpha)).hex().toLowerCase()
+    return chroma(channels as [number, number, number])
+      .alpha(Math.min(1, alpha))
+      .hex()
+      .toLowerCase()
   } catch {
     return null
   }

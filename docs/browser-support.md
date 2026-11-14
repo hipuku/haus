@@ -9,13 +9,13 @@ One feature sets that floor, not a usage survey. It is named below.
 
 ## What sets it, and what it costs
 
-| Feature | Chrome | Safari | Firefox | Used by |
-|---|---|---|---|---|
-| Relative colour syntax, `oklch(from …)` | 119 | 16.4 | **128** | 4 brand entries, 1 component rule |
-| `:has()` | 105 | 15.4 | 121 | `Input`'s focus ring |
-| OKLCH colours | 111 | 15.4 | 113 | every colour in the system |
-| Cascade layers, `@layer` | 99 | 15.4 | 97 | all five token layers and the component sheet |
-| Logical properties | 87 | 14.1 | 66 | every component |
+| Feature                                 | Chrome | Safari | Firefox | Used by                                       |
+| --------------------------------------- | ------ | ------ | ------- | --------------------------------------------- |
+| Relative colour syntax, `oklch(from …)` | 119    | 16.4   | **128** | 4 brand entries, 1 component rule             |
+| `:has()`                                | 105    | 15.4   | 121     | `Input`'s focus ring                          |
+| OKLCH colours                           | 111    | 15.4   | 113     | every colour in the system                    |
+| Cascade layers, `@layer`                | 99     | 15.4   | 97      | all five token layers and the component sheet |
+| Logical properties                      | 87     | 14.1   | 66      | every component                               |
 
 **Firefox 128 is the floor, and relative colour syntax is why.** It shipped there
 in July 2024, which is more recent than everything else on the list by three

@@ -48,9 +48,9 @@ type Story = StoryObj<typeof meta>
 export const Playground: Story = {}
 
 export const Tones: Story = {
-  render: (args) => (
+  render: args => (
     <div style={{ display: 'grid', gap: 'var(--haus-space-3)', maxWidth: 380 }}>
-      {(['neutral', 'info', 'success', 'warning', 'error'] as const).map((tone) => (
+      {(['neutral', 'info', 'success', 'warning', 'error'] as const).map(tone => (
         <Toast key={tone} {...args} tone={tone} title={tone} />
       ))}
     </div>
@@ -72,7 +72,7 @@ export const Appearances: Story = {
       },
     },
   },
-  render: (args) => (
+  render: args => (
     // Column-major: the flat list below is appearance-then-tone, so the rows
     // have to be fixed and the flow turned, or the two appearances interleave.
     <div
@@ -83,8 +83,8 @@ export const Appearances: Story = {
         gap: 'var(--haus-space-3)',
       }}
     >
-      {(['subtle', 'solid'] as const).map((appearance) =>
-        (['neutral', 'info', 'success', 'warning', 'error'] as const).map((tone) => (
+      {(['subtle', 'solid'] as const).map(appearance =>
+        (['neutral', 'info', 'success', 'warning', 'error'] as const).map(tone => (
           <Toast
             key={`${appearance}-${tone}`}
             {...args}
@@ -117,21 +117,29 @@ export const WithAction: Story = {
       },
     },
   },
-  render: (args) => (
+  render: args => (
     <div style={{ display: 'grid', gap: 'var(--haus-space-3)', maxWidth: 380 }}>
       <Toast
         {...args}
         appearance="subtle"
         title="Message archived"
         description={undefined}
-        action={<Button size="sm" variant="text">Undo</Button>}
+        action={
+          <Button size="sm" variant="text">
+            Undo
+          </Button>
+        }
       />
       <Toast
         {...args}
         appearance="solid"
         title="Message archived"
         description={undefined}
-        action={<Button size="sm" variant="text">Undo</Button>}
+        action={
+          <Button size="sm" variant="text">
+            Undo
+          </Button>
+        }
       />
     </div>
   ),

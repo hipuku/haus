@@ -3,10 +3,10 @@
 **Accepted**, 2026-09-08. **Implemented in `brand.css`, `brand.test.ts` and the
 generated `brand.ts`.** `haus#52`.
 
-*The implementing commit's message says `haus#47`, which is wrong. The issue was
+_The implementing commit's message says `haus#47`, which is wrong. The issue was
 written before it was filed and came back as #52. The commit is on `main` and is
 not being rewritten to correct a reference; the number here is the right one, and
-this note is the correction.*
+this note is the correction._
 
 ## Context
 
@@ -64,7 +64,7 @@ demanded all 54, and `brand.test.ts` failed a brand that supplied 28. Nothing wa
 broken except the two things asserting that it would be.
 
 This is the fourth instance of the portfolio's recurring shape and the first
-where the unread signal was a *rule* rather than a check: a constraint that had
+where the unread signal was a _rule_ rather than a check: a constraint that had
 been asserted rather than measured, holding for a case nobody had tried.
 
 ## Why all-or-nothing per ramp
@@ -86,11 +86,11 @@ case the type system cannot see.
 
 Three cases were run against the new contract rather than reasoned about:
 
-| Probe brand | Expected | Result |
-|---|---|---|
-| 28 base entries, no feedback tier | passes | passes |
+| Probe brand                                | Expected               | Result                          |
+| ------------------------------------------ | ---------------------- | ------------------------------- |
+| 28 base entries, no feedback tier          | passes                 | passes                          |
 | 28 base entries plus `error-default` alone | fails on the ramp rule | fails, naming `error` at 1 of 6 |
-| 27 base entries, `ink-primary` missing | fails on the base rule | fails, naming `ink-primary` |
+| 27 base entries, `ink-primary` missing     | fails on the base rule | fails, naming `ink-primary`     |
 
 `vault.css` supplies all 54 and does not move.
 

@@ -20,13 +20,13 @@ npm install haus-components haus-tokens
 The other three packages are the colour and measurement libraries the auditing
 tools were written against, and they stand alone:
 
-| Package | What it is |
-|---|---|
-| `haus-tokens` | The tokens, as CSS custom properties and W3C Design Tokens JSON |
-| `haus-components` | The twenty React components |
+| Package             | What it is                                                      |
+| ------------------- | --------------------------------------------------------------- |
+| `haus-tokens`       | The tokens, as CSS custom properties and W3C Design Tokens JSON |
+| `haus-components`   | The twenty React components                                     |
 | `haus-colour-utils` | OKLCH analysis, perceptual clustering, CIEDE2000, WCAG contrast |
-| `haus-style-probe` | What a browser actually computed for an element, in one shape |
-| `haus-colour-names` | 31,900 named colours as data |
+| `haus-style-probe`  | What a browser actually computed for an element, in one shape   |
+| `haus-colour-names` | 31,900 named colours as data                                    |
 
 ## 2. Import the two stylesheets, in order
 
@@ -84,6 +84,16 @@ components take `ref` as an ordinary prop rather than through `forwardRef`.
 
 <div style={{ height: '1px', background: 'var(--haus-color-border-subtle)', margin: 'var(--haus-space-8) 0' }} />
 
-<p style={{ font: 'var(--haus-type-body-sm-weight) var(--haus-type-body-sm-size)/var(--haus-type-body-sm-leading) var(--haus-font-sans)', color: 'var(--haus-color-ink-tertiary)' }}>
-  Releases are per package, tagged <code style={{ fontFamily: 'var(--haus-font-mono)' }}>{'<'}directory{'>'}-v{'<'}version{'>'}</code>, with tokens published before the components that depend on them. Provenance is signed to the Sigstore transparency log.
+<p
+  style={{
+    font: 'var(--haus-type-body-sm-weight) var(--haus-type-body-sm-size)/var(--haus-type-body-sm-leading) var(--haus-font-sans)',
+    color: 'var(--haus-color-ink-tertiary)',
+  }}
+>
+  Releases are per package, tagged{' '}
+  <code style={{ fontFamily: 'var(--haus-font-mono)' }}>
+    {'<'}directory{'>'}-v{'<'}version{'>'}
+  </code>
+  , with tokens published before the components that depend on them. Provenance is signed to the Sigstore transparency
+  log.
 </p>

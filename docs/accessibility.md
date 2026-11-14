@@ -8,16 +8,16 @@ it fails.
 
 ## What is checked, and by what
 
-| Claim | Checked by |
-|---|---|
-| Every component has no axe violations | `vitest-axe`, in all 20 component suites |
-| Every surface pairs with an ink that clears AA | `contrast.test.ts`, measured with `haus-colour-utils` |
-| The focus ring clears SC 1.4.11 at 3:1 | the same file, against three surfaces |
-| Focus is visible in forced-colors mode | `logical-properties.test.ts`, per component |
-| Controls are operable from the keyboard | Space, arrows and tab-stop tests |
-| A dialog traps focus **and gives it back** | `Modal.test.tsx` |
-| Hints describe rather than rename | `toHaveAccessibleName` / `toHaveAccessibleDescription` |
-| Components render with no DOM | `ssr.test.tsx`, in a node environment |
+| Claim                                          | Checked by                                             |
+| ---------------------------------------------- | ------------------------------------------------------ |
+| Every component has no axe violations          | `vitest-axe`, in all 20 component suites               |
+| Every surface pairs with an ink that clears AA | `contrast.test.ts`, measured with `haus-colour-utils`  |
+| The focus ring clears SC 1.4.11 at 3:1         | the same file, against three surfaces                  |
+| Focus is visible in forced-colors mode         | `logical-properties.test.ts`, per component            |
+| Controls are operable from the keyboard        | Space, arrows and tab-stop tests                       |
+| A dialog traps focus **and gives it back**     | `Modal.test.tsx`                                       |
+| Hints describe rather than rename              | `toHaveAccessibleName` / `toHaveAccessibleDescription` |
+| Components render with no DOM                  | `ssr.test.tsx`, in a node environment                  |
 
 Every row in the second column is an assertion that fails if the claim in the
 first stops being true.

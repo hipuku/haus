@@ -1,19 +1,18 @@
 import React from 'react'
 import styles from './Checkbox.module.css'
 
-export interface CheckboxProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'type' | 'size'> {
+export interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'type' | 'size'> {
   /**
    * `(checked, event)`. The boolean first because it is what a caller almost
    * always wants; the event second because without it there was no way to read
    * `event.target.name`, which is how a form with many checkboxes tells them
    * apart. Toggle and RadioGroup hand back the same pair.
    */
-  onChange?:       (checked: boolean, event: React.ChangeEvent<HTMLInputElement>) => void
-  label?:          string
-  hint?:           string
-  error?:          string
-  indeterminate?:  boolean
+  onChange?: (checked: boolean, event: React.ChangeEvent<HTMLInputElement>) => void
+  label?: string
+  hint?: string
+  error?: string
+  indeterminate?: boolean
   /** Lands on the row holding the box and the label, where `className` used to.
    *  The named second target ruling B5 asks for. */
   controlClassName?: string
@@ -39,7 +38,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(functi
   },
   ref,
 ) {
-  const inputRef   = React.useRef<HTMLInputElement>(null)
+  const inputRef = React.useRef<HTMLInputElement>(null)
   // The internal ref drives `indeterminate`, which has no attribute and can
   // only be set on the node. A caller's ref has to reach the same node, so
   // both are assigned rather than one replacing the other.
@@ -55,9 +54,9 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(functi
   // hook whenever an id is passed, so a parent that renders this component
   // with and without one changes the hook count between renders.
   const generatedId = React.useId()
-  const inputId    = id ?? generatedId
-  const hintId     = hint  ? `${inputId}-hint`  : undefined
-  const errorId    = error ? `${inputId}-error` : undefined
+  const inputId = id ?? generatedId
+  const hintId = hint ? `${inputId}-hint` : undefined
+  const errorId = error ? `${inputId}-error` : undefined
   // Both, in reading order, as Input and Select already do. The hint used to
   // sit inside the <label>, which made it part of the accessible *name*: a
   // screen reader announced "Accept terms Read them first, checkbox" as one
@@ -84,12 +83,14 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(functi
   // describe a defect is not worth writing down.
   const wrapperCls = [
     styles.wrapper,
-    isChecked    ? styles.checked      : '',
+    isChecked ? styles.checked : '',
     indeterminate ? styles.indeterminate : '',
-    error        ? styles.error        : '',
-    disabled     ? styles.disabled     : '',
+    error ? styles.error : '',
+    disabled ? styles.disabled : '',
     controlClassName,
-  ].filter(Boolean).join(' ')
+  ]
+    .filter(Boolean)
+    .join(' ')
 
   return (
     <div className={className}>
@@ -118,11 +119,17 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(functi
         <span className={styles.box} aria-hidden>
           {indeterminate ? (
             <svg width="8" height="2" viewBox="0 0 8 2" fill="none" className={styles.icon}>
-              <rect width="8" height="2" rx="1" fill="currentColor"/>
+              <rect width="8" height="2" rx="1" fill="currentColor" />
             </svg>
           ) : isChecked ? (
             <svg width="10" height="8" viewBox="0 0 10 8" fill="none" className={styles.icon}>
-              <path d="M1 4L3.5 6.5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path
+                d="M1 4L3.5 6.5L9 1"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           ) : null}
         </span>
@@ -131,7 +138,11 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(functi
           <span className={styles.content}>
             <span className={styles.label}>
               {label}
-              {required && <span aria-hidden className={styles.required}>*</span>}
+              {required && (
+                <span aria-hidden className={styles.required}>
+                  *
+                </span>
+              )}
             </span>
           </span>
         )}
@@ -140,7 +151,9 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(functi
       {/* Outside the label on purpose: anything inside it is read as part of the
           name. Indented to line up under the label text rather than under the box. */}
       {hint && !error && (
-        <span id={hintId} className={styles.hint}>{hint}</span>
+        <span id={hintId} className={styles.hint}>
+          {hint}
+        </span>
       )}
 
       {error && (

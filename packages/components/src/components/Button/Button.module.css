@@ -6,25 +6,25 @@
      take the same namespace. `stylesheet.test.ts` is what holds it. */
 
   /* Solid fill, and the ink that sits on it. */
-  --haus-btn-solid:         var(--haus-color-primary-default);
-  --haus-btn-solid-hover:   var(--haus-color-primary-hover);
+  --haus-btn-solid: var(--haus-color-primary-default);
+  --haus-btn-solid-hover: var(--haus-color-primary-hover);
   --haus-btn-solid-pressed: var(--haus-color-primary-pressed);
-  --haus-btn-on-solid:      var(--haus-color-ink-on-primary);
+  --haus-btn-on-solid: var(--haus-color-ink-on-primary);
 
   /* Tinted fill, for the weights that sit on the page rather than above it. */
-  --haus-btn-bg:            var(--haus-color-surface-subtle);
-  --haus-btn-bg-hover:      var(--haus-color-surface-sunken);
+  --haus-btn-bg: var(--haus-color-surface-subtle);
+  --haus-btn-bg-hover: var(--haus-color-surface-sunken);
 
   /* Three border roles because neutral genuinely uses three steps: an outline
      at rest, a stronger one on hover, and a fainter one for ghost's hover. */
-  --haus-btn-border:        var(--haus-color-border-default);
-  --haus-btn-border-hover:  var(--haus-color-border-strong);
-  --haus-btn-border-ghost:  var(--haus-color-border-subtle);
+  --haus-btn-border: var(--haus-color-border-default);
+  --haus-btn-border-hover: var(--haus-color-border-strong);
+  --haus-btn-border-ghost: var(--haus-color-border-subtle);
 
   /* Ink on the page's own surface. `text` inherits by default and the tones
      give it a colour, which is the one place the two inks differ. */
-  --haus-btn-ink:           var(--haus-color-ink-primary);
-  --haus-btn-text-ink:      inherit;
+  --haus-btn-ink: var(--haus-color-ink-primary);
+  --haus-btn-text-ink: inherit;
 
   /* Pressed-state luminance, for the weights with no darker token to move to.
      Two properties rather than one declared per variant: a variant rule sits
@@ -33,7 +33,7 @@
      solid weight has a real `primary-pressed` token and needs no shade; its
      tinted weights press onto `surface-sunken`, which is already the hover
      fill, so luminance is the only thing left to move. */
-  --haus-btn-shade:      none;
+  --haus-btn-shade: none;
   --haus-btn-shade-soft: brightness(0.97);
   display: inline-flex;
   align-items: center;
@@ -47,9 +47,9 @@
   cursor: pointer;
   transition:
     background-color var(--haus-motion-micro),
-    border-color     var(--haus-motion-micro),
-    color            var(--haus-motion-micro),
-    box-shadow       var(--haus-motion-micro);
+    border-color var(--haus-motion-micro),
+    color var(--haus-motion-micro),
+    box-shadow var(--haus-motion-micro);
   text-decoration: none;
   white-space: nowrap;
   user-select: none;
@@ -61,7 +61,7 @@
 }
 
 .button:disabled,
-.button[aria-disabled="true"] {
+.button[aria-disabled='true'] {
   cursor: not-allowed;
   opacity: var(--haus-opacity-disabled);
   pointer-events: none;
@@ -110,7 +110,6 @@
    tones across both appearances: this finishes a design that was specified,
    it does not invent one. */
 
-
 /* info and error take white ink on their 500 (`on-default`). success and
    warning cannot: their 500s fail with white, which is why `semantics.css`
    carries a `solid` role at 700 and why Badge's solid appearance already
@@ -121,64 +120,64 @@
 .success,
 .warning,
 .error {
-  --haus-btn-shade:      brightness(0.94);
+  --haus-btn-shade: brightness(0.94);
   --haus-btn-shade-soft: brightness(0.94);
 }
 
 .info {
-  --haus-btn-solid:         var(--haus-color-info-default);
-  --haus-btn-solid-hover:   var(--haus-color-info-emphasis);
+  --haus-btn-solid: var(--haus-color-info-default);
+  --haus-btn-solid-hover: var(--haus-color-info-emphasis);
   --haus-btn-solid-pressed: var(--haus-color-info-emphasis);
-  --haus-btn-on-solid:      var(--haus-color-info-on-default);
-  --haus-btn-bg:            var(--haus-color-info-subtle);
-  --haus-btn-bg-hover:      var(--haus-color-info-border);
-  --haus-btn-border:        var(--haus-color-info-border);
-  --haus-btn-border-hover:  var(--haus-color-info-default);
-  --haus-btn-border-ghost:  var(--haus-color-info-border);
-  --haus-btn-ink:           var(--haus-color-info-on-subtle);
-  --haus-btn-text-ink:      var(--haus-color-info-on-subtle);
+  --haus-btn-on-solid: var(--haus-color-info-on-default);
+  --haus-btn-bg: var(--haus-color-info-subtle);
+  --haus-btn-bg-hover: var(--haus-color-info-border);
+  --haus-btn-border: var(--haus-color-info-border);
+  --haus-btn-border-hover: var(--haus-color-info-default);
+  --haus-btn-border-ghost: var(--haus-color-info-border);
+  --haus-btn-ink: var(--haus-color-info-on-subtle);
+  --haus-btn-text-ink: var(--haus-color-info-on-subtle);
 }
 
 .success {
-  --haus-btn-solid:         var(--haus-color-success-solid);
-  --haus-btn-solid-hover:   var(--haus-color-success-emphasis);
+  --haus-btn-solid: var(--haus-color-success-solid);
+  --haus-btn-solid-hover: var(--haus-color-success-emphasis);
   --haus-btn-solid-pressed: var(--haus-color-success-emphasis);
-  --haus-btn-on-solid:      var(--haus-color-ink-inverse);
-  --haus-btn-bg:            var(--haus-color-success-subtle);
-  --haus-btn-bg-hover:      var(--haus-color-success-border);
-  --haus-btn-border:        var(--haus-color-success-border);
-  --haus-btn-border-hover:  var(--haus-color-success-solid);
-  --haus-btn-border-ghost:  var(--haus-color-success-border);
-  --haus-btn-ink:           var(--haus-color-success-on-subtle);
-  --haus-btn-text-ink:      var(--haus-color-success-on-subtle);
+  --haus-btn-on-solid: var(--haus-color-ink-inverse);
+  --haus-btn-bg: var(--haus-color-success-subtle);
+  --haus-btn-bg-hover: var(--haus-color-success-border);
+  --haus-btn-border: var(--haus-color-success-border);
+  --haus-btn-border-hover: var(--haus-color-success-solid);
+  --haus-btn-border-ghost: var(--haus-color-success-border);
+  --haus-btn-ink: var(--haus-color-success-on-subtle);
+  --haus-btn-text-ink: var(--haus-color-success-on-subtle);
 }
 
 .warning {
-  --haus-btn-solid:         var(--haus-color-warning-solid);
-  --haus-btn-solid-hover:   var(--haus-color-warning-emphasis);
+  --haus-btn-solid: var(--haus-color-warning-solid);
+  --haus-btn-solid-hover: var(--haus-color-warning-emphasis);
   --haus-btn-solid-pressed: var(--haus-color-warning-emphasis);
-  --haus-btn-on-solid:      var(--haus-color-ink-inverse);
-  --haus-btn-bg:            var(--haus-color-warning-subtle);
-  --haus-btn-bg-hover:      var(--haus-color-warning-border);
-  --haus-btn-border:        var(--haus-color-warning-border);
-  --haus-btn-border-hover:  var(--haus-color-warning-solid);
-  --haus-btn-border-ghost:  var(--haus-color-warning-border);
-  --haus-btn-ink:           var(--haus-color-warning-on-subtle);
-  --haus-btn-text-ink:      var(--haus-color-warning-on-subtle);
+  --haus-btn-on-solid: var(--haus-color-ink-inverse);
+  --haus-btn-bg: var(--haus-color-warning-subtle);
+  --haus-btn-bg-hover: var(--haus-color-warning-border);
+  --haus-btn-border: var(--haus-color-warning-border);
+  --haus-btn-border-hover: var(--haus-color-warning-solid);
+  --haus-btn-border-ghost: var(--haus-color-warning-border);
+  --haus-btn-ink: var(--haus-color-warning-on-subtle);
+  --haus-btn-text-ink: var(--haus-color-warning-on-subtle);
 }
 
 .error {
-  --haus-btn-solid:         var(--haus-color-error-default);
-  --haus-btn-solid-hover:   var(--haus-color-error-emphasis);
+  --haus-btn-solid: var(--haus-color-error-default);
+  --haus-btn-solid-hover: var(--haus-color-error-emphasis);
   --haus-btn-solid-pressed: var(--haus-color-error-emphasis);
-  --haus-btn-on-solid:      var(--haus-color-error-on-default);
-  --haus-btn-bg:            var(--haus-color-error-subtle);
-  --haus-btn-bg-hover:      var(--haus-color-error-border);
-  --haus-btn-border:        var(--haus-color-error-border);
-  --haus-btn-border-hover:  var(--haus-color-error-default);
-  --haus-btn-border-ghost:  var(--haus-color-error-border);
-  --haus-btn-ink:           var(--haus-color-error-on-subtle);
-  --haus-btn-text-ink:      var(--haus-color-error-on-subtle);
+  --haus-btn-on-solid: var(--haus-color-error-on-default);
+  --haus-btn-bg: var(--haus-color-error-subtle);
+  --haus-btn-bg-hover: var(--haus-color-error-border);
+  --haus-btn-border: var(--haus-color-error-border);
+  --haus-btn-border-hover: var(--haus-color-error-default);
+  --haus-btn-border-ghost: var(--haus-color-error-border);
+  --haus-btn-ink: var(--haus-color-error-on-subtle);
+  --haus-btn-text-ink: var(--haus-color-error-on-subtle);
 }
 
 /* ── Variants ── */
@@ -235,7 +234,7 @@
   text-decoration-thickness: var(--haus-border-width-default);
   text-decoration-color: oklch(from currentColor l c h / 0.35);
   transition:
-    text-decoration-color     var(--haus-motion-micro),
+    text-decoration-color var(--haus-motion-micro),
     text-decoration-thickness var(--haus-motion-micro);
 }
 .text:hover:not(:disabled) {

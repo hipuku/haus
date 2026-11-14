@@ -34,8 +34,7 @@ export type IconButtonTone = Tone
  */
 export type IconButtonSize = 'sm' | 'md' | 'lg'
 
-interface IconButtonBaseProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
+interface IconButtonBaseProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
   /**
    * The icon. Required, and the only child: an icon button with a label is a
    * Button, and passing one here would silently produce a square control with
@@ -51,8 +50,8 @@ interface IconButtonBaseProps
    */
   label: string
   variant?: IconButtonVariant
-  tone?:    IconButtonTone
-  size?:    IconButtonSize
+  tone?: IconButtonTone
+  size?: IconButtonSize
 }
 
 export type IconButtonOwnProps = IconButtonBaseProps & {
@@ -61,7 +60,7 @@ export type IconButtonOwnProps = IconButtonBaseProps & {
 }
 
 export type IconButtonAsChildProps = IconButtonBaseProps & {
-  asChild:  true
+  asChild: true
   loading?: never
   children: React.ReactElement
 }
@@ -111,43 +110,29 @@ export type IconButtonProps = IconButtonOwnProps | IconButtonAsChildProps
  */
 export const IconButton = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, IconButtonProps>(
   function IconButton(props, ref) {
-    const {
-      icon,
-      label,
-      variant = 'secondary',
-      tone    = 'neutral',
-      size    = 'md',
-      disabled,
-      className,
-      ...rest
-    } = props
+    const { icon, label, variant = 'secondary', tone = 'neutral', size = 'md', disabled, className, ...rest } = props
 
     // Read off the union rather than destructured above: the `asChild` half
     // types `loading` as `never`, and a default in the pattern would widen it
     // back. Same shape as Button.
     const asChild = props.asChild === true
-    const loading = props.asChild === true ? false : props.loading ?? false
+    const loading = props.asChild === true ? false : (props.loading ?? false)
 
     // `rest` still holds the discriminant and the props read off the union, and
     // every one of them would land on the DOM as an unknown attribute.
-    const {
-      asChild:  _asChild,
-      loading:  _loading,
-      children: _children,
-      ...domProps
-    } = rest as Record<string, unknown>
+    const { asChild: _asChild, loading: _loading, children: _children, ...domProps } = rest as Record<string, unknown>
 
-    const cls = [
-      styles.iconButton,
-      styles[variant],
-      tone !== 'neutral' ? styles[tone] : '',
-      styles[size],
-      className,
-    ].filter(Boolean).join(' ')
+    const cls = [styles.iconButton, styles[variant], tone !== 'neutral' ? styles[tone] : '', styles[size], className]
+      .filter(Boolean)
+      .join(' ')
 
     const isDisabled = disabled || loading
 
-    const glyph = <span className={styles.glyph} aria-hidden="true">{icon}</span>
+    const glyph = (
+      <span className={styles.glyph} aria-hidden="true">
+        {icon}
+      </span>
+    )
 
     if (asChild) {
       const child = React.Children.only(props.children as React.ReactElement)
@@ -184,9 +169,7 @@ export const IconButton = React.forwardRef<HTMLButtonElement | HTMLAnchorElement
         aria-label={label}
         {...domProps}
       >
-        {loading
-          ? <Spinner size="text" announcedBy="the button's aria-busy state" />
-          : glyph}
+        {loading ? <Spinner size="text" announcedBy="the button's aria-busy state" /> : glyph}
       </button>
     )
   },

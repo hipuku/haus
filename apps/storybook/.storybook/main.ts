@@ -1,10 +1,7 @@
 import type { StorybookConfig } from '@storybook/react-vite'
 
 const config: StorybookConfig = {
-  stories: [
-    '../stories/**/*.mdx',
-    '../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-  ],
+  stories: ['../stories/**/*.mdx', '../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
   staticDirs: [
     // robots.txt and sitemap.xml, served from the site root.
     { from: './static', to: '/' },
@@ -16,12 +13,7 @@ const config: StorybookConfig = {
   // viewport, backgrounds, toolbars, measure, outline and the interaction
   // runner all moved into the core `storybook` package in 9. Listing them here
   // is now an error rather than a no-op.
-  addons: [
-    '@storybook/addon-links',
-    '@storybook/addon-docs',
-    '@storybook/addon-a11y',
-    '@chromatic-com/storybook',
-  ],
+  addons: ['@storybook/addon-links', '@storybook/addon-docs', '@storybook/addon-a11y', '@chromatic-com/storybook'],
   // A published reference site, not a working Storybook: suppress the onboarding
   // checklist and update toasts, which are noise for a visitor here to read the
   // system and have no local project to onboard to.

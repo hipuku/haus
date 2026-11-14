@@ -1,9 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import React, { useCallback, useState } from 'react'
 import {
-  CopyChip, Callout, PlayButton, SectionHead, ColLabel,
-  pageWrap, pageTitleStyle, pageDescStyle,
-  TableGrid, TH, TD, TableDivider,
+  CopyChip,
+  Callout,
+  PlayButton,
+  SectionHead,
+  ColLabel,
+  pageWrap,
+  pageTitleStyle,
+  pageDescStyle,
+  TableGrid,
+  TH,
+  TD,
+  TableDivider,
 } from './_shared'
 
 /* ─── Duration table ─────────────────────────────────────────────────────── */
@@ -11,11 +20,11 @@ import {
 const DUR_COLS = 'auto auto auto 1fr'
 
 const durations = [
-  { name: 'duration-instant',  value: '50ms',  use: 'Skeleton shimmer and badge counters, imperceptible' },
-  { name: 'duration-fast',     value: '100ms', use: 'Checkbox, toggle and icon swap: snappy micro-interactions' },
-  { name: 'duration-normal',   value: '200ms', use: 'Hover, focus, most UI state changes' },
+  { name: 'duration-instant', value: '50ms', use: 'Skeleton shimmer and badge counters, imperceptible' },
+  { name: 'duration-fast', value: '100ms', use: 'Checkbox, toggle and icon swap: snappy micro-interactions' },
+  { name: 'duration-normal', value: '200ms', use: 'Hover, focus, most UI state changes' },
   { name: 'duration-moderate', value: '300ms', use: 'Panels, drawers, modals entering' },
-  { name: 'duration-slow',     value: '500ms', use: 'Page transitions, complex sequences' },
+  { name: 'duration-slow', value: '500ms', use: 'Page transitions, complex sequences' },
 ]
 
 function DurationBar({ ms }: { ms: number }) {
@@ -30,7 +39,15 @@ function DurationBar({ ms }: { ms: number }) {
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--haus-space-2)' }}>
-      <div style={{ width: 120, height: 8, background: 'var(--haus-color-border-default)', borderRadius: 'var(--haus-radius-full)', overflow: 'hidden' }}>
+      <div
+        style={{
+          width: 120,
+          height: 8,
+          background: 'var(--haus-color-border-default)',
+          borderRadius: 'var(--haus-radius-full)',
+          overflow: 'hidden',
+        }}
+      >
         <div
           key={key}
           style={{
@@ -52,13 +69,37 @@ function DurationBar({ ms }: { ms: number }) {
 type EasingEntry = { name: string; css: string; token: string; description: string }
 
 const easings: EasingEntry[] = [
-  { name: 'Enter',  token: 'ease-enter',  css: 'cubic-bezier(0.00, 0.00, 0.20, 1.00)', description: 'Start slow, arrive with energy. For elements appearing.' },
-  { name: 'Exit',   token: 'ease-exit',   css: 'cubic-bezier(0.40, 0.00, 1.00, 1.00)', description: 'Leave quickly, no lingering. For elements disappearing.' },
-  { name: 'Move',   token: 'ease-move',   css: 'cubic-bezier(0.40, 0.00, 0.20, 1.00)', description: 'Balanced, physical. For position changes within the UI.' },
-  { name: 'Spring', token: 'ease-spring', css: 'cubic-bezier(0.34, 1.56, 0.64, 1.00)', description: 'Slight overshoot. For interactive feedback that needs snap.' },
-  { name: 'Linear', token: 'ease-linear', css: 'linear',                                description: 'No easing. For opacity fades where curves add no value.' },
+  {
+    name: 'Enter',
+    token: 'ease-enter',
+    css: 'cubic-bezier(0.00, 0.00, 0.20, 1.00)',
+    description: 'Start slow, arrive with energy. For elements appearing.',
+  },
+  {
+    name: 'Exit',
+    token: 'ease-exit',
+    css: 'cubic-bezier(0.40, 0.00, 1.00, 1.00)',
+    description: 'Leave quickly, no lingering. For elements disappearing.',
+  },
+  {
+    name: 'Move',
+    token: 'ease-move',
+    css: 'cubic-bezier(0.40, 0.00, 0.20, 1.00)',
+    description: 'Balanced, physical. For position changes within the UI.',
+  },
+  {
+    name: 'Spring',
+    token: 'ease-spring',
+    css: 'cubic-bezier(0.34, 1.56, 0.64, 1.00)',
+    description: 'Slight overshoot. For interactive feedback that needs snap.',
+  },
+  {
+    name: 'Linear',
+    token: 'ease-linear',
+    css: 'linear',
+    description: 'No easing. For opacity fades where curves add no value.',
+  },
 ]
-
 
 const EASE_COLS = 'auto auto auto 1fr'
 
@@ -75,14 +116,34 @@ function EasingRow({ css, name, token, description }: EasingEntry) {
   return (
     <>
       <TD>
-        <span style={{ fontFamily: 'var(--haus-font-mono)', fontSize: 'var(--haus-type-mono-size)', fontWeight: 600, color: 'var(--haus-color-ink-primary)', whiteSpace: 'nowrap' }}>
+        <span
+          style={{
+            fontFamily: 'var(--haus-font-mono)',
+            fontSize: 'var(--haus-type-mono-size)',
+            fontWeight: 600,
+            color: 'var(--haus-color-ink-primary)',
+            whiteSpace: 'nowrap',
+          }}
+        >
           {name}
         </span>
       </TD>
-      <TD><CopyChip name={token} /></TD>
+      <TD>
+        <CopyChip name={token} />
+      </TD>
       <TD>
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--haus-space-2)' }}>
-          <div style={{ width: 120, height: 36, position: 'relative', overflow: 'hidden', borderRadius: 'var(--haus-radius-sm)', background: 'var(--haus-color-surface-subtle)', flexShrink: 0 }}>
+          <div
+            style={{
+              width: 120,
+              height: 36,
+              position: 'relative',
+              overflow: 'hidden',
+              borderRadius: 'var(--haus-radius-sm)',
+              background: 'var(--haus-color-surface-subtle)',
+              flexShrink: 0,
+            }}
+          >
             <div
               key={key}
               style={{
@@ -90,7 +151,8 @@ function EasingRow({ css, name, token, description }: EasingEntry) {
                 left: active ? 'calc(100% - 28px)' : '0',
                 top: '50%',
                 transform: 'translateY(-50%)',
-                width: 28, height: 28,
+                width: 28,
+                height: 28,
                 background: 'var(--haus-color-primary-default)',
                 borderRadius: 'var(--haus-radius-md)',
                 transition: active ? `left 400ms ${css}` : 'none',
@@ -101,7 +163,13 @@ function EasingRow({ css, name, token, description }: EasingEntry) {
         </div>
       </TD>
       <TD>
-        <span style={{ fontSize: 'var(--haus-type-body-sm-size)', color: 'var(--haus-color-ink-secondary)', lineHeight: 'var(--haus-type-body-sm-leading)' }}>
+        <span
+          style={{
+            fontSize: 'var(--haus-type-body-sm-size)',
+            color: 'var(--haus-color-ink-secondary)',
+            lineHeight: 'var(--haus-type-body-sm-leading)',
+          }}
+        >
           {description}
         </span>
       </TD>
@@ -114,15 +182,51 @@ function EasingRow({ css, name, token, description }: EasingEntry) {
 const COMP_COLS = 'auto auto 1fr'
 
 const composites = [
-  { name: 'motion-fade-in',    label: 'Fade In',    duration: 200, ease: 'cubic-bezier(0.00, 0.00, 0.20, 1.00)', use: 'Toast appearing, tooltip, popover' },
-  { name: 'motion-fade-out',   label: 'Fade Out',   duration: 100, ease: 'cubic-bezier(0.40, 0.00, 1.00, 1.00)', use: 'Toast dismissed, tooltip hidden' },
-  { name: 'motion-slide-in',   label: 'Slide In',   duration: 300, ease: 'cubic-bezier(0.00, 0.00, 0.20, 1.00)', use: 'Drawer, modal, panel entering' },
-  { name: 'motion-slide-out',  label: 'Slide Out',  duration: 100, ease: 'cubic-bezier(0.40, 0.00, 1.00, 1.00)', use: 'Drawer, modal, panel leaving' },
-  { name: 'motion-micro',      label: 'Micro',      duration: 100, ease: 'cubic-bezier(0.40, 0.00, 0.20, 1.00)', use: 'Checkbox tick, toggle thumb' },
-  { name: 'motion-interactive',label: 'Interactive',duration: 200, ease: 'cubic-bezier(0.40, 0.00, 0.20, 1.00)', use: 'Hover state, focus ring' },
+  {
+    name: 'motion-fade-in',
+    label: 'Fade In',
+    duration: 200,
+    ease: 'cubic-bezier(0.00, 0.00, 0.20, 1.00)',
+    use: 'Toast appearing, tooltip, popover',
+  },
+  {
+    name: 'motion-fade-out',
+    label: 'Fade Out',
+    duration: 100,
+    ease: 'cubic-bezier(0.40, 0.00, 1.00, 1.00)',
+    use: 'Toast dismissed, tooltip hidden',
+  },
+  {
+    name: 'motion-slide-in',
+    label: 'Slide In',
+    duration: 300,
+    ease: 'cubic-bezier(0.00, 0.00, 0.20, 1.00)',
+    use: 'Drawer, modal, panel entering',
+  },
+  {
+    name: 'motion-slide-out',
+    label: 'Slide Out',
+    duration: 100,
+    ease: 'cubic-bezier(0.40, 0.00, 1.00, 1.00)',
+    use: 'Drawer, modal, panel leaving',
+  },
+  {
+    name: 'motion-micro',
+    label: 'Micro',
+    duration: 100,
+    ease: 'cubic-bezier(0.40, 0.00, 0.20, 1.00)',
+    use: 'Checkbox tick, toggle thumb',
+  },
+  {
+    name: 'motion-interactive',
+    label: 'Interactive',
+    duration: 200,
+    ease: 'cubic-bezier(0.40, 0.00, 0.20, 1.00)',
+    use: 'Hover state, focus ring',
+  },
 ]
 
-function CompositeRow({ name, duration, ease, use }: typeof composites[number]) {
+function CompositeRow({ name, duration, ease, use }: (typeof composites)[number]) {
   const isFade = name.includes('fade')
   const [key, setKey] = useState(0)
   const [active, setActive] = useState(false)
@@ -135,25 +239,53 @@ function CompositeRow({ name, duration, ease, use }: typeof composites[number]) 
 
   return (
     <>
-      <TD><CopyChip name={name} /></TD>
+      <TD>
+        <CopyChip name={name} />
+      </TD>
       <TD>
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--haus-space-2)' }}>
-          <div style={{ width: 120, height: 32, position: 'relative', overflow: 'hidden', borderRadius: 'var(--haus-radius-sm)', background: 'var(--haus-color-surface-subtle)', flexShrink: 0 }}>
+          <div
+            style={{
+              width: 120,
+              height: 32,
+              position: 'relative',
+              overflow: 'hidden',
+              borderRadius: 'var(--haus-radius-sm)',
+              background: 'var(--haus-color-surface-subtle)',
+              flexShrink: 0,
+            }}
+          >
             <div
               key={key}
               style={{
                 position: 'absolute',
                 ...(isFade
-                  ? { inset: 0, opacity: active ? 1 : 0, background: 'var(--haus-color-primary-subtle)', transition: active ? `opacity ${duration}ms ${ease}` : 'none' }
-                  : { top: 4, bottom: 4, left: active ? 'calc(100% - 28px)' : '4px', width: 24, background: 'var(--haus-color-primary-default)', borderRadius: 'var(--haus-radius-sm)', transition: active ? `left ${duration}ms ${ease}` : 'none' }
-                ),
+                  ? {
+                      inset: 0,
+                      opacity: active ? 1 : 0,
+                      background: 'var(--haus-color-primary-subtle)',
+                      transition: active ? `opacity ${duration}ms ${ease}` : 'none',
+                    }
+                  : {
+                      top: 4,
+                      bottom: 4,
+                      left: active ? 'calc(100% - 28px)' : '4px',
+                      width: 24,
+                      background: 'var(--haus-color-primary-default)',
+                      borderRadius: 'var(--haus-radius-sm)',
+                      transition: active ? `left ${duration}ms ${ease}` : 'none',
+                    }),
               }}
             />
           </div>
           <PlayButton onClick={play} compact />
         </div>
       </TD>
-      <TD><span style={{ fontSize: 'var(--haus-type-body-sm-size)', color: 'var(--haus-color-ink-secondary)' }}>{use}</span></TD>
+      <TD>
+        <span style={{ fontSize: 'var(--haus-type-body-sm-size)', color: 'var(--haus-color-ink-secondary)' }}>
+          {use}
+        </span>
+      </TD>
     </>
   )
 }
@@ -165,48 +297,101 @@ function MotionPage() {
     <div style={pageWrap}>
       <h1 style={pageTitleStyle}>Motion</h1>
       <p style={pageDescStyle}>
-        Never write raw <code style={{ fontFamily: 'var(--haus-font-mono)' }}>ms</code> or <code style={{ fontFamily: 'var(--haus-font-mono)' }}>cubic-bezier()</code> values in component code. Use composite tokens, which pair the correct duration with the correct easing for each interaction type. All animated properties must collapse to <code style={{ fontFamily: 'var(--haus-font-mono)' }}>var(--haus-duration-reduced)</code> (0ms) inside <code style={{ fontFamily: 'var(--haus-font-mono)' }}>prefers-reduced-motion</code>.
+        Never write raw <code style={{ fontFamily: 'var(--haus-font-mono)' }}>ms</code> or{' '}
+        <code style={{ fontFamily: 'var(--haus-font-mono)' }}>cubic-bezier()</code> values in component code. Use
+        composite tokens, which pair the correct duration with the correct easing for each interaction type. All
+        animated properties must collapse to{' '}
+        <code style={{ fontFamily: 'var(--haus-font-mono)' }}>var(--haus-duration-reduced)</code> (0ms) inside{' '}
+        <code style={{ fontFamily: 'var(--haus-font-mono)' }}>prefers-reduced-motion</code>.
       </p>
 
       <SectionHead>Durations</SectionHead>
       <TableGrid columns={DUR_COLS}>
-        <TH><ColLabel icon="fa-solid fa-tag">Token</ColLabel></TH>
-        <TH><ColLabel icon="fa-solid fa-stopwatch">Value</ColLabel></TH>
-        <TH><ColLabel icon="fa-solid fa-eye">Demo</ColLabel></TH>
-        <TH><ColLabel icon="fa-solid fa-circle-info">Use</ColLabel></TH>
+        <TH>
+          <ColLabel icon="fa-solid fa-tag">Token</ColLabel>
+        </TH>
+        <TH>
+          <ColLabel icon="fa-solid fa-stopwatch">Value</ColLabel>
+        </TH>
+        <TH>
+          <ColLabel icon="fa-solid fa-eye">Demo</ColLabel>
+        </TH>
+        <TH>
+          <ColLabel icon="fa-solid fa-circle-info">Use</ColLabel>
+        </TH>
         <TableDivider />
         {durations.map(({ name, value, use }) => (
           <React.Fragment key={name}>
-            <TD><CopyChip name={name} /></TD>
-            <TD><span style={{ fontFamily: 'var(--haus-font-mono)', fontSize: 'var(--haus-type-mono-size)', color: 'var(--haus-color-ink-secondary)', whiteSpace: 'nowrap' }}>{value}</span></TD>
-            <TD><DurationBar ms={parseInt(value)} /></TD>
-            <TD><span style={{ fontSize: 'var(--haus-type-body-sm-size)', color: 'var(--haus-color-ink-secondary)' }}>{use}</span></TD>
+            <TD>
+              <CopyChip name={name} />
+            </TD>
+            <TD>
+              <span
+                style={{
+                  fontFamily: 'var(--haus-font-mono)',
+                  fontSize: 'var(--haus-type-mono-size)',
+                  color: 'var(--haus-color-ink-secondary)',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {value}
+              </span>
+            </TD>
+            <TD>
+              <DurationBar ms={parseInt(value)} />
+            </TD>
+            <TD>
+              <span style={{ fontSize: 'var(--haus-type-body-sm-size)', color: 'var(--haus-color-ink-secondary)' }}>
+                {use}
+              </span>
+            </TD>
           </React.Fragment>
         ))}
       </TableGrid>
 
       <SectionHead>Easing curves, press ▶ to preview</SectionHead>
       <TableGrid columns={EASE_COLS}>
-        <TH><ColLabel icon="fa-solid fa-tag">Name</ColLabel></TH>
-        <TH><ColLabel icon="fa-solid fa-code">Token</ColLabel></TH>
-        <TH><ColLabel icon="fa-solid fa-eye">Demo</ColLabel></TH>
-        <TH><ColLabel icon="fa-solid fa-circle-info">Use</ColLabel></TH>
+        <TH>
+          <ColLabel icon="fa-solid fa-tag">Name</ColLabel>
+        </TH>
+        <TH>
+          <ColLabel icon="fa-solid fa-code">Token</ColLabel>
+        </TH>
+        <TH>
+          <ColLabel icon="fa-solid fa-eye">Demo</ColLabel>
+        </TH>
+        <TH>
+          <ColLabel icon="fa-solid fa-circle-info">Use</ColLabel>
+        </TH>
         <TableDivider />
-        {easings.map(e => <EasingRow key={e.name} {...e} />)}
+        {easings.map(e => (
+          <EasingRow key={e.name} {...e} />
+        ))}
       </TableGrid>
 
       <SectionHead>Composite tokens: duration + easing pairs</SectionHead>
       <TableGrid columns={COMP_COLS}>
-        <TH><ColLabel icon="fa-solid fa-tag">Token</ColLabel></TH>
-        <TH><ColLabel icon="fa-solid fa-eye">Demo</ColLabel></TH>
-        <TH><ColLabel icon="fa-solid fa-circle-info">Use</ColLabel></TH>
+        <TH>
+          <ColLabel icon="fa-solid fa-tag">Token</ColLabel>
+        </TH>
+        <TH>
+          <ColLabel icon="fa-solid fa-eye">Demo</ColLabel>
+        </TH>
+        <TH>
+          <ColLabel icon="fa-solid fa-circle-info">Use</ColLabel>
+        </TH>
         <TH />
         <TableDivider />
-        {composites.map(c => <CompositeRow key={c.name} {...c} />)}
+        {composites.map(c => (
+          <CompositeRow key={c.name} {...c} />
+        ))}
       </TableGrid>
 
       <Callout variant="info" label="Reduced motion">
-        Set <code style={{ fontFamily: 'var(--haus-font-mono)' }}>transition-duration</code> to <code style={{ fontFamily: 'var(--haus-font-mono)' }}>var(--haus-duration-reduced)</code> (0ms) inside <code style={{ fontFamily: 'var(--haus-font-mono)' }}>@media (prefers-reduced-motion: reduce)</code>. Position and layout changes may remain; opacity and transform animations should collapse.
+        Set <code style={{ fontFamily: 'var(--haus-font-mono)' }}>transition-duration</code> to{' '}
+        <code style={{ fontFamily: 'var(--haus-font-mono)' }}>var(--haus-duration-reduced)</code> (0ms) inside{' '}
+        <code style={{ fontFamily: 'var(--haus-font-mono)' }}>@media (prefers-reduced-motion: reduce)</code>. Position
+        and layout changes may remain; opacity and transform animations should collapse.
       </Callout>
     </div>
   )

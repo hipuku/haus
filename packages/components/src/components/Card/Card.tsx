@@ -63,18 +63,13 @@ export const Card = React.forwardRef<HTMLElement, CardProps>(function Card(props
   // Read off the union rather than destructured above: the `asChild` half types
   // `as` as `never`, and a default in the pattern would widen it back.
   const asChild = props.asChild === true
-  const Element = props.asChild === true ? 'div' : props.as ?? 'div'
+  const Element = props.asChild === true ? 'div' : (props.as ?? 'div')
 
   // `rest` still holds the discriminant and the prop read off the union, and
   // both would land on the DOM as unknown attributes.
   const { asChild: _asChild, as: _as, ...domProps } = rest as Record<string, unknown>
 
-  const cls = [
-    styles.card,
-    styles[variant],
-    padding ? styles.padded : '',
-    className,
-  ].filter(Boolean).join(' ')
+  const cls = [styles.card, styles[variant], padding ? styles.padded : '', className].filter(Boolean).join(' ')
 
   if (asChild) {
     const child = React.Children.only(props.children as React.ReactElement)

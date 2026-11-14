@@ -105,10 +105,10 @@ export const Tooltip = React.forwardRef<HTMLSpanElement, TooltipProps>(function 
    * pass an id and wire it, which is the step people forget, and forgetting it
    * makes the tooltip invisible to the readers who need it most. */
   const described = React.cloneElement(children, {
-    'aria-describedby': [
-      (children.props as Record<string, string | undefined>)['aria-describedby'],
-      open ? id : undefined,
-    ].filter(Boolean).join(' ') || undefined,
+    'aria-describedby':
+      [(children.props as Record<string, string | undefined>)['aria-describedby'], open ? id : undefined]
+        .filter(Boolean)
+        .join(' ') || undefined,
   } as Partial<unknown> as never)
 
   return (
@@ -124,11 +124,7 @@ export const Tooltip = React.forwardRef<HTMLSpanElement, TooltipProps>(function 
     >
       {described}
       {open && (
-        <span
-          role="tooltip"
-          id={id}
-          className={[styles.bubble, styles[placement]].join(' ')}
-        >
+        <span role="tooltip" id={id} className={[styles.bubble, styles[placement]].join(' ')}>
           {content}
         </span>
       )}

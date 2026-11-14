@@ -20,7 +20,11 @@ describe('Card', () => {
   })
 
   it('keeps its classes on whatever element it becomes', () => {
-    render(<Card as="article" data-testid="c">Body</Card>)
+    render(
+      <Card as="article" data-testid="c">
+        Body
+      </Card>,
+    )
     const el = screen.getByTestId('c')
     expect(el.tagName).toBe('ARTICLE')
     expect(el.className).toContain('card')
@@ -57,7 +61,11 @@ describe('Card', () => {
   })
 
   it('spreads native div attributes', () => {
-    render(<Card data-testid="panel" aria-label="Summary">Contents</Card>)
+    render(
+      <Card data-testid="panel" aria-label="Summary">
+        Contents
+      </Card>,
+    )
     expect(screen.getByTestId('panel')).toHaveAttribute('aria-label', 'Summary')
   })
 
@@ -77,10 +85,18 @@ describe('Card', () => {
   it('has no axe violations across variants', async () => {
     const { container } = render(
       <>
-        <Card variant="default"><h2>Default</h2></Card>
-        <Card variant="elevated"><h2>Elevated</h2></Card>
-        <Card variant="outlined"><h2>Outlined</h2></Card>
-        <Card padding={false}><h2>Flush</h2></Card>
+        <Card variant="default">
+          <h2>Default</h2>
+        </Card>
+        <Card variant="elevated">
+          <h2>Elevated</h2>
+        </Card>
+        <Card variant="outlined">
+          <h2>Outlined</h2>
+        </Card>
+        <Card padding={false}>
+          <h2>Flush</h2>
+        </Card>
       </>,
     )
     expect((await axe(container)).violations).toEqual([])
@@ -123,7 +139,9 @@ describe('asChild', () => {
   it('gives the child the card box, and lets the child className win', () => {
     render(
       <Card asChild variant="elevated" className="sys">
-        <a href="/x" className="mine">body</a>
+        <a href="/x" className="mine">
+          body
+        </a>
       </Card>,
     )
     const link = screen.getByRole('link')
@@ -137,7 +155,9 @@ describe('asChild', () => {
     const child = createRef<HTMLAnchorElement>()
     render(
       <Card asChild ref={own}>
-        <a href="/x" ref={child}>body</a>
+        <a href="/x" ref={child}>
+          body
+        </a>
       </Card>,
     )
     expect(own.current).toBe(screen.getByRole('link'))
@@ -145,7 +165,11 @@ describe('asChild', () => {
   })
 
   it('puts no asChild-only prop on the DOM', () => {
-    render(<Card asChild><a href="/x">body</a></Card>)
+    render(
+      <Card asChild>
+        <a href="/x">body</a>
+      </Card>,
+    )
     const link = screen.getByRole('link')
     expect(link).not.toHaveAttribute('asChild')
     expect(link).not.toHaveAttribute('as')
@@ -153,8 +177,12 @@ describe('asChild', () => {
 
   it('does not typecheck with as', () => {
     // The child supplies the element and `as` names one. Both is a contradiction.
-    // @ts-expect-error the child is the element, so there is no element to name
-    const x = <Card asChild as="article"><a href="/x">body</a></Card>
+    const x = (
+      // @ts-expect-error the child is the element, so there is no element to name
+      <Card asChild as="article">
+        <a href="/x">body</a>
+      </Card>
+    )
     expect(x).toBeTruthy()
   })
 
@@ -173,7 +201,11 @@ describe('asChild', () => {
 
   it('has no axe violations as a link', async () => {
     const { container } = render(
-      <Card asChild><a href="/x"><h3>Title</h3></a></Card>,
+      <Card asChild>
+        <a href="/x">
+          <h3>Title</h3>
+        </a>
+      </Card>,
     )
     expect((await axe(container)).violations).toEqual([])
   })

@@ -39,10 +39,7 @@ const SHEETS = stylesheets()
 
 /** The same source with every comment removed. A rule that is being explained is
  *  not a rule that is in force, and these assertions read prose otherwise. */
-const CODE: [string, string][] = SHEETS.map(([file, css]) => [
-  file,
-  css.replace(/\/\*[\s\S]*?\*\//g, ''),
-])
+const CODE: [string, string][] = SHEETS.map(([file, css]) => [file, css.replace(/\/\*[\s\S]*?\*\//g, '')])
 
 /** Property names that pin a value to the left or the right of the box. */
 const PHYSICAL =

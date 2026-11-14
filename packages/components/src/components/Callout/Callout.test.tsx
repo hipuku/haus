@@ -21,7 +21,11 @@ describe('Callout', () => {
   })
 
   it('becomes assertive only when asked, because assertive interrupts', () => {
-    render(<Callout live="assertive" tone="error">Payment declined.</Callout>)
+    render(
+      <Callout live="assertive" tone="error">
+        Payment declined.
+      </Callout>,
+    )
     expect(screen.getByRole('alert')).toBeInTheDocument()
   })
 
@@ -34,7 +38,11 @@ describe('Callout', () => {
     const { rerender } = render(<Callout data-testid="c">Body</Callout>)
     expect(screen.getByTestId('c').className).toContain('info')
 
-    rerender(<Callout tone="warning" data-testid="c">Body</Callout>)
+    rerender(
+      <Callout tone="warning" data-testid="c">
+        Body
+      </Callout>,
+    )
     expect(screen.getByTestId('c').className).toContain('warning')
   })
 
@@ -59,7 +67,11 @@ describe('Callout', () => {
   })
 
   it('merges className rather than replacing the component classes', () => {
-    render(<Callout className="custom" data-testid="c">Body</Callout>)
+    render(
+      <Callout className="custom" data-testid="c">
+        Body
+      </Callout>,
+    )
     const el = screen.getByTestId('c')
     expect(el).toHaveClass('custom')
     expect(el.className).toContain('callout')
@@ -81,7 +93,9 @@ describe('Callout', () => {
         <Callout tone="info">Info</Callout>
         <Callout tone="success">Success</Callout>
         <Callout tone="warning">Warning</Callout>
-        <Callout tone="error" live="assertive">Error</Callout>
+        <Callout tone="error" live="assertive">
+          Error
+        </Callout>
       </>,
     )
     expect((await axe(container)).violations).toEqual([])

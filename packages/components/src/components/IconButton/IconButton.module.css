@@ -1,14 +1,14 @@
 .iconButton {
   /* Same private-property shape as Button, and the same reason: the shipped
      stylesheet must read nothing a consumer could also have declared. */
-  --haus-ibtn-solid:        var(--haus-color-primary-default);
-  --haus-ibtn-solid-hover:  var(--haus-color-primary-hover);
-  --haus-ibtn-on-solid:     var(--haus-color-ink-on-primary);
-  --haus-ibtn-bg:           var(--haus-color-surface-subtle);
-  --haus-ibtn-bg-hover:     var(--haus-color-surface-sunken);
-  --haus-ibtn-border:       var(--haus-color-border-default);
-  --haus-ibtn-ink:          var(--haus-color-ink-secondary);
-  --haus-ibtn-ink-hover:    var(--haus-color-ink-primary);
+  --haus-ibtn-solid: var(--haus-color-primary-default);
+  --haus-ibtn-solid-hover: var(--haus-color-primary-hover);
+  --haus-ibtn-on-solid: var(--haus-color-ink-on-primary);
+  --haus-ibtn-bg: var(--haus-color-surface-subtle);
+  --haus-ibtn-bg-hover: var(--haus-color-surface-sunken);
+  --haus-ibtn-border: var(--haus-color-border-default);
+  --haus-ibtn-ink: var(--haus-color-ink-secondary);
+  --haus-ibtn-ink-hover: var(--haus-color-ink-primary);
 
   display: grid;
   place-items: center;
@@ -19,9 +19,9 @@
   cursor: pointer;
   transition:
     background-color var(--haus-motion-micro),
-    border-color     var(--haus-motion-micro),
-    color            var(--haus-motion-micro),
-    box-shadow       var(--haus-motion-micro);
+    border-color var(--haus-motion-micro),
+    color var(--haus-motion-micro),
+    box-shadow var(--haus-motion-micro);
 }
 
 .iconButton:focus-visible {
@@ -30,7 +30,7 @@
 }
 
 .iconButton:disabled,
-.iconButton[aria-disabled="true"] {
+.iconButton[aria-disabled='true'] {
   cursor: not-allowed;
   opacity: var(--haus-opacity-disabled);
   pointer-events: none;
@@ -82,47 +82,47 @@
    meaning. */
 
 .info {
-  --haus-ibtn-solid:       var(--haus-color-info-default);
+  --haus-ibtn-solid: var(--haus-color-info-default);
   --haus-ibtn-solid-hover: var(--haus-color-info-emphasis);
-  --haus-ibtn-on-solid:    var(--haus-color-info-on-default);
-  --haus-ibtn-bg:          var(--haus-color-info-subtle);
-  --haus-ibtn-bg-hover:    var(--haus-color-info-border);
-  --haus-ibtn-border:      var(--haus-color-info-border);
-  --haus-ibtn-ink:         var(--haus-color-info-on-subtle);
-  --haus-ibtn-ink-hover:   var(--haus-color-info-on-subtle);
+  --haus-ibtn-on-solid: var(--haus-color-info-on-default);
+  --haus-ibtn-bg: var(--haus-color-info-subtle);
+  --haus-ibtn-bg-hover: var(--haus-color-info-border);
+  --haus-ibtn-border: var(--haus-color-info-border);
+  --haus-ibtn-ink: var(--haus-color-info-on-subtle);
+  --haus-ibtn-ink-hover: var(--haus-color-info-on-subtle);
 }
 
 .success {
-  --haus-ibtn-solid:       var(--haus-color-success-solid);
+  --haus-ibtn-solid: var(--haus-color-success-solid);
   --haus-ibtn-solid-hover: var(--haus-color-success-emphasis);
-  --haus-ibtn-on-solid:    var(--haus-color-ink-inverse);
-  --haus-ibtn-bg:          var(--haus-color-success-subtle);
-  --haus-ibtn-bg-hover:    var(--haus-color-success-border);
-  --haus-ibtn-border:      var(--haus-color-success-border);
-  --haus-ibtn-ink:         var(--haus-color-success-on-subtle);
-  --haus-ibtn-ink-hover:   var(--haus-color-success-on-subtle);
+  --haus-ibtn-on-solid: var(--haus-color-ink-inverse);
+  --haus-ibtn-bg: var(--haus-color-success-subtle);
+  --haus-ibtn-bg-hover: var(--haus-color-success-border);
+  --haus-ibtn-border: var(--haus-color-success-border);
+  --haus-ibtn-ink: var(--haus-color-success-on-subtle);
+  --haus-ibtn-ink-hover: var(--haus-color-success-on-subtle);
 }
 
 .warning {
-  --haus-ibtn-solid:       var(--haus-color-warning-solid);
+  --haus-ibtn-solid: var(--haus-color-warning-solid);
   --haus-ibtn-solid-hover: var(--haus-color-warning-emphasis);
-  --haus-ibtn-on-solid:    var(--haus-color-ink-inverse);
-  --haus-ibtn-bg:          var(--haus-color-warning-subtle);
-  --haus-ibtn-bg-hover:    var(--haus-color-warning-border);
-  --haus-ibtn-border:      var(--haus-color-warning-border);
-  --haus-ibtn-ink:         var(--haus-color-warning-on-subtle);
-  --haus-ibtn-ink-hover:   var(--haus-color-warning-on-subtle);
+  --haus-ibtn-on-solid: var(--haus-color-ink-inverse);
+  --haus-ibtn-bg: var(--haus-color-warning-subtle);
+  --haus-ibtn-bg-hover: var(--haus-color-warning-border);
+  --haus-ibtn-border: var(--haus-color-warning-border);
+  --haus-ibtn-ink: var(--haus-color-warning-on-subtle);
+  --haus-ibtn-ink-hover: var(--haus-color-warning-on-subtle);
 }
 
 .error {
-  --haus-ibtn-solid:       var(--haus-color-error-default);
+  --haus-ibtn-solid: var(--haus-color-error-default);
   --haus-ibtn-solid-hover: var(--haus-color-error-emphasis);
-  --haus-ibtn-on-solid:    var(--haus-color-error-on-default);
-  --haus-ibtn-bg:          var(--haus-color-error-subtle);
-  --haus-ibtn-bg-hover:    var(--haus-color-error-border);
-  --haus-ibtn-border:      var(--haus-color-error-border);
-  --haus-ibtn-ink:         var(--haus-color-error-on-subtle);
-  --haus-ibtn-ink-hover:   var(--haus-color-error-on-subtle);
+  --haus-ibtn-on-solid: var(--haus-color-error-on-default);
+  --haus-ibtn-bg: var(--haus-color-error-subtle);
+  --haus-ibtn-bg-hover: var(--haus-color-error-border);
+  --haus-ibtn-border: var(--haus-color-error-border);
+  --haus-ibtn-ink: var(--haus-color-error-on-subtle);
+  --haus-ibtn-ink-hover: var(--haus-color-error-on-subtle);
 }
 
 /* ── Variants ── */

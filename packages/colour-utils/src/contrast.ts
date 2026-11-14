@@ -2,9 +2,9 @@ import chroma from 'chroma-js'
 
 export interface ContrastResult {
   ratio: number
-  passAA:      boolean  // 4.5:1 for normal text
-  passAAA:     boolean  // 7:1   for normal text
-  passAALarge: boolean  // 3:1   for large text (≥18pt or ≥14pt bold)
+  passAA: boolean // 4.5:1 for normal text
+  passAAA: boolean // 7:1   for normal text
+  passAALarge: boolean // 3:1   for large text (≥18pt or ≥14pt bold)
 }
 
 /**
@@ -14,8 +14,8 @@ export function wcagContrast(foreground: string, background: string): ContrastRe
   const ratio = Math.round(chroma.contrast(foreground, background) * 100) / 100
   return {
     ratio,
-    passAA:      ratio >= 4.5,
-    passAAA:     ratio >= 7.0,
+    passAA: ratio >= 4.5,
+    passAAA: ratio >= 7.0,
     passAALarge: ratio >= 3.0,
   }
 }

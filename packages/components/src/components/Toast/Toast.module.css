@@ -16,8 +16,14 @@
 }
 
 @keyframes slideIn {
-  from { transform: translateY(var(--haus-space-2)); opacity: 0; }
-  to   { transform: translateY(0);   opacity: 1; }
+  from {
+    transform: translateY(var(--haus-space-2));
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 /* ── Tones ─────────────────────────────────────────────────────────────────
@@ -35,20 +41,20 @@
    the refactor unchanged. */
 
 .neutral {
-  --haus-toast-bg:        var(--haus-color-surface-subtle);
-  --haus-toast-border:    var(--haus-color-border-default);
-  --haus-toast-accent:    var(--haus-color-border-strong);
-  --haus-toast-icon:      var(--haus-color-ink-secondary);
-  --haus-toast-solid-bg:  var(--haus-color-surface-inverse);
+  --haus-toast-bg: var(--haus-color-surface-subtle);
+  --haus-toast-border: var(--haus-color-border-default);
+  --haus-toast-accent: var(--haus-color-border-strong);
+  --haus-toast-icon: var(--haus-color-ink-secondary);
+  --haus-toast-solid-bg: var(--haus-color-surface-inverse);
   --haus-toast-solid-ink: var(--haus-color-ink-inverse);
 }
 
 .info {
-  --haus-toast-bg:        var(--haus-color-info-subtle);
-  --haus-toast-border:    var(--haus-color-info-border);
-  --haus-toast-accent:    var(--haus-color-info-default);
-  --haus-toast-icon:      var(--haus-color-info-on-subtle);
-  --haus-toast-solid-bg:  var(--haus-color-info-default);
+  --haus-toast-bg: var(--haus-color-info-subtle);
+  --haus-toast-border: var(--haus-color-info-border);
+  --haus-toast-accent: var(--haus-color-info-default);
+  --haus-toast-icon: var(--haus-color-info-on-subtle);
+  --haus-toast-solid-bg: var(--haus-color-info-default);
   --haus-toast-solid-ink: var(--haus-color-info-on-default);
 }
 
@@ -57,29 +63,29 @@
    Button make, for the same measured reason. */
 
 .success {
-  --haus-toast-bg:        var(--haus-color-success-subtle);
-  --haus-toast-border:    var(--haus-color-success-border);
-  --haus-toast-accent:    var(--haus-color-success-default);
-  --haus-toast-icon:      var(--haus-color-success-on-subtle);
-  --haus-toast-solid-bg:  var(--haus-color-success-solid);
+  --haus-toast-bg: var(--haus-color-success-subtle);
+  --haus-toast-border: var(--haus-color-success-border);
+  --haus-toast-accent: var(--haus-color-success-default);
+  --haus-toast-icon: var(--haus-color-success-on-subtle);
+  --haus-toast-solid-bg: var(--haus-color-success-solid);
   --haus-toast-solid-ink: var(--haus-color-ink-inverse);
 }
 
 .warning {
-  --haus-toast-bg:        var(--haus-color-warning-subtle);
-  --haus-toast-border:    var(--haus-color-warning-border);
-  --haus-toast-accent:    var(--haus-color-warning-default);
-  --haus-toast-icon:      var(--haus-color-warning-on-subtle);
-  --haus-toast-solid-bg:  var(--haus-color-warning-solid);
+  --haus-toast-bg: var(--haus-color-warning-subtle);
+  --haus-toast-border: var(--haus-color-warning-border);
+  --haus-toast-accent: var(--haus-color-warning-default);
+  --haus-toast-icon: var(--haus-color-warning-on-subtle);
+  --haus-toast-solid-bg: var(--haus-color-warning-solid);
   --haus-toast-solid-ink: var(--haus-color-ink-inverse);
 }
 
 .error {
-  --haus-toast-bg:        var(--haus-color-error-subtle);
-  --haus-toast-border:    var(--haus-color-error-border);
-  --haus-toast-accent:    var(--haus-color-error-default);
-  --haus-toast-icon:      var(--haus-color-error-on-subtle);
-  --haus-toast-solid-bg:  var(--haus-color-error-default);
+  --haus-toast-bg: var(--haus-color-error-subtle);
+  --haus-toast-border: var(--haus-color-error-border);
+  --haus-toast-accent: var(--haus-color-error-default);
+  --haus-toast-icon: var(--haus-color-error-on-subtle);
+  --haus-toast-solid-bg: var(--haus-color-error-default);
   --haus-toast-solid-ink: var(--haus-color-error-on-default);
 }
 
@@ -117,8 +123,12 @@
 /* One rule per appearance rather than one per tone: the tinted appearance puts
    the tone's own ink on the icon, and the solid one has the tone in the surface
    already, so the icon takes the surface's ink. */
-.subtle .icon { color: var(--haus-toast-icon); }
-.solid  .icon { color: inherit; }
+.subtle .icon {
+  color: var(--haus-toast-icon);
+}
+.solid .icon {
+  color: inherit;
+}
 
 /* ── Body ── */
 
@@ -151,7 +161,9 @@
    contrast suite cannot measure. Title and description still separate, by
    weight and size, which is how the rest of the system does it. */
 .solid .description,
-.solid .action { color: inherit; }
+.solid .action {
+  color: inherit;
+}
 
 .titleRow {
   display: flex;
@@ -193,7 +205,9 @@
   height: var(--haus-icon-xs);
 }
 
-.close:hover { opacity: 1; }
+.close:hover {
+  opacity: 1;
+}
 .close:focus-visible {
   outline: none;
   box-shadow: var(--haus-focus-ring);

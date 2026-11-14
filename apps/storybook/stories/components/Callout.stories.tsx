@@ -32,9 +32,9 @@ type Story = StoryObj<typeof meta>
 export const Playground: Story = {}
 
 export const Tones: Story = {
-  render: (args) => (
+  render: args => (
     <div style={{ display: 'grid', gap: 'var(--haus-space-3)', maxWidth: 480 }}>
-      {(['neutral', 'info', 'success', 'warning', 'error'] as const).map((tone) => (
+      {(['neutral', 'info', 'success', 'warning', 'error'] as const).map(tone => (
         <Callout key={tone} {...args} tone={tone}>
           {tone}
         </Callout>

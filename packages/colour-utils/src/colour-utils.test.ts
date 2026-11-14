@@ -1,11 +1,11 @@
 import { describe, it, expect } from 'vitest'
 import chroma from 'chroma-js'
-import { generateLightnessScale }        from './lightnessScale'
+import { generateLightnessScale } from './lightnessScale'
 import { basicColourNames, createNamedColourMatcher } from './namedColour'
 import { hueFamily, oklch, HUE_FAMILIES } from './oklch'
 import { wcagContrast, isLight, suggestTextColour } from './contrast'
-import { clusterByPerceptualDistance }   from './cluster'
-import { nearestNamedColour }            from './namedColour'
+import { clusterByPerceptualDistance } from './cluster'
+import { nearestNamedColour } from './namedColour'
 
 describe('generateLightnessScale', () => {
   it('returns the requested number of steps', () => {
@@ -23,7 +23,7 @@ describe('generateLightnessScale', () => {
   it('goes from light to dark', () => {
     const scale = generateLightnessScale('#7c3aed', { steps: 5 })
     const first = chroma(scale[0]).luminance()
-    const last  = chroma(scale[4]).luminance()
+    const last = chroma(scale[4]).luminance()
     expect(first).toBeGreaterThan(last)
   })
 })
@@ -225,9 +225,7 @@ describe('hueFamily', () => {
 
   it('covers the whole wheel with no gap between bins', () => {
     for (let h = 0; h < 360; h += 1) {
-      const named = HUE_FAMILIES.some((f) =>
-        f.min > f.max ? h >= f.min || h < f.max : h >= f.min && h < f.max,
-      )
+      const named = HUE_FAMILIES.some(f => (f.min > f.max ? h >= f.min || h < f.max : h >= f.min && h < f.max))
       expect(named, `hue ${h} falls in no family`).toBe(true)
     }
   })

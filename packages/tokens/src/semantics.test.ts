@@ -17,23 +17,16 @@ const motion = read('motion.css')
 const brand = read('brand.css')
 
 /** Custom properties a file declares, e.g. `--haus-color-ink-primary`. */
-const declared = (css: string) =>
-  new Set([...css.matchAll(/^\s*(--[\w-]+)\s*:/gm)].map((m) => m[1]))
+const declared = (css: string) => new Set([...css.matchAll(/^\s*(--[\w-]+)\s*:/gm)].map(m => m[1]))
 
 /** Custom properties a file reads through `var(--x)`. */
-const referenced = (css: string) =>
-  new Set([...css.matchAll(/var\(\s*(--[\w-]+)/g)].map((m) => m[1]))
+const referenced = (css: string) => new Set([...css.matchAll(/var\(\s*(--[\w-]+)/g)].map(m => m[1]))
 
 const SEMANTIC = declared(semantics)
 // brand.css joined the layers when A3 split it out of this file: semantics now
 // reads --haus-brand-* entries rather than palette ramps, and those are declared
 // there.
-const AVAILABLE = new Set([
-  ...SEMANTIC,
-  ...declared(primitives),
-  ...declared(motion),
-  ...declared(brand),
-])
+const AVAILABLE = new Set([...SEMANTIC, ...declared(primitives), ...declared(motion), ...declared(brand)])
 
 describe('semantics.css', () => {
   it('reads the token files it is meant to read', () => {
@@ -43,7 +36,7 @@ describe('semantics.css', () => {
   })
 
   it('every token it references is declared in the token layers', () => {
-    const missing = [...referenced(semantics)].filter((t) => !AVAILABLE.has(t))
+    const missing = [...referenced(semantics)].filter(t => !AVAILABLE.has(t))
     expect(missing).toEqual([])
   })
 
@@ -86,14 +79,16 @@ describe('semantics.css', () => {
     // consumer on its own rule. Renaming it removed the only exception, and an
     // assertion with no exceptions is the one worth keeping.
     const palettes = ['aronia', 'damson', 'elderberry', 'greengage', 'mango', 'cherry', 'ruby']
-    const offenders = [...SEMANTIC].filter((t) => palettes.some((p) => t.includes(p)))
+    const offenders = [...SEMANTIC].filter(t => palettes.some(p => t.includes(p)))
     expect(offenders).toEqual([])
   })
 
   it('keeps spacing roles on the primitive ladder', () => {
     // Every inset/gap/stack step aliases a --space-N primitive directly, so a
     // step is the same size whichever role reads it.
-    const roles = [...semantics.matchAll(/^\s*(--haus-space-(?:inset|gap|stack)-[\w-]+)\s*:\s*var\((--haus-space-\d+)\)/gm)]
+    const roles = [
+      ...semantics.matchAll(/^\s*(--haus-space-(?:inset|gap|stack)-[\w-]+)\s*:\s*var\((--haus-space-\d+)\)/gm),
+    ]
     expect(roles.length).toBeGreaterThan(10)
     const sizeOf = new Map<string, string>()
     for (const [, , primitive] of roles) expect(declared(primitives).has(primitive)).toBe(true)

@@ -9,7 +9,11 @@ describe('Badge', () => {
   })
 
   it('applies variant and appearance classes', () => {
-    render(<Badge tone="success" appearance="solid">Passed</Badge>)
+    render(
+      <Badge tone="success" appearance="solid">
+        Passed
+      </Badge>,
+    )
     const cls = screen.getByText('Passed').className
     expect(cls).toContain('success')
     expect(cls).toContain('solid')
@@ -30,7 +34,11 @@ describe('Badge', () => {
   })
 
   it('spreads native span attributes', () => {
-    render(<Badge data-testid="status-badge" title="Build status">Live</Badge>)
+    render(
+      <Badge data-testid="status-badge" title="Build status">
+        Live
+      </Badge>,
+    )
     expect(screen.getByTestId('status-badge')).toHaveAttribute('title', 'Build status')
   })
 
@@ -48,7 +56,9 @@ describe('Badge', () => {
         <Badge tone="success">Success</Badge>
         <Badge tone="warning">Warning</Badge>
         <Badge tone="error">Error</Badge>
-        <Badge tone="info" appearance="solid">Info</Badge>
+        <Badge tone="info" appearance="solid">
+          Info
+        </Badge>
         <Badge dot>With dot</Badge>
       </>,
     )

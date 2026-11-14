@@ -45,8 +45,12 @@ function Demo({ children, ...args }: React.ComponentProps<typeof Modal>) {
         initialFocus={args.initialFocus === undefined ? undefined : confirm}
         footer={
           <div style={{ display: 'flex', gap: 'var(--haus-space-2)', justifyContent: 'flex-end' }}>
-            <Button variant="ghost" onClick={() => setOpen(false)}>Cancel</Button>
-            <Button ref={confirm} tone="error" onClick={() => setOpen(false)}>Delete</Button>
+            <Button variant="ghost" onClick={() => setOpen(false)}>
+              Cancel
+            </Button>
+            <Button ref={confirm} tone="error" onClick={() => setOpen(false)}>
+              Delete
+            </Button>
           </div>
         }
       >
@@ -57,15 +61,14 @@ function Demo({ children, ...args }: React.ComponentProps<typeof Modal>) {
 }
 
 export const Playground: Story = {
-  render: (args) => <Demo {...args}>This cannot be undone.</Demo>,
+  render: args => <Demo {...args}>This cannot be undone.</Demo>,
 }
 
 export const FocusTheAction: Story = {
   name: 'Focus starts on the action',
-  render: (args) => (
+  render: args => (
     <Demo {...args} initialFocus={{ current: null }}>
-      Focus lands on Delete rather than on the dialog, so a confirm with one
-      obvious action does not make you tab to it.
+      Focus lands on Delete rather than on the dialog, so a confirm with one obvious action does not make you tab to it.
     </Demo>
   ),
 }
@@ -73,12 +76,14 @@ export const FocusTheAction: Story = {
 export const NoBackdropDismiss: Story = {
   name: 'Refuses a backdrop click',
   args: { dismissOnBackdrop: false },
-  render: (args) => (
-    <Demo {...args}>A misplaced click should not discard what you were doing.</Demo>
-  ),
+  render: args => <Demo {...args}>A misplaced click should not discard what you were doing.</Demo>,
 }
 
 export const Sizes: Story = {
-  render: (args) => <Demo {...args} size="lg">A larger dialog.</Demo>,
+  render: args => (
+    <Demo {...args} size="lg">
+      A larger dialog.
+    </Demo>
+  ),
   args: { size: 'lg' },
 }

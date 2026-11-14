@@ -67,7 +67,7 @@ that is valid and wrong in context:
 - vault's `Popover` leaves focus return to the caller and none of its six call
   sites does it, so <kbd>Escape</kbd> drops focus onto `<body>`. WCAG 2.4.3.
 - vault's `EmptyState` renders load failures: "Couldn't open your library"
-  reads as *there is nothing here* when the truth is *we could not look*, and
+  reads as _there is nothing here_ when the truth is _we could not look_, and
   reaches assistive technology as nothing at all. Its title is a `<p>`, so
   heading navigation skips the only sentence explaining the absence.
 

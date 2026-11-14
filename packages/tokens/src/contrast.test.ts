@@ -21,9 +21,7 @@ const read = (f: string) => readFileSync(join(SRC, f), 'utf8')
 
 /** Every `--x: value;` in a file. */
 function declarations(css: string): Map<string, string> {
-  return new Map(
-    [...css.matchAll(/^\s*(--[\w-]+)\s*:\s*([^;]+);/gm)].map((m) => [m[1], m[2].trim()]),
-  )
+  return new Map([...css.matchAll(/^\s*(--[\w-]+)\s*:\s*([^;]+);/gm)].map(m => [m[1], m[2].trim()]))
 }
 
 const ALL = new Map([
@@ -116,10 +114,7 @@ describe('contrast', () => {
   })
 
   it('secondary text clears AA on the default surface', () => {
-    const { ratio } = wcagContrast(
-      resolve('--haus-color-ink-secondary')!,
-      resolve('--haus-color-surface-default')!,
-    )
+    const { ratio } = wcagContrast(resolve('--haus-color-ink-secondary')!, resolve('--haus-color-surface-default')!)
     expect(ratio, `ink-secondary is ${ratio.toFixed(2)}:1`).toBeGreaterThanOrEqual(4.5)
   })
 

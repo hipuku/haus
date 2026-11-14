@@ -40,9 +40,7 @@ describe('Input', () => {
     render(<Input label="Email" error="That address is already in use" />)
     const input = screen.getByLabelText('Email')
     expect(input).toHaveAttribute('aria-invalid', 'true')
-    expect(input.getAttribute('aria-describedby')).toContain(
-      screen.getByText('That address is already in use').id,
-    )
+    expect(input.getAttribute('aria-describedby')).toContain(screen.getByText('That address is already in use').id)
   })
 
   it('is not marked invalid when there is no error', () => {
