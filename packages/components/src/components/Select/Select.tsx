@@ -166,6 +166,10 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(function Sel
       >
         <ul className={styles.options} role="none">
           {options.map((o, i) => (
+            // Keys go to the trigger, which keeps focus and moves the active option
+            // through aria-activedescendant (useListbox), so an option takes no key
+            // events of its own. Its click is the pointer's way to choose.
+            // eslint-disable-next-line jsx-a11y-x/click-events-have-key-events
             <li
               key={o.value}
               id={listbox.optionId(i)}
