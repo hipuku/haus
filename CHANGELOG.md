@@ -34,6 +34,14 @@ when enabled, and no handler is added, so a Server Component can still render it
 
 **Fixed** · **Enabled buttons no longer carry `aria-disabled="false"`.**
 
+**Added** · **`Select` takes `hint` and `error`**, as Input does. The hint is a line under the
+control that describes it; the error takes its place, marks the trigger `aria-invalid`, rings
+it in the error colour and is announced when it appears. The panel still opens under the
+trigger, not under either line.
+
+**Fixed** · **`aria-describedby` on a `Select` described nothing.** It landed on the wrapper
+div with the other props. It now goes to the combobox, ahead of the hint or error.
+
 ## haus-tokens 5.2.0
 
 _2026-09-13. Mono becomes a ladder of three roles._
