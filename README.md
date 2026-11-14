@@ -73,6 +73,7 @@ pnpm run storybook      # builds the packages, then serves Storybook on port 600
 | `pnpm run lint`            | ESLint                                                  |
 | `pnpm run lint:css`        | Stylelint, which fails a raw value where a token exists |
 | `pnpm run lint:prose`      | The em dash check, against its baseline                 |
+| `pnpm run lint:md`         | markdownlint                                            |
 | `pnpm run format:check`    | Prettier                                                |
 | `pnpm run typecheck`       | `tsc` in every package                                  |
 | `pnpm -r run test`         | Every test suite                                        |

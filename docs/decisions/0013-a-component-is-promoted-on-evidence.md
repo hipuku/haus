@@ -20,7 +20,7 @@ of what the system did not give them.
 
 So the three products were measured rather than surveyed, on 2026-09-05:
 
-```
+```text
                     core   drift  vault   haus
 role="tablist"        1      2      1      0
 aria-haspopup         2      0      5      0

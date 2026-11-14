@@ -27,7 +27,7 @@ so your own styles win without a specificity fight.
 
 ## The layers
 
-```
+```text
 primitives.css   --haus-aronia-500: oklch(52% 0.138 300)
                         ↓
 brand.css        --haus-brand-primary-default: var(--haus-aronia-500)

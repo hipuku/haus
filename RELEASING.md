@@ -36,7 +36,7 @@ first goes through CI.
 
 ## Tag format
 
-```
+```text
 <directory>-v<version>
 ```
 
@@ -92,7 +92,7 @@ release the dependency, then release the dependent.
 
 Current order, bottom up:
 
-```
+```text
 haus-tokens        →  haus-components
 haus-colour-utils  →  haus-style-probe
 haus-colour-names     (nothing depends on it)

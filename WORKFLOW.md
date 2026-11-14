@@ -28,15 +28,16 @@ history, and it applies to the owner too.
 
 ## Checks
 
-| Check             | Workflow        | Runs                                                                                   | Required |
-| ----------------- | --------------- | -------------------------------------------------------------------------------------- | -------- |
-| Lint              | `ci.yml`        | `pnpm run lint` (ESLint), `pnpm run lint:css` (Stylelint), `pnpm run lint:prose`       | Yes      |
-| Format            | `ci.yml`        | `pnpm run format:check`                                                                | Yes      |
-| Typecheck         | `ci.yml`        | The package build, then `pnpm -r run typecheck`                                        | Yes      |
-| Test              | `ci.yml`        | The package build, then every suite with its coverage floor                            | Yes      |
-| Build             | `ci.yml`        | `tokens:check`, the package build and the Storybook build, after the four above pass   | Yes      |
-| Visual regression | `chromatic.yml` | Chromatic snapshots every story; a change waits in Chromatic for a person to accept it | No       |
-| CodeQL            | default setup   | Code scanning of the TypeScript and the workflows                                      | No       |
+| Check             | Workflow        | Runs                                                                                     | Required |
+| ----------------- | --------------- | ---------------------------------------------------------------------------------------- | -------- |
+| Lint              | `ci.yml`        | `pnpm run lint` (ESLint), `lint:css` (Stylelint), `lint:prose`, `lint:md` (markdownlint) | Yes      |
+| Links             | `ci.yml`        | lychee, offline: every relative link and heading anchor in the markdown resolves         | Yes      |
+| Format            | `ci.yml`        | `pnpm run format:check`                                                                  | Yes      |
+| Typecheck         | `ci.yml`        | The package build, then `pnpm -r run typecheck`                                          | Yes      |
+| Test              | `ci.yml`        | The package build, then every suite with its coverage floor                              | Yes      |
+| Build             | `ci.yml`        | `tokens:check`, the package build and the Storybook build, after the four above pass     | Yes      |
+| Visual regression | `chromatic.yml` | Chromatic snapshots every story; a change waits in Chromatic for a person to accept it   | No       |
+| CodeQL            | default setup   | Code scanning of the TypeScript and the workflows                                        | No       |
 
 Visual regression never fails the build (`exitZeroOnChanges`), and nothing is accepted
 automatically, so accepting a visual change is a decision rather than a side effect of merging. It
