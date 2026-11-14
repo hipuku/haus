@@ -8,21 +8,21 @@ name: Chromatic
 # way and produced no visual diff at any point, which was invisible because the
 # job also skipped for a missing token.
 #
-# Direct pushes to main are the normal workflow here, so main is where the
-# baseline has to come from. Snapshots cost one per story per browser per run;
-# this Storybook has eighteen story files on one browser, which is a small bill
-# for the only visual regression in the portfolio.
+# Snapshots cost one per story per browser per run, on one browser here.
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
   visual:
     name: Visual regression
     runs-on: ubuntu-latest
-    # Skips cleanly rather than failing red when the token is absent — on a fork,
+    # Skips cleanly rather than failing red when the token is absent: on a fork,
     # or before anyone has set it. A visual-regression job that fails for people
     # who cannot possibly fix it teaches everyone to ignore a red tick.
     #
@@ -65,22 +65,13 @@ jobs:
           # on one would mean every intentional design change arrives as a red
           # tick, which is how teams learn to merge past this job.
           exitZeroOnChanges: true
-          # Nothing is auto-accepted, and that is a deliberate departure from the
-          # usual setting of this flag.
-          #
-          # The textbook configuration accepts on main and reviews on a pull
-          # request, because main is the baseline and the PR is where a human
-          # reads the diff. That reasoning is sound and its premise is not met
-          # here: every pull request ever merged into this repository is
-          # Dependabot's. Design work goes straight to main. So the branch that
-          # reviewed only ever ran on dependency bumps, and the branch that
-          # accepted silently got all of the component work. Three changes were
-          # accepted unseen during the 1.0 push and nobody was offered the diff.
-          #
-          # Turning it off does not block anything: exitZeroOnChanges above keeps
-          # the build green either way. Changes wait in the Chromatic UI to be
-          # accepted or rejected, which makes accepting an act rather than a side
-          # effect of pushing. haus#36.
+          # Nothing is auto-accepted, on main or on a pull request. Every change
+          # reaches main through a pull request, and a visual change there waits
+          # in the Chromatic UI to be accepted or rejected, which makes accepting
+          # an act rather than a side effect of merging. Before pull requests
+          # were the workflow, design work went straight to main, where the usual
+          # setting accepted it unseen: three changes during the 1.0 push.
+          # exitZeroOnChanges above keeps the build green either way. haus#36.
           autoAcceptChanges: false
 
       - name: Say why this was skipped
@@ -89,4 +80,4 @@ jobs:
           CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
         run: |
           echo "::notice::CHROMATIC_PROJECT_TOKEN is not set, so no visual diff ran."
-          echo "Add it under Settings → Secrets and variables → Actions."
+          echo "Add it under Settings, Secrets and variables, Actions."

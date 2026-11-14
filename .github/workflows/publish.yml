@@ -19,6 +19,9 @@ on:
     tags:
       - '*-v*'
 
+permissions:
+  contents: read
+
 jobs:
   # Reading the tag is separated from acting on it so that a tag naming a version
   # already on npm can be skipped rather than failed. Tags are also written after
@@ -152,9 +155,10 @@ jobs:
 
       # Trusted publishing is npm CLI only, and only from 11.5.1. The npm that
       # ships with Node 22 is older than that, so it is upgraded rather than
-      # trusted to be new enough.
+      # trusted to be new enough. Pinned rather than latest: this step runs with
+      # the credential that publishes, so what it installs is fixed by a commit.
       - name: Upgrade npm to a version that speaks OIDC
-        run: npm install -g npm@latest
+        run: npm install -g npm@11.21.2
 
       # Two tools, because each does one half. pnpm rewrites `workspace:^` to the
       # dependency's real version as it packs. npm would publish the manifest
