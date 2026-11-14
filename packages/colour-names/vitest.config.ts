@@ -1,5 +1,5 @@
 import { defineConfig } from 'vitest/config'
-import { coverage } from '../../vitest.shared'
+import { coverage } from '../../vitest.shared.ts'
 
 /*
  * No thresholds, for the same reason as tokens and a different shape of it: this

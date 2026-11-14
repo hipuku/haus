@@ -1,6 +1,6 @@
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vitest/config'
-import { coverage } from '../../vitest.shared'
+import { coverage } from '../../vitest.shared.ts'
 
 export default defineConfig({
   plugins: [react()],
