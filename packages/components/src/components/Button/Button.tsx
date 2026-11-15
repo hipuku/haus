@@ -145,9 +145,11 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
     // A disabled child is the caller's element, often a router's link, so its
     // href stays and no click handler is added: a function prop on a host
     // element throws in a Server Component (decision 0024). It leaves the tab
-    // order, says it is disabled, loses the caller's onClick, and the
+    // order, says it is disabled, loses every click handler, the caller's and
+    // the child's own (cloneElement keeps any prop the override leaves out, so
+    // each is set to undefined, which adds nothing), and the
     // [aria-disabled='true'] rule in the stylesheet stops the pointer.
-    const { onClick, ...childDomProps } = domProps
+    const { onClick, onClickCapture, ...childDomProps } = domProps
     return React.cloneElement(
       child,
       {
@@ -156,7 +158,9 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
         className: [cls, childProps.className].filter(Boolean).join(' '),
         ref: mergeRefs(ref as React.Ref<unknown>, childRef),
         ...childDomProps,
-        ...((disabled ? { 'aria-disabled': true, tabIndex: -1 } : onClick ? { onClick } : {}) as Record<
+        ...((disabled
+          ? { 'aria-disabled': true, tabIndex: -1, onClick: undefined, onClickCapture: undefined }
+          : { ...(onClick ? { onClick } : {}), ...(onClickCapture ? { onClickCapture } : {}) }) as Record<
           string,
           unknown
         >),
@@ -199,7 +203,9 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
      becomes disabled while focused drops focus to the document, and the
      keyboard user who just pressed Save loses their place. Instead it stops
      being a submit button, so neither a click nor Enter can send its form
-     twice, and the caller's onClick is withheld. Nothing is attached that the
+     twice, and the caller's onClick and onClickCapture are withheld: the
+     pointer rule cannot stop Enter or Space on a focused button, and a
+     capture handler runs before onClick would. Nothing is attached that the
      caller did not pass, so a Server Component can still render it. The
      stylesheet's [aria-disabled='true'] rule stops the pointer. */
   const buttonProps = domProps as React.ButtonHTMLAttributes<HTMLButtonElement>
@@ -213,6 +219,7 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
       {...buttonProps}
       {...(loading ? { type: 'button' as const } : {})}
       onClick={loading ? undefined : buttonProps.onClick}
+      onClickCapture={loading ? undefined : buttonProps.onClickCapture}
     >
       {loading && <Spinner size="text" announcedBy="the button's aria-busy state" />}
       {children}
