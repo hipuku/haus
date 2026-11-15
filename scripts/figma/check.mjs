@@ -92,7 +92,8 @@ async function main() {
   if (flag('--save')) {
     const exported = JSON.parse(fs.readFileSync(option('--save'), 'utf8'))
     writeJson(PATHS.snapshot, {
-      exportedAt: new Date().toISOString(),
+      // The capture time, not the save time: Figma may have changed in between.
+      exportedAt: exported.capturedAt ?? new Date().toISOString(),
       source: 'plugin',
       file: FIGMA_FILE,
       variables: exported.variables,
