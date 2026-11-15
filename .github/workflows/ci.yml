@@ -52,8 +52,9 @@ jobs:
       - name: Markdown
         run: pnpm run lint:md
 
-  # Every relative link and heading anchor in the markdown resolves. Offline,
-  # so the check never fails because an outside site is slow.
+  # Every relative link and heading anchor in the markdown resolves, .github
+  # included (--hidden). Offline, so the check never fails because an outside
+  # site is slow.
   links:
     name: Links
     runs-on: ubuntu-latest
@@ -61,7 +62,7 @@ jobs:
       - uses: actions/checkout@v7
       - uses: lycheeverse/lychee-action@v2
         with:
-          args: --offline --include-fragments --no-progress --exclude-path node_modules './**/*.md'
+          args: --offline --include-fragments --no-progress --hidden --exclude-path node_modules --exclude-path .git './**/*.md'
           fail: true
 
   format:
