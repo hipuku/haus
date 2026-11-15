@@ -139,6 +139,41 @@ describe('reading the Figma file', () => {
   })
 })
 
+describe('axis names', () => {
+  it('refuses two Figma axes that read the same without case or spaces', () => {
+    const components = [
+      {
+        name: 'Toggle',
+        inSet: false,
+        props: [
+          { name: 'Label position', type: 'VARIANT', options: ['left', 'right'] },
+          { name: 'Label-position', type: 'VARIANT', options: ['start', 'end'] },
+        ],
+      },
+    ]
+    expect(() => figmaItems({ components })).toThrow(/two axes/)
+  })
+
+  it('refuses two components of the same name', () => {
+    const one = { name: 'Badge', inSet: false, props: [] }
+    expect(() => figmaItems({ components: [one, { ...one }] })).toThrow(/two components/)
+  })
+
+  it('refuses two State axes too, rather than letting one replace the other', () => {
+    const components = [
+      {
+        name: 'Button',
+        inSet: false,
+        props: [
+          { name: 'State', type: 'VARIANT', options: ['Default', 'Hover'] },
+          { name: 'S-tate', type: 'VARIANT', options: ['Default', 'Disabled'] },
+        ],
+      },
+    ]
+    expect(() => figmaItems({ components })).toThrow(/two axes/)
+  })
+})
+
 describe('reading the code', () => {
   it('follows var() chains to the end, fallbacks included', () => {
     const raw = { '--a': 'var(--b)', '--b': 'var(--c)', '--c': '4px' }

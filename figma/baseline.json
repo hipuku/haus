@@ -1,5 +1,5 @@
 {
-  "acceptedAt": "2026-11-15T04:38:05.652Z",
+  "acceptedAt": "2026-11-15T05:48:56.886Z",
   "items": {
     "axis Avatar.size": {
       "code": "lg|md|sm|xl|xs",
@@ -73,10 +73,8 @@
       "code": "auto|lg|md|sm|trigger|xl",
       "figma": "auto|lg|md|sm|trigger|xl"
     },
-    "axis Radio.orientation": {
-      "code": "horizontal|vertical"
-    },
     "axis RadioGroup.orientation": {
+      "code": "horizontal|vertical",
       "figma": "horizontal|vertical"
     },
     "axis Select.size": {
@@ -104,7 +102,8 @@
       "figma": "error|info|neutral|success|warning"
     },
     "axis Toggle.labelposition": {
-      "code": "left|right"
+      "code": "left|right",
+      "figma": "left|right"
     },
     "axis Toggle.size": {
       "code": "md|sm",
@@ -162,11 +161,8 @@
       "code": "present",
       "figma": "present"
     },
-    "component Radio": {
-      "code": "present",
-      "figma": "present"
-    },
     "component RadioGroup": {
+      "code": "present",
       "figma": "present"
     },
     "component Select": {
@@ -198,7 +194,8 @@
       "figma": "present"
     },
     "states Button": {
-      "code": "disabled|focus|hover|pressed"
+      "code": "disabled|focus|hover|pressed",
+      "figma": "disabled|focus|hover|pressed"
     },
     "states Checkbox": {
       "code": "disabled|focus|hover",
@@ -227,9 +224,6 @@
     "states Toggle": {
       "code": "disabled|focus|hover",
       "figma": "disabled|focus|hover"
-    },
-    "token --color-aronia-850": {
-      "figma": "#1f1032"
     },
     "token --haus-aronia-100": {
       "code": "#f6f3fc",
@@ -264,7 +258,8 @@
       "figma": "#2b1844"
     },
     "token --haus-aronia-850": {
-      "code": "#201134"
+      "code": "#201134",
+      "figma": "#201134"
     },
     "token --haus-aronia-900": {
       "code": "#150b25",
@@ -691,7 +686,8 @@
       "figma": "#683200"
     },
     "token --haus-marker-dot": {
-      "code": "6"
+      "code": "6",
+      "figma": "6"
     },
     "token --haus-modal-width-lg": {
       "code": "720",
@@ -775,7 +771,7 @@
     },
     "token --haus-paper-500": {
       "code": "#afaaa4",
-      "figma": "#afaaa3"
+      "figma": "#afaaa4"
     },
     "token --haus-paper-600": {
       "code": "#857f79",
@@ -1146,7 +1142,8 @@
       "figma": "360"
     },
     "token --haus-toggle-track-width": {
-      "code": "36"
+      "code": "36",
+      "figma": "36"
     },
     "token --haus-type-body-leading": {
       "code": "21",
@@ -1409,7 +1406,8 @@
       "figma": "700"
     },
     "token --haus-weight-emphasis": {
-      "code": "500"
+      "code": "500",
+      "figma": "500"
     },
     "token --haus-weight-medium": {
       "code": "500",
@@ -1424,7 +1422,8 @@
       "figma": "600"
     },
     "token --haus-weight-strong": {
-      "code": "600"
+      "code": "600",
+      "figma": "600"
     },
     "token --haus-z-base": {
       "code": "0",

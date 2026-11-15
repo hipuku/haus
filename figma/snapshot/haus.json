@@ -1,5 +1,5 @@
 {
-  "exportedAt": "2026-11-15T04:36:01.064Z",
+  "exportedAt": "2026-11-15T05:48:27.134Z",
   "source": "plugin",
   "file": {
     "key": "Qo23P38COlJrfQmlM39Fa3",
@@ -539,8 +539,11 @@
       "collection": "haus/primitives",
       "name": "color/aronia/850",
       "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-aronia-850)"
+      },
       "value": {
-        "hex": "#1f1032"
+        "hex": "#201134"
       }
     },
     {
@@ -1180,7 +1183,7 @@
         "WEB": "var(--haus-paper-500)"
       },
       "value": {
-        "hex": "#afaaa3"
+        "hex": "#afaaa4"
       }
     },
     {
@@ -3006,6 +3009,42 @@
         "WEB": "var(--haus-type-mono-xs-tracking)"
       },
       "value": 0
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/weight-emphasis",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-weight-emphasis)"
+      },
+      "value": 500
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/weight-strong",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-weight-strong)"
+      },
+      "value": 600
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/marker-dot",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-marker-dot)"
+      },
+      "value": 6
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/toggle-track-width",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-toggle-track-width)"
+      },
+      "value": 36
     }
   ],
   "components": [
@@ -3133,11 +3172,14 @@
           ]
         },
         {
-          "name": "Disabled",
+          "name": "State",
           "type": "VARIANT",
           "options": [
-            "false",
-            "true"
+            "Default",
+            "Disabled",
+            "Hover",
+            "Focus",
+            "Pressed"
           ]
         }
       ]
@@ -3915,6 +3957,14 @@
             "Hover",
             "Focus",
             "Disabled"
+          ]
+        },
+        {
+          "name": "Label position",
+          "type": "VARIANT",
+          "options": [
+            "right",
+            "left"
           ]
         }
       ]

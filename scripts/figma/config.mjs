@@ -33,6 +33,16 @@ export const COMPARED_STATES = new Set(Object.values(CSS_STATES))
 
 /* Props that are not Figma properties: structure, wiring, the element rendered
    and the ARIA a caller supplies. */
+/* A component folder whose main export has another name: Radio's folder exports
+   RadioGroup, which is the set Figma draws, beside a Radio part. The component
+   and its axes take the export's name; its states stay with the folder, because
+   the stylesheet styles the radios, which the Radio part draws. */
+export const COMPONENT_NAMES = { Radio: 'RadioGroup' }
+
+/* Axis names compared without case or spaces, so Figma's "Label position" and
+   code's labelPosition are one axis. */
+export const axisName = name => name.toLowerCase().replace(/[^a-z0-9]/g, '')
+
 export const SKIP_PROPS = new Set(['as', 'asChild', 'className', 'children', 'style', 'role', 'id', 'name'])
 
 /* Figma components that are construction parts, not components of the

@@ -3,7 +3,7 @@
 
 import fs from 'fs'
 import path from 'path'
-import { CSS_STATES, PATHS, SKIP_PROPS } from './config.mjs'
+import { COMPONENT_NAMES, CSS_STATES, PATHS, SKIP_PROPS, axisName } from './config.mjs'
 import { joinSet, normaliseValue } from './normalise.mjs'
 
 const stripComments = css => css.replace(/\/\*[\s\S]*?\*\//g, '')
@@ -160,11 +160,14 @@ export function codeComponents(root = '.') {
   for (const name of fs.readdirSync(dir).sort()) {
     const tsx = path.join(dir, name, `${name}.tsx`)
     if (!fs.existsSync(tsx)) continue
-    items[`component ${name}`] = 'present'
+    const main = COMPONENT_NAMES[name] ?? name
+    items[`component ${main}`] = 'present'
     const src = fs.readFileSync(tsx, 'utf8')
     const aliases = unionAliases(src, types)
     for (const [prop, values] of Object.entries(variantProps(src, aliases))) {
-      items[`axis ${name}.${prop.toLowerCase()}`] = joinSet(values.map(v => v.toLowerCase()))
+      const key = `axis ${main}.${axisName(prop)}`
+      if (key in items) throw new Error(`${main} has two props that both read as "${axisName(prop)}": rename one.`)
+      items[key] = joinSet(values.map(v => v.toLowerCase()))
     }
     const cssPath = path.join(dir, name, `${name}.module.css`)
     const states = fs.existsSync(cssPath) ? statesOf(fs.readFileSync(cssPath, 'utf8')) : []

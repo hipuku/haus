@@ -61,6 +61,9 @@ async function figmaSide() {
       }
       source = 'the REST API for components, the snapshot for variables'
       if (flag('--refresh')) {
+        // Validated before it is saved: a duplicate name throws here and the
+        // committed snapshot stays as it was.
+        figmaItems({ components })
         writeJson(PATHS.snapshot, { ...snapshot, componentsAt: new Date().toISOString(), components })
       }
     } catch (e) {

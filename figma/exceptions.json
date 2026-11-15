@@ -11,6 +11,7 @@
     "axis Tab.appearance": "A part of Tabs, see the component entry.",
     "axis Tab.size": "A part of Tabs, see the component entry.",
     "axis Toggle.checked": "On and off are the input's value in code and a variant in Figma, so both looks exist.",
+    "component Radio": "A construction part: one radio, drawn as its own set so a group can be composed. In code it is internal to RadioGroup, whose folder is Radio.",
     "component Select option": "A construction part: the options panel row, internal to Select in code and drawn as its own set so the panel can be composed.",
     "component Tab": "A construction part: one tab, internal to Tabs in code and drawn as its own set so a tablist can be composed.",
     "states Modal": "The hover and focus rules style the close button inside the dialog; Figma draws the dialog at rest and the button is an IconButton, compared on its own.",
