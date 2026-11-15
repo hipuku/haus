@@ -79,7 +79,7 @@ of the two, since a dialog with no accessible name is announced as nothing.
 
 `Toast` is the surface of a notice and nothing else: no provider, no queue, no
 positioning, no timer. That is a boundary rather than a gap. See
-[decision 0008](../../docs/decisions/0008-toast-is-presentational.md). You own
+[decision 0008](../../DESIGN.md#0008-toast-scope). You own
 where notices appear and for how long; it owns how one looks, and carries its
 own `role="status"` so it is announced wherever you put it.
 
@@ -111,7 +111,7 @@ Render it closed on the server and open it on the client.
 There is no `'use client'` directive, so the ten stateless components render in
 a Server Component as they are, and the ten that hold state need a client
 boundary of your own. The haus README lists which is which, and
-[decision 0024](../../docs/decisions/0024-the-rsc-path-is-guarded-by-its-rule.md)
+[decision 0024](../../DESIGN.md#0024-server-component-guard)
 is the rule that keeps the first list true.
 
 ## Build

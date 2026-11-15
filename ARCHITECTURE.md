@@ -68,7 +68,7 @@ so a bundler or runtime that falls back to `main` gets a file it can load. `haus
 ## Consumers
 
 Four products use haus, each through the packages it needs and nothing else, which is why there is
-no meta-package ([decision 0007](./docs/decisions/0007-no-meta-package.md)).
+no meta-package ([decision 0007](./DESIGN.md#0007-meta-package)).
 
 ```mermaid
 %%{init: {'theme':'base','themeVariables':{'primaryColor':'#f6f3fc','primaryBorderColor':'#7653ab','primaryTextColor':'#111113','lineColor':'#807f85','secondaryColor':'#f5f4f9','tertiaryColor':'#ffffff','fontFamily':'Manrope, ui-sans-serif, system-ui','fontSize':'13px','clusterBkg':'#fcfbfe','clusterBorder':'#e7e7ed','titleColor':'#442a68','edgeLabelBackground':'#ffffff'},'themeCSS':'background-color:#ffffff;border-radius:8px;'}}%%
@@ -153,7 +153,7 @@ for tools.
 `findUndefinedTokens` (a stylesheet reads a property nothing defines), `findFallbackTokens` (a
 property only ever read with a fallback, which is a hardcoded value in effect), and
 `findRestatedTokens` (a consumer overrides a role to the value haus already gives,
-[decision 0016](./docs/decisions/0016-a-restated-value-is-a-copy-and-the-package-says-so.md)). It reads
+[decision 0016](./DESIGN.md#0016-restated-values)). It reads
 no files, so it runs in a test, a script or a browser.
 
 ## Component build
@@ -182,12 +182,12 @@ flowchart LR
   pipeline scopes CSS Modules.
 - **One layered stylesheet.** The modules are concatenated into `styles.css`, and a Vite plugin
   wraps the file in `@layer haus.components` after it is written
-  ([decision 0006](./docs/decisions/0006-styles-css-declares-its-own-layer.md)).
+  ([decision 0006](./DESIGN.md#0006-component-stylesheet-layer)).
 - **No `use client`.** The package ships no client directive, so a React Server Component can import
   it. Ten components can render there: Avatar, Badge, Button, Callout, Card, Divider, EmptyState,
   IconButton, Spinner and Toast. The other ten hold state, an effect, a generated id or a portal, and
   need a client boundary. The rule that keeps this safe, and the test behind it, are in
-  [decision 0024](./docs/decisions/0024-the-rsc-path-is-guarded-by-its-rule.md).
+  [decision 0024](./DESIGN.md#0024-server-component-guard).
 - **Icons are drawn inline.** The package declares `haus-tokens` and the React peers and nothing
   else, so there is no icon font to load.
 
@@ -257,7 +257,7 @@ dependencies must be released in, and how to cut a release, are in [`RELEASING.m
 
 **Decision.** Each package has its own semantic version. A renamed token is a major release at an
 identical value, and a contrast change is a major even when the value barely moves
-([decision 0004](./docs/decisions/0004-versioning-is-1-x.md)).
+([decision 0004](./DESIGN.md#0004-versioning)).
 
 **Reason.** A token's name and its measured contrast are both part of the contract a consumer
 relies on; neither is an implementation detail.

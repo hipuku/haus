@@ -27,7 +27,7 @@ exactly the minimum, and Button `sm` is 28px. The 2.5.5 AAA size is 44px, which 
 size and should not carry a primary target on touch.
 
 **`Select` reimplements what a native `<select>` gives for free.** It was a native
-`<select>` until [decision 0025](decisions/0025-select-is-the-themed-control.md) and
+`<select>` until [decision 0025](../DESIGN.md#0025-themed-select) and
 is a themed control now, so haus draws the popup and owns the keyboard and
 screen-reader behaviour the platform used to provide: focus stays on the trigger,
 the highlighted option is announced through `aria-activedescendant`, and the
@@ -38,7 +38,7 @@ operating system's own popup beats a drawn panel.
 ## Two things that are the consumer's
 
 **Toast is presentational.** No provider, no queue, no positioning, no timer.
-See [decision 0008](decisions/0008-toast-is-presentational.md). It carries its own
+See [decision 0008](../DESIGN.md#0008-toast-scope). It carries its own
 `role="status"`, so a notice dropped into your container is announced; where it
 appears, how many stack and for how long are yours.
 
@@ -49,7 +49,7 @@ that guarantee; the tier guard in `haus-components` catches it.
 ## Focus
 
 One treatment, everywhere: a double ring, `0 0 0 2px <surface>, 0 0 0 4px <focus>`,
-in [decision 0001](decisions/0001-focus-is-a-double-ring.md). The inner band is
+in [decision 0001](../DESIGN.md#0001-focus-indicator). The inner band is
 the element's own backdrop, so the ring reads on a card and on the page without
 a second variant, and the outer band is the accent at full strength, because
 alpha is what made the alternatives fail.

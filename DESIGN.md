@@ -1,9 +1,9 @@
 # haus: design
 
 The design system itself: how the tokens are layered, how a brand is applied, the type system, how
-the 20 components are shaped, and what checks hold it together. Each choice that has a numbered
-record in [`docs/decisions/`](./docs/decisions/README.md) is summarised here in a sentence and
-linked; the rest are recorded below as decision entries. The Figma file mirrors all of it:
+the 20 components are shaped, and what checks hold it together. The numbered rulings behind it are
+under [Decisions](#decisions), each with what it was chosen over and what it costs. The Figma file
+mirrors all of it:
 [haus Design System](https://www.figma.com/design/Qo23P38COlJrfQmlM39Fa3/haus-Design-System).
 
 ## Contents
@@ -24,14 +24,14 @@ linked; the rest are recorded below as decision entries. The Figma file mirrors 
   - [Motion](#motion)
 - [Accessibility](#accessibility)
 - [Enforcement](#enforcement)
-- [Decision records](#decision-records)
+- [Decisions](#decisions)
 - [Known gaps](#known-gaps)
 
 ## Tokens
 
 The reference for every token is [`docs/tokens.md`](./docs/tokens.md), and the brand contract is
 [Brands](#brands) below, with its tiers in
-[decision 0014](./docs/decisions/0014-the-brand-contract-is-tiered.md). Figma holds the same tokens
+[decision 0014](#0014-brand-contract-tiers). Figma holds the same tokens
 as two variable collections, `haus/primitives` (136 variables) and `haus/semantics` (171), with one
 mode per shipped brand.
 
@@ -56,7 +56,7 @@ into a component. A value whose role cannot be named stays a primitive, because 
 would be a second name for the same number.
 
 **Alternatives.** Three layers, with the brand's choices written into `semantics.css`. Replaced by a
-separate brand layer in [decision 0003](./docs/decisions/0003-brand-and-roles-are-separate-layers.md),
+separate brand layer in [decision 0003](#0003-brand-and-role-layers),
 so a consumer replaces one file of choices rather than editing the meanings.
 
 ### Colour space
@@ -92,11 +92,11 @@ Form covers radius, elevation and typeface.
 the rest. The tiers say which ones a product must make and which it may leave to haus.
 
 The full reasoning is in four records:
-[0003](./docs/decisions/0003-brand-and-roles-are-separate-layers.md) (the brand layer),
-[0014](./docs/decisions/0014-the-brand-contract-is-tiered.md) (the tiers),
-[0015](./docs/decisions/0015-a-brand-states-form-not-only-colour.md) (form) and
-[0019](./docs/decisions/0019-typeface-is-a-form-tier-brand-entry.md) (typeface).
-[0016](./docs/decisions/0016-a-restated-value-is-a-copy-and-the-package-says-so.md) covers a consumer
+[0003](#0003-brand-and-role-layers) (the brand layer),
+[0014](#0014-brand-contract-tiers) (the tiers),
+[0015](#0015-brand-form-tier) (form) and
+[0019](#0019-typeface-in-the-brand) (typeface).
+[0016](#0016-restated-values) covers a consumer
 that overrides a role to the value haus already gives.
 
 ### Theme
@@ -104,7 +104,7 @@ that overrides a role to the value haus already gives.
 **Decision.** Light mode only. `semantics.css` declares `color-scheme: light`, and nothing uses
 `light-dark()`.
 
-**Reason.** [Decision 0002](./docs/decisions/0002-surface-polarity-is-fixed.md) fixes surface
+**Reason.** [Decision 0002](#0002-surface-polarity) fixes surface
 polarity in the contract (white cards on a subtle page) because every ink is paired with the surface
 it is safe on. A dark theme inverts polarity, so it cannot arrive as a brand, and doing it properly
 would double the colour decisions to audit.
@@ -138,9 +138,9 @@ which is how heading styles end up on decorative text. All four properties are t
 component that takes only the size and infers the rest drifts from one written by someone else.
 
 **Alternatives.** One mono role, replaced by the ladder in
-[decision 0027](./docs/decisions/0027-mono-is-a-ladder-not-a-role.md). In Figma a text style that bound
+[decision 0027](#0027-mono-ladder). In Figma a text style that bound
 only size and weight drifted the same way, settled in
-[decision 0026](./docs/decisions/0026-a-type-role-binds-all-four-properties-in-figma.md).
+[decision 0026](#0026-type-roles-in-figma).
 
 ## Components
 
@@ -154,8 +154,8 @@ the [live Storybook](https://haus.hipuku.dev) and a page in the Figma file.
 each built it independently.
 
 **Reason.** Promotion on evidence keeps haus to what more than one product needed, rather than to the
-list other design systems carry. [Decision 0013](./docs/decisions/0013-a-component-is-promoted-on-evidence.md)
-sets the rule and [0017](./docs/decisions/0017-the-nineteenth-component-is-a-busy-indicator.md) applies
+list other design systems carry. [Decision 0013](#0013-component-promotion)
+sets the rule and [0017](#0017-busy-indicator) applies
 it to Spinner.
 
 ### Styling
@@ -166,9 +166,9 @@ cascade layer, `haus.components`, and written in logical properties.
 **Reason.** The token layer is plain custom properties, so a consumer can use Tailwind, plain CSS or
 CSS-in-JS against it; CSS Modules keep the component styles off any consumer's build tooling and
 readable without a utility vocabulary. The layer lets a consumer's unlayered CSS win without a
-specificity fight ([0006](./docs/decisions/0006-styles-css-declares-its-own-layer.md)), and logical
+specificity fight ([0006](#0006-component-stylesheet-layer)), and logical
 properties make the components correct right to left
-([0010](./docs/decisions/0010-components-are-written-in-logical-properties.md)).
+([0010](#0010-logical-properties)).
 
 **Alternatives.** Tailwind for the components. Not taken: it would couple haus to one consumer
 toolchain and make each component's styles depend on Tailwind's class names.
@@ -178,14 +178,14 @@ toolchain and make each component's styles depend on Tailwind's class names.
 **Decision.** The props follow one set of rules across the package:
 
 - `variant` is visual weight, `tone` is meaning, `appearance` is fill
-  ([0005](./docs/decisions/0005-variant-and-tone-are-separate.md)), and a tone rule only remaps
-  custom properties ([0012](./docs/decisions/0012-a-tone-declares-custom-properties-only.md)).
+  ([0005](#0005-variant-and-tone)), and a tone rule only remaps
+  custom properties ([0012](#0012-tone-rules)).
 - `className` lands on the root element; a second target is a named prop
-  ([0009](./docs/decisions/0009-classname-lands-on-the-root.md)).
+  ([0009](#0009-where-classname-lands)).
 - A component owns its box, never the caller's element, and says so
-  ([0022](./docs/decisions/0022-ownership-is-stated-in-both-directions.md)).
+  ([0022](#0022-ownership)).
 - A union prop type exports each half by name
-  ([0023](./docs/decisions/0023-a-union-prop-type-exports-its-halves.md)).
+  ([0023](#0023-union-prop-type-halves)).
 
 **Reason.** A consumer who has learned one component has learned the prop vocabulary of all 20.
 
@@ -210,7 +210,7 @@ returned. The full list of what is checked, what is not, and the known limitatio
 [`docs/accessibility.md`](./docs/accessibility.md).
 
 Focus is one treatment everywhere, a double ring with the element's own surface as the inner band
-([0001](./docs/decisions/0001-focus-is-a-double-ring.md)), and every ring has a
+([0001](#0001-focus-indicator)), and every ring has a
 `forced-colors: active` fallback because forced-colours mode drops box shadows.
 
 ## Enforcement
@@ -233,19 +233,285 @@ and every token family on its own page.
 **Reason.** A token or component a consumer cannot see in the published docs is one they will not
 find. The token pages are held to the same visual standard as the components they document.
 
-## Decision records
+## Decisions
 
-All 27 are indexed in [`docs/decisions/README.md`](./docs/decisions/README.md), with each one's status.
-By subject:
+The rulings the system is built on, numbered in the order they were made. Each records what was
+chosen, what it was chosen over and what it costs. Status is about the decision, not the code: two
+are superseded, and one is not yet true of every component.
 
-| Subject           | Records                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Tokens and brands | [0002](./docs/decisions/0002-surface-polarity-is-fixed.md), [0003](./docs/decisions/0003-brand-and-roles-are-separate-layers.md), [0014](./docs/decisions/0014-the-brand-contract-is-tiered.md), [0015](./docs/decisions/0015-a-brand-states-form-not-only-colour.md), [0016](./docs/decisions/0016-a-restated-value-is-a-copy-and-the-package-says-so.md), [0018](./docs/decisions/0018-vaults-twenty-are-settled-one-at-a-time.md), [0019](./docs/decisions/0019-typeface-is-a-form-tier-brand-entry.md) |
-| Typography        | [0026](./docs/decisions/0026-a-type-role-binds-all-four-properties-in-figma.md), [0027](./docs/decisions/0027-mono-is-a-ladder-not-a-role.md)                                                                                                                                                                                                                                                                                                                                                              |
-| Components        | [0008](./docs/decisions/0008-toast-is-presentational.md), [0011](./docs/decisions/0011-select-is-a-native-select.md), [0013](./docs/decisions/0013-a-component-is-promoted-on-evidence.md), [0017](./docs/decisions/0017-the-nineteenth-component-is-a-busy-indicator.md), [0020](./docs/decisions/0020-listbox-and-select-both-stay.md), [0021](./docs/decisions/0021-decision-states-are-badge-tones.md), [0025](./docs/decisions/0025-select-is-the-themed-control.md)                                  |
-| Component API     | [0005](./docs/decisions/0005-variant-and-tone-are-separate.md), [0009](./docs/decisions/0009-classname-lands-on-the-root.md), [0012](./docs/decisions/0012-a-tone-declares-custom-properties-only.md), [0022](./docs/decisions/0022-ownership-is-stated-in-both-directions.md), [0023](./docs/decisions/0023-a-union-prop-type-exports-its-halves.md)                                                                                                                                                      |
-| Styling and focus | [0001](./docs/decisions/0001-focus-is-a-double-ring.md), [0006](./docs/decisions/0006-styles-css-declares-its-own-layer.md), [0010](./docs/decisions/0010-components-are-written-in-logical-properties.md)                                                                                                                                                                                                                                                                                                 |
-| Packaging         | [0004](./docs/decisions/0004-versioning-is-1-x.md), [0007](./docs/decisions/0007-no-meta-package.md), [0024](./docs/decisions/0024-the-rsc-path-is-guarded-by-its-rule.md)                                                                                                                                                                                                                                                                                                                                 |
+| Subject           | Decisions                                                                                                                                                                                                                                     |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Tokens and brands | [0002](#0002-surface-polarity), [0003](#0003-brand-and-role-layers), [0014](#0014-brand-contract-tiers), [0015](#0015-brand-form-tier), [0016](#0016-restated-values), [0018](#0018-vaults-local-tokens), [0019](#0019-typeface-in-the-brand) |
+| Typography        | [0026](#0026-type-roles-in-figma), [0027](#0027-mono-ladder)                                                                                                                                                                                  |
+| Components        | [0008](#0008-toast-scope), [0011](#0011-native-select), [0013](#0013-component-promotion), [0017](#0017-busy-indicator), [0020](#0020-listbox-and-select), [0021](#0021-domain-states-as-badge-tones), [0025](#0025-themed-select)            |
+| Component API     | [0005](#0005-variant-and-tone), [0009](#0009-where-classname-lands), [0012](#0012-tone-rules), [0022](#0022-ownership), [0023](#0023-union-prop-type-halves)                                                                                  |
+| Styling and focus | [0001](#0001-focus-indicator), [0006](#0006-component-stylesheet-layer), [0010](#0010-logical-properties)                                                                                                                                     |
+| Packaging         | [0004](#0004-versioning), [0007](#0007-meta-package), [0024](#0024-server-component-guard)                                                                                                                                                    |
+
+A choice worth recording, one a reviewer would otherwise reopen, gets the next number here.
+
+### 0001 Focus indicator
+
+_2026-09-01. Implemented._
+
+The focus indicator is `0 0 0 2px <surface>, 0 0 0 4px <focus>` everywhere: a band of the element's
+own backdrop, then the accent at full strength. Three treatments existed across the products, and
+only this one met WCAG 1.4.11: core's 2px outline at 32% alpha measured 1.60:1 against its page, and
+a soft halo's strongest pixel is not its measured contrast. Forced-colours mode drops box shadows, so
+every ring has an `outline` fallback in `Highlight`. The cost is room: a 4px ring crowds a full-width
+input, which is why the text controls change their border instead.
+
+### 0002 Surface polarity
+
+_2026-09-01. Implemented._
+
+White cards on a subtle page, and a brand cannot invert it. Every surface role is paired with the ink
+that is safe on it, which is what makes contrast decidable once at the token layer; a brand that
+inverted polarity would invert the pairings consumers rely on. core inverted it, so its adoption
+included a visual re-tune. The cost, stated plainly: there is no dark mode through the brand map. A
+dark theme would be a second contract, or this decision reopened.
+
+### 0003 Brand and role layers
+
+_2026-09-01. Implemented._
+
+The brand map is its own cascade layer, every property is prefixed `--haus-`, a brand is scoped by
+`data-haus-theme`, and a generated `BrandMap` type says what a brand must supply. Before this, every
+token sat unprefixed on a bare `:root` and collided with a consumer's Tailwind. vault declared 159
+properties of its own and core 56, but the roles were not what they rejected: of vault's 40 differing
+values, about thirty were palette swaps. The brand was the part that could not move. Breaking, so it
+landed with the 1.x cut.
+
+### 0004 Versioning
+
+_2026-09-01. Implemented at 1.0.0._
+
+Every package is 1.x so the caret works: under 0.x a minor is treated as breaking, and
+`haus-colour-utils` 0.3.0 sat unshipped because both consumers were pinned to `^0.2.1`. Two rules
+carry the weight: a token rename is a major at an identical value, and a contrast change is a major
+however little the hex moves. A token's name and its measured contrast are both contract.
+
+### 0005 Variant and tone
+
+_2026-09-01. Implemented._
+
+`variant` is visual weight only. `tone` is `neutral | info | success | warning | error` everywhere,
+with `danger` renamed `error`. `appearance` is `subtle | solid`, Button's `external` is its own prop,
+and sizes converge on `sm | md | lg`, with Avatar's `xs` and `xl` a documented extension. Badge also
+takes `primary`, which 0021 spends on the superseded state. `variant`
+had meant weight on Button, elevation on Card and semantics on Badge. It renamed props across most of
+the library, so it shipped in the same major as the token split.
+
+### 0006 Component stylesheet layer
+
+_2026-09-01. Implemented._
+
+`haus-components/styles.css` declares its own cascade layer, so a consumer's CSS wins without a
+specificity fight instead of depending on import order. A function consumers call and a shipped
+Stylelint config were the alternatives; only the layer makes the package state its own precedence.
+It was breaking for anyone relying on source order, and was done while drift was the only consumer of
+the component tier, when it cost least.
+
+### 0007 Meta-package
+
+_2026-09-01. Implemented by doing nothing._
+
+No `haus` package bundling the others at exact versions. The convenience was mostly the caret problem
+that 0004 already fixed, and a meta-package would add a sixth package to release and a second place
+each version is stated. One bundled version would also claim the tiers cannot release independently,
+which is not true of the architecture.
+
+### 0008 Toast scope
+
+_2026-09-01. Implemented._
+
+Toast ships the surface. The provider, queue, positioning, auto-dismiss and stacking are the
+consumer's, and `Toast.tsx` says so in its own documentation. A toast system owns global state, a
+portal and a policy about how many notices stack for how long, which is an application's opinion.
+Re-measured on 2026-09-08, only core has toasts at all, so a provider would have one consumer and fail 0013. core keeps sonner and renders haus's surface through `toast.custom`.
+
+### 0009 Where className lands
+
+_2026-09-01. Implemented._
+
+`className` goes on the root element of every component, and a component that needs a second target
+gets a named prop for it. It had landed on six different nodes, and Checkbox's outer div was
+unreachable by any means. Documenting the existing placement was rejected on that case: a convention
+that has to describe a defect is not worth writing down. `api-surface.test.tsx` holds it.
+
+### 0010 Logical properties
+
+_2026-09-01. Implemented._
+
+Inline-axis declarations use logical properties, so a right-to-left document flips them; 27
+declarations across ten components had pointed the wrong way. `translateX` has no logical form, so a
+sliding element carries its travel and direction as variables and a `[dir='rtl']` rule flips the sign.
+No public name changed. `logical-properties.test.ts` asserts the source, because the component tests
+run without CSS; a right-to-left visual test is still open.
+
+### 0011 Native Select
+
+_2026-09-02. Superseded by 0025._
+
+`Select` rendered a real `<select>` with a themed closed state and the operating system's popup. The
+platform gives correct keyboard handling, a wheel picker on iOS and assistive-technology behaviour for
+free. The cost was the whole finding: both consumers needed a themed list, built their own, and the
+system shipped the one picker neither used. The reasoning survives as guidance for when a raw
+`<select>` is the better answer: touch, forms that must work without JavaScript, very long lists.
+
+### 0012 Tone rules
+
+_2026-09-03. Implemented on Button and Toast; Badge pending._
+
+A tone rule may remap custom properties and declare nothing else, and a variant rule reads the subset
+its weight needs. Button's tone rules had set colours outright, so `variant="ghost" tone="error"`
+rendered solid. Neutral is a tone, and a component narrows `Tone` only where the roles genuinely do
+not exist. `stylesheet.test.ts` fails any tone rule that declares a non-custom property. The cost is
+indirection: `.primary` no longer says what colour it is.
+
+### 0013 Component promotion
+
+_2026-09-05. Implemented as Callout, Divider, EmptyState, Popover, Tabs and Tooltip._
+
+A component joins haus when products that consume it have built it more than once, independently,
+not because other systems ship it. The three products were measured for tablists, popups, listboxes,
+tooltips, empty states and callouts. Reading the implementations found an accessibility defect in four
+of six cases, none flagged by axe, and each became a prop: `live`, `triggerRef`, the panel `Tabs`
+renders. One product's answer to one product's problem, such as `Drawer` or `CommandPalette`, stays
+out.
+
+### 0014 Brand contract tiers
+
+_2026-09-08. Implemented._
+
+The base tier, 28 entries for surfaces, ink, borders, primary and the backdrop, is required. The
+feedback tier, 26 entries across `info`, `success`, `warning` and `error`, is optional, all or nothing
+per ramp. core's statuses are decision states, not notification severities, so it could supply 14 of
+54 honestly and could not be a brand at all. The cascade already handled an omitted ramp; only the
+type and the test demanded all 54. Half a ramp renders an error state in two unrelated colours with
+every `var()` resolving, so it fails.
+
+### 0015 Brand form tier
+
+_2026-09-08. Implemented._
+
+The form tier is radius and elevation, optional and all or nothing per group. What makes two products
+look different is colour, typeface, shadow and corner radius, not spacing or stacking. drift appeared
+to re-decide nineteen non-colour roles; measured against the version it installs, twelve were the
+literal haus already gives and two were version skew, leaving five real departures. z-index, opacity,
+border width and the space ladder stay out. `radius-pill` stays out because "as round as the box
+allows" is not a step.
+
+### 0016 Restated values
+
+_2026-09-08. Implemented as `findRestatedTokens` in `haus-tokens/guard`._
+
+A consumer declaring a property haus already declares, at the value haus gives, has a copy that is
+wrong the day either side moves. The guard reports each one as `identical`, the same text, or
+`resolved`, different text and the same value, which is how a consumer opts out of a scale while
+appearing to be on it. Run against drift it found the 89 counted by hand, 77 and 12. vault had written
+a text-only version of the rule by hand; a guard that lives in one consumer is a habit.
+
+### 0017 Busy indicator
+
+_2026-09-08. Implemented as Spinner._
+
+Swept by behaviour rather than filename, a busy indicator was built three times at seven call sites:
+core's announced nothing deliberately, drift hid it outright, vault's was correct. Building `Spinner`
+found that a loading Button never set `aria-busy`, though its test name claimed it did. A disclosure
+also appeared in all three products and was not promoted: what they share is a rule, not a component.
+
+### 0018 vault's local tokens
+
+_2026-09-08. Implemented on both sides._
+
+vault kept 20 local properties after adopting the token layer, the clearest evidence of what haus
+lacked. Thirteen stay vault's, each with a reason. Modal widths became a form-tier brand group, since
+two products disagree and both are right. Widening the hardcoded-value rule to `width` and `height`
+found ten literals inside haus, each now named. vault's `--type-title-*` was `heading-lg` with two
+properties changed, so it became a fork. `--control-height-xs` later came into haus with IconButton.
+
+### 0019 Typeface in the brand
+
+_2026-09-08. Implemented in haus-tokens 3.0.0._
+
+`--haus-brand-font-sans` and `-mono` join the form tier, and `--haus-font-sans` becomes a role reading
+them, so no component read moved. vault uses Manrope, drift `system-ui` and core Gabarito. For a
+consumer importing `primitives.css` alone the move is a removal, so under 0004 it was a major.
+
+### 0020 Listbox and Select
+
+_2026-09-08. Superseded by 0025._
+
+`Listbox` shipped for themed popups and options with more than a label, and the native `Select` stayed
+for the cases 0011 named, with its lack of consumers recorded rather than left implicit. Two releases
+later it still had none.
+
+### 0021 Domain states as Badge tones
+
+_2026-09-08. Implemented; core adopted it._
+
+core's six decision states map onto Badge's tones with no new token: draft neutral, proposed info,
+accepted success, rejected error, deprecated warning, superseded primary. Superseded is replaced but
+still valid, so it takes a slot that is distinct without alarm. The earlier ruling counted six states
+against five tones and missed that tone and appearance make twelve slots. A product with a seventh
+state gets a local component, not a seventh tone.
+
+### 0022 Ownership
+
+_2026-09-09. Implemented on Button, IconButton, Card and Tabs._
+
+A component owns its box, never its element: one that renders an interactive element ships `asChild`
+rather than a closed `as` union. A component owns a subtree only if it owns every part, so `Tabs`
+takes a `panelId` when the panel lives elsewhere. A consumer owns the cascade, the layout and the
+router's element, and a reset must be layered too. Every case was found by a consumer. `asChild` goes
+where a consumer needs it, not on every component, since each one widens the Server Component surface.
+
+### 0023 Union prop type halves
+
+_2026-09-09. Implemented on Button, IconButton, Card and Tabs._
+
+A union prop type exports each half by name, and the union is written from them. For an `asChild`
+union the halves are `<Component>OwnProps` and `<Component>AsChildProps`; Tabs names its panel union
+`TabsOwnPanelProps` and `TabsRemotePanelProps`. `ButtonProps` as a union broke every wrapper, and core reached for
+`Extract<ButtonProps, { asChild?: false }>`, a type every consumer would otherwise rewrite. Widening
+`children` on the `asChild` half was rejected: it deletes the constraint the union expresses.
+
+### 0024 Server Component guard
+
+_2026-09-09. Implemented as `rsc-rules.test.tsx`._
+
+haus ships no `use client`, so a Server Component can render a component directly, and `<Button
+asChild>` threw because `mergeRefs` attached a ref nobody passed. The test asserts the rule: render
+each `asChild` component with no ref and fail if one arrives. A real Server Component harness would
+catch more, at the cost of a dependency and a build wrinkle, and the whole known failure surface was
+one mechanism. A third defect it misses is the evidence for the harness.
+
+### 0025 Themed Select
+
+_2026-09-10. Supersedes 0011 and 0020._
+
+The native `<select>` component is retired and `Listbox` is renamed `Select`, the one picker haus
+ships. Nothing had imported the native one in two releases, and the thing a consumer imports to choose
+one of a set is called a select. A major version; haus is twenty components.
+
+### 0026 Type roles in Figma
+
+_2026-09-11. Implemented in the Figma file._
+
+Each type role has four Figma variables, size, weight, line height and letter spacing, and each text
+style binds all four. Line height and letter spacing hold pixels for that role, because a Figma number
+has no unit and a shared ratio means something different in px and percent. Typed values were
+unchecked, which is how a component took two of a role's properties and invented the other two.
+
+### 0027 Mono ladder
+
+_2026-09-13. Implemented in haus-tokens 5.2.0._
+
+Mono is three roles, `mono-xs`, `mono-sm` and `mono-md`, at 11, 12 and 13px, with leading that loosens
+as size grows. vault read the mono font in 21 places at those three sizes and took none of the single
+13px role, because the sizes do different jobs. `--haus-type-mono-*` stays as `mono-md`'s alias, so
+nothing moves on screen.
 
 ## Known gaps
 

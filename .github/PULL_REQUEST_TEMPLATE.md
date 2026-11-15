@@ -25,4 +25,4 @@
 - [ ] A test that fails without this change. For a fix, run it against the
       version being fixed to prove it catches it
 - [ ] Keyboard and screen reader checked, for anything interactive
-- [ ] A decision record, if this settles something someone will re-litigate
+- [ ] A numbered decision in `DESIGN.md`, if this settles something someone will re-litigate

@@ -32,8 +32,7 @@ export interface ToastProps extends Omit<React.HTMLAttributes<HTMLDivElement>, '
  * The surface of a notice, and deliberately only that.
  *
  * **There is no provider, no queue, no positioning, no auto-dismiss timer and no
- * z-index, and there will not be.** Ruling B4,
- * `docs/decisions/0008-toast-is-presentational.md`. A toast *system* is an
+ * z-index, and there will not be.** Ruling B4, decision 0008 in `DESIGN.md`. A toast *system* is an
  * application concern: it owns global state, a portal, and a policy about how
  * many notices stack and for how long, and a design system that ships one is
  * shipping an opinion most consumers end up fighting.

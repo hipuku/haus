@@ -63,7 +63,7 @@ can be rendered that way: `Avatar`, `Badge`, `Button`, `Callout`, `Card`,
 `Divider`, `EmptyState`, `IconButton`, `Spinner`, `Toast`.
 
 That path is guarded by its rule rather than by a render harness
-([decision 0024](docs/decisions/0024-the-rsc-path-is-guarded-by-its-rule.md)):
+([decision 0024](./DESIGN.md#0024-server-component-guard)):
 
 - **A component may not pass a `ref`, an event handler or anything else across a
   boundary it was not given one for.** The rule is narrower than "support RSC":
@@ -92,8 +92,9 @@ wait in the Chromatic UI for a person to accept or reject them (`haus#36`).
 ## Decisions
 
 Anything that changes what a consumer sees, or that someone will otherwise
-re-litigate in six months, gets a file in [`docs/decisions/`](docs/decisions/README.md):
-context, decision, consequences, and what it was chosen over.
+re-litigate in six months, gets the next numbered entry under
+[Decisions in `DESIGN.md`](DESIGN.md#decisions): what was chosen, what it was chosen over, and
+what it costs.
 
 A decision can be accepted and unimplemented. Several are, and say so: a
 contract can be agreed before it is built.
@@ -103,7 +104,7 @@ contract can be agreed before it is built.
 Write the commit message for the person who finds this in a year and needs to
 know why. What was broken, what it now does, and what was decided against.
 
-Versioning is [decision 0004](docs/decisions/0004-versioning-is-1-x.md): 1.x
+Versioning is [decision 0004](./DESIGN.md#0004-versioning): 1.x
 everywhere, a token rename is a major at an identical value, and a contrast
 change is a major even when the hex barely moves. `RELEASING.md` has the bump
 table and the publish order. `haus-components` depends on `haus-tokens`, so

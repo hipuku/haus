@@ -18,7 +18,7 @@ import { defineConfig, type Plugin } from 'vite'
 /**
  * Wraps the emitted stylesheet in `@layer haus.components`.
  *
- * Decision B1 and `docs/decisions/0006`. The token layers are layered and this
+ * Decision B1 and decision 0006 in `DESIGN.md`. The token layers are layered and this
  * stylesheet was not, so it competed with a consumer's own module CSS by source
  * order: whether a component's style or a consumer's override won depended on
  * import order rather than on anything either of them declared. Layered, the
