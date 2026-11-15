@@ -65,6 +65,19 @@ export default defineConfig([
     },
   },
 
+  // Promises, with type information. A promise nobody awaits is where a failure
+  // disappears; a deliberate fire-and-forget says so with `void`. An async
+  // handler passed to a JSX attribute is allowed, since React ignores a handler's
+  // return value.
+  {
+    files: ['packages/*/src/**/*.{ts,tsx}', 'packages/*/scripts/**/*.ts', 'apps/storybook/stories/**/*.{ts,tsx}'],
+    languageOptions: { parserOptions: { projectService: true, tsconfigRootDir: import.meta.dirname } },
+    rules: {
+      '@typescript-eslint/no-floating-promises': 'error',
+      '@typescript-eslint/no-misused-promises': ['error', { checksVoidReturn: { attributes: false } }],
+    },
+  },
+
   {
     // Vitest globals are enabled in each package's vitest config, so the test
     // files legitimately reference describe/it/expect without importing them.
