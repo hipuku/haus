@@ -43,7 +43,9 @@ history, and it applies to the owner too.
 
 Visual regression never fails the build (`exitZeroOnChanges`), and nothing is accepted
 automatically, so accepting a visual change is a decision rather than a side effect of merging. It
-skips with a notice when `CHROMATIC_PROJECT_TOKEN` is not available, as on a fork.
+skips with a notice when `CHROMATIC_PROJECT_TOKEN` is not available, as on a fork. It snapshots only the stories a change can
+affect (TurboSnap), and every story whenever anything under `packages/` changes, because the
+Storybook reads the packages' built output, which git does not track.
 
 ## Review
 
