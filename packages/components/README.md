@@ -35,14 +35,16 @@ To theme a subtree, put a brand on it:
 ```tsx
 import 'haus-tokens/brands/vault.css'
 
-<div data-haus-theme="vault">…</div>
+;<div data-haus-theme="vault">…</div>
 ```
 
 ```tsx
 import { Button, Card, Badge } from 'haus-components'
 
-<Card>
-  <Button variant="primary" size="lg">Save changes</Button>
+;<Card>
+  <Button variant="primary" size="lg">
+    Save changes
+  </Button>
   <Badge tone="success">Clean</Badge>
 </Card>
 ```

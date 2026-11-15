@@ -39,5 +39,9 @@
 
 /* The gap is a gap, not a margin on the bubble: a margin would sit inside the
    hover region and leave a dead strip the pointer crosses on its way in. */
-.top    { inset-block-end:   calc(100% + var(--haus-space-gap-2xs)); }
-.bottom { inset-block-start: calc(100% + var(--haus-space-gap-2xs)); }
+.top {
+  inset-block-end: calc(100% + var(--haus-space-gap-2xs));
+}
+.bottom {
+  inset-block-start: calc(100% + var(--haus-space-gap-2xs));
+}

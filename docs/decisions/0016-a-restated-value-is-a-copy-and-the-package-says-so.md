@@ -32,10 +32,10 @@ contract is defined here, so the check belongs here, which is the same argument
 vault's rule compares declaration text. That finds the first kind and not the
 second:
 
-| Kind | Shape | drift's count |
-|---|---|---|
-| `identical` | the same text on both sides. `--haus-space-inset-md: var(--haus-space-4)` written twice | **77** |
-| `resolved` | the text differs and the value does not. `--haus-z-modal: 400` against `var(--haus-z-400)`, where `--haus-z-400` is `400` | **12** |
+| Kind        | Shape                                                                                                                     | drift's count |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| `identical` | the same text on both sides. `--haus-space-inset-md: var(--haus-space-4)` written twice                                   | **77**        |
+| `resolved`  | the text differs and the value does not. `--haus-z-modal: 400` against `var(--haus-z-400)`, where `--haus-z-400` is `400` | **12**        |
 
 **The second kind is the interesting one, because it is how a consumer opts out
 of a scale while appearing to be on it.** Every one of drift's twelve is a
@@ -43,8 +43,8 @@ of a scale while appearing to be on it.** Every one of drift's twelve is a
 primitive resolves to. Read as text they look like decisions. Resolved they are
 the same number.
 
-That distinction is not academic: it was the difference between *drift
-re-decides nineteen non-colour things* and *drift re-decides five*, and the
+That distinction is not academic: it was the difference between _drift
+re-decides nineteen non-colour things_ and _drift re-decides five_, and the
 first version of `haus#53` was scoped on the wrong one.
 
 ## Decision
@@ -71,9 +71,9 @@ Measured against drift: **143 restatements with `brand.css` in `upstream`, 89
 without.** The 54 in the gap are exactly its colour overrides, which are a brand
 written as role overrides.
 
-- **Include `brand.css`** and the question is *does this consumer restate
-  anything we ship, our brand's colour choices included*
-- **Leave it out** and the question is *does it restate anything structural*,
+- **Include `brand.css`** and the question is _does this consumer restate
+  anything we ship, our brand's colour choices included_
+- **Leave it out** and the question is _does it restate anything structural_,
   with its own palette treated as its business
 
 So a consumer with a brand file, or intending one, leaves it out. A consumer with

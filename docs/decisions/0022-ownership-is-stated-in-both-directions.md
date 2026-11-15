@@ -9,12 +9,12 @@ and `Tabs` takes a `panelId` (`haus#67`). `haus#69`.
 Four issues arrived separately, from three different consumers, and nothing in
 these records named what they had in common.
 
-| | The component assumes | The consumer already owned it |
-|---|---|---|
-| `haus#57` | `Button` renders its own `<a>` for `href` | Next's `Link` is the thing that must render |
-| `Card` | `as` is a closed union of intrinsic element names | a clickable card is an anchor, or a router link |
-| `haus#67` | `Tabs` renders its tablist and panel as adjacent siblings | core's are a sticky toolbar and a document sheet |
-| `haus#68` | `Popover`'s panel is absolute against an ancestor that does not clip | `Modal`'s body is `overflow-y: auto` |
+|           | The component assumes                                                | The consumer already owned it                    |
+| --------- | -------------------------------------------------------------------- | ------------------------------------------------ |
+| `haus#57` | `Button` renders its own `<a>` for `href`                            | Next's `Link` is the thing that must render      |
+| `Card`    | `as` is a closed union of intrinsic element names                    | a clickable card is an anchor, or a router link  |
+| `haus#67` | `Tabs` renders its tablist and panel as adjacent siblings            | core's are a sticky toolbar and a document sheet |
+| `haus#68` | `Popover`'s panel is absolute against an ancestor that does not clip | `Modal`'s body is `overflow-y: auto`             |
 
 **A component assumes it owns an element or a subtree, in a consumer that already
 owns it.** Every one was found by a real consumer. None was found by review, and
@@ -58,7 +58,7 @@ So **a component that renders an interactive element ships `asChild`**, which
 clones the caller's single child and merges `className` and both refs, and never
 a closed `as` union of element names.
 
-`Card`'s comment argues against *generic polymorphism*, the kind that infers a
+`Card`'s comment argues against _generic polymorphism_, the kind that infers a
 whole prop set from `as`, and that argument is right and is not overturned here.
 It costs a page of conditional types and makes every error message unreadable.
 **`asChild` is not that pattern.** It takes no type parameter and infers nothing;

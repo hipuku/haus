@@ -20,7 +20,7 @@
 
 ## Checks
 
-- [ ] `pnpm run typecheck && pnpm run lint && pnpm run lint:css && pnpm run lint:prose && pnpm -r run test && pnpm run build`
+- [ ] `pnpm run typecheck && pnpm run lint && pnpm run lint:css && pnpm run lint:prose && pnpm run format:check && pnpm -r run test && pnpm run build`
 - [ ] Generated files regenerated rather than edited, if any source changed
 - [ ] A test that fails without this change. For a fix, run it against the
       version being fixed to prove it catches it

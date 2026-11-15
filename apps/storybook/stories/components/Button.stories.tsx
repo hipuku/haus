@@ -36,8 +36,7 @@ const meta = {
     tone: {
       control: 'inline-radio',
       options: ['neutral', 'info', 'success', 'warning', 'error'],
-      description:
-        'What it means. All five shared tones, composing freely with every weight.',
+      description: 'What it means. All five shared tones, composing freely with every weight.',
       table: { defaultValue: { summary: 'neutral' } },
     },
     size: {
@@ -71,12 +70,20 @@ type Story = StoryObj<typeof meta>
 export const Playground: Story = {}
 
 export const Weights: Story = {
-  render: (args) => (
+  render: args => (
     <div style={{ display: 'flex', gap: 'var(--haus-space-3)', flexWrap: 'wrap' }}>
-      <Button {...args} variant="primary">Primary</Button>
-      <Button {...args} variant="secondary">Secondary</Button>
-      <Button {...args} variant="ghost">Ghost</Button>
-      <Button {...args} variant="text">Text</Button>
+      <Button {...args} variant="primary">
+        Primary
+      </Button>
+      <Button {...args} variant="secondary">
+        Secondary
+      </Button>
+      <Button {...args} variant="ghost">
+        Ghost
+      </Button>
+      <Button {...args} variant="text">
+        Text
+      </Button>
     </div>
   ),
 }
@@ -98,12 +105,12 @@ export const Tones: Story = {
       },
     },
   },
-  render: (args) => (
+  render: args => (
     <table style={{ borderCollapse: 'separate', borderSpacing: 'var(--haus-space-3)' }}>
       <thead>
         <tr>
           <th />
-          {WEIGHTS.map((weight) => (
+          {WEIGHTS.map(weight => (
             <th
               key={weight}
               style={{
@@ -120,7 +127,7 @@ export const Tones: Story = {
         </tr>
       </thead>
       <tbody>
-        {TONES.map((tone) => (
+        {TONES.map(tone => (
           <tr key={tone}>
             <th
               scope="row"
@@ -134,7 +141,7 @@ export const Tones: Story = {
             >
               {tone}
             </th>
-            {WEIGHTS.map((weight) => (
+            {WEIGHTS.map(weight => (
               <td key={weight}>
                 <Button {...args} variant={weight} tone={tone}>
                   Delete
@@ -149,11 +156,17 @@ export const Tones: Story = {
 }
 
 export const Sizes: Story = {
-  render: (args) => (
+  render: args => (
     <div style={{ display: 'flex', gap: 'var(--haus-space-3)', alignItems: 'center' }}>
-      <Button {...args} size="sm">Small</Button>
-      <Button {...args} size="md">Medium</Button>
-      <Button {...args} size="lg">Large</Button>
+      <Button {...args} size="sm">
+        Small
+      </Button>
+      <Button {...args} size="md">
+        Medium
+      </Button>
+      <Button {...args} size="lg">
+        Large
+      </Button>
     </div>
   ),
 }
@@ -170,10 +183,14 @@ export const AsALink: Story = {
       },
     },
   },
-  render: (args) => (
+  render: args => (
     <div style={{ display: 'flex', gap: 'var(--haus-space-3)', alignItems: 'center' }}>
-      <Button {...args} href="https://haus.hipuku.dev" external>Documentation</Button>
-      <Button {...args} href="https://haus.hipuku.dev" disabled>Unavailable</Button>
+      <Button {...args} href="https://haus.hipuku.dev" external>
+        Documentation
+      </Button>
+      <Button {...args} href="https://haus.hipuku.dev" disabled>
+        Unavailable
+      </Button>
     </div>
   ),
 }

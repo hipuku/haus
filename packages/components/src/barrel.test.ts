@@ -39,7 +39,10 @@ function reExportedTypes(source: string): Set<string> {
   const names = new Set<string>()
   for (const m of source.matchAll(/export\s+type\s*\{([^}]*)\}/g)) {
     for (const raw of m[1].split(',')) {
-      const name = raw.trim().split(/\s+as\s+/)[0].trim()
+      const name = raw
+        .trim()
+        .split(/\s+as\s+/)[0]
+        .trim()
       if (name) names.add(name)
     }
   }

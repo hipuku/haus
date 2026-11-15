@@ -59,12 +59,14 @@ const SKIP = /(^|\/)(package-lock\.json|pnpm-lock\.yaml|.*\.(png|jpg|jpeg|gif|we
    `--exclude-standard` keeps .gitignore honoured, so build output and
    node_modules stay out. */
 function tracked() {
-  return execFileSync(
-    'git',
-    ['ls-files', '-z', '--cached', '--others', '--exclude-standard'],
-    { cwd: ROOT, maxBuffer: 32 * 1024 * 1024 },
-  )
-    .toString('utf8').split('\0').filter(Boolean).filter((f) => f !== SELF && !SKIP.test(f))
+  return execFileSync('git', ['ls-files', '-z', '--cached', '--others', '--exclude-standard'], {
+    cwd: ROOT,
+    maxBuffer: 32 * 1024 * 1024,
+  })
+    .toString('utf8')
+    .split('\0')
+    .filter(Boolean)
+    .filter(f => f !== SELF && !SKIP.test(f))
 }
 
 function count(file) {
@@ -96,9 +98,11 @@ const problems = []
 for (const [file, n] of [...found].sort()) {
   const allowed = baseline[file] ?? 0
   if (n > allowed) {
-    problems.push(allowed === 0
-      ? `  ${file}: ${n} em dash${n > 1 ? 'es' : ''}, and this file had none`
-      : `  ${file}: ${n} em dashes, baseline allows ${allowed}`)
+    problems.push(
+      allowed === 0
+        ? `  ${file}: ${n} em dash${n > 1 ? 'es' : ''}, and this file had none`
+        : `  ${file}: ${n} em dashes, baseline allows ${allowed}`,
+    )
   }
 }
 

@@ -28,13 +28,17 @@ const REQUIRED: Record<string, Record<string, unknown>> = {
   Modal: { open: true, onClose: () => {}, title: 'Confirm', children: 'Body' },
   // An open panel renders a plain div rather than a portal, so unlike Modal
   // it has something to hand back on the server too.
-  Popover: { open: true, onClose: () => {}, triggerRef: { current: null },
-             'aria-label': 'Options', children: 'Body' },
+  Popover: { open: true, onClose: () => {}, triggerRef: { current: null }, 'aria-label': 'Options', children: 'Body' },
   RadioGroup: { name: 'size', options: [{ value: 'sm', label: 'Small' }] },
   Select: { options: [{ value: 'a', label: 'A' }], value: 'a', onChange: () => {}, label: 'Pick' },
   Spinner: {},
-  Tabs: { items: [{ value: 'a', label: 'A' }], value: 'a', onValueChange: () => {},
-          'aria-label': 'Sections', children: 'Panel' },
+  Tabs: {
+    items: [{ value: 'a', label: 'A' }],
+    value: 'a',
+    onValueChange: () => {},
+    'aria-label': 'Sections',
+    children: 'Panel',
+  },
   Textarea: { label: 'Notes' },
   Toast: { title: 'Saved' },
   Toggle: { label: 'Wifi' },
@@ -42,8 +46,7 @@ const REQUIRED: Record<string, Record<string, unknown>> = {
 }
 
 const components = Object.entries(haus).filter(
-  ([name, value]) =>
-    /^[A-Z]/.test(name) && (typeof value === 'function' || typeof value === 'object'),
+  ([name, value]) => /^[A-Z]/.test(name) && (typeof value === 'function' || typeof value === 'object'),
 ) as [string, React.ElementType][]
 
 describe('the API the README promises', () => {
@@ -90,9 +93,6 @@ describe('the API the README promises', () => {
     // arrive by being spread. Without it a consumer cannot attach a test hook,
     // an analytics attribute or an aria-* the component did not think of.
     render(<Component {...REQUIRED[name]} data-probe={`${name}-probe`} />)
-    expect(
-      document.querySelector(`[data-probe="${name}-probe"]`),
-      `${name} dropped an unknown prop`,
-    ).not.toBeNull()
+    expect(document.querySelector(`[data-probe="${name}-probe"]`), `${name} dropped an unknown prop`).not.toBeNull()
   })
 })

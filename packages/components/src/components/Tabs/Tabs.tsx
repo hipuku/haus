@@ -41,8 +41,7 @@ interface TabsBaseProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onCh
 /* A tablist with no accessible name is announced as "tab list" and nothing
    else, which is no help at all when a screen has two. Same shape as Modal. */
 type TabsLabel =
-  | { 'aria-label': string; 'aria-labelledby'?: never }
-  | { 'aria-label'?: never; 'aria-labelledby': string }
+  { 'aria-label': string; 'aria-labelledby'?: never } | { 'aria-label'?: never; 'aria-labelledby': string }
 
 /**
  * Who renders the panel.
@@ -161,8 +160,8 @@ export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(function Tabs(
   const tabId = (v: string) => tabIdFor(base, v)
   const ownPanelId = (v: string) => `${base}-panel-${v}`
 
-  const enabled = items.filter((t) => !t.disabled)
-  const active = items.find((t) => t.value === value)
+  const enabled = items.filter(t => !t.disabled)
+  const active = items.find(t => t.value === value)
 
   /* Arrow keys move between tabs, Home and End jump to the ends, and disabled
      tabs are skipped rather than landed on and ignored.
@@ -179,11 +178,20 @@ export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(function Tabs(
     let next: number
 
     switch (e.key) {
-      case 'ArrowRight': next = index === last ? 0 : index + 1; break
-      case 'ArrowLeft':  next = index === 0 ? last : index - 1; break
-      case 'Home':       next = 0; break
-      case 'End':        next = last; break
-      default: return
+      case 'ArrowRight':
+        next = index === last ? 0 : index + 1
+        break
+      case 'ArrowLeft':
+        next = index === 0 ? last : index - 1
+        break
+      case 'Home':
+        next = 0
+        break
+      case 'End':
+        next = last
+        break
+      default:
+        return
     }
 
     e.preventDefault()
@@ -217,19 +225,14 @@ export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(function Tabs(
   }
 
   return (
-    <div
-      ref={ref}
-      id={id}
-      className={[styles.tabs, className].filter(Boolean).join(' ')}
-      {...rest}
-    >
+    <div ref={ref} id={id} className={[styles.tabs, className].filter(Boolean).join(' ')} {...rest}>
       <div
         role="tablist"
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledBy}
         className={[styles.list, styles[appearance], styles[size], tabListClassName].filter(Boolean).join(' ')}
       >
-        {items.map((item) => {
+        {items.map(item => {
           const selected = item.value === value
           return (
             <button
@@ -247,7 +250,12 @@ export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(function Tabs(
               tabIndex={selected ? 0 : -1}
               className={[styles.tab, selected ? styles.selected : ''].filter(Boolean).join(' ')}
               onClick={() => onValueChange(item.value)}
-              onKeyDown={(e) => move(e, enabled.findIndex((t) => t.value === item.value))}
+              onKeyDown={e =>
+                move(
+                  e,
+                  enabled.findIndex(t => t.value === item.value),
+                )
+              }
             >
               {item.label}
             </button>

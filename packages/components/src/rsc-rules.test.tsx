@@ -86,19 +86,13 @@ describe('no component attaches a ref it was not given', () => {
     expect(Component, `${name} is not exported`).toBeTruthy()
 
     let received: unknown = 'never rendered'
-    const Child = React.forwardRef<HTMLAnchorElement, { children?: React.ReactNode }>(
-      function Child(props, ref) {
-        received = ref
-        return <a href="/x" {...props} />
-      },
-    )
+    const Child = React.forwardRef<HTMLAnchorElement, { children?: React.ReactNode }>(function Child(props, ref) {
+      received = ref
+      return <a href="/x" {...props} />
+    })
 
     const html = renderToString(
-      React.createElement(
-        Component,
-        { asChild: true, ...(REQUIRED[name] ?? {}) },
-        <Child>Go</Child>,
-      ),
+      React.createElement(Component, { asChild: true, ...(REQUIRED[name] ?? {}) }, <Child>Go</Child>),
     )
 
     expect(html, `${name} rendered nothing`).toContain('<a')
@@ -110,21 +104,13 @@ describe('no component attaches a ref it was not given', () => {
     const Component = (haus as Record<string, unknown>)[name] as React.ElementType
 
     let received: unknown = null
-    const Child = React.forwardRef<HTMLAnchorElement, { children?: React.ReactNode }>(
-      function Child(props, ref) {
-        received = ref
-        return <a href="/x" {...props} />
-      },
-    )
+    const Child = React.forwardRef<HTMLAnchorElement, { children?: React.ReactNode }>(function Child(props, ref) {
+      received = ref
+      return <a href="/x" {...props} />
+    })
 
     const ref = React.createRef<HTMLAnchorElement>()
-    renderToString(
-      React.createElement(
-        Component,
-        { asChild: true, ref, ...(REQUIRED[name] ?? {}) },
-        <Child>Go</Child>,
-      ),
-    )
+    renderToString(React.createElement(Component, { asChild: true, ref, ...(REQUIRED[name] ?? {}) }, <Child>Go</Child>))
 
     // The fix for haus#71 was "return undefined when there is nothing to
     // merge", and the way to get that wrong in the other direction is to drop

@@ -85,14 +85,26 @@
   background: var(--haus-color-surface-raised);
 }
 
-.sm { font-size: var(--haus-type-label-sm-size); }
-.sm .tab { padding: var(--haus-space-inset-xs) var(--haus-space-inset-sm); }
+.sm {
+  font-size: var(--haus-type-label-sm-size);
+}
+.sm .tab {
+  padding: var(--haus-space-inset-xs) var(--haus-space-inset-sm);
+}
 
-.md { font-size: var(--haus-type-label-md-size); }
-.md .tab { padding: var(--haus-space-inset-sm) var(--haus-space-inset-md); }
+.md {
+  font-size: var(--haus-type-label-md-size);
+}
+.md .tab {
+  padding: var(--haus-space-inset-sm) var(--haus-space-inset-md);
+}
 
-.lg { font-size: var(--haus-type-body-size); }
-.lg .tab { padding: var(--haus-space-inset-md) var(--haus-space-inset-lg); }
+.lg {
+  font-size: var(--haus-type-body-size);
+}
+.lg .tab {
+  padding: var(--haus-space-inset-md) var(--haus-space-inset-lg);
+}
 
 .panel {
   padding-block-start: var(--haus-space-inset-md);

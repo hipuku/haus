@@ -11,8 +11,12 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .dialog {
@@ -28,16 +32,30 @@
 }
 
 @keyframes slideUp {
-  from { transform: translateY(var(--haus-space-3)); opacity: 0; }
-  to   { transform: translateY(0);    opacity: 1; }
+  from {
+    transform: translateY(var(--haus-space-3));
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 /* ── Sizes ── */
 
-.sm { max-width: var(--haus-modal-width-sm); }
-.md { max-width: var(--haus-modal-width-md); }
-.lg { max-width: var(--haus-modal-width-lg); }
-.xl { max-width: var(--haus-modal-width-xl); }
+.sm {
+  max-width: var(--haus-modal-width-sm);
+}
+.md {
+  max-width: var(--haus-modal-width-md);
+}
+.lg {
+  max-width: var(--haus-modal-width-lg);
+}
+.xl {
+  max-width: var(--haus-modal-width-xl);
+}
 
 /* ── Header ── */
 
@@ -75,7 +93,9 @@
   background: transparent;
   cursor: pointer;
   color: var(--haus-color-ink-tertiary);
-  transition: color var(--haus-motion-micro), background-color var(--haus-motion-micro);
+  transition:
+    color var(--haus-motion-micro),
+    background-color var(--haus-motion-micro);
   padding: 0;
   margin-block-start: -2px;
 }

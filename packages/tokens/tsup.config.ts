@@ -4,15 +4,7 @@ import { defineConfig } from 'tsup'
 // The CSS files and tokens.json are shipped as-is. They are the source form,
 // not something to compile. `files: ["dist"]` means only dist is published, so
 // they are copied there rather than exported from src.
-const ASSETS = [
-  'layers.css',
-  'primitives.css',
-  'brand.css',
-  'semantics.css',
-  'motion.css',
-  'index.css',
-  'tokens.json',
-]
+const ASSETS = ['layers.css', 'primitives.css', 'brand.css', 'semantics.css', 'motion.css', 'index.css', 'tokens.json']
 /**
  * Brands ship as their own directory so a consumer can point at one by name.
  *
@@ -23,7 +15,7 @@ const ASSETS = [
  * contain. A hand-maintained list beside a directory is a second place for the
  * same fact, and this package has now produced that defect four times.
  */
-const BRANDS = (await readdir('src/brands')).filter((f) => f.endsWith('.css'))
+const BRANDS = (await readdir('src/brands')).filter(f => f.endsWith('.css'))
 
 /**
  * Dual output, ESM and CJS.
@@ -49,8 +41,8 @@ export default defineConfig({
   async onSuccess() {
     await mkdir('dist/brands', { recursive: true })
     await Promise.all([
-      ...ASSETS.map((f) => copyFile(`src/${f}`, `dist/${f}`)),
-      ...BRANDS.map((f) => copyFile(`src/brands/${f}`, `dist/brands/${f}`)),
+      ...ASSETS.map(f => copyFile(`src/${f}`, `dist/${f}`)),
+      ...BRANDS.map(f => copyFile(`src/brands/${f}`, `dist/brands/${f}`)),
     ])
   },
 })

@@ -29,7 +29,7 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Playground: Story = {
-  render: (args) => (
+  render: args => (
     <div style={{ maxWidth: 420 }}>
       <p style={{ margin: 0 }}>Above the rule.</p>
       <Divider {...args} />
@@ -39,9 +39,9 @@ export const Playground: Story = {
 }
 
 export const Spacing: Story = {
-  render: (args) => (
+  render: args => (
     <div style={{ maxWidth: 420 }}>
-      {(['none', 'sm', 'md', 'lg'] as const).map((spacing) => (
+      {(['none', 'sm', 'md', 'lg'] as const).map(spacing => (
         <div key={spacing}>
           <p style={{ margin: 0, fontSize: 13 }}>{spacing}</p>
           <Divider {...args} spacing={spacing} />
@@ -53,7 +53,7 @@ export const Spacing: Story = {
 
 export const Vertical: Story = {
   name: 'Vertical, in a toolbar',
-  render: (args) => (
+  render: args => (
     <div style={{ display: 'flex', alignItems: 'center', gap: 0 }}>
       <span>Copy</span>
       <Divider {...args} orientation="vertical" />

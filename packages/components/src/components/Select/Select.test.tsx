@@ -13,13 +13,7 @@ const options = [
 function Harness(props: Partial<React.ComponentProps<typeof Select>> = {}) {
   const [value, setValue] = React.useState('author')
   return (
-    <Select
-      options={options}
-      value={value}
-      onChange={setValue}
-      label="Role"
-      {...(props as Record<string, never>)}
-    />
+    <Select options={options} value={value} onChange={setValue} label="Role" {...(props as Record<string, never>)} />
   )
 }
 
@@ -100,7 +94,10 @@ describe('Select', () => {
     const onChange = vi.fn()
     render(
       <Select
-        options={[{ value: 'a', label: 'A' }, { value: 'b', label: 'B', disabled: true }]}
+        options={[
+          { value: 'a', label: 'A' },
+          { value: 'b', label: 'B', disabled: true },
+        ]}
         value="a"
         onChange={onChange}
         label="Pick"

@@ -29,10 +29,7 @@ describe('Spinner', () => {
     // boolean prop would make that the easy thing to write; a string makes the
     // substitute nameable, and this asserts it survives to the markup.
     render(<Spinner announcedBy="Crawling 40 pages" />)
-    expect(document.querySelector('[data-announced-by]')).toHaveAttribute(
-      'data-announced-by',
-      'Crawling 40 pages',
-    )
+    expect(document.querySelector('[data-announced-by]')).toHaveAttribute('data-announced-by', 'Crawling 40 pages')
   })
 
   it('is silent completely, with no empty live region left behind', () => {
@@ -44,7 +41,7 @@ describe('Spinner', () => {
     expect(el).not.toHaveAttribute('aria-label')
   })
 
-  it.each(['text', 'sm', 'md'] as const)('draws at %s', (size) => {
+  it.each(['text', 'sm', 'md'] as const)('draws at %s', size => {
     const { container } = render(<Spinner size={size} />)
     expect(container.firstElementChild?.className).toContain(size)
   })

@@ -14,9 +14,9 @@ drift and vault on 2026-09-08, **no consumer imports it**: every `Select`
 import in the portfolio resolves to a product-local component.
 
 Two products built a replacement instead, and both wrote down the same reason.
-core, on `Dropdown`: *"a styled listbox standing in for `<select>`, whose native
-popup can't be themed."* vault, on `molecules/Select`: *"a custom dropdown
-replacing native `<select>`."* core's option carries a `hint`, a second line
+core, on `Dropdown`: _"a styled listbox standing in for `<select>`, whose native
+popup can't be themed."_ vault, on `molecules/Select`: _"a custom dropdown
+replacing native `<select>`."_ core's option carries a `hint`, a second line
 under the label, which an `<option>` cannot hold because the operating system
 draws it.
 
@@ -45,11 +45,11 @@ argued convincingly that a native select is genuinely better at some of them.
 
 Harder: two components to keep, and only one of them earning its keep in the
 portfolio right now. Keeping an unused component is defensible; keeping one
-*silently* is not, because an absence of consumers reads as proof of fitness
+_silently_ is not, because an absence of consumers reads as proof of fitness
 until somebody checks. If `Select` still has none when a fourth product lands,
 that is the moment to ask again rather than now, when removing it would be a
 major version for nobody's benefit.
 
 **This does not weaken 0011.** 0011 is about what a native select is and is not,
-and every sentence of it is still true. It was read as *the* answer to picking
+and every sentence of it is still true. It was read as _the_ answer to picking
 an option, and it was only ever the answer for one half of the cases.

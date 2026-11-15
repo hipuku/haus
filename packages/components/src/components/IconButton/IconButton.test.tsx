@@ -167,8 +167,12 @@ describe('asChild', () => {
   it('does not typecheck with loading', () => {
     // The guard is the type. A link that is permanently busy announces a wait
     // that will never end, the same reason Button forbids it.
-    // @ts-expect-error asChild has no busy state to announce
-    const a = <IconButton icon={<Glyph />} label="Edit" asChild loading><a href="/x" /></IconButton>
+    const a = (
+      // @ts-expect-error asChild has no busy state to announce
+      <IconButton icon={<Glyph />} label="Edit" asChild loading>
+        <a href="/x" />
+      </IconButton>
+    )
     expect(a).toBeTruthy()
   })
 
@@ -176,7 +180,10 @@ describe('asChild', () => {
     // Decision 0023. A wrapper accepting the whole union does not compile.
     const own: IconButtonOwnProps = { icon: <Glyph />, label: 'Edit', loading: true }
     const cloned: IconButtonAsChildProps = {
-      icon: <Glyph />, label: 'Edit', asChild: true, children: <a href="/x" />,
+      icon: <Glyph />,
+      label: 'Edit',
+      asChild: true,
+      children: <a href="/x" />,
     }
     expect([own.loading, cloned.asChild]).toEqual([true, true])
   })

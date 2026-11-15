@@ -3,8 +3,8 @@ import colornames from './colornames.json'
 
 export interface NamedColourMatch {
   name: string
-  hex: string       // the named colour's canonical hex
-  distance: number  // CIEDE2000 ΔE
+  hex: string // the named colour's canonical hex
+  distance: number // CIEDE2000 ΔE
 }
 
 /** One entry of a name dataset. `haus-colour-names` emits exactly this shape. */
@@ -45,7 +45,7 @@ export function createNamedColourMatcher(
 
   return function nearest(hex: string, topN = 5): NamedColourMatch[] {
     if (!indexed) {
-      indexed = entries.map((entry) => {
+      indexed = entries.map(entry => {
         const [L, a, b] = chroma(entry.hex).lab()
         return { ...entry, L, a, b }
       })
@@ -68,21 +68,21 @@ export function createNamedColourMatcher(
     // to something that was not the nearest match. The name comparison stays as
     // a tiebreak for genuinely equal distances, so the result is deterministic.
     return pool
-      .map((entry) => ({
+      .map(entry => ({
         name: entry.name,
         hex: entry.hex,
         distance: chroma.deltaE(hex, entry.hex),
       }))
       .sort((a, b) => a.distance - b.distance || a.name.localeCompare(b.name))
       .slice(0, topN)
-      .map((match) => ({ ...match, distance: Math.round(match.distance * 10) / 10 }))
+      .map(match => ({ ...match, distance: Math.round(match.distance * 10) / 10 }))
   }
 }
 
 /** The 289 basic colour terms bundled with this package. */
-export const basicColourNames: NamedColourEntry[] = Object.entries(
-  colornames as Record<string, string>,
-).map(([rawHex, name]) => ({ hex: `#${rawHex.padStart(6, '0').toLowerCase()}`, name }))
+export const basicColourNames: NamedColourEntry[] = Object.entries(colornames as Record<string, string>).map(
+  ([rawHex, name]) => ({ hex: `#${rawHex.padStart(6, '0').toLowerCase()}`, name }),
+)
 
 /**
  * Closest named colour by CIEDE2000, over the bundled 289 terms.

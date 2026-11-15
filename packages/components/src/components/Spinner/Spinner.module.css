@@ -8,8 +8,7 @@
   border: var(--haus-border-width-thick) solid currentColor;
   border-block-start-color: transparent;
   border-radius: var(--haus-radius-pill);
-  animation: haus-spinner-rotate var(--haus-motion-duration-emphasis)
-    var(--haus-ease-linear) infinite;
+  animation: haus-spinner-rotate var(--haus-motion-duration-emphasis) var(--haus-ease-linear) infinite;
 }
 
 /* 1em, so a spinner in a line of text matches the text. Button's was already

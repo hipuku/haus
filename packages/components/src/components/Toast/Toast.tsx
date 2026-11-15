@@ -18,14 +18,14 @@ export type ToastAppearance = Appearance
 export type ToastVariant = ToastTone
 
 export interface ToastProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
-  tone?:        ToastTone
-  appearance?:  ToastAppearance
+  tone?: ToastTone
+  appearance?: ToastAppearance
   /** Named rather than spread: it is the visible heading, not the tooltip the
    *  native title attribute would give. */
-  title:        string
+  title: string
   description?: string
-  action?:      React.ReactNode
-  onClose?:     () => void
+  action?: React.ReactNode
+  onClose?: () => void
 }
 
 /**
@@ -51,12 +51,7 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(function Toast
   { tone = 'neutral', appearance = 'subtle', title, description, action, onClose, className, ...rest },
   ref,
 ) {
-  const cls = [
-    styles.toast,
-    styles[tone],
-    styles[appearance],
-    className,
-  ].filter(Boolean).join(' ')
+  const cls = [styles.toast, styles[tone], styles[appearance], className].filter(Boolean).join(' ')
 
   return (
     <div ref={ref} className={cls} role="status" aria-live="polite" aria-atomic {...rest}>
@@ -71,14 +66,9 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(function Toast
       </div>
 
       {onClose && (
-        <button
-          type="button"
-          className={styles.close}
-          onClick={onClose}
-          aria-label="Dismiss notification"
-        >
+        <button type="button" className={styles.close} onClick={onClose} aria-label="Dismiss notification">
           <svg viewBox="0 0 12 12" fill="none" aria-hidden>
-            <path d="M2 2L10 10M10 2L2 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+            <path d="M2 2L10 10M10 2L2 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
           </svg>
         </button>
       )}

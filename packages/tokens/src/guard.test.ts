@@ -147,7 +147,7 @@ describe('findRestatedTokens', () => {
       defines: [`:root { --haus-space-inset-md: var(--haus-space-4); }`],
       upstream: HAUS,
     })
-    expect(found.map((f) => [f.name, f.kind])).toEqual([['--haus-space-inset-md', 'identical']])
+    expect(found.map(f => [f.name, f.kind])).toEqual([['--haus-space-inset-md', 'identical']])
   })
 
   it('finds a value hardcoded to what our chain resolves to', () => {
@@ -158,7 +158,7 @@ describe('findRestatedTokens', () => {
       defines: [`:root { --haus-z-modal: 400; }`],
       upstream: HAUS,
     })
-    expect(found.map((f) => [f.name, f.kind])).toEqual([['--haus-z-modal', 'resolved']])
+    expect(found.map(f => [f.name, f.kind])).toEqual([['--haus-z-modal', 'resolved']])
   })
 
   it('says nothing about a real override', () => {
@@ -187,7 +187,7 @@ describe('findRestatedTokens', () => {
       defines: [`:root {\n  --haus-space-inset-md:   var( --haus-space-4 ) /* same */ ;\n}`],
       upstream: HAUS,
     })
-    expect(found.map((f) => f.name)).toEqual(['--haus-space-inset-md'])
+    expect(found.map(f => f.name)).toEqual(['--haus-space-inset-md'])
   })
 
   it('reports each property once, however often it is declared', () => {
@@ -205,6 +205,6 @@ describe('findRestatedTokens', () => {
       defines: [`:root { --a: var(--b); }`],
       upstream: [`:root { --a: var(--b); --b: var(--a); }`],
     })
-    expect(found.map((f) => f.kind)).toEqual(['identical'])
+    expect(found.map(f => f.kind)).toEqual(['identical'])
   })
 })

@@ -20,11 +20,11 @@ departures** and proposed a brand group for each family. Redone against
 `haus-tokens@1.0.0`, **which is the version drift actually installs**, rather than
 against haus's working tree at 2.x:
 
-| | Count | What it is |
-|---|---|---|
-| Hardcodes the literal a haus primitive resolves to | **12** | eight `z-index` roles at `0` to `600`, `border-width` at `1px` and `2px`, `opacity` at `0.4` and `0.6` |
-| Version skew | **2** | `display-tracking` and `heading-lg-tracking`, byte-identical to haus 1.0.0 and different only from 2.x, because `haus#37` retightened them after drift's file was written |
-| **Genuine departures** | **5** | three `radius` roles one step tighter, two `elevation` roles on drift's own `--shadow-*` ramp |
+|                                                    | Count  | What it is                                                                                                                                                                |
+| -------------------------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Hardcodes the literal a haus primitive resolves to | **12** | eight `z-index` roles at `0` to `600`, `border-width` at `1px` and `2px`, `opacity` at `0.4` and `0.6`                                                                    |
+| Version skew                                       | **2**  | `display-tracking` and `heading-lg-tracking`, byte-identical to haus 1.0.0 and different only from 2.x, because `haus#37` retightened them after drift's file was written |
+| **Genuine departures**                             | **5**  | three `radius` roles one step tighter, two `elevation` roles on drift's own `--shadow-*` ramp                                                                             |
 
 **Comparing a consumer against a version it does not install manufactures
 departures that are really version skew, and it does so in the flattering
@@ -66,8 +66,8 @@ own, written a release before anyone asked the question.
 Typeface belongs in this tier by the same argument, and it is not here.
 
 `--haus-font-sans` and `-mono` are **primitives**, read directly by 32 component
-sites under a documented exemption: *"primitives whose own name already is the
-role, so no alias exists."* That reasoning holds exactly as long as there is one
+sites under a documented exemption: _"primitives whose own name already is the
+role, so no alias exists."_ That reasoning holds exactly as long as there is one
 brand.
 
 Making them brandable means the role and the primitive stop sharing a name, so the
@@ -124,9 +124,9 @@ and this is an assertion nobody has watched run.
 Code and Figma still brand elevation at different granularities, and this part was
 not wrong:
 
-| | What a brand states |
-|---|---|
-| **Code** | one alias per role, `--haus-brand-elevation-raised: var(--haus-shadow-sm)` |
+|           | What a brand states                                                              |
+| --------- | -------------------------------------------------------------------------------- |
+| **Code**  | one alias per role, `--haus-brand-elevation-raised: var(--haus-shadow-sm)`       |
 | **Figma** | five bound values per shadow layer, because there is no shadow variable to alias |
 
 Same result, different shape, and it is a mechanism difference rather than a

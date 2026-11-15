@@ -59,14 +59,7 @@ export interface Listbox {
  * Ported alongside vault's `useListbox`, with the same signature, so the two
  * stay diffable until one of them moves to haus.
  */
-export function useListbox({
-  open,
-  labels,
-  selectedIndex,
-  onSelect,
-  onOpenChange,
-  baseId,
-}: ListboxOptions): Listbox {
+export function useListbox({ open, labels, selectedIndex, onSelect, onOpenChange, baseId }: ListboxOptions): Listbox {
   const [activeIndex, setActiveIndex] = useState(selectedIndex)
   const [wasOpen, setWasOpen] = useState(open)
   const typed = useRef({ buffer: '', at: 0 })
@@ -79,7 +72,7 @@ export function useListbox({
   }, [onSelect, onOpenChange])
 
   const count = labels.length
-  const lower = useMemo(() => labels.map((l) => l.toLowerCase()), [labels])
+  const lower = useMemo(() => labels.map(l => l.toLowerCase()), [labels])
 
   // Opening starts on the current selection, so the first ArrowDown moves from
   // where the user is rather than from the top of a list they have scrolled
@@ -100,15 +93,10 @@ export function useListbox({
     // scrollIntoView, so a bare call throws inside an effect and takes the
     // consumer's whole test render down with it. A published component cannot
     // require the DOM to be complete to mount.
-    document
-      .getElementById(`${baseId}-option-${activeIndex}`)
-      ?.scrollIntoView?.({ block: 'nearest' })
+    document.getElementById(`${baseId}-option-${activeIndex}`)?.scrollIntoView?.({ block: 'nearest' })
   }, [open, activeIndex, baseId])
 
-  const optionId = useCallback(
-    (index: number) => `${baseId}-option-${index}`,
-    [baseId],
-  )
+  const optionId = useCallback((index: number) => `${baseId}-option-${index}`, [baseId])
 
   const onKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -147,16 +135,14 @@ export function useListbox({
       if (e.key.length !== 1 || e.metaKey || e.ctrlKey || e.altKey) return
       const now = Date.now()
       const buffer =
-        now - typed.current.at > TYPEAHEAD_MS
-          ? e.key.toLowerCase()
-          : typed.current.buffer + e.key.toLowerCase()
+        now - typed.current.at > TYPEAHEAD_MS ? e.key.toLowerCase() : typed.current.buffer + e.key.toLowerCase()
       typed.current = { buffer, at: now }
 
       // One letter pressed repeatedly cycles through the options beginning
       // with it, the way a native <select> does, rather than searching for
       // 'eee'. Any other run of keys is a prefix and searches from the current
       // row, so the match found by 'e' survives the 'd' that follows it.
-      const repeated = [...buffer].every((c) => c === buffer[0])
+      const repeated = [...buffer].every(c => c === buffer[0])
       const needle = repeated ? buffer[0] : buffer
       const from = repeated ? activeIndex + 1 : activeIndex
       for (let i = 0; i < count; i++) {
@@ -176,10 +162,7 @@ export function useListbox({
     activeIndex,
     setActiveIndex,
     optionId,
-    activeDescendant:
-      open && activeIndex >= 0 && activeIndex < count
-        ? optionId(activeIndex)
-        : undefined,
+    activeDescendant: open && activeIndex >= 0 && activeIndex < count ? optionId(activeIndex) : undefined,
     listId: `${baseId}-listbox`,
     controls: open ? `${baseId}-listbox` : undefined,
     onKeyDown,

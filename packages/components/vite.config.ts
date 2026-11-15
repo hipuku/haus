@@ -46,7 +46,7 @@ function layerStylesheet(): Plugin {
       // @import must stay at the top of the file, outside the block. There are
       // none today; hoisting them keeps that true if one ever arrives.
       const imports: string[] = []
-      const body = css.replace(/@import[^;]+;/g, (m) => {
+      const body = css.replace(/@import[^;]+;/g, m => {
         imports.push(m.trim())
         return ''
       })
@@ -70,7 +70,7 @@ export default defineConfig({
       // ESM and CJS both, so `main` and the require condition point at something
       // that actually works in the context they advertise for. See N30.
       formats: ['es', 'cjs'],
-      fileName: (format) => (format === 'es' ? 'index.js' : 'index.cjs'),
+      fileName: format => (format === 'es' ? 'index.js' : 'index.cjs'),
     },
     sourcemap: true,
     cssCodeSplit: false,

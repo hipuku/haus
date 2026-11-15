@@ -55,9 +55,7 @@ describe('EmptyState', () => {
   })
 
   it('hides the illustration from the accessibility tree', () => {
-    const { container } = render(
-      <EmptyState title="Nothing yet" icon={<svg data-testid="glyph" />} />,
-    )
+    const { container } = render(<EmptyState title="Nothing yet" icon={<svg data-testid="glyph" />} />)
     expect(container.querySelector('[aria-hidden="true"]')).not.toBeNull()
     expect(screen.getByTestId('glyph')).toBeInTheDocument()
   })

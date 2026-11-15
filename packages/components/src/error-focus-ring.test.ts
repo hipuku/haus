@@ -44,18 +44,18 @@ interface Component {
 
 function components(): Component[] {
   return readdirSync(COMPONENTS, { withFileTypes: true })
-    .filter((d) => d.isDirectory())
-    .map((d) => {
+    .filter(d => d.isDirectory())
+    .map(d => {
       const files = readdirSync(join(COMPONENTS, d.name))
       const read = (f: string) => readFileSync(join(COMPONENTS, d.name, f), 'utf8')
       return {
         name: d.name,
         css: files
-          .filter((f) => f.endsWith('.module.css'))
-          .map((f) => decomment(read(f)))
+          .filter(f => f.endsWith('.module.css'))
+          .map(f => decomment(read(f)))
           .join('\n'),
         source: files
-          .filter((f) => f.endsWith('.tsx') && !f.endsWith('.test.tsx'))
+          .filter(f => f.endsWith('.tsx') && !f.endsWith('.test.tsx'))
           .map(read)
           .join('\n'),
       }
@@ -80,18 +80,17 @@ describe('an invalid control rings in the error colour', () => {
     // Both halves. A wrong path empties the list; a regex that matches nothing
     // empties the set, and either would make every assertion below pass on air.
     expect(ALL.length).toBeGreaterThan(10)
-    expect(ALL.filter(takesError).map((c) => c.name).sort()).toEqual([
-      'Checkbox',
-      'Input',
-      'Radio',
-      'Textarea',
-    ])
+    expect(
+      ALL.filter(takesError)
+        .map(c => c.name)
+        .sort(),
+    ).toEqual(['Checkbox', 'Input', 'Radio', 'Textarea'])
   })
 
-  it.each(ALL.filter((c) => takesError(c) && paintsRing(c)).map((c) => c.name))(
+  it.each(ALL.filter(c => takesError(c) && paintsRing(c)).map(c => c.name))(
     '%s reads the error ring as well as the ordinary one',
-    (name) => {
-      const c = ALL.find((x) => x.name === name)!
+    name => {
+      const c = ALL.find(x => x.name === name)!
       expect(paintsErrorRing(c)).toBe(true)
     },
   )
@@ -103,7 +102,7 @@ describe('an invalid control rings in the error colour', () => {
     const unscoped: string[] = []
     for (const c of ALL.filter(paintsErrorRing)) {
       const rules = c.css.match(/[^{}]+\{[^}]*\}/g) ?? []
-      const carrying = rules.filter((r) => r.includes('var(--haus-focus-ring-error)'))
+      const carrying = rules.filter(r => r.includes('var(--haus-focus-ring-error)'))
       expect(carrying.length).toBeGreaterThan(0)
       for (const rule of carrying) {
         const selector = rule.slice(0, rule.indexOf('{'))
@@ -120,7 +119,7 @@ describe('an invalid control rings in the error colour', () => {
     // there is nothing to validate, and it correctly has neither an `error` prop
     // nor an error ring. If it ever grows one, the assertion above starts
     // covering it and this one says why it changed.
-    const toggle = ALL.find((c) => c.name === 'Toggle')!
+    const toggle = ALL.find(c => c.name === 'Toggle')!
     expect(takesError(toggle)).toBe(false)
     expect(paintsErrorRing(toggle)).toBe(false)
   })

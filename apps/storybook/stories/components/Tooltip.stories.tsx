@@ -34,7 +34,7 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Playground: Story = {
-  render: (args) => (
+  render: args => (
     <div style={{ margin: '60px 0' }}>
       <Tooltip {...args}>
         <Button>Copy</Button>
@@ -45,10 +45,12 @@ export const Playground: Story = {
 
 export const OnFocus: Story = {
   name: 'Reachable by keyboard',
-  render: (args) => (
+  render: args => (
     <div style={{ display: 'flex', gap: 'var(--haus-space-4)', margin: '60px 0' }}>
       <Button>Before</Button>
-      <Tooltip {...args}><Button>Copy</Button></Tooltip>
+      <Tooltip {...args}>
+        <Button>Copy</Button>
+      </Tooltip>
       <Button>After</Button>
     </div>
   ),

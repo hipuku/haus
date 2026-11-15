@@ -36,7 +36,7 @@
   justify-content: center;
   transition:
     background-color var(--haus-motion-micro),
-    border-color     var(--haus-motion-micro);
+    border-color var(--haus-motion-micro);
   margin-block-start: 1px; /* optical alignment with label text */
 }
 

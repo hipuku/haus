@@ -12,46 +12,43 @@
  *
  *   node scripts/figma-docs.mjs [outdir]
  */
-import { readFileSync, writeFileSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { readFileSync, writeFileSync } from 'node:fs'
+import { dirname, join, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-const PKG = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const ROOT = resolve(PKG, "..", "..");
-const TOKENS = join(ROOT, "packages", "tokens", "dist");
-const SRC = join(ROOT, "packages", "tokens", "src");
+const PKG = resolve(dirname(fileURLToPath(import.meta.url)), '..')
+const ROOT = resolve(PKG, '..', '..')
+const TOKENS = join(ROOT, 'packages', 'tokens', 'dist')
+const SRC = join(ROOT, 'packages', 'tokens', 'src')
 
-const read = (f, dir = TOKENS) => readFileSync(join(dir, f), "utf8");
-const esc = (s) =>
-  String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const read = (f, dir = TOKENS) => readFileSync(join(dir, f), 'utf8')
+const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 
 /** Declarations of a family, as [name, value, trailing comment]. */
 function declarations(css, pattern) {
-  const out = [];
+  const out = []
   for (const m of css.matchAll(/^\s*(--haus-[a-z0-9-]+)\s*:\s*([^;]+);(?:\s*\/\*\s*(.*?)\s*\*\/)?/gm)) {
-    if (pattern.test(m[1])) out.push([m[1], m[2].trim(), m[3] ?? ""]);
+    if (pattern.test(m[1])) out.push([m[1], m[2].trim(), m[3] ?? ''])
   }
-  return out;
+  return out
 }
 
-const primitives = read("primitives.css");
-const semantics = read("semantics.css");
-const motion = read("motion.css");
-const version = JSON.parse(readFileSync(join(PKG, "package.json"), "utf8")).version;
+const primitives = read('primitives.css')
+const semantics = read('semantics.css')
+const motion = read('motion.css')
+const version = JSON.parse(readFileSync(join(PKG, 'package.json'), 'utf8')).version
 
-const NAV = (here) =>
+const NAV = here =>
   [
-    ["FIGMA-VARIANTS-haus.html", "Variants"],
-    ["FIGMA-DOCS-tokens.html", "Page 1 · Tokens"],
-    ["FIGMA-DOCS-motion.html", "Page 2 · Motion"],
-    ["FIGMA-DOCS-getting-started.html", "Page 3 · Getting started"],
+    ['FIGMA-VARIANTS-haus.html', 'Variants'],
+    ['FIGMA-DOCS-tokens.html', 'Page 1 · Tokens'],
+    ['FIGMA-DOCS-motion.html', 'Page 2 · Motion'],
+    ['FIGMA-DOCS-getting-started.html', 'Page 3 · Getting started'],
   ]
     .map(([href, label]) =>
-      href === here
-        ? `<span class="nav-here">${label}</span>`
-        : `<a href="${href}">${label}</a>`,
+      href === here ? `<span class="nav-here">${label}</span>` : `<a href="${href}">${label}</a>`,
     )
-    .join("");
+    .join('')
 
 const shell = (here, title, intro, body) => `<!doctype html>
 <meta charset="utf-8">
@@ -60,9 +57,9 @@ const shell = (here, title, intro, body) => `<!doctype html>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Fira+Code:wght@400&display=swap">
 <style>
-${read("layers.css")}
+${read('layers.css')}
 ${primitives}
-${read("brand.css")}
+${read('brand.css')}
 ${motion}
 ${semantics}
 body { margin:0; padding:0 2.5rem 6rem; background:var(--haus-color-surface-subtle);
@@ -98,34 +95,30 @@ code, .mono { font-family:var(--haus-font-mono); font-size:.75rem; }
 <h1>${esc(title)}</h1>
 <div class="lede">${intro}</div>
 ${body}
-`;
+`
 
 /* ═══ Page 1 · Tokens ═══════════════════════════════════════════════════════ */
 
-const colourRoles = declarations(semantics, /^--haus-color-/);
-const spaceRoles = declarations(semantics, /^--haus-space-(inset|gap|stack)-/);
-const radiusRoles = declarations(semantics, /^--haus-radius-(control|surface|overlay|marker|pill)$/);
-const elevationRoles = declarations(semantics, /^--haus-elevation-/);
-const zRoles = declarations(semantics, /^--haus-z-[a-z]/);
+const colourRoles = declarations(semantics, /^--haus-color-/)
+const spaceRoles = declarations(semantics, /^--haus-space-(inset|gap|stack)-/)
+const radiusRoles = declarations(semantics, /^--haus-radius-(control|surface|overlay|marker|pill)$/)
+const elevationRoles = declarations(semantics, /^--haus-elevation-/)
+const zRoles = declarations(semantics, /^--haus-z-[a-z]/)
 const typeRoles = [
-  ...new Set(
-    [...semantics.matchAll(/^\s*(--haus-type-[a-z-]+?)-(size|weight|leading|tracking)\s*:/gm)].map(
-      (m) => m[1],
-    ),
-  ),
-];
+  ...new Set([...semantics.matchAll(/^\s*(--haus-type-[a-z-]+?)-(size|weight|leading|tracking)\s*:/gm)].map(m => m[1])),
+]
 
-const roleTable = (rows) =>
+const roleTable = rows =>
   `<table><tr><th>Variable</th><th>Resolves to</th><th>Use</th></tr>${rows
     .map(
       ([n, v, c]) =>
-        `<tr><td class="mono">${esc(n.replace("--haus-", ""))}</td><td class="mono">${esc(v)}</td><td>${esc(c)}</td></tr>`,
+        `<tr><td class="mono">${esc(n.replace('--haus-', ''))}</td><td class="mono">${esc(v)}</td><td>${esc(c)}</td></tr>`,
     )
-    .join("")}</table>`;
+    .join('')}</table>`
 
 const tokensPage = shell(
-  "FIGMA-DOCS-tokens.html",
-  "Page 1 · Tokens",
+  'FIGMA-DOCS-tokens.html',
+  'Page 1 · Tokens',
   `<p>What this page is for: a designer opening the library should be able to answer
    <em>which variable do I reach for</em> without reading any CSS. That is the only question
    this page exists to answer, so it is organised by the decision being made rather than by
@@ -269,7 +262,7 @@ const tokensPage = shell(
   style, and the nearest is <code>label-sm</code>: <b>identical at 12px, 140% and 0.24px, and wrong
   by one step of weight</b>, 500 against 600. Create it. That is the least visible kind of
   disagreement and the most durable, because nothing looks broken.</p></div>
-  <p class="mono">${typeRoles.map((t) => esc(t.replace("--haus-type-", ""))).join(" · ")}</p>
+  <p class="mono">${typeRoles.map(t => esc(t.replace('--haus-type-', ''))).join(' · ')}</p>
   <div class="callout"><p><b>label-eyebrow is new in haus#37 and has no text style yet. Create
   it.</b> 12px, SemiBold 600, 140%, letter-spacing <code>0.48px</code> (0.04em times 12px). It is the
   uppercase section label a product writes above a panel or group, and it is the second time a role
@@ -325,17 +318,17 @@ const tokensPage = shell(
   mode is called <code>vault</code> and the ramp stays <code>ruby</code>.</p></div>
 </div>
 `,
-);
+)
 
 /* ═══ Page 2 · Motion ═══════════════════════════════════════════════════════ */
 
-const durations = declarations(motion, /^--haus-duration-/);
-const eases = declarations(motion, /^--haus-ease-/);
-const pairs = declarations(motion, /^--haus-motion-/);
+const durations = declarations(motion, /^--haus-duration-/)
+const eases = declarations(motion, /^--haus-ease-/)
+const pairs = declarations(motion, /^--haus-motion-/)
 
 const motionPage = shell(
-  "FIGMA-DOCS-motion.html",
-  "Page 2 · Motion",
+  'FIGMA-DOCS-motion.html',
+  'Page 2 · Motion',
   `<p><strong>This is the page that has to exist.</strong> Figma cannot bind a duration or an easing
    curve to a variable, so unlike every other token in the system these have no home in the file
    except a page that writes them down. Leave it out and motion is the one layer a designer
@@ -351,10 +344,10 @@ const motionPage = shell(
   ${durations
     .map(
       ([n, v, c]) =>
-        `<tr><td class="mono">${esc(n.replace("--haus-", ""))}</td><td class="mono">${esc(v)}</td>` +
+        `<tr><td class="mono">${esc(n.replace('--haus-', ''))}</td><td class="mono">${esc(v)}</td>` +
         `<td><span class="bar" style="width:${Math.max(4, parseInt(v) / 2)}px"></span></td><td>${esc(c)}</td></tr>`,
     )
-    .join("")}
+    .join('')}
   </table>
   <div class="callout"><p><b>Write this on the frame:</b> <code>duration-reduced</code> is <code>0ms</code>
   and it is not a value anyone picks. Components read it under
@@ -370,9 +363,9 @@ const motionPage = shell(
   ${eases
     .map(
       ([n, v, c]) =>
-        `<tr><td class="mono">${esc(n.replace("--haus-", ""))}</td><td class="mono">${esc(v)}</td><td>${esc(c)}</td></tr>`,
+        `<tr><td class="mono">${esc(n.replace('--haus-', ''))}</td><td class="mono">${esc(v)}</td><td>${esc(c)}</td></tr>`,
     )
-    .join("")}
+    .join('')}
   </table>
 </div>
 
@@ -385,9 +378,9 @@ const motionPage = shell(
   ${pairs
     .map(
       ([n, v, c]) =>
-        `<tr><td class="mono">${esc(n.replace("--haus-", ""))}</td><td class="mono">${esc(v.replace(/var\(--haus-/g, "").replace(/\)/g, ""))}</td><td>${esc(c)}</td></tr>`,
+        `<tr><td class="mono">${esc(n.replace('--haus-', ''))}</td><td class="mono">${esc(v.replace(/var\(--haus-/g, '').replace(/\)/g, ''))}</td><td>${esc(c)}</td></tr>`,
     )
-    .join("")}
+    .join('')}
   </table>
   <div class="callout"><p><b>The one to put in Figma's own prototype settings:</b>
   <code>motion-interactive</code> for hover and focus, <code>motion-micro</code> for a checkbox or a
@@ -395,13 +388,13 @@ const motionPage = shell(
   code agree.</p></div>
 </div>
 `,
-);
+)
 
 /* ═══ Page 3 · Getting started ══════════════════════════════════════════════ */
 
 const startedPage = shell(
-  "FIGMA-DOCS-getting-started.html",
-  "Page 3 · Getting started",
+  'FIGMA-DOCS-getting-started.html',
+  'Page 3 · Getting started',
   `<p>The page a designer lands on first, and the one a hiring reviewer reads in ninety seconds.
    Its job is to make the file navigable and to state the two or three rules that make the
    component sets predictable.</p>
@@ -711,17 +704,17 @@ const startedPage = shell(
      ship is the drift this whole system was built to detect.</p>
 </div>
 `,
-);
+)
 
 /* ═══ write ════════════════════════════════════════════════════════════════ */
 
-const outdir = process.argv[2] ?? join(ROOT, "..");
+const outdir = process.argv[2] ?? join(ROOT, '..')
 const pages = [
-  ["FIGMA-DOCS-tokens.html", tokensPage],
-  ["FIGMA-DOCS-motion.html", motionPage],
-  ["FIGMA-DOCS-getting-started.html", startedPage],
-];
+  ['FIGMA-DOCS-tokens.html', tokensPage],
+  ['FIGMA-DOCS-motion.html', motionPage],
+  ['FIGMA-DOCS-getting-started.html', startedPage],
+]
 for (const [name, html] of pages) {
-  writeFileSync(join(outdir, name), html);
-  console.log(`wrote ${name}`);
+  writeFileSync(join(outdir, name), html)
+  console.log(`wrote ${name}`)
 }

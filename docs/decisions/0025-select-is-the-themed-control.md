@@ -28,7 +28,7 @@ The themed control is the one and only `Select` haus ships.
 
 - The public API `Listbox`, `ListboxProps`, `ListboxOption`, `ListboxSize` becomes
   `Select`, `SelectProps`, `SelectOption`, `SelectSize`. The internal
-  `useListbox` hook keeps its name: it implements the WAI-ARIA *listbox* keyboard
+  `useListbox` hook keeps its name: it implements the WAI-ARIA _listbox_ keyboard
   pattern, which is the ARIA role the panel carries (`role="listbox"`), not the
   component.
 - The native select's props, the ones that came from `<select>` itself, are gone.

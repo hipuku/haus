@@ -5,12 +5,11 @@ import styles from './Modal.module.css'
 
 export type ModalSize = Size | 'xl'
 
-interface ModalBaseProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title' | 'aria-label' | 'onClick'> {
-  open:        boolean
-  onClose:     () => void
-  size?:       ModalSize
-  footer?:     React.ReactNode
+interface ModalBaseProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title' | 'aria-label' | 'onClick'> {
+  open: boolean
+  onClose: () => void
+  size?: ModalSize
+  footer?: React.ReactNode
   /**
    * Where focus goes when the dialog opens. Defaults to the dialog itself, which
    * is safe and says nothing: a screen reader announces the dialog and the user
@@ -33,9 +32,7 @@ interface ModalBaseProps
 /* A dialog with no accessible name is a dialog a screen reader announces as
    nothing. Either the visible heading names it, or an aria-label does, and the
    type says so rather than leaving it to a reviewer to notice. */
-type ModalLabel =
-  | { title:  string;    'aria-label'?: never  }
-  | { title?: undefined; 'aria-label':  string }
+type ModalLabel = { title: string; 'aria-label'?: never } | { title?: undefined; 'aria-label': string }
 
 export type ModalProps = ModalBaseProps & ModalLabel
 
@@ -166,7 +163,9 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(function Modal
     const target = initialFocus?.current
     if (target && target.isConnected) target.focus()
     else dialogRef.current?.focus()
-    return () => { prev?.focus() }
+    return () => {
+      prev?.focus()
+    }
   }, [open, initialFocus])
 
   // Prevent body scroll when open
@@ -174,23 +173,23 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(function Modal
     if (!open) return
     const prev = document.body.style.overflow
     document.body.style.overflow = 'hidden'
-    return () => { document.body.style.overflow = prev }
+    return () => {
+      document.body.style.overflow = prev
+    }
   }, [open])
 
   if (!open) return null
 
-  const dialogCls = [
-    styles.dialog,
-    styles[size],
-    dialogClassName,
-  ].filter(Boolean).join(' ')
+  const dialogCls = [styles.dialog, styles[size], dialogClassName].filter(Boolean).join(' ')
 
   return createPortal(
     <div
       className={[styles.backdrop, className].filter(Boolean).join(' ')}
       onPointerDown={
         dismissOnBackdrop
-          ? e => { pressedBackdrop.current = e.target === e.currentTarget }
+          ? e => {
+              pressedBackdrop.current = e.target === e.currentTarget
+            }
           : undefined
       }
       onClick={
@@ -218,15 +217,12 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(function Modal
       >
         {title && (
           <div className={styles.header}>
-            <h2 id={titleId} className={styles.title}>{title}</h2>
-            <button
-              type="button"
-              className={styles.close}
-              onClick={onClose}
-              aria-label="Close modal"
-            >
+            <h2 id={titleId} className={styles.title}>
+              {title}
+            </h2>
+            <button type="button" className={styles.close} onClick={onClose} aria-label="Close modal">
               <svg viewBox="0 0 12 12" fill="none" aria-hidden>
-                <path d="M2 2L10 10M10 2L2 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                <path d="M2 2L10 10M10 2L2 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
               </svg>
             </button>
           </div>
@@ -237,6 +233,6 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(function Modal
         {footer && <div className={styles.footer}>{footer}</div>}
       </div>
     </div>,
-    document.body
+    document.body,
   )
 })

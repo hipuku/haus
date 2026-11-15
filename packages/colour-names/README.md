@@ -26,11 +26,11 @@ this package when you want the exhaustive set.
 
 ## API
 
-| Export | Type | What it is |
-|---|---|---|
+| Export                | Type                      | What it is                                                                                       |
+| --------------------- | ------------------------- | ------------------------------------------------------------------------------------------------ |
 | `colourNameEntries()` | `() => ColourNameEntry[]` | The dataset as `{ hex, name }`, hexes normalised to `#rrggbb`. Built on first call, then reused. |
-| `colourNames` | `Record<string, string>` | The raw map. Keys are six hex digits with no `#`. |
-| `COLOUR_NAME_COUNT` | `number` | 31,900. |
+| `colourNames`         | `Record<string, string>`  | The raw map. Keys are six hex digits with no `#`.                                                |
+| `COLOUR_NAME_COUNT`   | `number`                  | 31,900.                                                                                          |
 
 ## Licence
 

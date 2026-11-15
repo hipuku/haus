@@ -20,19 +20,19 @@ one axis of a two-axis component.
 
 The six states map onto Badge's existing tones. No new variable, no new token.
 
-| state | tone |
-|---|---|
-| draft | `neutral` |
-| proposed | `info` |
-| accepted | `success` |
-| rejected | `error` |
+| state      | tone      |
+| ---------- | --------- |
+| draft      | `neutral` |
+| proposed   | `info`    |
+| accepted   | `success` |
+| rejected   | `error`   |
 | deprecated | `warning` |
 | superseded | `primary` |
 
 `superseded` is the only judgement call, and it is recorded here because it will
 look arbitrary otherwise. It is not a failure, which is `rejected` and takes
 `error`. It is not inactive, which is `draft` and takes `neutral`. It is
-*replaced, and still historically valid*, so it takes a slot that is distinct
+_replaced, and still historically valid_, so it takes a slot that is distinct
 without being alarming.
 
 ## Consequences
@@ -44,7 +44,7 @@ them: core's settings page paints a **member role** with `pill--accepted` and
 decision state. A domain vocabulary that has its own colours invites exactly
 that.
 
-Harder: a product with a *seventh* state, or with two that mean the same
+Harder: a product with a _seventh_ state, or with two that mean the same
 temperature, will run out. When that happens the answer is a product-local
 component again, not a seventh tone: haus's tones are a semantic scale and
 stretching them to fit one product's taxonomy is how a design system acquires

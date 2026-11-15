@@ -19,32 +19,19 @@ export type BadgeAppearance = Appearance
 export type BadgeElement = 'span' | 'output' | 'dd' | 'li'
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLElement> {
-  tone?:       BadgeTone
+  tone?: BadgeTone
   appearance?: BadgeAppearance
-  dot?:        boolean
+  dot?: boolean
   /** The element to render. A count in a definition list or a live result is a
    *  `<dd>` or an `<output>`, not a `<span>`. */
-  as?:         BadgeElement
+  as?: BadgeElement
 }
 
 export const Badge = React.forwardRef<HTMLElement, BadgeProps>(function Badge(
-  {
-    tone       = 'neutral',
-    appearance = 'subtle',
-    dot        = false,
-    as: Element = 'span',
-    className,
-    children,
-    ...rest
-  },
+  { tone = 'neutral', appearance = 'subtle', dot = false, as: Element = 'span', className, children, ...rest },
   ref,
 ) {
-  const cls = [
-    styles.badge,
-    styles[tone],
-    styles[appearance],
-    className,
-  ].filter(Boolean).join(' ')
+  const cls = [styles.badge, styles[tone], styles[appearance], className].filter(Boolean).join(' ')
 
   return (
     <Element ref={ref as React.Ref<never>} className={cls} {...rest}>

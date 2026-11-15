@@ -47,12 +47,9 @@ export const Divider = React.forwardRef<HTMLHRElement, DividerProps>(function Di
   { orientation = 'horizontal', spacing = 'md', decorative = false, className, ...rest },
   ref,
 ) {
-  const cls = [
-    styles.divider,
-    styles[orientation],
-    spacing !== 'none' ? styles[`space-${spacing}`] : '',
-    className,
-  ].filter(Boolean).join(' ')
+  const cls = [styles.divider, styles[orientation], spacing !== 'none' ? styles[`space-${spacing}`] : '', className]
+    .filter(Boolean)
+    .join(' ')
 
   return (
     <hr

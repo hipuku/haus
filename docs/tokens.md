@@ -33,14 +33,14 @@ below.
 
 The colour primitives are six OKLCH palettes:
 
-| Palette | Hue | Role at the semantic layer |
-|---|---|---|
-| **Aronia** (dusty purple) | 300° | brand / primary |
-| **Damson** (cool near-grey) | 290° | surfaces, ink, borders |
-| **Elderberry** (indigo) | 265° | info |
-| **Greengage** (green) | 148° | success |
-| **Mango** (golden) | 65° | warning |
-| **Cherry** (warm red) | 27° | error |
+| Palette                     | Hue  | Role at the semantic layer |
+| --------------------------- | ---- | -------------------------- |
+| **Aronia** (dusty purple)   | 300° | brand / primary            |
+| **Damson** (cool near-grey) | 290° | surfaces, ink, borders     |
+| **Elderberry** (indigo)     | 265° | info                       |
+| **Greengage** (green)       | 148° | success                    |
+| **Mango** (golden)          | 65°  | warning                    |
+| **Cherry** (warm red)       | 27°  | error                      |
 
 The spacing ramp is 4px steps from `--haus-space-1`, plus two steps below it for optical
 padding inside small controls: `--haus-space-px` (1px) and `--haus-space-0-5` (2px). No role
@@ -79,16 +79,16 @@ re-resolves them.
 Semantic groups:
 
 - **Surface**: `--haus-color-surface-default | subtle | raised | overlay | sunken |
-  inverse | disabled`. Elevation is expressed with shadow rather than surface colour
+inverse | disabled`. Elevation is expressed with shadow rather than surface colour
   (`raised` is the same value as `default`).
 - **Ink (text)**: `--haus-color-ink-primary | secondary | tertiary | disabled |
-  inverse | link | on-primary`.
+inverse | link | on-primary`.
 - **Border**: `--haus-color-border-subtle | default | strong | focus | disabled`.
 - **Primary (aronia)**: `default | hover | pressed | subtle | on-subtle |
-  disabled`.
+disabled`.
 - **Feedback**: info (elderberry), success (greengage), warning (mango), error
   (cherry). Each provides `subtle | border | default | on-subtle | on-default |
-  emphasis`; success and warning additionally provide a `solid` step.
+emphasis`; success and warning additionally provide a `solid` step.
 - **Backdrop and inverse interactions**: computed with CSS relative colour
   syntax, e.g. `oklch(from var(--haus-damson-950) l c h / var(--haus-opacity-overlay))`.
   These reference a primitive and apply an opacity token, so they are computation,
@@ -188,7 +188,7 @@ together: a component that sets only `font-size` from a role is not on that role
   `--haus-motion-fade-out`, `--haus-motion-slide-in`, `--haus-motion-slide-out`,
   `--haus-motion-micro`, `--haus-motion-interactive`.
 - **Reduced motion**: `--haus-duration-reduced` (0ms). Under
-  `prefers-reduced-motion: reduce`, animated components collapse *duration* to
+  `prefers-reduced-motion: reduce`, animated components collapse _duration_ to
   this token rather than removing transforms, so positional meaning (a toggle
   thumb, a modal offset) still applies.
 
@@ -243,8 +243,12 @@ to a palette step:
   border-radius: var(--haus-radius-control);
   transition: background var(--haus-motion-interactive);
 }
-.cta:hover  { background: var(--haus-color-primary-hover); }
-.cta:focus-visible { box-shadow: var(--haus-focus-ring); }
+.cta:hover {
+  background: var(--haus-color-primary-hover);
+}
+.cta:focus-visible {
+  box-shadow: var(--haus-focus-ring);
+}
 ```
 
 Because the tokens are plain custom properties, a consuming project can use them
@@ -269,20 +273,20 @@ useful for CSS-in-JS or reading a value in JavaScript:
 ```ts
 import { tokens } from 'haus-tokens'
 
-tokens.color.aronia[500]     // 'oklch(52% 0.138 300)'
-tokens.duration.moderate     // '300ms'
-tokens.motion['fade-in']     // '200ms cubic-bezier(0.00, 0.00, 0.20, 1.00)'
+tokens.color.aronia[500] // 'oklch(52% 0.138 300)'
+tokens.duration.moderate // '300ms'
+tokens.motion['fade-in'] // '200ms cubic-bezier(0.00, 0.00, 0.20, 1.00)'
 ```
 
 ## Source files
 
-| File | Contents |
-|---|---|
-| `packages/tokens/src/primitives.css` | Raw palette, type scale, space, radius, shadow, z-index, border, opacity, icon sizes |
-| `packages/tokens/src/brand.css` | Which primitive each role takes. The file a consumer replaces |
-| `packages/tokens/src/brands/vault.css` | vault's brand, applied by `data-haus-theme="vault"` |
-| `packages/tokens/src/brands/core.css` | core's brand, base tier and its own paper and cobalt ramps, applied by `data-haus-theme="core"` |
-| `packages/tokens/src/semantics.css` | Role meanings: surface, ink, border, primary, feedback, focus, type roles, spacing, radius, elevation, motion |
-| `packages/tokens/src/motion.css` | Durations, easings, composite motion tokens, reduced-motion |
-| `packages/tokens/src/tokens.json` | W3C DTCG export of the same values |
-| `packages/tokens/src/index.ts` | Typed JS `tokens` object |
+| File                                   | Contents                                                                                                      |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `packages/tokens/src/primitives.css`   | Raw palette, type scale, space, radius, shadow, z-index, border, opacity, icon sizes                          |
+| `packages/tokens/src/brand.css`        | Which primitive each role takes. The file a consumer replaces                                                 |
+| `packages/tokens/src/brands/vault.css` | vault's brand, applied by `data-haus-theme="vault"`                                                           |
+| `packages/tokens/src/brands/core.css`  | core's brand, base tier and its own paper and cobalt ramps, applied by `data-haus-theme="core"`               |
+| `packages/tokens/src/semantics.css`    | Role meanings: surface, ink, border, primary, feedback, focus, type roles, spacing, radius, elevation, motion |
+| `packages/tokens/src/motion.css`       | Durations, easings, composite motion tokens, reduced-motion                                                   |
+| `packages/tokens/src/tokens.json`      | W3C DTCG export of the same values                                                                            |
+| `packages/tokens/src/index.ts`         | Typed JS `tokens` object                                                                                      |

@@ -40,10 +40,7 @@ export default defineConfig([
     rules: {
       // The underscore prefix is the established signal for a deliberately
       // unused binding: a discarded destructure, or a signature-only parameter.
-      '@typescript-eslint/no-unused-vars': [
-        'error',
-        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
-      ],
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
     },
   },
 

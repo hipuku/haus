@@ -33,7 +33,7 @@ export const WithDescription: Story = {
   args: { description: 'Sends a push to every signed-in device.' },
 }
 export const Sizes: Story = {
-  render: (args) => (
+  render: args => (
     <div style={{ display: 'grid', gap: 'var(--haus-space-3)' }}>
       <Toggle {...args} size="sm" label="Small" />
       <Toggle {...args} size="md" label="Medium" />

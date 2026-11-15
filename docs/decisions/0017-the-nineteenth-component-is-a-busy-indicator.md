@@ -6,11 +6,11 @@
 **Building it found a fourth implementation and a defect, both inside haus.**
 `Button` held its own spinner, which makes the count four products rather than
 three. And **a loading `Button` never set `aria-busy`**: it was announced exactly
-as a permanently disabled one, *"Saving, dimmed"*, with nothing to say the wait
+as a permanently disabled one, _"Saving, dimmed"_, with nothing to say the wait
 was temporary. The spinner could not fill the gap because it is `aria-hidden`,
 correctly, so the button was the only thing that could speak and did not.
 
-Its own test had been called *"disables and marks itself busy while loading"*
+Its own test had been called _"disables and marks itself busy while loading"_
 since it was written, and asserted `disabled` and `aria-disabled` and nothing
 else. **A test name that claims more than its body is the same defect as
 `brand.test.ts`'s `startsWith('--haus-')` and the forced-colors filter that
@@ -31,7 +31,7 @@ It said something else.
 
 The first pass listed vault's components with no haus counterpart and grepped
 core and drift for those names. Every one came back zero, so the conclusion was
-*haus stays at eighteen*.
+_haus stays at eighteen_.
 
 **A filename grep asks whether another product used the same word.** 0013 asks
 whether it solved the same problem. Redone as a sweep over ARIA roles and
@@ -44,19 +44,19 @@ different or nothing at all.
 Built independently three times, at seven call sites, with **four separate
 `.spinner` rules** across core and drift.
 
-| | How | Sites | What it tells assistive technology |
-|---|---|---|---|
-| **core** | `<Loader2 size={15} className={styles.spinner} />`, a lucide SVG, its own `.spinner` rule in each of two CSS modules | 2 | **Nothing deliberate.** No `role`, no label, no `aria-hidden` |
-| **drift** | `<span className={styles.spinner} aria-hidden="true" />`, its own `.spinner` rule in each of two CSS modules | 2 | **Nothing, deliberately.** Hidden outright |
-| **vault** | a real `Spinner` atom, 17 lines, `size` prop | 3 | `role="status"` and `aria-label="Loading"` |
+|           | How                                                                                                                  | Sites | What it tells assistive technology                            |
+| --------- | -------------------------------------------------------------------------------------------------------------------- | ----- | ------------------------------------------------------------- |
+| **core**  | `<Loader2 size={15} className={styles.spinner} />`, a lucide SVG, its own `.spinner` rule in each of two CSS modules | 2     | **Nothing deliberate.** No `role`, no label, no `aria-hidden` |
+| **drift** | `<span className={styles.spinner} aria-hidden="true" />`, its own `.spinner` rule in each of two CSS modules         | 2     | **Nothing, deliberately.** Hidden outright                    |
+| **vault** | a real `Spinner` atom, 17 lines, `size` prop                                                                         | 3     | `role="status"` and `aria-label="Loading"`                    |
 
 **Three answers to one question, and the two wrong ones are wrong in opposite
 directions.** core says nothing at all, so an unnamed graphic may be announced or
-may not. drift says *ignore this*, so a screen reader user waiting on a crawl is
+may not. drift says _ignore this_, so a screen reader user waiting on a crawl is
 told nothing is happening. vault is correct.
 
-That is the `haus#28` Callout argument exactly: *they disagree on the only hard
-part.* A spinner's CSS is a keyframe. **Its contract is whether the busy state is
+That is the `haus#28` Callout argument exactly: _they disagree on the only hard
+part._ A spinner's CSS is a keyframe. **Its contract is whether the busy state is
 announced, and whether it is announced twice when adjacent text already says
 "Extracting…"**, which is the case vault's own call site has and no rule covers.
 
@@ -77,8 +77,8 @@ component. The regions differ completely: a metadata dossier, an audit section, 
 font preview. A component that owned the button and left the region to the caller
 would be a `<button>` with one attribute, and 0013's exclusion list already holds
 things that are one product's answer to one product's problem. **Recorded as a
-candidate rather than closed**: a second product wiring it wrongly *in the same
-shape* would change the answer.
+candidate rather than closed**: a second product wiring it wrongly _in the same
+shape_ would change the answer.
 
 The rest of vault's set is confirmed vault-only, now by behaviour rather than by
 name: `BrandWordmark`, `EditableName`, `IconButton`, `MenuOption`, `Panel`,

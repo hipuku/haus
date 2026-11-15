@@ -36,8 +36,7 @@ interface DtcgToken {
 type DtcgGroup = Record<string, DtcgToken | Record<string, unknown> | string | undefined>
 type DtcgRoot = Record<string, DtcgGroup>
 
-const isToken = (node: unknown): node is DtcgToken =>
-  typeof node === 'object' && node !== null && '$value' in node
+const isToken = (node: unknown): node is DtcgToken => typeof node === 'object' && node !== null && '$value' in node
 
 /** Entries of a DTCG group, skipping `$`-prefixed metadata. */
 function entries(group: DtcgGroup): Array<[string, DtcgToken]> {
@@ -119,7 +118,7 @@ const SCALES: Array<{
   },
   {
     heading: 'Panel widths',
-    note: "The popover-scale sibling of overlay widths: Popover and the Select popup. A brand entry too, for the same reason, read through --haus-popover-width-*.",
+    note: 'The popover-scale sibling of overlay widths: Popover and the Select popup. A brand entry too, for the same reason, read through --haus-popover-width-*.',
     prefix: '--panel-width',
     path: ['panelWidth'],
   },
@@ -152,8 +151,7 @@ function group(path: string[]): DtcgGroup {
  * `--shadow` + `sm` → `--haus-shadow-sm`; `--font` + `sans` → `--haus-font-sans`.
  */
 const NAMESPACE = '--haus-'
-const propName = (prefix: string, leaf: string) =>
-  `${prefix.replace(/^--/, NAMESPACE)}-${leaf}`
+const propName = (prefix: string, leaf: string) => `${prefix.replace(/^--/, NAMESPACE)}-${leaf}`
 
 /** Pads to `width` so generated columns line up like a hand-written file. */
 const pad = (s: string, width: number) => s.padEnd(width)
@@ -166,8 +164,8 @@ const pad = (s: string, width: number) => s.padEnd(width)
 function cssValue(token: DtcgToken): string {
   const value = token.$value
   if (Array.isArray(value)) {
-    if (value.every((n) => typeof n === 'number')) {
-      return `cubic-bezier(${(value as number[]).map((n) => n.toFixed(2)).join(', ')})`
+    if (value.every(n => typeof n === 'number')) {
+      return `cubic-bezier(${(value as number[]).map(n => n.toFixed(2)).join(', ')})`
     }
     const [face, ...fallbacks] = value.map(String)
     return [`'${face}'`, ...fallbacks].join(', ')
@@ -227,9 +225,7 @@ function buildSemanticColor(): Record<string, DtcgToken> {
   const existing = (tokens.semantic?.color ?? {}) as Record<string, DtcgToken>
   const out: Record<string, DtcgToken> = {}
 
-  for (const [, name, value] of css.matchAll(
-    /^\s*(--haus-brand-[a-z0-9-]+)\s*:\s*([^;]+);/gm,
-  )) {
+  for (const [, name, value] of css.matchAll(/^\s*(--haus-brand-[a-z0-9-]+)\s*:\s*([^;]+);/gm)) {
     const key = name.replace('--haus-brand-', '')
     // A plain alias becomes a DTCG reference; anything computed (the relative
     // colour entries) is carried through as its literal, because DTCG has no
@@ -255,14 +251,7 @@ function buildSemanticColor(): Record<string, DtcgToken> {
  * makes drift impossible.
  */
 function buildMotionCss(): string {
-  const lines: string[] = [
-    BANNER,
-    '',
-    '@layer haus.motion {',
-    '',
-    '  :root {',
-    '',
-  ]
+  const lines: string[] = [BANNER, '', '@layer haus.motion {', '', '  :root {', '']
 
   lines.push(heading('Durations'))
   lines.push(...declarations(entries(group(['duration'])), '--duration'))
@@ -278,7 +267,7 @@ function buildMotionCss(): string {
   const composites = entries(group(['motion'])).map(([leaf, token]) => {
     const value = String(token.$value)
       .split(/\s+/)
-      .map((part) => aliasToVar(part))
+      .map(part => aliasToVar(part))
       .join(' ')
     return [leaf, { ...token, $value: value }] as [string, DtcgToken]
   })
@@ -299,7 +288,7 @@ function buildMotionCss(): string {
  */
 function buildBrandTypes(): string {
   const css = readFileSync(join(srcDir, 'brand.css'), 'utf8')
-  const names = [...css.matchAll(/^\s*(--haus-brand-[a-z0-9-]+)\s*:/gm)].map((m) => m[1])
+  const names = [...css.matchAll(/^\s*(--haus-brand-[a-z0-9-]+)\s*:/gm)].map(m => m[1])
   if (names.length === 0) throw new Error('brand.css declares no --haus-brand- properties')
 
   // The tier a role belongs to is its group, not its position in the file, so the
@@ -310,7 +299,7 @@ function buildBrandTypes(): string {
   const isFeedback = (n: string) => FEEDBACK.includes(groupOf(n))
   const isForm = (n: string) => FORM.includes(groupOf(n))
 
-  const base = names.filter((n) => !isFeedback(n) && !isForm(n))
+  const base = names.filter(n => !isFeedback(n) && !isForm(n))
   const feedback = names.filter(isFeedback)
   const form = names.filter(isForm)
   if (base.length === 0 || feedback.length === 0 || form.length === 0)
@@ -328,19 +317,19 @@ function buildBrandTypes(): string {
     ' * drops a declaration with no warning at all.',
     ' */',
     'export interface BrandMapBase {',
-    ...base.map((n) => `  '${n}': string`),
+    ...base.map(n => `  '${n}': string`),
     '}',
     '',
     '/**',
     ' * The optional half: info, success, warning and error.',
     ' *',
     ' * A product whose statuses are not those four semantics omits this tier and',
-    ' * inherits haus\'s from :root, because custom properties inherit and a named',
+    " * inherits haus's from :root, because custom properties inherit and a named",
     ' * brand only overrides what it declares. Optional here, and all-or-nothing per',
     ' * ramp in brand.test.ts, which types cannot express.',
     ' */',
     'export interface BrandMapFeedback {',
-    ...feedback.map((n) => `  '${n}': string`),
+    ...feedback.map(n => `  '${n}': string`),
     '}',
     '',
     '/**',
@@ -349,11 +338,11 @@ function buildBrandTypes(): string {
     ' * Radius, elevation, modal width and typeface, taken from what drift and vault',
     ' * actually changed. Not z-index, opacity, border-width or spacing: nobody',
     ' * re-decides those, and the overrides that looked like it were the literal',
-    ' * values of haus\'s own primitives typed out. All-or-nothing per group, in',
+    " * values of haus's own primitives typed out. All-or-nothing per group, in",
     ' * brand.test.ts.',
     ' */',
     'export interface BrandMapForm {',
-    ...form.map((n) => `  '${n}': string`),
+    ...form.map(n => `  '${n}': string`),
     '}',
     '',
     '/** A complete brand: the base tier, and as much of the optional tiers as applies. */',
@@ -361,22 +350,22 @@ function buildBrandTypes(): string {
     '',
     '/** The role names themselves, for anyone generating a brand rather than writing one. */',
     `export const brandRoles = [`,
-    ...names.map((n) => `  '${n}',`),
+    ...names.map(n => `  '${n}',`),
     '] as const',
     '',
     '/** The required half. A brand supplying fewer than these renders unstyled. */',
     `export const brandRolesBase = [`,
-    ...base.map((n) => `  '${n}',`),
+    ...base.map(n => `  '${n}',`),
     '] as const',
     '',
     '/** The optional colour half, grouped by the ramp that has to be complete or absent. */',
     `export const brandRolesFeedback = [`,
-    ...feedback.map((n) => `  '${n}',`),
+    ...feedback.map(n => `  '${n}',`),
     '] as const',
     '',
     '/** The optional non-colour half: radius, elevation, modal width and typeface. */',
     `export const brandRolesForm = [`,
-    ...form.map((n) => `  '${n}',`),
+    ...form.map(n => `  '${n}',`),
     '] as const',
     '',
   ].join('\n')
@@ -413,13 +402,15 @@ function aliasToVar(part: string): string {
 /** DTCG aliases (`{duration.normal}`) resolved to their literal value. */
 function resolveAlias(value: string): string {
   return value.replace(/\{([^}]+)\}/g, (_, ref: string) => {
-    const node = ref.split('.').reduce<Record<string, unknown>>(
-      (acc, key) => acc[key] as Record<string, unknown>,
-      tokens as unknown as Record<string, unknown>,
-    ) as unknown as DtcgToken
+    const node = ref
+      .split('.')
+      .reduce<Record<string, unknown>>(
+        (acc, key) => acc[key] as Record<string, unknown>,
+        tokens as unknown as Record<string, unknown>,
+      ) as unknown as DtcgToken
     const resolved = node.$value
-    if (Array.isArray(resolved) && resolved.every((n) => typeof n === 'number')) {
-      return `cubic-bezier(${(resolved as number[]).map((n) => n.toFixed(2)).join(', ')})`
+    if (Array.isArray(resolved) && resolved.every(n => typeof n === 'number')) {
+      return `cubic-bezier(${(resolved as number[]).map(n => n.toFixed(2)).join(', ')})`
     }
     return String(resolved)
   })
@@ -437,15 +428,15 @@ function jsObject(pairs: Array<[string, DtcgToken]>, indent: string, transform =
 function buildIndexTs(): string {
   const cubic = (token: DtcgToken): string => {
     const v = token.$value
-    if (Array.isArray(v) && v.every((n) => typeof n === 'number')) {
-      return JSON.stringify(`cubic-bezier(${(v as number[]).map((n) => n.toFixed(2)).join(', ')})`)
+    if (Array.isArray(v) && v.every(n => typeof n === 'number')) {
+      return JSON.stringify(`cubic-bezier(${(v as number[]).map(n => n.toFixed(2)).join(', ')})`)
     }
     return JSON.stringify(String(v))
   }
   const composite = (token: DtcgToken) => JSON.stringify(resolveAlias(String(token.$value)))
 
   const colour = FAMILIES.map(
-    (f) => `    ${f.key}: {\n${jsObject(entries(group(['color', f.key])), '      ')}\n    },`,
+    f => `    ${f.key}: {\n${jsObject(entries(group(['color', f.key])), '      ')}\n    },`,
   ).join('\n')
 
   return `/* ─── haus / tokens ──────────────────────────────────────────────────────────
@@ -495,7 +486,10 @@ ${jsObject(entries(group(['easing'])), '    ', cubic)}
 ${jsObject(entries(group(['motion'])), '    ', composite)}
   },
   shadow: {
-${jsObject(entries(group(['shadow'])).filter(([leaf]) => leaf !== 'focus'), '    ')}
+${jsObject(
+  entries(group(['shadow'])).filter(([leaf]) => leaf !== 'focus'),
+  '    ',
+)}
   },
   controlHeight: {
 ${jsObject(entries(group(['controlHeight'])), '    ')}
@@ -536,11 +530,8 @@ const outputs: Record<string, string> = {
   // separately: editing the brand map without regenerating is exactly the drift
   // `tokens:check` exists to catch.
   'brand.ts': buildBrandTypes(),
-  'tokens.json': JSON.stringify(
-    { ...tokens, semantic: { ...tokens.semantic, color: buildSemanticColor() } },
-    null,
-    2,
-  ) + '\n',
+  'tokens.json':
+    JSON.stringify({ ...tokens, semantic: { ...tokens.semantic, color: buildSemanticColor() } }, null, 2) + '\n',
 }
 
 const check = process.argv.includes('--check')

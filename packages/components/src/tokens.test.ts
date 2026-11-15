@@ -12,16 +12,12 @@ import { describe, expect, it } from 'vitest'
 const COMPONENTS = join(process.cwd(), 'src', 'components')
 const TOKENS = join(process.cwd(), '..', 'tokens', 'src')
 
-const declared = (css: string) =>
-  new Set([...css.matchAll(/^\s*(--[\w-]+)\s*:/gm)].map((m) => m[1]))
+const declared = (css: string) => new Set([...css.matchAll(/^\s*(--[\w-]+)\s*:/gm)].map(m => m[1]))
 
 const read = (p: string) => readFileSync(p, 'utf8')
 
 const PRIMITIVE = declared(read(join(TOKENS, 'primitives.css')))
-const ROLE = new Set([
-  ...declared(read(join(TOKENS, 'semantics.css'))),
-  ...declared(read(join(TOKENS, 'motion.css'))),
-])
+const ROLE = new Set([...declared(read(join(TOKENS, 'semantics.css'))), ...declared(read(join(TOKENS, 'motion.css')))])
 
 /** Every CSS declaration in the component styles, with its property and file. */
 function declarations() {
@@ -33,7 +29,7 @@ function declarations() {
       const css = read(join(COMPONENTS, dir.name, f))
       for (const line of css.split('\n')) {
         for (const part of line.split(';')) {
-          const tokens = [...part.matchAll(/var\(\s*(--[\w-]+)/g)].map((m) => m[1])
+          const tokens = [...part.matchAll(/var\(\s*(--[\w-]+)/g)].map(m => m[1])
           if (!tokens.length) continue
           out.push({ file: `${dir.name}/${f}`, property: /([a-z-]+)\s*:/.exec(part.trim())?.[1] ?? '?', tokens })
         }
@@ -45,10 +41,10 @@ function declarations() {
 
 const DECLS = declarations()
 /** Reads that go past the role layer to a primitive. */
-const PAST = DECLS.map((d) => ({
+const PAST = DECLS.map(d => ({
   ...d,
-  primitives: d.tokens.filter((t) => PRIMITIVE.has(t) && !ROLE.has(t)),
-})).filter((d) => d.primitives.length > 0)
+  primitives: d.tokens.filter(t => PRIMITIVE.has(t) && !ROLE.has(t)),
+})).filter(d => d.primitives.length > 0)
 
 describe('components read roles, not primitives', () => {
   it('reads the stylesheets it is meant to read', () => {
@@ -59,8 +55,8 @@ describe('components read roles, not primitives', () => {
 
   it('reads no colour, radius, shadow or motion primitive', () => {
     const banned = /^--haus-(aronia|damson|elderberry|greengage|mango|cherry|radius|shadow|duration|ease|motion)-/
-    const offenders = PAST.flatMap((d) =>
-      d.primitives.filter((t) => banned.test(t)).map((t) => `${d.file} ${d.property}: ${t}`),
+    const offenders = PAST.flatMap(d =>
+      d.primitives.filter(t => banned.test(t)).map(t => `${d.file} ${d.property}: ${t}`),
     )
     expect(offenders).toEqual([])
   })
@@ -78,9 +74,9 @@ describe('components read roles, not primitives', () => {
     // because the declaration that names the primitive is not the one that
     // spends it.
     const SPACING = /^(padding|margin|gap|row-gap|column-gap)(-|$)/
-    const misuse = PAST.filter((d) => d.primitives.some((t) => /^--haus-space-\d+$/.test(t)) && SPACING.test(d.property)).map(
-      (d) => `${d.file} ${d.property}`,
-    )
+    const misuse = PAST.filter(
+      d => d.primitives.some(t => /^--haus-space-\d+$/.test(t)) && SPACING.test(d.property),
+    ).map(d => `${d.file} ${d.property}`)
     expect(misuse).toEqual([])
   })
 
@@ -95,8 +91,8 @@ describe('components read roles, not primitives', () => {
     // --haus-font-sans is a role in semantics.css reading --haus-brand-font-sans,
     // and a component reading it is reading a role, not a primitive.
     const NAMED_ROLE = /^--haus-(weight-|icon-|control-height-)/
-    const undocumented = PAST.flatMap((d) =>
-      d.primitives.filter((t) => !/^--haus-space-\d+$/.test(t) && !NAMED_ROLE.test(t)).map((t) => `${d.file}: ${t}`),
+    const undocumented = PAST.flatMap(d =>
+      d.primitives.filter(t => !/^--haus-space-\d+$/.test(t) && !NAMED_ROLE.test(t)).map(t => `${d.file}: ${t}`),
     )
     expect(undocumented).toEqual([])
   })
@@ -104,7 +100,7 @@ describe('components read roles, not primitives', () => {
   it('matches the counts the docs state', () => {
     // docs/tokens.md, DESIGN.md and the semantics.css header all quote these.
     // If a component legitimately gains or loses one, update them together.
-    const sizes = PAST.filter((d) => d.primitives.some((t) => /^--haus-space-\d+$/.test(t)))
+    const sizes = PAST.filter(d => d.primitives.some(t => /^--haus-space-\d+$/.test(t)))
     expect(sizes.length).toBe(28)
     // 61 before step 7, rising to 77 as the six new components landed: border
     // widths, font families, shadows and, the sharp one, --haus-z-dropdown.

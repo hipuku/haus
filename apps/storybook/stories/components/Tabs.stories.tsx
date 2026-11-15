@@ -64,7 +64,7 @@ export const Sizes: Story = {
     const [value, setValue] = useState('overview')
     return (
       <div style={{ display: 'grid', gap: 'var(--haus-space-8)', maxWidth: 560 }}>
-        {(['sm', 'md', 'lg'] as const).map((size) => (
+        {(['sm', 'md', 'lg'] as const).map(size => (
           <Tabs key={size} {...args} size={size} value={value} onValueChange={setValue}>
             {size}
           </Tabs>

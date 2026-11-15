@@ -18,11 +18,12 @@ describe('Button', () => {
 
   it('adds rel="noopener noreferrer" to links opening in a new tab', () => {
     // target="_blank" without this gives the opened page access to window.opener.
-    render(<Button href="https://example.com" target="_blank">External</Button>)
-    expect(screen.getByRole('link', { name: 'External' })).toHaveAttribute(
-      'rel',
-      'noopener noreferrer',
+    render(
+      <Button href="https://example.com" target="_blank">
+        External
+      </Button>,
     )
+    expect(screen.getByRole('link', { name: 'External' })).toHaveAttribute('rel', 'noopener noreferrer')
   })
 
   it('does not set rel when the link stays in the same tab', () => {
@@ -32,7 +33,11 @@ describe('Button', () => {
 
   it('does not fire onClick while disabled', async () => {
     const onClick = vi.fn()
-    render(<Button disabled onClick={onClick}>Disabled</Button>)
+    render(
+      <Button disabled onClick={onClick}>
+        Disabled
+      </Button>,
+    )
     await userEvent.click(screen.getByRole('button', { name: 'Disabled' }))
     expect(onClick).not.toHaveBeenCalled()
   })
@@ -76,7 +81,11 @@ describe('Button', () => {
   it('marks an anchor aria-disabled, since href cannot be disabled', () => {
     // An <a> ignores the disabled attribute entirely, so the only signal
     // assistive technology gets is aria-disabled.
-    render(<Button href="/x" disabled>Nope</Button>)
+    render(
+      <Button href="/x" disabled>
+        Nope
+      </Button>,
+    )
     expect(screen.getByRole('link', { name: 'Nope' })).toHaveAttribute('aria-disabled', 'true')
   })
 
@@ -87,7 +96,9 @@ describe('Button', () => {
     // everyone else.
     render(
       <>
-        <Button href="/x" disabled>Nope</Button>
+        <Button href="/x" disabled>
+          Nope
+        </Button>
         <button type="button">after</button>
       </>,
     )
@@ -102,14 +113,22 @@ describe('Button', () => {
   it('a disabled anchor keeps target and rel off too', () => {
     // Otherwise a disabled external link still advertises a new tab it will
     // never open.
-    render(<Button href="https://example.com" target="_blank" disabled>Nope</Button>)
+    render(
+      <Button href="https://example.com" target="_blank" disabled>
+        Nope
+      </Button>,
+    )
     const link = screen.getByRole('link', { name: /Nope/ })
     expect(link).not.toHaveAttribute('target')
     expect(link).not.toHaveAttribute('rel')
   })
 
   it('applies variant, tone and size classes', () => {
-    render(<Button variant="secondary" tone="error" size="lg">Delete</Button>)
+    render(
+      <Button variant="secondary" tone="error" size="lg">
+        Delete
+      </Button>,
+    )
     const cls = screen.getByRole('button', { name: 'Delete' }).className
     expect(cls).toContain('secondary')
     expect(cls).toContain('error')
@@ -123,21 +142,22 @@ describe('Button', () => {
     expect(screen.getByRole('button', { name: 'Save' }).className).not.toContain('error')
   })
 
-  it.each(['info', 'success', 'warning', 'error'] as const)(
-    'carries the %s tone class',
-    (tone) => {
-      // Button narrowed the shared union to neutral | error on the premise that
-      // the other three had no design. semantics.css and Badge both said
-      // otherwise, so the union is whole again and each tone must arrive.
-      render(<Button tone={tone}>Act</Button>)
-      expect(screen.getByRole('button', { name: 'Act' }).className).toContain(tone)
-    },
-  )
+  it.each(['info', 'success', 'warning', 'error'] as const)('carries the %s tone class', tone => {
+    // Button narrowed the shared union to neutral | error on the premise that
+    // the other three had no design. semantics.css and Badge both said
+    // otherwise, so the union is whole again and each tone must arrive.
+    render(<Button tone={tone}>Act</Button>)
+    expect(screen.getByRole('button', { name: 'Act' }).className).toContain(tone)
+  })
 
   it('external is behaviour, so it stacks on any weight', () => {
     // It used to be a variant that silently forced the text weight. A primary
     // button that opens elsewhere is now expressible.
-    render(<Button variant="primary" external href="https://example.com">Docs</Button>)
+    render(
+      <Button variant="primary" external href="https://example.com">
+        Docs
+      </Button>,
+    )
     const cls = screen.getByRole('link', { name: 'Docs' }).className
     expect(cls).toContain('primary')
     expect(cls).toContain('external')
@@ -161,12 +181,20 @@ describe('Button', () => {
     // forwardRef<HTMLButtonElement> so nothing warned: a caller measuring or
     // focusing a link-shaped Button got null and no explanation.
     const ref = createRef<HTMLAnchorElement>()
-    render(<Button ref={ref} href="/x">Ref</Button>)
+    render(
+      <Button ref={ref} href="/x">
+        Ref
+      </Button>,
+    )
     expect(ref.current).toBeInstanceOf(HTMLAnchorElement)
   })
 
   it('hides the decorative external icon from assistive technology', () => {
-    render(<Button external href="https://example.com">Docs</Button>)
+    render(
+      <Button external href="https://example.com">
+        Docs
+      </Button>,
+    )
     // The arrow is presentational; announcing "↗" after the label is noise.
     expect(screen.getByRole('link', { name: 'Docs' })).toBeInTheDocument()
   })
@@ -181,9 +209,13 @@ describe('Button', () => {
         <Button tone="success">Success</Button>
         <Button tone="warning">Warning</Button>
         <Button tone="error">Error</Button>
-        <Button variant="ghost" tone="error">Ghost error</Button>
+        <Button variant="ghost" tone="error">
+          Ghost error
+        </Button>
         <Button variant="text">Text</Button>
-        <Button external href="https://example.com">External</Button>
+        <Button external href="https://example.com">
+          External
+        </Button>
         <Button disabled>Disabled</Button>
         <Button loading>Loading</Button>
       </>,
@@ -196,7 +228,9 @@ describe('asChild', () => {
   it('renders the child element instead of a button, and merges the class', () => {
     render(
       <Button asChild variant="secondary">
-        <a href="/somewhere" className="mine">Go</a>
+        <a href="/somewhere" className="mine">
+          Go
+        </a>
       </Button>,
     )
     // The child is what rendered: no button in the tree at all.
@@ -213,7 +247,9 @@ describe('asChild', () => {
     const ref = createRef<HTMLAnchorElement>()
     render(
       <Button asChild>
-        <a href="/x" ref={ref}>Go</a>
+        <a href="/x" ref={ref}>
+          Go
+        </a>
       </Button>,
     )
     expect(ref.current?.tagName).toBe('A')
@@ -259,10 +295,12 @@ describe('asChild', () => {
     // The first version of asChild passed only Button's ref into cloneElement,
     // which silently threw the child's away. Neither is more entitled.
     const onButton = createRef<HTMLAnchorElement>()
-    const onChild  = createRef<HTMLAnchorElement>()
+    const onChild = createRef<HTMLAnchorElement>()
     render(
       <Button asChild ref={onButton}>
-        <a href="/x" ref={onChild}>Go</a>
+        <a href="/x" ref={onChild}>
+          Go
+        </a>
       </Button>,
     )
     expect(onButton.current?.tagName).toBe('A')
@@ -274,12 +312,24 @@ describe('asChild', () => {
     // The guard is the type, so this is the only place it can be asserted.
     // If any of these ever start compiling, tsc fails on the unused directive
     // and this test file is what reports it.
-    // @ts-expect-error asChild has no busy state to announce
-    const a = <Button asChild loading><a href="/x">Go</a></Button>
-    // @ts-expect-error the child carries its own destination
-    const b = <Button asChild href="/x"><a href="/x">Go</a></Button>
-    // @ts-expect-error the child carries its own target
-    const c = <Button asChild target="_blank"><a href="/x">Go</a></Button>
+    const a = (
+      // @ts-expect-error asChild has no busy state to announce
+      <Button asChild loading>
+        <a href="/x">Go</a>
+      </Button>
+    )
+    const b = (
+      // @ts-expect-error the child carries its own destination
+      <Button asChild href="/x">
+        <a href="/x">Go</a>
+      </Button>
+    )
+    const c = (
+      // @ts-expect-error the child carries its own target
+      <Button asChild target="_blank">
+        <a href="/x">Go</a>
+      </Button>
+    )
     expect([a, b, c]).toHaveLength(3)
   })
 

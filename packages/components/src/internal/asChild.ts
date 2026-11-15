@@ -22,9 +22,7 @@ import React from 'react'
  * element, and this package's peer range allows both, so the child's ref is
  * read from whichever place holds it.
  */
-export function mergeRefs<T>(
-  ...refs: Array<React.Ref<T> | undefined>
-): React.RefCallback<T> | undefined {
+export function mergeRefs<T>(...refs: Array<React.Ref<T> | undefined>): React.RefCallback<T> | undefined {
   const real = refs.filter(Boolean)
   /* Nothing to merge means no ref at all, not a callback that does nothing.
      A ref is illegal in a Server Component, and `asChild` is the one path that
@@ -33,7 +31,7 @@ export function mergeRefs<T>(
      an unconditional callback made both throw "Refs cannot be used in Server
      Components". haus#71, and `rsc-rules.test.tsx` is what holds it now. */
   if (real.length === 0) return undefined
-  return (node) => {
+  return node => {
     for (const ref of real) {
       if (typeof ref === 'function') ref(node)
       else (ref as React.MutableRefObject<T | null>).current = node

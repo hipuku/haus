@@ -7,26 +7,26 @@
 ## Context
 
 `haus#71` shipped and reached a consumer within minutes. `<Button asChild>`
-rendered from a React Server Component threw *"Refs cannot be used in Server
-Components, nor passed to Client Components"*, because `mergeRefs` returned a
+rendered from a React Server Component threw _"Refs cannot be used in Server
+Components, nor passed to Client Components"_, because `mergeRefs` returned a
 callback unconditionally: with no ref on the Button and none on the child it
 still produced one, and `cloneElement` attached it.
 
 The audit after it found nothing else of its kind. It also found that **nothing
 here could have caught it, and nothing could catch the next one.**
 
-| Path | Covered by |
-|---|---|
-| client render | 30 component suites |
-| `renderToString` | `ssr.test.tsx` |
-| **React Server Component render** | **nothing** |
+| Path                              | Covered by          |
+| --------------------------------- | ------------------- |
+| client render                     | 30 component suites |
+| `renderToString`                  | `ssr.test.tsx`      |
+| **React Server Component render** | **nothing**         |
 
 That third row is a real path, not a hypothetical. This package ships **no
 `use client` directive**, so a Server Component can import and render a haus
 component directly. For `Button`, `Badge`, `Card`, `Divider` and the other
 stateless ones that is a feature, and core relies on it in two pages.
 
-`ssr.test.tsx` does not cover it. `renderToString` is server *rendering*, not
+`ssr.test.tsx` does not cover it. `renderToString` is server _rendering_, not
 React Server Components, and the two enforce different rules: `renderToString`
 accepts a ref happily and an RSC render rejects it.
 
@@ -65,7 +65,7 @@ observation that holds across the range.
 **The component list is read from the directory**, by looking for `asChild` in
 each component's source. A component that gains `asChild` is covered the day it
 gains it. This package has produced the list-beside-a-directory defect four
-times, and a guard written *because* the surface is about to grow is the last
+times, and a guard written _because_ the surface is about to grow is the last
 place to reintroduce it.
 
 **Both directions are asserted.** The fix for `haus#71` was "return undefined
@@ -74,8 +74,8 @@ direction is to drop the merge entirely, so a second case gives a ref and
 requires it to arrive.
 
 **It was proved able to fail.** Deleting the `real.length === 0` guard from
-`mergeRefs` fails it by component name with *"Button attached a ref nobody asked
-for"*. Checked, not assumed, because this package has shipped green checks over
+`mergeRefs` fails it by component name with _"Button attached a ref nobody asked
+for"_. Checked, not assumed, because this package has shipped green checks over
 broken things before.
 
 ## What stays open

@@ -26,7 +26,7 @@
   cursor: pointer;
   transition:
     border-color var(--haus-motion-micro),
-    box-shadow   var(--haus-motion-micro);
+    box-shadow var(--haus-motion-micro);
 }
 
 .trigger:hover:not(:disabled) {

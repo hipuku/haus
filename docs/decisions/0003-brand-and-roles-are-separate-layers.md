@@ -1,8 +1,7 @@
 # 0003 · The brand and the role system are separate layers
 
 **Accepted**, 2026-09-01. **Implemented** 2026-09-02, `bad8a5e`.
-The contract as built is `docs/tokens.md`, with its tiers in decisions 0014 and
-0015.
+The contract as built is `docs/tokens.md`, with its tiers in decisions 0014 and 0015.
 
 ## Context
 

@@ -26,10 +26,10 @@ export type ButtonTone = Tone
 export type ButtonSize = Size
 
 interface ButtonBaseProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?:  ButtonVariant
+  variant?: ButtonVariant
   /** What it means. `error` is what `variant="danger"` used to say. */
-  tone?:     ButtonTone
-  size?:     ButtonSize
+  tone?: ButtonTone
+  size?: ButtonSize
   /** Opens elsewhere: appends the glyph and, with `href`, is the honest signal
    *  that the destination leaves this app. Behaviour, so not a variant. */
   external?: boolean
@@ -63,15 +63,15 @@ export type ButtonOwnProps = ButtonBaseProps & {
   asChild?: false
   loading?: boolean
   /** Renders as an anchor when provided */
-  href?:    string
-  target?:  string
+  href?: string
+  target?: string
 }
 
 export type ButtonAsChildProps = ButtonBaseProps & {
-  asChild:  true
+  asChild: true
   loading?: never
-  href?:    never
-  target?:  never
+  href?: never
+  target?: never
   children: React.ReactElement
 }
 
@@ -92,112 +92,111 @@ export type ButtonAsChildProps = ButtonBaseProps & {
  */
 export type ButtonProps = ButtonOwnProps | ButtonAsChildProps
 
-export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
-  function Button(
-    props,
-    ref
-  ) {
-    const {
-      variant  = 'primary',
-      tone     = 'neutral',
-      size     = 'md',
-      external = false,
-      disabled,
-      children,
-      className,
-      ...rest
-    } = props
-    // Read off the union rather than destructured above: the `asChild` half
-    // types them as `never`, and a default in the pattern would widen it back.
-    const asChild = props.asChild === true
-    const loading = props.asChild === true ? false : props.loading ?? false
-    const href    = props.asChild === true ? undefined : props.href
-    const target  = props.asChild === true ? undefined : props.target
-    // `rest` still holds the discriminant and the props read off the union, and
-    // every one of them would land on the DOM as an unknown attribute.
-    const {
-      asChild: _asChild,
-      loading: _loading,
-      href:    _href,
-      target:  _target,
-      ...domProps
-    } = rest as Record<string, unknown>
+export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(function Button(props, ref) {
+  const {
+    variant = 'primary',
+    tone = 'neutral',
+    size = 'md',
+    external = false,
+    disabled,
+    children,
+    className,
+    ...rest
+  } = props
+  // Read off the union rather than destructured above: the `asChild` half
+  // types them as `never`, and a default in the pattern would widen it back.
+  const asChild = props.asChild === true
+  const loading = props.asChild === true ? false : (props.loading ?? false)
+  const href = props.asChild === true ? undefined : props.href
+  const target = props.asChild === true ? undefined : props.target
+  // `rest` still holds the discriminant and the props read off the union, and
+  // every one of them would land on the DOM as an unknown attribute.
+  const {
+    asChild: _asChild,
+    loading: _loading,
+    href: _href,
+    target: _target,
+    ...domProps
+  } = rest as Record<string, unknown>
 
-    const cls = [
-      styles.button,
-      styles[variant],
-      tone !== 'neutral' ? styles[tone] : '',
-      external ? styles.external : '',
-      styles[size],
-      className,
-    ].filter(Boolean).join(' ')
+  const cls = [
+    styles.button,
+    styles[variant],
+    tone !== 'neutral' ? styles[tone] : '',
+    external ? styles.external : '',
+    styles[size],
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ')
 
-    const isDisabled = disabled || loading
+  const isDisabled = disabled || loading
 
-    const externalIcon = external
-      ? <span className={styles.externalIcon} aria-hidden="true">↗</span>
-      : null
+  const externalIcon = external ? (
+    <span className={styles.externalIcon} aria-hidden="true">
+      ↗
+    </span>
+  ) : null
 
-    if (asChild) {
-      const child = React.Children.only(children as React.ReactElement)
-      const childProps = child.props as { className?: string }
-      const childRef = childRefOf(child)
-      return React.cloneElement(
-        child,
-        {
-          // Button's classes first so the child's own className wins a
-          // collision: the caller is closer to the problem than the system is.
-          className: [cls, childProps.className].filter(Boolean).join(' '),
-          ref: mergeRefs(ref as React.Ref<unknown>, childRef),
-          ...domProps,
-        } as Partial<unknown> & React.Attributes,
-        // The child keeps its own children, and the glyph is appended after
-        // them, which is where the other two branches put it too.
-        ...(external
-          ? [(child.props as { children?: React.ReactNode }).children, externalIcon]
-          : [(child.props as { children?: React.ReactNode }).children]),
-      )
-    }
+  if (asChild) {
+    const child = React.Children.only(children as React.ReactElement)
+    const childProps = child.props as { className?: string }
+    const childRef = childRefOf(child)
+    return React.cloneElement(
+      child,
+      {
+        // Button's classes first so the child's own className wins a
+        // collision: the caller is closer to the problem than the system is.
+        className: [cls, childProps.className].filter(Boolean).join(' '),
+        ref: mergeRefs(ref as React.Ref<unknown>, childRef),
+        ...domProps,
+      } as Partial<unknown> & React.Attributes,
+      // The child keeps its own children, and the glyph is appended after
+      // them, which is where the other two branches put it too.
+      ...(external
+        ? [(child.props as { children?: React.ReactNode }).children, externalIcon]
+        : [(child.props as { children?: React.ReactNode }).children]),
+    )
+  }
 
-    if (href) {
-      return (
-        <a
-          ref={ref as React.Ref<HTMLAnchorElement>}
-          // An anchor has no disabled state, and aria-disabled alone announces
-          // one without creating it: the link stayed focusable and still
-          // navigated. Dropping href is what actually disables it — the element
-          // is then neither focusable nor activatable — so role and tabIndex
-          // put back the two things href was carrying.
-          href={isDisabled ? undefined : href}
-          role={isDisabled ? 'link' : undefined}
-          tabIndex={isDisabled ? -1 : undefined}
-          target={isDisabled ? undefined : target}
-          rel={!isDisabled && target === '_blank' ? 'noopener noreferrer' : undefined}
-          className={cls}
-          aria-disabled={isDisabled}
-          aria-busy={loading || undefined}
-          {...(domProps as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
-        >
-          {loading && <Spinner size="text" announcedBy="the button's aria-busy state" />}
-          {children}
-          {externalIcon}
-        </a>
-      )
-    }
-
+  if (href) {
     return (
-      <button
-        ref={ref as React.Ref<HTMLButtonElement>}
+      <a
+        ref={ref as React.Ref<HTMLAnchorElement>}
+        // An anchor has no disabled state, and aria-disabled alone announces
+        // one without creating it: the link stayed focusable and still
+        // navigated. Dropping href is what actually disables it — the element
+        // is then neither focusable nor activatable — so role and tabIndex
+        // put back the two things href was carrying.
+        href={isDisabled ? undefined : href}
+        role={isDisabled ? 'link' : undefined}
+        tabIndex={isDisabled ? -1 : undefined}
+        target={isDisabled ? undefined : target}
+        rel={!isDisabled && target === '_blank' ? 'noopener noreferrer' : undefined}
         className={cls}
-        disabled={isDisabled}
         aria-disabled={isDisabled}
         aria-busy={loading || undefined}
-        {...(domProps as React.ButtonHTMLAttributes<HTMLButtonElement>)}
+        {...(domProps as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
       >
         {loading && <Spinner size="text" announcedBy="the button's aria-busy state" />}
         {children}
         {externalIcon}
-      </button>
+      </a>
     )
   }
-)
+
+  return (
+    <button
+      ref={ref as React.Ref<HTMLButtonElement>}
+      className={cls}
+      disabled={isDisabled}
+      aria-disabled={isDisabled}
+      aria-busy={loading || undefined}
+      {...(domProps as React.ButtonHTMLAttributes<HTMLButtonElement>)}
+    >
+      {loading && <Spinner size="text" announcedBy="the button's aria-busy state" />}
+      {children}
+      {externalIcon}
+    </button>
+  )
+})

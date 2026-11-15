@@ -19,77 +19,77 @@
  * `root` option.
  */
 
-import type { ProbeOptions, RawElement } from "./types.js";
+import type { ProbeOptions, RawElement } from './types.js'
 
 /** Runs in the browser. Returns untouched computed-style strings per element. */
 export function extractRawElements(options?: ProbeOptions): RawElement[] {
-  const SKIP = new Set(["SCRIPT", "STYLE", "META", "LINK", "HEAD", "NOSCRIPT", "BR", "TEMPLATE"]);
-  const maxElements = options?.maxElements ?? 12_000;
-  const out: RawElement[] = [];
+  const SKIP = new Set(['SCRIPT', 'STYLE', 'META', 'LINK', 'HEAD', 'NOSCRIPT', 'BR', 'TEMPLATE'])
+  const maxElements = options?.maxElements ?? 12_000
+  const out: RawElement[] = []
 
   // Scope: a named root reads that element plus its subtree (the single
   // component read); no root walks the whole document (the crawl). A root
   // selector that matches nothing yields an empty result rather than silently
   // falling back to the document. A missed mount must not look like a clean
   // component.
-  let all: Element[];
+  let all: Element[]
   if (options?.root) {
-    const rootEl = document.querySelector(options.root);
-    if (!rootEl) return [];
-    all = [rootEl, ...Array.from(rootEl.querySelectorAll("*"))];
+    const rootEl = document.querySelector(options.root)
+    if (!rootEl) return []
+    all = [rootEl, ...Array.from(rootEl.querySelectorAll('*'))]
   } else {
-    all = Array.from(document.querySelectorAll("*"));
+    all = Array.from(document.querySelectorAll('*'))
   }
 
   for (const node of all) {
-    if (out.length >= maxElements) break;
-    const el = node as HTMLElement;
-    if (SKIP.has(el.tagName)) continue;
+    if (out.length >= maxElements) break
+    const el = node as HTMLElement
+    if (SKIP.has(el.tagName)) continue
 
-    const cs = window.getComputedStyle(el);
-    if (cs.display === "none" || cs.visibility === "hidden") continue;
+    const cs = window.getComputedStyle(el)
+    if (cs.display === 'none' || cs.visibility === 'hidden') continue
 
     // Effective background: walk ancestors (incl. self) to the first
     // non-transparent background; fall back to the white page canvas.
     // Deliberately walks past the probe root, because the background a reader
     // actually sees is a property of the page, not of the subtree.
-    let effectiveBg = "rgb(255, 255, 255)";
-    let bgNode: Element | null = el;
+    let effectiveBg = 'rgb(255, 255, 255)'
+    let bgNode: Element | null = el
     while (bgNode) {
-      const bg = window.getComputedStyle(bgNode).backgroundColor;
+      const bg = window.getComputedStyle(bgNode).backgroundColor
       // Only the alpha matters here, and it has to be read without assuming a
       // colour syntax: getComputedStyle returns an oklch()/oklab()/color()
       // value verbatim, so matching rgb() alone would read every modern colour
       // as transparent and walk straight past it to the page canvas.
-      let alpha = 1;
-      if (bg === "" || bg === "transparent") {
-        alpha = 0;
+      let alpha = 1
+      if (bg === '' || bg === 'transparent') {
+        alpha = 0
       } else {
-        const rgb = bg.match(/rgba?\(([^)]+)\)/);
+        const rgb = bg.match(/rgba?\(([^)]+)\)/)
         if (rgb) {
-          const parts = rgb[1]!.split(/[,/\s]+/).filter(Boolean);
-          alpha = parts.length >= 4 ? parseFloat(parts[3]!) : 1;
+          const parts = rgb[1]!.split(/[,/\s]+/).filter(Boolean)
+          alpha = parts.length >= 4 ? parseFloat(parts[3]!) : 1
         } else {
           // Modern syntaxes carry alpha after a slash: oklch(L C H / 0.5).
-          const slash = bg.match(/\/\s*([\d.]+%?)\s*\)/);
+          const slash = bg.match(/\/\s*([\d.]+%?)\s*\)/)
           if (slash) {
-            const raw = slash[1]!;
-            alpha = raw.endsWith("%") ? parseFloat(raw) / 100 : parseFloat(raw);
+            const raw = slash[1]!
+            alpha = raw.endsWith('%') ? parseFloat(raw) / 100 : parseFloat(raw)
           }
         }
       }
       if (Number.isFinite(alpha) && alpha > 0) {
-        effectiveBg = bg;
-        break;
+        effectiveBg = bg
+        break
       }
-      bgNode = bgNode.parentElement;
+      bgNode = bgNode.parentElement
     }
 
-    let hasText = false;
+    let hasText = false
     for (const child of Array.from(el.childNodes)) {
-      if (child.nodeType === Node.TEXT_NODE && (child.textContent ?? "").trim().length > 0) {
-        hasText = true;
-        break;
+      if (child.nodeType === Node.TEXT_NODE && (child.textContent ?? '').trim().length > 0) {
+        hasText = true
+        break
       }
     }
 
@@ -136,8 +136,8 @@ export function extractRawElements(options?: ProbeOptions): RawElement[] {
         transitionDuration: cs.transitionDuration,
         transitionTimingFunction: cs.transitionTimingFunction,
       },
-    });
+    })
   }
 
-  return out;
+  return out
 }

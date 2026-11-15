@@ -16,15 +16,7 @@ const plain = [
 
 function Controlled(props: Partial<React.ComponentProps<typeof Select>>) {
   const [value, setValue] = React.useState('author')
-  return (
-    <Select
-      options={roles}
-      value={value}
-      onChange={setValue}
-      label="Role"
-      {...(props as Record<string, never>)}
-    />
-  )
+  return <Select options={roles} value={value} onChange={setValue} label="Role" {...(props as Record<string, never>)} />
 }
 
 const meta = {
@@ -41,7 +33,7 @@ const meta = {
           'it replaces was retired. Measured across core, drift and vault, ' +
           'nothing imported the native one, while two products built this and ' +
           'wrote down the same reason. core: *"a styled listbox standing in for ' +
-          "`<select>`, whose native popup can't be themed\"*. vault: *\"a custom " +
+          '`<select>`, whose native popup can\'t be themed"*. vault: *"a custom ' +
           'dropdown replacing native `<select>`"*. ' +
           '\n\n' +
           '**The hint is the whole argument.** An option carries a second line ' +

@@ -1,10 +1,6 @@
 {
-  "extends": [
-    "stylelint-config-standard"
-  ],
-  "plugins": [
-    "stylelint-declaration-strict-value"
-  ],
+  "extends": ["stylelint-config-standard"],
+  "plugins": ["stylelint-declaration-strict-value"],
   "rules": {
     "scale-unlimited/declaration-strict-value": [
       [
@@ -88,27 +84,18 @@
     "property-no-unknown": [
       true,
       {
-        "ignoreProperties": [
-          "composes"
-        ]
+        "ignoreProperties": ["composes"]
       }
     ]
   },
   "overrides": [
     {
-      "files": [
-        "packages/tokens/src/*.css"
-      ],
+      "files": ["packages/tokens/src/*.css"],
       "rules": {
         "scale-unlimited/declaration-strict-value": null,
         "no-duplicate-selectors": null
       }
     }
   ],
-  "ignoreFiles": [
-    "**/dist/**",
-    "**/node_modules/**",
-    "**/storybook-static/**",
-    "**/coverage/**"
-  ]
+  "ignoreFiles": ["**/dist/**", "**/node_modules/**", "**/storybook-static/**", "**/coverage/**"]
 }

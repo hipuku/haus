@@ -46,12 +46,16 @@ export function CopyChip({ name }: { name: string }) {
         background: flash ? 'var(--haus-color-success-subtle)' : 'transparent',
       }}
     >
-      <span style={{
-        fontSize: 'var(--haus-type-label-xs-size)',
-        opacity: flash ? 1 : 0,
-        transition: 'opacity 150ms',
-        color: 'var(--haus-color-success-emphasis)',
-      }}>✓</span>
+      <span
+        style={{
+          fontSize: 'var(--haus-type-label-xs-size)',
+          opacity: flash ? 1 : 0,
+          transition: 'opacity 150ms',
+          color: 'var(--haus-color-success-emphasis)',
+        }}
+      >
+        ✓
+      </span>
       {flash ? 'copied' : property}
     </button>
   )
@@ -166,13 +170,7 @@ export function TableGrid({
 }
 
 /** Header cell, sits directly inside TableGrid. No bottom border (use TableDivider). */
-export function TH({
-  children,
-  style,
-}: {
-  children?: React.ReactNode
-  style?: React.CSSProperties
-}) {
+export function TH({ children, style }: { children?: React.ReactNode; style?: React.CSSProperties }) {
   return (
     <div
       style={{
@@ -200,9 +198,7 @@ export function TableDivider({ weight = 'header' }: { weight?: 'header' | 'row' 
       style={{
         gridColumn: '1 / -1',
         height: weight === 'header' ? 'var(--haus-border-width-thick)' : 'var(--haus-border-width-default)',
-        background: weight === 'header'
-          ? 'var(--haus-color-border-strong)'
-          : 'var(--haus-color-border-default)',
+        background: weight === 'header' ? 'var(--haus-color-border-strong)' : 'var(--haus-color-border-default)',
         margin: 0,
       }}
     />
@@ -240,13 +236,7 @@ export function TD({
  * Labelled separator band between groups on a token page.
  * accent draws a left-side colour stripe (pass a CSS colour value).
  */
-export function SectionHead({
-  children,
-  accent,
-}: {
-  children: React.ReactNode
-  accent?: string
-}) {
+export function SectionHead({ children, accent }: { children: React.ReactNode; accent?: string }) {
   return (
     <p
       style={{
@@ -260,9 +250,7 @@ export function SectionHead({
         background: 'var(--haus-color-surface-subtle)',
         borderRadius: 'var(--haus-radius-sm)',
         whiteSpace: 'nowrap',
-        ...(accent
-          ? { borderLeft: `3px solid ${accent}`, paddingLeft: 'var(--haus-space-3)' }
-          : {}),
+        ...(accent ? { borderLeft: `3px solid ${accent}`, paddingLeft: 'var(--haus-space-3)' } : {}),
       }}
     >
       {children}
@@ -276,14 +264,14 @@ type CalloutVariant = 'neutral' | 'info'
 
 const calloutTokens: Record<CalloutVariant, { bg: string; border: string; text: string }> = {
   neutral: {
-    bg:     'var(--haus-color-surface-subtle)',
+    bg: 'var(--haus-color-surface-subtle)',
     border: 'var(--haus-color-border-default)',
-    text:   'var(--haus-color-ink-secondary)',
+    text: 'var(--haus-color-ink-secondary)',
   },
   info: {
-    bg:     'var(--haus-color-info-subtle)',
+    bg: 'var(--haus-color-info-subtle)',
     border: 'var(--haus-color-info-border)',
-    text:   'var(--haus-color-info-on-subtle)',
+    text: 'var(--haus-color-info-on-subtle)',
   },
 }
 
@@ -340,13 +328,7 @@ export function Callout({
 
 /* ─── Play button (motion demos) ─────────────────────────────────────────── */
 
-export function PlayButton({
-  onClick,
-  compact = false,
-}: {
-  onClick: () => void
-  compact?: boolean
-}) {
+export function PlayButton({ onClick, compact = false }: { onClick: () => void; compact?: boolean }) {
   return (
     <button
       onClick={onClick}
@@ -358,9 +340,7 @@ export function PlayButton({
         background: 'var(--haus-color-primary-subtle)',
         border: 'none',
         borderRadius: 'var(--haus-radius-sm)',
-        padding: compact
-          ? `var(--haus-space-1) var(--haus-space-2)`
-          : `var(--haus-space-1) var(--haus-space-2)`,
+        padding: compact ? `var(--haus-space-1) var(--haus-space-2)` : `var(--haus-space-1) var(--haus-space-2)`,
         cursor: 'pointer',
         whiteSpace: 'nowrap',
         flexShrink: 0,

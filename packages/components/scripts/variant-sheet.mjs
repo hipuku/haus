@@ -21,28 +21,28 @@
  *
  * Defaults to `FIGMA-VARIANTS-haus.html` next to the repo.
  */
-import React from "react";
-import { renderToStaticMarkup } from "react-dom/server";
-import { readFileSync, writeFileSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import React from 'react'
+import { renderToStaticMarkup } from 'react-dom/server'
+import { readFileSync, writeFileSync } from 'node:fs'
+import { dirname, join, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-const PKG = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const ROOT = resolve(PKG, "..", "..");
-const TOKENS = join(ROOT, "packages", "tokens", "dist");
-const COMPONENTS = join(PKG, "dist");
+const PKG = resolve(dirname(fileURLToPath(import.meta.url)), '..')
+const ROOT = resolve(PKG, '..', '..')
+const TOKENS = join(ROOT, 'packages', 'tokens', 'dist')
+const COMPONENTS = join(PKG, 'dist')
 
-const C = await import(join(COMPONENTS, "index.js"));
+const C = await import(join(COMPONENTS, 'index.js'))
 
 /* ── the vocabulary, from types.ts ──────────────────────────────────────────
    Narrowed per component, and the narrowing is the interesting part: a
    component that has no design for a tone leaves it out rather than inventing
    a colour to satisfy the type. */
-const TONE = ["neutral", "info", "success", "warning", "error"];
-const APPEARANCE = ["subtle", "solid"];
-const SIZE = ["sm", "md", "lg"];
+const TONE = ['neutral', 'info', 'success', 'warning', 'error']
+const APPEARANCE = ['subtle', 'solid']
+const SIZE = ['sm', 'md', 'lg']
 
-const h = React.createElement;
+const h = React.createElement
 
 /* ── a DOM, for the three that portal ────────────────────────────────────────
    Modal, Popover and Tooltip render their panel through createPortal, and a
@@ -51,41 +51,61 @@ const h = React.createElement;
    read back off document.body, which is the only way to print the thing being
    built. The old sheet left all three out, and a Figma library missing its
    overlay half is missing the half a product cannot avoid writing itself. */
-const { JSDOM } = await import("jsdom");
-const dom = new JSDOM("<!doctype html><html><body></body></html>", { pretendToBeVisual: true });
-const w = dom.window;
-w.matchMedia ??= () => ({ matches: false, addEventListener() {}, removeEventListener() {}, addListener() {}, removeListener() {} });
-for (const key of ["window", "document", "navigator", "HTMLElement", "Element", "Node",
-                   "getComputedStyle", "requestAnimationFrame", "cancelAnimationFrame",
-                   "MutationObserver", "matchMedia", "CSS", "DOMRect"]) {
-  if (w[key] === undefined) continue;
-  try { Object.defineProperty(globalThis, key, { value: w[key], configurable: true, writable: true }); } catch {}
+const { JSDOM } = await import('jsdom')
+const dom = new JSDOM('<!doctype html><html><body></body></html>', { pretendToBeVisual: true })
+const w = dom.window
+w.matchMedia ??= () => ({
+  matches: false,
+  addEventListener() {},
+  removeEventListener() {},
+  addListener() {},
+  removeListener() {},
+})
+for (const key of [
+  'window',
+  'document',
+  'navigator',
+  'HTMLElement',
+  'Element',
+  'Node',
+  'getComputedStyle',
+  'requestAnimationFrame',
+  'cancelAnimationFrame',
+  'MutationObserver',
+  'matchMedia',
+  'CSS',
+  'DOMRect',
+]) {
+  if (w[key] === undefined) continue
+  try {
+    Object.defineProperty(globalThis, key, { value: w[key], configurable: true, writable: true })
+  } catch {}
 }
-globalThis.IS_REACT_ACT_ENVIRONMENT = true;
-const { createRoot } = await import("react-dom/client");
-const { flushSync } = await import("react-dom");
+globalThis.IS_REACT_ACT_ENVIRONMENT = true
+const { createRoot } = await import('react-dom/client')
+const { flushSync } = await import('react-dom')
 
 /** Render into a real document and return what landed in the body, portals and
  *  all. The host div is dropped from the output because it is scaffolding. */
 const renderInDom = (element, { open } = {}) => {
-  const host = document.createElement("div");
-  document.body.appendChild(host);
-  flushSync(() => createRoot(host).render(element));
+  const host = document.createElement('div')
+  document.body.appendChild(host)
+  flushSync(() => createRoot(host).render(element))
   /* Tooltip has no `open` prop, deliberately: it is shown by hover or focus and
      nothing else, so the only way to print one is to do what a reader does.
      `open` names the selector to point at. */
   if (open) {
-    const trigger = document.querySelector(open);
+    const trigger = document.querySelector(open)
     /* Focus rather than hover: onFocusCapture listens for focusin, which
        bubbles, and React maps onPointerEnter through pointerover with logic a
        synthetic dispatch does not satisfy. Focus is also the path that matters:
        a tooltip only reachable by pointer is not reachable. */
-    if (trigger) flushSync(() => trigger.dispatchEvent(new w.FocusEvent("focusin", { bubbles: true })));
+    if (trigger) flushSync(() => trigger.dispatchEvent(new w.FocusEvent('focusin', { bubbles: true })))
   }
-  const html = document.body.innerHTML;
-  document.body.innerHTML = "";
-  return html.replace(/^<div><\/div>/, "");
-};
+  const html = document.body.innerHTML
+  document.body.innerHTML = ''
+  return html.replace(/^<div><\/div>/, '')
+}
 
 /**
  * Every component set to build, in the order they are worth building.
@@ -96,29 +116,30 @@ const renderInDom = (element, { open } = {}) => {
  */
 const SETS = [
   {
-    name: "Badge",
-    figma: "12 variants, Tone x Appearance. `dot` is a boolean property: it only shows and hides a layer, which is the one thing a Figma boolean can do.",
-    note: "The cheapest complete demo of the shared vocabulary, and the one to build first. Tone carries meaning, Appearance carries how solidly it is expressed.",
-    props: { Tone: [...TONE, "primary"], Appearance: APPEARANCE },
+    name: 'Badge',
+    figma:
+      '12 variants, Tone x Appearance. `dot` is a boolean property: it only shows and hides a layer, which is the one thing a Figma boolean can do.',
+    note: 'The cheapest complete demo of the shared vocabulary, and the one to build first. Tone carries meaning, Appearance carries how solidly it is expressed.',
+    props: { Tone: [...TONE, 'primary'], Appearance: APPEARANCE },
     booleans: { dot: [false, true] },
-    render: ({ Tone, Appearance, dot }) =>
-      h(C.Badge, { tone: Tone, appearance: Appearance, dot }, Tone),
+    render: ({ Tone, Appearance, dot }) => h(C.Badge, { tone: Tone, appearance: Appearance, dot }, Tone),
   },
   {
-    name: "Button",
-    figma: "120 variants, Variant x Tone x Size x Disabled. Disabled cannot be a boolean here because it sets opacity on the root and a boolean binds to layer visibility alone. `loading` can be a boolean, the spinner is a layer, but it also forces the disabled treatment, so a loading instance is the Disabled variant with that boolean on. Build Variant x Size at neutral first if time-boxed.",
-    note: "The flagship, and ruling A5 in one component set: `variant` is visual weight, `tone` is meaning, and every tone composes with every weight. 60 variants. If time-boxed, build Variant x Size complete first, then the five tones at primary/md.",
-    props: { Variant: ["primary", "secondary", "ghost", "text"], Tone: TONE, Size: SIZE },
+    name: 'Button',
+    figma:
+      '120 variants, Variant x Tone x Size x Disabled. Disabled cannot be a boolean here because it sets opacity on the root and a boolean binds to layer visibility alone. `loading` can be a boolean, the spinner is a layer, but it also forces the disabled treatment, so a loading instance is the Disabled variant with that boolean on. Build Variant x Size at neutral first if time-boxed.',
+    note: 'The flagship, and ruling A5 in one component set: `variant` is visual weight, `tone` is meaning, and every tone composes with every weight. 60 variants. If time-boxed, build Variant x Size complete first, then the five tones at primary/md.',
+    props: { Variant: ['primary', 'secondary', 'ghost', 'text'], Tone: TONE, Size: SIZE },
     booleans: { loading: [false, true], disabled: [false, true] },
     render: ({ Variant, Tone, Size, loading, disabled }) =>
-      h(C.Button, { variant: Variant, tone: Tone, size: Size, loading, disabled }, "Button"),
+      h(C.Button, { variant: Variant, tone: Tone, size: Size, loading, disabled }, 'Button'),
   },
   {
-    name: "Input",
-    figma: "5 variants. One variant property, State, with these five values.",
-    note: "The five states are the five selectors in Input.module.css and there is no hover or active rule in the file. Drawn with every layer present, because that is the master variant and the booleans hide them from there: label, required, the two adornments, and the hint or the error line. Note where the adornments sit, inside the border, so they are inside whatever the state does to it. Everything else costs no frames: Label, Required, Prefix, Suffix, Hint, and Filled, which swaps two stacked text layers because placeholder against value is a fill change. Hint and error are mutually exclusive, the component renders {hint && !error}, so the hint is hidden in both Error states. Disabled beats error on source order, which is why this is one property with five values rather than State crossed with Error.",
-    props: { State: ["Default", "Focus", "Error", "Error focus", "Disabled"] },
-    force: ({ State }) => State === "Focus" || State === "Error focus",
+    name: 'Input',
+    figma: '5 variants. One variant property, State, with these five values.',
+    note: 'The five states are the five selectors in Input.module.css and there is no hover or active rule in the file. Drawn with every layer present, because that is the master variant and the booleans hide them from there: label, required, the two adornments, and the hint or the error line. Note where the adornments sit, inside the border, so they are inside whatever the state does to it. Everything else costs no frames: Label, Required, Prefix, Suffix, Hint, and Filled, which swaps two stacked text layers because placeholder against value is a fill change. Hint and error are mutually exclusive, the component renders {hint && !error}, so the hint is hidden in both Error states. Disabled beats error on source order, which is why this is one property with five values rather than State crossed with Error.',
+    props: { State: ['Default', 'Focus', 'Error', 'Error focus', 'Disabled'] },
+    force: ({ State }) => State === 'Focus' || State === 'Error focus',
     /* Every layer present, because that is how the master variant is built: the
        booleans hide them, so a variant drawn without them has nowhere to hide
        them from. It also shows the thing a bare field cannot, which is that the
@@ -126,150 +147,154 @@ const SETS = [
        does to it. */
     render: ({ State }) =>
       h(C.Input, {
-        label: "Amount",
+        label: 'Amount',
         required: true,
-        prefix: "$",
-        suffix: "AUD",
-        hint: State.startsWith("Error") ? undefined : "Including GST",
-        error: State.startsWith("Error") ? "Enter an amount over zero" : undefined,
-        disabled: State === "Disabled",
-        defaultValue: "1250.00",
+        prefix: '$',
+        suffix: 'AUD',
+        hint: State.startsWith('Error') ? undefined : 'Including GST',
+        error: State.startsWith('Error') ? 'Enter an amount over zero' : undefined,
+        disabled: State === 'Disabled',
+        defaultValue: '1250.00',
       }),
   },
   {
-    name: "Input, the booleans",
-    figma: "No new variants. Every row here is the same five State variants with a layer shown or hidden, which is the one thing a Figma boolean property can do.",
+    name: 'Input, the booleans',
+    figma:
+      'No new variants. Every row here is the same five State variants with a layer shown or hidden, which is the one thing a Figma boolean property can do.',
     note: "Prefix and suffix are slots inside the field's border, before and after the text, each a span carrying ink-secondary at body-sm. They are what a currency symbol, a unit, a protocol or a small icon goes in, and nothing in this repository had ever rendered one, which is a fair reason for them to be puzzling. Build both as hidden layers in all five variants and expose them as booleans. Filled is the pair of stacked text layers: hiding one shows the other.",
     props: {
-      Property: ["Label off", "Required on", "Prefix", "Suffix", "Prefix and suffix", "Hint on", "Placeholder"],
+      Property: ['Label off', 'Required on', 'Prefix', 'Suffix', 'Prefix and suffix', 'Hint on', 'Placeholder'],
     },
     render: ({ Property }) =>
       h(C.Input, {
-        label: Property === "Label off" ? undefined : "Amount",
-        required: Property === "Required on",
-        prefix: Property === "Prefix" || Property === "Prefix and suffix" ? "$" : undefined,
-        suffix: Property === "Suffix" || Property === "Prefix and suffix" ? "AUD" : undefined,
-        hint: Property === "Hint on" ? "Including GST" : undefined,
-        placeholder: Property === "Placeholder" ? "0.00" : undefined,
-        defaultValue: Property === "Placeholder" ? undefined : "1250.00",
+        label: Property === 'Label off' ? undefined : 'Amount',
+        required: Property === 'Required on',
+        prefix: Property === 'Prefix' || Property === 'Prefix and suffix' ? '$' : undefined,
+        suffix: Property === 'Suffix' || Property === 'Prefix and suffix' ? 'AUD' : undefined,
+        hint: Property === 'Hint on' ? 'Including GST' : undefined,
+        placeholder: Property === 'Placeholder' ? '0.00' : undefined,
+        defaultValue: Property === 'Placeholder' ? undefined : '1250.00',
       }),
   },
   {
-    name: "Card",
-    figma: "6 variants, Variant x Padding. Padding has to be a variant rather than a boolean: it changes the frame padding, and a boolean only shows and hides a layer.",
-    note: "The elevation roles. `elevated` reads --haus-elevation-floating, which is why the effect styles had to exist first.",
-    props: { Variant: ["default", "elevated", "outlined"] },
+    name: 'Card',
+    figma:
+      '6 variants, Variant x Padding. Padding has to be a variant rather than a boolean: it changes the frame padding, and a boolean only shows and hides a layer.',
+    note: 'The elevation roles. `elevated` reads --haus-elevation-floating, which is why the effect styles had to exist first.',
+    props: { Variant: ['default', 'elevated', 'outlined'] },
     booleans: { padding: [true, false] },
-    render: ({ Variant, padding }) =>
-      h(C.Card, { variant: Variant, padding }, h("div", null, "Card content")),
+    render: ({ Variant, padding }) => h(C.Card, { variant: Variant, padding }, h('div', null, 'Card content')),
   },
   {
-    name: "Callout",
-    note: "The newest promotion, and the evidence story worth putting on the documentation page: all three products built one before haus owned it.",
+    name: 'Callout',
+    note: 'The newest promotion, and the evidence story worth putting on the documentation page: all three products built one before haus owned it.',
     props: { Tone: TONE },
-    render: ({ Tone }) => h(C.Callout, { tone: Tone }, "A short callout, one sentence long."),
+    render: ({ Tone }) => h(C.Callout, { tone: Tone }, 'A short callout, one sentence long.'),
   },
   {
-    name: "Toast",
-    note: "Tone and Appearance again, and the one place the pair changes the surface rather than a chip. A plain Toast is tinted; the dark one is appearance=solid.",
+    name: 'Toast',
+    note: 'Tone and Appearance again, and the one place the pair changes the surface rather than a chip. A plain Toast is tinted; the dark one is appearance=solid.',
     props: { Tone: TONE, Appearance: APPEARANCE },
     render: ({ Tone, Appearance }) =>
-      h(C.Toast, { tone: Tone, appearance: Appearance, title: "Saved" }, "Your change was saved."),
+      h(C.Toast, { tone: Tone, appearance: Appearance, title: 'Saved' }, 'Your change was saved.'),
   },
   {
-    name: "Avatar",
-    note: "Extends the size scale with xs and xl, documented rather than accidental: a picture has a use at 16px that a button does not.",
-    props: { Size: ["xs", ...SIZE, "xl"], Status: ["online", "away", "busy", "offline"] },
-    render: ({ Size, Status }) => h(C.Avatar, { size: Size, status: Status, name: "Ada Lovelace" }),
+    name: 'Avatar',
+    note: 'Extends the size scale with xs and xl, documented rather than accidental: a picture has a use at 16px that a button does not.',
+    props: { Size: ['xs', ...SIZE, 'xl'], Status: ['online', 'away', 'busy', 'offline'] },
+    render: ({ Size, Status }) => h(C.Avatar, { size: Size, status: Status, name: 'Ada Lovelace' }),
   },
   {
-    name: "Checkbox",
-    figma: "18 variants, Selection x State. Selection is Unchecked, Checked, Indeterminate; State is Default, Hover, Focus, Error, Error focus, Disabled. This component has a hover rule, which the three text controls do not. Disabled is 40% opacity on the whole frame, so it cannot be a boolean either.",
+    name: 'Checkbox',
+    figma:
+      '18 variants, Selection x State. Selection is Unchecked, Checked, Indeterminate; State is Default, Hover, Focus, Error, Error focus, Disabled. This component has a hover rule, which the three text controls do not. Disabled is 40% opacity on the whole frame, so it cannot be a boolean either.',
     props: {},
     booleans: { checked: [false, true], disabled: [false, true] },
-    render: ({ checked, disabled }) =>
-      h(C.Checkbox, { label: "Checkbox", defaultChecked: checked, disabled }),
+    render: ({ checked, disabled }) => h(C.Checkbox, { label: 'Checkbox', defaultChecked: checked, disabled }),
   },
   {
-    name: "Toggle",
-    figma: "16 variants, Size x Checked x State, where State is Default, Hover, Focus, Disabled. Checked moves the thumb and repaints the track, disabled sets opacity on the whole frame, and neither is a layer toggle. 32 if you also build the Label position axis, which is worth deferring.",
-    note: "Narrowed to sm and md. There is no lg design, so there is no lg option.",
-    props: { Size: ["sm", "md"] },
+    name: 'Toggle',
+    figma:
+      '16 variants, Size x Checked x State, where State is Default, Hover, Focus, Disabled. Checked moves the thumb and repaints the track, disabled sets opacity on the whole frame, and neither is a layer toggle. 32 if you also build the Label position axis, which is worth deferring.',
+    note: 'Narrowed to sm and md. There is no lg design, so there is no lg option.',
+    props: { Size: ['sm', 'md'] },
     booleans: { checked: [false, true], disabled: [false, true] },
     render: ({ Size, checked, disabled }) =>
-      h(C.Toggle, { size: Size, label: "Toggle", defaultChecked: checked, disabled }),
+      h(C.Toggle, { size: Size, label: 'Toggle', defaultChecked: checked, disabled }),
   },
   {
-    name: "Textarea",
-    figma: "5 variants, the same State property as Input.",
-    note: "The identical five selectors. No adornment booleans; it gains a resize handle instead.",
-    props: { State: ["Default", "Focus", "Error", "Error focus", "Disabled"] },
-    force: ({ State }) => State === "Focus" || State === "Error focus",
+    name: 'Textarea',
+    figma: '5 variants, the same State property as Input.',
+    note: 'The identical five selectors. No adornment booleans; it gains a resize handle instead.',
+    props: { State: ['Default', 'Focus', 'Error', 'Error focus', 'Disabled'] },
+    force: ({ State }) => State === 'Focus' || State === 'Error focus',
     render: ({ State }) =>
       h(C.Textarea, {
-        label: "Textarea",
-        disabled: State === "Disabled",
-        error: State.startsWith("Error") ? "Too short" : undefined,
-        defaultValue: "Some text",
+        label: 'Textarea',
+        disabled: State === 'Disabled',
+        error: State.startsWith('Error') ? 'Too short' : undefined,
+        defaultValue: 'Some text',
       }),
   },
   {
-    name: "RadioGroup",
-    figma: "Two components. The Radio item is 12 variants, Selection x State, the same six State values as Checkbox. RadioGroup is 2, Orientation vertical or horizontal, and holds instances of the item.",
+    name: 'RadioGroup',
+    figma:
+      'Two components. The Radio item is 12 variants, Selection x State, the same six State values as Checkbox. RadioGroup is 2, Orientation vertical or horizontal, and holds instances of the item.',
     props: {},
     booleans: { disabled: [false, true] },
     render: ({ disabled }) =>
       h(C.RadioGroup, {
-        label: "Radio group",
+        label: 'Radio group',
         name: `r${disabled}`,
         disabled,
-        defaultValue: "a",
+        defaultValue: 'a',
         options: [
-          { value: "a", label: "First" },
-          { value: "b", label: "Second" },
+          { value: 'a', label: 'First' },
+          { value: 'b', label: 'Second' },
         ],
       }),
   },
   {
-    name: "Divider",
-    figma: "8 variants, Orientation x Spacing. Only the horizontal half is drawn here, because a vertical rule stretches to a flex parent and has nothing to stretch to on this page. Build both.",
-    note: "One line of CSS that three products had each redrawn. Spacing is a variant property, orientation is the other.",
-    props: { Orientation: ["horizontal"], Spacing: ["none", ...SIZE] },
-    render: ({ Orientation, Spacing }) =>
-      h(C.Divider, { orientation: Orientation, spacing: Spacing }),
+    name: 'Divider',
+    figma:
+      '8 variants, Orientation x Spacing. Only the horizontal half is drawn here, because a vertical rule stretches to a flex parent and has nothing to stretch to on this page. Build both.',
+    note: 'One line of CSS that three products had each redrawn. Spacing is a variant property, orientation is the other.',
+    props: { Orientation: ['horizontal'], Spacing: ['none', ...SIZE] },
+    render: ({ Orientation, Spacing }) => h(C.Divider, { orientation: Orientation, spacing: Spacing }),
   },
   {
-    name: "EmptyState",
-    figma: "1 variant. `action` is a boolean property: the slot is a layer, so both rows below are the same component.",
-    note: "Twenty-five references across three products before haus owned it. The heading level is a prop, not a variant: it changes the document outline, not the drawing.",
+    name: 'EmptyState',
+    figma: '1 variant. `action` is a boolean property: the slot is a layer, so both rows below are the same component.',
+    note: 'Twenty-five references across three products before haus owned it. The heading level is a prop, not a variant: it changes the document outline, not the drawing.',
     props: {},
     booleans: { action: [false, true] },
     render: ({ action }) =>
       h(C.EmptyState, {
-        title: "Nothing here yet",
-        description: "Add your first item to see it listed.",
-        action: action ? h(C.Button, { variant: "primary", size: "md" }, "Add one") : undefined,
+        title: 'Nothing here yet',
+        description: 'Add your first item to see it listed.',
+        action: action ? h(C.Button, { variant: 'primary', size: 'md' }, 'Add one') : undefined,
       }),
   },
   {
-    name: "Tabs",
-    figma: "Two components. The Tab item is 18 variants, Size x State, where State is Default, Hover, Focus, Selected, Selected focus and Disabled. The Tabs container is 3, Size, and holds instances. There is no Selected hover: hover only takes the text to ink-primary and a selected tab is already there.",
+    name: 'Tabs',
+    figma:
+      'Two components. The Tab item is 18 variants, Size x State, where State is Default, Hover, Focus, Selected, Selected focus and Disabled. The Tabs container is 3, Size, and holds instances. There is no Selected hover: hover only takes the text to ink-primary and a selected tab is already there.',
     note: "All three products built one and none of them was haus's.",
     props: { Size: SIZE },
     render: ({ Size }) =>
       h(C.Tabs, {
         size: Size,
-        label: "Sections",
-        value: "one",
+        label: 'Sections',
+        value: 'one',
         onValueChange: () => {},
         items: [
-          { value: "one", label: "First" },
-          { value: "two", label: "Second" },
-          { value: "three", label: "Third", disabled: true },
+          { value: 'one', label: 'First' },
+          { value: 'two', label: 'Second' },
+          { value: 'three', label: 'Third', disabled: true },
         ],
       }),
   },
-];
+]
 
 /**
  * The three that portal, rendered into a document rather than described.
@@ -279,13 +304,14 @@ const SETS = [
  */
 const PORTALLED = [
   {
-    name: "Modal",
-    figma: "3 variants, Size, which only caps the dialog width at 400, 560 or 720. Header, Close and Footer are boolean properties. 9 if you also build the close button's hover and focus, which is worth deferring.",
-    figma: "3 variants, Size. `footer` is a boolean property, the footer is a layer, so the six rows below are three variants with it on and off.",
+    name: 'Modal',
+    figma:
+      "3 variants, Size, which only caps the dialog width at 400, 560 or 720. Header, Close and Footer are boolean properties. 9 if you also build the close button's hover and focus, which is worth deferring.",
+    figma:
+      '3 variants, Size. `footer` is a boolean property, the footer is a layer, so the six rows below are three variants with it on and off.',
     dom: true,
-    stage: "stage-fill",
-    note:
-      "Reads --haus-elevation-overlay for the panel and the backdrop role for the scrim, so both effect styles have to exist before this is built. In Figma: the panel at three widths, with a title slot, a body slot and an optional footer slot. The backdrop is a separate rectangle at the backdrop colour, not a shadow.",
+    stage: 'stage-fill',
+    note: 'Reads --haus-elevation-overlay for the panel and the backdrop role for the scrim, so both effect styles have to exist before this is built. In Figma: the panel at three widths, with a title slot, a body slot and an optional footer slot. The backdrop is a separate rectangle at the backdrop colour, not a shadow.',
     props: { Size: SIZE },
     booleans: { footer: [false, true] },
     render: ({ Size, footer }) =>
@@ -294,33 +320,32 @@ const PORTALLED = [
         {
           open: true,
           onClose: () => {},
-          title: "Modal title",
+          title: 'Modal title',
           size: Size,
           footer: footer
             ? h(
-                "div",
-                { style: { display: "flex", gap: ".5rem", justifyContent: "flex-end" } },
-                h(C.Button, { variant: "text", size: "md" }, "Cancel"),
-                h(C.Button, { variant: "primary", size: "md" }, "Confirm"),
+                'div',
+                { style: { display: 'flex', gap: '.5rem', justifyContent: 'flex-end' } },
+                h(C.Button, { variant: 'text', size: 'md' }, 'Cancel'),
+                h(C.Button, { variant: 'primary', size: 'md' }, 'Confirm'),
               )
             : undefined,
         },
-        "One paragraph of body copy, so the panel has something to size against.",
+        'One paragraph of body copy, so the panel has something to size against.',
       ),
   },
   {
-    name: "Popover",
+    name: 'Popover',
     dom: true,
-    stage: "stage-anchor",
-    note:
-      "The primitive under vault's five menus and core's Dropdown. Placement and Align are the two variant properties and they are pure CSS against the trigger, so the preview draws a real trigger button under each one: without it every value renders in the same place and the properties look inert. Placement puts the panel above or below. Align pins the panel's start edge, its end edge, or stretches it to the trigger's width. Role is a prop rather than a variant, because dialog, menu, listbox and group draw identically and announce differently: one component set, four accessible roles. There is deliberately no collision detection, and the component says so: no flipping at the viewport edge and no shifting along the cross axis. Placement is the caller's answer, one level up, where the layout is known.",
-    props: { Placement: ["bottom", "top"], Align: ["start", "end", "stretch"] },
+    stage: 'stage-anchor',
+    note: "The primitive under vault's five menus and core's Dropdown. Placement and Align are the two variant properties and they are pure CSS against the trigger, so the preview draws a real trigger button under each one: without it every value renders in the same place and the properties look inert. Placement puts the panel above or below. Align pins the panel's start edge, its end edge, or stretches it to the trigger's width. Role is a prop rather than a variant, because dialog, menu, listbox and group draw identically and announce differently: one component set, four accessible roles. There is deliberately no collision detection, and the component says so: no flipping at the viewport edge and no shifting along the cross axis. Placement is the caller's answer, one level up, where the layout is known.",
+    props: { Placement: ['bottom', 'top'], Align: ['start', 'end', 'stretch'] },
     render: ({ Placement, Align }) => {
-      const triggerRef = { current: null };
+      const triggerRef = { current: null }
       return h(
-        "span",
-        { className: "anchor" },
-        h(C.Button, { variant: "secondary", size: "md", ref: triggerRef }, "A wide trigger button"),
+        'span',
+        { className: 'anchor' },
+        h(C.Button, { variant: 'secondary', size: 'md', ref: triggerRef }, 'A wide trigger button'),
         h(
           C.Popover,
           {
@@ -329,101 +354,96 @@ const PORTALLED = [
             triggerRef,
             placement: Placement,
             align: Align,
-            role: "dialog",
-            label: "Popover",
+            role: 'dialog',
+            label: 'Popover',
           },
           /* Narrower than the trigger on purpose. `stretch` is inset-inline: 0, so
              the panel takes the trigger's width, and a panel whose content is
              already wider than the trigger cannot shrink to show it: stretch then
              renders identically to start and the property looks inert. */
-          h("div", { style: { whiteSpace: "nowrap" } }, "Item"),
+          h('div', { style: { whiteSpace: 'nowrap' } }, 'Item'),
         ),
-      );
+      )
     },
   },
   {
-    name: "Tooltip",
-    figma: "2 variants, Placement. The bubble is pinned to the trigger's leading edge rather than centred on it, deliberately, and that is the thing most likely to be corrected while building.",
+    name: 'Tooltip',
+    figma:
+      "2 variants, Placement. The bubble is pinned to the trigger's leading edge rather than centred on it, deliberately, and that is the thing most likely to be corrected while building.",
     dom: true,
-    stage: "stage-anchor",
-    open: "button",
-    note:
-      "One product built it, and it has the hardest accessibility contract of the six: it must not be the only place information lives, it has to survive keyboard focus as well as hover, and it is not a Popover. The file should say that last part out loud. Placement is the only variant property; the delay is a prop and has no drawing.",
-    props: { Placement: ["top", "bottom"] },
+    stage: 'stage-anchor',
+    open: 'button',
+    note: 'One product built it, and it has the hardest accessibility contract of the six: it must not be the only place information lives, it has to survive keyboard focus as well as hover, and it is not a Popover. The file should say that last part out loud. Placement is the only variant property; the delay is a prop and has no drawing.',
+    props: { Placement: ['top', 'bottom'] },
     render: ({ Placement }) =>
       h(
         C.Tooltip,
-        { content: "A short tooltip", placement: Placement, delay: 0 },
-        h(C.Button, { variant: "secondary", size: "md" }, "Trigger"),
+        { content: 'A short tooltip', placement: Placement, delay: 0 },
+        h(C.Button, { variant: 'secondary', size: 'md' }, 'Trigger'),
       ),
   },
-];
+]
 
 /* ── render ────────────────────────────────────────────────────────────────*/
 
 const combos = (props, booleans) => {
-  let out = [{}];
+  let out = [{}]
   for (const [key, values] of Object.entries(props ?? {})) {
-    out = out.flatMap((row) => values.map((v) => ({ ...row, [key]: v })));
+    out = out.flatMap(row => values.map(v => ({ ...row, [key]: v })))
   }
   for (const [key, values] of Object.entries(booleans ?? {})) {
-    out = out.flatMap((row) => values.map((v) => ({ ...row, [key]: v })));
+    out = out.flatMap(row => values.map(v => ({ ...row, [key]: v })))
   }
-  return out;
-};
+  return out
+}
 
-const esc = (s) =>
-  String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 
-const label = (row) =>
+const label = row =>
   Object.entries(row)
     .filter(([, v]) => v !== false)
     .map(([k, v]) => (v === true ? k : `${k}=${v}`))
-    .join(" · ") || "default";
+    .join(' · ') || 'default'
 
-let body = "";
-let total = 0;
+let body = ''
+let total = 0
 
 for (const set of [...SETS, ...PORTALLED]) {
-  const rows = combos(set.props, set.booleans);
-  total += rows.length;
+  const rows = combos(set.props, set.booleans)
+  total += rows.length
   const propList = [
-    ...Object.entries(set.props ?? {}).map(([k, v]) => `<b>${esc(k)}</b>: ${v.map(esc).join(" | ")}`),
-    ...Object.keys(set.booleans ?? {}).map((k) => `<b>${esc(k)}</b>: boolean`),
-  ];
+    ...Object.entries(set.props ?? {}).map(([k, v]) => `<b>${esc(k)}</b>: ${v.map(esc).join(' | ')}`),
+    ...Object.keys(set.booleans ?? {}).map(k => `<b>${esc(k)}</b>: boolean`),
+  ]
   /* The count on the heading is how many stages are drawn below, which is not
      always how many component variants Figma needs. `figma` says the second
      number in words wherever the two differ, because a reader counts what is on
      the page: Input showed eight rows of content while needing five states, and
      the page never said so. */
-  body += `<section><h2>${esc(set.name)} <span class="count">${rows.length} shown</span></h2>`;
-  body += `<p class="figma"><b>In Figma:</b> ${esc(set.figma ?? `${rows.length} variants.`)}</p>`;
-  if (set.note) body += `<p class="note">${esc(set.note)}</p>`;
-  if (propList.length) body += `<p class="props">${propList.join(" &nbsp;·&nbsp; ")}</p>`;
-  body += `<div class="grid">`;
+  body += `<section><h2>${esc(set.name)} <span class="count">${rows.length} shown</span></h2>`
+  body += `<p class="figma"><b>In Figma:</b> ${esc(set.figma ?? `${rows.length} variants.`)}</p>`
+  if (set.note) body += `<p class="note">${esc(set.note)}</p>`
+  if (propList.length) body += `<p class="props">${propList.join(' &nbsp;·&nbsp; ')}</p>`
+  body += `<div class="grid">`
   for (const row of rows) {
-    let markup;
+    let markup
     try {
-      markup = set.dom ? renderInDom(set.render(row), { open: set.open }) : renderToStaticMarkup(set.render(row));
+      markup = set.dom ? renderInDom(set.render(row), { open: set.open }) : renderToStaticMarkup(set.render(row))
     } catch (error) {
-      markup = `<span class="err">${esc(error.message)}</span>`;
+      markup = `<span class="err">${esc(error.message)}</span>`
     }
-    const cls = set.dom ? "figure wide" : "figure";
-    const stageCls = [
-      "stage",
-      set.stage ?? "",
-      set.force?.(row) ? "force-focus" : "",
-    ].filter(Boolean).join(" ");
-    body += `<figure class="${cls}"><figcaption>${esc(label(row))}</figcaption><div class="${stageCls}">${markup}</div></figure>`;
+    const cls = set.dom ? 'figure wide' : 'figure'
+    const stageCls = ['stage', set.stage ?? '', set.force?.(row) ? 'force-focus' : ''].filter(Boolean).join(' ')
+    body += `<figure class="${cls}"><figcaption>${esc(label(row))}</figcaption><div class="${stageCls}">${markup}</div></figure>`
   }
-  body += `</div></section>`;
+  body += `</div></section>`
 }
 
-const css = (f, dir = TOKENS) => readFileSync(join(dir, f), "utf8");
-const tokenCss = ["layers.css", "primitives.css", "brand.css", "motion.css", "semantics.css"]
-  .map((f) => css(f))
-  .join("\n");
-const componentCss = css("styles.css", COMPONENTS);
+const css = (f, dir = TOKENS) => readFileSync(join(dir, f), 'utf8')
+const tokenCss = ['layers.css', 'primitives.css', 'brand.css', 'motion.css', 'semantics.css']
+  .map(f => css(f))
+  .join('\n')
+const componentCss = css('styles.css', COMPONENTS)
 
 /**
  * The focus states, rendered.
@@ -472,50 +492,53 @@ function forcedFocusCss(sheet, components) {
    * markup was correct, the generated CSS was correct rule by rule, and the
    * result was wrong.
    */
-  const out = [];
-  const wanted = (selector) =>
-    [...components].some((name) => selector.includes(`haus-${name}-`));
+  const out = []
+  const wanted = selector => [...components].some(name => selector.includes(`haus-${name}-`))
   const emit = (selector, body) => {
-    if (!wanted(selector)) return;
+    if (!wanted(selector)) return
     const forced = selector
-      .split(",")
-      .map((one) => `.force-focus ${one.trim().replace(/:has\(:focus-visible\)/g, "").replace(/:focus-visible/g, "")}`)
-      .join(", ");
-    out.push(`${forced} { ${body.trim()} }`);
-  };
-  const scan = (text) => {
-    let cursor = 0;
+      .split(',')
+      .map(
+        one =>
+          `.force-focus ${one
+            .trim()
+            .replace(/:has\(:focus-visible\)/g, '')
+            .replace(/:focus-visible/g, '')}`,
+      )
+      .join(', ')
+    out.push(`${forced} { ${body.trim()} }`)
+  }
+  const scan = text => {
+    let cursor = 0
     while (cursor < text.length) {
-      const open = text.indexOf("{", cursor);
-      if (open === -1) return;
-      const prelude = text.slice(cursor, open).trim();
-      let depth = 1;
-      let close = open + 1;
+      const open = text.indexOf('{', cursor)
+      if (open === -1) return
+      const prelude = text.slice(cursor, open).trim()
+      let depth = 1
+      let close = open + 1
       for (; close < text.length && depth > 0; close++) {
-        if (text[close] === "{") depth++;
-        else if (text[close] === "}") depth--;
+        if (text[close] === '{') depth++
+        else if (text[close] === '}') depth--
       }
-      const body = text.slice(open + 1, close - 1);
-      if (prelude.startsWith("@layer") || prelude.startsWith("@supports")) scan(body);
-      else if (!prelude.startsWith("@")) emit(prelude, body);
-      cursor = close;
+      const body = text.slice(open + 1, close - 1)
+      if (prelude.startsWith('@layer') || prelude.startsWith('@supports')) scan(body)
+      else if (!prelude.startsWith('@')) emit(prelude, body)
+      cursor = close
     }
-  };
-  scan(sheet);
-  if (!out.length) throw new Error("the forced-focus pass matched nothing");
-  const stray = out.filter((r) => /highlight/i.test(r));
-  if (stray.length) throw new Error(`forced-colors rules escaped their media query: ${stray[0]}`);
-  return `/* Generated from styles.css by variant-sheet.mjs. See forcedFocusCss. */\n${out.join("\n")}`;
+  }
+  scan(sheet)
+  if (!out.length) throw new Error('the forced-focus pass matched nothing')
+  const stray = out.filter(r => /highlight/i.test(r))
+  if (stray.length) throw new Error(`forced-colors rules escaped their media query: ${stray[0]}`)
+  return `/* Generated from styles.css by variant-sheet.mjs. See forcedFocusCss. */\n${out.join('\n')}`
 }
 
 const focusCss = forcedFocusCss(
   componentCss,
-  new Set([...SETS, ...PORTALLED].filter((set) => set.force).map((set) => set.name)),
-);
+  new Set([...SETS, ...PORTALLED].filter(set => set.force).map(set => set.name)),
+)
 
-const version = JSON.parse(
-  readFileSync(join(PKG, "package.json"), "utf8"),
-).version;
+const version = JSON.parse(readFileSync(join(PKG, 'package.json'), 'utf8')).version
 
 const html = `<!doctype html>
 <meta charset="utf-8">
@@ -597,8 +620,8 @@ figcaption { font-family: var(--haus-font-mono); font-size: .6875rem; padding: .
      tones when it takes five.</p>
 </header>
 ${body}
-`;
+`
 
-const out = process.argv[2] ?? join(ROOT, "..", "FIGMA-VARIANTS-haus.html");
-writeFileSync(out, html);
-console.log(`${total} variants across ${SETS.length + PORTALLED.length} sets -> ${out}`);
+const out = process.argv[2] ?? join(ROOT, '..', 'FIGMA-VARIANTS-haus.html')
+writeFileSync(out, html)
+console.log(`${total} variants across ${SETS.length + PORTALLED.length} sets -> ${out}`)

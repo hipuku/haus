@@ -34,8 +34,10 @@ const preview: Preview = {
         // them the sidebar falls back to alphabetical, which buries the
         // Introduction behind Contributing.
         order: [
-          'Getting started', ['Introduction', 'Installation', 'Composition'],
-          'Tokens', ['Colours', 'Typography', 'Spacing', 'Elevation', 'Motion', 'Layout'],
+          'Getting started',
+          ['Introduction', 'Installation', 'Composition'],
+          'Tokens',
+          ['Colours', 'Typography', 'Spacing', 'Elevation', 'Motion', 'Layout'],
           'Components',
         ],
       },

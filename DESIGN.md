@@ -82,6 +82,7 @@ Storybook is the published surface, so a token declared in `primitives.css` with
 All animated components respect `prefers-reduced-motion: reduce` by overriding `transition-duration` and `animation-duration` to `--haus-duration-reduced`.
 
 The override targets duration rather than using `transition: none` because:
+
 - Some transforms carry positional meaning (Toggle thumb, Modal entry offset) and need to apply even without animation
 - A control that snaps straight to its new position still shows the state; with `transition: none` the Toggle thumb and the Modal offset would not move at all
 

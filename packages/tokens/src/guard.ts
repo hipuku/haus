@@ -106,7 +106,7 @@ export function findUndefinedTokens(input: TokenGuardInput): TokenGuardResult {
   for (const name of input.alsoDefined ?? []) defined.add(name)
 
   return {
-    missing: [...read].filter((name) => !defined.has(name)).sort(),
+    missing: [...read].filter(name => !defined.has(name)).sort(),
     read: [...read].sort(),
     defined: [...defined].sort(),
   }
@@ -123,7 +123,7 @@ export function findUndefinedTokens(input: TokenGuardInput): TokenGuardResult {
 export function findFallbackTokens(input: Pick<TokenGuardInput, 'reads' | 'defines'>): string[] {
   const withFallback = collect(input.reads, READ_WITH_FALLBACK)
   const defined = collect(input.defines, DECLARATION)
-  return [...withFallback].filter((name) => !defined.has(name)).sort()
+  return [...withFallback].filter(name => !defined.has(name)).sort()
 }
 
 /* ─── Restatement: a consumer keeping its own copy of a value we ship ────────

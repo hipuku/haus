@@ -11,10 +11,7 @@ export interface LightnessScaleOptions {
  * Hue and chroma are preserved from the base colour; only L varies.
  * Returns hex strings from lightest to darkest.
  */
-export function generateLightnessScale(
-  hex: string,
-  options: LightnessScaleOptions = {}
-): string[] {
+export function generateLightnessScale(hex: string, options: LightnessScaleOptions = {}): string[] {
   const { steps = 10, minL = 8, maxL = 97 } = options
 
   const base = chroma(hex)
@@ -23,11 +20,11 @@ export function generateLightnessScale(
   // Scale chroma down toward the extremes so light/dark steps don't
   // look over-saturated. This mirrors how CSS palettes are tuned.
   return Array.from({ length: steps }, (_, i) => {
-    const t   = i / (steps - 1)
-    const L   = maxL - t * (maxL - minL)
+    const t = i / (steps - 1)
+    const L = maxL - t * (maxL - minL)
     // Reduce chroma at very light and very dark ends
     const cScale = 1 - Math.abs(t - 0.5) * 0.9
-    const C   = c * cScale
+    const C = c * cScale
     try {
       return chroma.lch(L, C, isNaN(h) ? 0 : h).hex()
     } catch {

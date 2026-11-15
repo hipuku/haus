@@ -16,11 +16,11 @@ haus had one mono role where a ladder is wanted. Labels already work this way, `
 
 Three roles, each binding all four properties per decision 0026:
 
-| Role | Size | Weight | Leading | Tracking |
-|---|---|---|---|---|
-| `mono-xs` | 11 | regular | `leading-normal` 1.4 | normal |
-| `mono-sm` | 12 | regular | `leading-relaxed` 1.5 | normal |
-| `mono-md` | 13 | regular | `leading-loose` 1.6 | normal |
+| Role      | Size | Weight  | Leading               | Tracking |
+| --------- | ---- | ------- | --------------------- | -------- |
+| `mono-xs` | 11   | regular | `leading-normal` 1.4  | normal   |
+| `mono-sm` | 12   | regular | `leading-relaxed` 1.5 | normal   |
+| `mono-md` | 13   | regular | `leading-loose` 1.6   | normal   |
 
 **The leading loosens as the size grows**, because the larger the mono the more block-like the content: a chip or a value wants a tight box, a code panel wants air. `mono-sm`'s 1.5 is what vault's export panel already computes; `mono-md` keeps the old role's 1.6 exactly.
 

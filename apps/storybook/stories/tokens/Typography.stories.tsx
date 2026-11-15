@@ -1,10 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import React from 'react'
 import {
-  CopyChip, ColLabel,
-  pageWrap, pageTitleStyle, pageDescStyle,
+  CopyChip,
+  ColLabel,
+  pageWrap,
+  pageTitleStyle,
+  pageDescStyle,
   tokenNameStyle,
-  TableGrid, TH, TD, TableDivider,
+  TableGrid,
+  TH,
+  TD,
+  TableDivider,
 } from './_shared'
 
 /* ─── Local constants ────────────────────────────────────────────────────── */
@@ -23,55 +29,188 @@ const tokenMeta: React.CSSProperties = {
 
 type TypeEntry = {
   token: string
-  size: string; weight: string; lineHeight: string; tracking: string
+  size: string
+  weight: string
+  lineHeight: string
+  tracking: string
   trackingDisplay: string
   sample: string
   family?: 'sans' | 'mono'
 }
 
 const typeScale: TypeEntry[] = [
-  { token: 'label-xs',      size: 'var(--haus-type-label-xs-size)',      weight: 'var(--haus-type-label-xs-weight)',      lineHeight: 'var(--haus-type-label-xs-leading)',      tracking: 'var(--haus-type-label-xs-tracking)',      trackingDisplay: '0.08em',  sample: 'REQUIRED' },
-  { token: 'label-sm',      size: 'var(--haus-type-label-sm-size)',      weight: 'var(--haus-type-label-sm-weight)',      lineHeight: 'var(--haus-type-label-sm-leading)',      tracking: 'var(--haus-type-label-sm-tracking)',      trackingDisplay: '0.02em',  sample: 'Sort by date' },
-  { token: 'label-md',      size: 'var(--haus-type-label-md-size)',      weight: 'var(--haus-type-label-md-weight)',      lineHeight: 'var(--haus-type-label-md-leading)',      tracking: 'var(--haus-type-label-md-tracking)',      trackingDisplay: '-',       sample: 'Email address' },
-  { token: 'label-field',   size: 'var(--haus-type-label-field-size)',   weight: 'var(--haus-type-label-field-weight)',   lineHeight: 'var(--haus-type-label-field-leading)',   tracking: 'var(--haus-type-label-field-tracking)',   trackingDisplay: '0.02em',  sample: 'Email address' },
-  { token: 'label-eyebrow', size: 'var(--haus-type-label-eyebrow-size)', weight: 'var(--haus-type-label-eyebrow-weight)', lineHeight: 'var(--haus-type-label-eyebrow-leading)', tracking: 'var(--haus-type-label-eyebrow-tracking)', trackingDisplay: '0.04em',  sample: 'SECTION LABEL' },
-  { token: 'label-caption', size: 'var(--haus-type-label-caption-size)', weight: 'var(--haus-type-label-caption-weight)', lineHeight: 'var(--haus-type-label-caption-leading)', tracking: 'var(--haus-type-label-caption-tracking)', trackingDisplay: '-',       sample: 'We only use it to sign you in.' },
-  { token: 'body-sm',    size: 'var(--haus-type-body-sm-size)',    weight: 'var(--haus-type-body-sm-weight)',    lineHeight: 'var(--haus-type-body-sm-leading)',    tracking: 'var(--haus-type-body-sm-tracking)',    trackingDisplay: '-',       sample: 'You have 3 unread messages.' },
-  { token: 'body',       size: 'var(--haus-type-body-size)',       weight: 'var(--haus-type-body-weight)',       lineHeight: 'var(--haus-type-body-leading)',       tracking: 'var(--haus-type-body-tracking)',       trackingDisplay: '-',       sample: 'The quick brown fox jumps over the lazy dog.' },
-  { token: 'body-lg',    size: 'var(--haus-type-body-lg-size)',    weight: 'var(--haus-type-body-lg-weight)',    lineHeight: 'var(--haus-type-body-lg-leading)',    tracking: 'var(--haus-type-body-lg-tracking)',    trackingDisplay: '-',       sample: 'Designed for teams who ship fast.' },
-  { token: 'heading-sm', size: 'var(--haus-type-heading-sm-size)', weight: 'var(--haus-type-heading-sm-weight)', lineHeight: 'var(--haus-type-heading-sm-leading)', tracking: 'var(--haus-type-heading-sm-tracking)', trackingDisplay: '−0.01em', sample: 'Recent activity' },
-  { token: 'heading',    size: 'var(--haus-type-heading-size)',    weight: 'var(--haus-type-heading-weight)',    lineHeight: 'var(--haus-type-heading-leading)',    tracking: 'var(--haus-type-heading-tracking)',    trackingDisplay: '−0.01em', sample: 'Settings' },
-  { token: 'heading-lg', size: 'var(--haus-type-heading-lg-size)', weight: 'var(--haus-type-heading-lg-weight)', lineHeight: 'var(--haus-type-heading-lg-leading)', tracking: 'var(--haus-type-heading-lg-tracking)', trackingDisplay: '−0.02em', sample: 'Welcome back' },
-  { token: 'display',    size: 'var(--haus-type-display-size)',    weight: 'var(--haus-type-display-weight)',    lineHeight: 'var(--haus-type-display-leading)',    tracking: 'var(--haus-type-display-tracking)',    trackingDisplay: '−0.03em', sample: 'Haus.' },
-  { token: 'mono-xs',    size: 'var(--haus-type-mono-xs-size)',    weight: 'var(--haus-type-mono-xs-weight)',    lineHeight: 'var(--haus-type-mono-xs-leading)',    tracking: 'var(--haus-type-mono-xs-tracking)',    trackingDisplay: '-',       sample: 'var(--haus-color-ink-primary)', family: 'mono' },
-  { token: 'mono-sm',    size: 'var(--haus-type-mono-sm-size)',    weight: 'var(--haus-type-mono-sm-weight)',    lineHeight: 'var(--haus-type-mono-sm-leading)',    tracking: 'var(--haus-type-mono-sm-tracking)',    trackingDisplay: '-',       sample: 'var(--haus-color-ink-primary)', family: 'mono' },
-  { token: 'mono-md',    size: 'var(--haus-type-mono-md-size)',    weight: 'var(--haus-type-mono-md-weight)',    lineHeight: 'var(--haus-type-mono-md-leading)',    tracking: 'var(--haus-type-mono-md-tracking)',    trackingDisplay: '-',       sample: 'var(--haus-color-ink-primary)', family: 'mono' },
+  {
+    token: 'label-xs',
+    size: 'var(--haus-type-label-xs-size)',
+    weight: 'var(--haus-type-label-xs-weight)',
+    lineHeight: 'var(--haus-type-label-xs-leading)',
+    tracking: 'var(--haus-type-label-xs-tracking)',
+    trackingDisplay: '0.08em',
+    sample: 'REQUIRED',
+  },
+  {
+    token: 'label-sm',
+    size: 'var(--haus-type-label-sm-size)',
+    weight: 'var(--haus-type-label-sm-weight)',
+    lineHeight: 'var(--haus-type-label-sm-leading)',
+    tracking: 'var(--haus-type-label-sm-tracking)',
+    trackingDisplay: '0.02em',
+    sample: 'Sort by date',
+  },
+  {
+    token: 'label-md',
+    size: 'var(--haus-type-label-md-size)',
+    weight: 'var(--haus-type-label-md-weight)',
+    lineHeight: 'var(--haus-type-label-md-leading)',
+    tracking: 'var(--haus-type-label-md-tracking)',
+    trackingDisplay: '-',
+    sample: 'Email address',
+  },
+  {
+    token: 'label-field',
+    size: 'var(--haus-type-label-field-size)',
+    weight: 'var(--haus-type-label-field-weight)',
+    lineHeight: 'var(--haus-type-label-field-leading)',
+    tracking: 'var(--haus-type-label-field-tracking)',
+    trackingDisplay: '0.02em',
+    sample: 'Email address',
+  },
+  {
+    token: 'label-eyebrow',
+    size: 'var(--haus-type-label-eyebrow-size)',
+    weight: 'var(--haus-type-label-eyebrow-weight)',
+    lineHeight: 'var(--haus-type-label-eyebrow-leading)',
+    tracking: 'var(--haus-type-label-eyebrow-tracking)',
+    trackingDisplay: '0.04em',
+    sample: 'SECTION LABEL',
+  },
+  {
+    token: 'label-caption',
+    size: 'var(--haus-type-label-caption-size)',
+    weight: 'var(--haus-type-label-caption-weight)',
+    lineHeight: 'var(--haus-type-label-caption-leading)',
+    tracking: 'var(--haus-type-label-caption-tracking)',
+    trackingDisplay: '-',
+    sample: 'We only use it to sign you in.',
+  },
+  {
+    token: 'body-sm',
+    size: 'var(--haus-type-body-sm-size)',
+    weight: 'var(--haus-type-body-sm-weight)',
+    lineHeight: 'var(--haus-type-body-sm-leading)',
+    tracking: 'var(--haus-type-body-sm-tracking)',
+    trackingDisplay: '-',
+    sample: 'You have 3 unread messages.',
+  },
+  {
+    token: 'body',
+    size: 'var(--haus-type-body-size)',
+    weight: 'var(--haus-type-body-weight)',
+    lineHeight: 'var(--haus-type-body-leading)',
+    tracking: 'var(--haus-type-body-tracking)',
+    trackingDisplay: '-',
+    sample: 'The quick brown fox jumps over the lazy dog.',
+  },
+  {
+    token: 'body-lg',
+    size: 'var(--haus-type-body-lg-size)',
+    weight: 'var(--haus-type-body-lg-weight)',
+    lineHeight: 'var(--haus-type-body-lg-leading)',
+    tracking: 'var(--haus-type-body-lg-tracking)',
+    trackingDisplay: '-',
+    sample: 'Designed for teams who ship fast.',
+  },
+  {
+    token: 'heading-sm',
+    size: 'var(--haus-type-heading-sm-size)',
+    weight: 'var(--haus-type-heading-sm-weight)',
+    lineHeight: 'var(--haus-type-heading-sm-leading)',
+    tracking: 'var(--haus-type-heading-sm-tracking)',
+    trackingDisplay: '−0.01em',
+    sample: 'Recent activity',
+  },
+  {
+    token: 'heading',
+    size: 'var(--haus-type-heading-size)',
+    weight: 'var(--haus-type-heading-weight)',
+    lineHeight: 'var(--haus-type-heading-leading)',
+    tracking: 'var(--haus-type-heading-tracking)',
+    trackingDisplay: '−0.01em',
+    sample: 'Settings',
+  },
+  {
+    token: 'heading-lg',
+    size: 'var(--haus-type-heading-lg-size)',
+    weight: 'var(--haus-type-heading-lg-weight)',
+    lineHeight: 'var(--haus-type-heading-lg-leading)',
+    tracking: 'var(--haus-type-heading-lg-tracking)',
+    trackingDisplay: '−0.02em',
+    sample: 'Welcome back',
+  },
+  {
+    token: 'display',
+    size: 'var(--haus-type-display-size)',
+    weight: 'var(--haus-type-display-weight)',
+    lineHeight: 'var(--haus-type-display-leading)',
+    tracking: 'var(--haus-type-display-tracking)',
+    trackingDisplay: '−0.03em',
+    sample: 'Haus.',
+  },
+  {
+    token: 'mono-xs',
+    size: 'var(--haus-type-mono-xs-size)',
+    weight: 'var(--haus-type-mono-xs-weight)',
+    lineHeight: 'var(--haus-type-mono-xs-leading)',
+    tracking: 'var(--haus-type-mono-xs-tracking)',
+    trackingDisplay: '-',
+    sample: 'var(--haus-color-ink-primary)',
+    family: 'mono',
+  },
+  {
+    token: 'mono-sm',
+    size: 'var(--haus-type-mono-sm-size)',
+    weight: 'var(--haus-type-mono-sm-weight)',
+    lineHeight: 'var(--haus-type-mono-sm-leading)',
+    tracking: 'var(--haus-type-mono-sm-tracking)',
+    trackingDisplay: '-',
+    sample: 'var(--haus-color-ink-primary)',
+    family: 'mono',
+  },
+  {
+    token: 'mono-md',
+    size: 'var(--haus-type-mono-md-size)',
+    weight: 'var(--haus-type-mono-md-weight)',
+    lineHeight: 'var(--haus-type-mono-md-leading)',
+    tracking: 'var(--haus-type-mono-md-tracking)',
+    trackingDisplay: '-',
+    sample: 'var(--haus-color-ink-primary)',
+    family: 'mono',
+  },
 ]
 
 const typeMetaLabels: Record<string, string> = {
-  'label-xs':      '11px · 500 · lh 1.4',
-  'label-sm':      '12px · 500 · lh 1.4',
-  'label-md':      '13px · 500 · lh 1.4',
-  'label-field':   '12px · 600 · lh 1.4',
+  'label-xs': '11px · 500 · lh 1.4',
+  'label-sm': '12px · 500 · lh 1.4',
+  'label-md': '13px · 500 · lh 1.4',
+  'label-field': '12px · 600 · lh 1.4',
   'label-eyebrow': '12px · 600 · lh 1.4',
   'label-caption': '11px · 400 · lh 1.4',
-  'body-sm':    '13px · 400 · lh 1.5',
-  'body':       '14px · 400 · lh 1.5',
-  'body-lg':    '16px · 400 · lh 1.6',
+  'body-sm': '13px · 400 · lh 1.5',
+  body: '14px · 400 · lh 1.5',
+  'body-lg': '16px · 400 · lh 1.6',
   'heading-sm': '16px · 600 · lh 1.3',
-  'heading':    '20px · 600 · lh 1.25',
+  heading: '20px · 600 · lh 1.25',
   'heading-lg': '24px · 600 · lh 1.2',
-  'display':    '30px · 700 · lh 1.15',
-  'mono':       '13px · 400 · lh 1.6',
+  display: '30px · 700 · lh 1.15',
+  mono: '13px · 400 · lh 1.6',
 }
-
 
 const iconRows = [
   { name: '--icon-xs', value: '0.75rem', px: '12px', pair: 'label-xs' },
-  { name: '--icon-sm', value: '1rem',    px: '16px', pair: 'label, body-sm' },
+  { name: '--icon-sm', value: '1rem', px: '16px', pair: 'label, body-sm' },
   { name: '--icon-md', value: '1.25rem', px: '20px', pair: 'body-lg, heading-sm' },
-  { name: '--icon-lg', value: '1.5rem',  px: '24px', pair: 'heading' },
-  { name: '--icon-xl', value: '2rem',    px: '32px', pair: 'standalone / decorative' },
+  { name: '--icon-lg', value: '1.5rem', px: '24px', pair: 'heading' },
+  { name: '--icon-xl', value: '2rem', px: '32px', pair: 'standalone / decorative' },
 ]
 
 /* ─── Row component ──────────────────────────────────────────────────────── */
@@ -79,23 +218,31 @@ const iconRows = [
 function TypeRow({ token, size, weight, lineHeight, tracking, trackingDisplay, sample, family = 'sans' }: TypeEntry) {
   return (
     <>
-      <TD><CopyChip name={`type-${token}-size`} /></TD>
-      <TD><span style={tokenMeta}>{typeMetaLabels[token]}</span></TD>
-      <TD><span style={{ ...tokenMeta, minWidth: '4ch', textAlign: 'right' }}>{trackingDisplay}</span></TD>
+      <TD>
+        <CopyChip name={`type-${token}-size`} />
+      </TD>
+      <TD>
+        <span style={tokenMeta}>{typeMetaLabels[token]}</span>
+      </TD>
+      <TD>
+        <span style={{ ...tokenMeta, minWidth: '4ch', textAlign: 'right' }}>{trackingDisplay}</span>
+      </TD>
       <TD style={{ minWidth: 0 }}>
-        <div style={{
-          fontFamily: family === 'mono' ? 'var(--haus-font-mono)' : 'var(--haus-font-sans)',
-          fontSize: size,
-          fontWeight: weight,
-          lineHeight,
-          letterSpacing: tracking,
-          color: 'var(--haus-color-ink-primary)',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
-          minWidth: 0,
-          width: '100%',
-        }}>
+        <div
+          style={{
+            fontFamily: family === 'mono' ? 'var(--haus-font-mono)' : 'var(--haus-font-sans)',
+            fontSize: size,
+            fontWeight: weight,
+            lineHeight,
+            letterSpacing: tracking,
+            color: 'var(--haus-color-ink-primary)',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            minWidth: 0,
+            width: '100%',
+          }}
+        >
           {sample}
         </div>
       </TD>
@@ -110,18 +257,31 @@ function TypographyScale() {
     <div style={pageWrap}>
       <h1 style={pageTitleStyle}>Typography</h1>
       <p style={pageDescStyle}>
-        Manrope (variable, UI) and Fira Code (monospace). All four properties together, always: size, weight, leading, tracking. Setting only <code style={{ fontFamily: 'var(--haus-font-mono)' }}>font-size</code> from a type token and guessing the rest is using the system wrong. Roles replace heading levels: <code style={{ fontFamily: 'var(--haus-font-mono)' }}>label-xs</code> through <code style={{ fontFamily: 'var(--haus-font-mono)' }}>display</code>, never h1–h6. Click any token to copy.
+        Manrope (variable, UI) and Fira Code (monospace). All four properties together, always: size, weight, leading,
+        tracking. Setting only <code style={{ fontFamily: 'var(--haus-font-mono)' }}>font-size</code> from a type token
+        and guessing the rest is using the system wrong. Roles replace heading levels:{' '}
+        <code style={{ fontFamily: 'var(--haus-font-mono)' }}>label-xs</code> through{' '}
+        <code style={{ fontFamily: 'var(--haus-font-mono)' }}>display</code>, never h1–h6. Click any token to copy.
       </p>
 
       <TableGrid columns={TYPE_COLS}>
-        <TH><ColLabel icon="fa-solid fa-tag">Token</ColLabel></TH>
-        <TH><ColLabel icon="fa-solid fa-sliders">Specs</ColLabel></TH>
-        <TH><ColLabel icon="fa-solid fa-text-width">Tracking</ColLabel></TH>
-        <TH><ColLabel icon="fa-solid fa-font">Sample</ColLabel></TH>
+        <TH>
+          <ColLabel icon="fa-solid fa-tag">Token</ColLabel>
+        </TH>
+        <TH>
+          <ColLabel icon="fa-solid fa-sliders">Specs</ColLabel>
+        </TH>
+        <TH>
+          <ColLabel icon="fa-solid fa-text-width">Tracking</ColLabel>
+        </TH>
+        <TH>
+          <ColLabel icon="fa-solid fa-font">Sample</ColLabel>
+        </TH>
         <TableDivider />
-        {typeScale.map(e => <TypeRow key={e.token} {...e} />)}
+        {typeScale.map(e => (
+          <TypeRow key={e.token} {...e} />
+        ))}
       </TableGrid>
-
     </div>
   )
 }
@@ -131,14 +291,24 @@ function IconSizes() {
     <div style={pageWrap}>
       <h1 style={pageTitleStyle}>Icon Sizes</h1>
       <p style={pageDescStyle}>
-        Font Awesome 6 Solid. Set <code style={{ fontFamily: 'var(--haus-font-mono)' }}>font-size</code> on the <code style={{ fontFamily: 'var(--haus-font-mono)' }}>&lt;i&gt;</code> element using the matching icon token. Each size is paired with a type role, so icon and adjacent copy use the same scale step.
+        Font Awesome 6 Solid. Set <code style={{ fontFamily: 'var(--haus-font-mono)' }}>font-size</code> on the{' '}
+        <code style={{ fontFamily: 'var(--haus-font-mono)' }}>&lt;i&gt;</code> element using the matching icon token.
+        Each size is paired with a type role, so icon and adjacent copy use the same scale step.
       </p>
 
       <TableGrid columns={ICON_COLS}>
-        <TH><ColLabel icon="fa-solid fa-eye">Demo</ColLabel></TH>
-        <TH><ColLabel icon="fa-solid fa-tag">Token</ColLabel></TH>
-        <TH><ColLabel icon="fa-solid fa-hashtag">Value</ColLabel></TH>
-        <TH><ColLabel icon="fa-solid fa-link">Pairs with</ColLabel></TH>
+        <TH>
+          <ColLabel icon="fa-solid fa-eye">Demo</ColLabel>
+        </TH>
+        <TH>
+          <ColLabel icon="fa-solid fa-tag">Token</ColLabel>
+        </TH>
+        <TH>
+          <ColLabel icon="fa-solid fa-hashtag">Value</ColLabel>
+        </TH>
+        <TH>
+          <ColLabel icon="fa-solid fa-link">Pairs with</ColLabel>
+        </TH>
         <TableDivider />
         {iconRows.map(({ name, value, px, pair }) => (
           <React.Fragment key={name}>
@@ -147,9 +317,25 @@ function IconSizes() {
                 <i className="fa-solid fa-bell" style={{ fontSize: value, color: 'var(--haus-color-ink-secondary)' }} />
               </div>
             </TD>
-            <TD><CopyChip name={name.slice(2)} /></TD>
-            <TD><span style={{ ...tokenNameStyle, whiteSpace: 'nowrap' }}>{value} · {px}</span></TD>
-            <TD><span style={{ fontSize: 'var(--haus-type-body-sm-size)', color: 'var(--haus-color-ink-secondary)', whiteSpace: 'nowrap' }}>{pair}</span></TD>
+            <TD>
+              <CopyChip name={name.slice(2)} />
+            </TD>
+            <TD>
+              <span style={{ ...tokenNameStyle, whiteSpace: 'nowrap' }}>
+                {value} · {px}
+              </span>
+            </TD>
+            <TD>
+              <span
+                style={{
+                  fontSize: 'var(--haus-type-body-sm-size)',
+                  color: 'var(--haus-color-ink-secondary)',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {pair}
+              </span>
+            </TD>
           </React.Fragment>
         ))}
       </TableGrid>
@@ -167,4 +353,4 @@ const meta: Meta = {
 export default meta
 type Story = StoryObj
 export const TypeScale: Story = { render: () => <TypographyScale /> }
-export const Icons:     Story = { render: () => <IconSizes /> }
+export const Icons: Story = { render: () => <IconSizes /> }

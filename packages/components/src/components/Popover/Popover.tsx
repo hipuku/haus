@@ -66,8 +66,7 @@ interface PopoverBaseProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'r
    have a role. Either it points at its own heading or it carries a label, and
    the type says so rather than leaving it to a reviewer. Same shape as Modal. */
 type PopoverLabel =
-  | { 'aria-label': string; 'aria-labelledby'?: never }
-  | { 'aria-label'?: never; 'aria-labelledby': string }
+  { 'aria-label': string; 'aria-labelledby'?: never } | { 'aria-label'?: never; 'aria-labelledby': string }
 
 export type PopoverProps = PopoverBaseProps & PopoverLabel
 
@@ -194,7 +193,9 @@ export const Popover = React.forwardRef<HTMLDivElement, PopoverProps>(function P
     width === 'auto' ? '' : styles[`w-${width}`],
     className,
     portal ? styles.portalled : '',
-  ].filter(Boolean).join(' ')
+  ]
+    .filter(Boolean)
+    .join(' ')
 
   /* Viewport coordinates, so the panel sits where the absolute rules would have
      put it: below or above the trigger, aligned to the edge `align` names. The
@@ -207,9 +208,7 @@ export const Popover = React.forwardRef<HTMLDivElement, PopoverProps>(function P
         bottom: placement === 'top' ? window.innerHeight - rect.top : undefined,
         left: align === 'end' ? undefined : rect.left,
         right: align === 'end' ? window.innerWidth - rect.right : undefined,
-        ...(align === 'stretch' || width === 'trigger'
-          ? { inlineSize: rect.width }
-          : {}),
+        ...(align === 'stretch' || width === 'trigger' ? { inlineSize: rect.width } : {}),
       }
     : { position: 'fixed', visibility: 'hidden' }
 

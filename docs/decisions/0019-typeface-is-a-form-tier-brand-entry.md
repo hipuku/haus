@@ -17,7 +17,7 @@ already disagreed with the value:
 - **vault** forks sans to Manrope Variable, a fork it kept in its own `tokens.css`
 - **drift** keeps `system-ui` for all three of its faces, three of the six names
   it deliberately did not rename at the 1.0 cut, because pointing them at haus's
-  Manrope *"would have changed the product's face"*
+  Manrope _"would have changed the product's face"_
 
 By decision 0015's own argument, typeface is one of the four things that make two
 products look different (colour, shadow, radius, type). It belongs in the form

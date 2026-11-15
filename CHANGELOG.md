@@ -17,7 +17,7 @@ even when the hex barely moves.
 
 ## haus-tokens 5.1.0
 
-*2026-09-11. Two spacing steps below the 4px grid.*
+_2026-09-11. Two spacing steps below the 4px grid._
 
 **Added** · **`--haus-space-px`** (1px) and **`--haus-space-0-5`** (2px). Optical padding
 inside a small control, where the smallest step, 4px, is visibly too much: vault's Badge
@@ -27,7 +27,7 @@ land on. drift made the same call for itself, as
 
 ## haus-components 3.1.0
 
-*2026-09-10. IconButton gains a large size, level with a default Button.*
+_2026-09-10. IconButton gains a large size, level with a default Button._
 
 **Added** · **`IconButton` `size="lg"`**, 36px (`--haus-control-height-md`), the
 height of a default `Button`. An icon-only action beside a labelled one, core's
@@ -37,7 +37,7 @@ the smaller sizes have. Additive: `sm` and `md` do not move.
 
 ## haus-components 3.0.0
 
-*2026-09-10. The native Select is retired, and Listbox becomes Select.*
+_2026-09-10. The native Select is retired, and Listbox becomes Select._
 
 **Removed** · **The native `<select>` `Select`.** Measured across every consumer in
 the portfolio, nothing imported it, two releases after decision 0020 recorded the
@@ -55,7 +55,7 @@ built takes the name a consumer reaches for. `Listbox`, `ListboxProps`,
 
 ## haus-tokens 5.0.0
 
-*2026-09-10. The label roles become one `label-*` family.*
+_2026-09-10. The label roles become one `label-*` family._
 
 **Changed** · **The three label type roles are renamed** so every label role reads
 `label-<x>`: `--haus-type-label-*` (the default label) becomes
@@ -67,7 +67,7 @@ names. The values do not change: a token rename is a major at an identical value
 
 ## haus-tokens 4.2.0
 
-*2026-09-09. A 28px step, where the type ladder skipped from 24 to 30.*
+_2026-09-09. A 28px step, where the type ladder skipped from 24 to 30._
 
 **Added** · **`--haus-text-28` (28px / 1.75rem)**, between `--haus-text-24` and
 `--haus-text-30`. The ladder jumped 6px there against 1-to-2px steps lower down, and a
@@ -76,7 +76,7 @@ Additive: no role reads it yet, and nothing moves.
 
 ## haus-components 2.7.0
 
-*2026-09-09. Modal gains an xl size; Popover reads width tokens and gains xl.*
+_2026-09-09. Modal gains an xl size; Popover reads width tokens and gains xl._
 
 **Added** · **`ModalSize` gains `'xl'`**, 896px through `--haus-modal-width-xl`, for
 wide dashboards and side-by-side previews.
@@ -91,7 +91,7 @@ already can restate a modal's. No visual change at the default brand. Needs
 
 ## haus-tokens 4.1.0
 
-*2026-09-09. A fourth modal width, and popover widths become tokens.*
+_2026-09-09. A fourth modal width, and popover widths become tokens._
 
 **Added** · **`--haus-overlay-width-xl` (896px) and `--haus-modal-width-xl`**, so
 Modal is four sizes not three. A second consumer shipped a four-step modal scale
@@ -108,7 +108,7 @@ same way. `popover` is a fifth optional form group in the brand contract.
 
 ## haus-components 2.6.0
 
-*2026-09-09. A clickable card can be a router link.*
+_2026-09-09. A clickable card can be a router link._
 
 **Added** · **`asChild` on `Card`**, plus `CardOwnProps` and `CardAsChildProps`.
 The third and last component decision
@@ -118,7 +118,7 @@ the one it reopened rather than filed.
 `as` stays, and the two are not the same tool twice. `as` covers what it was
 built for, where the right element is a plain intrinsic one and the reason is the
 document outline: `article`, `li`, `section`, `aside`. The argument in
-`CardElement`'s comment against a *generic polymorphic* `as` is still right and
+`CardElement`'s comment against a _generic polymorphic_ `as` is still right and
 is not overturned.
 
 **`asChild` covers what `as` cannot reach**: a clickable card that is a router
@@ -142,20 +142,20 @@ apart.
 
 ## haus-components 2.5.0
 
-*2026-09-09. Two of every three tabs pointed at nothing.*
+_2026-09-09. Two of every three tabs pointed at nothing._
 
 **Fixed** · **`aria-controls` referenced panels that were not in the document.**
 Only the active panel is ever rendered, and every tab pointed at its own
 generated panel id, so a three-tab group shipped one panel and **two dangling
 IDREFs**.
 
-In the component whose stated reason for owning both ends is that *"the wiring
-between a tab and its panel is precisely what all three products got wrong"*.
+In the component whose stated reason for owning both ends is that _"the wiring
+between a tab and its panel is precisely what all three products got wrong"_.
 
 **Nothing caught it.** The suite runs axe and passes, because
 `aria-valid-attr-value` does not resolve `aria-controls` against the document
-here, and the component's own tests asserted the attribute was *present* rather
-than that it *resolved*. Present and correct are different assertions and only
+here, and the component's own tests asserted the attribute was _present_ rather
+than that it _resolved_. Present and correct are different assertions and only
 one was being made. Found while building `panelId`, by writing the assertion the
 other way round.
 
@@ -192,7 +192,7 @@ otherwise `useId`-generated and uncomputable.
 
 ## haus-components 2.4.0
 
-*2026-09-09. An icon-only link can be one.*
+_2026-09-09. An icon-only link can be one._
 
 **Added** · **`asChild` on `IconButton`**, plus `IconButtonOwnProps` and
 `IconButtonAsChildProps`. `haus#70`, the first thing built on decision
@@ -208,7 +208,7 @@ what an icon button's box is.
 **The glyph replaces the child's children rather than being appended to them.**
 That is the question `haus#70` raised and `Button` never had to answer. Button's
 children are the caller's, so it appends; here they are not. `icon` is the
-content and this component's contract is that it is the *only* content, which the
+content and this component's contract is that it is the _only_ content, which the
 other half of the union already states by omitting `children` from the element
 attributes. A caller who puts text in the child wants a `Button`.
 
@@ -232,7 +232,7 @@ happening, for once.
 
 ## haus-components 2.3.1
 
-*2026-09-09. The RSC row is not blank any more.*
+_2026-09-09. The RSC row is not blank any more._
 
 **Added** · **`rsc-rules.test.tsx`**, which asserts that no component attaches a
 ref it was not given. `haus#72`. No runtime change; this release is a test and a
@@ -240,7 +240,7 @@ decision.
 
 `haus#71` shipped because nothing here could see it. The 30 component suites
 render on a client, where a stray ref is legal, and `ssr.test.tsx` renders
-through `renderToString`, which is server *rendering* and not React Server
+through `renderToString`, which is server _rendering_ and not React Server
 Components: it accepts a ref happily and an RSC render rejects it. **The RSC row
 of that table was blank, and the blank row was the finding.**
 
@@ -252,7 +252,7 @@ typed, so a component that gains `asChild` is covered the day it gains it, and
 the props map is checked in both directions so it cannot silently go stale.
 
 It was proved able to fail: deleting the `real.length === 0` guard from
-`mergeRefs` fails it with *"Button attached a ref nobody asked for"*.
+`mergeRefs` fails it with _"Button attached a ref nobody asked for"_.
 
 **The limit is stated rather than implied.** This catches a ref attached unasked
 and nothing else. A real RSC harness would also catch a hook where none is
@@ -266,7 +266,7 @@ put `asChild` on two more components.
 
 ## haus-components 2.3.0
 
-*2026-09-09. The two halves of `ButtonProps` have names.*
+_2026-09-09. The two halves of `ButtonProps` have names._
 
 **Added** · **`ButtonOwnProps` and `ButtonAsChildProps`**, exported beside
 `ButtonProps` from the component barrel and the package root. `haus#66`.
@@ -301,7 +301,7 @@ name.
 
 ## haus-tokens 4.0.0
 
-*2026-09-09. The drift brand is gone, because drift is gone.*
+_2026-09-09. The drift brand is gone, because drift is gone._
 
 **Removed** · **`brands/drift.css`.** drift took its whole token layer in-house
 on 2026-09-09 and no longer installs this package, so the file was a brand for a
@@ -331,7 +331,7 @@ made this a one-line removal instead of a fifth instance of the same defect.**
 
 ## haus-components 2.2.2
 
-*2026-09-09. A portalled Popover was behind the thing it escaped.*
+_2026-09-09. A portalled Popover was behind the thing it escaped._
 
 **Fixed** · **`Popover portal` rendered the panel underneath its own Modal.**
 `haus#73`. Portalling is what a caller reaches for when something clips, and the
@@ -351,10 +351,10 @@ test can only see that the class was applied, and the class is not the claim.
 
 ## haus-components 2.2.1
 
-*2026-09-09. `asChild` no longer throws in a Server Component.*
+_2026-09-09. `asChild` no longer throws in a Server Component._
 
 **Fixed** · **`<Button asChild>` rendered from a React Server Component threw**
-*"Refs cannot be used in Server Components, nor passed to Client Components."*
+_"Refs cannot be used in Server Components, nor passed to Client Components."_
 `haus#71`. The ref merge always returned a callback, even when neither Button
 nor the child had a ref, so every cloned child got one it never asked for. On
 the client that is wasteful; in a Server Component a ref is illegal, and
@@ -372,7 +372,7 @@ when a ref genuinely exists.
 
 ## haus-components 2.2.0
 
-*2026-09-09. A Popover can escape what clips it.*
+_2026-09-09. A Popover can escape what clips it._
 
 **Added** · **`Popover` takes `portal`**, and `Listbox` passes it through.
 `haus#68`. A Popover inside a Modal was clipped at the dialog's edge: `Modal`'s
@@ -397,12 +397,12 @@ knows whether it sits inside a scrolling container, and the panel cannot.
 
 ## haus-components 2.1.1
 
-*2026-09-08. A glyph two steps too large, and a type nobody could import.*
+_2026-09-08. A glyph two steps too large, and a type nobody could import._
 
 **Fixed** · **`IconButton` drew its glyph from the wrong rung.** `md` took
 `icon-md` (20px) inside a 28px box and `sm` took `icon-sm` (16px) inside 24px.
-The scale's own documentation pairs `icon-md` with *"body-lg and heading-sm"*
-and `icon-sm` with *"label and body-sm"*, and this control's type role is label,
+The scale's own documentation pairs `icon-md` with _"body-lg and heading-sm"_
+and `icon-sm` with _"label and body-sm"_, and this control's type role is label,
 so both were one step high. Measurement agrees: core draws **13px and 14px**
 glyphs in its 28px icon button, so 20px was larger than any consumer had asked
 for. Now `icon-sm` at `md` and `icon-xs` at `sm`, which also gives both sizes the
@@ -421,7 +421,7 @@ beside a directory, which is the shape this defect belongs to.
 
 ## haus-components 2.1.0
 
-*2026-09-08. Two new components, `asChild`, a segmented Tabs, and a Modal fix.*
+_2026-09-08. Two new components, `asChild`, a segmented Tabs, and a Modal fix._
 
 A minor: everything is additive, and no existing call site renders differently.
 Requires `haus-tokens@^3.2.0`, which `IconButton` needs for its smaller size.
@@ -440,8 +440,8 @@ required, because an SVG contributes nothing to the accessible name.
 **Added** · **`Listbox`**, the twenty-first, `haus#61`,
 [decision 0020](docs/decisions/0020-listbox-and-select-both-stay.md). Two
 products replaced the native `Select` and wrote down the same reason, and core's
-hook already said it was written to stay diffable with vault's *"until one of
-them moves to haus"*. An option carries a `hint`, a second line the platform's
+hook already said it was written to stay diffable with vault's _"until one of
+them moves to haus"_. An option carries a `hint`, a second line the platform's
 own popup cannot draw, and that field is the whole argument for the component.
 It composes `Popover`, keeps focus on the trigger, and announces the active row
 through `aria-activedescendant`. **It does not replace `Select`**, and 0020
@@ -470,7 +470,7 @@ this: `fireEvent.click` synthesises neither the pointerdown nor the ordering.
 
 ## haus-tokens 3.2.0
 
-*2026-09-08. A fourth control height.*
+_2026-09-08. A fourth control height._
 
 **Added** · **`--haus-control-height-xs`, 1.5rem**. The floor for a target that
 has no spacing exception, and the size `IconButton` takes for `sm`. It is the
@@ -480,7 +480,7 @@ locally: vault declares `--control-height-xs` at exactly this value. Added to
 
 ## haus-tokens 3.1.0
 
-*2026-09-08. core's brand takes the radius form group.*
+_2026-09-08. core's brand takes the radius form group._
 
 A minor: four additive entries in `brands/core.css`, no existing declaration
 moved, and no consumer outside the `core` brand mode renders differently.
@@ -507,7 +507,7 @@ deleting that line fails `core.css supplies whole optional groups or none`.
 
 ## haus-components 2.0.0
 
-*2026-09-08. The nineteenth component, the `aria-busy` fix, and a `haus-tokens 3.0.0` floor.*
+_2026-09-08. The nineteenth component, the `aria-busy` fix, and a `haus-tokens 3.0.0` floor._
 
 A major because the dependency crossed one. `Modal` reads `--haus-modal-width-*`
 and the package reads its typeface through a role, so it now requires
@@ -526,9 +526,9 @@ covers it: every product that got this wrong got it wrong by hiding the ring and
 putting nothing in its place.
 
 **Fixed** · **A loading `Button` never set `aria-busy`**, so it was announced
-exactly as a permanently disabled one: *"Saving, dimmed"*, with nothing to say
-the wait was temporary. Its own test had been named *"disables and marks itself
-busy while loading"* since it was written and asserted only `disabled` and
+exactly as a permanently disabled one: _"Saving, dimmed"_, with nothing to say
+the wait was temporary. Its own test had been named _"disables and marks itself
+busy while loading"_ since it was written and asserted only `disabled` and
 `aria-disabled`. Button now sets `aria-busy` and draws with `Spinner` rather than
 its own copy.
 
@@ -536,7 +536,7 @@ its own copy.
 
 ## haus-tokens 3.0.0
 
-*2026-09-08. Typeface becomes brandable, and core becomes the third brand.*
+_2026-09-08. Typeface becomes brandable, and core becomes the third brand._
 
 A major for one reason: a token left `primitives.css`. Everything a consumer
 importing the whole token stack sees is additive; the break is only for a
@@ -562,13 +562,13 @@ elevation. `BrandMapForm` gains the two, so a brand supplying one supplies both 
 fails the consumer's build. vault states Manrope Variable, drift system-ui, core
 Gabarito.
 
-**Changed** · The `--haus-font-sans` and `--haus-font-mono` *roles* now live in
+**Changed** · The `--haus-font-sans` and `--haus-font-mono` _roles_ now live in
 `semantics.css` and read the brand entry. The role name is unchanged, so no
 component that reads it moved, and a full-stack consumer renders identically.
 
 ## haus-tokens 2.4.0
 
-*2026-09-08. drift's brand grows its radius group.*
+_2026-09-08. drift's brand grows its radius group._
 
 **Added** · Four `radius` entries in `brands/drift.css`, taking it to 58. drift
 sits one step tighter than haus at all three sizes, and states `radius-marker` at
@@ -585,7 +585,7 @@ of a product's identity the system already has vocabulary for.
 
 ## haus-tokens 2.3.1
 
-*2026-09-08. 2.3.0 announced a brand the package did not contain.*
+_2026-09-08. 2.3.0 announced a brand the package did not contain._
 
 **Fixed** · `brands/drift.css` is actually shipped. `tsup.config.ts` carried a
 hardcoded `BRANDS = ['vault.css']` beside the directory, so the new brand was
@@ -606,7 +606,7 @@ the file from `dist` and watching it fail.
 
 ## haus-tokens 2.3.0
 
-*2026-09-08. A third brand, and nothing else.*
+_2026-09-08. A third brand, and nothing else._
 
 **Added** · `brands/drift.css`, drift's palette as brand inputs. Fifty-four
 entries, the base tier and the whole feedback tier, because drift has all four
@@ -631,7 +631,7 @@ over two brands instead of one, which is what makes a contract a contract.
 
 ## haus-tokens 2.2.1
 
-*2026-09-08. 2.2.0's tag went red and never published.*
+_2026-09-08. 2.2.0's tag went red and never published._
 
 **Fixed** · An empty `src/index.test.ts`, left behind by a stray shell redirect,
 which vitest fails on because a test file with no suite in it is more likely a
@@ -649,8 +649,8 @@ today.
 
 ## haus-tokens 2.2.0
 
-*Tagged and never published: the run went red before the publish step. Its
-contents ship as 2.2.1. The exports 2.1.0's own notes promised and did not ship.*
+_Tagged and never published: the run went red before the publish step. Its
+contents ship as 2.2.1. The exports 2.1.0's own notes promised and did not ship._
 
 **Fixed** · `brandRolesBase`, `brandRolesFeedback` and `brandRolesForm` are
 re-exported from the package root. 2.1.0 generated all four lists in `./brand`
@@ -671,8 +671,8 @@ was never asked.
 
 ## haus-tokens 2.1.0
 
-*2026-09-08. Additive throughout: every 54-entry brand still satisfies the
-contract, no value moved, and nothing renders differently.*
+_2026-09-08. Additive throughout: every 54-entry brand still satisfies the
+contract, no value moved, and nothing renders differently._
 
 **Added** · The brand contract is tiered, `haus#52`, [decision 0014](docs/decisions/0014-the-brand-contract-is-tiered.md).
 `brand.css`'s 54 entries split into a required base of 28 (surfaces, ink, borders,
@@ -769,7 +769,7 @@ assumed: `25rem` is `400px`, `22.5rem` is `360px`, `0.375rem` is `6px`.
   `-60`. `semantics.css` holds the names, unchanged: `--haus-z-modal`,
   `--haus-border-width-default`, `--haus-opacity-disabled` and the rest.
   **A consumer reading a role name needs no change**: the same twelve names
-  resolve, one layer higher. Breaking only if you read the *primitive*, which
+  resolve, one layer higher. Breaking only if you read the _primitive_, which
   until now was the only way to get the stacking order at all, and is why drift
   and vault each settled one themselves. The JS export's keys move with it:
   `tokens.zIndex.modal` is `tokens.zIndex['400']`, and the role is CSS-side.

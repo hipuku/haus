@@ -3,11 +3,11 @@
 The haus design tokens: OKLCH colour, type, spacing, radius, shadow and motion,
 in three forms, from one source of truth.
 
-| Form | Import | For |
-|---|---|---|
-| CSS custom properties | `haus-tokens/primitives.css`, `/semantics.css`, `/motion.css` | styling components |
-| Typed JS constants | `import { tokens } from 'haus-tokens'` | build config, style-in-JS, media queries |
-| W3C-DTCG JSON | `haus-tokens/tokens.json` | design-tool sync, external tooling |
+| Form                  | Import                                                        | For                                      |
+| --------------------- | ------------------------------------------------------------- | ---------------------------------------- |
+| CSS custom properties | `haus-tokens/primitives.css`, `/semantics.css`, `/motion.css` | styling components                       |
+| Typed JS constants    | `import { tokens } from 'haus-tokens'`                        | build config, style-in-JS, media queries |
+| W3C-DTCG JSON         | `haus-tokens/tokens.json`                                     | design-tool sync, external tooling       |
 
 ## Install
 
@@ -71,9 +71,9 @@ can't read CSS. The JS export covers that:
 ```ts
 import { tokens } from 'haus-tokens'
 
-tokens.color.aronia[500]  // 'oklch(52% 0.138 300)'
-tokens.breakpoint.lg      // '1024px', breakpoints are JS-only by necessity
-tokens.motion['fade-in']  // '200ms cubic-bezier(0.00, 0.00, 0.20, 1.00)'
+tokens.color.aronia[500] // 'oklch(52% 0.138 300)'
+tokens.breakpoint.lg // '1024px', breakpoints are JS-only by necessity
+tokens.motion['fade-in'] // '200ms cubic-bezier(0.00, 0.00, 0.20, 1.00)'
 ```
 
 This is the **primitive** layer only. Semantic tokens live in `semantics.css`
@@ -83,7 +83,7 @@ Freezing them into a JS constant would defeat the point.
 ## The DTCG JSON
 
 `tokens.json` conforms to the [W3C Design Tokens](https://tr.designtokens.org/format/)
-format, so it round-trips through design tooling. It stores *typed* values
+format, so it round-trips through design tooling. It stores _typed_ values
 rather than CSS strings: a font family is an array, a cubic-bezier is four
 numbers, a composite is an alias:
 
@@ -100,7 +100,7 @@ declaration is dropped and the property inherits. No console warning, no build
 error, nothing in review: a focus ring is simply absent, and a missing duration
 looks like a design choice.
 
-That makes *have you loaded what my components read* a question worth failing a
+That makes _have you loaded what my components read_ a question worth failing a
 build over, and it is a question this package can answer because this package
 defines the contract. Import it from your own suite:
 
@@ -151,7 +151,7 @@ it('restates no value haus already ships', () => {
     ],
   })
 
-  expect(copies.map((c) => `${c.name} (${c.kind})`)).toEqual([])
+  expect(copies.map(c => `${c.name} (${c.kind})`)).toEqual([])
 })
 ```
 
@@ -162,8 +162,8 @@ once `var()` chains are followed. `--haus-z-modal: 400` against our
 a scale while still appearing to be on it.
 
 **Which files you pass as `upstream` decides the question.** Include `brand.css`
-and you are asking *do I restate anything haus ships, its colour choices
-included*. Leave it out and you are asking *do I restate anything structural*,
+and you are asking _do I restate anything haus ships, its colour choices
+included_. Leave it out and you are asking _do I restate anything structural_,
 with your palette treated as your business. Against drift, while it still
 consumed haus, the two answers were 143 and 89, and the 54 in the gap were
 exactly its brand.

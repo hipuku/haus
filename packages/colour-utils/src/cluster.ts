@@ -1,8 +1,8 @@
 import chroma from 'chroma-js'
 
 export interface ColourCluster {
-  representative: string   // hex, the colour closest to the cluster centroid
-  members: string[]        // all hex values in the cluster
+  representative: string // hex, the colour closest to the cluster centroid
+  members: string[] // all hex values in the cluster
   size: number
 }
 
@@ -12,10 +12,7 @@ export interface ColourCluster {
  * Uses single-linkage: any member within threshold of a new colour
  * pulls it into that cluster. Returns clusters sorted by size descending.
  */
-export function clusterByPerceptualDistance(
-  hexes: string[],
-  threshold = 8
-): ColourCluster[] {
+export function clusterByPerceptualDistance(hexes: string[], threshold = 8): ColourCluster[] {
   if (hexes.length === 0) return []
 
   const unique = [...new Set(hexes.map(h => h.toLowerCase()))]
@@ -27,7 +24,8 @@ export function clusterByPerceptualDistance(
   }
 
   function union(i: number, j: number) {
-    const ri = find(i), rj = find(j)
+    const ri = find(i),
+      rj = find(j)
     if (ri !== rj) clusterOf[ri] = rj
   }
 
@@ -57,17 +55,19 @@ export function clusterByPerceptualDistance(
 
 function centroid(hexes: string[]): string {
   const labs = hexes.map(h => chroma(h).lab())
-  const mean = labs.reduce(
-    (acc, [L, a, b]) => [acc[0] + L, acc[1] + a, acc[2] + b],
-    [0, 0, 0]
-  ).map(v => v / labs.length) as [number, number, number]
+  const mean = labs
+    .reduce((acc, [L, a, b]) => [acc[0] + L, acc[1] + a, acc[2] + b], [0, 0, 0])
+    .map(v => v / labs.length) as [number, number, number]
 
   let best = hexes[0]
   let bestDist = Infinity
   for (const h of hexes) {
     const [L, a, b] = chroma(h).lab()
     const dist = Math.hypot(L - mean[0], a - mean[1], b - mean[2])
-    if (dist < bestDist) { bestDist = dist; best = h }
+    if (dist < bestDist) {
+      bestDist = dist
+      best = h
+    }
   }
   return best
 }

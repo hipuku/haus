@@ -34,7 +34,7 @@
   min-height: var(--haus-space-20);
   transition:
     border-color var(--haus-motion-micro),
-    box-shadow   var(--haus-motion-micro);
+    box-shadow var(--haus-motion-micro);
   box-sizing: border-box;
 }
 

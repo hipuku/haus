@@ -23,12 +23,24 @@
   min-block-size: var(--haus-space-inset-md);
 }
 
-.horizontal.space-sm { margin-block: var(--haus-space-stack-sm); }
-.horizontal.space-md { margin-block: var(--haus-space-stack-md); }
-.horizontal.space-lg { margin-block: var(--haus-space-stack-lg); }
+.horizontal.space-sm {
+  margin-block: var(--haus-space-stack-sm);
+}
+.horizontal.space-md {
+  margin-block: var(--haus-space-stack-md);
+}
+.horizontal.space-lg {
+  margin-block: var(--haus-space-stack-lg);
+}
 
 /* The inline axis for a vertical rule, so the space sits either side of it and
    flips with the writing direction rather than staying on the left. */
-.vertical.space-sm { margin-inline: var(--haus-space-stack-sm); }
-.vertical.space-md { margin-inline: var(--haus-space-stack-md); }
-.vertical.space-lg { margin-inline: var(--haus-space-stack-lg); }
+.vertical.space-sm {
+  margin-inline: var(--haus-space-stack-sm);
+}
+.vertical.space-md {
+  margin-inline: var(--haus-space-stack-md);
+}
+.vertical.space-lg {
+  margin-inline: var(--haus-space-stack-lg);
+}
