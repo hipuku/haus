@@ -119,7 +119,7 @@ emphasis`; success and warning additionally provide a `solid` step.
 
 Two kinds of primitive read remain in the components, and both are deliberate.
 
-Twenty-eight declarations take a size off the space ladder, on `height`, `width`,
+Twenty-nine declarations take a size off the space ladder, on `height`, `width`,
 `min-*`/`max-*` and `transform` offsets: the avatar sizes and its bounds, the
 checkbox and radio boxes, the toggle track and thumb and the thumb's travel, the
 modal's max height, the toast and modal entry offsets, and the textarea's minimum

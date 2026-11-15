@@ -101,7 +101,9 @@ describe('components read roles, not primitives', () => {
     // docs/tokens.md and the semantics.css header quote these.
     // If a component legitimately gains or loses one, update them together.
     const sizes = PAST.filter(d => d.primitives.some(t => /^--haus-space-\d+$/.test(t)))
-    expect(sizes.length).toBe(28)
+    // 29 since the small Toggle thumb's travel moved off a raw 12px onto
+    // --haus-space-3, matching the default thumb, which already read the ladder.
+    expect(sizes.length).toBe(29)
     // 61 before step 7, rising to 77 as the six new components landed: border
     // widths, font families, shadows and, the sharp one, --haus-z-dropdown.
     // Popover and Tooltip are the pair worth pausing on. They are the first

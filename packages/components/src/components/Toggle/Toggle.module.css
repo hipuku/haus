@@ -87,7 +87,7 @@
 .sm .thumb {
   width: var(--haus-space-3);
   height: var(--haus-space-3);
-  --haus-thumb-travel: 12px;
+  --haus-thumb-travel: var(--haus-space-3);
 }
 
 /* ── Content ── */

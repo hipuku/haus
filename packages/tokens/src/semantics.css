@@ -6,7 +6,7 @@
    radius, elevation and motion. Two kinds of primitive read remain in the
    components, both deliberate:
 
-   · 28 declarations take a size off the space ladder, on height, width,
+   · 29 declarations take a size off the space ladder, on height, width,
      min/max and transform offsets: the avatar sizes and its status dot, the
      checkbox and radio boxes, the toggle track and thumb and the thumb's
      travel, the modal's max height, the toast and modal entry offsets, and the
