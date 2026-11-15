@@ -54,8 +54,10 @@
 
 .thumb {
   position: absolute;
-  top: 2px;
-  inset-inline-start: 2px;
+  /* The inset scales with the track and thumb, which are in rem, so the thumb
+     sits centred and ends level at any font size. */
+  top: var(--haus-space-0-5);
+  inset-inline-start: var(--haus-space-0-5);
   width: var(--haus-space-4);
   height: var(--haus-space-4);
   border-radius: 50%;

@@ -53,10 +53,11 @@ reading the focused element could announce it without the description. The bubbl
 always rendered, `hidden` while closed, and the trigger's `aria-describedby` always points
 at it.
 
-**Fixed** · **The small `Toggle` thumb reaches the end of its track at any font size.** Its
-travel was a fixed 12px while the track and thumb are sized in rem, so with a larger browser
-font size the thumb stopped short when on. The travel is now `--haus-space-3`, the same
-12px at the default size.
+**Fixed** · **The `Toggle` thumb sits centred in its track at any font size.** The track and
+thumb are sized in rem, but the thumb's inset was a fixed 2px and the small thumb's travel a
+fixed 12px, so with a larger browser font size the thumb sat high and, when on, stopped
+short of the end. The inset is now `--haus-space-0-5` and the small travel `--haus-space-3`,
+the same 2px and 12px at the default size, so nothing moves there.
 
 ## haus-tokens 5.2.0
 

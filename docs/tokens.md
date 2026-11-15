@@ -119,12 +119,12 @@ emphasis`; success and warning additionally provide a `solid` step.
 
 Two kinds of primitive read remain in the components, and both are deliberate.
 
-Twenty-nine declarations take a size off the space ladder, on `height`, `width`,
-`min-*`/`max-*` and `transform` offsets: the avatar sizes and its bounds, the
-checkbox and radio boxes, the toggle track and thumb and the thumb's travel, the
-modal's max height, the toast and modal entry offsets, and the textarea's minimum
-height. A size is a value rather than a role, and calling a 16px checkbox `--haus-space-inset-md` would say
-something untrue about what it is. No padding, gap or margin does this.
+Thirty-one declarations take a size off the space ladder, on `height`, `width`,
+`min-*`/`max-*`, insets and `transform` offsets: the avatar sizes and its bounds, the
+checkbox and radio boxes, the toggle track and thumb and the thumb's travel and inset, the
+modal's max height, the toast and modal entry offsets, and the textarea's minimum height. A
+size is a value rather than a role, and calling a 16px checkbox `--haus-space-inset-md`
+would say something untrue about what it is. No padding, gap or margin does this.
 
 Control heights are a scale of their own rather than a step off the ladder,
 because 36px and 44px are not on it. `--haus-control-height-xs`, `-sm`, `-md` and
