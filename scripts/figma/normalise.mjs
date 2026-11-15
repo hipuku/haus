@@ -14,7 +14,7 @@
    to the end of their chain and the final values compared. */
 
 import chroma from 'chroma-js'
-import { COMPARED_STATES, isPrivateComponent } from './config.mjs'
+import { COMPARED_STATES, axisName, isPrivateComponent } from './config.mjs'
 
 const ROOT_PX = 16
 
@@ -62,7 +62,7 @@ export function figmaItems({ variables = [], components = [] }) {
     items[`component ${c.name}`] = 'present'
     for (const p of c.props) {
       if (p.type !== 'VARIANT') continue
-      const name = p.name.split('#')[0].toLowerCase()
+      const name = axisName(p.name.split('#')[0])
       if (name === 'state') {
         const states = p.options.map(o => o.toLowerCase()).filter(o => COMPARED_STATES.has(o))
         if (states.length) items[`states ${c.name}`] = joinSet(states)
