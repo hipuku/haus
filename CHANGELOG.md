@@ -26,9 +26,9 @@ a keyboard user who pressed Save lost their place. It now stays focusable, is ma
 submit its form a second time, and withholds the caller's `onClick` and `onClickCapture`. A
 submit button that is loading leaves a hidden, natively disabled submit button in its place, so
 Enter in a field does not submit through it: where it was the form's first submit button, a
-one-field form submits nothing, as when the button was disabled. Role queries do not see it. A
-consumer test that asserts `toBeDisabled()` on a loading button should assert
-`aria-disabled="true"` instead.
+one-field form submits nothing, as when the button was disabled. It is hidden, so a role query
+finds it only with `hidden: true`. A consumer test that asserts `toBeDisabled()` on a loading
+button should assert `aria-disabled="true"` instead.
 
 **Fixed** · **`<Button asChild disabled>` and `<IconButton asChild disabled>` were not
 disabled.** The type accepted `disabled` and the child rendered live. The child now leaves the
