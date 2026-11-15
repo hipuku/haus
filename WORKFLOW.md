@@ -21,7 +21,7 @@ title becomes the commit on `main`, and labels group the release notes.
 
 The template asks whether the change is visible to a consumer. A breaking or additive change carries
 its `CHANGELOG.md` entry in the same pull request, and a decision someone would otherwise
-re-litigate gets a record in [`docs/decisions/`](./docs/decisions/README.md).
+re-litigate gets the next numbered entry under [Decisions](./DESIGN.md#decisions) in `DESIGN.md`.
 
 The `main` ruleset requires a pull request, the checks below, resolved conversations and a linear
 history, and it applies to the owner too.

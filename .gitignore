@@ -11,3 +11,6 @@ storybook-static
 # Tarballs from a manual `pnpm pack` (first publish of a new package)
 *.tgz
 coverage/
+
+# Decision records: kept locally. Their content is in DESIGN.md under Decisions.
+docs/decisions/

@@ -11,7 +11,7 @@ from commit messages written for a different purpose. Everything from here is
 written as it lands.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
-Versioning follows [decision 0004](docs/decisions/0004-versioning-is-1-x.md): a
+Versioning follows [decision 0004](./DESIGN.md#0004-versioning-goes-to-1x): a
 token rename is a major at an identical value, and a contrast change is a major
 even when the hex barely moves.
 
@@ -79,7 +79,7 @@ _2026-09-13. Mono becomes a ladder of three roles._
 
 **Added** · **`mono-xs`**, **`mono-sm`** and **`mono-md`**, each binding size, weight,
 leading and tracking: 11 at leading 1.4, 12 at 1.5 and 13 at 1.6, all regular weight and
-normal tracking ([decision 0027](docs/decisions/0027-mono-is-a-ladder-not-a-role.md)). The
+normal tracking ([decision 0027](./DESIGN.md#0027-mono-is-a-ladder-not-a-role)). The
 sizes are the label ramp's. vault reads `--haus-font-mono` in 21 places at those three sizes
 and took none of the single role. Additive: `--haus-type-mono-*` stays, as `mono-md`'s alias,
 so nothing that reads it moves.
@@ -112,7 +112,7 @@ _2026-09-10. The native Select is retired, and Listbox becomes Select._
 
 **Removed** · **The native `<select>` `Select`.** Measured across every consumer in
 the portfolio, nothing imported it, two releases after decision 0020 recorded the
-same gap ([decision 0025](docs/decisions/0025-select-is-the-themed-control.md)). A raw
+same gap ([decision 0025](./DESIGN.md#0025-select-is-the-themed-control-and-the-native-select-is-retired)). A raw
 `<select>` is still the right answer on touch and in a form that must work without
 JavaScript; write the element rather than importing a component for it.
 
@@ -134,7 +134,7 @@ _2026-09-10. The label roles become one `label-*` family._
 `--haus-type-label-field-*`, and `--haus-type-caption-*` becomes
 `--haus-type-label-caption-*`. `label-xs`, `label-sm` and `label-eyebrow` keep their
 names. The values do not change: a token rename is a major at an identical value
-([decision 0004](docs/decisions/0004-versioning-is-1-x.md)).
+([decision 0004](./DESIGN.md#0004-versioning-goes-to-1x)).
 
 ## haus-tokens 4.2.0
 
@@ -183,7 +183,7 @@ _2026-09-09. A clickable card can be a router link._
 
 **Added** · **`asChild` on `Card`**, plus `CardOwnProps` and `CardAsChildProps`.
 The third and last component decision
-[0022](docs/decisions/0022-ownership-is-stated-in-both-directions.md) names, and
+[0022](./DESIGN.md#0022-ownership-is-stated-in-both-directions) names, and
 the one it reopened rather than filed.
 
 `as` stays, and the two are not the same tool twice. `as` covers what it was
@@ -236,7 +236,7 @@ inactive tabs, that assertion was testing a bug.
 
 **Added** · **`panelId`, for a consumer whose two halves are not adjacent.**
 `haus#67`, and the second thing built on decision
-[0022](docs/decisions/0022-ownership-is-stated-in-both-directions.md).
+[0022](./DESIGN.md#0022-ownership-is-stated-in-both-directions).
 
 core's decision editor puts the Write / Preview switch in a sticky toolbar and
 the content it controls in the document sheet, with the whole editor form in
@@ -259,7 +259,7 @@ once, `Tabs` changes its scheme, and the panel silently stops being labelled.
 otherwise `useId`-generated and uncomputable.
 
 **Added** · `TabsOwnPanelProps` and `TabsRemotePanelProps`, per decision
-[0023](docs/decisions/0023-a-union-prop-type-exports-its-halves.md).
+[0023](./DESIGN.md#0023-a-union-prop-type-exports-its-halves).
 
 ## haus-components 2.4.0
 
@@ -267,7 +267,7 @@ _2026-09-09. An icon-only link can be one._
 
 **Added** · **`asChild` on `IconButton`**, plus `IconButtonOwnProps` and
 `IconButtonAsChildProps`. `haus#70`, the first thing built on decision
-[0022](docs/decisions/0022-ownership-is-stated-in-both-directions.md).
+[0022](./DESIGN.md#0022-ownership-is-stated-in-both-directions).
 
 core's workspace-settings gear is a 36px square, icon only, inside a Next
 `<Link>`. It was the last element keeping `.btn` and `.btn--icon` alive in core's
@@ -329,10 +329,10 @@ It was proved able to fail: deleting the `real.length === 0` guard from
 and nothing else. A real RSC harness would also catch a hook where none is
 allowed or an event handler in a server tree, and it is a dependency this package
 has refused before; decision
-[0024](docs/decisions/0024-the-rsc-path-is-guarded-by-its-rule.md) records why
+[0024](./DESIGN.md#0024-the-rsc-path-is-guarded-by-its-rule-not-by-a-harness) records why
 the narrow option was taken and what would justify revisiting it. What tips it is
 that `asChild` is the only path here that can attach a ref unasked, and
-[0022](docs/decisions/0022-ownership-is-stated-in-both-directions.md) is about to
+[0022](./DESIGN.md#0022-ownership-is-stated-in-both-directions) is about to
 put `asChild` on two more components.
 
 ## haus-components 2.3.0
@@ -357,7 +357,7 @@ name**, and the union is now written from the halves rather than the halves bein
 extracted back out of it.
 
 Purely additive; `ButtonProps` is unchanged and no existing code needs editing.
-Decision [0023](docs/decisions/0023-a-union-prop-type-exports-its-halves.md).
+Decision [0023](./DESIGN.md#0023-a-union-prop-type-exports-its-halves).
 
 **Added** · A self-test on `barrel.test.ts`, which had none. The check that every
 exported type reaches both barrels is the one thing standing between a new type
@@ -390,7 +390,7 @@ observed.
 the measurement that produced it: 19 apparent non-colour departures, of which 12
 hardcoded a literal a haus primitive already resolves to and 2 were version skew,
 leaving five real ones. That measurement does not become wrong because the
-consumer left, and `docs/decisions/0015` still rests on it. Likewise `guard.ts`
+consumer left, and decision 0015 still rests on it. Likewise `guard.ts`
 and `brand.ts` still cite drift's 89 restatements, which happened.
 
 **The contract still has two implementations.** `brands/core.css` and
@@ -509,7 +509,7 @@ and vault's 20px both under the floor and not worth porting up. `label` is
 required, because an SVG contributes nothing to the accessible name.
 
 **Added** · **`Listbox`**, the twenty-first, `haus#61`,
-[decision 0020](docs/decisions/0020-listbox-and-select-both-stay.md). Two
+[decision 0020](./DESIGN.md#0020-listbox-and-select-both-stay). Two
 products replaced the native `Select` and wrote down the same reason, and core's
 hook already said it was written to stay diffable with vault's _"until one of
 them moves to haus"_. An option carries a `hint`, a second line the platform's
@@ -588,7 +588,7 @@ rather than twice. Released for `C2`/`C3`, when core became the consumer ready t
 install it.
 
 **Added** · `Spinner`, the nineteenth component, `haus#55`,
-[decision 0017](docs/decisions/0017-the-nineteenth-component-is-a-busy-indicator.md).
+[decision 0017](./DESIGN.md#0017-the-nineteenth-component-is-a-busy-indicator).
 Promoted on evidence: all three products built one and haus's own Button held a
 fourth, and the four gave three different answers to whether the wait is
 announced. `label` announces by default. **`announcedBy` takes the text that
@@ -613,14 +613,14 @@ A major for one reason: a token left `primitives.css`. Everything a consumer
 importing the whole token stack sees is additive; the break is only for a
 consumer importing `primitives.css` alone, which is core, and core does not read
 the font primitives, so nothing breaks in practice. The version says so anyway,
-because [decision 0004](docs/decisions/0004-versioning-is-1-x.md) makes a moved
+because [decision 0004](./DESIGN.md#0004-versioning-goes-to-1x) makes a moved
 token a major at an identical value.
 
 **Removed** · `--haus-font-sans` and `--haus-font-mono` are no longer in
 `primitives.css`. Import the full stack (or `semantics.css`) and the role of the
 same name still resolves; import `primitives.css` alone and they are gone. This
 is the whole of the major. `haus#54`,
-[decision 0019](docs/decisions/0019-typeface-is-a-form-tier-brand-entry.md).
+[decision 0019](./DESIGN.md#0019-typeface-is-a-form-tier-brand-entry-and-moving-it-is-a-major).
 
 **Added** · `brands/core.css`, the third brand, `C1`. Base tier only: core's
 statuses are the states of a decision, not the four semantics of a notification,
@@ -745,7 +745,7 @@ was never asked.
 _2026-09-08. Additive throughout: every 54-entry brand still satisfies the
 contract, no value moved, and nothing renders differently._
 
-**Added** · The brand contract is tiered, `haus#52`, [decision 0014](docs/decisions/0014-the-brand-contract-is-tiered.md).
+**Added** · The brand contract is tiered, `haus#52`, [decision 0014](./DESIGN.md#0014-the-brand-contract-is-tiered).
 `brand.css`'s 54 entries split into a required base of 28 (surfaces, ink, borders,
 primary, backdrop) and an optional feedback tier of 26 (`info`, `success`,
 `warning`, `error`). A brand may now supply the base alone and inherit the rest
@@ -760,7 +760,7 @@ renders in two hues with every `var()` resolving and no check firing.
 **Not breaking.** Every 54-entry brand still satisfies the contract, so `vault`
 and any consumer brand keep working unchanged. No value moved.
 
-**Added** · A brand states form as well as colour, `haus#53`, [decision 0015](docs/decisions/0015-a-brand-states-form-not-only-colour.md).
+**Added** · A brand states form as well as colour, `haus#53`, [decision 0015](./DESIGN.md#0015-a-brand-states-form-as-well-as-colour).
 A third tier of 7 optional entries: `radius` (control, surface, overlay, marker)
 and `elevation` (raised, floating, overlay). `BrandMap` gains
 `Partial<BrandMapForm>` and `brandRolesForm` is exported.
@@ -775,7 +775,7 @@ the new entries to the primitives they read before, checked by walking the chain
 `vault.css` supplies none of the tier and passes, because none is a legal amount.
 
 **Added** · `findRestatedTokens` in `haus-tokens/guard`, `haus#53`,
-[decision 0016](docs/decisions/0016-a-restated-value-is-a-copy-and-the-package-says-so.md).
+[decision 0016](./DESIGN.md#0016-a-restated-value-is-a-copy-and-the-package-says-so).
 Reports every declaration a consumer makes that this package already ships,
 tagged `identical` (the same text) or `resolved` (different text, same value once
 `var()` chains are followed).
@@ -791,7 +791,7 @@ ships from the package now. Run against drift it reproduces, independently, the
 Pure, like the rest of the guard: it takes CSS as strings and reads no files.
 
 **Added** · Modal widths become a form-tier brand group, `haus#53`,
-[decision 0018](docs/decisions/0018-vaults-twenty-are-settled-one-at-a-time.md).
+[decision 0018](./DESIGN.md#0018-vaults-twenty-local-tokens-settled-one-at-a-time).
 `--haus-brand-modal-width-sm|md|lg`, taking the form tier from 7 entries to 10,
 plus the `overlayWidth` and `size` primitive groups and the roles
 `--haus-toast-width`, `--haus-toggle-track-width` and `--haus-marker-dot`.
@@ -921,5 +921,5 @@ assumed: `25rem` is `400px`, `22.5rem` is `360px`, `0.375rem` is `6px`.
   the `secondary` and `text` weights: the tone set background, border and colour
   outright and won on source order whatever the variant asked for. Tone is a
   palette of custom properties now, per
-  [decision 0012](docs/decisions/0012-a-tone-declares-custom-properties-only.md),
+  [decision 0012](./DESIGN.md#0012-a-tone-rule-declares-custom-properties-only),
   so weight and meaning compose. An untoned Button is unchanged.

@@ -1,6 +1,6 @@
 /**
  * The vocabulary every component shares, so a consumer who learns one can guess
- * the next. Ruling A5, `docs/decisions/0005-variant-and-tone-are-separate.md`.
+ * the next. Ruling A5, decision 0005 in `DESIGN.md`.
  *
  * Before this, `variant` meant three different things: visual weight on Button,
  * elevation on Card, semantics on Badge and Toast, and Button said `danger`

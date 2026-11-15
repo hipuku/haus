@@ -142,7 +142,7 @@ function group(path: string[]): DtcgGroup {
 
 /**
  * Every custom property haus defines carries `--haus-`, at every layer,
- * primitives included. Ruling A3 and `docs/decisions/0003`.
+ * primitives included. Ruling A3 and decision 0003 in `DESIGN.md`.
  *
  * The point is that a consumer can adopt haus without auditing their own
  * namespace first: unprefixed, `--space-4` and `--text-14` sat in the global

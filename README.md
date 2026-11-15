@@ -20,8 +20,8 @@ libraries underneath. Light mode only.
 - **Accessible components.** Axe runs in all 20 component suites, every surface is measured
   against its paired ink, and every focus ring has a forced-colours fallback.
   [`DESIGN.md` § Accessibility](./DESIGN.md#accessibility)
-- **Decided in the open.** 27 numbered decision records, each with what it was chosen over.
-  [`docs/decisions/`](./docs/decisions/README.md)
+- **Decided in the open.** 27 numbered decisions, each with what it was chosen over.
+  [`DESIGN.md` § Decisions](./DESIGN.md#decisions)
 - **Generated, not copied.** The primitives, the motion layer and the typed constants are generated
   from the token file, and the brand map type from `brand.css`; CI fails if either drifts.
   [`ARCHITECTURE.md` § Token build](./ARCHITECTURE.md#token-build)
@@ -35,7 +35,6 @@ libraries underneath. Light mode only.
 | [`DESIGN.md`](./DESIGN.md)             | Tokens, brands, typography, components, accessibility and enforcement    |
 | [`ARCHITECTURE.md`](./ARCHITECTURE.md) | Packages, consumers, the token and component builds, publishing, testing |
 | [`WORKFLOW.md`](./WORKFLOW.md)         | Branches, pull requests, checks, review, keeping Figma and code in step  |
-| [`docs/decisions/`](./docs/decisions/) | One record per decision, numbered                                        |
 | [`docs/`](./docs/)                     | Reference: tokens, accessibility, browser support                        |
 | [`CHANGELOG.md`](./CHANGELOG.md)       | What each package release changed, for a consumer                        |
 | [`RELEASING.md`](./RELEASING.md)       | How a package is tagged and published                                    |

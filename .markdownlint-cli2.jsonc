@@ -11,5 +11,7 @@
     "MD041": false,
   },
   "globs": ["**/*.md"],
+  // Skip what git ignores, so a local file kept out of the repository is not linted.
+  "gitignore": true,
   "ignores": ["**/node_modules/**", "**/dist/**", "**/coverage/**", "**/storybook-static/**"],
 }

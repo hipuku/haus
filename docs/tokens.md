@@ -172,7 +172,7 @@ The type system has **roles rather than heading levels**: `display`, `heading-lg
 `mono-md`, and one label family: a size ramp, `label-xs`, `label-sm` and `label-md`,
 and three named variants, `label-field`, `label-eyebrow` and `label-caption`. The mono
 rungs share the label ramp's sizes, 11, 12 and 13, and loosen their leading as they
-grow ([decision 0027](decisions/0027-mono-is-a-ladder-not-a-role.md)).
+grow ([decision 0027](../DESIGN.md#0027-mono-is-a-ladder-not-a-role)).
 `--haus-type-mono-*`, the single role it replaced, stays as `mono-md`'s alias. Every role declares exactly
 **four** properties, size, weight, leading and tracking, each as its own token
 (`--haus-type-<role>-size`, `-weight`, `-leading`, `-tracking`). All four are used
