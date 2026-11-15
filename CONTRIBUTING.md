@@ -63,7 +63,7 @@ can be rendered that way: `Avatar`, `Badge`, `Button`, `Callout`, `Card`,
 `Divider`, `EmptyState`, `IconButton`, `Spinner`, `Toast`.
 
 That path is guarded by its rule rather than by a render harness
-([decision 0024](./DESIGN.md#0024-the-rsc-path-is-guarded-by-its-rule-not-by-a-harness)):
+([decision 0024](./DESIGN.md#0024-server-component-guard)):
 
 - **A component may not pass a `ref`, an event handler or anything else across a
   boundary it was not given one for.** The rule is narrower than "support RSC":
@@ -104,7 +104,7 @@ contract can be agreed before it is built.
 Write the commit message for the person who finds this in a year and needs to
 know why. What was broken, what it now does, and what was decided against.
 
-Versioning is [decision 0004](./DESIGN.md#0004-versioning-goes-to-1x): 1.x
+Versioning is [decision 0004](./DESIGN.md#0004-versioning): 1.x
 everywhere, a token rename is a major at an identical value, and a contrast
 change is a major even when the hex barely moves. `RELEASING.md` has the bump
 table and the publish order. `haus-components` depends on `haus-tokens`, so
