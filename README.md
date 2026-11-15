@@ -74,6 +74,8 @@ pnpm run storybook      # builds the packages, then serves Storybook on port 600
 | `pnpm run lint:prose`      | The em dash check, against its baseline                 |
 | `pnpm run lint:md`         | markdownlint                                            |
 | `pnpm run knip`            | Unused files, exports and dependencies                  |
+| `pnpm run figma:check`     | Code against the Figma file, see `WORKFLOW.md`          |
+| `pnpm run test:scripts`    | The repository scripts' own tests                       |
 | `pnpm run format:check`    | Prettier                                                |
 | `pnpm run typecheck`       | `tsc` in every package                                  |
 | `pnpm -r run test`         | Every test suite                                        |

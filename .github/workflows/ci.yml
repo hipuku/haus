@@ -116,6 +116,9 @@ jobs:
       # rather than being a number someone can run locally and ignore.
       - name: Test
         run: pnpm -r run test:coverage
+      # The repository's own scripts: the Figma parity check's decision rules.
+      - name: Script tests
+        run: pnpm run test:scripts
 
   build:
     name: Build
