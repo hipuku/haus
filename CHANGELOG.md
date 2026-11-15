@@ -15,6 +15,25 @@ Versioning follows [decision 0004](docs/decisions/0004-versioning-is-1-x.md): a
 token rename is a major at an identical value, and a contrast change is a major
 even when the hex barely moves.
 
+## haus-components, unreleased
+
+_Changes merged since 3.1.1, released together as the next minor._
+
+**Changed** · **A loading `Button` or `IconButton` keeps focus.** It was natively disabled
+while loading, and a button that becomes disabled while focused drops focus to the document,
+so a keyboard user who pressed Save lost their place. It now stays focusable, is marked
+`aria-disabled` and `aria-busy`, renders as `type="button"` so neither a click nor Enter can
+submit its form a second time, and withholds the caller's `onClick`. A consumer test that
+asserts `toBeDisabled()` on a loading button should assert `aria-disabled="true"` instead.
+
+**Fixed** · **`<Button asChild disabled>` and `<IconButton asChild disabled>` were not
+disabled.** The type accepted `disabled` and the child rendered live. The child now leaves the
+tab order, is marked `aria-disabled`, and loses the caller's `onClick`; the stylesheet's
+`pointer-events: none` stops the pointer. Its `href` stays, so a router's link keeps working
+when enabled, and no handler is added, so a Server Component can still render it.
+
+**Fixed** · **Enabled buttons no longer carry `aria-disabled="false"`.**
+
 ## haus-tokens 5.2.0
 
 _2026-09-13. Mono becomes a ladder of three roles._

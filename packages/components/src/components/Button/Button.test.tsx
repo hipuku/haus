@@ -1,4 +1,6 @@
-import { render, screen } from '@testing-library/react'
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
+import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React, { createRef } from 'react'
 import { axe } from 'vitest-axe'
@@ -42,21 +44,93 @@ describe('Button', () => {
     expect(onClick).not.toHaveBeenCalled()
   })
 
-  it('disables and marks itself busy while loading', () => {
-    // loading must imply disabled: a spinner that still accepts clicks lets a
-    // user fire the same request twice.
+  it('blocks itself and marks itself busy while loading', () => {
+    // A loading button must not accept a second click, or the same request goes
+    // twice. It is blocked with aria-disabled rather than the native attribute,
+    // because a button that becomes natively disabled while focused drops focus
+    // to the document, and the keyboard user who just pressed it loses their
+    // place. The click is refused in the handler instead; see the tests below.
     //
-    // The aria-busy half of this test's name was missing until haus#55, and the
-    // name had claimed it since the test was written. Without it a loading
-    // button is announced exactly as a permanently disabled one: "Saving,
-    // dimmed", with nothing to say the wait is temporary. The spinner could not
-    // fill the gap because it is aria-hidden, correctly, so the button was the
-    // only thing that could speak and did not.
+    // aria-busy says the wait is temporary. Without it a loading button is
+    // announced exactly as a permanently disabled one, and the spinner cannot
+    // fill the gap because it is aria-hidden, correctly.
     render(<Button loading>Saving</Button>)
     const button = screen.getByRole('button', { name: 'Saving' })
-    expect(button).toBeDisabled()
+    expect(button).not.toBeDisabled()
     expect(button).toHaveAttribute('aria-disabled', 'true')
     expect(button).toHaveAttribute('aria-busy', 'true')
+  })
+
+  it('keeps focus when it starts loading', () => {
+    const { rerender } = render(<Button>Save</Button>)
+    const button = screen.getByRole('button', { name: 'Save' })
+    button.focus()
+    rerender(<Button loading>Save</Button>)
+    expect(button).toHaveFocus()
+  })
+
+  it('refuses a click while loading, and does not submit its form', async () => {
+    const onClick = vi.fn()
+    const onSubmit = vi.fn((e: React.FormEvent) => e.preventDefault())
+    render(
+      <form onSubmit={onSubmit}>
+        <Button type="submit" loading onClick={onClick}>
+          Save
+        </Button>
+      </form>,
+    )
+    await userEvent.click(screen.getByRole('button', { name: 'Save' }))
+    expect(onClick).not.toHaveBeenCalled()
+    expect(onSubmit).not.toHaveBeenCalled()
+  })
+
+  it('says nothing about being disabled when it is not', () => {
+    // aria-disabled="false" on every enabled button is noise a screen reader
+    // may read out, and says nothing the absence of the attribute does not.
+    render(<Button>Go</Button>)
+    expect(screen.getByRole('button', { name: 'Go' })).not.toHaveAttribute('aria-disabled')
+  })
+
+  it('an asChild Button that is disabled cannot be focused or followed', async () => {
+    // asChild dropped `disabled` entirely: the type accepts it, and the child
+    // rendered live. The child is the caller's element and may be a router's
+    // link, so its href cannot be taken away, and no click handler can be added
+    // without breaking a Server Component render (decision 0024). It is taken out
+    // of the tab order and marked, the caller's onClick is dropped, and the
+    // stylesheet's pointer-events rule, asserted below, stops the pointer.
+    const onClick = vi.fn()
+    render(
+      <Button asChild disabled onClick={onClick}>
+        <a href="/x">Go</a>
+      </Button>,
+    )
+    const link = screen.getByRole('link', { name: 'Go' })
+    expect(link).toHaveAttribute('aria-disabled', 'true')
+    expect(link).toHaveAttribute('tabindex', '-1')
+    fireEvent.click(link)
+    expect(onClick).not.toHaveBeenCalled()
+  })
+
+  it('stops the pointer on anything marked aria-disabled', () => {
+    // The component tests run with css: false, so this reads the rule itself.
+    // It is what stops a click on a disabled asChild child and on a loading
+    // button, neither of which takes the native disabled attribute.
+    const css = readFileSync(join(__dirname, 'Button.module.css'), 'utf8')
+    const rule = /\.button\[aria-disabled='true'\]\s*\{([^}]*)\}/.exec(css)?.[1] ?? ''
+    expect(rule).toMatch(/pointer-events:\s*none/)
+  })
+
+  it('attaches no handler to an asChild child it disables', () => {
+    // A function prop on a host element throws in a Server Component render.
+    render(
+      <Button asChild disabled>
+        <a href="/x">Go</a>
+      </Button>,
+    )
+    const link = screen.getByRole('link', { name: 'Go' })
+    const props = Object.keys(link).find(k => k.startsWith('__reactProps'))
+    const own = props ? (link as unknown as Record<string, Record<string, unknown>>)[props] : {}
+    expect(Object.values(own).some(v => typeof v === 'function')).toBe(false)
   })
 
   it('is not busy when it is merely disabled', () => {

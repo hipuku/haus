@@ -137,6 +137,7 @@ export const IconButton = React.forwardRef<HTMLButtonElement | HTMLAnchorElement
     if (asChild) {
       const child = React.Children.only(props.children as React.ReactElement)
       const childProps = child.props as { className?: string }
+      const { onClick, ...childDomProps } = domProps
       return React.cloneElement(
         child,
         {
@@ -147,7 +148,13 @@ export const IconButton = React.forwardRef<HTMLButtonElement | HTMLAnchorElement
           // The child supplies the element, not the name. An anchor wrapping an
           // SVG announces as a link and nothing else without this.
           'aria-label': label,
-          ...domProps,
+          ...childDomProps,
+          // Disabled as Button's asChild is: out of the tab order, marked, the
+          // caller's onClick withheld, and no handler added (decision 0024).
+          ...((disabled ? { 'aria-disabled': true, tabIndex: -1 } : onClick ? { onClick } : {}) as Record<
+            string,
+            unknown
+          >),
         } as Partial<unknown> & React.Attributes,
         // The glyph *replaces* the child's children rather than being appended.
         // Button appends because its children are the caller's; here they are
@@ -160,14 +167,17 @@ export const IconButton = React.forwardRef<HTMLButtonElement | HTMLAnchorElement
     return (
       <button
         ref={ref as React.Ref<HTMLButtonElement>}
-        type="button"
         className={cls}
-        disabled={isDisabled}
-        aria-disabled={isDisabled}
+        disabled={disabled}
+        aria-disabled={isDisabled || undefined}
         aria-busy={loading || undefined}
         // The name comes from here, never from the icon.
         aria-label={label}
         {...domProps}
+        // Loading blocks without the native attribute, so focus stays put; see
+        // Button. It cannot submit, and the caller's onClick is withheld.
+        type={loading ? 'button' : ((domProps.type as 'button' | 'submit' | 'reset' | undefined) ?? 'button')}
+        onClick={loading ? undefined : (domProps.onClick as React.MouseEventHandler<HTMLButtonElement> | undefined)}
       >
         {loading ? <Spinner size="text" announcedBy="the button's aria-busy state" /> : glyph}
       </button>
