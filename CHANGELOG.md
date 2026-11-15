@@ -15,9 +15,9 @@ Versioning follows [decision 0004](docs/decisions/0004-versioning-is-1-x.md): a
 token rename is a major at an identical value, and a contrast change is a major
 even when the hex barely moves.
 
-## haus-components, unreleased
+## haus-components 3.2.0
 
-_Changes merged since 3.1.1, released together as the next minor._
+_2026-11-15. Select takes a hint and an error; Button, IconButton, Popover, Tooltip and Toggle fixes._
 
 **Changed** · **A loading `Button` or `IconButton` keeps focus.** It was natively disabled
 while loading, and a button that becomes disabled while focused drops focus to the document, so
