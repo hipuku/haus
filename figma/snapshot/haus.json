@@ -1,0 +1,3944 @@
+{
+  "exportedAt": "2026-11-15T04:36:01.064Z",
+  "source": "plugin",
+  "file": {
+    "key": "Qo23P38COlJrfQmlM39Fa3",
+    "name": "haus Design System"
+  },
+  "variables": [
+    {
+      "collection": "haus/primitives",
+      "name": "spacing/1",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-1)"
+      },
+      "value": 4
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "spacing/2",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-2)"
+      },
+      "value": 8
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "spacing/3",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-3)"
+      },
+      "value": 12
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "spacing/4",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-4)"
+      },
+      "value": 16
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "spacing/5",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-5)"
+      },
+      "value": 20
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "spacing/6",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-6)"
+      },
+      "value": 24
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "spacing/7",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-7)"
+      },
+      "value": 28
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "spacing/8",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-8)"
+      },
+      "value": 32
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "spacing/10",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-10)"
+      },
+      "value": 40
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "spacing/12",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-12)"
+      },
+      "value": 48
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "spacing/16",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-16)"
+      },
+      "value": 64
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "spacing/20",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-20)"
+      },
+      "value": 80
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "radius/none",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-radius-none)"
+      },
+      "value": 0
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "radius/sm",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-radius-sm)"
+      },
+      "value": 4
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "radius/md",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-radius-md)"
+      },
+      "value": 8
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "radius/lg",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-radius-lg)"
+      },
+      "value": 12
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "radius/xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-radius-xl)"
+      },
+      "value": 16
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "radius/2xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-radius-2xl)"
+      },
+      "value": 24
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "radius/full",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-radius-full)"
+      },
+      "value": 9999
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "font-size/11",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-text-11)"
+      },
+      "value": 11
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "font-size/12",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-text-12)"
+      },
+      "value": 12
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "font-size/13",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-text-13)"
+      },
+      "value": 13
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "font-size/14",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-text-14)"
+      },
+      "value": 14
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "font-size/16",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-text-16)"
+      },
+      "value": 16
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "font-size/20",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-text-20)"
+      },
+      "value": 20
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "font-size/24",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-text-24)"
+      },
+      "value": 24
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "font-size/28",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-text-28)"
+      },
+      "value": 28
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "font-size/30",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-text-30)"
+      },
+      "value": 30
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "border-width/default",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-border-width-default)"
+      },
+      "value": 1
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "border-width/thick",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-border-width-thick)"
+      },
+      "value": 2
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "icon-size/xs",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-icon-xs)"
+      },
+      "value": 12
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "icon-size/sm",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-icon-sm)"
+      },
+      "value": 16
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "icon-size/md",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-icon-md)"
+      },
+      "value": 20
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "icon-size/lg",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-icon-lg)"
+      },
+      "value": 24
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "icon-size/xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-icon-xl)"
+      },
+      "value": 32
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "font-weight/regular",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-weight-regular)"
+      },
+      "value": 400
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "font-weight/medium",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-weight-medium)"
+      },
+      "value": 500
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "font-weight/semibold",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-weight-semibold)"
+      },
+      "value": 600
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "font-weight/bold",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-weight-bold)"
+      },
+      "value": 700
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "opacity/disabled",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-opacity-disabled)"
+      },
+      "value": 40
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "opacity/overlay",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-opacity-overlay)"
+      },
+      "value": 60
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "z-index/base",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-z-base)"
+      },
+      "value": 0
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "z-index/raised",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-z-raised)"
+      },
+      "value": 10
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "z-index/dropdown",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-z-dropdown)"
+      },
+      "value": 100
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "z-index/sticky",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-z-sticky)"
+      },
+      "value": 200
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "z-index/overlay",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-z-overlay)"
+      },
+      "value": 300
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "z-index/modal",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-z-modal)"
+      },
+      "value": 400
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "z-index/toast",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-z-toast)"
+      },
+      "value": 500
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "z-index/tooltip",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-z-tooltip)"
+      },
+      "value": 600
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/aronia/100",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-aronia-100)"
+      },
+      "value": {
+        "hex": "#f6f3fc"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/aronia/200",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-aronia-200)"
+      },
+      "value": {
+        "hex": "#e7e1f5"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/aronia/300",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-aronia-300)"
+      },
+      "value": {
+        "hex": "#d0c3ec"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/aronia/400",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-aronia-400)"
+      },
+      "value": {
+        "hex": "#ae96da"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/aronia/500",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-aronia-500)"
+      },
+      "value": {
+        "hex": "#7653ab"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/aronia/600",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-aronia-600)"
+      },
+      "value": {
+        "hex": "#5b3c89"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/aronia/700",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-aronia-700)"
+      },
+      "value": {
+        "hex": "#442a68"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/aronia/800",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-aronia-800)"
+      },
+      "value": {
+        "hex": "#2b1844"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/aronia/850",
+      "type": "COLOR",
+      "value": {
+        "hex": "#1f1032"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/aronia/900",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-aronia-900)"
+      },
+      "value": {
+        "hex": "#150b25"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/aronia/950",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-aronia-950)"
+      },
+      "value": {
+        "hex": "#070310"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/damson/0",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-damson-0)"
+      },
+      "value": {
+        "hex": "#ffffff"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/damson/50",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-damson-50)"
+      },
+      "value": {
+        "hex": "#fcfbfe"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/damson/100",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-damson-100)"
+      },
+      "value": {
+        "hex": "#f5f4f9"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/damson/200",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-damson-200)"
+      },
+      "value": {
+        "hex": "#e7e7ed"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/damson/300",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-damson-300)"
+      },
+      "value": {
+        "hex": "#d1d0d7"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/damson/400",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-damson-400)"
+      },
+      "value": {
+        "hex": "#aaaab1"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/damson/500",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-damson-500)"
+      },
+      "value": {
+        "hex": "#807f85"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/damson/600",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-damson-600)"
+      },
+      "value": {
+        "hex": "#5d5d61"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/damson/700",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-damson-700)"
+      },
+      "value": {
+        "hex": "#3f3f43"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/damson/800",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-damson-800)"
+      },
+      "value": {
+        "hex": "#262629"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/damson/900",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-damson-900)"
+      },
+      "value": {
+        "hex": "#111113"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/damson/950",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-damson-950)"
+      },
+      "value": {
+        "hex": "#040405"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/elderberry/100",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-elderberry-100)"
+      },
+      "value": {
+        "hex": "#eff5ff"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/elderberry/200",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-elderberry-200)"
+      },
+      "value": {
+        "hex": "#dbe8ff"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/elderberry/500",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-elderberry-500)"
+      },
+      "value": {
+        "hex": "#3665e4"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/elderberry/700",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-elderberry-700)"
+      },
+      "value": {
+        "hex": "#2043a3"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/elderberry/900",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-elderberry-900)"
+      },
+      "value": {
+        "hex": "#0f2669"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/greengage/100",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-greengage-100)"
+      },
+      "value": {
+        "hex": "#e8fbea"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/greengage/200",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-greengage-200)"
+      },
+      "value": {
+        "hex": "#d0f3d4"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/greengage/500",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-greengage-500)"
+      },
+      "value": {
+        "hex": "#009630"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/greengage/700",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-greengage-700)"
+      },
+      "value": {
+        "hex": "#006a1b"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/greengage/900",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-greengage-900)"
+      },
+      "value": {
+        "hex": "#00430e"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/mango/100",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-mango-100)"
+      },
+      "value": {
+        "hex": "#fff2e4"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/mango/200",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-mango-200)"
+      },
+      "value": {
+        "hex": "#fee2c9"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/mango/500",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-mango-500)"
+      },
+      "value": {
+        "hex": "#c46300"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/mango/700",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-mango-700)"
+      },
+      "value": {
+        "hex": "#8e4400"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/mango/900",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-mango-900)"
+      },
+      "value": {
+        "hex": "#683200"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/cherry/100",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-cherry-100)"
+      },
+      "value": {
+        "hex": "#ffeeea"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/cherry/200",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-cherry-200)"
+      },
+      "value": {
+        "hex": "#ffdbd4"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/cherry/500",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-cherry-500)"
+      },
+      "value": {
+        "hex": "#d73431"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/cherry/700",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-cherry-700)"
+      },
+      "value": {
+        "hex": "#9a1316"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/cherry/900",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-cherry-900)"
+      },
+      "value": {
+        "hex": "#621513"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/ruby/100",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-ruby-100)"
+      },
+      "value": {
+        "hex": "#feeff2"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/ruby/200",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-ruby-200)"
+      },
+      "value": {
+        "hex": "#fcd6de"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/ruby/300",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-ruby-300)"
+      },
+      "value": {
+        "hex": "#f2aebf"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/ruby/400",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-ruby-400)"
+      },
+      "value": {
+        "hex": "#d46083"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/ruby/500",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-ruby-500)"
+      },
+      "value": {
+        "hex": "#aa1055"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/ruby/600",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-ruby-600)"
+      },
+      "value": {
+        "hex": "#98034b"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/ruby/700",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-ruby-700)"
+      },
+      "value": {
+        "hex": "#880044"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/ruby/800",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-ruby-800)"
+      },
+      "value": {
+        "hex": "#601033"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/ruby/900",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-ruby-900)"
+      },
+      "value": {
+        "hex": "#3a021d"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/ruby/950",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-ruby-950)"
+      },
+      "value": {
+        "hex": "#1c010c"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "control-height/sm",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-control-height-sm)"
+      },
+      "value": 28
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "control-height/md",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-control-height-md)"
+      },
+      "value": 36
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "control-height/lg",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-control-height-lg)"
+      },
+      "value": 44
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "overlay-width/xs",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-overlay-width-xs)"
+      },
+      "value": 360
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "overlay-width/sm",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-overlay-width-sm)"
+      },
+      "value": 400
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "overlay-width/md",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-overlay-width-md)"
+      },
+      "value": 560
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "overlay-width/lg",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-overlay-width-lg)"
+      },
+      "value": 720
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "size/marker-dot",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-size-marker-dot)"
+      },
+      "value": 6
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "size/toggle-track",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-size-toggle-track)"
+      },
+      "value": 36
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "control-height/xs",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-control-height-xs)"
+      },
+      "value": 24
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/paper/0",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-paper-0)"
+      },
+      "value": {
+        "hex": "#fffefd"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/paper/100",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-paper-100)"
+      },
+      "value": {
+        "hex": "#f8f5f1"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/paper/200",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-paper-200)"
+      },
+      "value": {
+        "hex": "#eeebe5"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/paper/300",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-paper-300)"
+      },
+      "value": {
+        "hex": "#e1ddd8"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/paper/400",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-paper-400)"
+      },
+      "value": {
+        "hex": "#d1cdc7"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/paper/500",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-paper-500)"
+      },
+      "value": {
+        "hex": "#afaaa3"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/paper/600",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-paper-600)"
+      },
+      "value": {
+        "hex": "#857f79"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/paper/700",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-paper-700)"
+      },
+      "value": {
+        "hex": "#5d5751"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/paper/900",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-paper-900)"
+      },
+      "value": {
+        "hex": "#2b2521"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/paper/950",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-paper-950)"
+      },
+      "value": {
+        "hex": "#0e0a07"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/cobalt/100",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-cobalt-100)"
+      },
+      "value": {
+        "hex": "#e3efff"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/cobalt/500",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-cobalt-500)"
+      },
+      "value": {
+        "hex": "#255ebc"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/cobalt/600",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-cobalt-600)"
+      },
+      "value": {
+        "hex": "#124ca9"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/cobalt/700",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-cobalt-700)"
+      },
+      "value": {
+        "hex": "#043b90"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/shadow/6",
+      "type": "COLOR",
+      "value": {
+        "hex": "#1111130f"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/shadow/7",
+      "type": "COLOR",
+      "value": {
+        "hex": "#11111312"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/shadow/10",
+      "type": "COLOR",
+      "value": {
+        "hex": "#1111131a"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "overlay-width/xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-overlay-width-xl)"
+      },
+      "value": 896
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "panel-width/sm",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-panel-width-sm)"
+      },
+      "value": 180
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "panel-width/md",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-panel-width-md)"
+      },
+      "value": 260
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "panel-width/lg",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-panel-width-lg)"
+      },
+      "value": 340
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "panel-width/xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-panel-width-xl)"
+      },
+      "value": 420
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "spacing/px",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-px)"
+      },
+      "value": 1
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "spacing/0-5",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-0-5)"
+      },
+      "value": 2
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/surface/default",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-surface-default)"
+      },
+      "value": {
+        "hex": "#ffffff"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/surface/subtle",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-surface-subtle)"
+      },
+      "value": {
+        "hex": "#f5f4f9"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/surface/raised",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-surface-raised)"
+      },
+      "value": {
+        "hex": "#ffffff"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/surface/overlay",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-surface-overlay)"
+      },
+      "value": {
+        "hex": "#fcfbfe"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/surface/sunken",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-surface-sunken)"
+      },
+      "value": {
+        "hex": "#e7e7ed"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/surface/inverse",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-surface-inverse)"
+      },
+      "value": {
+        "hex": "#111113"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/surface/disabled",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-surface-disabled)"
+      },
+      "value": {
+        "hex": "#f5f4f9"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/ink/primary",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-ink-primary)"
+      },
+      "value": {
+        "hex": "#111113"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/ink/secondary",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-ink-secondary)"
+      },
+      "value": {
+        "hex": "#3f3f43"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/ink/tertiary",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-ink-tertiary)"
+      },
+      "value": {
+        "hex": "#807f85"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/ink/disabled",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-ink-disabled)"
+      },
+      "value": {
+        "hex": "#aaaab1"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/ink/inverse",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-ink-inverse)"
+      },
+      "value": {
+        "hex": "#ffffff"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/ink/link",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-ink-link)"
+      },
+      "value": {
+        "hex": "#7653ab"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/ink/on-primary",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-ink-on-primary)"
+      },
+      "value": {
+        "hex": "#ffffff"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/border/subtle",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-border-subtle)"
+      },
+      "value": {
+        "hex": "#f5f4f9"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/border/default",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-border-default)"
+      },
+      "value": {
+        "hex": "#e7e7ed"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/border/strong",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-border-strong)"
+      },
+      "value": {
+        "hex": "#d1d0d7"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/border/focus",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-border-focus)"
+      },
+      "value": {
+        "hex": "#7653ab"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/border/disabled",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-border-disabled)"
+      },
+      "value": {
+        "hex": "#e7e7ed"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/primary/default",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-primary-default)"
+      },
+      "value": {
+        "hex": "#7653ab"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/primary/hover",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-primary-hover)"
+      },
+      "value": {
+        "hex": "#5b3c89"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/primary/pressed",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-primary-pressed)"
+      },
+      "value": {
+        "hex": "#442a68"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/primary/subtle",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-primary-subtle)"
+      },
+      "value": {
+        "hex": "#f6f3fc"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/primary/on-subtle",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-primary-on-subtle)"
+      },
+      "value": {
+        "hex": "#442a68"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/primary/disabled",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-primary-disabled)"
+      },
+      "value": {
+        "hex": "#e7e7ed"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/info/subtle",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-info-subtle)"
+      },
+      "value": {
+        "hex": "#eff5ff"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/info/border",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-info-border)"
+      },
+      "value": {
+        "hex": "#dbe8ff"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/info/default",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-info-default)"
+      },
+      "value": {
+        "hex": "#3665e4"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/info/on-subtle",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-info-on-subtle)"
+      },
+      "value": {
+        "hex": "#2043a3"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/info/on-default",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-info-on-default)"
+      },
+      "value": {
+        "hex": "#ffffff"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/info/emphasis",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-info-emphasis)"
+      },
+      "value": {
+        "hex": "#0f2669"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/success/subtle",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-success-subtle)"
+      },
+      "value": {
+        "hex": "#e8fbea"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/success/border",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-success-border)"
+      },
+      "value": {
+        "hex": "#d0f3d4"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/success/default",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-success-default)"
+      },
+      "value": {
+        "hex": "#009630"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/success/on-subtle",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-success-on-subtle)"
+      },
+      "value": {
+        "hex": "#006a1b"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/success/on-default",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-success-on-default)"
+      },
+      "value": {
+        "hex": "#111113"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/success/solid",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-success-solid)"
+      },
+      "value": {
+        "hex": "#006a1b"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/success/emphasis",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-success-emphasis)"
+      },
+      "value": {
+        "hex": "#00430e"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/warning/subtle",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-warning-subtle)"
+      },
+      "value": {
+        "hex": "#fff2e4"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/warning/border",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-warning-border)"
+      },
+      "value": {
+        "hex": "#fee2c9"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/warning/default",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-warning-default)"
+      },
+      "value": {
+        "hex": "#c46300"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/warning/on-subtle",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-warning-on-subtle)"
+      },
+      "value": {
+        "hex": "#8e4400"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/warning/on-default",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-warning-on-default)"
+      },
+      "value": {
+        "hex": "#111113"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/warning/solid",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-warning-solid)"
+      },
+      "value": {
+        "hex": "#8e4400"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/warning/emphasis",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-warning-emphasis)"
+      },
+      "value": {
+        "hex": "#683200"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/error/subtle",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-error-subtle)"
+      },
+      "value": {
+        "hex": "#ffeeea"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/error/border",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-error-border)"
+      },
+      "value": {
+        "hex": "#ffdbd4"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/error/default",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-error-default)"
+      },
+      "value": {
+        "hex": "#d73431"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/error/on-subtle",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-error-on-subtle)"
+      },
+      "value": {
+        "hex": "#9a1316"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/error/on-default",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-error-on-default)"
+      },
+      "value": {
+        "hex": "#ffffff"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/error/emphasis",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-error-emphasis)"
+      },
+      "value": {
+        "hex": "#621513"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/backdrop",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-backdrop)"
+      },
+      "value": {
+        "hex": "#04040599"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/border/inverse",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-border-inverse)"
+      },
+      "value": {
+        "hex": "#ffffff4d"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/border/inverse-hover",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-border-inverse-hover)"
+      },
+      "value": {
+        "hex": "#ffffff80"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/surface/inverse-hover",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-surface-inverse-hover)"
+      },
+      "value": {
+        "hex": "#ffffff1a"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/radius/control",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-radius-control)"
+      },
+      "value": 8
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/radius/surface",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-radius-surface)"
+      },
+      "value": 12
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/radius/overlay",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-radius-overlay)"
+      },
+      "value": 16
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/radius/marker",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-radius-marker)"
+      },
+      "value": 4
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/radius/pill",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-radius-pill)"
+      },
+      "value": 9999
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/inset-2xs",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-inset-2xs)"
+      },
+      "value": 4
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/inset-xs",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-inset-xs)"
+      },
+      "value": 8
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/inset-sm",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-inset-sm)"
+      },
+      "value": 12
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/inset-md",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-inset-md)"
+      },
+      "value": 16
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/inset-lg",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-inset-lg)"
+      },
+      "value": 20
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/inset-xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-inset-xl)"
+      },
+      "value": 24
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/inset-2xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-inset-2xl)"
+      },
+      "value": 28
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/inset-3xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-inset-3xl)"
+      },
+      "value": 32
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/inset-4xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-inset-4xl)"
+      },
+      "value": 40
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/inset-5xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-inset-5xl)"
+      },
+      "value": 48
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/inset-6xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-inset-6xl)"
+      },
+      "value": 64
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/inset-7xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-inset-7xl)"
+      },
+      "value": 80
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/gap-2xs",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-gap-2xs)"
+      },
+      "value": 4
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/gap-xs",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-gap-xs)"
+      },
+      "value": 8
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/gap-sm",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-gap-sm)"
+      },
+      "value": 12
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/gap-md",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-gap-md)"
+      },
+      "value": 16
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/gap-lg",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-gap-lg)"
+      },
+      "value": 20
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/gap-xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-gap-xl)"
+      },
+      "value": 24
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/gap-2xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-gap-2xl)"
+      },
+      "value": 28
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/gap-3xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-gap-3xl)"
+      },
+      "value": 32
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/gap-4xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-gap-4xl)"
+      },
+      "value": 40
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/gap-5xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-gap-5xl)"
+      },
+      "value": 48
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/gap-6xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-gap-6xl)"
+      },
+      "value": 64
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/gap-7xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-gap-7xl)"
+      },
+      "value": 80
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/stack-2xs",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-stack-2xs)"
+      },
+      "value": 4
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/stack-xs",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-stack-xs)"
+      },
+      "value": 8
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/stack-sm",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-stack-sm)"
+      },
+      "value": 12
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/stack-md",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-stack-md)"
+      },
+      "value": 16
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/stack-lg",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-stack-lg)"
+      },
+      "value": 20
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/stack-xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-stack-xl)"
+      },
+      "value": 24
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/stack-2xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-stack-2xl)"
+      },
+      "value": 28
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/stack-3xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-stack-3xl)"
+      },
+      "value": 32
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/stack-4xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-stack-4xl)"
+      },
+      "value": 40
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/stack-5xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-stack-5xl)"
+      },
+      "value": 48
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/stack-6xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-stack-6xl)"
+      },
+      "value": 64
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/stack-7xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-stack-7xl)"
+      },
+      "value": 80
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/modal-width/sm",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-modal-width-sm)"
+      },
+      "value": 400
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/modal-width/md",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-modal-width-md)"
+      },
+      "value": 560
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/modal-width/lg",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-modal-width-lg)"
+      },
+      "value": 720
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/toast-width",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-toast-width)"
+      },
+      "value": 360
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "font-family/sans",
+      "type": "STRING",
+      "codeSyntax": {
+        "WEB": "var(--haus-font-sans)"
+      },
+      "value": "Manrope"
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "font-family/mono",
+      "type": "STRING",
+      "codeSyntax": {
+        "WEB": "var(--haus-font-mono)"
+      },
+      "value": "Fira Code"
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/modal-width/xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-modal-width-xl)"
+      },
+      "value": 896
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/popover-width/sm",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-popover-width-sm)"
+      },
+      "value": 180
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/popover-width/md",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-popover-width-md)"
+      },
+      "value": 260
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/popover-width/lg",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-popover-width-lg)"
+      },
+      "value": 340
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/popover-width/xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-popover-width-xl)"
+      },
+      "value": 420
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/display/size",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-display-size)"
+      },
+      "value": 30
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/display/weight",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-display-weight)"
+      },
+      "value": 700
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/display/line-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-display-leading)"
+      },
+      "value": 34.5
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/display/letter-spacing",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-display-tracking)"
+      },
+      "value": -0.9
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/heading-lg/size",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-heading-lg-size)"
+      },
+      "value": 24
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/heading-lg/weight",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-heading-lg-weight)"
+      },
+      "value": 600
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/heading-lg/line-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-heading-lg-leading)"
+      },
+      "value": 28.8
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/heading-lg/letter-spacing",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-heading-lg-tracking)"
+      },
+      "value": -0.48
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/heading/size",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-heading-size)"
+      },
+      "value": 20
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/heading/weight",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-heading-weight)"
+      },
+      "value": 600
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/heading/line-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-heading-leading)"
+      },
+      "value": 25
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/heading/letter-spacing",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-heading-tracking)"
+      },
+      "value": -0.2
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/heading-sm/size",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-heading-sm-size)"
+      },
+      "value": 16
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/heading-sm/weight",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-heading-sm-weight)"
+      },
+      "value": 600
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/heading-sm/line-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-heading-sm-leading)"
+      },
+      "value": 20.8
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/heading-sm/letter-spacing",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-heading-sm-tracking)"
+      },
+      "value": -0.16
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/body-lg/size",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-body-lg-size)"
+      },
+      "value": 16
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/body-lg/weight",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-body-lg-weight)"
+      },
+      "value": 400
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/body-lg/line-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-body-lg-leading)"
+      },
+      "value": 25.6
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/body-lg/letter-spacing",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-body-lg-tracking)"
+      },
+      "value": 0
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/body/size",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-body-size)"
+      },
+      "value": 14
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/body/weight",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-body-weight)"
+      },
+      "value": 400
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/body/line-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-body-leading)"
+      },
+      "value": 21
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/body/letter-spacing",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-body-tracking)"
+      },
+      "value": 0
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/body-sm/size",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-body-sm-size)"
+      },
+      "value": 13
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/body-sm/weight",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-body-sm-weight)"
+      },
+      "value": 400
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/body-sm/line-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-body-sm-leading)"
+      },
+      "value": 19.5
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/body-sm/letter-spacing",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-body-sm-tracking)"
+      },
+      "value": 0
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-field/size",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-field-size)"
+      },
+      "value": 12
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-field/weight",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-field-weight)"
+      },
+      "value": 600
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-field/line-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-field-leading)"
+      },
+      "value": 16.8
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-field/letter-spacing",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-field-tracking)"
+      },
+      "value": 0.24
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-eyebrow/size",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-eyebrow-size)"
+      },
+      "value": 12
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-caption/size",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-caption-size)"
+      },
+      "value": 11
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-caption/weight",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-caption-weight)"
+      },
+      "value": 400
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-caption/line-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-caption-leading)"
+      },
+      "value": 15.4
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-caption/letter-spacing",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-caption-tracking)"
+      },
+      "value": 0
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-eyebrow/weight",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-eyebrow-weight)"
+      },
+      "value": 600
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-eyebrow/line-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-eyebrow-leading)"
+      },
+      "value": 16.8
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-eyebrow/letter-spacing",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-eyebrow-tracking)"
+      },
+      "value": 0.48
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-md/size",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-md-size)"
+      },
+      "value": 13
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-md/weight",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-md-weight)"
+      },
+      "value": 500
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-md/line-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-md-leading)"
+      },
+      "value": 18.2
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-md/letter-spacing",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-md-tracking)"
+      },
+      "value": 0
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-sm/size",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-sm-size)"
+      },
+      "value": 12
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-sm/weight",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-sm-weight)"
+      },
+      "value": 500
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-sm/line-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-sm-leading)"
+      },
+      "value": 16.8
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-sm/letter-spacing",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-sm-tracking)"
+      },
+      "value": 0.24
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-xs/size",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-xs-size)"
+      },
+      "value": 11
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-xs/weight",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-xs-weight)"
+      },
+      "value": 500
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-xs/line-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-xs-leading)"
+      },
+      "value": 15.4
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-xs/letter-spacing",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-xs-tracking)"
+      },
+      "value": 0.88
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/mono-md/size",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-mono-md-size)"
+      },
+      "value": 13
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/mono-sm/size",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-mono-sm-size)"
+      },
+      "value": 12
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/mono-sm/weight",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-mono-sm-weight)"
+      },
+      "value": 400
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/mono-sm/line-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-mono-sm-leading)"
+      },
+      "value": 18
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/mono-sm/letter-spacing",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-mono-sm-tracking)"
+      },
+      "value": 0
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/mono-md/weight",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-mono-md-weight)"
+      },
+      "value": 400
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/mono-md/line-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-mono-md-leading)"
+      },
+      "value": 20.8
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/mono-md/letter-spacing",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-mono-md-tracking)"
+      },
+      "value": 0
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/mono-xs/size",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-mono-xs-size)"
+      },
+      "value": 11
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/mono-xs/weight",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-mono-xs-weight)"
+      },
+      "value": 400
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/mono-xs/line-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-mono-xs-leading)"
+      },
+      "value": 15.4
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/mono-xs/letter-spacing",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-mono-xs-tracking)"
+      },
+      "value": 0
+    }
+  ],
+  "components": [
+    {
+      "name": "Avatar",
+      "page": "-> Avatar",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "Show status#230:0",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "Image#230:21",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "Initials#230:42",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "Initials text#230:63",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "Size",
+          "type": "VARIANT",
+          "options": [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl"
+          ]
+        },
+        {
+          "name": "Status",
+          "type": "VARIANT",
+          "options": [
+            "online",
+            "away",
+            "busy",
+            "offline"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Badge",
+      "page": "-> Badge",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "Dot#197:0",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "Tone",
+          "type": "VARIANT",
+          "options": [
+            "neutral",
+            "primary",
+            "info",
+            "success",
+            "error",
+            "warning"
+          ]
+        },
+        {
+          "name": "Appearance",
+          "type": "VARIANT",
+          "options": [
+            "subtle",
+            "solid"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Button",
+      "page": "-> Buttons",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "Loading#197:13",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "Variant",
+          "type": "VARIANT",
+          "options": [
+            "primary",
+            "secondary",
+            "ghost",
+            "text"
+          ]
+        },
+        {
+          "name": "Tone",
+          "type": "VARIANT",
+          "options": [
+            "neutral",
+            "info",
+            "success",
+            "warning",
+            "error"
+          ]
+        },
+        {
+          "name": "Size",
+          "type": "VARIANT",
+          "options": [
+            "sm",
+            "md",
+            "lg"
+          ]
+        },
+        {
+          "name": "Disabled",
+          "type": "VARIANT",
+          "options": [
+            "false",
+            "true"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Callout",
+      "page": "-> Callout",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "Icon#223:0",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "Body text#223:6",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "Tone",
+          "type": "VARIANT",
+          "options": [
+            "neutral",
+            "info",
+            "success",
+            "warning",
+            "error"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Card",
+      "page": "-> Cards",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "Variant",
+          "type": "VARIANT",
+          "options": [
+            "default",
+            "elevated",
+            "outlined"
+          ]
+        },
+        {
+          "name": "Padding",
+          "type": "VARIANT",
+          "options": [
+            "on",
+            "off"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Checkbox",
+      "page": "-> Checkbox",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "Label#219:0",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "Required#219:19",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "Hint#219:38",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "Label text#219:57",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "Hint text#219:76",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "Error message#219:95",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "Selection",
+          "type": "VARIANT",
+          "options": [
+            "Unchecked",
+            "Checked",
+            "Indeterminate"
+          ]
+        },
+        {
+          "name": "State",
+          "type": "VARIANT",
+          "options": [
+            "Default",
+            "Hover",
+            "Focus",
+            "Error",
+            "Error focus",
+            "Disabled"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Divider",
+      "page": "-> Divider",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "Orientation",
+          "type": "VARIANT",
+          "options": [
+            "Horizontal",
+            "Vertical"
+          ]
+        },
+        {
+          "name": "Spacing",
+          "type": "VARIANT",
+          "options": [
+            "none",
+            "sm",
+            "md",
+            "lg"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "EmptyState",
+      "page": "-> Empty State",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": [
+        {
+          "name": "Icon#230:84",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "Description#230:85",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "Action#230:86",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "Title text#230:87",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "Description text#230:88",
+          "type": "TEXT",
+          "options": []
+        }
+      ]
+    },
+    {
+      "name": "IconButton",
+      "page": "-> IconButton",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "Size",
+          "type": "VARIANT",
+          "options": [
+            "sm",
+            "md",
+            "lg"
+          ]
+        },
+        {
+          "name": "Variant",
+          "type": "VARIANT",
+          "options": [
+            "primary",
+            "secondary",
+            "ghost"
+          ]
+        },
+        {
+          "name": "Tone",
+          "type": "VARIANT",
+          "options": [
+            "neutral",
+            "info",
+            "success",
+            "warning",
+            "error"
+          ]
+        },
+        {
+          "name": "State",
+          "type": "VARIANT",
+          "options": [
+            "Default",
+            "Hover",
+            "Focus",
+            "Disabled",
+            "Loading"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Input",
+      "page": "-> Input",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "Label#197:135",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "Required#197:141",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "Prefix#197:147",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "Suffix#197:153",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "Hint#197:159",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "Filled#197:165",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "Label text#197:171",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "Value text#197:177",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "Placeholder text#197:183",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "Hint text#197:189",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "Error text#197:195",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "State",
+          "type": "VARIANT",
+          "options": [
+            "Default",
+            "Focus",
+            "Error",
+            "Error focus",
+            "Disabled"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Modal",
+      "page": "-> Modal",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "Header#238:0",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "Close#238:4",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "Footer#238:8",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "Title text#238:12",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "Body text#238:16",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "Size",
+          "type": "VARIANT",
+          "options": [
+            "sm",
+            "md",
+            "lg",
+            "xl"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Popover",
+      "page": "-> Popover",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "Placement",
+          "type": "VARIANT",
+          "options": [
+            "bottom",
+            "top"
+          ]
+        },
+        {
+          "name": "Align",
+          "type": "VARIANT",
+          "options": [
+            "start",
+            "end",
+            "stretch"
+          ]
+        },
+        {
+          "name": "Width",
+          "type": "VARIANT",
+          "options": [
+            "auto",
+            "trigger",
+            "sm",
+            "md",
+            "lg",
+            "xl"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Radio",
+      "page": "-> Radio",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "Hint#219:114",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "Label#219:127",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "Hint text#219:140",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "Selection",
+          "type": "VARIANT",
+          "options": [
+            "Unselected",
+            "Selected"
+          ]
+        },
+        {
+          "name": "State",
+          "type": "VARIANT",
+          "options": [
+            "Default",
+            "Hover",
+            "Focus",
+            "Error",
+            "Error focus",
+            "Disabled"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "RadioGroup",
+      "page": "-> Radio",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "Label#219:153",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "Required#219:156",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "Error#219:159",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "Group label#219:162",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "Error text#219:165",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "Orientation",
+          "type": "VARIANT",
+          "options": [
+            "Vertical",
+            "Horizontal"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Select option",
+      "page": "-> Select",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "Content",
+          "type": "VARIANT",
+          "options": [
+            "label only",
+            "label and hint"
+          ]
+        },
+        {
+          "name": "State",
+          "type": "VARIANT",
+          "options": [
+            "Default",
+            "Active",
+            "Selected",
+            "Selected active",
+            "Disabled"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Select",
+      "page": "-> Select",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "Size",
+          "type": "VARIANT",
+          "options": [
+            "sm",
+            "md",
+            "lg"
+          ]
+        },
+        {
+          "name": "Value",
+          "type": "VARIANT",
+          "options": [
+            "placeholder",
+            "selected"
+          ]
+        },
+        {
+          "name": "State",
+          "type": "VARIANT",
+          "options": [
+            "Default",
+            "Hover",
+            "Focus",
+            "Open",
+            "Disabled",
+            "Error",
+            "Error focus"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Spinner",
+      "page": "-> Spinner",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "Size",
+          "type": "VARIANT",
+          "options": [
+            "text",
+            "sm",
+            "md"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Tab",
+      "page": "-> Tabs",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "Label text#230:89",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "Appearance",
+          "type": "VARIANT",
+          "options": [
+            "underline",
+            "segmented"
+          ]
+        },
+        {
+          "name": "Size",
+          "type": "VARIANT",
+          "options": [
+            "sm",
+            "md",
+            "lg"
+          ]
+        },
+        {
+          "name": "State",
+          "type": "VARIANT",
+          "options": [
+            "Default",
+            "Hover",
+            "Focus",
+            "Selected",
+            "Selected focus",
+            "Disabled"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Tabs",
+      "page": "-> Tabs",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "Appearance",
+          "type": "VARIANT",
+          "options": [
+            "underline",
+            "segmented"
+          ]
+        },
+        {
+          "name": "Size",
+          "type": "VARIANT",
+          "options": [
+            "sm",
+            "md",
+            "lg"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Textarea",
+      "page": "-> Textarea",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "Label#208:0",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "Required#208:6",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "Hint#208:12",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "Filled#208:18",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "Label text#208:24",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "Value#208:30",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "Placeholder#208:36",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "Hint text#208:42",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "Error message#208:48",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "State",
+          "type": "VARIANT",
+          "options": [
+            "Default",
+            "Focus",
+            "Error",
+            "Error focus",
+            "Disabled"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Toast",
+      "page": "-> Toast",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "Description#247:0",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "Action#247:11",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "Close#247:22",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "Title#247:33",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "Description text#247:44",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "Tone",
+          "type": "VARIANT",
+          "options": [
+            "neutral",
+            "info",
+            "success",
+            "warning",
+            "error"
+          ]
+        },
+        {
+          "name": "Appearance",
+          "type": "VARIANT",
+          "options": [
+            "subtle",
+            "solid"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Toggle",
+      "page": "-> Toggle",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "Label#219:168",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "Description#219:185",
+          "type": "BOOLEAN",
+          "options": []
+        },
+        {
+          "name": "Label text#219:202",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "Description text#219:219",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "Size",
+          "type": "VARIANT",
+          "options": [
+            "sm",
+            "md"
+          ]
+        },
+        {
+          "name": "Checked",
+          "type": "VARIANT",
+          "options": [
+            "Off",
+            "On"
+          ]
+        },
+        {
+          "name": "State",
+          "type": "VARIANT",
+          "options": [
+            "Default",
+            "Hover",
+            "Focus",
+            "Disabled"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Tooltip",
+      "page": "-> Tooltip",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "Label#255:0",
+          "type": "TEXT",
+          "options": []
+        },
+        {
+          "name": "Placement",
+          "type": "VARIANT",
+          "options": [
+            "top",
+            "bottom"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -31,3 +31,7 @@ packages/tokens/src/**/*.css
 # its own line, which MDX then parses as a Markdown paragraph, so a heading's
 # text rendered as a 14px <p> inside the <h1>.
 *.mdx
+
+# Written by the Figma parity check (JSON.stringify), read by it, never by hand.
+figma/snapshot/
+figma/baseline.json

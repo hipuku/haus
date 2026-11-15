@@ -7,7 +7,7 @@
   "tsup": false,
   "workspaces": {
     ".": {
-      "entry": ["scripts/*.mjs"],
+      "entry": ["scripts/*.mjs", "scripts/**/*.test.mjs"],
     },
     "packages/*": {
       "entry": ["src/index.ts", "src/**/*.test.{ts,tsx}"],

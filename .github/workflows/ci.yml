@@ -66,7 +66,7 @@ jobs:
       - uses: actions/checkout@v7
       - uses: lycheeverse/lychee-action@v2
         with:
-          args: --offline --include-fragments --no-progress --hidden --exclude-path node_modules --exclude-path .git './**/*.md'
+          args: --offline --include-fragments --no-progress --hidden --exclude-path node_modules --exclude-path '(^|/)\.git/' './**/*.md'
           fail: true
 
   format:
@@ -116,6 +116,9 @@ jobs:
       # rather than being a number someone can run locally and ignore.
       - name: Test
         run: pnpm -r run test:coverage
+      # The repository's own scripts: the Figma parity check's decision rules.
+      - name: Script tests
+        run: pnpm run test:scripts
 
   build:
     name: Build
