@@ -4,7 +4,7 @@ A token-first design system for React, published as five npm packages: OKLCH des
 replaceable brand layer, 20 accessible components built on them, and the colour and measurement
 libraries underneath. Light mode only.
 
-<!-- ASK: a hero image, for example the Storybook component overview at 1600px wide, saved as screenshots/storybook-components.png -->
+![The haus Storybook: the Composition page, a sign-in form built from haus components, beside the token and component index](screenshots/storybook-composition.png)
 
 [![Case study on hipuku.dev](https://img.shields.io/badge/Case_study-hipuku.dev-7653AB?style=for-the-badge)](https://www.hipuku.dev/work/haus)
 [![Live Storybook](https://img.shields.io/badge/Live-Storybook-7653AB?logo=storybook&logoColor=white&style=for-the-badge)](https://haus.hipuku.dev)
