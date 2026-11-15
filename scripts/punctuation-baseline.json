@@ -1,7 +1,4 @@
 {
-  ".github/ISSUE_TEMPLATE/bug.yml": 3,
-  ".github/ISSUE_TEMPLATE/config.yml": 1,
-  ".github/workflows/chromatic.yml": 1,
   "apps/storybook/.storybook/main.ts": 1,
   "apps/storybook/.storybook/preview.ts": 1,
   "apps/storybook/stories/components/Badge.stories.tsx": 1,

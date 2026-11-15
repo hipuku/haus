@@ -1,5 +1,5 @@
 # One pnpm workspace, so a single npm entry at the root covers every package.
-# Weekly and grouped, so a review is one pull request rather than nine.
+# Weekly and grouped, so a review is one pull request per group rather than one per package.
 version: 2
 updates:
   - package-ecosystem: npm
@@ -33,6 +33,7 @@ updates:
         patterns: ['vitest', '@vitest/*', 'vitest-axe', 'jsdom', 'happy-dom', '@testing-library/*']
       tooling:
         patterns: ['eslint*', '@eslint/*', 'typescript-eslint', 'prettier*']
+    labels: [deps]
     commit-message:
       prefix: 'deps'
     ignore:
@@ -51,3 +52,6 @@ updates:
     directory: /
     schedule:
       interval: monthly
+    labels: [deps]
+    commit-message:
+      prefix: 'deps'

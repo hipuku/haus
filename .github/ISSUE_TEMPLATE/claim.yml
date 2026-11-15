@@ -1,6 +1,6 @@
 name: A claim that is not true
 description: A document, comment or type says something the code does not do.
-labels: [documentation]
+labels: [docs]
 body:
   - type: markdown
     attributes:
