@@ -183,6 +183,10 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(function Modal
   const dialogCls = [styles.dialog, styles[size], dialogClassName].filter(Boolean).join(' ')
 
   return createPortal(
+    // The backdrop's click is the pointer's way to dismiss. The keyboard's is
+    // Escape, handled on the document above, so the backdrop takes no key events
+    // and no role: it is not a control, and a screen reader should not find it.
+    // eslint-disable-next-line jsx-a11y-x/click-events-have-key-events, jsx-a11y-x/no-static-element-interactions
     <div
       className={[styles.backdrop, className].filter(Boolean).join(' ')}
       onPointerDown={

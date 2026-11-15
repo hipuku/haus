@@ -1,4 +1,5 @@
 import js from '@eslint/js'
+import jsxA11y from 'eslint-plugin-jsx-a11y-x'
 import reactHooks from 'eslint-plugin-react-hooks'
 import storybook from 'eslint-plugin-storybook'
 import globals from 'globals'
@@ -47,6 +48,21 @@ export default defineConfig([
   {
     files: ['packages/components/**/*.tsx'],
     extends: [reactHooks.configs.flat.recommended],
+  },
+
+  // Accessibility in JSX, caught at the line rather than in an audit. Components
+  // and their stories both: a story is documentation a consumer copies. A
+  // deliberate exception is disabled at its site with its reason. The fork is used
+  // because eslint-plugin-jsx-a11y does not support ESLint 10 yet.
+  {
+    files: ['packages/components/src/**/*.tsx', 'apps/storybook/**/*.tsx'],
+    // Tests render deliberate edge cases, such as an empty anchor for asChild to
+    // fill, so they are out of scope.
+    ignores: ['**/*.test.tsx'],
+    ...jsxA11y.configs.recommended,
+    rules: {
+      ...jsxA11y.configs.recommended.rules,
+    },
   },
 
   {
