@@ -39,7 +39,7 @@ history, and it applies to the owner too.
 | Build             | `ci.yml`           | `tokens:check`, the package build and the Storybook build, after the four above pass             | Yes      |
 | Visual regression | `chromatic.yml`    | Chromatic snapshots every story; a change waits in Chromatic for a person to accept it           | No       |
 | CodeQL            | default setup      | Code scanning of the TypeScript and the workflows                                                | No       |
-| Figma parity      | `figma-parity.yml` | `pnpm run figma:check`, described under [Design sync](#design-sync)                              | No       |
+| Figma parity      | `figma-parity.yml` | `pnpm run figma:check`, described under [Design sync](#design-sync)                              | Yes      |
 
 Visual regression never fails the build (`exitZeroOnChanges`), and nothing is accepted
 automatically, so accepting a visual change is a decision rather than a side effect of merging. It
