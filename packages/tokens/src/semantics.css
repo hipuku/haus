@@ -6,13 +6,13 @@
    radius, elevation and motion. Two kinds of primitive read remain in the
    components, both deliberate:
 
-   · 28 declarations take a size off the space ladder, on height, width,
-     min/max and transform offsets: the avatar sizes and its status dot, the
-     checkbox and radio boxes, the toggle track and thumb and the thumb's
-     travel, the modal's max height, the toast and modal entry offsets, and the
-     textarea's minimum height. A size is a
-     value, not a role, and calling a 16px checkbox --haus-space-inset-md
-     would say something untrue.
+   · 31 declarations take a size off the space ladder, on height, width,
+     min/max, insets and transform offsets: the avatar sizes and its status
+     dot, the checkbox and radio boxes, the toggle track and thumb and the
+     thumb's travel and inset, the modal's max height, the toast and modal
+     entry offsets, and the textarea's minimum height. A size is a value, not
+     a role, and calling a 16px checkbox --haus-space-inset-md would say
+     something untrue.
    · 31 read a primitive that has no alias here because its own name already
      is the role: thirteen control heights and eighteen icon sizes (six
      --haus-icon-sm, seven --haus-icon-lg, five --haus-icon-xs). Button used to

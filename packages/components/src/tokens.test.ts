@@ -46,6 +46,10 @@ const PAST = DECLS.map(d => ({
   primitives: d.tokens.filter(t => PRIMITIVE.has(t) && !ROLE.has(t)),
 })).filter(d => d.primitives.length > 0)
 
+/** The space ladder: the 4px steps and the two optical steps below them, which
+ * docs/tokens.md says a component reads directly where 4px is too much. */
+const LADDER = /^--haus-space-(\d+|0-5|px)$/
+
 describe('components read roles, not primitives', () => {
   it('reads the stylesheets it is meant to read', () => {
     // A wrong path here would make every assertion below vacuously pass.
@@ -74,9 +78,9 @@ describe('components read roles, not primitives', () => {
     // because the declaration that names the primitive is not the one that
     // spends it.
     const SPACING = /^(padding|margin|gap|row-gap|column-gap)(-|$)/
-    const misuse = PAST.filter(
-      d => d.primitives.some(t => /^--haus-space-\d+$/.test(t)) && SPACING.test(d.property),
-    ).map(d => `${d.file} ${d.property}`)
+    const misuse = PAST.filter(d => d.primitives.some(t => LADDER.test(t)) && SPACING.test(d.property)).map(
+      d => `${d.file} ${d.property}`,
+    )
     expect(misuse).toEqual([])
   })
 
@@ -92,7 +96,7 @@ describe('components read roles, not primitives', () => {
     // and a component reading it is reading a role, not a primitive.
     const NAMED_ROLE = /^--haus-(weight-|icon-|control-height-)/
     const undocumented = PAST.flatMap(d =>
-      d.primitives.filter(t => !/^--haus-space-\d+$/.test(t) && !NAMED_ROLE.test(t)).map(t => `${d.file}: ${t}`),
+      d.primitives.filter(t => !LADDER.test(t) && !NAMED_ROLE.test(t)).map(t => `${d.file}: ${t}`),
     )
     expect(undocumented).toEqual([])
   })
@@ -100,8 +104,12 @@ describe('components read roles, not primitives', () => {
   it('matches the counts the docs state', () => {
     // docs/tokens.md and the semantics.css header quote these.
     // If a component legitimately gains or loses one, update them together.
-    const sizes = PAST.filter(d => d.primitives.some(t => /^--haus-space-\d+$/.test(t)))
-    expect(sizes.length).toBe(28)
+    const sizes = PAST.filter(d => d.primitives.some(t => LADDER.test(t)))
+    // 31 since the Toggle thumb stopped mixing px into a rem track: the small
+    // thumb's travel moved off a raw 12px onto --haus-space-3, and the thumb's
+    // top and start insets off 2px onto --haus-space-0-5, the first component
+    // read of a half step.
+    expect(sizes.length).toBe(31)
     // 61 before step 7, rising to 77 as the six new components landed: border
     // widths, font families, shadows and, the sharp one, --haus-z-dropdown.
     // Popover and Tooltip are the pair worth pausing on. They are the first
