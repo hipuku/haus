@@ -1,109 +1,84 @@
 # haus
 
-An open-source design system. Token-first, light-mode only, OKLCH throughout.
+A token-first design system for React, published as five npm packages: OKLCH design tokens with a
+replaceable brand layer, 20 accessible components built on them, and the colour and measurement
+libraries underneath. Light mode only.
 
-## Scope
+<!-- ASK: a hero image, for example the Storybook component overview at 1600px wide, saved as screenshots/storybook-components.png -->
 
-- **Light mode only.** There is no dark theme and no `light-dark()` layer.
-- **20 React components** (CSS Modules): Avatar, Badge, Button, Callout, Card, Checkbox, Divider, EmptyState, IconButton, Input, Modal, Popover, Radio, Select, Spinner, Tabs, Textarea, Toast, Toggle, Tooltip.
-- **Scope stops at the tokens and the components.** No MCP server, no Figma Code Connect.
+[![Case study on hipuku.dev](https://img.shields.io/badge/Case_study-hipuku.dev-7653AB?style=for-the-badge)](https://www.hipuku.dev/work/haus)
+[![Live Storybook](https://img.shields.io/badge/Live-Storybook-7653AB?logo=storybook&logoColor=white&style=for-the-badge)](https://haus.hipuku.dev)
+[![haus-components on npm](https://img.shields.io/npm/v/haus-components?label=npm&logo=npm&logoColor=white&color=7653AB&style=for-the-badge)](https://www.npmjs.com/package/haus-components)
+[![Figma file](https://img.shields.io/badge/Figma-1_file-7653AB?logo=figma&logoColor=white&style=for-the-badge)](https://www.figma.com/design/Qo23P38COlJrfQmlM39Fa3/haus-Design-System)
 
-## Packages
+## At a glance
 
-Two tracks share this workspace. `haus-tokens` and `haus-components` are the design
-system. `haus-colour-utils` and `haus-style-probe` are the colour and measurement libraries
-the auditing tools were written against, and they are the two with consumers outside this
-repo.
+- **Four token layers.** Primitives, brand, semantics and motion, each in its own cascade layer;
+  components read roles, never palette steps. [`DESIGN.md` § Layers](./DESIGN.md#layers)
+- **Replaceable brand.** A brand is one file of 71 choices, and two products ship their own on the
+  same contract. [`DESIGN.md` § Brands](./DESIGN.md#brands)
+- **Accessible components.** Axe runs in all 20 component suites, every surface is measured
+  against its paired ink, and every focus ring has a forced-colours fallback.
+  [`DESIGN.md` § Accessibility](./DESIGN.md#accessibility)
+- **Decided in the open.** 27 numbered decision records, each with what it was chosen over.
+  [`docs/decisions/`](./docs/decisions/README.md)
+- **Generated, not copied.** The primitives, the motion layer, the typed constants and the brand
+  map type are generated from one token file, and CI fails if they drift.
+  [`ARCHITECTURE.md` § Token build](./ARCHITECTURE.md#token-build)
+- **Used by four products.** core, vault, drift and hexicon each take the packages they need.
+  [`ARCHITECTURE.md` § Consumers](./ARCHITECTURE.md#consumers)
 
-| Package             | Description                                                                              | Used by                                                                                    |
-| ------------------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| `haus-tokens`       | Design tokens as CSS custom properties and W3C Design Tokens JSON                        | `haus-components`, core, vault                                                             |
-| `haus-components`   | React component library (20 components) built on the token layer                         | this repo's Storybook, core                                                                |
-| `haus-colour-utils` | Colour science: OKLCH analysis, perceptual clustering, CIEDE2000 distance, WCAG contrast | drift, vault, hexicon                                                                      |
-| `haus-style-probe`  | Reads what a browser actually computed for an element, normalised into one shape         | drift                                                                                      |
-| `haus-colour-names` | 31,900 named colours as data, for pairing with the matcher in `haus-colour-utils`        | vault, and `haus-colour-utils` for the hue-family test; hexicon still carries its own copy |
+## Documentation
 
-## Token architecture
+| File                                   | Covers                                                                   |
+| -------------------------------------- | ------------------------------------------------------------------------ |
+| [`DESIGN.md`](./DESIGN.md)             | Tokens, brands, typography, components, accessibility and enforcement    |
+| [`ARCHITECTURE.md`](./ARCHITECTURE.md) | Packages, consumers, the token and component builds, publishing, testing |
+| [`WORKFLOW.md`](./WORKFLOW.md)         | Branches, pull requests, checks, review, keeping Figma and code in step  |
+| [`docs/decisions/`](./docs/decisions/) | One record per decision, numbered                                        |
+| [`docs/`](./docs/)                     | Reference: tokens, theming, accessibility, browser support               |
+| [`CHANGELOG.md`](./CHANGELOG.md)       | What each package release changed, for a consumer                        |
+| [`RELEASING.md`](./RELEASING.md)       | How a package is tagged and published                                    |
+| [`CONTRIBUTING.md`](./CONTRIBUTING.md) | The rules a change is held to                                            |
 
-Four layers, strict separation:
-
-```
-primitives.css   Raw values. No meaning. No component should reference these.
-brand.css        Which primitive each role takes. The one file a consumer replaces.
-semantics.css    What each role means. No palette names.
-motion.css       Easing curves and duration tokens.
-```
-
-Every property carries `--haus-`, and roles are declared on `:root, [data-haus-theme]`, so a brand applies to a subtree and nests. Replacing `brand.css` is how you theme; `brands/vault.css` and `brands/core.css` are the two shipped brands, and `BrandMap` is generated from `brand.css` so an omission is a type error rather than an unresolved `var()`. See [decision 0003](docs/decisions/0003-brand-and-roles-are-separate-layers.md).
-
-haus is light-mode only. That is a consequence of [decision 0002](docs/decisions/0002-surface-polarity-is-fixed.md) rather than a deferred layer: surface polarity is fixed by the contract, so a dark theme cannot arrive as a brand map.
-
-## Server Components
-
-This package ships **no `use client` directive**, so a React Server Component can
-import and render a haus component directly. A stateless component such as
-`Button` then adds nothing to the client bundle.
-
-**RSC-safe**, ten, no client boundary needed: `Avatar`, `Badge`, `Button`,
-`Callout`, `Card`, `Divider`, `EmptyState`, `IconButton`, `Spinner`, `Toast`.
-
-**Needs a client boundary**, ten, because each holds state, an effect, a
-generated id or a portal: `Checkbox`, `Input`, `Modal`, `Popover`,
-`Radio`, `Select`, `Tabs`, `Textarea`, `Toggle`, `Tooltip`.
-
-`Input` is on the second list for `useId` alone, which React does allow in a
-Server Component; it is grouped with the rest because a later change could give
-it a real client dependency.
-
-Stated because a consumer would otherwise have to derive it by reading each file
-for hooks, and because the RSC path has no test yet (`haus#72`). See
-`CONTRIBUTING.md` for what that means for a change.
-
-## Decisions
-
-The rulings this system is built on are recorded one file each in
-[`docs/decisions/`](docs/decisions/README.md): what was chosen, what it was
-chosen over, and what it costs. A decision can be settled before it is built,
-and its entry says which.
-
-Start with [0003, the brand and role split](docs/decisions/0003-brand-and-roles-are-separate-layers.md),
-which is the one the rest of the roadmap hangs off.
-
-## Documents
-
-- [**Decisions**](docs/decisions/README.md). The rulings this system is built
-  on, one file each, including when each was built.
-- [**Accessibility**](docs/accessibility.md). What is checked and by what, two
-  known failures disclosed, and what is not covered.
-- [**Browser support**](docs/browser-support.md). The floor, the one feature
-  that sets it, and what widening it would cost.
-- [**Tokens**](docs/tokens.md). The layers as they are.
-- [**Contributing**](CONTRIBUTING.md) · [**Changelog**](CHANGELOG.md) ·
-  [**Releasing**](RELEASING.md) · [**Security**](SECURITY.md)
-
-## Links
-
-- **Live Storybook:** [haus.hipuku.dev](https://haus.hipuku.dev)
-- **npm:** [`haus-tokens`](https://www.npmjs.com/package/haus-tokens) ·
-  [`haus-components`](https://www.npmjs.com/package/haus-components) ·
-  [`haus-colour-utils`](https://www.npmjs.com/package/haus-colour-utils) ·
-  [`haus-style-probe`](https://www.npmjs.com/package/haus-style-probe) ·
-  [`haus-colour-names`](https://www.npmjs.com/package/haus-colour-names)
+## Install
 
 ```bash
 npm install haus-tokens haus-components
 ```
 
-## Visual regression
+```ts
+import 'haus-tokens/index.css'
+import 'haus-components/styles.css'
+```
 
-Chromatic runs on pushes to `main` and on pull requests. Nothing is
-auto-accepted: every visual change waits in the Chromatic UI for a person to
-accept or reject it (`haus#36`). A change never fails the build either way,
-because `exitZeroOnChanges` is on.
+React 18 or 19 is a peer dependency. The colour libraries install on their own:
+`haus-colour-utils`, `haus-colour-names` and `haus-style-probe`. Each package's README covers its
+API.
 
-## Status
+## Develop
 
-Active development. All five packages are published to npm, and all five have consumers
-outside this repo. `haus-tokens` has two products on it, core and vault. `haus-components`
-has one, core, which draws thirteen of the twenty. Releasing is documented in
-[RELEASING.md](./RELEASING.md).
+Node 22 (`.nvmrc`) and pnpm 10 (`packageManager` in `package.json`).
+
+```bash
+pnpm install
+pnpm run storybook      # builds the packages, then serves Storybook on port 6006
+```
+
+## Scripts
+
+| Command                    | Runs                                                    |
+| -------------------------- | ------------------------------------------------------- |
+| `pnpm run build`           | Every package                                           |
+| `pnpm run lint`            | ESLint                                                  |
+| `pnpm run lint:css`        | Stylelint, which fails a raw value where a token exists |
+| `pnpm run lint:prose`      | The em dash check, against its baseline                 |
+| `pnpm run format:check`    | Prettier                                                |
+| `pnpm run typecheck`       | `tsc` in every package                                  |
+| `pnpm -r run test`         | Every test suite                                        |
+| `pnpm run build-storybook` | The static Storybook                                    |
+
+## Stack
+
+React · TypeScript · CSS Modules · OKLCH · W3C Design Tokens · pnpm workspaces · tsup · Vite ·
+Vitest · Storybook · Chromatic

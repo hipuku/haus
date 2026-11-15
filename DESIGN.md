@@ -1,89 +1,257 @@
-# Design and Engineering Decisions
+# haus: design
 
-Key decisions made during the design and build of haus, recorded so a later change knows what it replaces.
+The design system itself: how the tokens are layered, how a brand is applied, the type system, how
+the 20 components are shaped, and what checks hold it together. Each choice that has a numbered
+record in [`docs/decisions/`](./docs/decisions/README.md) is summarised here in a sentence and
+linked; the rest are recorded below as decision entries. The Figma file mirrors all of it:
+[haus Design System](https://www.figma.com/design/Qo23P38COlJrfQmlM39Fa3/haus-Design-System).
 
----
+## Contents
 
-## Colour space: OKLCH over hex and HSL
+- [Tokens](#tokens)
+  - [Layers](#layers)
+  - [Colour space](#colour-space)
+  - [Surface and ink pairs](#surface-and-ink-pairs)
+  - [Brands](#brands)
+  - [Theme](#theme)
+- [Typography](#typography)
+  - [Typefaces](#typefaces)
+  - [Type roles](#type-roles)
+- [Components](#components)
+  - [Scope](#scope)
+  - [Styling](#styling)
+  - [Props](#props)
+  - [Motion](#motion)
+- [Accessibility](#accessibility)
+- [Enforcement](#enforcement)
+- [Decision records](#decision-records)
+- [Known gaps](#known-gaps)
 
-OKLCH is perceptually uniform. Equal numeric steps in L, C, or H produce equal-feeling changes to the eye, which means palette ramps and feedback scales can be authored by reasoning about perception rather than guessing at hex values. Wide-gamut support (P3) is a free consequence. Every colour in haus is defined in OKLCH. Conversion to hex for tooling is a display concern; the OKLCH value stays the source.
+## Tokens
 
-## Hue family bins are fitted to named colours
+The reference for every token is [`docs/tokens.md`](./docs/tokens.md), and the brand contract is
+[`docs/theming.md`](./docs/theming.md). Figma holds the same tokens as two variable collections,
+`haus/primitives` (136 variables) and `haus/semantics` (171), with one mode per shipped brand.
 
-`hueFamily` in `haus-colour-utils` reports which of eight families a colour belongs to. The
-first version binned OKLCH hue at the midpoints between the measured hues of the eight
-colours the families are named after, which is a construction that only holds if each
-family is centred on its namesake.
+### Layers
 
-Measured against 4,275 colours from `haus-colour-names` whose names end in a family word,
-several are not. The median of 222 colours people call orange is hue 47, while `#ffa500`
-is at 71, so a midpoint at 50 filed most oranges as red. Purple ran the other way: its
-median is 312 and the bin ended at 310, which is why `#800080` came out as Pink.
+**Decision.** Four layers, each a file and a cascade layer, declared in one order by `layers.css`:
 
-The boundaries are now the set that maximises mean per-family recall over that data, which
-moved it from 0.62 to 0.78. Per-family recall rather than plain accuracy, because there are
-five times as many labelled greens as oranges and plain accuracy rises when a small family
-is emptied into a large neighbour.
+```text
+primitives.css   haus.primitives   raw values, no meaning
+brand.css        haus.brand        which primitive each role takes
+semantics.css    haus.semantics    what each role means, no palette names
+motion.css       haus.motion       durations, easings and motion pairs
+```
 
-Two edges are judgement. Orange ends at 72 rather than the fitted 70, so that `#ffa500` is
-still Orange, at a cost of 0.002. And purple and magenta cannot be separated at all:
-`#800080` and `#ff00ff` are both hue 328 and differ only in lightness and chroma, so one of
-the two is misnamed whatever the boundary does. 328 is Purple, because far more real
-colours at that hue are called purple.
+Components read the semantic layer for colour, padding, gap, margin, radius, elevation and motion.
+Two kinds of primitive read are allowed: a size off the space ladder (an avatar, a checkbox box, a
+toggle track), and a primitive whose own name is already the role, such as
+`--haus-control-height-md` or an icon size.
 
-The fit is held by a test. `hue-families.test.ts` rebuilds the labelled set,
-holds recall above 0.77, and asserts that every declared family is reachable, so a boundary
-moved for one colour that looked wrong cannot quietly cost the other 4,274.
+**Reason.** A theme swap runs on the separation: replacing one layer cannot reach past the roles
+into a component. A value whose role cannot be named stays a primitive, because an invented alias
+would be a second name for the same number.
 
-## Four-layer token architecture: primitives → brand → semantics → components
+**Alternatives.** Three layers, with the brand's choices written into `semantics.css`. Replaced by a
+separate brand layer in [decision 0003](./docs/decisions/0003-brand-and-roles-are-separate-layers.md),
+so a consumer replaces one file of choices rather than editing the meanings.
 
-Primitives hold raw values (no meaning, just numbers). Brand holds which primitive each role takes, and is the one file a consumer replaces. Semantics hold intent: role names like `--haus-color-surface-default`, each reading its brand entry. Components consume semantics for colour, padding, gap, margin, radius, elevation and motion, and no component reads a colour, radius, shadow or motion primitive. Two kinds of primitive read remain, both deliberate and both tested: 28 declarations take a size off the space ladder (avatar sizes, the checkbox and radio boxes, the toggle track and thumb, a few min/max bounds), because a size is a value rather than a role; and 31 read a primitive whose own name already is the role, such as `--haus-control-height-md` and the icon sizes the close buttons and the chevron bind to since haus#43 (this was 54 until haus#54 made typeface brandable and moved the 32 `--haus-font-sans` reads onto a role, then rose and fell with IconButton, Select, the native select's retirement in decision 0025 and IconButton's lg size; tokens.test.ts holds the ledger). That was 71 until haus#27 gave stacking, border width and opacity a role layer, which moved 30 reads up a layer without changing a single component declaration. Control heights were the exception to this until they had a scale: Button, Input and Select set `min-height` in raw pixels, and `min-height` is now in stylelint's strict-value list so the next one cannot. The separation is what a theme swap runs on: `brand.css` holds which primitive each role takes and nothing else, `brands/vault.css` and `brands/core.css` are two shipped brands against the same contract, and `BrandMap` is generated from `brand.css` so an omission is a type error rather than an unresolved `var()`. [Decision 0003](docs/decisions/0003-brand-and-roles-are-separate-layers.md) records the contract that makes it true and what it costs. A value whose role cannot be named stays a primitive.
+### Colour space
 
-## Role-based type system over a heading scale
+**Decision.** Every colour is authored in OKLCH. Hex is a display format for tooling; the OKLCH value
+is the source.
 
-The type system has roles rather than heading levels: `display`, `heading-lg`, `heading`, `heading-sm`, `body-lg`, `body`, `body-sm`, `mono`, and one label family, a size ramp (`label-xs`, `label-sm`, `label-md`) and three named variants (`label-field`, `label-eyebrow`, `label-caption`). This decouples visual hierarchy from document semantics. A component author picks the role that fits the content's purpose. Picking by the size that looks right produces h1 styles on decorative text.
+**Reason.** OKLCH is perceptually uniform: equal steps in lightness, chroma or hue look like equal
+changes, so a ramp or a feedback scale is authored by reasoning about perception rather than by
+adjusting hex values until they look even. Wide-gamut (P3) colour comes with it.
 
-## The four-property rule for type tokens
+**Alternatives.** Hex and HSL. HSL's lightness is not perceptual, so two colours at the same HSL
+lightness can differ visibly in brightness.
 
-Every type role defines exactly four properties: size, weight, line-height, and tracking. All four are declared as semantic tokens. Setting only font-size from a type token and inferring the rest introduces inconsistency between components authored by different people.
+### Surface and ink pairs
 
-## CSS Modules over Tailwind for components
+**Decision.** Every surface role has a paired ink role: `--haus-color-success-subtle` with
+`--haus-color-success-on-subtle`, and so on for every surface. `contrast.test.ts` measures each pair.
 
-Component CSS uses CSS Modules. The token layer is plain CSS custom properties, so any consuming project can use Tailwind, vanilla CSS, or CSS-in-JS against the tokens. Keeping component styles in CSS Modules avoids coupling haus to any consumer's build tooling, and means the component styles are readable without knowing Tailwind's class vocabulary. Utility classes stay a consumer's choice.
+**Reason.** Surface and text contrast are specified together, so a component author never works out
+a pairing at the call site, and a pair that drops below WCAG AA fails a test rather than a review.
+The naming follows Material Design 3.
 
-## Semantic `on-*` pairing for every surface token
+### Brands
 
-Every surface token has a corresponding `on-*` text token: `--haus-color-success-subtle` is paired with `--haus-color-success-on-subtle`. Surface and text contrast are specified together, so a component author never works out a pairing at the call site. The approach is Material Design 3's. Using the paired token gives the contrast the token layer specifies.
+**Decision.** A brand is one file that maps roles to primitives, scoped by `data-haus-theme`, so a
+brand applies to a subtree and nests. `brand.css` is the default; `brands/vault.css` and
+`brands/core.css` ship beside it. The contract has three tiers: a required base (surfaces, ink,
+borders, primary, the backdrop), and optional feedback and form tiers, all or nothing per group.
+Form covers radius, elevation and typeface.
 
-## W3C Design Tokens JSON as the canonical export format
+**Reason.** Products differ in a few decisions (palette, typeface, shadows, corner radius) and share
+the rest. The tiers say which ones a product must make and which it may leave to haus.
 
-`tokens.json` conforms to the W3C Design Tokens 1.0 format. This means haus tokens are compatible with Style Dictionary, Theo, and any token pipeline that reads the spec without any haus-specific tooling. The CSS custom properties are the runtime format; the JSON is the handoff format for tools and downstream systems.
+The full reasoning is in four records:
+[0003](./docs/decisions/0003-brand-and-roles-are-separate-layers.md) (the brand layer),
+[0014](./docs/decisions/0014-the-brand-contract-is-tiered.md) (the tiers),
+[0015](./docs/decisions/0015-a-brand-states-form-not-only-colour.md) (form) and
+[0019](./docs/decisions/0019-typeface-is-a-form-tier-brand-entry.md) (typeface).
+[0016](./docs/decisions/0016-a-restated-value-is-a-copy-and-the-package-says-so.md) covers a consumer
+that overrides a role to the value haus already gives.
 
-## Monorepo with pnpm workspaces
+### Theme
 
-Five packages: `tokens`, `components`, `colour-utils`, `style-probe` and `colour-names`. Keeping them separate means a project that only needs the token layer doesn't pull in the React component code, a project using `colour-utils` server-side doesn't depend on the browser component bundle, and a project that wants CIEDE2000 doesn't pay 764KB for 31,900 names it never asks about. pnpm workspaces because workspace symlinks work reliably across packages without manual linking and the lockfile deduplication keeps the install footprint small.
+**Decision.** Light mode only. `semantics.css` declares `color-scheme: light`, and nothing uses
+`light-dark()`.
 
-## Manrope for UI, Fira Code for mono
+**Reason.** [Decision 0002](./docs/decisions/0002-surface-polarity-is-fixed.md) fixes surface
+polarity in the contract (white cards on a subtle page) because every ink is paired with the surface
+it is safe on. A dark theme inverts polarity, so it cannot arrive as a brand, and doing it properly
+would double the colour decisions to audit.
 
-Manrope is a variable font with a wide weight range (200-800), which means the full type scale ships in one font load with no fallback weight snapping. Fira Code has programming ligatures and a compact footprint. Both are available on Google Fonts, which removes the self-hosting requirement for a v1 system. A serif display face was tried and rejected: it did not sit with the rest of the scale inside UI components, and no component needed it.
+**Alternatives.** A `light-dark()` layer in the semantic tokens. Not taken; reopening it means
+reopening 0002.
 
-## Light mode only
+## Typography
 
-haus is light mode only. Dark mode is out of scope, not a deferred layer. The semantic layer declares `color-scheme: light` and there is no `light-dark()` usage anywhere in the tokens. Doing dark mode properly would require auditing every semantic token for dark-mode contrast, which doubles the colour decision surface; the system is deliberately scoped to prove the light token structure without that cost. Revisiting it would mean reopening [decision 0002](docs/decisions/0002-surface-polarity-is-fixed.md), which fixes surface polarity in the contract rather than leaving it to a brand: a dark theme is a polarity inversion, so under that decision it cannot arrive as a theme at all.
+### Typefaces
 
-Scope is locked in two other ways worth recording here: there is **no MCP server** and **no Figma Code Connect** integration. The product surface is the token packages, the 20 React components, and Storybook, and nothing more.
+**Decision.** The default brand sets Manrope for the interface and Fira Code for mono, both from
+Google Fonts. A brand can replace either through `--haus-brand-font-sans` and
+`--haus-brand-font-mono`; core sets Gabarito.
 
-## Storybook is the product surface
+**Reason.** Manrope is a variable font from 200 to 800, so the whole type scale ships in one font
+load with no weight snapping. Fira Code has programming ligatures and a compact footprint.
 
-Storybook is the published surface, so a token declared in `primitives.css` with no story is one a consumer never sees. The rule enforced here: nothing ships without a corresponding story. The token pages are held to the same visual standard as the components they document.
+**Alternatives.** A serif display face. It did not sit with the rest of the scale inside components,
+and no component needed it.
 
-## `prefers-reduced-motion` policy
+### Type roles
 
-All animated components respect `prefers-reduced-motion: reduce` by overriding `transition-duration` and `animation-duration` to `--haus-duration-reduced`.
+**Decision.** Type is set by role rather than heading level: `display`, `heading-lg`, `heading`,
+`heading-sm`, `body-lg`, `body`, `body-sm`, the mono ladder `mono-xs`, `mono-sm` and `mono-md`, and a
+label family (`label-xs`, `label-sm`, `label-md`, `label-field`, `label-eyebrow`,
+`label-caption`). Each role binds exactly four tokens: size, weight, leading and tracking.
 
-The override targets duration rather than using `transition: none` because:
+**Reason.** A component author picks the role that fits the content, not the size that looks right,
+which is how heading styles end up on decorative text. All four properties are tokens because a
+component that takes only the size and infers the rest drifts from one written by someone else.
 
-- Some transforms carry positional meaning (Toggle thumb, Modal entry offset) and need to apply even without animation
-- A control that snaps straight to its new position still shows the state; with `transition: none` the Toggle thumb and the Modal offset would not move at all
+**Alternatives.** One mono role, replaced by the ladder in
+[decision 0027](./docs/decisions/0027-mono-is-a-ladder-not-a-role.md). In Figma a text style that bound
+only size and weight drifted the same way, settled in
+[decision 0026](./docs/decisions/0026-a-type-role-binds-all-four-properties-in-figma.md).
 
-`--haus-duration-reduced` is a named token rather than a hardcoded `0ms`, so the value is tunable in one place.
+## Components
+
+Avatar, Badge, Button, Callout, Card, Checkbox, Divider, EmptyState, IconButton, Input, Modal,
+Popover, RadioGroup, Select, Spinner, Tabs, Textarea, Toast, Toggle and Tooltip. Each has a story in
+the [live Storybook](https://haus.hipuku.dev) and a page in the Figma file.
+
+### Scope
+
+**Decision.** Twenty components, and a component joins only when products that consume haus have
+each built it independently.
+
+**Reason.** Promotion on evidence keeps haus to what more than one product needed, rather than to the
+list other design systems carry. [Decision 0013](./docs/decisions/0013-a-component-is-promoted-on-evidence.md)
+sets the rule and [0017](./docs/decisions/0017-the-nineteenth-component-is-a-busy-indicator.md) applies
+it to Spinner.
+
+### Styling
+
+**Decision.** Component styles are CSS Modules, compiled into one stylesheet that declares its own
+cascade layer, `haus.components`, and written in logical properties.
+
+**Reason.** The token layer is plain custom properties, so a consumer can use Tailwind, plain CSS or
+CSS-in-JS against it; CSS Modules keep the component styles off any consumer's build tooling and
+readable without a utility vocabulary. The layer lets a consumer's unlayered CSS win without a
+specificity fight ([0006](./docs/decisions/0006-styles-css-declares-its-own-layer.md)), and logical
+properties make the components correct right to left
+([0010](./docs/decisions/0010-components-are-written-in-logical-properties.md)).
+
+**Alternatives.** Tailwind for the components. Not taken: it would couple haus to one consumer
+toolchain and make each component's styles depend on Tailwind's class names.
+
+### Props
+
+**Decision.** The props follow one set of rules across the package:
+
+- `variant` is visual weight, `tone` is meaning, `appearance` is fill
+  ([0005](./docs/decisions/0005-variant-and-tone-are-separate.md)), and a tone rule only remaps
+  custom properties ([0012](./docs/decisions/0012-a-tone-declares-custom-properties-only.md)).
+- `className` lands on the root element; a second target is a named prop
+  ([0009](./docs/decisions/0009-classname-lands-on-the-root.md)).
+- A component owns its box, never the caller's element, and says so
+  ([0022](./docs/decisions/0022-ownership-is-stated-in-both-directions.md)).
+- A union prop type exports each half by name
+  ([0023](./docs/decisions/0023-a-union-prop-type-exports-its-halves.md)).
+
+**Reason.** A consumer who has learned one component has learned the prop vocabulary of all 20.
+
+### Motion
+
+**Decision.** Every animated component sets `transition-duration` and `animation-duration` to
+`--haus-duration-reduced` (0ms) under `prefers-reduced-motion: reduce`.
+
+**Reason.** Some transforms carry position, such as the Toggle thumb and the Modal's entry offset.
+Overriding the duration lets the control snap to its new state; `transition: none` would leave the
+thumb where it was. The value is a token so it can be tuned in one place.
+
+**Alternatives.** `transition: none` under the media query, rejected for the reason above.
+
+## Accessibility
+
+Axe runs in all 20 component suites. `contrast.test.ts` measures every surface and ink pair against
+WCAG AA with `haus-colour-utils`, and the focus ring against three surfaces at 3:1. Keyboard tests
+cover arrows, Space, Escape and tab stops, and Modal's test checks that focus is trapped and
+returned. The full list of what is checked, what is not, and the known limitations is in
+[`docs/accessibility.md`](./docs/accessibility.md).
+
+Focus is one treatment everywhere, a double ring with the element's own surface as the inner band
+([0001](./docs/decisions/0001-focus-is-a-double-ring.md)), and every ring has a
+`forced-colors: active` fallback because forced-colours mode drops box shadows.
+
+## Enforcement
+
+| Check                                | Fails when                                                                                                       |
+| ------------------------------------ | ---------------------------------------------------------------------------------------------------------------- |
+| Stylelint `declaration-strict-value` | A colour, size, spacing, radius, shadow, type or z-index value is written raw in a component stylesheet          |
+| `tokens.test.ts`                     | A component reads a colour, radius, shadow or motion primitive, or names a custom property that nothing declares |
+| `logical-properties.test.ts`         | A component uses a physical inline-axis property, or a focus ring has no forced-colours fallback                 |
+| `stories.test.ts`                    | A component has no story                                                                                         |
+| `api-surface.test.tsx`               | A component in the barrel breaks a rule every component shares                                                   |
+| `tokens:check`                       | The generated token files differ from what the generator writes                                                  |
+| Chromatic                            | A story's rendering changes; the change waits for a person to accept or reject it                                |
+
+### Storybook
+
+**Decision.** Storybook is the published surface, and nothing ships without a story: every component,
+and every token family on its own page.
+
+**Reason.** A token or component a consumer cannot see in the published docs is one they will not
+find. The token pages are held to the same visual standard as the components they document.
+
+## Decision records
+
+All 27 are indexed in [`docs/decisions/README.md`](./docs/decisions/README.md), with each one's status.
+By subject:
+
+| Subject           | Records                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Tokens and brands | [0002](./docs/decisions/0002-surface-polarity-is-fixed.md), [0003](./docs/decisions/0003-brand-and-roles-are-separate-layers.md), [0014](./docs/decisions/0014-the-brand-contract-is-tiered.md), [0015](./docs/decisions/0015-a-brand-states-form-not-only-colour.md), [0016](./docs/decisions/0016-a-restated-value-is-a-copy-and-the-package-says-so.md), [0018](./docs/decisions/0018-vaults-twenty-are-settled-one-at-a-time.md), [0019](./docs/decisions/0019-typeface-is-a-form-tier-brand-entry.md) |
+| Typography        | [0026](./docs/decisions/0026-a-type-role-binds-all-four-properties-in-figma.md), [0027](./docs/decisions/0027-mono-is-a-ladder-not-a-role.md)                                                                                                                                                                                                                                                                                                                                                              |
+| Components        | [0008](./docs/decisions/0008-toast-is-presentational.md), [0011](./docs/decisions/0011-select-is-a-native-select.md), [0013](./docs/decisions/0013-a-component-is-promoted-on-evidence.md), [0017](./docs/decisions/0017-the-nineteenth-component-is-a-busy-indicator.md), [0020](./docs/decisions/0020-listbox-and-select-both-stay.md), [0021](./docs/decisions/0021-decision-states-are-badge-tones.md), [0025](./docs/decisions/0025-select-is-the-themed-control.md)                                  |
+| Component API     | [0005](./docs/decisions/0005-variant-and-tone-are-separate.md), [0009](./docs/decisions/0009-classname-lands-on-the-root.md), [0012](./docs/decisions/0012-a-tone-declares-custom-properties-only.md), [0022](./docs/decisions/0022-ownership-is-stated-in-both-directions.md), [0023](./docs/decisions/0023-a-union-prop-type-exports-its-halves.md)                                                                                                                                                      |
+| Styling and focus | [0001](./docs/decisions/0001-focus-is-a-double-ring.md), [0006](./docs/decisions/0006-styles-css-declares-its-own-layer.md), [0010](./docs/decisions/0010-components-are-written-in-logical-properties.md)                                                                                                                                                                                                                                                                                                 |
+| Packaging         | [0004](./docs/decisions/0004-versioning-is-1-x.md), [0007](./docs/decisions/0007-no-meta-package.md), [0024](./docs/decisions/0024-the-rsc-path-is-guarded-by-its-rule.md)                                                                                                                                                                                                                                                                                                                                 |
+
+## Known gaps
+
+- **No dark theme.** Out of scope while decision 0002 stands.
+- **Badge's tones** still declare colours directly rather than remapping custom properties, the last
+  component decision 0012 has not reached.
+- **No screen reader run.** The accessibility checks are automated; they cover the markup, not the
+  experience of using it.
+- **No right-to-left visual test.** The components are written in logical properties and a source
+  test holds them there, but nothing renders one right to left under a visual diff.
+- **Scope stops at tokens, components and Storybook.** There is no MCP server and no Figma Code
+  Connect integration.
