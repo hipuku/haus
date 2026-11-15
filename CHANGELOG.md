@@ -42,6 +42,11 @@ trigger, not under either line.
 **Fixed** · **`aria-describedby` on a `Select` described nothing.** It landed on the wrapper
 div with the other props. It now goes to the combobox, ahead of the hint or error.
 
+**Fixed** · **A portalled `Popover` lined up with the wrong edge right to left.** With
+`portal`, `align="start"` pinned the panel to the trigger's left edge whatever the direction.
+It now reads the trigger's direction, so `start` is its right edge in a right-to-left layout
+and `end` its left. The same applies to a portalled `Select`.
+
 ## haus-tokens 5.2.0
 
 _2026-09-13. Mono becomes a ladder of three roles._
