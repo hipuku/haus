@@ -153,6 +153,20 @@ describe('axis names', () => {
     ]
     expect(() => figmaItems({ components })).toThrow(/two axes/)
   })
+
+  it('refuses two State axes too, rather than letting one replace the other', () => {
+    const components = [
+      {
+        name: 'Button',
+        inSet: false,
+        props: [
+          { name: 'State', type: 'VARIANT', options: ['Default', 'Hover'] },
+          { name: 'S-tate', type: 'VARIANT', options: ['Default', 'Disabled'] },
+        ],
+      },
+    ]
+    expect(() => figmaItems({ components })).toThrow(/two axes/)
+  })
 })
 
 describe('reading the code', () => {
