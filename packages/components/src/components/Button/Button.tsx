@@ -1,5 +1,6 @@
 import React from 'react'
 import { childRefOf, mergeRefs } from '../../internal/asChild'
+import { SubmitStandIn } from '../../internal/submitStandIn'
 import type { Size, Tone } from '../../types'
 import { Spinner } from '../Spinner'
 import styles from './Button.module.css'
@@ -213,9 +214,13 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
      pointer rule cannot stop Enter or Space on a focused button, and a
      capture handler runs before onClick would. Nothing is attached that the
      caller did not pass, so a Server Component can still render it. The
-     stylesheet's [aria-disabled='true'] rule stops the pointer. */
+     stylesheet's [aria-disabled='true'] rule stops the pointer. A button with
+     no type submits, so unless the caller said otherwise a hidden disabled
+     submit button stands in for it while it loads, and Enter in a one-field
+     form submits nothing either (internal/submitStandIn). */
   const buttonProps = domProps as React.ButtonHTMLAttributes<HTMLButtonElement>
-  return (
+  const standIn = loading && (buttonProps.type ?? 'submit') === 'submit'
+  const button = (
     <button
       ref={ref as React.Ref<HTMLButtonElement>}
       className={cls}
@@ -231,5 +236,13 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
       {children}
       {externalIcon}
     </button>
+  )
+  return standIn ? (
+    <>
+      {button}
+      <SubmitStandIn form={buttonProps.form} />
+    </>
+  ) : (
+    button
   )
 })
