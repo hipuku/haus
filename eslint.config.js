@@ -48,6 +48,8 @@ export default defineConfig([
   {
     files: ['packages/components/**/*.tsx'],
     extends: [reactHooks.configs.flat.recommended],
+    // A missing dependency is a stale closure, so it fails rather than warns.
+    rules: { 'react-hooks/exhaustive-deps': 'error' },
   },
 
   // Accessibility in JSX, caught at the line rather than in an audit. Components
