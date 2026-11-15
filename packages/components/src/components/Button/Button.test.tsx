@@ -84,6 +84,55 @@ describe('Button', () => {
     expect(onSubmit).not.toHaveBeenCalled()
   })
 
+  it('blocks Enter in a one-field form while loading, as a disabled submit button did', async () => {
+    // A loading button is type="button" so it keeps focus, which leaves the form
+    // with no submit button, and a one-field form then submits on Enter.
+    const onSubmit = vi.fn((e: React.FormEvent) => e.preventDefault())
+    render(
+      <form onSubmit={onSubmit}>
+        <label>
+          Name
+          <input />
+        </label>
+        <Button loading>Save</Button>
+      </form>,
+    )
+    await userEvent.type(screen.getByLabelText('Name'), 'x{Enter}')
+    expect(onSubmit).not.toHaveBeenCalled()
+  })
+
+  it('submits on Enter again once it stops loading', async () => {
+    const onSubmit = vi.fn((e: React.FormEvent) => e.preventDefault())
+    render(
+      <form onSubmit={onSubmit}>
+        <label>
+          Name
+          <input />
+        </label>
+        <Button>Save</Button>
+      </form>,
+    )
+    await userEvent.type(screen.getByLabelText('Name'), 'x{Enter}')
+    expect(onSubmit).toHaveBeenCalledTimes(1)
+  })
+
+  it('adds the stand-in only for a loading submit button, and keeps it out of reach', () => {
+    const { container, rerender } = render(<Button loading>Save</Button>)
+    const standIn = container.querySelectorAll('button')[1]
+    expect(standIn).toHaveAttribute('type', 'submit')
+    expect(standIn).toBeDisabled()
+    expect(standIn).not.toBeVisible()
+    expect(screen.getAllByRole('button')).toHaveLength(1)
+    rerender(
+      <Button type="button" loading>
+        Save
+      </Button>,
+    )
+    expect(container.querySelectorAll('button')).toHaveLength(1)
+    rerender(<Button>Save</Button>)
+    expect(container.querySelectorAll('button')).toHaveLength(1)
+  })
+
   it('says nothing about being disabled when it is not', () => {
     // aria-disabled="false" on every enabled button is noise a screen reader
     // may read out, and says nothing the absence of the attribute does not.

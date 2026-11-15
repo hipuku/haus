@@ -1,5 +1,6 @@
 import React from 'react'
 import { childRefOf, mergeRefs } from '../../internal/asChild'
+import { SubmitStandIn } from '../../internal/submitStandIn'
 import type { Tone } from '../../types'
 import { Spinner } from '../Spinner'
 import styles from './IconButton.module.css'
@@ -167,7 +168,10 @@ export const IconButton = React.forwardRef<HTMLButtonElement | HTMLAnchorElement
       )
     }
 
-    return (
+    // IconButton defaults to type="button", so only a caller's explicit submit
+    // needs the stand-in; see Button.
+    const standIn = loading && domProps.type === 'submit'
+    const button = (
       <button
         ref={ref as React.Ref<HTMLButtonElement>}
         className={cls}
@@ -188,6 +192,14 @@ export const IconButton = React.forwardRef<HTMLButtonElement | HTMLAnchorElement
       >
         {loading ? <Spinner size="text" announcedBy="the button's aria-busy state" /> : glyph}
       </button>
+    )
+    return standIn ? (
+      <>
+        {button}
+        <SubmitStandIn form={domProps.form as string | undefined} />
+      </>
+    ) : (
+      button
     )
   },
 )

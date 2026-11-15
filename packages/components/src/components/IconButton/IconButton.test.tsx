@@ -72,6 +72,21 @@ describe('IconButton', () => {
     expect(onClick).not.toHaveBeenCalled()
   })
 
+  it('blocks Enter in a one-field form while a submit IconButton loads', async () => {
+    const onSubmit = vi.fn((e: React.FormEvent) => e.preventDefault())
+    render(
+      <form onSubmit={onSubmit}>
+        <label>
+          Name
+          <input />
+        </label>
+        <IconButton icon={<Glyph />} label="Save" type="submit" loading />
+      </form>,
+    )
+    await userEvent.type(screen.getByLabelText('Name'), 'x{Enter}')
+    expect(onSubmit).not.toHaveBeenCalled()
+  })
+
   it('says nothing about being disabled when it is not', () => {
     render(<IconButton icon={<Glyph />} label="Edit" />)
     expect(screen.getByRole('button')).not.toHaveAttribute('aria-disabled')
