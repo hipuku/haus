@@ -130,6 +130,25 @@ describe('Button', () => {
     expect(capture).not.toHaveBeenCalled()
   })
 
+  it('withholds every click handler from a disabled or loading link', () => {
+    const onClick = vi.fn()
+    const capture = vi.fn()
+    const { rerender } = render(
+      <Button href="/x" loading onClick={onClick} onClickCapture={capture}>
+        Go
+      </Button>,
+    )
+    fireEvent.click(screen.getByRole('link', { name: 'Go' }))
+    rerender(
+      <Button href="/x" disabled onClick={onClick} onClickCapture={capture}>
+        Go
+      </Button>,
+    )
+    fireEvent.click(screen.getByRole('link', { name: 'Go' }))
+    expect(onClick).not.toHaveBeenCalled()
+    expect(capture).not.toHaveBeenCalled()
+  })
+
   it('withholds onClickCapture while loading, which runs before onClick would', async () => {
     // The pointer rule stops a mouse, not Enter or Space on the focused button.
     const capture = vi.fn()

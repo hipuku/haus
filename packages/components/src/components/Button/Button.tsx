@@ -191,6 +191,12 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
         aria-disabled={isDisabled || undefined}
         aria-busy={loading || undefined}
         {...(domProps as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
+        // Withheld as on the button below, so a disabled or loading link runs
+        // none of the caller's click handlers either.
+        onClick={isDisabled ? undefined : (domProps.onClick as React.MouseEventHandler<HTMLAnchorElement> | undefined)}
+        onClickCapture={
+          isDisabled ? undefined : (domProps.onClickCapture as React.MouseEventHandler<HTMLAnchorElement> | undefined)
+        }
       >
         {loading && <Spinner size="text" announcedBy="the button's aria-busy state" />}
         {children}
