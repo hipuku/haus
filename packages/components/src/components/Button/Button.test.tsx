@@ -111,6 +111,57 @@ describe('Button', () => {
     expect(onClick).not.toHaveBeenCalled()
   })
 
+  it('withholds every click handler from a disabled asChild child, its own included', () => {
+    // cloneElement keeps any prop the override leaves out, so a handler on the
+    // child itself survived. Enter on a focused link still ran it.
+    const fromChild = vi.fn()
+    const childCapture = vi.fn()
+    const capture = vi.fn()
+    render(
+      <Button asChild disabled onClickCapture={capture}>
+        <a href="/x" onClick={fromChild} onClickCapture={childCapture}>
+          Go
+        </a>
+      </Button>,
+    )
+    fireEvent.click(screen.getByRole('link', { name: 'Go' }))
+    expect(fromChild).not.toHaveBeenCalled()
+    expect(childCapture).not.toHaveBeenCalled()
+    expect(capture).not.toHaveBeenCalled()
+  })
+
+  it('withholds every click handler from a disabled or loading link', () => {
+    const onClick = vi.fn()
+    const capture = vi.fn()
+    const { rerender } = render(
+      <Button href="/x" loading onClick={onClick} onClickCapture={capture}>
+        Go
+      </Button>,
+    )
+    fireEvent.click(screen.getByRole('link', { name: 'Go' }))
+    rerender(
+      <Button href="/x" disabled onClick={onClick} onClickCapture={capture}>
+        Go
+      </Button>,
+    )
+    fireEvent.click(screen.getByRole('link', { name: 'Go' }))
+    expect(onClick).not.toHaveBeenCalled()
+    expect(capture).not.toHaveBeenCalled()
+  })
+
+  it('withholds onClickCapture while loading, which runs before onClick would', async () => {
+    // The pointer rule stops a mouse, not Enter or Space on the focused button.
+    const capture = vi.fn()
+    render(
+      <Button loading onClickCapture={capture}>
+        Save
+      </Button>,
+    )
+    screen.getByRole('button', { name: 'Save' }).focus()
+    await userEvent.keyboard('{Enter}')
+    expect(capture).not.toHaveBeenCalled()
+  })
+
   it('stops the pointer on anything marked aria-disabled', () => {
     // The component tests run with css: false, so this reads the rule itself.
     // It is what stops a click on a disabled asChild child and on a loading

@@ -91,6 +91,27 @@ describe('IconButton', () => {
     expect(onClick).not.toHaveBeenCalled()
   })
 
+  it('withholds every click handler from a disabled asChild child, its own included', () => {
+    const fromChild = vi.fn()
+    const capture = vi.fn()
+    render(
+      <IconButton icon={<Glyph />} label="Edit" asChild disabled onClickCapture={capture}>
+        <a href="/x" onClick={fromChild} />
+      </IconButton>,
+    )
+    fireEvent.click(screen.getByRole('link', { name: 'Edit' }))
+    expect(fromChild).not.toHaveBeenCalled()
+    expect(capture).not.toHaveBeenCalled()
+  })
+
+  it('withholds onClickCapture while loading', async () => {
+    const capture = vi.fn()
+    render(<IconButton icon={<Glyph />} label="Saving" loading onClickCapture={capture} />)
+    screen.getByRole('button').focus()
+    await userEvent.keyboard('{Enter}')
+    expect(capture).not.toHaveBeenCalled()
+  })
+
   it('fires when it is not', async () => {
     const onClick = vi.fn()
     render(<IconButton icon={<Glyph />} label="Edit" onClick={onClick} />)

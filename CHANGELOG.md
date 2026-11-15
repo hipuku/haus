@@ -20,17 +20,18 @@ even when the hex barely moves.
 _Changes merged since 3.1.1, released together as the next minor._
 
 **Changed** · **A loading `Button` or `IconButton` keeps focus.** It was natively disabled
-while loading, and a button that becomes disabled while focused drops focus to the document,
-so a keyboard user who pressed Save lost their place. It now stays focusable, is marked
+while loading, and a button that becomes disabled while focused drops focus to the document, so
+a keyboard user who pressed Save lost their place. It now stays focusable, is marked
 `aria-disabled` and `aria-busy`, renders as `type="button"` so neither a click nor Enter can
-submit its form a second time, and withholds the caller's `onClick`. A consumer test that
-asserts `toBeDisabled()` on a loading button should assert `aria-disabled="true"` instead.
+submit its form a second time, and withholds the caller's `onClick` and `onClickCapture`. A
+consumer test that asserts `toBeDisabled()` on a loading button should assert
+`aria-disabled="true"` instead.
 
 **Fixed** · **`<Button asChild disabled>` and `<IconButton asChild disabled>` were not
 disabled.** The type accepted `disabled` and the child rendered live. The child now leaves the
-tab order, is marked `aria-disabled`, and loses the caller's `onClick`; the stylesheet's
-`pointer-events: none` stops the pointer. Its `href` stays, so a router's link keeps working
-when enabled, and no handler is added, so a Server Component can still render it.
+tab order, is marked `aria-disabled`, and loses every click handler, the caller's and its own;
+the stylesheet's `pointer-events: none` stops the pointer. Its `href` stays, so a router's link
+keeps working when enabled, and no handler is added, so a Server Component can still render it.
 
 **Fixed** · **Enabled buttons no longer carry `aria-disabled="false"`.**
 
