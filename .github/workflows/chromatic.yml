@@ -32,6 +32,10 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
+          # The pull request's own head, which is the commit Chromatic records.
+          # The default merge checkout builds a commit Chromatic does not know,
+          # and TurboSnap would then choose snapshots from the wrong diff.
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           # Chromatic diffs against a baseline commit, so it needs the history to
           # find one. With a shallow clone every run looks like the first run and
           # every story reads as a change.
