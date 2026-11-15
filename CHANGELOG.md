@@ -47,6 +47,12 @@ div with the other props. It now goes to the combobox, ahead of the hint or erro
 It now reads the trigger's direction, so `start` is its right edge in a right-to-left layout
 and `end` its left. The same applies to a portalled `Select`.
 
+**Changed** · **`Tooltip` describes its trigger from the first render.** The description was
+attached only when the tooltip opened, in a render after the focus event, so a screen reader
+reading the focused element could announce it without the description. The bubble is now
+always rendered, `hidden` while closed, and the trigger's `aria-describedby` always points
+at it.
+
 ## haus-tokens 5.2.0
 
 _2026-09-13. Mono becomes a ladder of three roles._

@@ -106,9 +106,8 @@ export const Tooltip = React.forwardRef<HTMLSpanElement, TooltipProps>(function 
    * makes the tooltip invisible to the readers who need it most. */
   const described = React.cloneElement(children, {
     'aria-describedby':
-      [(children.props as Record<string, string | undefined>)['aria-describedby'], open ? id : undefined]
-        .filter(Boolean)
-        .join(' ') || undefined,
+      [(children.props as Record<string, string | undefined>)['aria-describedby'], id].filter(Boolean).join(' ') ||
+      undefined,
   } as Partial<unknown> as never)
 
   return (
@@ -123,11 +122,13 @@ export const Tooltip = React.forwardRef<HTMLSpanElement, TooltipProps>(function 
       {...rest}
     >
       {described}
-      {open && (
-        <span role="tooltip" id={id} className={[styles.bubble, styles[placement]].join(' ')}>
-          {content}
-        </span>
-      )}
+      {/* Always rendered, hidden while closed, so the trigger is described
+          from its first render: a screen reader reads the focused element on
+          focus, before a render that opens the bubble could attach anything.
+          A hidden element still supplies its text to aria-describedby. */}
+      <span role="tooltip" id={id} hidden={!open} className={[styles.bubble, styles[placement]].join(' ')}>
+        {content}
+      </span>
     </span>
   )
 })
