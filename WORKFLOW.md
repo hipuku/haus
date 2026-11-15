@@ -106,7 +106,9 @@ Figma's Plugin API. The check warns when the file has changed since that export,
 Without the token (a fork, a Dependabot pull request, or a local run) everything comes from the
 snapshot, and the report says so. A rate limit or a server error is retried up to twice, waiting at
 most a minute each time; if Figma still cannot answer, components are compared from the snapshot,
-the report names the snapshot's date, and the weekly run leaves the issues alone. A rejected token
+the report names the snapshot's date, and the weekly run leaves the issues alone. While the
+variables snapshot is older than the file, the weekly run also leaves token issues alone, opening
+and closing only component ones. A rejected token
 is different: it fails the check, because a snapshot would hide it.
 
 ### How a finding is decided

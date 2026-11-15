@@ -60,13 +60,20 @@ function itemBody(f) {
 }
 
 function main() {
-  const { findings, live } = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'))
+  const report = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'))
+  const { live, variablesFresh } = report
   // Reconciling closes issues whose finding has gone. Findings read from the
   // snapshot because Figma could not be reached are not evidence of that.
   if (!live) {
     console.log('Components were not read live from Figma, so the issues were left as they are.')
     return
   }
+  // Token findings come from the variables snapshot. While it is older than the
+  // file they say nothing about Figma now, so token issues are neither opened
+  // nor closed until it is re-exported; component issues carry on.
+  const isToken = key => key.startsWith('token ')
+  const findings = variablesFresh ? report.findings : report.findings.filter(f => !isToken(f.key))
+  if (!variablesFresh) console.log('The variables snapshot is stale, so token issues were left as they are.')
 
   // One issue per item, opened once and closed when the item is resolved.
   for (const label of new Set(Object.values(KINDS).map(k => k.label))) {
@@ -87,6 +94,7 @@ function main() {
     }
     for (const issue of open) {
       if (titles.has(issue.title) || !kinds.some(([, k]) => issue.title.startsWith(`${k.prefix}: `))) continue
+      if (!variablesFresh && isToken(issue.title.replace(/^[^:]+: /, ''))) continue
       gh([
         'issue',
         'close',
@@ -99,7 +107,8 @@ function main() {
   }
 
   // One tracking issue for the known drift, rewritten each run.
-  const known = findings.filter(f => f.kind === 'known')
+  // The tracking issue lists what is known, which a stale snapshot does not change.
+  const known = report.findings.filter(f => f.kind === 'known')
   const tracking = openIssues(TRACKING.label).find(i => i.title === TRACKING.title)
   const body = [
     `${known.length} item(s) differ between code and Figma and have since the last accepted baseline. None fails a pull request. Updated ${new Date().toISOString().slice(0, 10)}.`,

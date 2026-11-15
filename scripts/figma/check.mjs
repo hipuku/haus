@@ -44,6 +44,7 @@ async function figmaSide() {
   let components = snapshot.components
   let source = 'the snapshot'
   let isLive = false
+  let variablesFresh = false
 
   if (token) {
     try {
@@ -51,7 +52,8 @@ async function figmaSide() {
       components = live.components
       isLive = true
       // The same response the components came from, so the two cannot disagree.
-      if (new Date(live.file.lastModified) > new Date(snapshot.exportedAt)) {
+      variablesFresh = new Date(live.file.lastModified) <= new Date(snapshot.exportedAt)
+      if (!variablesFresh) {
         warnings.push(
           `The variables snapshot was exported ${snapshot.exportedAt} and the file changed ${live.file.lastModified}. ` +
             'Variables were compared against the snapshot; re-export it to compare the current file.',
@@ -73,7 +75,13 @@ async function figmaSide() {
   } else {
     warnings.push(`No FIGMA_TOKEN, so Figma was read from the committed snapshot (${day}).`)
   }
-  return { items: figmaItems({ variables: snapshot.variables, components }), warnings, source, live: isLive }
+  return {
+    items: figmaItems({ variables: snapshot.variables, components }),
+    warnings,
+    source,
+    live: isLive,
+    variablesFresh,
+  }
 }
 
 async function main() {
@@ -97,7 +105,7 @@ async function main() {
   const read = p => (fs.existsSync(p) ? JSON.parse(fs.readFileSync(p, 'utf8')) : {})
   const exceptions = read(PATHS.exceptions).items ?? {}
   const side = await figmaSide()
-  const { warnings, source, live } = side
+  const { warnings, source, live, variablesFresh } = side
   const { code, figma, baseline, stale } = applyExceptions({
     code: codeItems(),
     figma: side.items,
@@ -129,8 +137,9 @@ async function main() {
   })
   process.stdout.write(md)
   if (option('--report')) fs.writeFileSync(option('--report'), md)
-  // `live` says whether components came from Figma itself; issues.mjs reconciles only then.
-  if (option('--json')) writeJson(option('--json'), { ...result, warnings, live })
+  // `live` says whether components came from Figma itself, and `variablesFresh`
+  // whether the variables snapshot is as new as the file. issues.mjs uses both.
+  if (option('--json')) writeJson(option('--json'), { ...result, warnings, live, variablesFresh })
   if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, md)
   if (result.failing.length) process.exitCode = 1
 }
