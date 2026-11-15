@@ -5,7 +5,7 @@
 Five packages in a pnpm workspace, plus a Storybook that consumes them the way a
 consumer would.
 
-```
+```text
 packages/tokens          the system: primitives, brand, semantics, motion
 packages/components      twenty React components built on it
 packages/colour-utils    contrast, ramps, perceptual distance

@@ -30,8 +30,10 @@ linked; the rest are recorded below as decision entries. The Figma file mirrors 
 ## Tokens
 
 The reference for every token is [`docs/tokens.md`](./docs/tokens.md), and the brand contract is
-[`docs/theming.md`](./docs/theming.md). Figma holds the same tokens as two variable collections,
-`haus/primitives` (136 variables) and `haus/semantics` (171), with one mode per shipped brand.
+[Brands](#brands) below, with its tiers in
+[decision 0014](./docs/decisions/0014-the-brand-contract-is-tiered.md). Figma holds the same tokens
+as two variable collections, `haus/primitives` (136 variables) and `haus/semantics` (171), with one
+mode per shipped brand.
 
 ### Layers
 

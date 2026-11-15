@@ -12,7 +12,7 @@ Tokens are split into four files, wired to four CSS cascade layers so their
 precedence is explicit and order-independent. `layers.css` declares the order
 once, before anything opens a layer:
 
-```
+```text
 @layer haus.primitives   →   primitives.css   Raw values. No meaning.
 @layer haus.brand        →   brand.css        Which primitive each role takes.
 @layer haus.semantics    →   semantics.css    What each role means.

@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 # One job per check, named exactly as the ruleset on main requires them: Lint,
-# Format, Typecheck, Test and Build. They run in parallel, and Build runs last,
+# Links, Format, Typecheck, Test and Build. They run in parallel, and Build runs last,
 # after the other four pass, so a red tick names the check that failed rather than a step
 # inside one long job.
 #
@@ -46,6 +46,24 @@ jobs:
       # every file would have been turned off instead of adopted.
       - name: Prose
         run: pnpm run lint:prose
+
+      # Markdown structure. Prettier owns wrapping and the docs standard owns
+      # voice, so this checks headings, lists, fences and the like.
+      - name: Markdown
+        run: pnpm run lint:md
+
+  # Every relative link and heading anchor in the markdown resolves, .github
+  # included (--hidden). Offline, so the check never fails because an outside
+  # site is slow.
+  links:
+    name: Links
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: lycheeverse/lychee-action@v2
+        with:
+          args: --offline --include-fragments --no-progress --hidden --exclude-path node_modules --exclude-path .git './**/*.md'
+          fail: true
 
   format:
     name: Format

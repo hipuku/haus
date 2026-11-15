@@ -100,6 +100,8 @@ styles stay three.
 
 > Can one reference another? **no, none**
 
+<!-- Two separate quotations from the same file. -->
+
 > Figma has no shadow variable type at all [...] collection 1 holds `FLOAT`,
 > `STRING` and `COLOR` and nothing else.
 
