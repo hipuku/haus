@@ -36,7 +36,7 @@ libraries underneath. Light mode only.
 | [`ARCHITECTURE.md`](./ARCHITECTURE.md) | Packages, consumers, the token and component builds, publishing, testing |
 | [`WORKFLOW.md`](./WORKFLOW.md)         | Branches, pull requests, checks, review, keeping Figma and code in step  |
 | [`docs/decisions/`](./docs/decisions/) | One record per decision, numbered                                        |
-| [`docs/`](./docs/)                     | Reference: tokens, theming, accessibility, browser support               |
+| [`docs/`](./docs/)                     | Reference: tokens, accessibility, browser support                        |
 | [`CHANGELOG.md`](./CHANGELOG.md)       | What each package release changed, for a consumer                        |
 | [`RELEASING.md`](./RELEASING.md)       | How a package is tagged and published                                    |
 | [`CONTRIBUTING.md`](./CONTRIBUTING.md) | The rules a change is held to                                            |
