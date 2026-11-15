@@ -168,9 +168,12 @@ mango-700) exist for the cases that need white text.
 #### Typography roles
 
 The type system has **roles rather than heading levels**: `display`, `heading-lg`, `heading`,
-`heading-sm`, `body-lg`, `body`, `body-sm`, `mono`, and one label family: a size
-ramp, `label-xs`, `label-sm` and `label-md`, and three named variants,
-`label-field`, `label-eyebrow` and `label-caption`. Every role declares exactly
+`heading-sm`, `body-lg`, `body`, `body-sm`, a mono ladder, `mono-xs`, `mono-sm` and
+`mono-md`, and one label family: a size ramp, `label-xs`, `label-sm` and `label-md`,
+and three named variants, `label-field`, `label-eyebrow` and `label-caption`. The mono
+rungs share the label ramp's sizes, 11, 12 and 13, and loosen their leading as they
+grow ([decision 0027](decisions/0027-mono-is-a-ladder-not-a-role.md)).
+`--haus-type-mono-*`, the single role it replaced, stays as `mono-md`'s alias. Every role declares exactly
 **four** properties, size, weight, leading and tracking, each as its own token
 (`--haus-type-<role>-size`, `-weight`, `-leading`, `-tracking`). All four are used
 together: a component that sets only `font-size` from a role is not on that role.

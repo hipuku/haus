@@ -15,6 +15,19 @@ Versioning follows [decision 0004](docs/decisions/0004-versioning-is-1-x.md): a
 token rename is a major at an identical value, and a contrast change is a major
 even when the hex barely moves.
 
+## haus-tokens 5.2.0
+
+_2026-09-13. Mono becomes a ladder of three roles._
+
+**Added** · **`mono-xs`**, **`mono-sm`** and **`mono-md`**, each binding size, weight,
+leading and tracking: 11 at leading 1.4, 12 at 1.5 and 13 at 1.6, all regular weight and
+normal tracking ([decision 0027](docs/decisions/0027-mono-is-a-ladder-not-a-role.md)). The
+sizes are the label ramp's. vault reads `--haus-font-mono` in 21 places at those three sizes
+and took none of the single role. Additive: `--haus-type-mono-*` stays, as `mono-md`'s alias,
+so nothing that reads it moves.
+
+_This entry was written after the release, from the decision record and the token source._
+
 ## haus-tokens 5.1.0
 
 _2026-09-11. Two spacing steps below the 4px grid._

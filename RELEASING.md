@@ -61,29 +61,23 @@ recoverable by bumping again.
 
 ### Tagging a release that already happened
 
-The first version of each package was published by hand, before this workflow existed, and
-two of the five never got one. Tag the commit whose manifest carries that version:
+The first version of each package was published by hand, before this workflow existed. A tag
+written later onto the commit whose manifest carries that version gives the npm page a commit
+to point at:
 
 ```sh
 git tag style-probe-v0.2.1 <commit>
 git push --tags
 ```
 
-The tag is what lets `git describe` and the npm page agree on which commit a published version
-came from.
+The run it starts skips at the version check, because that version is already on npm.
 
-Actions runs the workflow **as it existed at the tagged commit**, not as it exists on `main`. So a
-tag written onto a commit from before the skip check will still run the old workflow and fail at
-npm with "cannot publish over the previously published versions". The tag is created correctly
-either way; the run is noise, and the run can be deleted from the Actions page. `tokens-v0.1.2` is
-in that state, run #11. Any tag written from here on gets the skip.
-
-**Corrected 2026-09-07.** This paragraph used to name `style-probe-v0.2.1` as the second one, and
-it is not. Run #10 failed on `Error: error occurred in dts build`, which is a different fault with
-a different fix, and calling it publish-over noise would have had the next person delete the run
-rather than read it. `haus-style-probe@0.2.1` reached npm by hand. The build passes now and the
-whole-workspace build added in #17 is why, so a re-tag of that version would skip on the version
-check before it ever reached the build.
+Actions runs the workflow **as it existed at the tagged commit**, not as it exists on `main`. A tag
+on a commit from before the skip check runs the old workflow, which fails at npm with "cannot
+publish over the previously published versions". The tag itself is correct either way.
+`tokens-v0.1.2` (run #11) is in that state. Run #10, `style-probe-v0.2.1`, failed for a
+different reason, a declaration build error since fixed by building the whole workspace; that
+version reached npm by hand.
 
 ## Order matters
 
