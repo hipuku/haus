@@ -9,20 +9,89 @@ on:
 permissions:
   contents: read
 
+# One job per check, named exactly as the ruleset on main requires them: Lint,
+# Typecheck, Test and Build. They run in parallel, and Build runs last, after the
+# other three pass, so a red tick names the check that failed rather than a step
+# inside one long job.
+#
+# Packages resolve each other through dist/, which is gitignored, and workspace:^
+# links them, so nothing can typecheck or test across a package boundary until the
+# workspace is built. Typecheck and Test build the packages first for that reason;
+# the five build in seconds.
+
 jobs:
-  ci:
-    name: Tokens, Lint, Build, Typecheck, Test
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-
       - uses: pnpm/action-setup@v6
-
       - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: pnpm
+      - run: pnpm install --frozen-lockfile
 
+      - name: ESLint
+        run: pnpm run lint
+
+      # The hardcoded-value gate. Catches a component reaching past the token
+      # layer, the common failure when components are generated rather than
+      # hand-written.
+      - name: Stylelint (design tokens)
+        run: pnpm run lint:css
+
+      # House style does not use an em dash. Ratcheted against a baseline rather
+      # than absolute: a rule that could only pass after a mechanical rewrite of
+      # every file would have been turned off instead of adopted.
+      - name: Prose
+        run: pnpm run lint:prose
+
+  typecheck:
+    name: Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Build packages
+        run: pnpm run build
+      - name: Typecheck
+        run: pnpm -r run typecheck
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Build packages
+        run: pnpm run build
+      # With coverage, so the floors in each vitest.config.ts are enforced here
+      # rather than being a number someone can run locally and ignore.
+      - name: Test
+        run: pnpm -r run test:coverage
+
+  build:
+    name: Build
+    needs: [lint, typecheck, test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
       - run: pnpm install --frozen-lockfile
 
       # Generated primitives must match tokens.json. This is what replaced the
@@ -30,36 +99,8 @@ jobs:
       - name: Tokens up to date
         run: pnpm --filter haus-tokens run tokens:check
 
-      - name: Lint
-        run: pnpm run lint
-
-      # The hardcoded-value gate. Catches a component reaching past the token
-      # layer, the common failure when components are generated rather than
-      # hand-written.
-      - name: Lint CSS (design tokens)
-        run: pnpm run lint:css
-
-      # House style does not use an em dash. Ratcheted against a baseline rather
-      # than absolute: a rule that could only pass after a mechanical rewrite of
-      # every file would have been turned off instead of adopted.
-      - name: Lint prose
-        run: pnpm run lint:prose
-
-      # Packages resolve through dist/, which is gitignored, and workspace:^ links
-      # them to each other, so nothing can typecheck across a package boundary
-      # until the workspace is built. This used to sit after Typecheck and passed
-      # only because the internal dependencies resolved to their published copies
-      # on npm, which ship a dist.
       - name: Build packages
         run: pnpm run build
-
-      - name: Typecheck
-        run: pnpm -r run typecheck
-
-      # With coverage, so the floors in each vitest.config.ts are enforced here
-      # rather than being a number someone can run locally and ignore.
-      - name: Test
-        run: pnpm -r run test:coverage
 
       - name: Build Storybook
         run: pnpm run build-storybook
