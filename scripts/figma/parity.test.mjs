@@ -154,6 +154,11 @@ describe('axis names', () => {
     expect(() => figmaItems({ components })).toThrow(/two axes/)
   })
 
+  it('refuses two components of the same name', () => {
+    const one = { name: 'Badge', inSet: false, props: [] }
+    expect(() => figmaItems({ components: [one, { ...one }] })).toThrow(/two components/)
+  })
+
   it('refuses two State axes too, rather than letting one replace the other', () => {
     const components = [
       {

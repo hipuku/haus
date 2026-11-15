@@ -59,6 +59,8 @@ export function figmaItems({ variables = [], components = [] }) {
   }
   for (const c of components) {
     if (c.inSet || isPrivateComponent(c.name)) continue
+    // A second set of the same name would overwrite the first's axes.
+    if (`component ${c.name}` in items) throw new Error(`Figma has two components named "${c.name}": rename one.`)
     items[`component ${c.name}`] = 'present'
     // Two axes that read the same once case and spaces go would overwrite each
     // other, and one of them would never be compared; State included.
