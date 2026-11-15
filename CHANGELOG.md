@@ -59,6 +59,16 @@ fixed 12px, so with a larger browser font size the thumb sat high and, when on, 
 short of the end. The inset is now `--haus-space-0-5` and the small travel `--haus-space-3`,
 the same 2px and 12px at the default size, so nothing moves there.
 
+## haus-components 3.1.1
+
+_2026-11-15. Avatar takes its colour from its name again._
+
+**Fixed** · **`Avatar`'s palette named roles that do not exist.** The five background and
+ink pairs were written as `--color-*-subtle` rather than `--haus-color-*-subtle`, so each
+resolved to nothing and every avatar fell back to primary, whatever its name hashed to. They
+now read the prefixed roles, and a name keeps one of five colours as it always claimed to. A
+test now fails on any custom property a component names that no layer declares.
+
 ## haus-tokens 5.2.0
 
 _2026-09-13. Mono becomes a ladder of three roles._

@@ -18,11 +18,11 @@ export interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const PALETTE: Array<[string, string]> = [
-  ['var(--color-primary-subtle)', 'var(--color-primary-on-subtle)'],
-  ['var(--color-info-subtle)', 'var(--color-info-on-subtle)'],
-  ['var(--color-success-subtle)', 'var(--color-success-on-subtle)'],
-  ['var(--color-warning-subtle)', 'var(--color-warning-on-subtle)'],
-  ['var(--color-error-subtle)', 'var(--color-error-on-subtle)'],
+  ['var(--haus-color-primary-subtle)', 'var(--haus-color-primary-on-subtle)'],
+  ['var(--haus-color-info-subtle)', 'var(--haus-color-info-on-subtle)'],
+  ['var(--haus-color-success-subtle)', 'var(--haus-color-success-on-subtle)'],
+  ['var(--haus-color-warning-subtle)', 'var(--haus-color-warning-on-subtle)'],
+  ['var(--haus-color-error-subtle)', 'var(--haus-color-error-on-subtle)'],
 ]
 
 function nameHash(name: string): number {

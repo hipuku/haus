@@ -189,3 +189,53 @@ describe('components read roles, not primitives', () => {
     expect(PAST.length - sizes.length).toBe(31)
   })
 })
+
+/**
+ * Every custom property a component names, in its stylesheet or in its source,
+ * is one that exists.
+ *
+ * A misspelt or unprefixed name is not an error anywhere else. The browser
+ * treats `var(--color-primary-subtle)` as unset and takes the fallback, or drops
+ * the declaration, and nothing logs. Stylelint reads only the stylesheets, and
+ * the role checks above only ask whether a name is a primitive, so a name that
+ * is neither passed both. Avatar's palette did exactly that in TSX: five
+ * unprefixed role names, so every avatar took the fallback and was primary,
+ * whatever its name hashed to.
+ */
+describe('every custom property a component names exists', () => {
+  const BRAND = declared(read(join(TOKENS, 'brand.css')))
+
+  const sources: { file: string; text: string }[] = []
+  for (const dir of readdirSync(COMPONENTS, { withFileTypes: true })) {
+    if (!dir.isDirectory()) continue
+    for (const f of readdirSync(join(COMPONENTS, dir.name))) {
+      if (!/\.(module\.css|tsx)$/.test(f) || /\.test\.tsx$/.test(f)) continue
+      sources.push({ file: `${dir.name}/${f}`, text: read(join(COMPONENTS, dir.name, f)) })
+    }
+  }
+
+  // A component may declare its own custom properties, in its stylesheet or as
+  // a style object key in its source, and read them back.
+  const OWN = new Set(
+    sources.flatMap(({ text }) => [
+      ...[...text.matchAll(/^\s*(--[\w-]+)\s*:/gm)].map(m => m[1]),
+      ...[...text.matchAll(/['"](--[\w-]+)['"]\s*:/g)].map(m => m[1]),
+    ]),
+  )
+  const KNOWN = new Set([...PRIMITIVE, ...ROLE, ...BRAND, ...OWN])
+
+  it('reads the source it is meant to read', () => {
+    expect(sources.some(s => s.file.endsWith('.tsx'))).toBe(true)
+    expect(sources.some(s => s.file.endsWith('.module.css'))).toBe(true)
+  })
+
+  it('names no custom property that is never declared', () => {
+    const unknown = sources.flatMap(({ file, text }) =>
+      [...text.matchAll(/var\(\s*(--[\w-]+)/g)]
+        .map(m => m[1])
+        .filter(name => !KNOWN.has(name))
+        .map(name => `${file}: ${name}`),
+    )
+    expect(unknown).toEqual([])
+  })
+})
