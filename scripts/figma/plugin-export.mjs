@@ -14,6 +14,9 @@
    module stays importable. */
 
 export async function exportFile(figma) {
+  // Taken before the first read, so an edit made while the export runs is newer
+  // than the capture and the snapshot is reported stale rather than fresh.
+  const capturedAt = new Date().toISOString()
   const byId = {}
   for (const v of await figma.variables.getLocalVariablesAsync()) byId[v.id] = v
   const collections = await figma.variables.getLocalVariableCollectionsAsync()
@@ -81,9 +84,7 @@ export async function exportFile(figma) {
     }
   }
 
-  // When the values were read, which is what freshness is measured against: an
-  // export saved later still describes the file as it was here.
-  return { capturedAt: new Date().toISOString(), variables, components }
+  return { capturedAt, variables, components }
 }
 
 export const pluginCode = () => `${exportFile.toString()}\nreturn await exportFile(figma)\n`
