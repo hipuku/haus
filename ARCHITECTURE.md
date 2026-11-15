@@ -241,6 +241,9 @@ One workflow, `.github/workflows/publish.yml`, publishes one package per tag. Th
 
 1. The tag is split, and the run stops unless `packages/<directory>/package.json` has that version.
 2. If that version is already on npm, the run ends there, so a tag can be written after the fact.
+   That holds for a tag on a commit whose workflow has this check: Actions runs the workflow as it
+   was at the tagged commit, so an older one fails at npm instead
+   ([`RELEASING.md`](./RELEASING.md#tagging-a-release-that-already-happened)).
 3. Every workspace dependency must already be on npm at the version the manifest names; pnpm writes
    that version into the published manifest.
 4. The whole workspace is built and the package's tests run.

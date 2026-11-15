@@ -30,6 +30,10 @@ specific":
 | `--popover-width-sm` `-md` `-lg`                                                | **One product is not evidence.** haus's Popover deliberately sets no width, documented as _content width is not a useful measure for a panel holding a form_. If a second product invents a popover width, this changes |
 | `--haus-font-sans` `--haus-type-heading-weight` `--haus-type-label-xs-tracking` | The three forks `vault#32` argued and kept. Adopting a token layer is not licence to restyle a shipped product                                                                                                          |
 
+> **Later, 2026-09-08.** `--control-height-xs` did not stay vault-specific. haus#58 promoted
+> `IconButton` to the twentieth component once core's icon buttons were counted, and the 24px
+> height came with it as `--haus-control-height-xs`.
+
 ## Settled: haus's gap, and now haus's
 
 **Modal widths become a form-tier brand group.** Three products had three answers:

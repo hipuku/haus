@@ -22,8 +22,8 @@ libraries underneath. Light mode only.
   [`DESIGN.md` § Accessibility](./DESIGN.md#accessibility)
 - **Decided in the open.** 27 numbered decision records, each with what it was chosen over.
   [`docs/decisions/`](./docs/decisions/README.md)
-- **Generated, not copied.** The primitives, the motion layer, the typed constants and the brand
-  map type are generated from one token file, and CI fails if they drift.
+- **Generated, not copied.** The primitives, the motion layer and the typed constants are generated
+  from the token file, and the brand map type from `brand.css`; CI fails if either drifts.
   [`ARCHITECTURE.md` § Token build](./ARCHITECTURE.md#token-build)
 - **Used by four products.** core, vault, drift and hexicon each take the packages they need.
   [`ARCHITECTURE.md` § Consumers](./ARCHITECTURE.md#consumers)
