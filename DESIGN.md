@@ -195,10 +195,11 @@ toolchain and make each component's styles depend on Tailwind's class names.
 `--haus-duration-reduced` (0ms) under `prefers-reduced-motion: reduce`.
 
 **Reason.** Some transforms carry position, such as the Toggle thumb and the Modal's entry offset.
-Overriding the duration lets the control snap to its new state; `transition: none` would leave the
-thumb where it was. The value is a token so it can be tuned in one place.
+Collapsing the duration keeps the transform, so the control still lands in its new state, only
+without the movement. The value is a token so it can be tuned in one place.
 
-**Alternatives.** `transition: none` under the media query, rejected for the reason above.
+**Alternatives.** Removing the transforms under the media query, rejected because the Toggle thumb
+would no longer show which state it is in.
 
 ## Accessibility
 
