@@ -146,6 +146,23 @@ describe('reading the code', () => {
     expect(resolve('var(--missing, 2px)', raw)).toBe('2px')
   })
 
+  it('resolves a fallback that is itself a var(), and leaves no stray bracket', () => {
+    const raw = { '--b': '4px', '--a': '1px' }
+    expect(resolve('var(--missing, var(--b))', raw)).toBe('4px')
+    expect(resolve('var(--a, var(--b))', raw)).toBe('1px')
+    expect(resolve('0 0 0 var(--a) var(--b)', raw)).toBe('0 0 0 1px 4px')
+  })
+
+  it('reads a union written over several lines, leading pipe and all', () => {
+    const src = "export type Shape =\n  | 'round'\n  | 'square'"
+    expect(unionAliases(src, '').Shape).toEqual(['round', 'square'])
+  })
+
+  it('merges a prop declared in two halves of a union', () => {
+    const src = "type A = {\n  size?: 'sm' | 'md'\n}\ntype B = {\n  size?: 'lg' | 'xl'\n}"
+    expect(variantProps(src, {}).size).toEqual(['sm', 'md', 'lg', 'xl'])
+  })
+
   it('resolves union aliases through other aliases, Extract and Exclude', () => {
     const types = "export type Size = 'sm' | 'md' | 'lg'\nexport type Tone = 'neutral' | 'error'"
     const src = [

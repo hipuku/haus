@@ -63,12 +63,6 @@ async function get(url, token) {
   }
 }
 
-/** When the file last changed, without downloading its tree. */
-export async function lastModified(key, token) {
-  const file = await get(`${API}/files/${key}?depth=1`, token)
-  return file.lastModified
-}
-
 /** The file's components in the raw shape plugin-export.js also produces. */
 export async function fetchComponents(key, token) {
   const file = await get(`${API}/files/${key}`, token)

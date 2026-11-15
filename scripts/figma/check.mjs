@@ -20,7 +20,7 @@ import { codeItems } from './code.mjs'
 import { figmaItems } from './normalise.mjs'
 import { diff, accept, applyExceptions } from './diff.mjs'
 import { report } from './report.mjs'
-import { FigmaUnavailable, fetchComponents, lastModified } from './rest.mjs'
+import { FigmaUnavailable, fetchComponents } from './rest.mjs'
 import { pluginCode } from './plugin-export.mjs'
 
 const args = process.argv.slice(2)
@@ -43,18 +43,20 @@ async function figmaSide() {
   const day = snapshot.exportedAt.slice(0, 10)
   let components = snapshot.components
   let source = 'the snapshot'
+  let isLive = false
 
   if (token) {
     try {
-      const modified = await lastModified(FIGMA_FILE.key, token)
-      if (new Date(modified) > new Date(snapshot.exportedAt)) {
+      const live = await fetchComponents(FIGMA_FILE.key, token)
+      components = live.components
+      isLive = true
+      // The same response the components came from, so the two cannot disagree.
+      if (new Date(live.file.lastModified) > new Date(snapshot.exportedAt)) {
         warnings.push(
-          `The variables snapshot was exported ${snapshot.exportedAt} and the file changed ${modified}. ` +
+          `The variables snapshot was exported ${snapshot.exportedAt} and the file changed ${live.file.lastModified}. ` +
             'Variables were compared against the snapshot; re-export it to compare the current file.',
         )
       }
-      const live = await fetchComponents(FIGMA_FILE.key, token)
-      components = live.components
       source = 'the REST API for components, the snapshot for variables'
       if (flag('--refresh')) {
         writeJson(PATHS.snapshot, { ...snapshot, componentsAt: new Date().toISOString(), components })
@@ -71,7 +73,7 @@ async function figmaSide() {
   } else {
     warnings.push(`No FIGMA_TOKEN, so Figma was read from the committed snapshot (${day}).`)
   }
-  return { items: figmaItems({ variables: snapshot.variables, components }), warnings, source }
+  return { items: figmaItems({ variables: snapshot.variables, components }), warnings, source, live: isLive }
 }
 
 async function main() {
@@ -95,7 +97,7 @@ async function main() {
   const read = p => (fs.existsSync(p) ? JSON.parse(fs.readFileSync(p, 'utf8')) : {})
   const exceptions = read(PATHS.exceptions).items ?? {}
   const side = await figmaSide()
-  const { warnings, source } = side
+  const { warnings, source, live } = side
   const { code, figma, baseline, stale } = applyExceptions({
     code: codeItems(),
     figma: side.items,
@@ -127,7 +129,8 @@ async function main() {
   })
   process.stdout.write(md)
   if (option('--report')) fs.writeFileSync(option('--report'), md)
-  if (option('--json')) writeJson(option('--json'), { ...result, warnings })
+  // `live` says whether components came from Figma itself; issues.mjs reconciles only then.
+  if (option('--json')) writeJson(option('--json'), { ...result, warnings, live })
   if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, md)
   if (result.failing.length) process.exitCode = 1
 }

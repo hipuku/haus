@@ -30,13 +30,34 @@ export function rawTokens(root = '.') {
   return raw
 }
 
-/** A value with every `var()` followed to the end of its chain. */
+/** A value with every `var()` followed to the end of its chain. Brackets are
+    matched rather than pattern-matched, so a fallback that is itself a `var()`
+    resolves whole. */
 export function resolve(value, raw, depth = 0) {
   if (depth > 12) return value
-  return value.replace(/var\((--[\w-]+)(?:\s*,\s*([^)]+))?\)/g, (whole, name, fallback) => {
-    if (raw[name] !== undefined) return resolve(raw[name], raw, depth + 1)
-    return fallback !== undefined ? resolve(fallback.trim(), raw, depth + 1) : whole
-  })
+  let out = ''
+  let i = 0
+  while (i < value.length) {
+    const at = value.indexOf('var(', i)
+    if (at === -1) break
+    out += value.slice(i, at)
+    let level = 0
+    let end = at + 3
+    let comma = -1
+    for (; end < value.length; end++) {
+      const ch = value[end]
+      if (ch === '(') level++
+      else if (ch === ')' && --level === 0) break
+      else if (ch === ',' && level === 1 && comma === -1) comma = end
+    }
+    const name = value.slice(at + 4, comma === -1 ? end : comma).trim()
+    const fallback = comma === -1 ? undefined : value.slice(comma + 1, end).trim()
+    if (raw[name] !== undefined) out += resolve(raw[name], raw, depth + 1)
+    else if (fallback !== undefined) out += resolve(fallback, raw, depth + 1)
+    else out += value.slice(at, end + 1)
+    i = end + 1
+  }
+  return out + value.slice(i)
 }
 
 const px = v => {
@@ -70,8 +91,11 @@ export function codeTokens(root = '.') {
     Tone | 'primary'` resolves to Tone's five values and `primary`. */
 export function unionAliases(...sources) {
   const decl = {}
-  for (const src of sources)
-    for (const m of src.matchAll(/^(?:export )?type (\w+)\s*=\s*([^\n{]+)$/gm)) decl[m[1]] ??= m[2].trim()
+  // A union may run over several lines, each member led by a pipe, and may
+  // open with one: join the lines, then drop the leading pipe.
+  for (const src of sources.map(s => s.replace(/\n\s*\|/g, ' |')))
+    for (const m of src.matchAll(/^(?:export )?type (\w+)\s*=\s*([^\n{]+)$/gm))
+      decl[m[1]] ??= m[2].trim().replace(/^\|\s*/, '')
   const resolved = {}
   const values = (name, seen = new Set()) => {
     if (resolved[name]) return resolved[name]
@@ -106,12 +130,14 @@ export function variantProps(src, aliases) {
   const body = src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '')
   for (const m of body.matchAll(/^\s+(\w+)\??\s*:\s*([^;\n]+?)\s*;?\s*$/gm)) {
     const [, prop, type] = m
-    if (SKIP_PROPS.has(prop) || /^aria|ClassName$/.test(prop) || props[prop]) continue
+    if (SKIP_PROPS.has(prop) || /^aria|ClassName$/.test(prop)) continue
     let values
     if (/^'[^']*'(\s*\|\s*'[^']*')*$/.test(type)) values = type.split('|').map(v => v.trim().replace(/'/g, ''))
     else if (/^\w+$/.test(type)) values = aliases[type]
-    if (values?.length > 1) props[prop] = values
+    // The same prop in two halves of a union takes both halves' values.
+    if (values?.length) props[prop] = [...new Set([...(props[prop] ?? []), ...values])]
   }
+  for (const [prop, values] of Object.entries(props)) if (values.length < 2) delete props[prop]
   return props
 }
 

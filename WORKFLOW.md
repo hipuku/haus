@@ -68,8 +68,9 @@ resolved; the ruleset will not merge a pull request with an open conversation.
 
 haus's design lives in one Figma file, [haus Design System](https://www.figma.com/design/Qo23P38COlJrfQmlM39Fa3/haus-Design-System):
 the token collections and one page per component. The Figma parity check compares it with the code
-on every pull request, so a difference between them is found when it is made rather than when
-someone notices.
+on every pull request, so a difference in a component is found when it is made rather than when
+someone notices. Variables are compared from an exported snapshot, so a variable changed in Figma is
+found once the snapshot is refreshed.
 
 ### What is compared
 
@@ -103,8 +104,10 @@ Figma's Plugin API. The check warns when the file has changed since that export,
 `pnpm run figma:check --plugin-code` prints the export to run; `--save` stores its result.
 
 Without the token (a fork, a Dependabot pull request, or a local run) everything comes from the
-snapshot, and the report says so. A rate limit or a server error is retried twice; a rejected token
-fails the check, because a snapshot would hide it.
+snapshot, and the report says so. A rate limit or a server error is retried up to twice, waiting at
+most a minute each time; if Figma still cannot answer, components are compared from the snapshot,
+the report names the snapshot's date, and the weekly run leaves the issues alone. A rejected token
+is different: it fails the check, because a snapshot would hide it.
 
 ### How a finding is decided
 
