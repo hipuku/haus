@@ -73,6 +73,16 @@ jobs:
           # setting accepted it unseen: three changes during the 1.0 push.
           # exitZeroOnChanges above keeps the build green either way. haus#36.
           autoAcceptChanges: false
+          # TurboSnap: snapshot only the stories a change can affect, so a pull
+          # request that touches docs, CI or scripts costs no snapshots. The
+          # Storybook reads the packages' built dist, which git does not track,
+          # so TurboSnap cannot trace a component change to its stories; any
+          # change under packages/ therefore turns it off for that build and
+          # every story is snapshotted. The monthly snapshot limit ran out on
+          # 2026-11-15 with every build snapshotting all 99 stories.
+          onlyChanged: true
+          externals: |
+            packages/**
 
       - name: Say why this was skipped
         if: ${{ env.CHROMATIC_PROJECT_TOKEN == '' }}
