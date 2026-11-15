@@ -84,7 +84,7 @@ describe('an invalid control rings in the error colour', () => {
       ALL.filter(takesError)
         .map(c => c.name)
         .sort(),
-    ).toEqual(['Checkbox', 'Input', 'Radio', 'Textarea'])
+    ).toEqual(['Checkbox', 'Input', 'Radio', 'Select', 'Textarea'])
   })
 
   it.each(ALL.filter(c => takesError(c) && paintsRing(c)).map(c => c.name))(

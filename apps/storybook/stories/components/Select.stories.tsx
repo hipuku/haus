@@ -129,3 +129,13 @@ export const InAForm: Story = {
 }
 
 export const Disabled: Story = { render: () => <Controlled disabled /> }
+
+/** A line under the control that describes it, read out with it. */
+export const WithFieldHint: Story = {
+  render: () => <Controlled hint="Who can accept a decision in this workspace" />,
+}
+
+/** The error takes the hint's place, marks the trigger invalid and rings it in the error colour. */
+export const WithError: Story = {
+  render: () => <Controlled hint="Who can accept a decision in this workspace" error="Pick a role for this member" />,
+}

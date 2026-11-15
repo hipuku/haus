@@ -1,7 +1,14 @@
 .listbox {
-  position: relative;
-  display: inline-block;
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--haus-space-gap-2xs);
   inline-size: 100%;
+}
+
+/* The box the panel is positioned against: the trigger alone, so a hint or an
+   error under it does not push the panel down. */
+.control {
+  position: relative;
 }
 
 /* ── Trigger ─────────────────────────────────────────────────────────────────
@@ -164,6 +171,33 @@
   font-size: var(--haus-type-label-sm-size);
   line-height: var(--haus-type-label-sm-leading);
   color: var(--haus-color-ink-tertiary);
+}
+
+.trigger.error {
+  --haus-lb-border: var(--haus-color-error-default);
+}
+
+.trigger.error:focus-visible {
+  box-shadow: var(--haus-focus-ring-error);
+}
+
+/* Input's hint and error lines, so a form mixing the two reads as one. */
+.hint {
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-label-caption-size);
+  font-weight: var(--haus-type-label-caption-weight);
+  line-height: var(--haus-type-label-caption-leading);
+  letter-spacing: var(--haus-type-label-caption-tracking);
+  color: var(--haus-color-ink-secondary);
+}
+
+.errorMessage {
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-label-caption-size);
+  font-weight: var(--haus-type-label-caption-weight);
+  line-height: var(--haus-type-label-caption-leading);
+  letter-spacing: var(--haus-type-label-caption-tracking);
+  color: var(--haus-color-error-default);
 }
 
 @media (prefers-reduced-motion: reduce) {

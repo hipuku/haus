@@ -136,6 +136,51 @@ describe('Select', () => {
     expect(trigger).toHaveAttribute('aria-expanded', 'true')
   })
 
+  it('describes the trigger, not its wrapper, with what the caller points at', () => {
+    // aria-describedby used to land on the root div with the rest of the props,
+    // where it describes nothing: the combobox is the element that is announced.
+    render(
+      <>
+        <p id="role-note">Only maintainers can accept</p>
+        <Harness aria-describedby="role-note" />
+      </>,
+    )
+    expect(screen.getByRole('combobox')).toHaveAccessibleDescription('Only maintainers can accept')
+  })
+
+  it('shows a hint and describes the trigger with it', () => {
+    render(<Harness hint="Who can accept a decision" />)
+    expect(screen.getByText('Who can accept a decision')).toBeInTheDocument()
+    expect(screen.getByRole('combobox')).toHaveAccessibleDescription('Who can accept a decision')
+    expect(screen.getByRole('combobox')).not.toHaveAttribute('aria-invalid')
+  })
+
+  it('marks itself invalid and announces the error in place of the hint', () => {
+    render(<Harness hint="Who can accept a decision" error="Pick a role" />)
+    const trigger = screen.getByRole('combobox')
+    expect(trigger).toHaveAttribute('aria-invalid', 'true')
+    expect(trigger).toHaveAccessibleDescription('Pick a role')
+    expect(screen.getByRole('alert')).toHaveTextContent('Pick a role')
+    expect(screen.queryByText('Who can accept a decision')).toBeNull()
+  })
+
+  it('keeps the caller description alongside its own', () => {
+    render(
+      <>
+        <p id="role-note">Only maintainers can accept</p>
+        <Harness aria-describedby="role-note" hint="Who can accept a decision" />
+      </>,
+    )
+    expect(screen.getByRole('combobox')).toHaveAccessibleDescription(
+      'Only maintainers can accept Who can accept a decision',
+    )
+  })
+
+  it('has no axe violations with an error', async () => {
+    const { container } = render(<Harness error="Pick a role" />)
+    expect((await axe(container)).violations).toEqual([])
+  })
+
   it('has no axe violations, open', async () => {
     // The structural one that matters: role="option" has to be owned by the
     // listbox, and the <ul> in between is role="none" so it is not.
