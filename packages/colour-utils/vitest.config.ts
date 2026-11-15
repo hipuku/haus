@@ -1,5 +1,5 @@
 import { defineConfig } from 'vitest/config'
-import { coverage } from '../../vitest.shared'
+import { coverage } from '../../vitest.shared.ts'
 
 /* Floors just under today's figures: 96.11 / 88.23 / 100 / 97.81. */
 

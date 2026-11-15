@@ -1,5 +1,5 @@
 import { defineConfig } from 'vitest/config'
-import { coverage } from '../../vitest.shared'
+import { coverage } from '../../vitest.shared.ts'
 
 /*
  * No thresholds, deliberately. This package's tests read CSS and JSON files and

@@ -1,5 +1,5 @@
 import { defineConfig } from 'vitest/config'
-import { coverage } from '../../vitest.shared'
+import { coverage } from '../../vitest.shared.ts'
 
 /*
  * This package read 44.89 / 41.02 / 75 / 47 when coverage was first wired up,

@@ -55,9 +55,6 @@ export interface Listbox {
  * outside-dismissal are deliberately not here: both components that use this
  * already own them, and one of them shares that ownership with every other
  * popover in its app.
- *
- * Ported alongside vault's `useListbox`, with the same signature, so the two
- * stay diffable until one of them moves to haus.
  */
 export function useListbox({ open, labels, selectedIndex, onSelect, onOpenChange, baseId }: ListboxOptions): Listbox {
   const [activeIndex, setActiveIndex] = useState(selectedIndex)

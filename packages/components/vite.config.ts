@@ -66,7 +66,7 @@ export default defineConfig({
   },
   build: {
     lib: {
-      entry: resolve(__dirname, 'src/index.ts'),
+      entry: resolve(import.meta.dirname, 'src/index.ts'),
       // ESM and CJS both, so `main` and the require condition point at something
       // that actually works in the context they advertise for. See N30.
       formats: ['es', 'cjs'],
