@@ -71,7 +71,11 @@ export function figmaItems({ variables = [], components = [] }) {
       // A variant axis of false|true is a boolean, which is a layer toggle as
       // often as a prop; booleans are not compared on either side.
       if (joinSet(p.options.map(o => o.toLowerCase())) === 'false|true') continue
-      items[`axis ${c.name}.${name}`] = joinSet(p.options.map(o => o.toLowerCase()))
+      const key = `axis ${c.name}.${name}`
+      // Two axes that read the same once case and spaces go would overwrite each
+      // other, and one of them would never be compared.
+      if (key in items) throw new Error(`${c.name} has two axes that both read as "${name}": rename one in Figma.`)
+      items[key] = joinSet(p.options.map(o => o.toLowerCase()))
     }
   }
   return items

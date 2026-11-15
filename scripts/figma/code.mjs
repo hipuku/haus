@@ -165,7 +165,9 @@ export function codeComponents(root = '.') {
     const src = fs.readFileSync(tsx, 'utf8')
     const aliases = unionAliases(src, types)
     for (const [prop, values] of Object.entries(variantProps(src, aliases))) {
-      items[`axis ${main}.${axisName(prop)}`] = joinSet(values.map(v => v.toLowerCase()))
+      const key = `axis ${main}.${axisName(prop)}`
+      if (key in items) throw new Error(`${main} has two props that both read as "${axisName(prop)}": rename one.`)
+      items[key] = joinSet(values.map(v => v.toLowerCase()))
     }
     const cssPath = path.join(dir, name, `${name}.module.css`)
     const states = fs.existsSync(cssPath) ? statesOf(fs.readFileSync(cssPath, 'utf8')) : []
