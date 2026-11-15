@@ -9,7 +9,7 @@ import React, { useState } from 'react'
 /**
  * The token name, as documentation and as something to paste.
  *
- * `name` is the suffix — `color-surface-default` — and the namespace is added
+ * `name` is the suffix (`color-surface-default`), and the namespace is added
  * here. Every caller passes it that way, so putting the prefix in one place is
  * what stopped these pages handing out `var(--color-surface-default)` after
  * ruling A3 namespaced everything: a name that no longer exists, on the page

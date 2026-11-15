@@ -20,7 +20,7 @@ const meta = {
       description: {
         component:
           'The one button. `variant` is visual weight, `tone` is meaning, and ' +
-          '`external` is behaviour — three things that used to be one prop. ' +
+          '`external` is behaviour: three things that used to be one prop. ' +
           'Renders an `<a>` when given `href`, and a disabled link is really ' +
           'disabled: no `href`, out of the tab order, not activatable.',
       },

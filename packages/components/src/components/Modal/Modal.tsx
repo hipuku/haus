@@ -19,12 +19,12 @@ interface ModalBaseProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'tit
   initialFocus?: React.RefObject<HTMLElement | null>
   /**
    * Whether clicking the backdrop closes the dialog. On by default, and worth
-   * turning off for anything destructive or anything holding unsaved input —
+   * turning off for anything destructive or anything holding unsaved input:
    * a misplaced click should not discard work, and there was no way to say so.
    */
   dismissOnBackdrop?: boolean
   /** Lands on the dialog rather than the backdrop, where `className` used to.
-   *  Ruling B5 put `className` on the root — here the backdrop — and this is the
+   *  Ruling B5 put `className` on the root, here the backdrop, and this is the
    *  named second target it asks for. */
   dialogClassName?: string
 }

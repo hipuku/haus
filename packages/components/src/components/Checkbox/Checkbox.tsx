@@ -78,7 +78,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(functi
   }
 
   // className goes on the root, ruling B5. It used to go on the inner <label>,
-  // which left the outer <div> unreachable by any means at all — no prop
+  // which left the outer <div> unreachable by any means at all: no prop
   // addressed it. That is the case that decided B5: a convention that has to
   // describe a defect is not worth writing down.
   const wrapperCls = [
@@ -106,7 +106,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(functi
           disabled={disabled}
           // aria-required rather than the native attribute, as Input, Select,
           // Textarea and RadioGroup all do. These components own their error
-          // display — there is an `error` prop and a role="alert" message — and
+          // display (there is an `error` prop and a role="alert" message), and
           // the native attribute brings the browser's own validation bubble,
           // which would fight it. Checkbox was the one doing the opposite.
           aria-required={required}

@@ -35,7 +35,7 @@ function nameHash(name: string): number {
 
 function initials(name: string): string {
   // `''` and `'   '` both split to [''], so indexing [0][0] gave undefined and
-  // .toUpperCase() threw — an avatar for a user whose name had not loaded yet
+  // .toUpperCase() threw, so an avatar for a user whose name had not loaded yet
   // took the page down rather than rendering a blank circle.
   const parts = name.trim().split(/\s+/).filter(Boolean)
   if (parts.length === 0) return ''

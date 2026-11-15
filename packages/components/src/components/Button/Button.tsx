@@ -9,7 +9,7 @@ import styles from './Button.module.css'
  * Visual weight, and nothing else. Ruling A5.
  *
  * `danger` left this union because it was a meaning rather than a weight, and
- * it is `tone="error"` now — the same word Badge and Toast already used.
+ * it is `tone="error"` now, the same word Badge and Toast already used.
  * `external` left because it was behaviour plus a glyph rather than a look.
  */
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'text'
@@ -18,8 +18,8 @@ export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'text'
  * All five tones. The narrowing this replaced was written on the
  * premise that the other three had no design, and the premise was wrong:
  * `semantics.css` already carried the full six-role set for info, success and
- * warning — including the `solid` roles that exist precisely because those two
- * 500s fail with white ink — and Badge already spent every one of them. The
+ * warning, including the `solid` roles that exist precisely because those two
+ * 500s fail with white ink, and Badge already spent every one of them. The
  * design was specified; only Button had not adopted it.
  */
 export type ButtonTone = Tone
@@ -180,8 +180,8 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
         ref={ref as React.Ref<HTMLAnchorElement>}
         // An anchor has no disabled state, and aria-disabled alone announces
         // one without creating it: the link stayed focusable and still
-        // navigated. Dropping href is what actually disables it — the element
-        // is then neither focusable nor activatable — so role and tabIndex
+        // navigated. Dropping href is what actually disables it (the element
+        // is then neither focusable nor activatable), so role and tabIndex
         // put back the two things href was carrying.
         href={isDisabled ? undefined : href}
         role={isDisabled ? 'link' : undefined}

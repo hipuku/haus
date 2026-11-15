@@ -6,7 +6,7 @@
  * someone compares them.
  *
  * The thresholds are floors rather than targets. They are set just under where
- * each package is today, so the number can only go up — a floor set at the
+ * each package is today, so the number can only go up. A floor set at the
  * current figure fails on the first honest refactor and teaches people to lower
  * it, which is worse than not having one.
  */

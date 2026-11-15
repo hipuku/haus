@@ -55,7 +55,7 @@ const elements = (await page.evaluate(extractRawElements)).map(normaliseElement)
 
 | Option        | Default | Meaning                                                                                                                                                                                                    |
 | ------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `root`        | —       | CSS selector for the subtree to read: the matched element **and** its descendants, nothing else. Omit to walk the document.                                                                                |
+| `root`        | none    | CSS selector for the subtree to read: the matched element **and** its descendants, nothing else. Omit to walk the document.                                                                                |
 | `maxElements` | `12000` | Ceiling on extracted elements. A single animation-heavy page can have tens of thousands of nodes; the design system lives in the shared stylesheet, so the first few thousand already cover the token set. |
 
 A `root` that matches nothing returns `[]` rather than falling back to the
@@ -66,7 +66,7 @@ whole document. A component that never mounted must not read as a clean one.
 | Property                   | Raw                                                   | Normalised                                                                                                  |
 | -------------------------- | ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
 | `color`, `backgroundColor` | `oklch()`, `oklab()`, `color(srgb …)`, `rgb()`, named | lowercase hex, alpha pair appended when `< 1`, `null` when fully transparent                                |
-| `effectiveBackgroundColor` | —                                                     | nearest non-transparent ancestor background (the value to pair with `color` for contrast)                   |
+| `effectiveBackgroundColor` | the ancestors' backgrounds                            | nearest non-transparent ancestor background (the value to pair with `color` for contrast)                   |
 | `fontFamily`               | the whole stack                                       | first family, unquoted                                                                                      |
 | `lineHeight`               | `24px` / `normal`                                     | unitless ratio against font-size; `null` for `normal`                                                       |
 | `letterSpacing`            | `0.4px` / `normal`                                    | em against font-size; `0` for `normal`                                                                      |

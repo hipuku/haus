@@ -3,7 +3,7 @@
  * the next. Ruling A5, `docs/decisions/0005-variant-and-tone-are-separate.md`.
  *
  * Before this, `variant` meant three different things: visual weight on Button,
- * elevation on Card, semantics on Badge and Toast — and Button said `danger`
+ * elevation on Card, semantics on Badge and Toast, and Button said `danger`
  * where Badge and Toast said `error`. One word for three concepts, and two words
  * for one.
  */

@@ -44,7 +44,7 @@ const config: StorybookConfig = {
     options: {},
   },
   // `docs.autodocs` is gone. Tagging a meta with `autodocs` is the whole
-  // mechanism now, which is what it always meant here — the option said "only
+  // mechanism now, which is what it always meant here: the option said "only
   // tagged components get docs" and nothing was tagged, so this generated
   // nothing at all.
 }

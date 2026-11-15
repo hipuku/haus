@@ -1,7 +1,7 @@
 /**
  * The split only means anything if the three files agree, and nothing else can
  * check that: brand.css chooses, semantics.css reads, and a second brand has to
- * satisfy the same set. An entry missing from any of the three fails silently —
+ * satisfy the same set. An entry missing from any of the three fails silently:
  * `var(--x)` for an undefined `--x` drops the declaration with no warning, no
  * build error, and a component that renders unstyled.
  */
@@ -43,7 +43,7 @@ describe('the brand map', () => {
   })
 
   it('contains nothing but brand entries', () => {
-    // "No new names, no raw values, no structure" — the contract. A brand author
+    // "No new names, no raw values, no structure" is the contract. A brand author
     // reads a flat list of choices, and anything else here is a second place for
     // the role vocabulary to live.
     const strays = [...BRAND].filter(n => !n.startsWith('--haus-brand-'))

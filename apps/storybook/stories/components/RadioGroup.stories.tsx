@@ -9,7 +9,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A group, not a radio — the arrows move the selection and the whole ' +
+          'A group, not a radio. The arrows move the selection and the whole ' +
           'group is one tab stop, which comes free from the native inputs sharing ' +
           'a name. Option ids are indexed rather than built from the value: ' +
           '`"extra large"` or `"50%"` made an id `htmlFor` matched but no selector ' +

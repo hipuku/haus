@@ -2,7 +2,7 @@
  * Every contrast claim in this package, measured.
  *
  * The component suite runs with `css: false`, so axe there sees unstyled DOM and
- * `color-contrast` can never fire — which is why two comments in semantics.css
+ * `color-contrast` can never fire, which is why two comments in semantics.css
  * stated 6.82:1 and 7.05:1 and nothing checked either. Measuring the token
  * values directly is the answer rather than turning CSS on: these are claims
  * about the palette, and the palette is what should be asked.
@@ -58,13 +58,13 @@ const PAIRS: Array<[surface: string, ink: string, min: number]> = [
 
   // The solid roles. success and warning exist at 700 precisely because their
   // 500s fail with white ink, and the comments in semantics.css recording that
-  // were the only thing asserting it — Badge's solid appearance has spent both
+  // were the only thing asserting it. Badge's solid appearance has spent both
   // since it was written, and Button's tone palette now does too.
   ['--haus-color-success-solid', '--haus-color-ink-inverse', 4.5],
   ['--haus-color-warning-solid', '--haus-color-ink-inverse', 4.5],
 
   // Hover. Every tone moves to `emphasis` at 900 under the same ink, so these
-  // should only ever gain contrast — which is worth asserting rather than
+  // should only ever gain contrast, which is worth asserting rather than
   // assuming, because it is the ramp that guarantees it and a rebrand may
   // rewrite the ramp.
   ['--haus-color-info-emphasis', '--haus-color-info-on-default', 4.5],

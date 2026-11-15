@@ -8,7 +8,7 @@ describe('Toggle', () => {
     // Every interaction test in this package used userEvent.click. A switch that
     // works on click and not on Space is operable by exactly half its users, and
     // clicking a <label> reaches the input by a different route than focusing it
-    // and pressing a key — so the click tests could not have caught it.
+    // and pressing a key, so the click tests could not have caught it.
     const onChange = vi.fn()
     render(<Toggle label="Notifications" onChange={onChange} />)
     const toggle = screen.getByRole('switch')

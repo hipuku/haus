@@ -35,7 +35,7 @@
 
     /* ── The ruby palette ──────────────────────────────────────────────────
        Declared here rather than in primitives.css: a brand brings its own ramp.
-       Values are vault's, unchanged — this is a real brand rather than a
+       Values are vault's, unchanged: this is a real brand rather than a
        plausible one, which is the point of shipping it. */
     --haus-ruby-100: oklch(96.5% 0.016 3);
     --haus-ruby-200: oklch(91%   0.044 3);
