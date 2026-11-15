@@ -135,6 +135,24 @@ const SETS = [
       h(C.Button, { variant: Variant, tone: Tone, size: Size, loading, disabled }, 'Button'),
   },
   {
+    name: 'IconButton',
+    figma:
+      '69 variants: Size x Variant x Tone at Default, plus Hover, Focus, Disabled and Loading. Default is md, secondary, neutral, as in code. The glyph is an instance swap, never a variant per icon.',
+    note: "Button's box for a single glyph. It has no text variant, because an icon-only text button has nothing to show that it is a button, and its name comes from `label`, never from the icon. A loading IconButton replaces the glyph with the spinner rather than joining it.",
+    props: { Size: SIZE, Variant: ['primary', 'secondary', 'ghost'], Tone: TONE },
+    booleans: { loading: [false, true], disabled: [false, true] },
+    render: ({ Size, Variant, Tone, loading, disabled }) =>
+      h(C.IconButton, {
+        icon: h('span', { 'aria-hidden': true }, '\u2715'),
+        label: 'Close',
+        size: Size,
+        variant: Variant,
+        tone: Tone,
+        loading,
+        disabled,
+      }),
+  },
+  {
     name: 'Input',
     figma: '5 variants. One variant property, State, with these five values.',
     note: 'The five states are the five selectors in Input.module.css and there is no hover or active rule in the file. Drawn with every layer present, because that is the master variant and the booleans hide them from there: label, required, the two adornments, and the hint or the error line. Note where the adornments sit, inside the border, so they are inside whatever the state does to it. Everything else costs no frames: Label, Required, Prefix, Suffix, Hint, and Filled, which swaps two stacked text layers because placeholder against value is a fill change. Hint and error are mutually exclusive, the component renders {hint && !error}, so the hint is hidden in both Error states. Disabled beats error on source order, which is why this is one property with five values rather than State crossed with Error.',
@@ -175,6 +193,41 @@ const SETS = [
         placeholder: Property === 'Placeholder' ? '0.00' : undefined,
         defaultValue: Property === 'Placeholder' ? undefined : '1250.00',
       }),
+  },
+  {
+    name: 'Select',
+    figma:
+      "42 variants, Size x Value x State. State has Input's five plus Hover and Open: Default, Hover, Focus, Open, Disabled, Error and Error focus. The set draws the trigger only; the label, hint and error lines sit outside it as they do on Input, and the open panel is the Select open composition beside the set.",
+    note: 'The themed control: it draws its own options panel through Popover, so an option can carry a hint line. An error marks the trigger aria-invalid, draws its border in the error colour and rings it in the error colour when focused, the same as Input.',
+    props: {
+      Size: SIZE,
+      Value: ['placeholder', 'selected'],
+      State: ['Default', 'Focus', 'Error', 'Error focus', 'Disabled'],
+    },
+    force: ({ State }) => State === 'Focus' || State === 'Error focus',
+    render: ({ Size, Value, State }) =>
+      h(C.Select, {
+        label: 'Fruit',
+        options: [
+          { value: 'apple', label: 'Apple' },
+          { value: 'pear', label: 'Pear', hint: 'In season' },
+        ],
+        value: Value === 'selected' ? 'apple' : '',
+        onChange: () => {},
+        placeholder: 'Select an option\u2026',
+        size: Size,
+        disabled: State === 'Disabled',
+        hint: State === 'Default' ? 'Pick one' : undefined,
+        error: State.startsWith('Error') ? 'Choose a fruit' : undefined,
+      }),
+  },
+  {
+    name: 'Spinner',
+    figma:
+      '3 variants, Size. Default is md, as in code. text sizes itself to the surrounding type, which is how Button uses it.',
+    note: 'A busy indicator with an announcement contract: it says Loading by default, takes a label, and goes silent only when something else announces the wait, named through announcedBy.',
+    props: { Size: ['text', 'sm', 'md'] },
+    render: ({ Size }) => h(C.Spinner, { size: Size }),
   },
   {
     name: 'Card',
@@ -305,8 +358,6 @@ const SETS = [
 const PORTALLED = [
   {
     name: 'Modal',
-    figma:
-      "3 variants, Size, which only caps the dialog width at 400, 560 or 720. Header, Close and Footer are boolean properties. 9 if you also build the close button's hover and focus, which is worth deferring.",
     figma:
       '3 variants, Size. `footer` is a boolean property, the footer is a layer, so the six rows below are three variants with it on and off.',
     dom: true,
