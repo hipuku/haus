@@ -1,4 +1,5 @@
 import type { StorybookConfig } from '@storybook/react-vite'
+import remarkGfm from 'remark-gfm'
 
 const config: StorybookConfig = {
   stories: ['../stories/**/*.mdx', '../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
@@ -13,7 +14,18 @@ const config: StorybookConfig = {
   // viewport, backgrounds, toolbars, measure, outline and the interaction
   // runner all moved into the core `storybook` package in 9. Listing them here
   // is now an error rather than a no-op.
-  addons: ['@storybook/addon-links', '@storybook/addon-docs', '@storybook/addon-a11y', '@chromatic-com/storybook'],
+  addons: [
+    '@storybook/addon-links',
+    {
+      name: '@storybook/addon-docs',
+      // MDX follows CommonMark, which has no tables: without GitHub-flavoured
+      // Markdown a pipe table renders as a paragraph of pipes, as the package
+      // table on the Installation page did.
+      options: { mdxPluginOptions: { mdxCompileOptions: { remarkPlugins: [remarkGfm] } } },
+    },
+    '@storybook/addon-a11y',
+    '@chromatic-com/storybook',
+  ],
   // A published reference site, not a working Storybook: suppress the onboarding
   // checklist and update toasts, which are noise for a visitor here to read the
   // system and have no local project to onboard to.
