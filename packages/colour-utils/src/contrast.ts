@@ -9,14 +9,18 @@ export interface ContrastResult {
 
 /**
  * Returns the WCAG 2.1 contrast ratio between two colours and AA/AAA pass/fail.
+ *
+ * The verdicts compare the exact ratio with each threshold, as WCAG does, so
+ * 4.496:1 fails 4.5:1. Only the reported `ratio` is rounded, to 2 decimal
+ * places, for display.
  */
 export function wcagContrast(foreground: string, background: string): ContrastResult {
-  const ratio = Math.round(chroma.contrast(foreground, background) * 100) / 100
+  const exact = chroma.contrast(foreground, background)
   return {
-    ratio,
-    passAA: ratio >= 4.5,
-    passAAA: ratio >= 7.0,
-    passAALarge: ratio >= 3.0,
+    ratio: Math.round(exact * 100) / 100,
+    passAA: exact >= 4.5,
+    passAAA: exact >= 7.0,
+    passAALarge: exact >= 3.0,
   }
 }
 

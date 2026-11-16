@@ -33,7 +33,7 @@ deltaE('#3366cc', '#3467cc') // 0.34, effectively the same colour
 
 ### `wcagContrast(foreground, background): ContrastResult`
 
-WCAG 2.1 contrast ratio and pass/fail verdicts.
+WCAG 2.1 contrast ratio and pass/fail verdicts. The verdicts compare the exact ratio with each threshold, as WCAG does, so 4.496:1 fails AA; only the reported `ratio` is rounded, to 2 decimal places.
 
 ```ts
 wcagContrast('#767676', '#ffffff')

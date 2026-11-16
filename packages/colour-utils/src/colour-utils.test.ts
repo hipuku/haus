@@ -45,6 +45,27 @@ describe('wcagContrast', () => {
     const result = wcagContrast('#000000', '#ffffff')
     expect(result.ratio).toBe(Math.round(result.ratio * 100) / 100)
   })
+
+  // WCAG compares the ratio itself with the threshold, without rounding: 4.496:1
+  // fails 4.5:1. These three sit just under each threshold and display as exactly
+  // it, which is where rounding before comparing went wrong (hipuku/haus#136).
+  it('compares the unrounded ratio with the AA threshold', () => {
+    const result = wcagContrast('#007cc3', '#ffffff') // 4.4957:1
+    expect(result.ratio).toBe(4.5)
+    expect(result.passAA).toBe(false)
+  })
+
+  it('compares the unrounded ratio with the AAA threshold', () => {
+    const result = wcagContrast('#003cf8', '#ffffff') // 6.9958:1
+    expect(result.ratio).toBe(7)
+    expect(result.passAAA).toBe(false)
+  })
+
+  it('compares the unrounded ratio with the large-text threshold', () => {
+    const result = wcagContrast('#009bf5', '#ffffff') // 2.9970:1
+    expect(result.ratio).toBe(3)
+    expect(result.passAALarge).toBe(false)
+  })
 })
 
 describe('isLight', () => {

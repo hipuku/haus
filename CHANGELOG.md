@@ -15,6 +15,16 @@ Versioning follows [decision 0004](./DESIGN.md#0004-versioning): a
 token rename is a major at an identical value, and a contrast change is a major
 even when the hex barely moves.
 
+## haus-colour-utils 1.0.1
+
+_2026-11-16. Contrast verdicts compare the exact ratio._
+
+**Fixed** · **`wcagContrast` passed ratios just under a threshold.** It rounded the ratio to 2
+decimal places before comparing, so 4.496:1 passed AA, 6.996:1 passed AAA and 2.997:1 passed
+large-text AA. WCAG compares the ratio itself, without rounding. The verdicts now use the exact
+ratio; `ratio` is still rounded for display. A colour pair that sat in one of those three narrow
+bands now fails where it passed. Reported in [#136](https://github.com/hipuku/haus/issues/136).
+
 ## haus-components 3.2.0
 
 _2026-11-15. Select takes a hint and an error; Button, IconButton, Popover, Tooltip and Toggle fixes._
