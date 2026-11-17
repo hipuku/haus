@@ -25,7 +25,7 @@ libraries underneath. Light mode only.
 - **Generated, not copied.** The primitives, the motion layer and the typed constants are generated
   from the token file, and the brand map type from `brand.css`; CI fails if either drifts.
   [`ARCHITECTURE.md` § Token build](./ARCHITECTURE.md#token-build)
-- **Used by four products.** core, vault, drift and hexicon each take the packages they need.
+- **Used by five products.** core, vault, drift, hexicon and maple each take the packages they need.
   [`ARCHITECTURE.md` § Consumers](./ARCHITECTURE.md#consumers)
 
 ## Documentation

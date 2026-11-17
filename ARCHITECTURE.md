@@ -67,7 +67,7 @@ so a bundler or runtime that falls back to `main` gets a file it can load. `haus
 
 ## Consumers
 
-Four products use haus, each through the packages it needs and nothing else, which is why there is
+Five products use haus, each through the packages it needs and nothing else, which is why there is
 no meta-package ([decision 0007](./DESIGN.md#0007-meta-package)).
 
 ```mermaid
@@ -83,6 +83,7 @@ flowchart LR
     VAULT["vault<br/><small>Electron app</small>"]
     DRIFT["drift<br/><small>design-drift auditor</small>"]
     HEX["hexicon<br/><small>palette tool</small>"]
+    MAPLE["maple<br/><small>brand library for studios</small>"]
 
     T -- "brands/core.css" --> CORE
     C -- "13 of 20" --> CORE
@@ -92,6 +93,7 @@ flowchart LR
     U --> DRIFT
     P --> DRIFT
     U --> HEX
+    U --> MAPLE
 ```
 
 | Product | Packages                                                                     | How it uses them                                                                                                                                                                                                                                                                                      |
@@ -99,7 +101,8 @@ flowchart LR
 | core    | `haus-tokens` ^5.2.0, `haus-components` ^3.1.0                               | Imports the six token stylesheets and `brands/core.css`, then `haus-components/styles.css`. Renders 13 of the 20 components, including stateless ones from Server Components.                                                                                                                         |
 | vault   | `haus-tokens` ^5.2.0, `haus-colour-utils` ^1.0.0, `haus-colour-names` ^1.0.0 | Imports the token stylesheets and `brands/vault.css`, and builds its own components on the roles. Uses `hueFamily` to sort colours and the name data for its two-pass name search. Its side is in [vault's ARCHITECTURE.md](https://github.com/hipuku/vault/blob/main/ARCHITECTURE.md#haus-packages). |
 | drift   | `haus-colour-utils` ^1.0.0, `haus-style-probe` ^1.0.0                        | Runs `extractRawElements` in each crawled page and `normaliseElement` on the result, then `clusterByPerceptualDistance`, `wcagContrast`, `deltaE` and `hueFamily` in its audit.                                                                                                                       |
-| hexicon | `haus-colour-utils` ^0.3.0                                                   | `deltaE` and `wcagContrast` in its palette analysis. It is pinned to the 0.x line.                                                                                                                                                                                                                    |
+| hexicon | `haus-colour-utils` ^1.0.0                                                   | `deltaE` and `wcagContrast` in its palette analysis.                                                                                                                                                                                                                                                  |
+| maple   | `haus-colour-utils` ^1.0.0                                                   | `oklch`, `toHex` and `generateLightnessScale` build each client colour's scale, `deltaE` and `nearestNamedColour` name it, and `wcagContrast` checks its pairs. maple's repository is private, so it is not linked.                                                                                   |
 
 A brand reaches a product as one stylesheet scoped by `data-haus-theme`, so core and vault share
 every role name and differ only in the primitives their brand file chooses.
@@ -321,5 +324,3 @@ a version one.
   decision 0024 as a dependency the package does not otherwise need.
 - **Packages build before they typecheck.** Cross-package types resolve through `dist/`, so every
   CI job that typechecks or tests builds first.
-- **hexicon is on the 0.x line of `haus-colour-utils`** and does not receive the hue family fit or
-  later fixes until it moves to 1.x.
