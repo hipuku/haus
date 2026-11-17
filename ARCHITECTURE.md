@@ -57,7 +57,7 @@ boundary until the workspace is built; CI builds first for that reason.
 | ------------------- | ------- | --------------------------------------------------------------------------------- | ------------------- | ---------- |
 | `haus-tokens`       | 5.2.0   | Six stylesheets, the brand files, typed constants, DTCG JSON, and the token guard | nothing             | tsup       |
 | `haus-components`   | 3.2.0   | 20 React components and one stylesheet                                            | `haus-tokens`       | Vite, tsc  |
-| `haus-colour-utils` | 1.0.0   | Contrast, CIEDE2000, clustering, name matching, OKLCH and hue families            | `chroma-js`         | tsup       |
+| `haus-colour-utils` | 1.0.1   | Contrast, CIEDE2000, clustering, name matching, OKLCH and hue families            | `chroma-js`         | tsup       |
 | `haus-colour-names` | 1.0.0   | 31,900 named colours as data                                                      | nothing             | tsup       |
 | `haus-style-probe`  | 1.0.0   | Computed-style extraction in the page, normalisation in Node                      | `haus-colour-utils` | tsup       |
 
@@ -269,10 +269,10 @@ relies on; neither is an implementation detail.
 | `haus-components`   | 30         | 506   |
 | `haus-style-probe`  | 2          | 81    |
 | `haus-tokens`       | 4          | 71    |
-| `haus-colour-utils` | 3          | 64    |
+| `haus-colour-utils` | 3          | 67    |
 | `haus-colour-names` | 1          | 6     |
 
-728 tests in Vitest. The component suites run in jsdom with `css: false`, so they assert markup,
+731 tests in Vitest. The component suites run in jsdom with `css: false`, so they assert markup,
 behaviour and accessibility, not computed styles. `ssr.test.tsx` renders every component to a string
 in a Node environment, and `rsc-rules.test.tsx` checks the Server Component rule. Each package's
 `vitest.config.ts` sets coverage floors, and CI runs the suites with coverage so the floors are
