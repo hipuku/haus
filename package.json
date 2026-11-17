@@ -28,7 +28,7 @@
     "@eslint/js": "^10.0.1",
     "@vitest/coverage-v8": "^5.0.3",
     "chroma-js": "^3.3.0",
-    "eslint": "^10.12.0",
+    "eslint": "^10.15.0",
     "eslint-plugin-jsx-a11y-x": "^0.2.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-storybook": "^10.6.7",
@@ -40,7 +40,7 @@
     "stylelint-config-standard": "^40.0.0",
     "stylelint-declaration-strict-value": "^1.12.1",
     "typescript": "^5.4.5",
-    "typescript-eslint": "^8.71.2",
+    "typescript-eslint": "^8.72.2",
     "vitest": "^5.0.3"
   },
   "pnpm": {
