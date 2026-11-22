@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "docs": "A Node service, script or CLI: the base, emitting nothing by default.",
+  "extends": "./base.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "noEmit": true
+  }
+}

@@ -14,7 +14,7 @@
     "lint:fix": "eslint . --fix",
     "lint:css": "stylelint \"packages/**/*.css\"",
     "lint:css:fix": "stylelint \"packages/**/*.css\" --fix",
-    "lint:prose": "node scripts/check-punctuation.mjs",
+    "lint:prose": "hipuku-check-prose",
     "lint:md": "markdownlint-cli2",
     "knip": "knip",
     "figma:check": "node scripts/figma/check.mjs",
@@ -22,10 +22,12 @@
     "test:coverage": "pnpm -r run test:coverage",
     "test:scripts": "vitest run scripts",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "lint:names": "hipuku-check-names"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@hipuku/config": "workspace:*",
     "@vitest/coverage-v8": "^5.1.0",
     "chroma-js": "^3.3.0",
     "eslint": "^10.15.0",
@@ -56,5 +58,13 @@
       "katex@<0.18.2": "^0.19.1"
     }
   },
-  "type": "module"
+  "type": "module",
+  "prettier": "@hipuku/config/prettier/wide",
+  "hipuku": {
+    "names": {
+      "skip": [
+        "^packages/colour-names/src/colournames\\.json$"
+      ]
+    }
+  }
 }

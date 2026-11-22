@@ -1,0 +1,50 @@
+{
+  "name": "@hipuku/config",
+  "version": "0.1.0",
+  "description": "Shared TypeScript, Prettier and prose configuration for hipuku repositories, plus the em dash and blocked-name checks.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "author": "hipuku",
+  "homepage": "https://github.com/hipuku/haus/tree/main/packages/config#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hipuku/haus.git",
+    "directory": "packages/config"
+  },
+  "keywords": [
+    "tsconfig",
+    "prettier-config",
+    "config",
+    "hipuku"
+  ],
+  "type": "module",
+  "exports": {
+    "./tsconfig/base.json": "./tsconfig/base.json",
+    "./tsconfig/react.json": "./tsconfig/react.json",
+    "./tsconfig/node.json": "./tsconfig/node.json",
+    "./prettier": "./prettier/index.js",
+    "./prettier/wide": "./prettier/wide.js",
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "hipuku-check-prose": "./bin/check-prose.mjs",
+    "hipuku-check-names": "./bin/check-names.mjs"
+  },
+  "files": [
+    "tsconfig",
+    "prettier",
+    "bin",
+    "README.md",
+    "test"
+  ],
+  "scripts": {
+    "test": "node --test \"test/*.test.mjs\"",
+    "test:coverage": "node --test \"test/*.test.mjs\""
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}
