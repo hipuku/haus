@@ -77,19 +77,24 @@ Ratcheted when a baseline file exists, which is the default: a count can only go
 fails and removing one fails until the baseline comes down with it. A ceiling alone lets the number
 rot. Absolute when there is no baseline, which is right for a repo that started clean.
 
-| Flag                  | Effect                                                              |
-| --------------------- | ------------------------------------------------------------------- |
-| `--write`             | Write the current counts as the baseline                            |
-| `--baseline <path>`   | A baseline somewhere other than `scripts/punctuation-baseline.json` |
-| `--absolute`          | Ignore any baseline and fail on every occurrence                    |
-| `--generated <regex>` | Exclude files a tool regenerates. Repeatable                        |
+| Flag                 | Effect                                                                                |
+| -------------------- | ------------------------------------------------------------------------------------- |
+| `--write`            | Write the current counts as the baseline                                              |
+| `--baseline <path>`  | A baseline somewhere other than `scripts/punctuation-baseline.json`                   |
+| `--absolute`         | Ignore any baseline and fail on every occurrence                                      |
+| `--generated <path>` | Exclude a file a tool regenerates, or a directory when it ends in a slash. Repeatable |
 
 A generated-file exclusion belongs in the repo, because it is a property of the repo:
 
 ```jsonc
 // package.json
-{ "hipuku": { "prose": { "generated": ["^AGENTS\\.md$", "^CLAUDE\\.md$"] } } }
+{ "hipuku": { "prose": { "generated": ["AGENTS.md", "CLAUDE.md"] } } }
 ```
+
+Each value is a plain repo-relative path, or a directory when it ends in a slash, not a pattern.
+The first version of these options built a regular expression from the value, which CodeQL flagged
+as a regex injection on 2026-11-23. Both real uses were literal paths, so a pattern was never
+needed, and a path is easier to write correctly.
 
 core and maple need that one. `next dev` rewrites those files on every startup with em dashes baked
 in by `node_modules/next/dist/server/lib/generate-agent-files.js`, and there is no opt-out short of
@@ -108,6 +113,16 @@ hipuku-check-names --message FILE   # a commit message, plus identity
 
 The blocked words are stored as SHA-256 hashes, so the list does not publish the names it protects.
 A match prints the file and line and never the word.
+
+Takes the same kind of exclusion, for data files whose words are nobody's prose:
+
+```jsonc
+// package.json
+{ "hipuku": { "names": { "skip": ["packages/colour-names/src/colournames.json"] } } }
+```
+
+haus needs that one. A 31,900-entry colour-name database contains most of the English language, so
+a collision with a blocked word is certain and means nothing.
 
 Wire it into a pre-commit hook with `--staged` and a `commit-msg` hook with `--message`, so a name
 cannot reach a commit rather than being found in one.

@@ -73,17 +73,29 @@ const OWN_COPY = /(^|\/)(check-punctuation|check-prose)\.mjs$/
  *  by node_modules/next/dist/server/lib/generate-agent-files.js. There is no
  *  opt-out short of patching that vendored file, so linting these only fails CI
  *  on bytes no human here authored. Set per repo, because only the Next repos
- *  have the problem. */
-function generatedPattern() {
-  const fromFlag = argv.filter((a, i) => argv[i - 1] === '--generated')
-  const pkgPath = join(ROOT, 'package.json')
-  const fromPkg = existsSync(pkgPath) ? (JSON.parse(readFileSync(pkgPath, 'utf8')).hipuku?.prose?.generated ?? []) : []
-  const sources = [...fromFlag, ...fromPkg]
-  if (sources.length === 0) return null
-  return new RegExp(sources.map(s => `(?:${s})`).join('|'))
+ *  have the problem.
+ *
+ *  Plain paths, not patterns. Each value is either an exact repo-relative path
+ *  or, ending in a slash, a directory whose contents are all excluded. The
+ *  first version of this took a regular expression and built one from the
+ *  option, which CodeQL flagged as a regex injection on 2026-11-23 and was
+ *  right to: a value from a flag or a package.json reached `new RegExp`
+ *  unescaped. Looking at what the option is actually used for settled it. Both
+ *  real uses were literal paths, so a pattern was never needed, and a plain
+ *  path is easier to write correctly as well. */
+function excluded(paths) {
+  const exact = new Set(paths.filter(p => !p.endsWith('/')))
+  const dirs = paths.filter(p => p.endsWith('/'))
+  if (exact.size === 0 && dirs.length === 0) return () => false
+  return file => exact.has(file) || dirs.some(d => file.startsWith(d))
 }
 
-const GENERATED = generatedPattern()
+const GENERATED = excluded([
+  ...argv.filter((a, i) => argv[i - 1] === '--generated'),
+  ...(existsSync(join(ROOT, 'package.json'))
+    ? (JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8')).hipuku?.prose?.generated ?? [])
+    : []),
+])
 
 /* Tracked files *and* new ones git is not ignoring.
    `--others --exclude-standard` is what makes a file visible before it is
@@ -102,7 +114,7 @@ function tracked() {
     .toString('utf8')
     .split('\0')
     .filter(Boolean)
-    .filter(f => !NEVER.test(f) && !SKIP.test(f) && !OWN_COPY.test(f) && !(GENERATED && GENERATED.test(f)))
+    .filter(f => !NEVER.test(f) && !SKIP.test(f) && !OWN_COPY.test(f) && !GENERATED(f))
 }
 
 function count(file) {

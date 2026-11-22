@@ -40,8 +40,13 @@ const hash = word => createHash('sha256').update(word).digest('hex')
    haus and stopped on packages/colour-names. Skipping the file is right, and
    skipping by default is not: the repo says which of its files are data.
 
-     "hipuku": { "names": { "skip": ["^packages/colour-names/src/"] } }  */
-const SKIP = (() => {
+   Plain paths, not patterns, for the reason check-prose.mjs records: the first
+   version built a regular expression from the option and CodeQL flagged the
+   injection. A value is an exact repo-relative path, or a directory when it
+   ends in a slash.
+
+     "hipuku": { "names": { "skip": ["packages/colour-names/src/"] } }  */
+const skipped = (() => {
   const fromFlag = process.argv.filter((a, i) => process.argv[i - 1] === '--skip')
   let fromPkg = []
   try {
@@ -50,10 +55,11 @@ const SKIP = (() => {
     /* no package.json, or no key */
   }
   const all = [...fromFlag, ...fromPkg]
-  return all.length === 0 ? null : new RegExp(all.map(s => `(?:${s})`).join('|'))
+  const exact = new Set(all.filter(p => !p.endsWith('/')))
+  const dirs = all.filter(p => p.endsWith('/'))
+  if (exact.size === 0 && dirs.length === 0) return () => false
+  return path => exact.has(path) || dirs.some(d => path.startsWith(d))
 })()
-
-const skipped = path => SKIP !== null && SKIP.test(path)
 
 const findings = []
 

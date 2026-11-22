@@ -119,10 +119,32 @@ test('a lockfile is not prose', () => {
   rmSync(dir, { recursive: true, force: true })
 })
 
+test('a generated directory is excluded when the path ends in a slash', () => {
+  const dir = repo({
+    'generated/a.md': `From a tool ${DASH} not us.\n`,
+    'src/b.md': 'Clean.\n',
+    'package.json': JSON.stringify({ hipuku: { prose: { generated: ['generated/'] } } }),
+  })
+  assert.equal(run(dir).code, 0)
+  rmSync(dir, { recursive: true, force: true })
+})
+
+test('an exclusion is a plain path, so regex metacharacters are not patterns', () => {
+  // 'a.md' as a regex would match 'axmd'. As a path it matches only itself.
+  const dir = repo({
+    axmd: `Not excluded ${DASH} here.\n`,
+    'package.json': JSON.stringify({ hipuku: { prose: { generated: ['a.md'] } } }),
+  })
+  const { code, out } = run(dir)
+  assert.equal(code, 1)
+  assert.match(out, /axmd/)
+  rmSync(dir, { recursive: true, force: true })
+})
+
 test('generated files are excluded when the repo says so', () => {
   const dir = repo({
     'AGENTS.md': `Written by a tool ${DASH} not by us.\n`,
-    'package.json': JSON.stringify({ hipuku: { prose: { generated: ['^AGENTS\\.md$'] } } }),
+    'package.json': JSON.stringify({ hipuku: { prose: { generated: ['AGENTS.md'] } } }),
   })
   assert.equal(run(dir).code, 0)
   rmSync(dir, { recursive: true, force: true })
