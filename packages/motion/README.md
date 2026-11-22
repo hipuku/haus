@@ -9,12 +9,20 @@ A design system that ships motion needs the same numbers in three places: the CS
 renders, the Figma variables a designer reads, and the test that measures what the browser actually
 animated. Writing a duration at a call site puts it in one of those places and nowhere else.
 
-This package holds the calculations CSS cannot perform, which is not the same as the values CSS
-cannot hold. A compiled `linear()` curve sits in a custom property perfectly well, and that is how a
-component consumes it; what CSS cannot do is derive it, because sampling a damped spring's closed
-form needs `exp`, `cos` and `sin`. A duration cap is likewise a choice about which number to use
-rather than a number, so the choice is made here. Everything that is simply a value stays a custom
-property.
+This package exists for the reason above, and not because CSS is short of arithmetic. CSS Values 4
+defines `exp()`, `cos()`, `sin()` and `min()`, so a stylesheet could evaluate a spring's position at
+a single moment and clamp a duration without any help from JavaScript.
+
+What CSS has no way to do is **iterate**. A `linear()` easing is a list of stops, 41 of them for
+every spring in the current token set, and there is no construct in CSS that builds a list of
+computed values. So the curve is sampled here and emitted whole.
+
+The duration caps are here for the three-places reason rather than a capability one. `min()` would
+clamp a duration perfectly well in a stylesheet, but the cap would then live in the CSS alone, and
+the Figma variable and the test that measures the animation would each need their own copy of the
+same number. That is the problem this package is for.
+
+Everything that is simply a value stays a custom property, the compiled curve included.
 
 ## Install
 
