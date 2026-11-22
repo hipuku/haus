@@ -1,0 +1,46 @@
+{
+  "name": "@hipuku/motion",
+  "version": "0.1.0",
+  "description": "Motion engine: role duration caps, spring maths compiled to CSS linear(), sheet drag physics and presence state.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "author": "hipuku",
+  "homepage": "https://github.com/hipuku/haus/tree/main/packages/motion#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hipuku/haus.git",
+    "directory": "packages/motion"
+  },
+  "keywords": [
+    "motion",
+    "animation",
+    "spring",
+    "linear-easing",
+    "design-tokens",
+    "haus"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

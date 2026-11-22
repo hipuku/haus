@@ -197,6 +197,8 @@ importers:
         specifier: ^0.1.0
         version: 0.1.0(vitest@5.1.0)
 
+  packages/motion: {}
+
   packages/style-probe:
     dependencies:
       haus-colour-utils:
