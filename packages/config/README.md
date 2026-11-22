@@ -102,14 +102,19 @@ patching that vendored file, so linting them only fails CI on bytes no human her
 
 ## The names check
 
-Fails when a blocked personal or employer name appears anywhere in the repository, its history, a
-commit message, or the git author and committer identity.
+Fails when a blocked personal or employer name appears in a file on disk, in a commit message, or in
+a git author or committer identity.
 
 ```bash
-hipuku-check-names                  # files on disk and the whole history
+hipuku-check-names                  # files on disk, and every commit message and identity
 hipuku-check-names --staged         # staged files, plus identity
 hipuku-check-names --message FILE   # a commit message, plus identity
 ```
+
+What it does not read is historical file contents. The history pass is `git log --all` over commit
+messages and the author and committer of each commit, so a name that was only ever in a version of a
+file that has since been changed or deleted goes unreported. Treat this as a gate on what is being
+written, not as an audit of what has already been pushed.
 
 The blocked words are stored as SHA-256 hashes, so the list does not publish the names it protects.
 A match prints the file and line and never the word.

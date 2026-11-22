@@ -10,7 +10,8 @@
 // which is being deleted. Every public repo should run it.
 //
 // Usage:
-//   hipuku-check-names                 files on disk and the whole history
+//   hipuku-check-names                 files on disk, and every commit
+//                                      message and identity in the history
 //   hipuku-check-names --staged        files staged for commit, plus identity
 //   hipuku-check-names --message FILE  a commit message, plus identity
 //
@@ -91,7 +92,9 @@ if (args[0] === '--message') {
   scan(readFileSync(args[1], 'utf8'), 'commit message')
   scanIdentity()
 } else if (args[0] === '--staged') {
-  const staged = git('diff', '--cached', '--name-only', '--diff-filter=ACMR', '-z').split('\0').filter(Boolean)
+  // ACMR plus T. A tracked symlink replaced by a regular file is a type
+  // change, and without T its new contents are never read.
+  const staged = git('diff', '--cached', '--name-only', '--diff-filter=ACMRT', '-z').split('\0').filter(Boolean)
   for (const path of staged) {
     if (skipped(path)) continue
     scanFile(path, p => execFileSync('git', ['show', `:${p}`], { maxBuffer: 64 * 1024 * 1024 }))
@@ -104,7 +107,10 @@ if (args[0] === '--message') {
     try {
       scanFile(path, p => readFileSync(p))
     } catch (error) {
-      if (error.code !== 'ENOENT') throw error // deleted but not yet staged
+      // ENOENT: deleted but not yet staged. EISDIR: a submodule, which
+      // `ls-files --cached` lists as a gitlink and which has no contents to
+      // read from this repo. check-prose.mjs skips the same entries by stat.
+      if (error.code !== 'ENOENT' && error.code !== 'EISDIR') throw error
     }
   }
   // Commit messages and every author and committer name and email.

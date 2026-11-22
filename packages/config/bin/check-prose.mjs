@@ -32,8 +32,8 @@
  * Runs from the current working directory, so it checks the repo that calls it.
  */
 import { execFileSync } from 'node:child_process'
-import { readFileSync, writeFileSync, existsSync, statSync } from 'node:fs'
-import { join, resolve } from 'node:path'
+import { readFileSync, writeFileSync, existsSync, statSync, mkdirSync } from 'node:fs'
+import { dirname, join, resolve } from 'node:path'
 
 const argv = process.argv.slice(2)
 const flag = name => argv.includes(`--${name}`)
@@ -136,6 +136,9 @@ const total = () => [...found.values()].reduce((a, b) => a + b, 0)
 
 if (flag('write')) {
   const sorted = Object.fromEntries([...found].sort(([a], [b]) => a.localeCompare(b)))
+  // The default baseline sits in scripts/, which a repo adopting this package
+  // need not have yet, and a --baseline elsewhere has the same problem.
+  mkdirSync(dirname(BASELINE), { recursive: true })
   writeFileSync(BASELINE, JSON.stringify(sorted, null, 2) + '\n')
   console.log(`baseline written: ${found.size} files, ${total()} occurrences`)
   process.exit(0)
@@ -146,7 +149,10 @@ const baseline = hasBaseline ? JSON.parse(readFileSync(BASELINE, 'utf8')) : {}
 const problems = []
 
 for (const [file, n] of [...found].sort()) {
-  const allowed = baseline[file] ?? 0
+  // Own properties only. The baseline is parsed JSON, so a file named
+  // `constructor` or `toString` would otherwise read Object.prototype's and
+  // compare a count against a function, which is false and passes silently.
+  const allowed = Object.hasOwn(baseline, file) ? baseline[file] : 0
   if (n > allowed) {
     problems.push(
       allowed === 0

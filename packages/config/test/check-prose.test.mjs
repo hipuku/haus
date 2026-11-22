@@ -7,7 +7,7 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { execFileSync, spawnSync } from 'node:child_process'
-import { mkdtempSync, writeFileSync, mkdirSync, rmSync } from 'node:fs'
+import { mkdtempSync, writeFileSync, mkdirSync, rmSync, readFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -147,5 +147,36 @@ test('generated files are excluded when the repo says so', () => {
     'package.json': JSON.stringify({ hipuku: { prose: { generated: ['AGENTS.md'] } } }),
   })
   assert.equal(run(dir).code, 0)
+  rmSync(dir, { recursive: true, force: true })
+})
+
+test('--write creates the baseline directory when the repo has no scripts/', () => {
+  // A repo adopting this package has no scripts/ yet, and the default baseline
+  // path lives inside it, so the write has to make the directory itself.
+  const dir = repo({ 'a.md': `One ${DASH} here.\n` })
+  const { code, out } = run(dir, '--write')
+  assert.equal(code, 0, out)
+  const written = JSON.parse(readFileSync(join(dir, 'scripts', 'punctuation-baseline.json'), 'utf8'))
+  assert.deepEqual(written, { 'a.md': 1 })
+  rmSync(dir, { recursive: true, force: true })
+})
+
+test('--write creates the directory of a --baseline given elsewhere', () => {
+  const dir = repo({ 'a.md': `One ${DASH} here.\n` })
+  const where = join('config', 'nested', 'prose.json')
+  assert.equal(run(dir, '--write', '--baseline', where).code, 0)
+  assert.deepEqual(JSON.parse(readFileSync(join(dir, where), 'utf8')), { 'a.md': 1 })
+  rmSync(dir, { recursive: true, force: true })
+})
+
+test('a file named after an Object prototype member is still checked', () => {
+  /* The baseline is parsed JSON, so `baseline['constructor']` on an empty one
+     used to return Object.prototype.constructor and compare a count against a
+     function, which is false. The occurrence passed with nothing to show it. */
+  const dir = repo({ constructor: `One ${DASH} here.\n`, toString: `${ENTITY}\n` })
+  const { code, out } = run(dir)
+  assert.equal(code, 1)
+  assert.match(out, /constructor: 1 em dash/)
+  assert.match(out, /toString: 1 em dash/)
   rmSync(dir, { recursive: true, force: true })
 })
