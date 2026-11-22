@@ -33,7 +33,12 @@ tooling choice rather than a design-system one.
 
 The names check takes a per-repo skip list. haus sets one for
 `packages/colour-names/src/colournames.json`: a 31,900-entry colour-name database collides with a
-blocked word, which means nothing in a list of that size.
+blocked word, which means nothing in a list of that size. It never scans `node_modules`, regardless
+of the skip list and regardless of whether the repo has a `.gitignore` for git to honour.
+
+It checks files on disk, commit messages and the git author and committer identity. It does **not**
+read historical file contents, so a name that existed only in a since-changed version of a file goes
+unreported: it is a gate on what is being written, not an audit of what has already been pushed.
 
 ESLint, Stylelint and markdownlint are not included. Their configs differ by runtime rather than
 by preference, so a shared base is separate work.

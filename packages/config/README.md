@@ -119,6 +119,11 @@ written, not as an audit of what has already been pushed.
 The blocked words are stored as SHA-256 hashes, so the list does not publish the names it protects.
 A match prints the file and line and never the word.
 
+That also means a test cannot write a blocked word in order to check that it is caught, so the
+script reads `HIPUKU_NAMES_TEST_HASHES` for a comma-separated list of extra hashes. It exists for
+the test suite, which puts a harmless sentinel word there, and it is not configuration: a repo that
+needs to block a further name should get a `package.json` key and a decision record instead.
+
 Takes the same kind of exclusion, for data files whose words are nobody's prose:
 
 ```jsonc

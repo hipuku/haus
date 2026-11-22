@@ -23,12 +23,28 @@ import { createHash } from 'node:crypto'
 import { execFileSync } from 'node:child_process'
 import { readFileSync } from 'node:fs'
 
+/* The words are stored only as hashes, which is the point of the whole design:
+   the list does not publish the names it protects. It also means a test cannot
+   write a blocked word in order to check that it is caught, so without a seam
+   the matching itself is the one part of this script that cannot be tested.
+
+   This is that seam, and it is named for what it is rather than offered as
+   configuration. The suite puts the hash of a harmless sentinel word here and
+   asserts both that the word is found and that it is never printed. A repo that
+   genuinely wants to block a further name should get a package.json key and a
+   decision record, not an environment variable set in CI. */
+const TEST_HASHES = (process.env.HIPUKU_NAMES_TEST_HASHES ?? '')
+  .split(',')
+  .map(h => h.trim().toLowerCase())
+  .filter(Boolean)
+
 const BLOCKED = new Set([
   'd7a98e7d5ce496e71555c4599b1f613b2e5fbc16c52586d5f951ce1fe993e0de',
   '891b6b5e36a41a89930df5c8b68eb5b339271c327e5da736b5b7a1f528f4808e',
   'b1fca1e43b68200b66ecdbd4cab9d6d80f6d0f55d480db6e8d27ac1c876d7edb',
   '5e32cab3fba457f8fe24614ee789967cb011cbb50783f37f21c514673d0543a2',
   'bca6cc053dd0e20c7c4b71d0e46e1994b9d45250f35a2b65a5f2fd1b7423f04e',
+  ...TEST_HASHES,
 ])
 
 const git = (...args) => execFileSync('git', args, { encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 })
@@ -47,6 +63,15 @@ const hash = word => createHash('sha256').update(word).digest('hex')
    ends in a slash.
 
      "hipuku": { "names": { "skip": ["packages/colour-names/src/"] } }  */
+/* node_modules, always, and not negotiable per repo. Every real repo gitignores
+   it, so `--exclude-standard` drops it and this never fires there. A repo
+   without a .gitignore is not hypothetical though, and check-prose.mjs already
+   carries this pattern for exactly that reason. This script did not, which is
+   the sort of gap that opens when two checks are written as a pair and only one
+   of them learns something: found on 2026-11-23 while giving this file its
+   first test suite, with a dependency's own source triggering the check. */
+const NEVER = /(^|\/)node_modules\//
+
 const skipped = (() => {
   const fromFlag = process.argv.filter((a, i) => process.argv[i - 1] === '--skip')
   let fromPkg = []
@@ -58,8 +83,7 @@ const skipped = (() => {
   const all = [...fromFlag, ...fromPkg]
   const exact = new Set(all.filter(p => !p.endsWith('/')))
   const dirs = all.filter(p => p.endsWith('/'))
-  if (exact.size === 0 && dirs.length === 0) return () => false
-  return path => exact.has(path) || dirs.some(d => path.startsWith(d))
+  return path => NEVER.test(path) || exact.has(path) || dirs.some(d => path.startsWith(d))
 })()
 
 const findings = []
