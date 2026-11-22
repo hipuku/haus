@@ -13,6 +13,11 @@
       "entry": ["src/index.ts", "src/**/*.test.{ts,tsx}"],
       "project": ["src/**/*.{ts,tsx}"],
     },
+    // No TypeScript: JSON configs, two Prettier presets and two bin scripts.
+    "packages/config": {
+      "entry": ["bin/*.mjs", "prettier/*.js", "test/*.test.mjs"],
+      "project": ["bin/**/*.mjs", "prettier/**/*.js", "test/**/*.mjs"],
+    },
     "packages/tokens": {
       "entry": ["src/index.ts", "src/guard.ts", "scripts/*.ts", "src/**/*.test.ts"],
       "project": ["src/**/*.ts", "scripts/**/*.ts"],

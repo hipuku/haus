@@ -15,6 +15,34 @@ Versioning follows [decision 0004](./DESIGN.md#0004-versioning): a
 token rename is a major at an identical value, and a contrast change is a major
 even when the hex barely moves.
 
+## @hipuku/config 0.1.0
+
+_Unreleased. A new package: the shared TypeScript, Prettier and prose configuration._
+
+**Added** · **`@hipuku/config`.** TypeScript bases (`base`, `react`, `node`), two Prettier
+presets, and two bin scripts: `hipuku-check-prose` for the em dash rule and `hipuku-check-names`
+for blocked personal and employer names. It replaces per-repo copies of the same checks, which had
+drifted into seven versions across eight repositories, one of which could not see an untracked
+file.
+
+Two presets rather than one, because two Prettier styles are in use and switching a repo between
+them reformats every file it has. `prettier` is 100 columns with Prettier's own defaults;
+`prettier/wide` is 120 columns, no semicolons and single quotes, which is what haus and vault
+write. The reason is in the package README rather than a numbered decision, because it is a
+tooling choice rather than a design-system one.
+
+The names check takes a per-repo skip list. haus sets one for
+`packages/colour-names/src/colournames.json`: a 31,900-entry colour-name database collides with a
+blocked word, which means nothing in a list of that size. It never scans `node_modules`, regardless
+of the skip list and regardless of whether the repo has a `.gitignore` for git to honour.
+
+It checks files on disk, commit messages and the git author and committer identity. It does **not**
+read historical file contents, so a name that existed only in a since-changed version of a file goes
+unreported: it is a gate on what is being written, not an audit of what has already been pushed.
+
+ESLint, Stylelint and markdownlint are not included. Their configs differ by runtime rather than
+by preference, so a shared base is separate work.
+
 ## haus-colour-utils 1.0.1
 
 _2026-11-16. Contrast verdicts compare the exact ratio._
