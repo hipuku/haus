@@ -66,6 +66,20 @@ describe('springPosition', () => {
   it('rejects a bounce that is not finite', () => {
     expect(() => springPosition({ visualDuration: 0.2, bounce: Number.NaN }, 0.1)).toThrow(RangeError)
   })
+
+  it('rejects a duration that is positive and finite but gives an unusable frequency', () => {
+    /* Review finding on haus#146. Both of these pass the positive-and-finite
+       check and then break the maths. 1.2 × MAX_VALUE overflows to Infinity, so
+       omega is 0, the remaining-distance bound is a constant 1 and
+       springSettleTime never returns: a hang, not a wrong answer. MIN_VALUE
+       gives an infinite omega and NaN positions, so the loop exits at once and
+       reports a 1 ms settle that means nothing. */
+    for (const visualDuration of [Number.MAX_VALUE, Number.MIN_VALUE]) {
+      expect(() => springPosition({ visualDuration, bounce: 0 }, 0.1)).toThrow(RangeError)
+      expect(() => springSettleTime({ visualDuration, bounce: 0 })).toThrow(RangeError)
+      expect(() => springToLinear({ visualDuration, bounce: 0 })).toThrow(RangeError)
+    }
+  })
 })
 
 describe('springSettleTime', () => {

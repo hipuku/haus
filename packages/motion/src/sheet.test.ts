@@ -51,6 +51,22 @@ describe('VelocityTracker', () => {
     expect(releaseTarget(40, 400, tracker.velocity(2032))).toBe('open')
   })
 
+  it('ignores stale samples at release, so a flick that already stopped does not dismiss', () => {
+    /* Review finding on haus#146. add() prunes against the time of the last
+       move event, so a pointer that flicked and then held still fires no
+       further events and the fast early samples survive in the buffer. The
+       freshness guard does not catch it, because the newest sample is recent.
+       Before the fix this reported 1 px/ms, twice the dismiss threshold, and
+       the sheet closed under a finger that had been still for 51 ms. */
+    const tracker = new VelocityTracker()
+    tracker.add(0, 0)
+    tracker.add(50, 100)
+    tracker.add(80, 100)
+    tracker.add(100, 100)
+    expect(tracker.velocity(151)).toBe(0)
+    expect(releaseTarget(100, 400, tracker.velocity(151))).toBe('open')
+  })
+
   it('forgets everything on reset', () => {
     const tracker = new VelocityTracker()
     tracker.add(0, 0)

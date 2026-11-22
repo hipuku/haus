@@ -37,8 +37,8 @@ easy to confuse:
 - the **visual duration**, which is what a person perceives and what a role's cap applies to
 - the **settle time**, which is how long the CSS has to run for the curve to finish
 
-The compiled curves settle at snappy 353 ms, smooth 530 ms, snappy-bounce 368 ms and smooth-bounce
-512 ms, each within 0.1% of its target. A test that compares a measured animation against a role's
+The compiled curves settle at snappy 353 ms, smooth 530 ms, snappy-bounce 335 ms and smooth-bounce
+512 ms, each matching the `durationMs` of its token exactly. A test that compares a measured animation against a role's
 cap has to compare the visual duration, and one that compares against the CSS has to use the settle
 time. `springSettleTime` returns the second so a test can tell them apart.
 

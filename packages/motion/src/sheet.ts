@@ -43,8 +43,28 @@ export class VelocityTracker {
    * Also 0 with fewer than two samples or no time between them.
    */
   velocity(nowMs: number): number {
-    const first = this.samples[0]
-    const last = this.samples[this.samples.length - 1]
+    /* The window is reapplied here, against the release time, and not only in
+       add(). add() prunes against the time of the last move event, so a pointer
+       that moved fast and then held still fires no further events and leaves
+       its earlier, faster samples in the buffer. The slope across the whole
+       buffer then reports a flick that had already finished: samples at
+       (0,0), (50,100), (80,100), (100,100) released at 151 ms gave 1 px/ms,
+       twice the dismiss threshold, when the two samples inside the window both
+       sat at 100 and the real velocity was 0. The sheet dismissed itself under
+       a still finger.
+
+       The freshness guard below does not catch it, because it only asks
+       whether the newest sample is recent, not whether the oldest one is.
+
+       When fewer than two samples fall inside the window the whole buffer is
+       used instead, which is the fallback that measures a flick after a pause:
+       there is no recent pair to take a slope from, and the only estimate
+       available is the one spanning the gap. */
+    const cutoff = nowMs - VELOCITY_WINDOW_MS
+    const recent = this.samples.filter(sample => sample.t >= cutoff)
+    const window = recent.length >= 2 ? recent : this.samples
+    const first = window[0]
+    const last = window[window.length - 1]
     if (!first || !last || last.t <= first.t) return 0
     if (nowMs - last.t > VELOCITY_WINDOW_MS) return 0
     return (last.y - first.y) / (last.t - first.t)

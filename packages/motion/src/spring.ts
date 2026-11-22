@@ -46,8 +46,19 @@ function shape({ visualDuration, bounce }: SpringOptions): SpringShape {
   // Motion's conversion: stiffness = (2π / (1.2 × visualDuration))², and a
   // damping ratio of 1 - bounce, kept between 0.05 and 1 so the spring always
   // settles and never becomes overdamped.
+  const omega = (2 * Math.PI) / (1.2 * visualDuration)
+  /* A finite, positive duration can still give an unusable frequency, so the
+     check above is not enough. 1.2 × Number.MAX_VALUE overflows to Infinity
+     and omega becomes 0, which makes the remaining-distance bound a constant 1
+     and springSettleTime loop forever. Number.MIN_VALUE goes the other way:
+     omega is Infinity and every position is NaN, so the loop exits at once and
+     reports a 1 ms settle that means nothing. Neither is reachable from a
+     token, and both are better as a throw than as a hang or a silent lie. */
+  if (!Number.isFinite(omega) || omega <= 0) {
+    throw new RangeError(`visualDuration ${visualDuration} gives an unusable spring frequency ${omega}`)
+  }
   return {
-    omega: (2 * Math.PI) / (1.2 * visualDuration),
+    omega,
     zeta: Math.min(1, Math.max(0.05, 1 - bounce)),
   }
 }
