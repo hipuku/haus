@@ -49,12 +49,14 @@ _Unreleased. A new package: the maths behind haus's motion._
 
 **Added** · **`@hipuku/motion`.** Role duration caps, springs sampled and compiled to a CSS
 `linear()` curve, sheet drag physics with a velocity tracker, and presence state across an exit
-animation. Plain functions over numbers, no DOM and no framework. 57 tests at 100% of statements,
+animation. Plain functions over numbers, no DOM and no framework. 59 tests at 100% of statements,
 branches, functions and lines.
 
-It holds the part of motion that cannot be a custom property. A spring has no CSS keyword, so it is
-sampled here and emitted as a curve; a duration cap is a rule rather than a value, so it is applied
-here. Everything that can be a token stays one.
+It holds the calculations CSS cannot perform, not the values CSS cannot hold. Sampling a damped
+spring needs `exp`, `cos` and `sin`, so the curve is computed here and emitted as a `linear()`
+value; clamping a duration to its role's cap is a choice about which number to use, so the choice
+is made here. The results are ordinary values and are consumed as custom properties like any other
+token.
 
 A spring's visual duration and its settle time are reported separately, because a role's cap
 applies to the first and the CSS has to run for the second. The compiled curves settle at snappy

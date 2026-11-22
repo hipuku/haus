@@ -9,9 +9,12 @@ A design system that ships motion needs the same numbers in three places: the CS
 renders, the Figma variables a designer reads, and the test that measures what the browser actually
 animated. Writing a duration at a call site puts it in one of those places and nowhere else.
 
-This package holds the part that cannot live in CSS. A spring has no CSS keyword, so it is sampled
-here and emitted as a `linear()` curve. A duration cap is a rule rather than a value, so it is
-applied here. Everything that can be a custom property stays one.
+This package holds the calculations CSS cannot perform, which is not the same as the values CSS
+cannot hold. A compiled `linear()` curve sits in a custom property perfectly well, and that is how a
+component consumes it; what CSS cannot do is derive it, because sampling a damped spring's closed
+form needs `exp`, `cos` and `sin`. A duration cap is likewise a choice about which number to use
+rather than a number, so the choice is made here. Everything that is simply a value stays a custom
+property.
 
 ## Install
 
@@ -63,6 +66,6 @@ matching the CSS.
 
 ## Tests
 
-57 tests, 100% of statements, branches, functions and lines. The floor is set at 100 rather than
+59 tests, 100% of statements, branches, functions and lines. The floor is set at 100 rather than
 just under it, which is unusual here and deliberate: the package is pure functions over numbers, so
 every branch is reachable from a test and a drop means a branch arrived without a case for it.
