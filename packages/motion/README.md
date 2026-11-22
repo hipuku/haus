@@ -13,16 +13,24 @@ This package exists for the reason above, and not because CSS is short of arithm
 defines `exp()`, `cos()`, `sin()` and `min()`, so a stylesheet could evaluate a spring's position at
 a single moment and clamp a duration without any help from JavaScript.
 
-What CSS has no way to do is **iterate**. A `linear()` easing is a list of stops, 41 of them for
-every spring in the current token set, and there is no construct in CSS that builds a list of
-computed values. So the curve is sampled here and emitted whole.
+What CSS has no way to do is **iterate**. A `linear()` easing is a list of stops, and there is no
+construct in CSS that builds a list of computed values. The count is 41 for every spring in the
+current token set and it grows with bounce, since the sampling rate follows the number of
+oscillations: 41 at bounce 0.15, 171 at 0.9, 347 at 1. So the curve is sampled here and emitted
+whole.
 
 The duration caps are here for the three-places reason rather than a capability one. `min()` would
-clamp a duration perfectly well in a stylesheet, but the cap would then live in the CSS alone, and
-the Figma variable and the test that measures the animation would each need their own copy of the
-same number. That is the problem this package is for.
+clamp a duration in a stylesheet perfectly well, but the cap would then live in the CSS alone, and
+the Figma variable and the test that measures the animation would each need their own copy.
 
-Everything that is simply a value stays a custom property, the compiled curve included.
+**That is the goal, not yet the state.** `capDuration` returns a capped number and nothing in this
+repository carries it onward: the CSS, the Figma variables and the tests are not reading one shared
+value today, because `tokens.generated.ts` is not generated here (see below). The package is the
+piece that makes sharing possible, not evidence that it has happened.
+
+The same distinction applies to the curve. `springToLinear` returns a string; it does not write a
+custom property, and the token source contains no compiled spring curve. A caller is expected to
+put the returned value in one, which is where it belongs, but that is the caller's job.
 
 ## Install
 

@@ -54,10 +54,13 @@ branches, functions and lines.
 
 It exists because the same numbers are needed in the CSS, the Figma variables and the tests, not
 because CSS is short of arithmetic: CSS Values 4 has `exp()`, `cos()`, `sin()` and `min()`. What CSS
-cannot do is iterate, and a `linear()` easing is a list of 41 stops, so the curve is sampled here
-and emitted whole. The caps are applied here so that one capped number reaches all three places
-rather than being reproduced in each. The results are ordinary values, consumed as custom properties
-like any other token.
+cannot do is iterate, and a `linear()` easing is a list of stops, 41 for each spring in the current
+token set and more as bounce rises, so the curve is sampled here and emitted whole.
+
+Sharing one capped number across the CSS, Figma and the tests is the **intended** outcome and not
+yet the case: `capDuration` returns a number and nothing here propagates it, and
+`tokens.generated.ts` is not generated in this repository. Likewise `springToLinear` returns a
+string rather than writing a custom property; storing it in one is the caller's job.
 
 A spring's visual duration and its settle time are reported separately, because a role's cap
 applies to the first and the CSS has to run for the second. The compiled curves settle at snappy
