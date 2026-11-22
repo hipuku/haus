@@ -18,6 +18,10 @@
       "entry": ["bin/*.mjs", "prettier/*.js", "test/*.test.mjs"],
       "project": ["bin/**/*.mjs", "prettier/**/*.js", "test/**/*.mjs"],
     },
+    "packages/motion": {
+      "entry": ["src/index.ts", "src/**/*.test.ts"],
+      "project": ["src/**/*.ts"],
+    },
     "packages/tokens": {
       "entry": ["src/index.ts", "src/guard.ts", "scripts/*.ts", "src/**/*.test.ts"],
       "project": ["src/**/*.ts", "scripts/**/*.ts"],

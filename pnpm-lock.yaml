@@ -202,6 +202,8 @@ importers:
 
   packages/config: {}
 
+  packages/motion: {}
+
   packages/style-probe:
     dependencies:
       haus-colour-utils:

@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    // The repo's base targets ES2020. This package needs ES2022 for
+    // `Array.prototype.at`, which `spring.test.ts` uses to read the last
+    // sample of a compiled `linear()` curve. Raised here rather than in the
+    // base, because moving the base retargets five published packages and that
+    // is its own change. @hipuku/config/tsconfig/base.json is ES2022 and is
+    // where the repo lands when it adopts the shared config.
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "noUncheckedIndexedAccess": true
+  },
+  "include": ["src"]
+}

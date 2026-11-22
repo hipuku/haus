@@ -1,0 +1,87 @@
+# @hipuku/motion
+
+The maths behind haus's motion: role duration caps, springs compiled to CSS `linear()`, sheet drag
+physics and presence state. Plain functions over numbers, no DOM and no framework.
+
+## Why it exists
+
+A design system that ships motion needs the same numbers in three places: the CSS a component
+renders, the Figma variables a designer reads, and the test that measures what the browser actually
+animated. Writing a duration at a call site puts it in one of those places and nowhere else.
+
+This package exists for the reason above, and not because CSS is short of arithmetic. CSS Values 4
+defines `exp()`, `cos()`, `sin()` and `min()`, so a stylesheet could evaluate a spring's position at
+a single moment and clamp a duration without any help from JavaScript.
+
+What CSS has no way to do is **iterate**. A `linear()` easing is a list of stops, and there is no
+construct in CSS that builds a list of computed values. The count is 41 for every spring in the
+current token set and it grows with bounce, since the sampling rate follows the number of
+oscillations: 41 at bounce 0.15, 171 at 0.9, 347 at 1. So the curve is sampled here and emitted
+whole.
+
+The duration caps are here for the three-places reason rather than a capability one. `min()` would
+clamp a duration in a stylesheet perfectly well, but the cap would then live in the CSS alone, and
+the Figma variable and the test that measures the animation would each need their own copy.
+
+**That is the goal, not yet the state.** `capDuration` returns a capped number and nothing in this
+repository carries it onward: the CSS, the Figma variables and the tests are not reading one shared
+value today, because `tokens.generated.ts` is not generated here (see below). The package is the
+piece that makes sharing possible, not evidence that it has happened.
+
+The same distinction applies to the curve. `springToLinear` returns a string; it does not write a
+custom property, and the token source contains no compiled spring curve. A caller is expected to
+put the returned value in one, which is where it belongs, but that is the caller's job.
+
+## Install
+
+```bash
+pnpm add @hipuku/motion
+```
+
+## What it does
+
+| Export                                                             | Does                                                                                                                                 |
+| ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `capDuration(role, ms)`                                            | Clamps a duration to the role's cap. A non-finite value returns 0, so a bad token produces no animation rather than an unbounded one |
+| `springToLinear`, `springPosition`, `springSettleTime`             | Samples a spring and compiles it to a CSS `linear()` curve, with the settle time reported separately from the visual duration        |
+| `originFromTrigger`, `highlightMove`, `durationForDistance`        | Where a popover grows from, how a highlight travels between items, and how far-apart things take longer to move                      |
+| `VelocityTracker`, `dragMovesSheet`, `releaseTarget`, `rubberBand` | Sheet drag: whether a gesture should move the sheet, where it lands on release, and resistance past the edge                         |
+| `presence`, `isMounted`                                            | Mount and unmount state across an exit animation, so a component is still rendered while it is leaving                               |
+
+## Springs, and why the duration is two numbers
+
+A spring does not stop. It approaches rest and gets close enough, so it has two durations that are
+easy to confuse:
+
+- the **visual duration**, which is what a person perceives and what a role's cap applies to
+- the **settle time**, which is how long the CSS has to run for the curve to finish
+
+The compiled curves settle at snappy 353 ms, smooth 530 ms, snappy-bounce 335 ms and smooth-bounce
+512 ms, each matching the `durationMs` of its token exactly. A test that compares a measured animation against a role's
+cap has to compare the visual duration, and one that compares against the CSS has to use the settle
+time. `springSettleTime` returns the second so a test can tell them apart.
+
+This is also why `spring.snappy-bounce` is 200 ms of visual duration rather than 220: 220 broke the
+200 ms cap on the `highlight` and `feedback` roles.
+
+## `src/tokens.generated.ts` has no generator here yet
+
+The role names, caps, modes, transitions and stagger values in that file are generated. Its
+generator was in the repository this engine came from, and it did not come across: haus has its own
+token build, and its source has `duration`, `easing` and composite `motion` pairs but no roles, no
+caps, no spring definitions and no modes.
+
+So for now the file is carried over verbatim and is **not** regenerated by anything in this repo.
+Editing it by hand is wrong, and so is trusting it to match `packages/tokens`. The next change adds
+roles, caps and springs to `packages/tokens/src/tokens.json` and makes `scripts/build-tokens.ts`
+emit this file, at which point the engine and the CSS read the same numbers again, which is the
+whole point of it being generated.
+
+Until then, treat the values as the engine's own and do not add a component that depends on them
+matching the CSS.
+
+## Tests
+
+59 tests, 100% of statements, branches, functions and lines. The floor is set at 100 rather than
+just under it, which is unusual here and deliberate: the package is pure functions over numbers, so
+every branch is reachable from a test and a drop means a branch arrived without a case for it.
