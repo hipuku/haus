@@ -1,1 +1,4 @@
-{ "title": "Tools", "pages": ["converter"] }
+{
+  "title": "Tools",
+  "pages": ["converter", "colour"]
+}
