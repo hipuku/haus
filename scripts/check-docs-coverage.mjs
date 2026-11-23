@@ -10,6 +10,7 @@
 
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
+import { pathToFileURL } from 'node:url'
 
 /** The registry items of type registry:ui with no page under `pagesDir`. */
 export function findUndocumented(root, pagesDir = 'apps/docs/content/docs/components') {
@@ -20,7 +21,10 @@ export function findUndocumented(root, pagesDir = 'apps/docs/content/docs/compon
     .filter(name => !existsSync(join(root, pagesDir, `${name}.mdx`)))
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+// Compared as URLs: import.meta.url encodes a space as %20 and a hand-built
+// `file://` string does not, so in a path with a space the check ran nothing
+// and exited 0.
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const missing = findUndocumented(process.cwd())
   if (missing.length) {
     console.error('These registry items have no docs page:\n')

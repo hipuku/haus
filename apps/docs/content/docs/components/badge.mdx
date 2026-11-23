@@ -30,8 +30,9 @@ import { Badge } from '@/components/haus/components/Badge'
 
 ## API
 
-Badge also takes every HTML attribute of the element it renders, and forwards its ref to that
-element.
+Badge also takes the attributes every HTML element has (`React.HTMLAttributes`), and forwards its
+ref to the element it renders. Attributes only one element has, such as `htmlFor` on an `output`,
+are not in its type.
 
 <ApiTable file="components/Badge/Badge.tsx" name="BadgeProps" />
 

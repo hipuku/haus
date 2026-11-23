@@ -34,3 +34,22 @@ describe('findUndocumented', () => {
     expect(findUndocumented(join(import.meta.dirname, '..'))).toEqual([])
   })
 })
+
+describe('run as a script', () => {
+  it('checks, and fails, from a path with a space in it', async () => {
+    const { execFileSync } = await import('node:child_process')
+    const { cpSync } = await import('node:fs')
+    const root = repo([{ name: 'ghost', type: 'registry:ui' }], [])
+    const dir = join(root, 'with space')
+    mkdirSync(join(dir, 'scripts'), { recursive: true })
+    cpSync(join(root, 'registry.json'), join(dir, 'registry.json'))
+    cpSync(join(import.meta.dirname, 'check-docs-coverage.mjs'), join(dir, 'scripts/check-docs-coverage.mjs'))
+    let code = 0
+    try {
+      execFileSync('node', ['scripts/check-docs-coverage.mjs'], { cwd: dir, stdio: 'pipe' })
+    } catch (error) {
+      code = error.status
+    }
+    expect(code).toBe(1)
+  })
+})
