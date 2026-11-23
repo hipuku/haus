@@ -7,7 +7,7 @@ import './global.css'
 // The components render with haus's own tokens and stylesheets. Imported here
 // rather than from global.css because Tailwind's import pass leaves the token
 // barrel's own @imports out of order.
-import 'haus-tokens/index.css'
+import '@hipuku/tokens/index.css'
 import 'haus-components/styles.css'
 
 export const metadata: Metadata = {

@@ -1,5 +1,5 @@
 {
-  "name": "haus-style-probe",
+  "name": "@hipuku/style-probe",
   "version": "1.0.0",
   "description": "Read a rendered element's design decisions: in-browser computed-style extraction plus pure, testable normalisation into typed token values.",
   "license": "MIT",
@@ -55,5 +55,9 @@
     "tsup": "^9.0.0",
     "typescript": "^5.4.5",
     "vitest": "^5.1.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   }
 }

@@ -124,7 +124,7 @@ const tokensPage = shell(
    this page exists to answer, so it is organised by the decision being made rather than by
    the shape of the token file.</p>
    <p>Build it as <strong>one Figma page named <code>Tokens</code></strong> with the frames below,
-   in this order. Values are read from <code>haus-tokens@${esc(version)}</code>.</p>`,
+   in this order. Values are read from <code>@hipuku/tokens@${esc(version)}</code>.</p>`,
   `
 <div class="frame">
   <h3>Frame 1 · The four layers, and why a designer only ever picks from one</h3>
@@ -334,7 +334,7 @@ const motionPage = shell(
    except a page that writes them down. Leave it out and motion is the one layer a designer
    cannot look up.</p>
    <p>Build it as <strong>one Figma page named <code>Motion</code></strong>. Values from
-   <code>haus-tokens@${esc(version)}</code>.</p>`,
+   <code>@hipuku/tokens@${esc(version)}</code>.</p>`,
   `
 <div class="frame">
   <h3>Frame 1 · Durations</h3>

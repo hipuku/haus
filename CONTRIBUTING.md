@@ -36,7 +36,7 @@ pnpm run typecheck && pnpm run lint && pnpm run lint:css && pnpm run lint:prose 
 **Generated files are generated.** `primitives.css`, `motion.css`, `index.ts`,
 `brand.ts` and `tokens.json`'s semantic block all come from
 `packages/tokens/scripts/build-tokens.ts`. Edit the source or the generator, never
-the output. `pnpm --filter haus-tokens run tokens:check` fails CI if they
+the output. `pnpm --filter @hipuku/tokens run tokens:check` fails CI if they
 disagree, and it has already caught someone editing a comment in a generated
 file.
 
@@ -107,7 +107,7 @@ know why. What was broken, what it now does, and what was decided against.
 Versioning is [decision 0004](./DESIGN.md#0004-versioning): 1.x
 everywhere, a token rename is a major at an identical value, and a contrast
 change is a major even when the hex barely moves. `RELEASING.md` has the bump
-table and the publish order. `haus-components` depends on `haus-tokens`, so
+table and the publish order. `haus-components` depends on `@hipuku/tokens`, so
 tokens goes to npm first and the workflow enforces it.
 
 Add a `CHANGELOG.md` entry in the same commit as the change. The gap between

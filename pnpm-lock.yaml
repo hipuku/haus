@@ -82,6 +82,9 @@ importers:
       '@hipuku/dtcg':
         specifier: workspace:*
         version: link:../../packages/dtcg
+      '@hipuku/tokens':
+        specifier: workspace:*
+        version: link:../../packages/tokens
       '@storybook/react':
         specifier: ^10.6.7
         version: 10.6.7(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(storybook@10.6.7(@types/react@19.3.0)(prettier@3.10.1)(react@19.3.1))(typescript@5.9.3)
@@ -100,9 +103,6 @@ importers:
       haus-components:
         specifier: workspace:*
         version: link:../../packages/components
-      haus-tokens:
-        specifier: workspace:*
-        version: link:../../packages/tokens
       next:
         specifier: 16.4.6
         version: 16.4.6(@babel/core@7.29.13)(@types/node@22.20.3)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
@@ -140,12 +140,12 @@ importers:
 
   apps/storybook:
     dependencies:
+      '@hipuku/tokens':
+        specifier: workspace:*
+        version: link:../../packages/tokens
       haus-components:
         specifier: workspace:*
         version: link:../../packages/components
-      haus-tokens:
-        specifier: workspace:*
-        version: link:../../packages/tokens
     devDependencies:
       '@chromatic-com/storybook':
         specifier: ^5.6.0
@@ -202,7 +202,7 @@ importers:
 
   packages/components:
     dependencies:
-      haus-tokens:
+      '@hipuku/tokens':
         specifier: workspace:^
         version: link:../tokens
     devDependencies:

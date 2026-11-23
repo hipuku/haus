@@ -1,5 +1,5 @@
 /**
- * haus-style-probe: read a rendered element's design decisions.
+ * @hipuku/style-probe: read a rendered element's design decisions.
  *
  * The shared measuring tool underneath the portfolio's design-system auditors.
  * Two halves, deliberately split at the browser boundary:
@@ -16,7 +16,7 @@
  *
  * @example
  * ```ts
- * import { extractRawElements, normaliseElement } from 'haus-style-probe'
+ * import { extractRawElements, normaliseElement } from '@hipuku/style-probe'
  *
  * const raw = await page.evaluate(extractRawElements, { root: '#probe' })
  * const [component] = raw.map(normaliseElement)

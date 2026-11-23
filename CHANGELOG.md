@@ -15,9 +15,13 @@ Versioning follows [decision 0004](./DESIGN.md#0004-versioning): a
 token rename is a major at an identical value, and a contrast change is a major
 even when the hex barely moves.
 
-## haus-tokens 5.3.0
+## @hipuku/tokens 5.3.0
 
-_Unreleased. Motion roles._
+_Unreleased. `haus-tokens`, renamed, with motion roles._
+
+**Changed** · **Renamed from `haus-tokens`**, one of the packages moving to the `@hipuku` scope. The CSS,
+the JS constants and the DTCG JSON are unchanged by the rename: replace `haus-tokens` with
+`@hipuku/tokens` in imports. `haus-tokens` gets a final release pointing here (RELEASING.md).
 
 **Added** · **Ten motion roles as custom properties, in three modes.** `press`, `highlight`,
 `feedback`, `layout`, and enter and exit for `popover`, `dialog` and `sheet`. Each role has
@@ -64,6 +68,14 @@ unreported: it is a gate on what is being written, not an audit of what has alre
 
 ESLint, Stylelint and markdownlint are not included. Their configs differ by runtime rather than
 by preference, so a shared base is separate work.
+
+## @hipuku/style-probe 1.1.0
+
+_Unreleased. `haus-style-probe`, renamed._
+
+**Changed** · **Renamed from `haus-style-probe`**, and it now depends on `@hipuku/colour` in place of
+`haus-colour-utils`. Its exports are unchanged: replace `haus-style-probe` with `@hipuku/style-probe`
+in imports. The old name gets a final release pointing here (RELEASING.md).
 
 ## @hipuku/colour 0.1.0
 

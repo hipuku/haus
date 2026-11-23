@@ -6,8 +6,8 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
-    "haus-components": "workspace:*",
-    "haus-tokens": "workspace:*"
+    "@hipuku/tokens": "workspace:*",
+    "haus-components": "workspace:*"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^5.6.0",

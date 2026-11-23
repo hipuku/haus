@@ -8,12 +8,12 @@ reaches npm, and what is tested. The design decisions themselves are in [`DESIGN
 %%{init: {'theme':'base','themeVariables':{'primaryColor':'#f6f3fc','primaryBorderColor':'#7653ab','primaryTextColor':'#111113','lineColor':'#807f85','secondaryColor':'#f5f4f9','tertiaryColor':'#ffffff','fontFamily':'Manrope, ui-sans-serif, system-ui','fontSize':'13px','clusterBkg':'#fcfbfe','clusterBorder':'#e7e7ed','titleColor':'#442a68','edgeLabelBackground':'#ffffff'},'themeCSS':'background-color:#ffffff;border-radius:8px;'}}%%
 flowchart LR
     subgraph SYSTEM ["design system"]
-        T["haus-tokens"]
+        T["@hipuku/tokens"]
         C["haus-components"]
     end
     subgraph COLOUR ["colour and measurement"]
         U["@hipuku/colour"]
-        P["haus-style-probe"]
+        P["@hipuku/style-probe"]
     end
     SB["apps/storybook"]
 
@@ -44,7 +44,7 @@ A pnpm workspace with packages under `packages/` and two apps. `apps/storybook` 
 packages the way an outside project would. `apps/docs` is the documentation site, Next and Fumadocs,
 with one page per component in `registry.json`; it renders the Storybook stories through
 `composeStories` and generates each API table from the component's source. Two packages are the design system
-(`haus-tokens`, `haus-components`); three are the colour and measurement libraries that the
+(`@hipuku/tokens`, `haus-components`); three are the colour and measurement libraries that the
 products' auditing and colour tools were written against. Each is versioned and published on its
 own, and none is private to the workspace.
 
@@ -54,14 +54,14 @@ boundary until the workspace is built; CI builds first for that reason.
 
 ## Packages
 
-| Package            | Version           | What it ships                                                                                            | Depends on       | Built with |
-| ------------------ | ----------------- | -------------------------------------------------------------------------------------------------------- | ---------------- | ---------- |
-| `haus-tokens`      | 5.2.0             | Six stylesheets, the brand files, typed constants, DTCG JSON, and the token guard                        | nothing          | tsup       |
-| `haus-components`  | 3.2.0             | 20 React components and one stylesheet                                                                   | `haus-tokens`    | Vite, tsc  |
-| `@hipuku/colour`   | 0.1.0, unreleased | Contrast, CIEDE2000, clustering, name matching, OKLCH and hue families; 31,900 named colours on `/names` | `chroma-js`      | tsc        |
-| `haus-style-probe` | 1.0.0             | Computed-style extraction in the page, normalisation in Node                                             | `@hipuku/colour` | tsup       |
-| `@hipuku/dtcg`     | 0.1.0, unreleased | Token conversion between DTCG, Figma, Tokens Studio and Tailwind v4, with a loss report                  | `culori`         | tsc        |
-| `@hipuku/dtcg-cli` | 0.1.0, unreleased | The `dtcg` command                                                                                       | `@hipuku/dtcg`   | tsc        |
+| Package               | Version                     | What it ships                                                                                            | Depends on       | Built with |
+| --------------------- | --------------------------- | -------------------------------------------------------------------------------------------------------- | ---------------- | ---------- |
+| `@hipuku/tokens`      | 5.2.0 as `haus-tokens`      | Six stylesheets, the brand files, typed constants, DTCG JSON, and the token guard                        | nothing          | tsup       |
+| `haus-components`     | 3.2.0                       | 20 React components and one stylesheet                                                                   | `@hipuku/tokens` | Vite, tsc  |
+| `@hipuku/colour`      | 0.1.0, unreleased           | Contrast, CIEDE2000, clustering, name matching, OKLCH and hue families; 31,900 named colours on `/names` | `chroma-js`      | tsc        |
+| `@hipuku/style-probe` | 1.0.0 as `haus-style-probe` | Computed-style extraction in the page, normalisation in Node                                             | `@hipuku/colour` | tsup       |
+| `@hipuku/dtcg`        | 0.1.0, unreleased           | Token conversion between DTCG, Figma, Tokens Studio and Tailwind v4, with a loss report                  | `culori`         | tsc        |
+| `@hipuku/dtcg-cli`    | 0.1.0, unreleased           | The `dtcg` command                                                                                       | `@hipuku/dtcg`   | tsc        |
 
 The three `haus-*` packages publish ESM and CommonJS with their own types, and `main` points at the CommonJS build
 so a bundler or runtime that falls back to `main` gets a file it can load. The `@hipuku/*`
@@ -76,11 +76,11 @@ no meta-package ([decision 0007](./DESIGN.md#0007-meta-package)).
 ```mermaid
 %%{init: {'theme':'base','themeVariables':{'primaryColor':'#f6f3fc','primaryBorderColor':'#7653ab','primaryTextColor':'#111113','lineColor':'#807f85','secondaryColor':'#f5f4f9','tertiaryColor':'#ffffff','fontFamily':'Manrope, ui-sans-serif, system-ui','fontSize':'13px','clusterBkg':'#fcfbfe','clusterBorder':'#e7e7ed','titleColor':'#442a68','edgeLabelBackground':'#ffffff'},'themeCSS':'background-color:#ffffff;border-radius:8px;'}}%%
 flowchart LR
-    T["haus-tokens"]
+    T["@hipuku/tokens"]
     C["haus-components"]
     U["haus-colour-utils"]
     N["haus-colour-names"]
-    P["haus-style-probe"]
+    P["@hipuku/style-probe"]
 
     CORE["core<br/><small>Next.js app</small>"]
     VAULT["vault<br/><small>Electron app</small>"]
@@ -139,7 +139,7 @@ flowchart LR
     G --> JS
 ```
 
-- `pnpm --filter haus-tokens run tokens` writes them; `tokens:check` fails if any differs from what
+- `pnpm --filter @hipuku/tokens run tokens` writes them; `tokens:check` fails if any differs from what
   the generator would write. CI runs the check, and `prepublishOnly` runs it before a publish.
 - `BrandMap` is generated from `brand.css`, so a brand file that omits a required entry is a type
   error in a product's own checks rather than an unresolved `var()` at runtime.
@@ -158,7 +158,7 @@ for tools.
 
 ### Token guard
 
-`haus-tokens/guard` is a second entry point with three pure functions that take CSS as strings:
+`@hipuku/tokens/guard` is a second entry point with three pure functions that take CSS as strings:
 `findUndefinedTokens` (a stylesheet reads a property nothing defines), `findFallbackTokens` (a
 property only ever read with a fallback, which is a hardcoded value in effect), and
 `findRestatedTokens` (a consumer overrides a role to the value haus already gives,
@@ -197,7 +197,7 @@ flowchart LR
   IconButton, Spinner and Toast. The other ten hold state, an effect, a generated id or a portal, and
   need a client boundary. The rule that keeps this safe, and the test behind it, are in
   [decision 0024](./DESIGN.md#0024-server-component-guard).
-- **Icons are drawn inline.** The package declares `haus-tokens` and the React peers and nothing
+- **Icons are drawn inline.** The package declares `@hipuku/tokens` and the React peers and nothing
   else, so there is no icon font to load.
 
 ## Colour utilities
@@ -226,7 +226,7 @@ were filed as red.
 
 ## Style probe
 
-`haus-style-probe` is split at the browser boundary. `extractRawElements` runs in the page and
+`@hipuku/style-probe` is split at the browser boundary. `extractRawElements` runs in the page and
 returns `getComputedStyle` strings untouched; `normaliseElement` runs in Node and parses them into
 typed values (colour to hex, line height to a unitless ratio, letter spacing to em). Nothing is
 parsed inside the page, so the browser half stays small and every parsing rule is a pure, testable
@@ -273,12 +273,12 @@ relies on; neither is an implementation detail.
 
 ## Testing and CI
 
-| Package            | Test files | Tests |
-| ------------------ | ---------- | ----- |
-| `haus-components`  | 30         | 506   |
-| `haus-style-probe` | 2          | 81    |
-| `haus-tokens`      | 4          | 71    |
-| `@hipuku/colour`   | 4          | 73    |
+| Package               | Test files | Tests |
+| --------------------- | ---------- | ----- |
+| `haus-components`     | 30         | 506   |
+| `@hipuku/style-probe` | 2          | 81    |
+| `@hipuku/tokens`      | 4          | 71    |
+| `@hipuku/colour`      | 4          | 73    |
 
 731 tests in Vitest. The component suites run in jsdom with `css: false`, so they assert markup,
 behaviour and accessibility, not computed styles. `ssr.test.tsx` renders every component to a string

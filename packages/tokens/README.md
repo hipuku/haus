@@ -1,5 +1,8 @@
 # haus-tokens
 
+This package is being renamed to `@hipuku/tokens`. The new name is not on npm yet, so the examples below use
+`haus-tokens`, the name that installs today; they switch when `@hipuku/tokens` is published.
+
 The haus design tokens: OKLCH colour, type, spacing, radius, shadow and motion,
 in three forms, from one source of truth.
 

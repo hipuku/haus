@@ -1,5 +1,8 @@
 # haus-style-probe
 
+This package is being renamed to `@hipuku/style-probe`. The new name is not on npm yet, so the examples below use
+`haus-style-probe`, the name that installs today; they switch when `@hipuku/style-probe` is published.
+
 Read a rendered element's design decisions: in-browser computed-style
 extraction, plus pure normalisation into typed token values.
 

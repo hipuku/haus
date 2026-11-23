@@ -1,7 +1,7 @@
 # Releasing
 
-Packages publish to npm from this repo: `haus-tokens`, `haus-components` and `haus-style-probe`,
-unscoped, and the scoped `@hipuku/*` packages, public.
+Packages publish to npm from this repo: the scoped `@hipuku/*` packages, public, and `haus-components`
+until its final release.
 
 ## The colour rename
 
@@ -18,7 +18,7 @@ git tag colour-utils-v1.0.2 && git push origin colour-utils-v1.0.2
 npm deprecate haus-colour-utils "Replaced by @hipuku/colour"
 ```
 
-The same for `colour-names`. **`haus-style-probe` cannot be released until `@hipuku/colour` is on
+The same for `colour-names`. **`@hipuku/style-probe` cannot be released until `@hipuku/colour` is on
 npm**, because it now depends on it; the workflow refuses, as below. `@hipuku/colour`'s first
 version is published by hand, like any new package.
 
@@ -26,6 +26,23 @@ Each is released by pushing a tag. `.github/workflows/publish.yml` reads the tag
 manifest agrees with it, builds, tests and publishes. If the version in the tag is already on
 npm, the run skips instead of failing, so a tag can also be written after the fact to give an
 earlier release a commit to point at.
+
+## The tokens and style probe renames
+
+`haus-tokens` became `@hipuku/tokens` and `haus-style-probe` became `@hipuku/style-probe` after commit
+`ec0982c`. Their directories did not move, so the tags keep their prefixes: `tokens-v…` and
+`style-probe-v…` now publish the new names. Each old name gets one final release from a branch cut
+from `ec0982c`, where the old names are still in `package.json`, then `npm deprecate` pointing at the
+new name, as for colour above. The first version of each new name is published by hand.
+
+Until the new names are on npm, consumer-facing install text keeps the published names: the root
+README, Storybook's installation page, and the install and import examples in both packages'
+READMEs. `registry.json` keeps Badge's dependency on `haus-tokens@^5.2.0`. All of them switch at the
+release.
+
+Every `@hipuku/*` manifest sets `publishConfig.provenance`. Provenance is generated in CI, so if the
+manual first publish of a new name stops with an `EUSAGE` error about provenance, publish that first
+version with `npm publish <tarball> --provenance=false`; CI releases after it keep provenance.
 
 ## Authentication
 
@@ -99,7 +116,7 @@ version reached npm by hand.
 
 ## Order matters
 
-`haus-components` depends on `haus-tokens`, and `haus-style-probe` on `@hipuku/colour`,
+`haus-components` depends on `@hipuku/tokens`, and `@hipuku/style-probe` on `@hipuku/colour`,
 through `workspace:^`. pnpm rewrites that to the dependency's real version when it publishes,
 so **the dependency has to be on npm at that version first**. Publishing components against a
 tokens version that was never released produces a package that installs and then fails to
@@ -111,8 +128,8 @@ release the dependency, then release the dependent.
 Current order, bottom up:
 
 ```text
-haus-tokens        →  haus-components
-@hipuku/colour     →  haus-style-probe
+@hipuku/tokens     →  haus-components
+@hipuku/colour     →  @hipuku/style-probe
 ```
 
 ## What the workflow will not do for you

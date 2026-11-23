@@ -11,7 +11,7 @@ import { join } from 'node:path'
  * `api-surface.test.tsx` could not catch it: that asserts over *values*, and a
  * type export has no runtime presence.
  *
- * `brand.test.ts` in haus-tokens has the precedent, and its comment says it was
+ * `brand.test.ts` in @hipuku/tokens has the precedent, and its comment says it was
  * written after exactly this: "the package root offered one of the four and the
  * decision records said it offered all four". The lesson did not travel here.
  *

@@ -6,7 +6,7 @@
    There is deliberately no collision detection: no flipping when the panel
    would leave the viewport, and no shifting along the cross axis. That needs a
    positioning engine measuring rects on scroll and resize, and this package
-   declares haus-tokens and the two React peers and nothing else. Adding
+   declares @hipuku/tokens and the two React peers and nothing else. Adding
    @floating-ui to a design system's component package makes it a dependency of
    every consumer of every component. `placement` is the caller's answer to the
    same problem, one level up, where the layout is actually known. */
