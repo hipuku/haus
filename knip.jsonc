@@ -41,6 +41,14 @@
          for as long as the test was wrong. */
       "ignoreDependencies": ["haus-tokens"],
     },
+    // Next's file conventions are its entries. knip does not read imports out
+    // of MDX, so the examples the pages import are entries in their own right.
+    "apps/docs": {
+      "entry": ["app/**/*.{ts,tsx}", "components/examples/*.tsx"],
+      "project": ["app/**/*.{ts,tsx}", "components/**/*.{ts,tsx}", "lib/**/*.{ts,tsx}"],
+      // Loaded by `@import 'tailwindcss'` in global.css, which knip does not read.
+      "ignoreDependencies": ["tailwindcss"],
+    },
     "apps/storybook": {
       "entry": [".storybook/*.{ts,tsx}", "stories/**/*.{ts,tsx,mdx}"],
       "project": [".storybook/**/*.{ts,tsx}", "stories/**/*.{ts,tsx}"],

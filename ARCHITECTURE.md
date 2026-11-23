@@ -41,8 +41,10 @@ flowchart LR
 
 ## Overview
 
-A pnpm workspace with five packages under `packages/` and one app, `apps/storybook`, which consumes
-the built packages the way an outside project would. Two packages are the design system
+A pnpm workspace with packages under `packages/` and two apps. `apps/storybook` consumes the built
+packages the way an outside project would. `apps/docs` is the documentation site, Next and Fumadocs,
+with one page per component in `registry.json`; it renders the Storybook stories through
+`composeStories` and generates each API table from the component's source. Two packages are the design system
 (`haus-tokens`, `haus-components`); three are the colour and measurement libraries that the
 products' auditing and colour tools were written against. Each is versioned and published on its
 own, and none is private to the workspace.
