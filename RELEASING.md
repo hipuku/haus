@@ -35,8 +35,14 @@ earlier release a commit to point at.
 from `ec0982c`, where the old names are still in `package.json`, then `npm deprecate` pointing at the
 new name, as for colour above. The first version of each new name is published by hand.
 
-Until the new names are on npm, consumer-facing install text keeps the published names, and
-`registry.json` keeps Badge's dependency on `haus-tokens@^5.2.0`; both switch at the release.
+Until the new names are on npm, consumer-facing install text keeps the published names: the root
+README, Storybook's installation page, and the install and import examples in both packages'
+READMEs. `registry.json` keeps Badge's dependency on `haus-tokens@^5.2.0`. All of them switch at the
+release.
+
+Every `@hipuku/*` manifest sets `publishConfig.provenance`. Provenance is generated in CI, so if the
+manual first publish of a new name stops with an `EUSAGE` error about provenance, publish that first
+version with `npm publish <tarball> --provenance=false`; CI releases after it keep provenance.
 
 ## Authentication
 

@@ -1,7 +1,7 @@
-# @hipuku/style-probe
+# haus-style-probe
 
-Renamed from `haus-style-probe`, which is the name on npm until `@hipuku/style-probe` is published. Until then, install
-`haus-style-probe` and import from it.
+This package is being renamed to `@hipuku/style-probe`. The new name is not on npm yet, so the examples below use
+`haus-style-probe`, the name that installs today; they switch when `@hipuku/style-probe` is published.
 
 Read a rendered element's design decisions: in-browser computed-style
 extraction, plus pure normalisation into typed token values.
@@ -28,7 +28,7 @@ unit-testable without launching a browser at all.
 ## Install
 
 ```bash
-npm install @hipuku/style-probe
+npm install haus-style-probe
 ```
 
 ## Usage
@@ -36,7 +36,7 @@ npm install @hipuku/style-probe
 Probe one mounted component:
 
 ```ts
-import { extractRawElements, normaliseElement } from '@hipuku/style-probe'
+import { extractRawElements, normaliseElement } from 'haus-style-probe'
 
 await page.setContent('<div id="probe">' + renderToString(<Button />) + '</div>')
 

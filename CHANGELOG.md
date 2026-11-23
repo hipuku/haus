@@ -19,7 +19,7 @@ even when the hex barely moves.
 
 _Unreleased. `haus-tokens`, renamed, with motion roles._
 
-**Changed** · **Renamed from `haus-tokens`** under the scope every haus package now uses. The CSS,
+**Changed** · **Renamed from `haus-tokens`**, one of the packages moving to the `@hipuku` scope. The CSS,
 the JS constants and the DTCG JSON are unchanged by the rename: replace `haus-tokens` with
 `@hipuku/tokens` in imports. `haus-tokens` gets a final release pointing here (RELEASING.md).
 
