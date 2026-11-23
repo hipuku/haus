@@ -29,9 +29,6 @@
     "packages/components": {
       "entry": ["src/index.ts", "scripts/*.mjs", "src/**/*.test.{ts,tsx}"],
       "project": ["src/**/*.{ts,tsx}", "scripts/**/*.mjs"],
-      // Read through CSS custom properties, never imported, and still a runtime
-      // dependency: the components render unstyled without it.
-      "ignoreDependencies": ["haus-tokens"],
     },
     "apps/storybook": {
       "entry": [".storybook/*.{ts,tsx}", "stories/**/*.{ts,tsx,mdx}"],
