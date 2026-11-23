@@ -80,6 +80,10 @@ _Unreleased. A new package: the token conversion engine._
 variables exports, Tokens Studio and Tailwind v4 `@theme` stylesheets into one model, writes that
 model to any of the four, and reports what each conversion loses, per token, with a reason.
 
+Two defects found by code scanning on the way in, both fixed and tested: a token path segment named
+`__proto__` was written onto `Object.prototype`, and a Tailwind stylesheet of unclosed comments took
+quadratic time to read, about nine seconds at the 500KB input cap.
+
 Moved from the tokenise app, where it was the engine, under plan decision 19. ESM only, built with
 `tsc` for Node and bundlers alike. Coverage arrived at 77% of statements and 66% of branches, and
 the floors are set just under that rather than at a target.

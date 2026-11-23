@@ -81,8 +81,24 @@ interface Declaration {
   mode: string
 }
 
+/**
+ * Comments blanked to spaces, newlines kept so positions still line up.
+ *
+ * A scan rather than a lazy regex: `/\*[\s\S]*?\*\//g` retries from every `/*`
+ * when one is never closed, which is quadratic, and a pasted stylesheet of
+ * `/*` followed by many `a/*` took over half a second at 120KB. An unclosed
+ * comment is left as it is, as the regex left it.
+ */
 function stripComments(css: string): string {
-  return css.replace(/\/\*[\s\S]*?\*\//g, c => c.replace(/[^\n]/g, ' '))
+  let out = ''
+  let from = 0
+  for (;;) {
+    const start = css.indexOf('/*', from)
+    const end = start === -1 ? -1 : css.indexOf('*/', start + 2)
+    if (end === -1) return out + css.slice(from)
+    out += css.slice(from, start) + css.slice(start, end + 2).replace(/[^\n]/g, ' ')
+    from = end + 2
+  }
 }
 
 /** The mode a block's prelude selects, or undefined when it is not a token block. */

@@ -27,7 +27,7 @@ export function setAtPath(
 ): boolean {
   let node = root
   for (const [i, key] of path.slice(0, -1).entries()) {
-    const next = node[key]
+    const next = own(node, key)
     if (isRecord(next) && '$value' in next) {
       losses.add(
         'renamed',
@@ -36,11 +36,11 @@ export function setAtPath(
       )
       return false
     }
-    if (!isRecord(next)) node[key] = {}
-    node = node[key] as Record<string, unknown>
+    if (!isRecord(next)) define(node, key, {})
+    node = own(node, key) as Record<string, unknown>
   }
   const last = path[path.length - 1]
-  if (isRecord(node[last])) {
+  if (isRecord(own(node, last))) {
     losses.add(
       'renamed',
       path,
@@ -48,9 +48,21 @@ export function setAtPath(
     )
     return false
   }
-  node[last] = leaf
+  define(node, last, leaf)
   return true
 }
+
+/*
+ * A token path comes from the input, so a segment can be `__proto__`. Read and
+ * written as own properties, it stays data: `node.__proto__ = {}` would replace
+ * the object's prototype, and a deeper write through it reached
+ * Object.prototype itself. JSON.stringify writes an own `__proto__` key like
+ * any other.
+ */
+const own = (node: Record<string, unknown>, key: string): unknown => (Object.hasOwn(node, key) ? node[key] : undefined)
+
+const define = (node: Record<string, unknown>, key: string, value: unknown) =>
+  Object.defineProperty(node, key, { value, enumerable: true, writable: true, configurable: true })
 
 /**
  * A model value as a 2025.10 `$value`, or undefined when 2025.10 has no way to

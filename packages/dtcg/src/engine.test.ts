@@ -282,3 +282,30 @@ describe('loss report', () => {
     }
   })
 })
+
+describe('input that names a prototype key or never closes a comment', () => {
+  it('writes a token path through __proto__ as data, without touching Object.prototype', async () => {
+    const { setAtPath } = await import('./dtcgWrite.js')
+    const { Losses } = await import('./document.js')
+    const root: Record<string, unknown> = {}
+    expect(setAtPath(root, ['__proto__', 'polluted'], { $value: 1 }, new Losses())).toBe(true)
+    expect(({} as Record<string, unknown>).polluted).toBeUndefined()
+    expect(JSON.parse(JSON.stringify(root))).toEqual(JSON.parse('{"__proto__":{"polluted":{"$value":1}}}'))
+  })
+
+  it('reads a stylesheet of unclosed comments in linear time', () => {
+    // 480KB, under the input cap. The lazy regex this replaced took seconds.
+    const text = '/*' + 'a/*'.repeat(160_000)
+    const started = performance.now()
+    read([{ name: 'theme.css', text: `@theme {\n  --color-brand: #ff0000;\n}\n${text}` }], 'tailwind')
+    expect(performance.now() - started).toBeLessThan(1000)
+  })
+
+  it('blanks closed comments and leaves an unclosed one as it was', () => {
+    const set = read(
+      [{ name: 'theme.css', text: '@theme {\n  /* --color-hidden: #000; */\n  --color-brand: #ff0000;\n}\n/* open' }],
+      'tailwind',
+    ).set
+    expect(set.tokens.map(t => joinPath(t.path))).toEqual(['color.brand'])
+  })
+})
