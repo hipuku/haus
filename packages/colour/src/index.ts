@@ -15,4 +15,15 @@ export { nearestNamedColour, createNamedColourMatcher, basicColourNames } from '
 export type { NamedColourMatch, NamedColourEntry } from './namedColour.js'
 
 export { oklch, hueFamily, HUE_FAMILIES, NEUTRAL_CHROMA } from './oklch.js'
+export { analysePalette, classifyDeltaE, NEAR_IDENTICAL_DELTA_E, PALETTE_ACHROMATIC_CHROMA } from './palette.js'
+export type {
+  ChromaCoherence,
+  ContrastPair,
+  DeltaEBand,
+  HueArc,
+  LightnessUniformity,
+  NearIdenticalPair,
+  PaletteAnalysis,
+  PalettePoint,
+} from './palette.js'
 export type { Oklch, HueFamily, HueFamilyName } from './oklch.js'

@@ -23,6 +23,8 @@ import {
   hueFamily,
   isLight,
   suggestTextColour,
+  analysePalette,
+  classifyDeltaE,
 } from '@hipuku/colour'
 ```
 
@@ -91,6 +93,18 @@ A perceptual lightness ramp anchored on a colour, in OKLCH. Options: `{ steps = 
 ### `isLight(hex): boolean` · `suggestTextColour(background, palette): string`
 
 Quick helpers for picking readable text against a background.
+
+### `analysePalette(hexes): PaletteAnalysis | null`
+
+Measures a palette: its OKLCH lightness steps and how even they are, the spread of its chroma, the
+arc of the hue wheel it covers and whether its hues turn back in the order given, its near-identical
+pairs (CIEDE2000 under 2.5), and the WCAG contrast of every pair, with verdicts on the exact ratio.
+Colours it cannot read are left out; null when fewer than two remain.
+
+### `classifyDeltaE(distance): DeltaEBand`
+
+How visible a CIEDE2000 difference is: `imperceptible` under 1, `just-noticeable` under 2,
+`noticeable` under 10, `distinct` under 50, and `different` beyond.
 
 ## Licence
 
