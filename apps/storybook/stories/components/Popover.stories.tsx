@@ -20,7 +20,7 @@ const meta = {
           'Not a focus trap. A modal is modal and the page behind it is inert; a ' +
           'popover sits over live content, so tabbing off the end closes it. There ' +
           'is no collision detection either: that needs a positioning engine, and ' +
-          'this package declares `haus-tokens` and the two React peers and nothing ' +
+          'this package declares `@hipuku/tokens` and the two React peers and nothing ' +
           'else.',
       },
     },

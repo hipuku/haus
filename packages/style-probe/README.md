@@ -1,4 +1,7 @@
-# haus-style-probe
+# @hipuku/style-probe
+
+Renamed from `haus-style-probe`, which is the name on npm until `@hipuku/style-probe` is published. Until then, install
+`haus-style-probe` and import from it.
 
 Read a rendered element's design decisions: in-browser computed-style
 extraction, plus pure normalisation into typed token values.
@@ -25,7 +28,7 @@ unit-testable without launching a browser at all.
 ## Install
 
 ```bash
-npm install haus-style-probe
+npm install @hipuku/style-probe
 ```
 
 ## Usage
@@ -33,7 +36,7 @@ npm install haus-style-probe
 Probe one mounted component:
 
 ```ts
-import { extractRawElements, normaliseElement } from 'haus-style-probe'
+import { extractRawElements, normaliseElement } from '@hipuku/style-probe'
 
 await page.setContent('<div id="probe">' + renderToString(<Button />) + '</div>')
 

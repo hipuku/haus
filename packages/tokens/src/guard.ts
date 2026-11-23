@@ -24,7 +24,7 @@
  * @example
  * ```ts
  * import { readFileSync } from 'node:fs'
- * import { findUndefinedTokens } from 'haus-tokens/guard'
+ * import { findUndefinedTokens } from '@hipuku/tokens/guard'
  *
  * const read = (p: string) => readFileSync(p, 'utf8')
  *
@@ -32,9 +32,9 @@
  *   const { missing } = findUndefinedTokens({
  *     reads:   [read('node_modules/haus-components/dist/styles.css')],
  *     defines: [
- *       read('node_modules/haus-tokens/dist/primitives.css'),
- *       read('node_modules/haus-tokens/dist/semantics.css'),
- *       read('node_modules/haus-tokens/dist/motion.css'),
+ *       read('node_modules/@hipuku/tokens/dist/primitives.css'),
+ *       read('node_modules/@hipuku/tokens/dist/semantics.css'),
+ *       read('node_modules/@hipuku/tokens/dist/motion.css'),
  *       read('src/tokens/overrides.css'),
  *     ],
  *   })
@@ -249,7 +249,7 @@ export interface RestatementInput {
  *
  * @example
  * ```ts
- * import { findRestatedTokens } from 'haus-tokens/guard'
+ * import { findRestatedTokens } from '@hipuku/tokens/guard'
  *
  * it('restates no value haus already ships', () => {
  *   const copies = findRestatedTokens({

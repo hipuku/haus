@@ -2,7 +2,7 @@
 
    haus is one Figma file: the token collections (haus/primitives and
    haus/semantics, with one semantics mode per shipped brand) and one page per
-   component. Code is the token sources in haus-tokens and the component folders
+   component. Code is the token sources in @hipuku/tokens and the component folders
    in haus-components. */
 
 export const FIGMA_FILE = { key: 'Qo23P38COlJrfQmlM39Fa3', name: 'haus Design System' }

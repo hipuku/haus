@@ -62,7 +62,7 @@ function BreakpointsPage() {
       <p style={pageDescStyle}>
         JS constants, not CSS custom properties, because custom properties can't be used inside{' '}
         <code style={{ fontFamily: 'var(--haus-font-mono)' }}>@media</code> query conditions. Import from{' '}
-        <code style={{ fontFamily: 'var(--haus-font-mono)' }}>haus-tokens</code> and use in Tailwind's{' '}
+        <code style={{ fontFamily: 'var(--haus-font-mono)' }}>@hipuku/tokens</code> and use in Tailwind's{' '}
         <code style={{ fontFamily: 'var(--haus-font-mono)' }}>screens</code> config or style-in-JS.
       </p>
 
@@ -126,7 +126,7 @@ function BreakpointsPage() {
             lineHeight: 'var(--haus-type-mono-leading)',
             overflowX: 'auto',
           }}
-        >{`import { tokens } from 'haus-tokens'
+        >{`import { tokens } from '@hipuku/tokens'
 
 // Tailwind v4
 screens: {

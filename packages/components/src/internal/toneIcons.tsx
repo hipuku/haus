@@ -4,7 +4,7 @@ import type { Tone } from '../types'
 /**
  * The severity glyphs, drawn rather than named as icon-font classes.
  *
- * The package declares `haus-tokens` and the two React peers and nothing else,
+ * The package declares `@hipuku/tokens` and the two React peers and nothing else,
  * so a consumer without Font Awesome loaded would get an empty element where
  * the severity indicator belongs, with no error to say why. Both products that
  * built a Callout reached for Font Awesome; neither could have used haus's if

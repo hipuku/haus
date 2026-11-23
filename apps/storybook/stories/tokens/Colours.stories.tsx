@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import React from 'react'
-import { tokens } from 'haus-tokens'
+import { tokens } from '@hipuku/tokens'
 import {
   CopyChip,
   ColLabel,

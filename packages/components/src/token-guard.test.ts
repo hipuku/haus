@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
-// The source, not `haus-tokens/guard`. That export resolves to `dist/guard.js`,
+// The source, not `@hipuku/tokens/guard`. That export resolves to `dist/guard.js`,
 // which is gitignored, so importing it made the whole suite fail to collect on a
 // fresh checkout that had not run a build: "Failed to resolve import". CI builds
 // first and was never affected, which is exactly why it needed catching in
@@ -13,7 +13,7 @@ import { findFallbackTokens, findUndefinedTokens } from '../../tokens/src/guard'
 /**
  * Every custom property these components read is defined somewhere.
  *
- * `haus-tokens` has shipped this guard since haus#19 and **nothing in this
+ * `@hipuku/tokens` has shipped this guard since haus#19 and **nothing in this
  * repository ran it.** Its only call sites were its own tests, so the check we
  * hand consumers was never applied to us: a consumer who ran it was better
  * protected than we were. Found on 2026-11-23 while preparing the first

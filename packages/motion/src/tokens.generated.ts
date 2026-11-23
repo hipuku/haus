@@ -1,6 +1,6 @@
 // GENERATED FROM packages/tokens/src/tokens.json (the motion-role group) by
 // packages/tokens/scripts/build-tokens.ts. Do not edit.
-// Regenerate with `pnpm --filter haus-tokens run tokens`; `tokens:check` fails CI if stale.
+// Regenerate with `pnpm --filter @hipuku/tokens run tokens`; `tokens:check` fails CI if stale.
 
 /** Upper limit on duration per role, in ms. A spring role is measured by its visual duration. */
 export const DURATION_CAPS_MS = {

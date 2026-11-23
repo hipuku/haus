@@ -140,7 +140,7 @@ jobs:
       # Generated primitives must match tokens.json. This is what replaced the
       # test that used to compare the three hand-maintained copies.
       - name: Tokens up to date
-        run: pnpm --filter haus-tokens run tokens:check
+        run: pnpm --filter @hipuku/tokens run tokens:check
 
       - name: Build packages
         run: pnpm run build

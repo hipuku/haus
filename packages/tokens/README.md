@@ -1,22 +1,25 @@
-# haus-tokens
+# @hipuku/tokens
+
+Renamed from `haus-tokens`, which is the name on npm until `@hipuku/tokens` is published. Until then, install
+`haus-tokens` and import from it.
 
 The haus design tokens: OKLCH colour, type, spacing, radius, shadow and motion,
 in three forms, from one source of truth.
 
-| Form                  | Import                                                        | For                                      |
-| --------------------- | ------------------------------------------------------------- | ---------------------------------------- |
-| CSS custom properties | `haus-tokens/primitives.css`, `/semantics.css`, `/motion.css` | styling components                       |
-| Typed JS constants    | `import { tokens } from 'haus-tokens'`                        | build config, style-in-JS, media queries |
-| W3C-DTCG JSON         | `haus-tokens/tokens.json`                                     | design-tool sync, external tooling       |
+| Form                  | Import                                                           | For                                      |
+| --------------------- | ---------------------------------------------------------------- | ---------------------------------------- |
+| CSS custom properties | `@hipuku/tokens/primitives.css`, `/semantics.css`, `/motion.css` | styling components                       |
+| Typed JS constants    | `import { tokens } from '@hipuku/tokens'`                        | build config, style-in-JS, media queries |
+| W3C-DTCG JSON         | `@hipuku/tokens/tokens.json`                                     | design-tool sync, external tooling       |
 
 ## Install
 
 ```bash
-npm install haus-tokens
+npm install @hipuku/tokens
 ```
 
 ```ts
-import 'haus-tokens/index.css'
+import '@hipuku/tokens/index.css'
 ```
 
 `index.css` loads the layer order, then `primitives`, `brand`, `semantics` and
@@ -69,7 +72,7 @@ Custom properties cannot be used inside `@media` conditions, and build tools
 can't read CSS. The JS export covers that:
 
 ```ts
-import { tokens } from 'haus-tokens'
+import { tokens } from '@hipuku/tokens'
 
 tokens.color.aronia[500] // 'oklch(52% 0.138 300)'
 tokens.breakpoint.lg // '1024px', breakpoints are JS-only by necessity
@@ -106,7 +109,7 @@ defines the contract. Import it from your own suite:
 
 ```ts
 import { readFileSync } from 'node:fs'
-import { findUndefinedTokens } from 'haus-tokens/guard'
+import { findUndefinedTokens } from '@hipuku/tokens/guard'
 
 const read = (p: string) => readFileSync(p, 'utf8')
 
@@ -114,9 +117,9 @@ it('reads no role this app does not load', () => {
   const { missing, read: reads } = findUndefinedTokens({
     reads: [read('node_modules/haus-components/dist/styles.css')],
     defines: [
-      read('node_modules/haus-tokens/dist/primitives.css'),
-      read('node_modules/haus-tokens/dist/motion.css'),
-      read('node_modules/haus-tokens/dist/semantics.css'),
+      read('node_modules/@hipuku/tokens/dist/primitives.css'),
+      read('node_modules/@hipuku/tokens/dist/motion.css'),
+      read('node_modules/@hipuku/tokens/dist/semantics.css'),
       read('src/tokens/overrides.css'),
     ],
   })
@@ -139,15 +142,15 @@ already gives, is not an override. It is a copy, and it renders perfectly until
 one of the two moves.
 
 ```ts
-import { findRestatedTokens } from 'haus-tokens/guard'
+import { findRestatedTokens } from '@hipuku/tokens/guard'
 
 it('restates no value haus already ships', () => {
   const copies = findRestatedTokens({
     defines: [read('src/tokens/semantics.css')],
     upstream: [
-      read('node_modules/haus-tokens/dist/primitives.css'),
-      read('node_modules/haus-tokens/dist/motion.css'),
-      read('node_modules/haus-tokens/dist/semantics.css'),
+      read('node_modules/@hipuku/tokens/dist/primitives.css'),
+      read('node_modules/@hipuku/tokens/dist/motion.css'),
+      read('node_modules/@hipuku/tokens/dist/semantics.css'),
     ],
   })
 

@@ -1,6 +1,6 @@
 # haus tokens
 
-`haus-tokens` is the source of truth for every visual value in haus: colour,
+`@hipuku/tokens` (on npm as `haus-tokens` until the new name is published) is the source of truth for every visual value in haus: colour,
 type, space, radius, elevation, and motion. It ships as plain CSS custom
 properties (the runtime format) and a W3C Design Tokens JSON file (the handoff
 format for tooling). haus is **light-mode only**: there is no dark theme and no
@@ -219,7 +219,7 @@ The package exposes both the CSS files and a typed JS object.
 Import the layers once at your app root, in order:
 
 ```css
-@import 'haus-tokens/index.css';
+@import '@hipuku/tokens/index.css';
 ```
 
 That is the four files in the order they have to load. They are exported
@@ -228,11 +228,11 @@ the order wrong fails silently: an unresolved `var()` drops the declaration with
 no warning and no build error.
 
 ```css
-@import 'haus-tokens/layers.css';
-@import 'haus-tokens/primitives.css';
-@import 'haus-tokens/brand.css';
-@import 'haus-tokens/semantics.css';
-@import 'haus-tokens/motion.css';
+@import '@hipuku/tokens/layers.css';
+@import '@hipuku/tokens/primitives.css';
+@import '@hipuku/tokens/brand.css';
+@import '@hipuku/tokens/semantics.css';
+@import '@hipuku/tokens/motion.css';
 ```
 
 Then reference the **semantic** tokens in your own CSS, without reaching through
@@ -265,7 +265,7 @@ format, so it feeds Style Dictionary, Theo, or any spec-compliant pipeline with 
 haus-specific tooling:
 
 ```js
-import tokens from 'haus-tokens/tokens.json' with { type: 'json' }
+import tokens from '@hipuku/tokens/tokens.json' with { type: 'json' }
 ```
 
 ### Typed JS object
@@ -274,7 +274,7 @@ The package's main export is a typed `tokens` object mirroring the same values,
 useful for CSS-in-JS or reading a value in JavaScript:
 
 ```ts
-import { tokens } from 'haus-tokens'
+import { tokens } from '@hipuku/tokens'
 
 tokens.color.aronia[500] // 'oklch(52% 0.138 300)'
 tokens.duration.moderate // '300ms'

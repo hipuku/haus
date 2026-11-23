@@ -1,7 +1,7 @@
 /* ─── haus / tokens ──────────────────────────────────────────────────────────
    The whole token layer in one import, in the right order.
 
-     @import 'haus-tokens/index.css';
+     @import '@hipuku/tokens/index.css';
 
    The four files are still exported individually for anyone who wants to swap
    one (replacing brand.css is the documented case), but the order matters and

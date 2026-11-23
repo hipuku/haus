@@ -74,7 +74,7 @@ build compiles it with this package's `springToLinear`, so the `linear()` curve 
 the file are the ones this engine computes. The same build writes the roles into `motion.css` as
 custom properties, one block per mode.
 
-Do not edit the file. Change `tokens.json` and run `pnpm --filter haus-tokens run tokens`.
+Do not edit the file. Change `tokens.json` and run `pnpm --filter @hipuku/tokens run tokens`.
 `tokens:check` fails CI when the file and its source disagree, including after a hand edit.
 
 ## Tests

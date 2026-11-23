@@ -13,10 +13,10 @@ body:
     attributes:
       label: Package
       options:
-        - haus-tokens
+        - '@hipuku/tokens'
         - haus-components
         - '@hipuku/colour'
-        - haus-style-probe
+        - '@hipuku/style-probe'
     validations: { required: true }
   - type: input
     id: version

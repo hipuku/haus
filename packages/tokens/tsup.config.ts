@@ -31,7 +31,7 @@ const BRANDS = (await readdir('src/brands')).filter(f => f.endsWith('.css'))
 export default defineConfig({
   /* A second entry rather than a re-export from index. The guard is a build-
      and test-time tool and nothing that renders should pull it in, so it is
-     reachable as `haus-tokens/guard` and absent from the main bundle. */
+     reachable as `@hipuku/tokens/guard` and absent from the main bundle. */
   entry: ['src/index.ts', 'src/guard.ts'],
   format: ['esm', 'cjs'],
   dts: true,
