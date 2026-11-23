@@ -1,7 +1,14 @@
 import { readdirSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { findFallbackTokens, findUndefinedTokens } from 'haus-tokens/guard'
+// The source, not `haus-tokens/guard`. That export resolves to `dist/guard.js`,
+// which is gitignored, so importing it made the whole suite fail to collect on a
+// fresh checkout that had not run a build: "Failed to resolve import". CI builds
+// first and was never affected, which is exactly why it needed catching in
+// review. The guard is pure functions over strings and `dist` is built from this
+// file, so the behaviour is the same, and it now matches the decision already
+// made for the token CSS below rather than contradicting it.
+import { findFallbackTokens, findUndefinedTokens } from '../../tokens/src/guard'
 
 /**
  * Every custom property these components read is defined somewhere.
@@ -38,6 +45,11 @@ import { findFallbackTokens, findUndefinedTokens } from 'haus-tokens/guard'
  * kept because it is correct rather than because it is load-bearing: a property
  * set from TSX and read without a fallback would be a false positive without
  * it, and that is a normal thing for the next component to do.
+ *
+ * Both the guard and the token CSS are read from `packages/tokens/src` rather
+ * than `dist`, so this runs on a fresh checkout with no build. The first version
+ * did that for the CSS and not for the import, which is the sort of
+ * half-application a reviewer catches and the author does not.
  *
  * **Nothing here is a hand-written list.** The stylesheets come from the
  * directory and the TSX-set properties come from the source, because a list

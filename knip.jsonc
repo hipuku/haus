@@ -29,6 +29,17 @@
     "packages/components": {
       "entry": ["src/index.ts", "scripts/*.mjs", "src/**/*.test.{ts,tsx}"],
       "project": ["src/**/*.{ts,tsx}", "scripts/**/*.mjs"],
+      /* Read through CSS custom properties, never imported, and still a runtime
+         dependency: the components render unstyled without it.
+
+         Removed on 2026-11-23 and restored the same day. token-guard.test.ts
+         briefly imported `haus-tokens/guard`, which made the dependency real to
+         knip, so the entry looked stale and knip said so. Review then pointed
+         out that the export resolves to gitignored `dist`, so the test now
+         imports the source by relative path and nothing references the package
+         name again. The original comment was right; the entry only looked wrong
+         for as long as the test was wrong. */
+      "ignoreDependencies": ["haus-tokens"],
     },
     "apps/storybook": {
       "entry": [".storybook/*.{ts,tsx}", "stories/**/*.{ts,tsx,mdx}"],
