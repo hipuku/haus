@@ -44,6 +44,7 @@
     "./layers.css": "./dist/layers.css",
     "./primitives.css": "./dist/primitives.css",
     "./brand.css": "./dist/brand.css",
+    "./brand-dark.css": "./dist/brand-dark.css",
     "./semantics.css": "./dist/semantics.css",
     "./motion.css": "./dist/motion.css",
     "./brands/*.css": "./dist/brands/*.css",

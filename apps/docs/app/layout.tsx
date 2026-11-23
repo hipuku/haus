@@ -19,7 +19,10 @@ export default function Layout({ children }: LayoutProps<'/'>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="flex min-h-screen flex-col">
-        <RootProvider>{children}</RootProvider>
+        {/* `data-theme` as well as fumadocs's `class`: it is haus's own switch
+            (brand-dark.css), so the components follow the site's toggle rather
+            than staying light on a dark page. */}
+        <RootProvider theme={{ attribute: ['class', 'data-theme'] }}>{children}</RootProvider>
       </body>
     </html>
   )

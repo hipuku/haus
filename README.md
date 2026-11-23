@@ -2,7 +2,7 @@
 
 A token-first design system for React, published as five npm packages: OKLCH design tokens with a
 replaceable brand layer, 20 accessible components built on them, and the colour and measurement
-libraries underneath. Light mode only.
+libraries underneath. Light and dark modes; the product brands are light only.
 
 ![The haus Storybook: the Composition page, a sign-in form built from haus components, beside the token and component index](screenshots/storybook-composition.png)
 
@@ -20,7 +20,7 @@ libraries underneath. Light mode only.
 - **Accessible components.** Axe runs in all 20 component suites, every surface is measured
   against its paired ink, and every focus ring has a forced-colours fallback.
   [`DESIGN.md` § Accessibility](./DESIGN.md#accessibility)
-- **Decided in the open.** 27 numbered decisions, each with what it was chosen over.
+- **Decided in the open.** 28 numbered decisions, each with what it was chosen over.
   [`DESIGN.md` § Decisions](./DESIGN.md#decisions)
 - **Generated, not copied.** The primitives, the motion layer and the typed constants are generated
   from the token file, and the brand map type from `brand.css`; CI fails if either drifts.

@@ -101,16 +101,18 @@ that overrides a role to the value haus already gives.
 
 ### Theme
 
-**Decision.** Light mode only. `semantics.css` declares `color-scheme: light`, and nothing uses
-`light-dark()`.
+**Decision.** Light and dark. `brand-dark.css` restates haus's colour roles for dark, applied by
+`data-theme="dark"` on the root or by `prefers-color-scheme: dark` when the root has no
+`data-theme`. The product brands, vault and core, stay light. [Decision 0028](#0028-dark-theme).
 
-**Reason.** [Decision 0002](#0002-surface-polarity) fixes surface
-polarity in the contract (white cards on a subtle page) because every ink is paired with the surface
-it is safe on. A dark theme inverts polarity, so it cannot arrive as a brand, and doing it properly
-would double the colour decisions to audit.
+**Reason.** A dark theme inverts surface polarity, so it cannot arrive as a brand
+([0002](#0002-surface-polarity)). It arrives as a second colour map of the same roles instead, and
+every surface and ink pair `contrast.test.ts` checks is measured in both maps.
 
-**Alternatives.** A `light-dark()` layer in the semantic tokens. Not taken; reopening it means
-reopening 0002.
+**Alternatives.** A `light-dark()` value in each role. Not taken: it changes every line of
+`brand.css`, which `BrandMap` and `tokens.json` are generated from, and a custom property holding
+`light-dark()` resolves where it is used, so a light-only brand inside a dark page would need its
+own `color-scheme` on every element.
 
 ## Typography
 
@@ -239,14 +241,14 @@ The rulings the system is built on, numbered in the order they were made. Each r
 chosen, what it was chosen over and what it costs. Status is about the decision, not the code: two
 are superseded, and one is not yet true of every component.
 
-| Subject           | Decisions                                                                                                                                                                                                                                     |
-| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Tokens and brands | [0002](#0002-surface-polarity), [0003](#0003-brand-and-role-layers), [0014](#0014-brand-contract-tiers), [0015](#0015-brand-form-tier), [0016](#0016-restated-values), [0018](#0018-vaults-local-tokens), [0019](#0019-typeface-in-the-brand) |
-| Typography        | [0026](#0026-type-roles-in-figma), [0027](#0027-mono-ladder)                                                                                                                                                                                  |
-| Components        | [0008](#0008-toast-scope), [0011](#0011-native-select), [0013](#0013-component-promotion), [0017](#0017-busy-indicator), [0020](#0020-listbox-and-select), [0021](#0021-domain-states-as-badge-tones), [0025](#0025-themed-select)            |
-| Component API     | [0005](#0005-variant-and-tone), [0009](#0009-where-classname-lands), [0012](#0012-tone-rules), [0022](#0022-ownership), [0023](#0023-union-prop-type-halves)                                                                                  |
-| Styling and focus | [0001](#0001-focus-indicator), [0006](#0006-component-stylesheet-layer), [0010](#0010-logical-properties)                                                                                                                                     |
-| Packaging         | [0004](#0004-versioning), [0007](#0007-meta-package), [0024](#0024-server-component-guard)                                                                                                                                                    |
+| Subject           | Decisions                                                                                                                                                                                                                                                               |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Tokens and brands | [0002](#0002-surface-polarity), [0003](#0003-brand-and-role-layers), [0014](#0014-brand-contract-tiers), [0015](#0015-brand-form-tier), [0016](#0016-restated-values), [0018](#0018-vaults-local-tokens), [0019](#0019-typeface-in-the-brand), [0028](#0028-dark-theme) |
+| Typography        | [0026](#0026-type-roles-in-figma), [0027](#0027-mono-ladder)                                                                                                                                                                                                            |
+| Components        | [0008](#0008-toast-scope), [0011](#0011-native-select), [0013](#0013-component-promotion), [0017](#0017-busy-indicator), [0020](#0020-listbox-and-select), [0021](#0021-domain-states-as-badge-tones), [0025](#0025-themed-select)                                      |
+| Component API     | [0005](#0005-variant-and-tone), [0009](#0009-where-classname-lands), [0012](#0012-tone-rules), [0022](#0022-ownership), [0023](#0023-union-prop-type-halves)                                                                                                            |
+| Styling and focus | [0001](#0001-focus-indicator), [0006](#0006-component-stylesheet-layer), [0010](#0010-logical-properties)                                                                                                                                                               |
+| Packaging         | [0004](#0004-versioning), [0007](#0007-meta-package), [0024](#0024-server-component-guard)                                                                                                                                                                              |
 
 A choice worth recording, one a reviewer would otherwise reopen, gets the next number here.
 
@@ -269,7 +271,8 @@ White cards on a subtle page, and a brand cannot invert it. Every surface role i
 that is safe on it, which is what makes contrast decidable once at the token layer; a brand that
 inverted polarity would invert the pairings consumers rely on. core inverted it, so its adoption
 included a visual re-tune. The cost, stated plainly: there is no dark mode through the brand map. A
-dark theme would be a second contract, or this decision reopened.
+dark theme would be a second contract, or this decision reopened. It became a second map of the same
+roles in [0028](#0028-dark-theme); polarity inside each mode is unchanged.
 
 ### 0003 Brand and role layers
 
@@ -513,9 +516,29 @@ as size grows. vault read the mono font in 21 places at those three sizes and to
 13px role, because the sizes do different jobs. `--haus-type-mono-*` stays as `mono-md`'s alias, so
 nothing moves on screen.
 
+### 0028 Dark theme
+
+_2026-11-23. Implemented in the tokens; components not yet checked one by one._
+
+haus has a dark mode: `brand-dark.css` gives every colour role a dark value, and form roles (radius,
+elevation, widths, type) are the same in both modes. `data-theme="dark"` or `"light"` on the root
+forces a mode; without it, `prefers-color-scheme` decides. In dark, the status ramps run the other
+way: subtle fills from 900, their text from 200, emphasis from 200 under dark ink. Dark ink on
+elderberry-500 measured 4.04:1 and on cherry-500 4.32:1, so each status ramp gained a 400 step for
+the dark default fill, all four for the same ramp shape. The page is damson-900 rather than the
+darker 950, so sunken stays below the page as it does in light. vault and core stay light: the dark
+rules skip a root naming a brand, and `brand.css` sets haus's light values at zero specificity on
+every `[data-haus-theme]` element, so core, which supplies only the base tier, cannot inherit dark
+status colours. The cost is a second map to keep in step, held by `brand.test.ts` (every colour role,
+both selectors identical) and by `contrast.test.ts` running every pair in both modes.
+
 ## Known gaps
 
-- **No dark theme.** Out of scope while decision 0002 stands.
+- **Dark mode is not checked component by component.** The token pairs are measured in both modes;
+  a component that pairs roles outside those pairs is not, and nothing runs axe against a rendered
+  dark story in CI. The Storybook toolbar switches mode for a manual check.
+- **Borders below 3:1.** `border-default` is 1.23:1 on the light page and 1.80:1 on the dark one. A
+  field whose border is its only edge falls short of WCAG 1.4.11 in both modes.
 - **Badge's tones** still declare colours directly rather than remapping custom properties, the last
   component decision 0012 has not reached.
 - **No screen reader run.** The accessibility checks are automated; they cover the markup, not the

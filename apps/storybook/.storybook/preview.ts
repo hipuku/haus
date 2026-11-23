@@ -1,4 +1,4 @@
-import type { Preview } from '@storybook/react-vite'
+import type { Decorator, Preview } from '@storybook/react-vite'
 import { hausTheme } from './theme'
 // The barrel, in the order the four token files have to load. Storybook is a
 // consumer like any other, so it takes the import a consumer is told to take.
@@ -7,8 +7,34 @@ import '@hipuku/tokens/index.css'
 // longer pulls its CSS modules in as a side effect of consuming source.
 import 'haus-components/styles.css'
 
+/**
+ * Light or dark, from the toolbar. Sets `data-theme` on the root, which is the
+ * same switch a consumer uses (brand-dark.css), so a story shows what a product
+ * shows. Light is the default so existing snapshots keep their baseline; the
+ * a11y addon checks whichever mode is selected.
+ */
+const withMode: Decorator = (Story, context) => {
+  document.documentElement.dataset.theme = context.globals.mode === 'dark' ? 'dark' : 'light'
+  return Story()
+}
+
 const preview: Preview = {
-  initialGlobals: { backgrounds: { value: 'surface' } },
+  initialGlobals: { backgrounds: { value: 'surface' }, mode: 'light' },
+  globalTypes: {
+    mode: {
+      description: 'Light or dark mode',
+      toolbar: {
+        title: 'Mode',
+        icon: 'mirror',
+        items: [
+          { value: 'light', title: 'Light' },
+          { value: 'dark', title: 'Dark' },
+        ],
+        dynamicTitle: true,
+      },
+    },
+  },
+  decorators: [withMode],
   parameters: {
     controls: {
       matchers: {

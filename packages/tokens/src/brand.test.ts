@@ -141,6 +141,41 @@ describe('the brand map', () => {
   })
 })
 
+describe('the dark map', () => {
+  const dark = read('brand-dark.css')
+  const COLOUR_ENTRIES = BRAND_ENTRIES.filter(n => !isForm(n))
+
+  /** The declarations inside each selector block, in order, as text. */
+  const blocks = [...dark.matchAll(/:root[^{]*\{([^{}]*)\}/g)]
+    .map(m => [...m[1].matchAll(/^\s*(--[\w-]+)\s*:\s*([^;]+);/gm)].map(d => `${d[1]}: ${d[2].trim()}`))
+    .filter(b => b.length > 0)
+
+  it('holds the same declarations under both selectors', () => {
+    // The attribute rule and the prefers-color-scheme rule restate one map,
+    // because CSS has no way to share a block between them. A value changed
+    // in one and not the other would make the OS setting and the toggle
+    // disagree, and nothing would report it.
+    expect(blocks).toHaveLength(2)
+    expect(blocks[1]).toEqual(blocks[0])
+  })
+
+  it('supplies every colour role and nothing else', () => {
+    // A colour role missing here keeps its light value in a dark page: light
+    // ink on a dark surface, or the reverse. Form entries are the same in both
+    // modes and stay out, so a dark map never restates a radius.
+    const names = blocks[0].map(d => d.split(':')[0])
+    expect([...names].sort()).toEqual([...COLOUR_ENTRIES].sort())
+  })
+
+  it('leaves a root that names a product brand alone', () => {
+    // vault and core are light-only. Every rule that sets the dark map must
+    // skip a root carrying data-haus-theme.
+    const selectors = [...dark.matchAll(/^\s*(:root[^{]*)\{/gm)].map(m => m[1].trim())
+    expect(selectors.length).toBeGreaterThan(0)
+    for (const s of selectors) expect(s).toMatch(/:not\([^)]*\[data-haus-theme\]/)
+  })
+})
+
 describe('what a consumer can actually reach', () => {
   it('re-exports every brand list from the package root', async () => {
     // 2.1.0 shipped brandRolesBase, -Feedback and -Form from ./brand and never

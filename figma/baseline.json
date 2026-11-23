@@ -1,5 +1,5 @@
 {
-  "acceptedAt": "2026-11-23T07:25:12.027Z",
+  "acceptedAt": "2026-11-23T12:25:41.481Z",
   "items": {
     "axis Avatar.size": {
       "code": "lg|md|sm|xl|xs",
@@ -284,6 +284,9 @@
     "token --haus-cherry-200": {
       "code": "#ffdbd4",
       "figma": "#ffdbd4"
+    },
+    "token --haus-cherry-400": {
+      "code": "#e8594f"
     },
     "token --haus-cherry-500": {
       "code": "#d73431",
@@ -605,6 +608,9 @@
       "code": "#dbe8ff",
       "figma": "#dbe8ff"
     },
+    "token --haus-elderberry-400": {
+      "code": "#5886f2"
+    },
     "token --haus-elderberry-500": {
       "code": "#3665e4",
       "figma": "#3665e4"
@@ -632,6 +638,9 @@
     "token --haus-greengage-200": {
       "code": "#d0f3d4",
       "figma": "#d0f3d4"
+    },
+    "token --haus-greengage-400": {
+      "code": "#39b457"
     },
     "token --haus-greengage-500": {
       "code": "#009630",
@@ -672,6 +681,9 @@
     "token --haus-mango-200": {
       "code": "#fee2c9",
       "figma": "#fee2c9"
+    },
+    "token --haus-mango-400": {
+      "code": "#e18600"
     },
     "token --haus-mango-500": {
       "code": "#c46300",

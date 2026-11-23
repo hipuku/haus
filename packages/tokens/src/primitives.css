@@ -42,6 +42,7 @@
     /* ── Elderberry (Indigo) ── H=265°, distinct from Aronia H=300° ──────────── */
     --haus-elderberry-100:  oklch(97% 0.020 265);   /* Subtle background */
     --haus-elderberry-200:  oklch(93% 0.040 265);   /* Subtle border */
+    --haus-elderberry-400:  oklch(64% 0.170 265);   /* Default fill in dark mode */
     --haus-elderberry-500:  oklch(55% 0.200 265);   /* Default */
     --haus-elderberry-700:  oklch(42% 0.160 265);   /* Text on subtle background */
     --haus-elderberry-900:  oklch(30% 0.120 265);   /* Emphasis / high-contrast text */
@@ -49,6 +50,7 @@
     /* ── Greengage (Green) ── H=148° ─────────────────────────────────────────── */
     --haus-greengage-100:  oklch(97% 0.030 148);   /* Subtle background */
     --haus-greengage-200:  oklch(93% 0.055 148);   /* Subtle border */
+    --haus-greengage-400:  oklch(68% 0.170 148);   /* Default fill in dark mode */
     --haus-greengage-500:  oklch(58% 0.185 148);   /* Default */
     --haus-greengage-700:  oklch(45% 0.150 148);   /* Text on subtle background */
     --haus-greengage-900:  oklch(33% 0.110 148);   /* Emphasis / high-contrast text */
@@ -56,6 +58,7 @@
     /* ── Mango (Golden) ── H=65° ─────────────────────────────────────────────── */
     --haus-mango-100:  oklch(97% 0.025 65);   /* Subtle background */
     --haus-mango-200:  oklch(93% 0.045 65);   /* Subtle border */
+    --haus-mango-400:  oklch(70% 0.160 65);   /* Default fill in dark mode */
     --haus-mango-500:  oklch(60% 0.175 65);   /* Default */
     --haus-mango-700:  oklch(47% 0.142 65);   /* Text on subtle background */
     --haus-mango-900:  oklch(38% 0.110 65);   /* Emphasis / high-contrast text */
@@ -63,6 +66,7 @@
     /* ── Cherry (Red) ── H=27° ───────────────────────────────────────────────── */
     --haus-cherry-100:  oklch(97% 0.030 27);   /* Subtle background */
     --haus-cherry-200:  oklch(93% 0.055 27);   /* Subtle border */
+    --haus-cherry-400:  oklch(65% 0.180 27);   /* Default fill in dark mode */
     --haus-cherry-500:  oklch(58% 0.200 27);   /* Default */
     --haus-cherry-700:  oklch(44% 0.168 27);   /* Text on subtle background */
     --haus-cherry-900:  oklch(33% 0.110 27);   /* Emphasis / high-contrast text */

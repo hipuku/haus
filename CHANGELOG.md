@@ -17,7 +17,18 @@ even when the hex barely moves.
 
 ## @hipuku/tokens 5.3.0
 
-_Unreleased. `haus-tokens`, renamed, with motion roles._
+_Unreleased. `haus-tokens`, renamed, with motion roles and a dark mode. The dark mode makes this
+release a major (decision 0004); the version is set at release._
+
+**Changed, breaking** · **A dark mode, on by default for users whose system is set to dark.**
+`index.css` now loads `brand-dark.css`, which gives every colour role a dark value under
+`prefers-color-scheme: dark`, or under `data-theme="dark"` on the root whatever the system says.
+An app that is light only keeps haus light with `<html data-theme="light">`. A root carrying
+`data-haus-theme` (vault, core) is left light. Every surface and ink pair in `contrast.test.ts`
+clears 4.5:1 in both modes. Decision 0028.
+
+**Added** · **A 400 step on the four status ramps**: `--haus-elderberry-400`, `--haus-greengage-400`,
+`--haus-mango-400` and `--haus-cherry-400`, the default fill of each status colour in dark mode.
 
 **Changed** · **Renamed from `haus-tokens`**, one of the packages moving to the `@hipuku` scope. The CSS,
 the JS constants and the DTCG JSON are unchanged by the rename: replace `haus-tokens` with

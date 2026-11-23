@@ -4,7 +4,16 @@ import { defineConfig } from 'tsup'
 // The CSS files and tokens.json are shipped as-is. They are the source form,
 // not something to compile. `files: ["dist"]` means only dist is published, so
 // they are copied there rather than exported from src.
-const ASSETS = ['layers.css', 'primitives.css', 'brand.css', 'semantics.css', 'motion.css', 'index.css', 'tokens.json']
+const ASSETS = [
+  'layers.css',
+  'primitives.css',
+  'brand.css',
+  'brand-dark.css',
+  'semantics.css',
+  'motion.css',
+  'index.css',
+  'tokens.json',
+]
 /**
  * Brands ship as their own directory so a consumer can point at one by name.
  *
