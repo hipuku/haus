@@ -49,7 +49,12 @@
 
 @layer haus.semantics {
 
-  :root {
+  /* Every brand root too, since the dark mode (brand-dark.css): color-scheme
+     inherits, so a light product brand inside a dark page would otherwise keep
+     light roles and render dark native controls, scrollbars and fields. The dark
+     rules are more specific and skip a root naming a brand. */
+  :root,
+  [data-haus-theme] {
     color-scheme: light;
   }
 

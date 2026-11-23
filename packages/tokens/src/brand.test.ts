@@ -167,6 +167,13 @@ describe('the dark map', () => {
     expect([...names].sort()).toEqual([...COLOUR_ENTRIES].sort())
   })
 
+  it('keeps native controls light inside a product brand', () => {
+    // color-scheme inherits. Without a light scheme on every brand root, a
+    // vault or core section in a dark page renders dark scrollbars and fields
+    // around light roles.
+    expect(semantics).toMatch(/:root,\s*\[data-haus-theme\]\s*\{\s*color-scheme:\s*light;/)
+  })
+
   it('leaves a root that names a product brand alone', () => {
     // vault and core are light-only. Every rule that sets the dark map must
     // skip a root carrying data-haus-theme.

@@ -69,19 +69,16 @@ themed Select. `tokens.test.ts` in `haus-components` carries the whole ledger.
 ## Dark mode
 
 `index.css` includes `brand-dark.css`, which gives every colour role a dark value. Without a
-`data-theme` attribute, the page follows the system setting. To set it yourself:
+`data-theme` attribute, the page follows the system setting. To set it yourself, put
+`data-theme="dark"` on the root for always dark, or `data-theme="light"` for always light:
 
 ```html
-<html data-theme="dark">
-  <!-- always dark -->
-  <html data-theme="light">
-    <!-- always light -->
-  </html>
-</html>
+<html data-theme="dark"></html>
 ```
 
 Radius, elevation, widths and type are the same in both modes. The product brands in `brands/`
-stay light: the dark rules skip a root that carries `data-haus-theme`. Importing the layers one by
+stay light, native controls included: the dark rules skip a root that carries `data-haus-theme`,
+and every `[data-haus-theme]` element sets `color-scheme: light`. Importing the layers one by
 one, leave out `brand-dark.css` for a light-only app.
 
 ## Typed constants
