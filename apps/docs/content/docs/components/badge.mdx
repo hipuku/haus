@@ -11,6 +11,9 @@ import { BadgeTones, BadgeAppearances } from '@/components/examples/badge'
 
 ## Install
 
+The registry is for TypeScript projects: with `"tsx": false` in `components.json`, shadcn writes
+`.js` and `.jsx` files that still contain TypeScript, and the build fails.
+
 ```bash
 npx shadcn add @haus/badge
 ```
