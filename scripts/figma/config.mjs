@@ -5,11 +5,17 @@
    component. Code is the token sources in @hipuku/tokens and the component folders
    in haus-components. */
 
+/* The Figma collection holding haus's light and dark colour roles (decision
+   0028). haus/semantics' haus mode aliases its light mode, so only its dark mode
+   is compared, against brand-dark.css. */
+export const THEME_COLLECTION = 'haus/theme'
+
 export const FIGMA_FILE = { key: 'Qo23P38COlJrfQmlM39Fa3', name: 'haus Design System' }
 
 export const PATHS = {
   tokens: 'packages/tokens/src',
   tokenFiles: ['primitives.css', 'brand.css', 'semantics.css', 'motion.css'],
+  darkBrand: 'brand-dark.css',
   brands: 'packages/tokens/src/brands',
   types: 'packages/components/src/types.ts',
   components: 'packages/components/src/components',

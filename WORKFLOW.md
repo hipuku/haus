@@ -89,6 +89,10 @@ Both chains are followed to the end, colours are compared as the hex Figma store
 leading and tracking are compared in pixels, because that is what its Figma variable holds
 ([decision 0026](./DESIGN.md#0026-type-roles-in-figma)). The default mode is compared, which is the
 haus brand; a named brand's own primitives are read too, because Figma keeps them beside haus's.
+The dark colour map is compared as well: each role in `brand-dark.css` against the dark mode of the
+`haus/theme` collection, as `token dark --haus-brand-<role>`. That collection's light mode is what
+the semantics collection's haus mode points at, so it is not compared twice
+([decision 0028](./DESIGN.md#0028-dark-theme)).
 
 Some things are left out on purpose, and `figma/exceptions.json` lists each with its reason: motion
 and shadows (Figma has no variable that drives a transition, and draws shadows as effect styles),

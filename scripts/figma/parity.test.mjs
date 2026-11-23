@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { diff, accept, applyExceptions } from './diff.mjs'
 import { normaliseValue, figmaItems, variableToProperty } from './normalise.mjs'
 import { retryDelay, fetchComponents, FigmaUnavailable } from './rest.mjs'
-import { resolve, unionAliases, variantProps, statesOf } from './code.mjs'
+import { resolve, unionAliases, variantProps, statesOf, codeDarkTokens } from './code.mjs'
 import { show, report } from './report.mjs'
 
 const kindOf = (code, figma, baseline) => diff({ code, figma, baseline }).findings.map(f => f.kind)
@@ -104,6 +104,36 @@ describe('normalising values', () => {
   it('maps a variable to its CSS property by code syntax, then by name', () => {
     expect(variableToProperty({ name: 'spacing/4', codeSyntax: { WEB: 'var(--haus-space-4)' } })).toBe('--haus-space-4')
     expect(variableToProperty({ name: 'color/shadow/6' })).toBe('--color-shadow-6')
+  })
+})
+
+describe('the dark colour map', () => {
+  it('reads haus/theme by its dark mode only, keyed by the brand role', () => {
+    const items = figmaItems({
+      variables: [
+        {
+          collection: 'haus/theme',
+          name: 'theme/surface/default',
+          value: { hex: '#ffffff' },
+          dark: { hex: '#111113' },
+        },
+        { collection: 'haus/theme', name: 'theme/backdrop', value: { hex: '#04040599' }, dark: { hex: '#04040599' } },
+      ],
+    })
+    // The light mode is what haus/semantics already resolves to, so it is not
+    // a second item; a name-derived key would have no code side and fail.
+    expect(items).toEqual({
+      'token dark --haus-brand-surface-default': '#111113',
+      'token dark --haus-brand-backdrop': '#04040599',
+    })
+  })
+
+  it('reads every colour role from brand-dark.css, resolved', () => {
+    const items = codeDarkTokens()
+    expect(Object.keys(items)).toHaveLength(54)
+    expect(items['token dark --haus-brand-surface-default']).toBe('#111113')
+    // A translucent role resolves through relative colour syntax to an alpha hex.
+    expect(items['token dark --haus-brand-border-inverse']).toBe('#0404054d')
   })
 })
 

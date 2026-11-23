@@ -176,4 +176,20 @@ export function codeComponents(root = '.') {
   return items
 }
 
-export const codeItems = (root = '.') => ({ ...codeTokens(root), ...codeComponents(root) })
+/** The dark colour map, as `token dark --haus-brand-<role>`: each role in
+    brand-dark.css resolved against the primitives. Compared with the dark mode of
+    Figma's haus/theme collection, whose variables are the brand roles. */
+export function codeDarkTokens(root = '.') {
+  const raw = rawTokens(root)
+  const css = stripComments(fs.readFileSync(path.join(root, PATHS.tokens, PATHS.darkBrand), 'utf8'))
+  const items = {}
+  // The file states its map twice, once per selector, and brand.test.ts holds
+  // the two equal, so the first declaration of each role is the map.
+  for (const m of css.matchAll(/(--haus-brand-[\w-]+)\s*:\s*([^;]+);/g)) {
+    const key = `token dark ${m[1]}`
+    if (!(key in items)) items[key] = normaliseValue(resolve(m[2].trim(), raw))
+  }
+  return items
+}
+
+export const codeItems = (root = '.') => ({ ...codeTokens(root), ...codeDarkTokens(root), ...codeComponents(root) })

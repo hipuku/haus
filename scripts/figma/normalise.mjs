@@ -14,7 +14,7 @@
    to the end of their chain and the final values compared. */
 
 import chroma from 'chroma-js'
-import { COMPARED_STATES, axisName, isPrivateComponent } from './config.mjs'
+import { COMPARED_STATES, THEME_COLLECTION, axisName, isPrivateComponent } from './config.mjs'
 
 const ROOT_PX = 16
 
@@ -52,6 +52,14 @@ export function variableToProperty(v) {
 export function figmaItems({ variables = [], components = [] }) {
   const items = {}
   for (const v of variables) {
+    // haus/theme: its light mode is what haus/semantics already resolves to, so
+    // only its dark mode is an item of its own, keyed by the brand role.
+    if (v.collection === THEME_COLLECTION) {
+      if (v.dark !== undefined) {
+        items[`token dark --haus-brand-${v.name.replace(/^theme\//, '').replace(/\//g, '-')}`] = normaliseValue(v.dark)
+      }
+      continue
+    }
     // Figma's opacity fields take a percentage, so its opacity variables hold
     // 40 where the CSS holds 0.4.
     const value = v.name.startsWith('opacity/') && typeof v.value === 'number' ? v.value / 100 : v.value

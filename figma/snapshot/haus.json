@@ -1,5 +1,5 @@
 {
-  "exportedAt": "2026-11-23T07:24:07.838Z",
+  "exportedAt": "2026-11-23T12:50:54.349Z",
   "source": "plugin",
   "file": {
     "key": "Qo23P38COlJrfQmlM39Fa3",
@@ -1360,6 +1360,50 @@
         "WEB": "var(--haus-space-0-5)"
       },
       "value": 2
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/elderberry/400",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-elderberry-400)"
+      },
+      "value": {
+        "hex": "#5886f2"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/greengage/400",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-greengage-400)"
+      },
+      "value": {
+        "hex": "#39b457"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/mango/400",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-mango-400)"
+      },
+      "value": {
+        "hex": "#e18600"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/cherry/400",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-cherry-400)"
+      },
+      "value": {
+        "hex": "#e8594f"
+      }
     },
     {
       "collection": "haus/semantics",
@@ -3288,6 +3332,600 @@
         "WEB": "var(--haus-motion-sheet-exit-easing)"
       },
       "value": "cubic-bezier(0.4, 0, 1, 1)"
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/surface/default",
+      "type": "COLOR",
+      "value": {
+        "hex": "#ffffff"
+      },
+      "dark": {
+        "hex": "#111113"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/surface/subtle",
+      "type": "COLOR",
+      "value": {
+        "hex": "#f5f4f9"
+      },
+      "dark": {
+        "hex": "#262629"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/surface/raised",
+      "type": "COLOR",
+      "value": {
+        "hex": "#ffffff"
+      },
+      "dark": {
+        "hex": "#262629"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/surface/overlay",
+      "type": "COLOR",
+      "value": {
+        "hex": "#fcfbfe"
+      },
+      "dark": {
+        "hex": "#262629"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/surface/sunken",
+      "type": "COLOR",
+      "value": {
+        "hex": "#e7e7ed"
+      },
+      "dark": {
+        "hex": "#040405"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/surface/inverse",
+      "type": "COLOR",
+      "value": {
+        "hex": "#111113"
+      },
+      "dark": {
+        "hex": "#f5f4f9"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/surface/disabled",
+      "type": "COLOR",
+      "value": {
+        "hex": "#f5f4f9"
+      },
+      "dark": {
+        "hex": "#262629"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/ink/primary",
+      "type": "COLOR",
+      "value": {
+        "hex": "#111113"
+      },
+      "dark": {
+        "hex": "#fcfbfe"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/ink/secondary",
+      "type": "COLOR",
+      "value": {
+        "hex": "#3f3f43"
+      },
+      "dark": {
+        "hex": "#d1d0d7"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/ink/tertiary",
+      "type": "COLOR",
+      "value": {
+        "hex": "#807f85"
+      },
+      "dark": {
+        "hex": "#aaaab1"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/ink/disabled",
+      "type": "COLOR",
+      "value": {
+        "hex": "#aaaab1"
+      },
+      "dark": {
+        "hex": "#5d5d61"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/ink/inverse",
+      "type": "COLOR",
+      "value": {
+        "hex": "#ffffff"
+      },
+      "dark": {
+        "hex": "#040405"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/ink/link",
+      "type": "COLOR",
+      "value": {
+        "hex": "#7653ab"
+      },
+      "dark": {
+        "hex": "#d0c3ec"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/ink/on-primary",
+      "type": "COLOR",
+      "value": {
+        "hex": "#ffffff"
+      },
+      "dark": {
+        "hex": "#040405"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/border/subtle",
+      "type": "COLOR",
+      "value": {
+        "hex": "#f5f4f9"
+      },
+      "dark": {
+        "hex": "#262629"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/border/default",
+      "type": "COLOR",
+      "value": {
+        "hex": "#e7e7ed"
+      },
+      "dark": {
+        "hex": "#3f3f43"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/border/strong",
+      "type": "COLOR",
+      "value": {
+        "hex": "#d1d0d7"
+      },
+      "dark": {
+        "hex": "#5d5d61"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/border/disabled",
+      "type": "COLOR",
+      "value": {
+        "hex": "#e7e7ed"
+      },
+      "dark": {
+        "hex": "#262629"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/primary/default",
+      "type": "COLOR",
+      "value": {
+        "hex": "#7653ab"
+      },
+      "dark": {
+        "hex": "#ae96da"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/primary/hover",
+      "type": "COLOR",
+      "value": {
+        "hex": "#5b3c89"
+      },
+      "dark": {
+        "hex": "#d0c3ec"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/primary/pressed",
+      "type": "COLOR",
+      "value": {
+        "hex": "#442a68"
+      },
+      "dark": {
+        "hex": "#e7e1f5"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/primary/subtle",
+      "type": "COLOR",
+      "value": {
+        "hex": "#f6f3fc"
+      },
+      "dark": {
+        "hex": "#201134"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/primary/on-subtle",
+      "type": "COLOR",
+      "value": {
+        "hex": "#442a68"
+      },
+      "dark": {
+        "hex": "#e7e1f5"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/primary/disabled",
+      "type": "COLOR",
+      "value": {
+        "hex": "#e7e7ed"
+      },
+      "dark": {
+        "hex": "#262629"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/info/subtle",
+      "type": "COLOR",
+      "value": {
+        "hex": "#eff5ff"
+      },
+      "dark": {
+        "hex": "#0f2669"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/info/border",
+      "type": "COLOR",
+      "value": {
+        "hex": "#dbe8ff"
+      },
+      "dark": {
+        "hex": "#2043a3"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/info/default",
+      "type": "COLOR",
+      "value": {
+        "hex": "#3665e4"
+      },
+      "dark": {
+        "hex": "#5886f2"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/info/on-subtle",
+      "type": "COLOR",
+      "value": {
+        "hex": "#2043a3"
+      },
+      "dark": {
+        "hex": "#dbe8ff"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/info/on-default",
+      "type": "COLOR",
+      "value": {
+        "hex": "#ffffff"
+      },
+      "dark": {
+        "hex": "#040405"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/info/emphasis",
+      "type": "COLOR",
+      "value": {
+        "hex": "#0f2669"
+      },
+      "dark": {
+        "hex": "#dbe8ff"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/success/subtle",
+      "type": "COLOR",
+      "value": {
+        "hex": "#e8fbea"
+      },
+      "dark": {
+        "hex": "#00430e"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/success/border",
+      "type": "COLOR",
+      "value": {
+        "hex": "#d0f3d4"
+      },
+      "dark": {
+        "hex": "#006a1b"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/success/default",
+      "type": "COLOR",
+      "value": {
+        "hex": "#009630"
+      },
+      "dark": {
+        "hex": "#39b457"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/success/on-subtle",
+      "type": "COLOR",
+      "value": {
+        "hex": "#006a1b"
+      },
+      "dark": {
+        "hex": "#d0f3d4"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/success/on-default",
+      "type": "COLOR",
+      "value": {
+        "hex": "#111113"
+      },
+      "dark": {
+        "hex": "#040405"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/success/solid",
+      "type": "COLOR",
+      "value": {
+        "hex": "#006a1b"
+      },
+      "dark": {
+        "hex": "#39b457"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/success/emphasis",
+      "type": "COLOR",
+      "value": {
+        "hex": "#00430e"
+      },
+      "dark": {
+        "hex": "#d0f3d4"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/warning/subtle",
+      "type": "COLOR",
+      "value": {
+        "hex": "#fff2e4"
+      },
+      "dark": {
+        "hex": "#683200"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/warning/border",
+      "type": "COLOR",
+      "value": {
+        "hex": "#fee2c9"
+      },
+      "dark": {
+        "hex": "#8e4400"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/warning/default",
+      "type": "COLOR",
+      "value": {
+        "hex": "#c46300"
+      },
+      "dark": {
+        "hex": "#e18600"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/warning/on-subtle",
+      "type": "COLOR",
+      "value": {
+        "hex": "#8e4400"
+      },
+      "dark": {
+        "hex": "#fee2c9"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/warning/on-default",
+      "type": "COLOR",
+      "value": {
+        "hex": "#111113"
+      },
+      "dark": {
+        "hex": "#040405"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/warning/solid",
+      "type": "COLOR",
+      "value": {
+        "hex": "#8e4400"
+      },
+      "dark": {
+        "hex": "#e18600"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/warning/emphasis",
+      "type": "COLOR",
+      "value": {
+        "hex": "#683200"
+      },
+      "dark": {
+        "hex": "#fee2c9"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/error/subtle",
+      "type": "COLOR",
+      "value": {
+        "hex": "#ffeeea"
+      },
+      "dark": {
+        "hex": "#621513"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/error/border",
+      "type": "COLOR",
+      "value": {
+        "hex": "#ffdbd4"
+      },
+      "dark": {
+        "hex": "#9a1316"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/error/default",
+      "type": "COLOR",
+      "value": {
+        "hex": "#d73431"
+      },
+      "dark": {
+        "hex": "#e8594f"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/error/on-subtle",
+      "type": "COLOR",
+      "value": {
+        "hex": "#9a1316"
+      },
+      "dark": {
+        "hex": "#ffdbd4"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/error/on-default",
+      "type": "COLOR",
+      "value": {
+        "hex": "#ffffff"
+      },
+      "dark": {
+        "hex": "#040405"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/error/emphasis",
+      "type": "COLOR",
+      "value": {
+        "hex": "#621513"
+      },
+      "dark": {
+        "hex": "#ffdbd4"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/backdrop",
+      "type": "COLOR",
+      "value": {
+        "hex": "#04040599"
+      },
+      "dark": {
+        "hex": "#04040599"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/border/inverse",
+      "type": "COLOR",
+      "value": {
+        "hex": "#ffffff4d"
+      },
+      "dark": {
+        "hex": "#0404054d"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/border/inverse-hover",
+      "type": "COLOR",
+      "value": {
+        "hex": "#ffffff80"
+      },
+      "dark": {
+        "hex": "#04040580"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/surface/inverse-hover",
+      "type": "COLOR",
+      "value": {
+        "hex": "#ffffff1a"
+      },
+      "dark": {
+        "hex": "#0404051a"
+      }
     }
   ],
   "components": [
