@@ -1,0 +1,37 @@
+---
+title: Motion
+description: The maths behind haus's motion, as plain functions over numbers.
+---
+
+`@hipuku/motion`, unreleased at 0.1.0. Role duration caps, springs compiled to a CSS `linear()`
+easing, sheet drag physics and presence state, with no DOM and no framework.
+
+## Install
+
+Not on npm yet.
+
+```bash
+npm install @hipuku/motion
+```
+
+## Usage
+
+```ts
+import { capDuration, springToLinear } from '@hipuku/motion'
+
+springToLinear({ visualDuration: 0.2, bounce: 0 })
+// { durationMs: 353, easing: 'linear(0, 0.0229, 0.0789, …, 1)' }
+
+capDuration('highlight', 260) // 200, the highlight role's cap
+```
+
+A spring is two numbers: how long it looks like it moves (`visualDuration`) and how much it
+overshoots (`bounce`). The CSS has to run until it settles, which is longer, so `durationMs` is the
+settle time. The role values, caps and modes come from the token source; the same values are the
+`--haus-motion-*` custom properties.
+
+## API
+
+<ModuleApi file="motion/src/index.ts" />
+
+The full reference is the [package README](https://github.com/hipuku/haus/tree/main/packages/motion).
