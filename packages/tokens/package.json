@@ -58,10 +58,11 @@
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "npm run tokens:check && npm run build",
     "tokens": "tsx scripts/build-tokens.ts",
-    "tokens:check": "tsx scripts/build-tokens.ts --check",
+    "tokens:check": "tsx scripts/build-tokens.ts --check && tsx scripts/check-dtcg.ts",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "tokens:dtcg-write": "tsx scripts/check-dtcg.ts --write"
   },
   "devDependencies": {
     "@hipuku/colour": "workspace:^",
