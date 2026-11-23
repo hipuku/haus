@@ -1,9 +1,12 @@
-# haus-colour-utils
+# @hipuku/colour
+
+Replaces `haus-colour-utils` and `haus-colour-names`, which merged into this package. Unreleased at
+0.1.0.
 
 Perceptual colour utilities: the colour science behind the [haus](https://github.com/hipuku/haus) design system, published standalone. Pure ESM, ships its own types, one dependency.
 
 ```bash
-npm install haus-colour-utils
+npm install @hipuku/colour
 ```
 
 ## API
@@ -20,7 +23,7 @@ import {
   hueFamily,
   isLight,
   suggestTextColour,
-} from 'haus-colour-utils'
+} from '@hipuku/colour'
 ```
 
 ### `deltaE(a, b): number`
@@ -50,10 +53,11 @@ The closest named colours to a hex, ranked by CIEDE2000 distance, over the 289 b
 
 ### `createNamedColourMatcher(entries): (hex, topN?) => NamedColourMatch[]`
 
-The same search over a dataset you supply. Install [`haus-colour-names`](../colour-names) for the exhaustive 31,900-name set:
+The same search over a dataset you supply. Import `@hipuku/colour/names` for the exhaustive 31,900-name set. It is a subpath rather than part of
+the main entry, so a bundler leaves its 764KB out unless it is imported:
 
 ```ts
-import { colourNameEntries } from 'haus-colour-names'
+import { colourNameEntries } from '@hipuku/colour/names'
 const nameColour = createNamedColourMatcher(colourNameEntries())
 ```
 

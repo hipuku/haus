@@ -62,7 +62,7 @@ const hash = word => createHash('sha256').update(word).digest('hex')
    injection. A value is an exact repo-relative path, or a directory when it
    ends in a slash.
 
-     "hipuku": { "names": { "skip": ["packages/colour-names/src/"] } }  */
+     "hipuku": { "names": { "skip": ["packages/colour/src/names/"] } }  */
 /* node_modules, always, and not negotiable per repo. Every real repo gitignores
    it, so `--exclude-standard` drops it and this never fires there. A repo
    without a .gitignore is not hypothetical though, and check-prose.mjs already

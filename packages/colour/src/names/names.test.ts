@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { COLOUR_NAME_COUNT, colourNameEntries, colourNames } from './index'
+import { COLOUR_NAME_COUNT, colourNameEntries, colourNames } from './index.js'
 
 describe('the dataset', () => {
   it('holds 31,900 colours', () => {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { toHex } from './toHex'
+import { toHex } from './toHex.js'
 
 describe('toHex', () => {
   it('parses the classic rgb syntaxes', () => {

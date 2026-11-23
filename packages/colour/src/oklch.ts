@@ -53,7 +53,7 @@ export interface HueFamily {
  * Hue families, ordered round the wheel from red. `min` above `max` wraps.
  *
  * The boundaries are fitted to 4,275 human-named colours rather than derived.
- * Every entry in haus-colour-names whose name ends in a family word, and whose
+ * Every entry in `@hipuku/colour/names` whose name ends in a family word, and whose
  * previous word is not also one ("Blue Green" is nobody's evidence), is a colour
  * a person decided the family of: 1,094 Greens, 1,070 Blues, 509 Reds and so on.
  * The eight boundaries are the set that maximises mean per-family recall over

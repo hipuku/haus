@@ -7,13 +7,13 @@
  * these functions collapse that surface into the ElementStyle shape.
  */
 
-import { toHex } from 'haus-colour-utils'
+import { toHex } from '@hipuku/colour'
 import type { ElementStyle, ExtractedElement, RawElement } from './types.js'
 
 /**
  * Any CSS colour → lowercase hex; null when fully transparent or unparseable.
  *
- * Delegates to haus-colour-utils. getComputedStyle stopped normalising to
+ * Delegates to @hipuku/colour. getComputedStyle stopped normalising to
  * `rgb()`: a colour authored in OKLCH comes back as `oklch(0.52 0.138 300)`
  * verbatim, so a probe that only speaks rgb() silently reports null for every
  * colour on a modern design system.

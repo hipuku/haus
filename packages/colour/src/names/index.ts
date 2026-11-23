@@ -3,18 +3,20 @@
  *
  * The meodai colour-names dataset: 31,900 hex values with a human name each.
  * Data only, no dependencies and no matching logic, so a project that wants ΔE
- * from haus-colour-utils does not pay 764KB for names it never asks about.
+ * from `@hipuku/colour` does not pay 764KB for names it never asks about. A
+ * subpath rather than a package of its own, so a bundler drops it unless it
+ * is imported.
  *
- * Pair it with `createNamedColourMatcher` from haus-colour-utils:
+ * Pair it with `createNamedColourMatcher`:
  *
- *   import { colourNameEntries } from 'haus-colour-names'
- *   import { createNamedColourMatcher } from 'haus-colour-utils'
+ *   import { colourNameEntries } from '@hipuku/colour/names'
+ *   import { createNamedColourMatcher } from '@hipuku/colour'
  *
  *   const nameColour = createNamedColourMatcher(colourNameEntries())
  *   nameColour('#4f84ba')  // [{ name: 'Blue Vault', hex: '#4e83bd', distance: 0.7 }, …]
  */
 
-import raw from './colournames.json'
+import raw from './colournames.json' with { type: 'json' }
 
 /** One dataset entry, with the hex normalised to `#rrggbb`. */
 export interface ColourNameEntry {

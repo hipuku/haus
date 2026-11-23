@@ -178,19 +178,7 @@ importers:
         specifier: ^8.3.8
         version: 8.3.8(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.1)
 
-  packages/colour-names:
-    devDependencies:
-      tsup:
-        specifier: ^9.0.0
-        version: 9.0.0(jiti@2.7.0)(postcss@8.5.33)(tsx@4.23.12)(typescript@5.9.3)(yaml@2.9.1)
-      typescript:
-        specifier: ^5.4.5
-        version: 5.9.3
-      vitest:
-        specifier: ^5.1.0
-        version: 5.1.0(@types/node@26.6.6)(@vitest/coverage-v8@5.1.0)(happy-dom@21.0.4)(jsdom@31.0.1)(vite@8.3.8(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.12)(yaml@2.9.1))
-
-  packages/colour-utils:
+  packages/colour:
     dependencies:
       chroma-js:
         specifier: ^3.3.0
@@ -199,12 +187,6 @@ importers:
       '@types/chroma-js':
         specifier: ^3.1.3
         version: 3.1.3
-      haus-colour-names:
-        specifier: workspace:^
-        version: link:../colour-names
-      tsup:
-        specifier: ^9.0.0
-        version: 9.0.0(jiti@2.7.0)(postcss@8.5.33)(tsx@4.23.12)(typescript@5.9.3)(yaml@2.9.1)
       typescript:
         specifier: ^5.4.5
         version: 5.9.3
@@ -302,9 +284,9 @@ importers:
 
   packages/style-probe:
     dependencies:
-      haus-colour-utils:
+      '@hipuku/colour':
         specifier: workspace:^
-        version: link:../colour-utils
+        version: link:../colour
     devDependencies:
       happy-dom:
         specifier: ^21.0.4
@@ -321,12 +303,12 @@ importers:
 
   packages/tokens:
     devDependencies:
+      '@hipuku/colour':
+        specifier: workspace:^
+        version: link:../colour
       '@types/node':
         specifier: ^22.20.3
         version: 22.20.3
-      haus-colour-utils:
-        specifier: workspace:^
-        version: link:../colour-utils
       tsup:
         specifier: ^9.0.0
         version: 9.0.0(jiti@2.7.0)(postcss@8.5.33)(tsx@4.23.12)(typescript@5.9.3)(yaml@2.9.1)

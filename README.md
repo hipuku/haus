@@ -52,7 +52,8 @@ import 'haus-components/styles.css'
 ```
 
 React 18 or 19 is a peer dependency. The colour libraries install on their own:
-`haus-colour-utils`, `haus-colour-names` and `haus-style-probe`. Each package's README covers its
+`@hipuku/colour` (unreleased; it replaces `haus-colour-utils` and `haus-colour-names`) and
+`haus-style-probe`. Each package's README covers its
 API.
 
 ### From the registry

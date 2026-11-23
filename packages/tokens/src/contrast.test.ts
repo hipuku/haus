@@ -14,7 +14,7 @@
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { wcagContrast } from 'haus-colour-utils'
+import { wcagContrast } from '@hipuku/colour'
 
 const SRC = join(process.cwd(), 'src')
 const read = (f: string) => readFileSync(join(SRC, f), 'utf8')

@@ -7,7 +7,7 @@ What this system does, what it does not, and where it is known to fall short.
 | Claim                                          | Checked by                                             |
 | ---------------------------------------------- | ------------------------------------------------------ |
 | Every component has no axe violations          | `vitest-axe`, in all 20 component suites               |
-| Every surface pairs with an ink that clears AA | `contrast.test.ts`, measured with `haus-colour-utils`  |
+| Every surface pairs with an ink that clears AA | `contrast.test.ts`, measured with `@hipuku/colour`     |
 | The focus ring clears SC 1.4.11 at 3:1         | the same file, against three surfaces                  |
 | Focus is visible in forced-colors mode         | `logical-properties.test.ts`, per component            |
 | Controls are operable from the keyboard        | Space, arrows and tab-stop tests                       |

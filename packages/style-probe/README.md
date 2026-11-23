@@ -81,7 +81,7 @@ whole document. A component that never mounted must not read as a clean one.
 back as `oklch(0.52 0.138 300)` verbatim, so a probe that only reads `rgb()`
 reports `null` for every colour on a modern design system, silently, since
 `null` is also what a genuinely transparent element returns. Parsing is
-delegated to [`haus-colour-utils`](../colour-utils), which covers the modern
+delegated to [`@hipuku/colour`](../colour), which covers the modern
 syntaxes as well as the classic ones.
 
 ## Authoring constraint

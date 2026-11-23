@@ -1,8 +1,26 @@
 # Releasing
 
-Five packages publish to npm from this repo, unscoped and public:
-`haus-tokens`, `haus-components`, `haus-colour-utils`, `haus-style-probe`,
-`haus-colour-names`.
+Packages publish to npm from this repo: `haus-tokens`, `haus-components` and `haus-style-probe`,
+unscoped, and the scoped `@hipuku/*` packages, public.
+
+## The colour rename
+
+`haus-colour-utils` and `haus-colour-names` merged into `@hipuku/colour`, in `packages/colour`, after
+commit `0f18c24`. Neither directory exists on `main` any more, but each old name still gets one
+final release that points at the replacement. The workflow reads the package from the tagged commit,
+so tag a commit where the old directory exists:
+
+```sh
+git switch -c release/colour-utils-final 0f18c24
+# in packages/colour-utils: bump the version, point the README at @hipuku/colour
+git commit -am "colour-utils 1.0.2: final release, replaced by @hipuku/colour"
+git tag colour-utils-v1.0.2 && git push origin colour-utils-v1.0.2
+npm deprecate haus-colour-utils "Replaced by @hipuku/colour"
+```
+
+The same for `colour-names`. **`haus-style-probe` cannot be released until `@hipuku/colour` is on
+npm**, because it now depends on it; the workflow refuses, as below. `@hipuku/colour`'s first
+version is published by hand, like any new package.
 
 Each is released by pushing a tag. `.github/workflows/publish.yml` reads the tag, checks the
 manifest agrees with it, builds, tests and publishes. If the version in the tag is already on
@@ -81,7 +99,7 @@ version reached npm by hand.
 
 ## Order matters
 
-`haus-components` depends on `haus-tokens`, and `haus-style-probe` on `haus-colour-utils`,
+`haus-components` depends on `haus-tokens`, and `haus-style-probe` on `@hipuku/colour`,
 through `workspace:^`. pnpm rewrites that to the dependency's real version when it publishes,
 so **the dependency has to be on npm at that version first**. Publishing components against a
 tokens version that was never released produces a package that installs and then fails to
@@ -94,8 +112,7 @@ Current order, bottom up:
 
 ```text
 haus-tokens        →  haus-components
-haus-colour-utils  →  haus-style-probe
-haus-colour-names     (nothing depends on it)
+@hipuku/colour     →  haus-style-probe
 ```
 
 ## What the workflow will not do for you

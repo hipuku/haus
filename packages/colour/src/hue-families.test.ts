@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { colourNameEntries } from 'haus-colour-names'
-import { hueFamily, oklch, HUE_FAMILIES, NEUTRAL_CHROMA } from './oklch'
+import { colourNameEntries } from './names/index.js'
+import { hueFamily, oklch, HUE_FAMILIES, NEUTRAL_CHROMA } from './oklch.js'
 
 /**
  * The hue bins are fitted rather than derived, so the fit is what has to be
@@ -9,7 +9,7 @@ import { hueFamily, oklch, HUE_FAMILIES, NEUTRAL_CHROMA } from './oklch'
  * other 4,274 worse.
  *
  * The labelled set is built here rather than committed: every entry in
- * haus-colour-names whose name ends in a family word, and whose previous word
+ * `@hipuku/colour/names` whose name ends in a family word, and whose previous word
  * is not also one, is a colour a person decided the family of. "Persian Blue"
  * counts, "Blue Green" does not.
  */
