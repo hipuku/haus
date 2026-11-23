@@ -1,3 +1,4 @@
+import { resolve } from 'node:path'
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin'
 import { playwright } from '@vitest/browser-playwright'
 import { defineConfig } from 'vitest/config'
@@ -65,6 +66,31 @@ async function modeProject(mode: (typeof MODES)[number]) {
         expect: {
           toMatchScreenshot: {
             screenshotDirectory: `__screenshots__/${mode}`,
+            // The mode in the attachment path too, not just the reference
+            // path. Both modes run the same story file, so with the default
+            // the light and dark actual images and diffs write to one
+            // filename and the second overwrites the first: 32 failures
+            // produced 16 images, and the artifact could not rebuild both
+            // sides. The artifact is how a runner-made reference reaches the
+            // repository, so this is load-bearing rather than tidy.
+            resolveDiffPath: ({
+              root,
+              attachmentsDir,
+              testFileDirectory,
+              testFileName,
+              arg,
+              browserName,
+              platform,
+              ext,
+            }) =>
+              resolve(
+                root,
+                attachmentsDir,
+                testFileDirectory,
+                mode,
+                testFileName,
+                `${arg}-${browserName}-${platform}${ext}`,
+              ),
             comparatorName: 'pixelmatch' as const,
             // One pixel in a thousand, of the story's own box rather than of
             // the window. Text antialiasing moves a handful of subpixels
