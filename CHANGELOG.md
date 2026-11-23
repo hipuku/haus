@@ -78,6 +78,11 @@ bundler leaves the dataset out unless `/names` is imported.
 `@hipuku/*` packages; the two old packages also shipped CommonJS. No current consumer calls
 `require` on them.
 
+**Added** · **`analysePalette` and `classifyDeltaE`**, from hexicon's palette analyser. Two of
+hexicon's defects are fixed on the way: its contrast verdicts compared a ratio already rounded to
+one decimal, so 4.478:1 passed AA, and its hue-order check walked the hues after sorting them, so it
+reported every palette as monotonic.
+
 To move: install `@hipuku/colour` in place of both packages, then import from `@hipuku/colour` where
 the code imported `haus-colour-utils`, and from `@hipuku/colour/names` where it imported
 `haus-colour-names`. Both old names get a final release pointing here (RELEASING.md).
