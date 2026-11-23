@@ -36,8 +36,12 @@ export function Converter() {
     try {
       return { result: convert([{ name: 'tokens.json', text }], target) }
     } catch (error) {
+      // A ReadError is the engine saying what is wrong with the input. Anything
+      // else is the engine failing on it (an $extends that refers to itself
+      // overflowed the stack), and it still belongs on the textarea, where the
+      // input can be corrected, rather than taking the page down.
       if (error instanceof ReadError) return { error: error.message }
-      throw error
+      return { error: `The converter could not process this input: ${(error as Error).message}` }
     }
   }, [text, target])
 
@@ -61,7 +65,12 @@ export function Converter() {
       />
       {outcome.result && (
         <>
-          <p>
+          {/* The summary is announced when it changes, so changing the target is heard;
+              the generated files are not, being long and not a status. */}
+          <p role="status">
+            {outcome.result.allLosses.length === 0
+              ? 'Nothing was lost. '
+              : `${outcome.result.allLosses.length} ${outcome.result.allLosses.length === 1 ? 'loss' : 'losses'}. `}
             Read as {FORMAT_LABEL[outcome.result.format]}: {outcome.result.set.tokens.length}{' '}
             {outcome.result.set.tokens.length === 1 ? 'token' : 'tokens'}
             {outcome.result.set.modes.length > 1 ? `, ${outcome.result.set.modes.length} modes` : ''}.
