@@ -1,5 +1,7 @@
+import { DocsContainer, type DocsContainerProps } from '@storybook/addon-docs/blocks'
 import type { Decorator, Preview } from '@storybook/react-vite'
-import { hausTheme } from './theme'
+import { createElement, useEffect, useState } from 'react'
+import { hausDarkTheme, hausTheme } from './theme'
 // The barrel, in the order the four token files have to load. Storybook is a
 // consumer like any other, so it takes the import a consumer is told to take.
 import '@hipuku/tokens/index.css'
@@ -13,9 +15,44 @@ import 'haus-components/styles.css'
  * shows. Light is the default so existing snapshots keep their baseline; the
  * a11y addon checks whichever mode is selected.
  */
+const setMode = (mode: unknown) => {
+  document.documentElement.dataset.theme = mode === 'dark' ? 'dark' : 'light'
+}
+
 const withMode: Decorator = (Story, context) => {
-  document.documentElement.dataset.theme = context.globals.mode === 'dark' ? 'dark' : 'light'
+  setMode(context.globals.mode)
   return Story()
+}
+
+/** The Mode global as the docs context holds it, before any change event. */
+function initialMode(context: DocsContainerProps['context']): unknown {
+  const store = (context as unknown as { store?: { userGlobals?: { get?: () => Record<string, unknown> } } }).store
+  return store?.userGlobals?.get?.().mode
+}
+
+/**
+ * Docs pages follow the Mode toolbar as well. A pure MDX page (the Getting
+ * started pages) renders no story, so the decorator above never runs on it:
+ * without this, the page kept whatever data-theme the last story left, or fell
+ * back to the operating system's setting, and its haus-coloured text could land
+ * on Storybook's white docs background in either mode. This sets haus's
+ * data-theme and the matching docs theme from the same global.
+ */
+function ModeDocsContainer(props: DocsContainerProps) {
+  const [mode, setModeState] = useState<unknown>(() => initialMode(props.context) ?? 'light')
+
+  useEffect(() => {
+    const onGlobals = ({ globals }: { globals: Record<string, unknown> }) => setModeState(globals.mode)
+    props.context.channel.on('globalsUpdated', onGlobals)
+    props.context.channel.on('setGlobals', onGlobals)
+    return () => {
+      props.context.channel.off('globalsUpdated', onGlobals)
+      props.context.channel.off('setGlobals', onGlobals)
+    }
+  }, [props.context.channel])
+
+  setMode(mode)
+  return createElement(DocsContainer, { ...props, theme: mode === 'dark' ? hausDarkTheme : hausTheme })
 }
 
 const preview: Preview = {
@@ -73,7 +110,7 @@ const preview: Preview = {
     a11y: { test: 'error' },
     // Without an explicit theme the docs pages render in Storybook's default
     // light palette rather than in haus's own chrome.
-    docs: { theme: hausTheme },
+    docs: { theme: hausTheme, container: ModeDocsContainer },
   },
 }
 

@@ -5,7 +5,7 @@ import { Badge } from 'haus-components'
 
 <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--haus-space-3)', marginBottom: 'var(--haus-space-6)' }}>
   <h1 style={{ font: 'var(--haus-type-display-weight) var(--haus-type-display-size)/var(--haus-type-display-leading) var(--haus-font-sans)', letterSpacing: 'var(--haus-type-display-tracking)', color: 'var(--haus-color-ink-primary)', margin: 0 }}>haus</h1>
-  <p style={{ font: 'var(--haus-type-body-lg-weight) var(--haus-type-body-lg-size)/var(--haus-type-body-lg-leading) var(--haus-font-sans)', color: 'var(--haus-color-ink-secondary)', maxWidth: '62ch', margin: 0 }}>A token-first, light-mode, OKLCH design system: four cascade layers, a brand map split from the roles, and twenty React components built on top. It is published to npm and it has real consumers.</p>
+  <p style={{ font: 'var(--haus-type-body-lg-weight) var(--haus-type-body-lg-size)/var(--haus-type-body-lg-leading) var(--haus-font-sans)', color: 'var(--haus-color-ink-secondary)', maxWidth: '62ch', margin: 0 }}>A token-first OKLCH design system, in light and dark: four cascade layers, a brand map split from the roles, and twenty React components built on top. It is published to npm and it has real consumers.</p>
 </div>
 
 ## What this is
@@ -58,7 +58,7 @@ decisions in `DESIGN.md` carry the reasoning and the cost.
 
 <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--haus-space-2)', margin: 'var(--haus-space-4) 0' }}>
   {[
-    ['Light only', 'Surface polarity is fixed by the contract, so a dark theme cannot arrive as a brand map. White cards on a subtle page, always.'],
+    ['Light and dark', 'Dark is a second colour map of the same roles, not a brand: data-theme on the root, or the system setting. Polarity holds inside each mode, and the product brands stay light. Use the Mode toolbar to switch.'],
     ['Brand is a layer', 'Not a theme toggle. The brand map is the fourth cascade layer, with a generated TypeScript type so an omission is a compile error.'],
     ['Tone, weight and behaviour are separate props', 'variant is visual weight, tone is meaning (neutral, info, success, warning, error), and things like a Button being a link are their own prop. They used to be one word.'],
     ['One focus mechanism', 'A double ring, :focus-visible only, with a forced-colors fallback because every ring is a box-shadow.'],
