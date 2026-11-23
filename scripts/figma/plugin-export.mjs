@@ -28,7 +28,13 @@ export async function exportFile(figma) {
     const raw = v.valuesByMode[mode ?? defaultMode[v.variableCollectionId]] ?? Object.values(v.valuesByMode)[0]
     if (raw && typeof raw === 'object' && raw.type === 'VARIABLE_ALIAS') {
       const target = byId[raw.id] ?? (await figma.variables.getVariableByIdAsync(raw.id))
-      return target && depth < 12 ? finalValue(target, depth + 1) : `unresolved ${raw.id}`
+      // A target in the same collection resolves in the mode being read, so a
+      // dark value aliasing another dark-mode variable stays dark. A target in
+      // another collection (a primitive) resolves in its own default mode.
+      const sameCollection = target?.variableCollectionId === v.variableCollectionId
+      return target && depth < 12
+        ? finalValue(target, depth + 1, sameCollection ? mode : undefined)
+        : `unresolved ${raw.id}`
     }
     if (raw && typeof raw === 'object' && 'r' in raw) {
       const hex = [raw.r, raw.g, raw.b]
