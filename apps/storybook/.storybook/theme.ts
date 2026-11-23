@@ -7,8 +7,13 @@ import { create } from 'storybook/theming'
  * The docs pages need it explicitly. Without a theme they render in Storybook's
  * default palette, so the documentation for haus would sit on chrome that is
  * not haus. The wordmark and logo are served from /brand/* through staticDirs
- * in main.ts; the plum is aronia, the brand primitive, matched to
- * --haus-color-primary-default.
+ * in main.ts.
+ *
+ * The accent is #7653ab, which is --haus-color-primary-default (aronia-500,
+ * oklch(52% 0.138 300)) converted to hex, because Storybook's theme runs colour
+ * functions that cannot read var(). It said it was that token and was #623A8F,
+ * a plum from before the ramp that is nearest aronia-600 and equal to nothing.
+ * The two brand SVGs still draw #623A8F and are a separate decision.
  */
 export const hausTheme = create({
   base: 'light',
@@ -21,8 +26,8 @@ export const hausTheme = create({
   fontBase: '"Manrope", system-ui, sans-serif',
   fontCode: '"Fira Code", ui-monospace, monospace',
 
-  colorPrimary: '#623A8F',
-  colorSecondary: '#623A8F',
+  colorPrimary: '#7653ab', // aronia-500, primary-default
+  colorSecondary: '#7653ab',
 
   appBorderRadius: 8,
 })
