@@ -87,6 +87,7 @@ Node 22 (`.nvmrc`) and pnpm 10 (`packageManager` in `package.json`).
 ```bash
 pnpm install
 pnpm run storybook      # builds the packages, then serves Storybook on port 6006
+pnpm --filter docs dev  # the docs site, once the packages are built
 ```
 
 ## Scripts
@@ -105,6 +106,9 @@ pnpm run storybook      # builds the packages, then serves Storybook on port 600
 | `pnpm run typecheck`       | `tsc` in every package                                  |
 | `pnpm -r run test`         | Every test suite                                        |
 | `pnpm run build-storybook` | The static Storybook                                    |
+| `pnpm run build-registry`  | The registry items, into the Storybook output           |
+| `pnpm run test:registry`   | Installs every registry item into a fresh app           |
+| `pnpm run lint:docs`       | Fails when a registry component has no docs page        |
 
 ## Stack
 
