@@ -1,11 +1,11 @@
 import { describe, it, expect } from 'vitest'
 import chroma from 'chroma-js'
-import { generateLightnessScale } from './lightnessScale'
-import { basicColourNames, createNamedColourMatcher } from './namedColour'
-import { hueFamily, oklch, HUE_FAMILIES } from './oklch'
-import { wcagContrast, isLight, suggestTextColour } from './contrast'
-import { clusterByPerceptualDistance } from './cluster'
-import { nearestNamedColour } from './namedColour'
+import { generateLightnessScale } from './lightnessScale.js'
+import { basicColourNames, createNamedColourMatcher } from './namedColour.js'
+import { hueFamily, oklch, HUE_FAMILIES } from './oklch.js'
+import { wcagContrast, isLight, suggestTextColour } from './contrast.js'
+import { clusterByPerceptualDistance } from './cluster.js'
+import { nearestNamedColour } from './namedColour.js'
 
 describe('generateLightnessScale', () => {
   it('returns the requested number of steps', () => {

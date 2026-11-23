@@ -19,8 +19,8 @@ packages/motion/src/tokens.generated.ts
 
 # Vendored data, not source. Reformatting a name map one entry per line only makes
 # every future diff on it unreadable.
-packages/colour-names/src/**/*.json
-packages/colour-utils/src/colornames.json
+packages/colour/src/names/colournames.json
+packages/colour/src/colornames.json
 
 # Prettier cannot parse the Storybook manager and preview head fragments as HTML
 # documents, and they are copied into the page verbatim.

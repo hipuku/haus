@@ -15,8 +15,7 @@ body:
       options:
         - haus-tokens
         - haus-components
-        - haus-colour-utils
-        - haus-colour-names
+        - '@hipuku/colour'
         - haus-style-probe
     validations: { required: true }
   - type: input

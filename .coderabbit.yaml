@@ -20,8 +20,8 @@ reviews:
     - '!**/storybook-static/**'
     - '!**/*.snap'
     - '!scripts/punctuation-baseline.json'
-    - '!packages/colour-names/src/**/*.json'
-    - '!packages/colour-utils/src/colornames.json'
+    - '!packages/colour/src/names/colournames.json'
+    - '!packages/colour/src/colornames.json'
   path_instructions:
     - path: 'packages/components/src/**/*.module.css'
       instructions: >-

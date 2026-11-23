@@ -26,7 +26,7 @@
 
 export { extractRawElements } from './extract.js'
 
-export { toHex } from 'haus-colour-utils'
+export { toHex } from '@hipuku/colour'
 
 export {
   normaliseElement,

@@ -61,6 +61,23 @@ unreported: it is a gate on what is being written, not an audit of what has alre
 ESLint, Stylelint and markdownlint are not included. Their configs differ by runtime rather than
 by preference, so a shared base is separate work.
 
+## @hipuku/colour 0.1.0
+
+_Unreleased. `haus-colour-utils` and `haus-colour-names`, merged and renamed._
+
+**Changed** · **One package replaces two.** Everything `haus-colour-utils` 1.0.1 exports is exported
+from `@hipuku/colour` under the same names, and the 31,900-name dataset that was
+`haus-colour-names` 1.0.0 is the `@hipuku/colour/names` subpath, with the same three exports. A
+bundler leaves the dataset out unless `/names` is imported.
+
+**Breaking for a CommonJS consumer** · The package is ESM only, built with `tsc` like the other
+`@hipuku/*` packages; the two old packages also shipped CommonJS. No current consumer calls
+`require` on them.
+
+To move: install `@hipuku/colour` in place of both packages, then import from `@hipuku/colour` where
+the code imported `haus-colour-utils`, and from `@hipuku/colour/names` where it imported
+`haus-colour-names`. Both old names get a final release pointing here (RELEASING.md).
+
 ## @hipuku/dtcg-cli 0.1.0
 
 _Unreleased. A new package: the `dtcg` command._

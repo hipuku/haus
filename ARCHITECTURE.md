@@ -12,8 +12,7 @@ flowchart LR
         C["haus-components"]
     end
     subgraph COLOUR ["colour and measurement"]
-        U["haus-colour-utils"]
-        N["haus-colour-names"]
+        U["@hipuku/colour"]
         P["haus-style-probe"]
     end
     SB["apps/storybook"]
@@ -55,17 +54,16 @@ boundary until the workspace is built; CI builds first for that reason.
 
 ## Packages
 
-| Package             | Version           | What it ships                                                                           | Depends on          | Built with |
-| ------------------- | ----------------- | --------------------------------------------------------------------------------------- | ------------------- | ---------- |
-| `haus-tokens`       | 5.2.0             | Six stylesheets, the brand files, typed constants, DTCG JSON, and the token guard       | nothing             | tsup       |
-| `haus-components`   | 3.2.0             | 20 React components and one stylesheet                                                  | `haus-tokens`       | Vite, tsc  |
-| `haus-colour-utils` | 1.0.1             | Contrast, CIEDE2000, clustering, name matching, OKLCH and hue families                  | `chroma-js`         | tsup       |
-| `haus-colour-names` | 1.0.0             | 31,900 named colours as data                                                            | nothing             | tsup       |
-| `haus-style-probe`  | 1.0.0             | Computed-style extraction in the page, normalisation in Node                            | `haus-colour-utils` | tsup       |
-| `@hipuku/dtcg`      | 0.1.0, unreleased | Token conversion between DTCG, Figma, Tokens Studio and Tailwind v4, with a loss report | `culori`            | tsc        |
-| `@hipuku/dtcg-cli`  | 0.1.0, unreleased | The `dtcg` command                                                                      | `@hipuku/dtcg`      | tsc        |
+| Package            | Version           | What it ships                                                                                            | Depends on       | Built with |
+| ------------------ | ----------------- | -------------------------------------------------------------------------------------------------------- | ---------------- | ---------- |
+| `haus-tokens`      | 5.2.0             | Six stylesheets, the brand files, typed constants, DTCG JSON, and the token guard                        | nothing          | tsup       |
+| `haus-components`  | 3.2.0             | 20 React components and one stylesheet                                                                   | `haus-tokens`    | Vite, tsc  |
+| `@hipuku/colour`   | 0.1.0, unreleased | Contrast, CIEDE2000, clustering, name matching, OKLCH and hue families; 31,900 named colours on `/names` | `chroma-js`      | tsc        |
+| `haus-style-probe` | 1.0.0             | Computed-style extraction in the page, normalisation in Node                                             | `@hipuku/colour` | tsup       |
+| `@hipuku/dtcg`     | 0.1.0, unreleased | Token conversion between DTCG, Figma, Tokens Studio and Tailwind v4, with a loss report                  | `culori`         | tsc        |
+| `@hipuku/dtcg-cli` | 0.1.0, unreleased | The `dtcg` command                                                                                       | `@hipuku/dtcg`   | tsc        |
 
-The five `haus-*` packages publish ESM and CommonJS with their own types, and `main` points at the CommonJS build
+The three `haus-*` packages publish ESM and CommonJS with their own types, and `main` points at the CommonJS build
 so a bundler or runtime that falls back to `main` gets a file it can load. The `@hipuku/*`
 packages are ESM only. `haus-components` has
 `react` and `react-dom` 18 or 19 as peers.
@@ -108,6 +106,9 @@ flowchart LR
 | drift   | `haus-colour-utils` ^1.0.0, `haus-style-probe` ^1.0.0                        | Runs `extractRawElements` in each crawled page and `normaliseElement` on the result, then `clusterByPerceptualDistance`, `wcagContrast`, `deltaE` and `hueFamily` in its audit.                                                                                                                       |
 | hexicon | `haus-colour-utils` ^1.0.0                                                   | `deltaE` and `wcagContrast` in its palette analysis.                                                                                                                                                                                                                                                  |
 | maple   | `haus-colour-utils` ^1.0.0                                                   | `oklch`, `toHex` and `generateLightnessScale` build each client colour's scale, `deltaE` and `nearestNamedColour` name it, and `wcagContrast` checks its pairs. maple's repository is private, so it is not linked.                                                                                   |
+
+The products above still install the published `haus-colour-utils` and `haus-colour-names`, which in
+this repository are now `@hipuku/colour`. They move when it is published (plan steps 1.8 and 1.9).
 
 A brand reaches a product as one stylesheet scoped by `data-haus-theme`, so core and vault share
 every role name and differ only in the primitives their brand file chooses.
@@ -272,13 +273,12 @@ relies on; neither is an implementation detail.
 
 ## Testing and CI
 
-| Package             | Test files | Tests |
-| ------------------- | ---------- | ----- |
-| `haus-components`   | 30         | 506   |
-| `haus-style-probe`  | 2          | 81    |
-| `haus-tokens`       | 4          | 71    |
-| `haus-colour-utils` | 3          | 67    |
-| `haus-colour-names` | 1          | 6     |
+| Package            | Test files | Tests |
+| ------------------ | ---------- | ----- |
+| `haus-components`  | 30         | 506   |
+| `haus-style-probe` | 2          | 81    |
+| `haus-tokens`      | 4          | 71    |
+| `@hipuku/colour`   | 4          | 73    |
 
 731 tests in Vitest. The component suites run in jsdom with `css: false`, so they assert markup,
 behaviour and accessibility, not computed styles. `ssr.test.tsx` renders every component to a string

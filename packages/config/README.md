@@ -128,7 +128,7 @@ Takes the same kind of exclusion, for data files whose words are nobody's prose:
 
 ```jsonc
 // package.json
-{ "hipuku": { "names": { "skip": ["packages/colour-names/src/colournames.json"] } } }
+{ "hipuku": { "names": { "skip": ["packages/colour/src/names/colournames.json"] } } }
 ```
 
 haus needs that one. A 31,900-entry colour-name database contains most of the English language, so

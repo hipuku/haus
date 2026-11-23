@@ -67,7 +67,7 @@
   "hipuku": {
     "names": {
       "skip": [
-        "packages/colour-names/src/colournames.json"
+        "packages/colour/src/names/colournames.json"
       ]
     }
   }

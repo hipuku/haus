@@ -48,7 +48,7 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "haus-colour-utils": "workspace:^"
+    "@hipuku/colour": "workspace:^"
   },
   "devDependencies": {
     "happy-dom": "^21.0.4",

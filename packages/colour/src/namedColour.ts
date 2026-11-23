@@ -1,5 +1,5 @@
 import chroma from 'chroma-js'
-import colornames from './colornames.json'
+import colornames from './colornames.json' with { type: 'json' }
 
 export interface NamedColourMatch {
   name: string
@@ -7,7 +7,7 @@ export interface NamedColourMatch {
   distance: number // CIEDE2000 ΔE
 }
 
-/** One entry of a name dataset. `haus-colour-names` emits exactly this shape. */
+/** One entry of a name dataset. `@hipuku/colour/names` emits exactly this shape. */
 export interface NamedColourEntry {
   hex: string
   name: string
@@ -27,13 +27,13 @@ const CIE76_RADIUS = 28
  * Build a matcher over a name dataset.
  *
  * The bundled dataset here is 289 basic colour terms, which is what most callers
- * want and costs nothing to carry. For exhaustive naming, install
- * `haus-colour-names` (31,900 entries, 764KB) and pass its entries in:
+ * want and costs nothing to carry. For exhaustive naming, import
+ * `@hipuku/colour/names` (31,900 entries, 764KB) and pass its entries in:
  *
  *   const nameColour = createNamedColourMatcher(colourNameEntries())
  *
- * Keeping the data out of this package is deliberate. A caller who only wants
- * CIEDE2000 or WCAG contrast should not install a name dataset to get it.
+ * Keeping the data on its own subpath is deliberate. A caller who only wants
+ * CIEDE2000 or WCAG contrast should not bundle a name dataset to get it.
  *
  * Lab values are computed on the first query rather than at construction, so
  * building a matcher you never call is free.

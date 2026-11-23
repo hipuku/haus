@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    // NodeNext so the build runs in Node without a bundler, like @hipuku/motion:
+    // relative imports carry .js and the JSON data is imported with
+    // `with { type: 'json' }`.
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "resolveJsonModule": true
+  },
+  "include": ["src"]
+}
