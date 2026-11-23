@@ -22,8 +22,8 @@ npm install haus-tokens
 import 'haus-tokens/index.css'
 ```
 
-`index.css` loads the layer order, then `primitives`, `brand`, `semantics` and
-`motion`, in the order they have to load. They are exported individually too,
+`index.css` loads the layer order, then `primitives`, `brand`, `brand-dark`,
+`semantics` and `motion`, in the order they have to load. They are exported individually too,
 and replacing `brand.css` is the documented case, but leave one out and every
 role that reads it drops silently. All of them are wrapped in `@layer haus.*`,
 so your own styles win without a specificity fight.
@@ -65,6 +65,21 @@ one for themselves. haus#27 put the ladders in `primitives.css` and the names in
 one layer higher. It fell again when typeface became a brand entry and the 32
 `--haus-font-sans` reads became role reads, and rose with IconButton and the
 themed Select. `tokens.test.ts` in `haus-components` carries the whole ledger.
+
+## Dark mode
+
+`index.css` includes `brand-dark.css`, which gives every colour role a dark value. Without a
+`data-theme` attribute, the page follows the system setting. To set it yourself, put
+`data-theme="dark"` on the root for always dark, or `data-theme="light"` for always light:
+
+```html
+<html data-theme="dark"></html>
+```
+
+Radius, elevation, widths and type are the same in both modes. The product brands in `brands/`
+stay light, native controls included: the dark rules skip a root that carries `data-haus-theme`,
+and every `[data-haus-theme]` element sets `color-scheme: light`. Importing the layers one by
+one, leave out `brand-dark.css` for a light-only app.
 
 ## Typed constants
 

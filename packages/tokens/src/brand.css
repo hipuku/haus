@@ -44,7 +44,12 @@
 
 @layer haus.brand {
 
-  :root {
+  /* `:where([data-haus-theme])` since the dark map (brand-dark.css): every named
+     brand starts from haus's light values, at zero specificity so the brand's own
+     rule always wins. Without it, a brand that supplies only the base tier would
+     inherit dark status colours from a dark :root. */
+  :root,
+  :where([data-haus-theme]) {
 
     /* ══ BASE TIER, required ═══════════════════════════════════════════════
        Twenty-eight entries. Every product has these, whatever it is for. A
