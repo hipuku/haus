@@ -75,10 +75,11 @@ because CSS is short of arithmetic: CSS Values 4 has `exp()`, `cos()`, `sin()` a
 cannot do is iterate, and a `linear()` easing is a list of stops, 41 for each spring in the current
 token set and more as bounce rises, so the curve is sampled here and emitted whole.
 
-Sharing one capped number across the CSS, Figma and the tests is the **intended** outcome and not
-yet the case: `capDuration` returns a number and nothing here propagates it, and
-`tokens.generated.ts` is not generated in this repository. Likewise `springToLinear` returns a
-string rather than writing a custom property; storing it in one is the caller's job.
+Sharing one capped number across the CSS, Figma and the tests is the intended outcome. The CSS and
+the engine now share it, both generated from `tokens.json` (below); the Figma variables and a test
+that measures animations do not yet. `capDuration` returns a number and carries it no further, and
+`springToLinear` returns a string; the token build is what writes the compiled curves into
+`motion.css`.
 
 A spring's visual duration and its settle time are reported separately, because a role's cap
 applies to the first and the CSS has to run for the second. The compiled curves settle at snappy
