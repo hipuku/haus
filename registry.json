@@ -22,7 +22,7 @@
       "title": "Badge",
       "description": "A short status label in one of six tones, subtle or solid.",
       "dependencies": ["haus-tokens@^5.2.0"],
-      "registryDependencies": ["@haus/types"],
+      "registryDependencies": ["@hipuku/types"],
       "files": [
         {
           "path": "packages/components/src/components/Badge/Badge.tsx",
