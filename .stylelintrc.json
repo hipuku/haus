@@ -97,5 +97,11 @@
       }
     }
   ],
-  "ignoreFiles": ["**/dist/**", "**/node_modules/**", "**/storybook-static/**", "**/coverage/**"]
+  "ignoreFiles": [
+    "**/dist/**",
+    "**/node_modules/**",
+    "**/storybook-static/**",
+    "**/coverage/**",
+    "packages/*/src/fixtures/**"
+  ]
 }

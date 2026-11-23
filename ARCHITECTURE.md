@@ -55,16 +55,19 @@ boundary until the workspace is built; CI builds first for that reason.
 
 ## Packages
 
-| Package             | Version | What it ships                                                                     | Depends on          | Built with |
-| ------------------- | ------- | --------------------------------------------------------------------------------- | ------------------- | ---------- |
-| `haus-tokens`       | 5.2.0   | Six stylesheets, the brand files, typed constants, DTCG JSON, and the token guard | nothing             | tsup       |
-| `haus-components`   | 3.2.0   | 20 React components and one stylesheet                                            | `haus-tokens`       | Vite, tsc  |
-| `haus-colour-utils` | 1.0.1   | Contrast, CIEDE2000, clustering, name matching, OKLCH and hue families            | `chroma-js`         | tsup       |
-| `haus-colour-names` | 1.0.0   | 31,900 named colours as data                                                      | nothing             | tsup       |
-| `haus-style-probe`  | 1.0.0   | Computed-style extraction in the page, normalisation in Node                      | `haus-colour-utils` | tsup       |
+| Package             | Version           | What it ships                                                                           | Depends on          | Built with |
+| ------------------- | ----------------- | --------------------------------------------------------------------------------------- | ------------------- | ---------- |
+| `haus-tokens`       | 5.2.0             | Six stylesheets, the brand files, typed constants, DTCG JSON, and the token guard       | nothing             | tsup       |
+| `haus-components`   | 3.2.0             | 20 React components and one stylesheet                                                  | `haus-tokens`       | Vite, tsc  |
+| `haus-colour-utils` | 1.0.1             | Contrast, CIEDE2000, clustering, name matching, OKLCH and hue families                  | `chroma-js`         | tsup       |
+| `haus-colour-names` | 1.0.0             | 31,900 named colours as data                                                            | nothing             | tsup       |
+| `haus-style-probe`  | 1.0.0             | Computed-style extraction in the page, normalisation in Node                            | `haus-colour-utils` | tsup       |
+| `@hipuku/dtcg`      | 0.1.0, unreleased | Token conversion between DTCG, Figma, Tokens Studio and Tailwind v4, with a loss report | `culori`            | tsc        |
+| `@hipuku/dtcg-cli`  | 0.1.0, unreleased | The `dtcg` command                                                                      | `@hipuku/dtcg`      | tsc        |
 
-Every package publishes ESM and CommonJS with its own types, and `main` points at the CommonJS build
-so a bundler or runtime that falls back to `main` gets a file it can load. `haus-components` has
+The five `haus-*` packages publish ESM and CommonJS with their own types, and `main` points at the CommonJS build
+so a bundler or runtime that falls back to `main` gets a file it can load. The `@hipuku/*`
+packages are ESM only. `haus-components` has
 `react` and `react-dom` 18 or 19 as peers.
 
 ## Consumers

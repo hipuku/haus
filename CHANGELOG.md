@@ -61,6 +61,34 @@ unreported: it is a gate on what is being written, not an audit of what has alre
 ESLint, Stylelint and markdownlint are not included. Their configs differ by runtime rather than
 by preference, so a shared base is separate work.
 
+## @hipuku/dtcg-cli 0.1.0
+
+_Unreleased. A new package: the `dtcg` command._
+
+**Added** · **`dtcg <file...> --to <format>`** converts with `@hipuku/dtcg`. One output file goes
+to stdout and several go to `--out`; the loss report goes to stderr, one line per loss, so stdout
+can be redirected. `--from` skips detection, and `--rem-base` and `--mode-selector` set the write
+options. Exit codes: 0 converted, 1 the input could not be read or names an output file outside
+`--out`, 2 the command was wrong, 3 the output could not be written.
+
+Moved from the tokenise repository, where it was built, under plan decision 19.
+
+## @hipuku/dtcg 0.1.0
+
+_Unreleased. A new package: the token conversion engine._
+
+**Added** · **`@hipuku/dtcg`.** Reads DTCG (including resolver documents with modes), Figma
+variables exports, Tokens Studio and Tailwind v4 `@theme` stylesheets into one model, writes that
+model to any of the four, and reports what each conversion loses, per token, with a reason.
+
+Two defects found by code scanning on the way in, both fixed and tested: a token path segment named
+`__proto__` was written onto `Object.prototype`, and a Tailwind stylesheet of unclosed comments took
+quadratic time to read, about nine seconds at the 500KB input cap.
+
+Moved from the tokenise app, where it was the engine, under plan decision 19. ESM only, built with
+`tsc` for Node and bundlers alike. Coverage arrived at 77% of statements and 66% of branches, and
+the floors are set just under that rather than at a target.
+
 ## @hipuku/motion 0.1.0
 
 _Unreleased. A new package: the maths behind haus's motion._
