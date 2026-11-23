@@ -6,6 +6,11 @@ html {
   scrollbar-gutter: stable;
 }
 
+/* A cell that wraps should not pull its row's other cells to the middle. */
+.prose :where(td, th) {
+  vertical-align: top;
+}
+
 html > body[data-scroll-locked] {
   margin-right: 0px !important;
   --removed-body-scroll-bar-size: 0px !important;
