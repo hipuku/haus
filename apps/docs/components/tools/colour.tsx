@@ -9,7 +9,7 @@ import {
   wcagContrast,
   type NamedColourMatch,
 } from '@hipuku/colour'
-import { Badge, Input, Textarea } from 'haus-components'
+import { Badge, Button, Input, Textarea } from 'haus-components'
 import { useEffect, useMemo, useState } from 'react'
 
 type Matcher = (hex: string, topN?: number) => NamedColourMatch[]
@@ -33,13 +33,18 @@ const swatch = (hex: string) => (
 export function NameColour() {
   const [input, setInput] = useState('#4f84ba')
   const [matcher, setMatcher] = useState<Matcher | null>(null)
+  const [loadFailed, setLoadFailed] = useState(false)
+  const [attempt, setAttempt] = useState(0)
 
   useEffect(() => {
     // The names subpath is 764KB; importing it here keeps it off every other page.
-    import('@hipuku/colour/names').then(({ colourNameEntries }) =>
-      setMatcher(() => createNamedColourMatcher(colourNameEntries())),
-    )
-  }, [])
+    // A failed load (a dropped connection, say) offers a retry rather than
+    // leaving the loading line up for good.
+    setLoadFailed(false)
+    import('@hipuku/colour/names')
+      .then(({ colourNameEntries }) => setMatcher(() => createNamedColourMatcher(colourNameEntries())))
+      .catch(() => setLoadFailed(true))
+  }, [attempt])
 
   const hex = toHex(input)
   const matches = hex && matcher ? matcher(hex) : []
@@ -53,7 +58,15 @@ export function NameColour() {
         onChange={event => setInput(event.target.value)}
         error={hex ? undefined : 'Not a colour this can read.'}
       />
-      {hex && !matcher && <p>Loading 31,900 names…</p>}
+      {hex && !matcher && !loadFailed && <p>Loading 31,900 names…</p>}
+      {loadFailed && (
+        <p role="alert">
+          The colour names did not load.{' '}
+          <Button variant="secondary" size="sm" onClick={() => setAttempt(n => n + 1)}>
+            Retry
+          </Button>
+        </p>
+      )}
       {matches.length > 0 && (
         <ol className="grid gap-1">
           {matches.map(m => (
@@ -98,14 +111,32 @@ export function CompareColours() {
   )
 }
 
+/**
+ * Colours separated by spaces, commas or new lines, split only outside
+ * brackets, so `rgb(255, 0, 0)` stays one colour.
+ */
+function splitColours(text: string): string[] {
+  const out: string[] = []
+  let depth = 0
+  let current = ''
+  for (const char of text) {
+    if (char === '(') depth++
+    if (char === ')') depth = Math.max(0, depth - 1)
+    if (depth === 0 && /[\s,]/.test(char)) {
+      if (current) out.push(current)
+      current = ''
+    } else current += char
+  }
+  if (current) out.push(current)
+  return out
+}
+
 /** A palette's lightness steps, chroma spread, hue arc, near-duplicates and contrast. */
 export function PaletteAnalysis() {
   const [text, setText] = useState('#161616 #484848 #808080 #bebebe #ffffff #3366cc #3467cc #cc6633')
   const hexes = useMemo(
     () =>
-      text
-        .split(/[\s,]+/)
-        .filter(Boolean)
+      splitColours(text)
         .map(toHex)
         .filter((h): h is string => Boolean(h)),
     [text],
