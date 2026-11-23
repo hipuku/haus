@@ -186,13 +186,28 @@ export function readDtcgTree(root: unknown, mode: string, losses: Losses, docume
   if (!isRecord(root)) throw new ReadError(`${documentName} does not hold a token object.`)
   const tokens: Token[] = []
 
-  const walk = (node: Record<string, unknown>, path: string[], inheritedType: string | undefined) => {
+  // `inside` holds every group the walk is in at this point, ancestors and
+  // groups being extended alike. A $extends that targets one of them would
+  // walk it again forever: `{ "a": { "$extends": "{a}" } }`, or a child that
+  // extends its own parent, overflowed the stack before this was checked.
+  const walk = (
+    node: Record<string, unknown>,
+    path: string[],
+    inheritedType: string | undefined,
+    inside: ReadonlySet<object>,
+  ) => {
     const groupType = typeof node.$type === 'string' ? node.$type : inheritedType
+    const here = new Set(inside).add(node)
 
     if (typeof node.$extends === 'string') {
       const target = parseCurlyReference(node.$extends)
       const source = target && target.reduce<unknown>((n, key) => (isRecord(n) ? n[key] : undefined), root)
-      if (isRecord(source)) walk(source, path, groupType)
+      if (isRecord(source) && here.has(source)) {
+        throw new ReadError(
+          `${documentName}: the $extends at "${path.join('.') || '(root)'}" refers to ${node.$extends}, which contains it, so the groups extend each other without end.`,
+        )
+      }
+      if (isRecord(source)) walk(source, path, groupType, here)
       else losses.add('lenient-read', path, `$extends ${node.$extends} does not resolve to a group; ignored.`, mode)
     }
 
@@ -216,12 +231,12 @@ export function readDtcgTree(root: unknown, mode: string, losses: Losses, docume
         if (isRecord(child.$extensions)) token.extensions = child.$extensions
         tokens.push(token)
       } else {
-        walk(child, childPath, groupType)
+        walk(child, childPath, groupType, here)
       }
     }
   }
 
-  walk(root, [], undefined)
+  walk(root, [], undefined, new Set())
   return tokens
 }
 

@@ -324,3 +324,28 @@ describe('input that names a prototype key or never closes a comment', () => {
     expect(set.tokens.map(t => joinPath(t.path))).toEqual(['color.brand'])
   })
 })
+
+describe('$extends cycles', () => {
+  const readText = (json: unknown) => () => read([{ name: 'tokens.json', text: JSON.stringify(json) }], 'dtcg')
+
+  it('reports a group that extends itself as a read error, not a stack overflow', () => {
+    expect(readText({ a: { $extends: '{a}' }, n: { $type: 'number', $value: 1 } })).toThrow(ReadError)
+    expect(readText({ a: { $extends: '{a}' } })).toThrow(/extend each other without end/)
+  })
+
+  it('reports a child that extends its own parent', () => {
+    expect(readText({ a: { b: { $extends: '{a}' }, x: { $type: 'number', $value: 1 } } })).toThrow(ReadError)
+  })
+
+  it('reports two groups that extend each other', () => {
+    expect(readText({ a: { $extends: '{b}' }, b: { $extends: '{a}' } })).toThrow(ReadError)
+  })
+
+  it('still reads a group that extends another', () => {
+    const { set } = readText({
+      base: { $type: 'number', one: { $value: 1 } },
+      derived: { $extends: '{base}', two: { $type: 'number', $value: 2 } },
+    })()
+    expect(set.tokens.map(t => joinPath(t.path)).sort()).toEqual(['base.one', 'derived.one', 'derived.two'])
+  })
+})
