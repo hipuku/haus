@@ -67,6 +67,9 @@
 
 .circle {
   flex-shrink: 0;
+  /* The border is inside the 16px, as Checkbox's box is. */
+  box-sizing: border-box;
+  position: relative;
   width: var(--haus-marker-box);
   height: var(--haus-marker-box);
   border-radius: 50%;
@@ -97,8 +100,11 @@
   border-color: var(--haus-color-primary-default);
 }
 
+/* Absolutely positioned for the reason Checkbox's tick is: in flow it gave the
+   circle a baseline only when selected, so the control moved down the line. */
 .checked .circle::after {
   content: '';
+  position: absolute;
   width: var(--haus-marker-dot);
   height: var(--haus-marker-dot);
   border-radius: 50%;

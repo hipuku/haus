@@ -26,6 +26,12 @@
 
 .box {
   flex-shrink: 0;
+  /* The 2px border is inside the 16px the token names, so the drawn box is the
+     size the token says whatever reset the consumer has. Without this the box
+     is 20px in an app with no border-box reset and 16px in one that has it,
+     and the centring below subtracts the wrong number in the first. */
+  box-sizing: border-box;
+  position: relative;
   width: var(--haus-marker-box);
   height: var(--haus-marker-box);
   border-radius: var(--haus-radius-marker);
@@ -94,9 +100,15 @@
 
 /* ── Check icon ── */
 
+/* Absolutely positioned, which an abs-positioned child of a flex container
+   still centres by the container's own alignment. In flow it was the box's
+   first in-flow child, so the box took its baseline from the tick and had no
+   baseline of its own while unchecked: the whole inline-flex wrapper moved
+   1.25px down the line the moment it was checked. */
 .icon {
   color: var(--haus-color-ink-inverse);
   display: flex;
+  position: absolute;
 }
 
 /* ── Label area ── */
