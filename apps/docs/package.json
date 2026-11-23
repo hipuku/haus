@@ -9,6 +9,7 @@
     "typecheck": "next typegen && tsc --noEmit"
   },
   "dependencies": {
+    "@hipuku/colour": "workspace:*",
     "@hipuku/dtcg": "workspace:*",
     "@storybook/react": "^10.6.7",
     "fumadocs-core": "16.19.7",

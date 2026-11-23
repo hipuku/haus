@@ -76,6 +76,9 @@ importers:
 
   apps/docs:
     dependencies:
+      '@hipuku/colour':
+        specifier: workspace:*
+        version: link:../../packages/colour
       '@hipuku/dtcg':
         specifier: workspace:*
         version: link:../../packages/dtcg
