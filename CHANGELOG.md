@@ -33,6 +33,10 @@ by the build with `@hipuku/motion`'s spring maths, so the CSS and the engine tra
 
 The existing durations, easings and the six `--haus-motion-*` composites are unchanged.
 
+**Fixed** · **`findRestatedTokens` took quadratic time on an unclosed comment.** Its comment
+stripping was a lazy regex that retried from every `/*`, about two seconds for a 240KB value. It is
+now a linear scan, and still leaves an unclosed comment as it was.
+
 ## @hipuku/config 0.1.0
 
 _Unreleased. A new package: the shared TypeScript, Prettier and prose configuration._

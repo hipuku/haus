@@ -157,10 +157,24 @@ type Declaration = { name: string; value: string }
 
 /** Comments out, whitespace flattened, so two spellings of one value compare equal. */
 function normalise(value: string): string {
-  return value
-    .replace(/\/\*[\s\S]*?\*\//g, '')
-    .replace(/\s+/g, ' ')
-    .trim()
+  return withoutComments(value).replace(/\s+/g, ' ').trim()
+}
+
+/**
+ * Closed comments removed; an unclosed one is left as it is. A scan rather
+ * than `/\/\*[\s\S]*?\*\//g`, which retries from every `/*` when one never
+ * closes: quadratic, and 2 s for a 240KB value of `/*` and `a/*` repeated.
+ */
+function withoutComments(text: string): string {
+  let out = ''
+  let from = 0
+  for (;;) {
+    const start = text.indexOf('/*', from)
+    const end = start === -1 ? -1 : text.indexOf('*/', start + 2)
+    if (end === -1) return out + text.slice(from)
+    out += text.slice(from, start)
+    from = end + 2
+  }
 }
 
 function declarations(sources: string[]): Declaration[] {
