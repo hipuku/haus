@@ -13,6 +13,7 @@ packages/tokens/src/motion.css
 packages/tokens/src/index.ts
 packages/tokens/src/brand.ts
 packages/tokens/src/tokens.json
+packages/motion/src/tokens.generated.ts
 
 # Vendored data, not source. Reformatting a name map one entry per line only makes
 # every future diff on it unreadable.

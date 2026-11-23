@@ -22,8 +22,12 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+// Read from source, not from the package: CI checks the tokens before anything
+// is built, and spring.ts imports nothing, so there is no cycle to worry about.
+import { springToLinear } from '../../motion/src/spring.ts'
 
 const srcDir = join(dirname(fileURLToPath(import.meta.url)), '..', 'src')
+const motionSrcDir = join(dirname(fileURLToPath(import.meta.url)), '..', '..', 'motion', 'src')
 const tokens = JSON.parse(readFileSync(join(srcDir, 'tokens.json'), 'utf8')) as DtcgRoot
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -273,9 +277,198 @@ function buildMotionCss(): string {
   })
   lines.push(...declarations(composites, '--motion'))
   lines.push('')
+  lines.push('  }', '')
 
-  lines.push('  }', '}', '')
+  // Roles, per mode. Subtle is the default; data-haus-motion picks another, and
+  // reduced motion wins over either, from the user's setting or the attribute.
+  lines.push('  /* ── Motion roles: subtle, the default ─────────────────────────────────── */')
+  lines.push('  :root {', ...roleDeclarations('subtle'), '  }', '')
+  lines.push(`  [data-haus-motion='expressive'] {`, ...roleDeclarations('expressive'), '  }', '')
+  lines.push(`  [data-haus-motion='reduced'] {`, ...roleDeclarations('reduced'), '  }', '')
+  lines.push('  @media (prefers-reduced-motion: reduce) {')
+  lines.push(
+    '    :root,',
+    `    [data-haus-motion] {`,
+    ...roleDeclarations('reduced').map(l => `  ${l}`),
+    '    }',
+    '  }',
+  )
+  lines.push('}', '')
   return lines.join('\n')
+}
+
+// ─── Motion roles ────────────────────────────────────────────────────────────
+
+/**
+ * A component asks for a role (`press`, `dialog-enter`) rather than a duration,
+ * and the role resolves to a duration and an easing in each mode. The source is
+ * the `motion-role` group in tokens.json. A spring is stored as the two numbers
+ * a designer sets, visual duration and bounce; its linear() easing and settle
+ * time are computed here with @hipuku/motion's own spring maths, so the CSS,
+ * the engine and the Motion adapter cannot disagree about a curve.
+ *
+ * These values arrived with the engine, hand-carried in tokens.generated.ts.
+ * Generating that file from here is plan step 1.7.
+ */
+interface RoleValue {
+  durationMs: number
+  easing: string
+  offsetPx?: number
+  scale?: number
+  visualDurationMs?: number
+  bounce?: number
+}
+
+const msOf = (token: DtcgToken) => {
+  const m = /^(-?\d+(?:\.\d+)?)ms$/.exec(String(token.$value))
+  if (!m) throw new Error(`Expected a duration in ms, got ${JSON.stringify(token.$value)}`)
+  return Number(m[1])
+}
+const pxOf = (token: DtcgToken) => {
+  const m = /^(-?\d+(?:\.\d+)?)px$/.exec(String(token.$value))
+  if (!m) throw new Error(`Expected a dimension in px, got ${JSON.stringify(token.$value)}`)
+  return Number(m[1])
+}
+const bezier = (token: DtcgToken) => `cubic-bezier(${(token.$value as number[]).join(', ')})`
+const sub = (node: unknown, key: string) => (node as Record<string, unknown>)[key] as Record<string, unknown>
+const keys = (node: unknown) => Object.keys(node as object).filter(k => !k.startsWith('$'))
+
+function roleValue(source: Record<string, unknown>): RoleValue {
+  const token = (k: string) => source[k] as DtcgToken | undefined
+  const out: RoleValue = { durationMs: 0, easing: 'linear' }
+  const visual = token('visual-duration')
+  if (visual) {
+    const visualDurationMs = msOf(visual)
+    const bounce = Number(token('bounce')!.$value)
+    const compiled = springToLinear({ visualDuration: visualDurationMs / 1000, bounce })
+    Object.assign(out, compiled, { visualDurationMs, bounce })
+  } else {
+    out.durationMs = msOf(token('duration')!)
+    const easing = token('easing')
+    if (easing) out.easing = bezier(easing)
+  }
+  if (token('offset')) out.offsetPx = pxOf(token('offset')!)
+  if (token('scale')) out.scale = Number(token('scale')!.$value)
+  // Key order fixed for output: duration, easing, offset, scale, then the spring.
+  const ordered: RoleValue = { durationMs: out.durationMs, easing: out.easing }
+  if (out.offsetPx !== undefined) ordered.offsetPx = out.offsetPx
+  if (out.scale !== undefined) ordered.scale = out.scale
+  if (out.visualDurationMs !== undefined) ordered.visualDurationMs = out.visualDurationMs
+  if (out.bounce !== undefined) ordered.bounce = out.bounce
+  return ordered
+}
+
+const motionRoles = group(['motion-role']) as unknown as Record<string, unknown>
+const ROLE_CAPS = Object.fromEntries(
+  keys(sub(motionRoles, 'cap')).map(r => [r, msOf(sub(motionRoles, 'cap')[r] as DtcgToken)]),
+)
+const ROLES = Object.keys(ROLE_CAPS)
+const MODES = keys(sub(motionRoles, 'mode'))
+const ROLE_TOKENS: Record<string, Record<string, RoleValue>> = Object.fromEntries(
+  MODES.map(mode => {
+    const node = sub(sub(motionRoles, 'mode'), mode)
+    const missing = ROLES.filter(r => !(r in node))
+    if (missing.length) throw new Error(`motion-role.mode.${mode} is missing ${missing.join(', ')}`)
+    return [mode, Object.fromEntries(ROLES.map(r => [r, roleValue(sub(node, r))]))]
+  }),
+)
+
+/** A JS literal in the shape the hand-written file had: unquoted keys where legal. */
+const jsKey = (k: string) => (/^[a-zA-Z_$][\w$]*$/.test(k) ? k : `'${k}'`)
+const jsLit = (v: unknown): string =>
+  typeof v === 'string' ? `'${v}'` : Array.isArray(v) ? `[${v.map(jsLit).join(', ')}]` : String(v)
+const jsInline = (o: object) =>
+  `{ ${Object.entries(o)
+    .map(([k, v]) => `${jsKey(k)}: ${jsLit(v)}`)
+    .join(', ')} }`
+
+/** The role as the transition Motion takes: seconds, a cubic-bezier array, or a spring. */
+function motionTransition(role: RoleValue): object {
+  if (role.visualDurationMs !== undefined) {
+    return { type: 'spring', visualDuration: role.visualDurationMs / 1000, bounce: role.bounce }
+  }
+  const duration = role.durationMs / 1000
+  const m = /^cubic-bezier\(([^)]+)\)$/.exec(role.easing)
+  return m ? { duration, ease: m[1].split(',').map(Number) } : { duration }
+}
+
+function buildMotionTokensTs(): string {
+  const limit = sub(motionRoles, 'limit')
+  const stagger = sub(motionRoles, 'stagger')
+  const perMode = (render: (role: RoleValue) => string) =>
+    MODES.map(
+      mode =>
+        `  ${jsKey(mode)}: {\n${ROLES.map(r => `    ${jsKey(r)}: ${render(ROLE_TOKENS[mode][r])},`).join('\n')}\n  },`,
+    ).join('\n')
+
+  return `// GENERATED FROM packages/tokens/src/tokens.json (the motion-role group) by
+// packages/tokens/scripts/build-tokens.ts. Do not edit.
+// Regenerate with \`pnpm --filter haus-tokens run tokens\`; \`tokens:check\` fails CI if stale.
+
+/** Upper limit on duration per role, in ms. A spring role is measured by its visual duration. */
+export const DURATION_CAPS_MS = {
+${ROLES.map(r => `  ${jsKey(r)}: ${ROLE_CAPS[r]},`).join('\n')}
+} as const
+
+export type MotionRole = keyof typeof DURATION_CAPS_MS
+
+/** The two themes, plus reduced motion, which overrides either. */
+export const MOTION_MODES = [${MODES.map(m => `'${m}'`).join(', ')}] as const
+
+export type MotionMode = (typeof MOTION_MODES)[number]
+
+/** Global limits every theme stays inside. */
+export const MOTION_LIMITS = {
+  bounceMax: ${Number((limit['bounce-max'] as DtcgToken).$value)},
+  offsetMaxPx: ${pxOf(limit['offset-max'] as DtcgToken)},
+  scaleMin: ${Number((limit['scale-min'] as DtcgToken).$value)},
+  reducedDurationMaxMs: ${msOf(limit['reduced-duration-max'] as DtcgToken)},
+} as const
+
+export interface RoleToken {
+  /** How long the CSS transition runs; for a spring, until it settles. */
+  durationMs: number
+  /** A CSS easing: cubic-bezier(), linear() for a spring, or linear for a jump. */
+  easing: string
+  offsetPx?: number
+  scale?: number
+  visualDurationMs?: number
+  bounce?: number
+}
+
+/** Every role in every mode, resolved to values. The same values as the CSS custom properties. */
+export const MOTION_TOKENS: Record<MotionMode, Record<MotionRole, RoleToken>> = {
+${perMode(jsInline)}
+}
+
+/** Stagger on first open, per mode. */
+export const STAGGER: Record<MotionMode, { stepMs: number; maxMs: number }> = {
+${MODES.map(m => `  ${jsKey(m)}: { stepMs: ${msOf(sub(stagger, m).step as DtcgToken)}, maxMs: ${msOf(sub(stagger, m).max as DtcgToken)} },`).join('\n')}
+}
+
+/** A transition in the shape Motion takes: seconds, a cubic-bezier array, or a spring. */
+export type MotionTransition =
+  | { type: 'spring'; visualDuration: number; bounce: number }
+  | { duration: number; ease?: [number, number, number, number] }
+
+/** The Motion adapter: each role in each mode as a Motion transition. */
+export const MOTION_TRANSITIONS: Record<MotionMode, Record<MotionRole, MotionTransition>> = {
+${perMode(role => jsInline(motionTransition(role)))}
+}
+`
+}
+
+/** The roles as custom properties, one block per mode. */
+function roleDeclarations(mode: string): string[] {
+  const pairs: Array<[string, DtcgToken]> = []
+  for (const r of ROLES) {
+    const v = ROLE_TOKENS[mode][r]
+    pairs.push([`${r}-duration`, { $value: `${v.durationMs}ms` }])
+    pairs.push([`${r}-easing`, { $value: v.easing }])
+    if (v.offsetPx !== undefined) pairs.push([`${r}-offset`, { $value: `${v.offsetPx}px` }])
+    if (v.scale !== undefined) pairs.push([`${r}-scale`, { $value: String(v.scale) }])
+  }
+  return declarations(pairs, '--motion').map(line => `  ${line}`)
 }
 
 // ─── brand.d.ts: the map a consumer has to satisfy ───────────────────────────
@@ -534,6 +727,11 @@ const outputs: Record<string, string> = {
     JSON.stringify({ ...tokens, semantic: { ...tokens.semantic, color: buildSemanticColor() } }, null, 2) + '\n',
 }
 
+// Written outside src/, into the package that consumes it.
+const external: Record<string, string> = {
+  [join(motionSrcDir, 'tokens.generated.ts')]: buildMotionTokensTs(),
+}
+
 const check = process.argv.includes('--check')
 const stale: string[] = []
 
@@ -549,6 +747,15 @@ for (const [name, content] of Object.entries(outputs)) {
   }
 }
 
+for (const [target, content] of Object.entries(external)) {
+  if (check) {
+    const current = existsSync(target) ? readFileSync(target, 'utf8') : null
+    if (current !== content) stale.push(target.slice(target.indexOf('packages/')))
+  } else {
+    writeFileSync(target, content)
+  }
+}
+
 // CSS_EXCLUDED is documentation of intent as much as a guard: breakpoints are
 // JS-only because custom properties cannot appear in @media conditions.
 void CSS_EXCLUDED
@@ -557,12 +764,15 @@ if (check) {
   if (stale.length) {
     console.error(
       `✗ Generated tokens are stale: ${stale.join(', ')}\n` +
-        `  src/tokens.json has changed without regenerating.\n` +
+        `  A source (src/tokens.json or src/brand.css) changed without regenerating,\n` +
+        `  or a generated file was edited by hand.\n` +
         `  Run: npm run tokens`,
     )
     process.exit(1)
   }
-  console.log(`✓ ${Object.keys(outputs).join(', ')} are up to date with their sources`)
+  console.log(
+    `✓ ${[...Object.keys(outputs), 'motion/src/tokens.generated.ts'].join(', ')} are up to date with their sources`,
+  )
 } else {
-  console.log(`✓ Wrote ${Object.keys(outputs).join(', ')} from tokens.json`)
+  console.log(`✓ Wrote ${[...Object.keys(outputs), 'motion/src/tokens.generated.ts'].join(', ')} from tokens.json`)
 }
