@@ -1,7 +1,7 @@
 {
   "name": "@hipuku/dtcg",
   "version": "0.1.0",
-  "description": "Read and write design tokens across DTCG, Figma variables, Tokens Studio and Tailwind v4, with a report of what each conversion loses.",
+  "description": "Convert design tokens between DTCG, Figma variables, Tokens Studio and Tailwind v4, in code or with the dtcg command, with a report of what each conversion loses.",
   "license": "MIT",
   "engines": {
     "node": ">=22.12.0"
@@ -14,14 +14,18 @@
     "directory": "packages/dtcg"
   },
   "keywords": [
+    "cli",
     "design-tokens",
     "dtcg",
     "figma",
-    "tokens-studio",
-    "tailwind"
+    "tailwind",
+    "tokens-studio"
   ],
   "type": "module",
   "sideEffects": false,
+  "bin": {
+    "dtcg": "./dist/cli/bin.js"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -43,6 +47,7 @@
   },
   "devDependencies": {
     "@types/culori": "^4.0.1",
+    "@types/node": "^22.20.3",
     "typescript": "^5.4.5",
     "vite": "^8.3.8",
     "vitest": "^5.1.0"

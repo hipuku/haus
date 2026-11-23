@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { basename, join } from 'node:path'
 import { parseArgs } from 'node:util'
-import { convert, DEFAULT_OPTIONS, FORMAT_LABEL, ReadError, type FormatId, type WriteOptions } from '@hipuku/dtcg'
+import { convert, DEFAULT_OPTIONS, FORMAT_LABEL, ReadError, type FormatId, type WriteOptions } from '../index.js'
 
 const FORMATS = Object.keys(FORMAT_LABEL) as FormatId[]
 const MODE_SELECTORS: WriteOptions['tailwindModeSelector'][] = ['data-theme', 'class', 'media']

@@ -1,6 +1,6 @@
 ---
 title: DTCG
-description: Convert design tokens between four formats, with a report of what each conversion loses.
+description: Convert design tokens between four formats, in code or on the command line, with a report of what each conversion loses.
 ---
 
 `@hipuku/dtcg`, unreleased at 0.1.0. Reads DTCG (resolver documents with modes included), Figma
@@ -30,6 +30,29 @@ result.allLosses // what was lost reading, then writing, each with the token, re
 
 `read` and `write` are the two halves of `convert`. `detectFormat` names the format of a set of
 documents from their shape.
+
+## The dtcg command
+
+The package installs a `dtcg` command.
+
+```bash
+npx dtcg tokens.json --to tailwind > theme.css
+npx dtcg theme.css --from tailwind --to figma --out figma/
+```
+
+With `--out`, every output file is written into that directory. Without it, a single output file
+goes to stdout, and more than one is an error. The loss report goes to stderr, one line per loss.
+
+| Option | Meaning |
+| ------ | ------- |
+| `--to <format>` | `dtcg`, `figma`, `tokens-studio` or `tailwind`. Required |
+| `--from <format>` | The input format. Detected when left out |
+| `--out <dir>` | Write the output files here |
+| `--rem-base <px>` | Pixels per rem. Default 16 |
+| `--mode-selector <kind>` | How a Tailwind stylesheet switches modes: `data-theme`, `class` or `media` |
+
+Exit codes: 0 converted, 1 the input could not be read or names an output file outside `--out`, 2
+the command was wrong, 3 the output could not be written.
 
 ## API
 
