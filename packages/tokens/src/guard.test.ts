@@ -141,6 +141,22 @@ describe('findRestatedTokens', () => {
      }`,
   ]
 
+  it('compares a value with an unclosed comment in linear time', () => {
+    // The comment regex this replaced took about 2 s on a value this shape.
+    const value = '/*' + 'a/*'.repeat(80_000)
+    const started = performance.now()
+    findRestatedTokens({ defines: [`:root { --haus-z-modal: ${value} }`], upstream: HAUS })
+    expect(performance.now() - started).toBeLessThan(1000)
+  })
+
+  it('ignores closed comments when comparing values', () => {
+    const found = findRestatedTokens({
+      defines: [`:root { --haus-space-inset-md: /* the default */ var(--haus-space-4); }`],
+      upstream: HAUS,
+    })
+    expect(found.map(f => [f.name, f.kind])).toEqual([['--haus-space-inset-md', 'identical']])
+  })
+
   it('finds a declaration restated as the same text', () => {
     // 77 of drift's 148 are this: haus's own line, retyped.
     const found = findRestatedTokens({
