@@ -55,8 +55,8 @@ export const hausDarkTheme = create({
   fontBase: '"Manrope", system-ui, sans-serif',
   fontCode: '"Fira Code", ui-monospace, monospace',
 
-  colorPrimary: '#d0c3eb', // aronia-300, ink-link in dark
-  colorSecondary: '#d0c3eb',
+  colorPrimary: '#d0c3ec', // aronia-300, ink-link in dark
+  colorSecondary: '#d0c3ec',
 
   appBg: '#111113', // damson-900, surface-default
   appContentBg: '#111113',
