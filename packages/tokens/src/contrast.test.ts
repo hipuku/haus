@@ -176,3 +176,48 @@ describe.each(MODES)('contrast, %s', (mode, map) => {
     }
   })
 })
+
+/**
+ * The shipped brands, measured rather than commented.
+ *
+ * Both preset files state contrast figures for their control edge, and nothing
+ * read them: the maps above are the default brand only, so an edit to either
+ * preset could drop a control below 3:1 and this file would still pass while
+ * claiming at the top that every contrast claim in the package is measured.
+ *
+ * Light only, which is what the presets are: `brand-dark.css` skips a root
+ * naming a brand, so vault and core stay light whatever the system says, and
+ * decision 0028 records that.
+ */
+const PRESETS = ['vault', 'core'] as const
+
+const PRESET_PAIRS: Array<[surface: string, ink: string, min: number, why: string]> = [
+  ['--haus-color-surface-default', '--haus-color-border-control', 3, 'a control edge, WCAG 1.4.11'],
+  ['--haus-color-surface-subtle', '--haus-color-border-control', 3, 'a control edge on the subtle surface'],
+  ['--haus-color-surface-default', '--haus-color-ink-placeholder', 4.5, 'placeholder text'],
+  ['--haus-color-surface-default', '--haus-color-ink-primary', 4.5, 'body text'],
+  ['--haus-color-surface-default', '--haus-color-border-focus', 3, 'the focus ring, WCAG 1.4.11'],
+]
+
+describe.each(PRESETS)('contrast, the %s brand', preset => {
+  const map = new Map([...LIGHT, ...declarations(read(join('brands', `${preset}.css`)))])
+  const resolve = (name: string) => resolveIn(map, name)
+
+  it('reads the preset it is meant to read', () => {
+    // Without this the pairs below would measure haus's own values twice and
+    // pass for the wrong reason, which is the failure mode the file opens with.
+    expect(map.get('--haus-brand-border-control'), `${preset} declares no border-control`).toBeDefined()
+    // The focus ring rather than the control edge: both presets take their own
+    // accent there, ruby and cobalt, while vault's control edge is legitimately
+    // the same damson step as haus's, so that one would prove nothing.
+    expect(resolve('--haus-color-border-focus')).not.toBe(resolveIn(LIGHT, '--haus-color-border-focus'))
+  })
+
+  it.each(PRESET_PAIRS)('%s and %s clear the bar', (surface, ink, min, why) => {
+    const bg = resolve(surface)
+    const fg = resolve(ink)
+    if (bg === null || fg === null) return // a relative-colour pair, out of scope
+    const { ratio } = wcagContrast(fg, bg)
+    expect(ratio, `${preset}: ${ink} on ${surface} is ${ratio.toFixed(2)}:1, ${why}`).toBeGreaterThanOrEqual(min)
+  })
+})
