@@ -1,8 +1,8 @@
 # @hipuku/dtcg
 
 Reads design tokens from four formats into one model, writes that model back out to any of them,
-and reports what each conversion loses. The engine behind the converter page on the haus docs
-site.
+and reports what each conversion loses. Written as the engine of the tokenise converter, which
+is being replaced by a page on the haus docs site.
 
 Formats: DTCG (including resolver documents with modes), Figma variables exports, Tokens Studio,
 and Tailwind v4 `@theme` stylesheets.
