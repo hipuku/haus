@@ -13,7 +13,12 @@ import { create } from 'storybook/theming'
  * oklch(52% 0.138 300)) converted to hex, because Storybook's theme runs colour
  * functions that cannot read var(). It said it was that token and was #623A8F,
  * a plum from before the ramp that is nearest aronia-600 and equal to nothing.
- * The two brand SVGs still draw #623A8F and are a separate decision.
+ *
+ * The two brand SVGs drew that plum and a darker one, #48296D, neither on the
+ * ramp. They are aronia-600 (#5b3c89) and aronia-700 (#442a68) now, the steps
+ * they were nearest, so the mark keeps its own two-tone weight and every brand
+ * colour in the repository is a step of the ramp. The mark is therefore one
+ * step darker than this accent, which is the primary role rather than the mark.
  */
 export const hausTheme = create({
   base: 'light',
