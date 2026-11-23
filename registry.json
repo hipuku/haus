@@ -1,0 +1,45 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "haus",
+  "homepage": "https://haus.hipuku.dev",
+  "items": [
+    {
+      "name": "types",
+      "type": "registry:lib",
+      "title": "Shared types",
+      "description": "The tone, appearance and size vocabulary every haus component reads.",
+      "files": [
+        {
+          "path": "packages/components/src/types.ts",
+          "type": "registry:file",
+          "target": "components/haus/types.ts"
+        }
+      ]
+    },
+    {
+      "name": "badge",
+      "type": "registry:ui",
+      "title": "Badge",
+      "description": "A short status label in one of six tones, subtle or solid.",
+      "dependencies": ["haus-tokens@^5.2.0"],
+      "registryDependencies": ["@haus/types"],
+      "files": [
+        {
+          "path": "packages/components/src/components/Badge/Badge.tsx",
+          "type": "registry:file",
+          "target": "components/haus/components/Badge/Badge.tsx"
+        },
+        {
+          "path": "packages/components/src/components/Badge/Badge.module.css",
+          "type": "registry:file",
+          "target": "components/haus/components/Badge/Badge.module.css"
+        },
+        {
+          "path": "packages/components/src/components/Badge/index.ts",
+          "type": "registry:file",
+          "target": "components/haus/components/Badge/index.ts"
+        }
+      ]
+    }
+  ]
+}
