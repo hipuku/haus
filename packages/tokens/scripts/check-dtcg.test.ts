@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { checkDtcg, tokenPaths } from './check-dtcg'
+import { checkDtcg, findingKey, tokenPaths } from './check-dtcg'
 
 const here = import.meta.dirname
 const tokens = readFileSync(join(here, '..', 'src', 'tokens.json'), 'utf8')
@@ -38,6 +38,20 @@ describe('checkDtcg', () => {
     const json = JSON.parse(tokens)
     json.color.aronia['100'].$value = 'oklch(98% 0.010 300)'
     expect(checkDtcg(JSON.stringify(json), baseline)).toMatchObject({ added: [], removed: [] })
+  })
+})
+
+describe('findingKey', () => {
+  it('removes a quoted value whole, even one that contains double quotes', () => {
+    const loss = (raw: string) => ({
+      reason: 'lenient-read' as const,
+      token: 'font.label',
+      detail: `No $type, and "${raw}" is a CSS expression, not a DTCG value or reference.`,
+    })
+    expect(findingKey(loss('var(--label, "A")'))).toBe(findingKey(loss('var(--label, "B")')))
+    expect(findingKey(loss('var(--label, "A")'))).toBe(
+      'font.label: lenient-read: No $type, and "…" is a CSS expression, not a DTCG value or reference.',
+    )
   })
 })
 

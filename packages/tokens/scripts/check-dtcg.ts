@@ -28,9 +28,14 @@ const here = dirname(fileURLToPath(import.meta.url))
 const TOKENS = join(here, '..', 'src', 'tokens.json')
 const BASELINE = join(here, 'dtcg-baseline.json')
 
-/** A finding without the value it quotes, so editing a value does not move it. */
+/**
+ * A finding without the value it quotes, so editing a value does not move it.
+ * The reader quotes the raw value once per message, unescaped, so the span runs
+ * from the first double quote to the last: a value that itself contains a
+ * double quote, such as `var(--label, "A")`, is still removed whole.
+ */
 export function findingKey(loss: LossEntry): string {
-  const kind = loss.detail.replace(/"[^"]*"/g, '"…"').replace(/\d+(\.\d+)?/g, 'N')
+  const kind = loss.detail.replace(/"[\s\S]*"/, '"…"').replace(/\d+(\.\d+)?/g, 'N')
   return `${loss.token}: ${loss.reason}: ${kind}`
 }
 
