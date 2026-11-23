@@ -55,13 +55,18 @@
 }
 
 /* Sized against the body step it sits beside rather than against the callout,
-   and nudged down by the difference between the line box and the glyph so the
-   mark reads as aligned to the first line of text rather than to the box. */
+   and centred in the first line of that text rather than in the box, so the
+   mark reads as aligned to the line it labels. The offset is the line box less
+   the glyph, which is computed from the type role: a 2px literal was Manrope's
+   answer at this size and nothing else's, and it moved on a typeface or a
+   density change without anything saying so. */
 .icon {
   display: flex;
   flex-shrink: 0;
   color: var(--haus-callout-icon);
-  margin-block-start: 2px;
+  margin-block-start: calc(
+    (var(--haus-type-body-sm-size) * var(--haus-type-body-sm-leading) - var(--haus-icon-sm)) / 2
+  );
 }
 
 .icon > svg {

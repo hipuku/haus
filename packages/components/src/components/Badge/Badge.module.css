@@ -1,4 +1,15 @@
 .badge {
+  /* Decision 0012: a tone remaps these and declares nothing else, and the two
+     appearance rules below read the pair their weight needs. Written the other
+     way, as `.neutral.solid` compounds, every tone restated both weights and
+     the appearance rules had nothing to read, so a tone could not be reused
+     and a new weight meant six more rules. `--haus-` for the same reason as
+     Button: the shipped stylesheet must read nothing a consumer could also
+     have declared. The defaults here are neutral's. */
+  --haus-badge-subtle-bg: var(--haus-color-surface-subtle);
+  --haus-badge-subtle-ink: var(--haus-color-ink-secondary);
+  --haus-badge-solid-bg: var(--haus-color-surface-inverse);
+  --haus-badge-solid-ink: var(--haus-color-ink-inverse);
   display: inline-flex;
   align-items: center;
   gap: var(--haus-space-gap-2xs);
@@ -9,72 +20,59 @@
   line-height: var(--haus-type-label-xs-leading);
   letter-spacing: var(--haus-type-label-xs-tracking);
   text-transform: uppercase;
-  padding: 2px var(--haus-space-inset-xs);
+  padding: var(--haus-space-inset-3xs) var(--haus-space-inset-xs);
   white-space: nowrap;
 }
 
-/* ── Subtle (default) ── */
+/* ── Tones ── */
 
-.neutral.subtle {
-  background-color: var(--haus-color-surface-subtle);
-  color: var(--haus-color-ink-secondary);
+.primary {
+  --haus-badge-subtle-bg: var(--haus-color-primary-subtle);
+  --haus-badge-subtle-ink: var(--haus-color-primary-on-subtle);
+  --haus-badge-solid-bg: var(--haus-color-primary-default);
+  --haus-badge-solid-ink: var(--haus-color-ink-on-primary);
 }
 
-.primary.subtle {
-  background-color: var(--haus-color-primary-subtle);
-  color: var(--haus-color-primary-on-subtle);
+.info {
+  --haus-badge-subtle-bg: var(--haus-color-info-subtle);
+  --haus-badge-subtle-ink: var(--haus-color-info-on-subtle);
+  --haus-badge-solid-bg: var(--haus-color-info-default);
+  --haus-badge-solid-ink: var(--haus-color-info-on-default);
 }
 
-.info.subtle {
-  background-color: var(--haus-color-info-subtle);
-  color: var(--haus-color-info-on-subtle);
+/* success and warning take the 700-level solid, because their 500s fail with
+   white ink; the subtle weight is unaffected. */
+.success {
+  --haus-badge-subtle-bg: var(--haus-color-success-subtle);
+  --haus-badge-subtle-ink: var(--haus-color-success-on-subtle);
+  --haus-badge-solid-bg: var(--haus-color-success-solid);
+  --haus-badge-solid-ink: var(--haus-color-ink-inverse);
 }
 
-.success.subtle {
-  background-color: var(--haus-color-success-subtle);
-  color: var(--haus-color-success-on-subtle);
+.warning {
+  --haus-badge-subtle-bg: var(--haus-color-warning-subtle);
+  --haus-badge-subtle-ink: var(--haus-color-warning-on-subtle);
+  --haus-badge-solid-bg: var(--haus-color-warning-solid);
+  --haus-badge-solid-ink: var(--haus-color-ink-inverse);
 }
 
-.warning.subtle {
-  background-color: var(--haus-color-warning-subtle);
-  color: var(--haus-color-warning-on-subtle);
+.error {
+  --haus-badge-subtle-bg: var(--haus-color-error-subtle);
+  --haus-badge-subtle-ink: var(--haus-color-error-on-subtle);
+  --haus-badge-solid-bg: var(--haus-color-error-default);
+  --haus-badge-solid-ink: var(--haus-color-error-on-default);
 }
 
-.error.subtle {
-  background-color: var(--haus-color-error-subtle);
-  color: var(--haus-color-error-on-subtle);
+/* ── Appearance ── */
+
+.subtle {
+  background-color: var(--haus-badge-subtle-bg);
+  color: var(--haus-badge-subtle-ink);
 }
 
-/* ── Solid ── */
-
-.neutral.solid {
-  background-color: var(--haus-color-surface-inverse);
-  color: var(--haus-color-ink-inverse);
-}
-
-.primary.solid {
-  background-color: var(--haus-color-primary-default);
-  color: var(--haus-color-ink-on-primary);
-}
-
-.info.solid {
-  background-color: var(--haus-color-info-default);
-  color: var(--haus-color-info-on-default);
-}
-
-.success.solid {
-  background-color: var(--haus-color-success-solid);
-  color: var(--haus-color-ink-inverse);
-}
-
-.warning.solid {
-  background-color: var(--haus-color-warning-solid);
-  color: var(--haus-color-ink-inverse);
-}
-
-.error.solid {
-  background-color: var(--haus-color-error-default);
-  color: var(--haus-color-error-on-default);
+.solid {
+  background-color: var(--haus-badge-solid-bg);
+  color: var(--haus-badge-solid-ink);
 }
 
 /* ── Dot indicator ── */

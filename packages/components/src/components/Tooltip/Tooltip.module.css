@@ -20,7 +20,7 @@
      package sit the same way, and re-centring is a positioning-engine problem
      of the kind Popover already declines. */
   inset-inline-start: 0;
-  max-inline-size: 240px;
+  max-inline-size: var(--haus-tooltip-width);
   inline-size: max-content;
   padding: var(--haus-space-inset-2xs) var(--haus-space-inset-xs);
   border-radius: var(--haus-radius-control);

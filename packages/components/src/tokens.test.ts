@@ -109,7 +109,14 @@ describe('components read roles, not primitives', () => {
     // thumb's travel moved off a raw 12px onto --haus-space-3, and the thumb's
     // top and start insets off 2px onto --haus-space-0-5, the first component
     // read of a half step.
-    expect(sizes.length).toBe(31)
+    //
+    // Then 31 to 26 when the five optical nudges were replaced by an offset
+    // derived from the first line of the label. The offset is a margin and it
+    // subtracts the box, so the box could no longer be a step of the ladder:
+    // Checkbox's and Radio's 16px boxes took --haus-marker-box and Toggle's
+    // 20px track height --haus-toggle-track-height, five declarations off the
+    // ladder and onto a size whose name says what it is.
+    expect(sizes.length).toBe(26)
     // 61 before step 7, rising to 77 as the six new components landed: border
     // widths, font families, shadows and, the sharp one, --haus-z-dropdown.
     // Popover and Tooltip are the pair worth pausing on. They are the first
@@ -183,10 +190,15 @@ describe('components read roles, not primitives', () => {
     // its glyph, three declarations. It was added because md tops out below
     // Button's md, so an icon action beside a labelled one had no way to match it.
     //
-    // What is left is thirteen control heights and eighteen icon sizes. A control
+    // Then 31 to 33 when the five optical nudges were replaced: Callout's icon
+    // and Modal's close are centred on the first line of the text beside them,
+    // and each offset subtracts the icon box, so each margin reads the icon
+    // scale a second time.
+    //
+    // What is left is thirteen control heights and twenty icon sizes. A control
     // height and an icon box are sizes whose own name is already the role, with
     // no honest alias to invent.
-    expect(PAST.length - sizes.length).toBe(31)
+    expect(PAST.length - sizes.length).toBe(33)
   })
 })
 

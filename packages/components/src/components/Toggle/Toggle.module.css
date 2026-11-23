@@ -25,12 +25,16 @@
 .track {
   flex-shrink: 0;
   width: var(--haus-toggle-track-width);
-  height: var(--haus-space-5);
+  height: var(--haus-toggle-track-height);
   border-radius: var(--haus-radius-pill);
   background-color: var(--haus-color-border-strong);
   position: relative;
   transition: background-color var(--haus-motion-micro);
-  margin-block-start: 1px;
+  /* Centred in the label's first line, as Checkbox's box is. The track is
+     taller than that line, so the offset is negative by a quarter pixel. */
+  margin-block-start: calc(
+    (var(--haus-type-body-sm-size) * var(--haus-type-body-sm-leading) - var(--haus-toggle-track-height)) / 2
+  );
 }
 
 .wrapper:not(.disabled):hover .track {
@@ -97,7 +101,7 @@
 .content {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--haus-space-gap-3xs);
 }
 
 .label {
@@ -136,7 +140,7 @@
    rather than ours. */
 @media (forced-colors: active) {
   .input:focus-visible ~ .track {
-    outline: 2px solid Highlight;
-    outline-offset: 2px;
+    outline: var(--haus-focus-outline-forced);
+    outline-offset: var(--haus-focus-outline-offset);
   }
 }

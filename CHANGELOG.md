@@ -27,6 +27,20 @@ An app that is light only keeps haus light with `<html data-theme="light">`. A r
 `data-haus-theme` (vault, core) is left light. Every surface and ink pair in `contrast.test.ts`
 clears 4.5:1 in both modes. Decision 0028.
 
+**Added** · **Eleven tokens the components used to write as raw values.** Every length, colour and
+time in a component stylesheet now resolves to a token, which a stricter stylelint rule holds.
+Roles: `--haus-space-inset-3xs`, `--haus-space-gap-3xs` and `--haus-space-stack-3xs` (2px, the step
+below the 4px one on all three ladders), `--haus-border-width-accent` (3px, Toast's leading edge),
+`--haus-opacity-subtle` and `--haus-opacity-muted` (0.35 and 0.6), `--haus-marker-box` (16px, the
+Checkbox box and the Radio circle), `--haus-toggle-track-height` (20px), `--haus-tooltip-width`
+(240px), `--haus-popover-max-height` (256px), `--haus-measure-sm` (44ch, a line length),
+`--haus-text-underline-offset` (3px) and `--haus-focus-outline-forced` with
+`--haus-focus-outline-offset`, the forced-colours fallback eleven components each wrote out.
+Underneath them: `--haus-border-width-3`, `--haus-opacity-35`, `--haus-panel-width-xs`,
+`--haus-size-marker-box`, `--haus-size-toggle-track-height`, `--haus-size-popover-max-height`,
+`--haus-size-measure-sm` and `--haus-size-underline-offset`. Nothing was renamed or removed and no
+value moved.
+
 **Added** · **A 400 step on the four status ramps**: `--haus-elderberry-400`, `--haus-greengage-400`,
 `--haus-mango-400` and `--haus-cherry-400`, the default fill of each status colour in dark mode.
 
@@ -173,6 +187,32 @@ decimal places before comparing, so 4.496:1 passed AA, 6.996:1 passed AAA and 2.
 large-text AA. WCAG compares the ratio itself, without rounding. The verdicts now use the exact
 ratio; `ratio` is still rounded for display. A colour pair that sat in one of those three narrow
 bands now fails where it passed. Reported in [#136](https://github.com/hipuku/haus/issues/136).
+
+## haus-components 3.3.0
+
+_Unreleased. No raw values left in the stylesheets, and Badge's tones remap properties._
+
+**Changed** · **Five optical nudges are gone.** Checkbox's box, Radio's circle, Toggle's track,
+Callout's icon and Modal's close button were each pushed 1px or 2px to sit level with the text
+beside them, which was Manrope's answer at one size and nothing else's: it moved on a typeface or a
+density change and nothing reported it. Each is now centred on the first line of that text, from
+the type role's size and leading, so the offset follows the role. Every one of the five moves by
+about a pixel: the checkbox, radio and callout icon sit 0.25px to 0.75px lower, the toggle track
+1.25px higher, and Modal's close 0.4px lower.
+
+**Changed** · **Badge's tones remap custom properties** instead of declaring colours, the last
+component decision 0012 had not reached. Twelve compound rules became six tone rules and two
+appearance rules. No badge changes colour. A consumer overriding `--haus-badge-subtle-bg`,
+`--haus-badge-subtle-ink`, `--haus-badge-solid-bg` or `--haus-badge-solid-ink` can now retone a
+badge without restating both weights.
+
+**Changed** · **No stylesheet writes a raw length, colour or time.** The values that were literals
+read tokens now: Badge's 2px padding, the 2px gaps in Checkbox, Radio and Toggle, Toast's 3px accent
+edge and the padding that compensates for it, Tooltip's 240px, Select's 16rem panel bound,
+EmptyState's 44ch measure, Button's 3px underline offset and its underline at 35%, Toast's close
+button at 60%, and the `2px solid Highlight` forced-colours outline in eleven stylesheets. Nothing
+renders differently. `em` relative to the element's own text, percentages and viewport units stay,
+and stylelint now fails any other raw length in `packages/components`, inside `calc()` included.
 
 ## haus-components 3.2.0
 

@@ -230,9 +230,9 @@
   color: var(--haus-btn-text-ink);
   padding-inline: var(--haus-space-inset-2xs);
   text-decoration: underline;
-  text-underline-offset: 3px;
+  text-underline-offset: var(--haus-text-underline-offset);
   text-decoration-thickness: var(--haus-border-width-default);
-  text-decoration-color: oklch(from currentColor l c h / 0.35);
+  text-decoration-color: oklch(from currentColor l c h / var(--haus-opacity-subtle));
   transition:
     text-decoration-color var(--haus-motion-micro),
     text-decoration-thickness var(--haus-motion-micro);
@@ -271,7 +271,7 @@
    rather than ours. */
 @media (forced-colors: active) {
   .button:focus-visible {
-    outline: 2px solid Highlight;
-    outline-offset: 2px;
+    outline: var(--haus-focus-outline-forced);
+    outline-offset: var(--haus-focus-outline-offset);
   }
 }

@@ -3,10 +3,12 @@
   align-items: center;
   gap: var(--haus-space-gap-sm);
   padding: var(--haus-space-inset-sm) var(--haus-space-inset-md);
-  padding-inline-start: calc(var(--haus-space-inset-md) + 3px); /* compensate for accent border */
+  /* The accent edge is wider than the other three borders, so the leading
+     padding takes the difference back and the content stays centred. */
+  padding-inline-start: calc(var(--haus-space-inset-md) + var(--haus-border-width-accent));
   border-radius: var(--haus-radius-surface);
   border: var(--haus-border-width-default) solid;
-  border-inline-start-width: 3px;
+  border-inline-start-width: var(--haus-border-width-accent);
   box-shadow: var(--haus-elevation-floating);
   max-width: var(--haus-toast-width);
   width: 100%;
@@ -192,7 +194,7 @@
   background: transparent;
   cursor: pointer;
   color: inherit;
-  opacity: 0.6;
+  opacity: var(--haus-opacity-muted);
   transition: opacity var(--haus-motion-micro);
   padding: 0;
   align-self: flex-start;
@@ -225,7 +227,7 @@
    rather than ours. */
 @media (forced-colors: active) {
   .close:focus-visible {
-    outline: 2px solid Highlight;
-    outline-offset: 2px;
+    outline: var(--haus-focus-outline-forced);
+    outline-offset: var(--haus-focus-outline-offset);
   }
 }

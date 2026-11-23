@@ -156,8 +156,10 @@
     /* ── Border width ────────────────────────────────────────────────────────── */
     --haus-border-width-1:  1px;
     --haus-border-width-2:  2px;
+    --haus-border-width-3:  3px;   /* 3px. An accent edge: the leading border Toast tones. */
 
     /* ── Opacity ─────────────────────────────────────────────────────────────── */
+    --haus-opacity-35:  0.35;
     --haus-opacity-40:  0.4;
     --haus-opacity-60:  0.6;
 
@@ -178,6 +180,7 @@
 
     /* ── Panel widths ────────────────────────────────────────────────────────── */
     /* The popover-scale sibling of overlay widths: Popover and the Select popup. A brand entry too, for the same reason, read through --haus-popover-width-*. */
+    --haus-panel-width-xs:  15rem;   /* 240px, Tooltip. Narrower than a Popover because a tooltip holds one line or two, and a bubble as wide as a menu reads as a panel. */
     --haus-panel-width-sm:  11.25rem;   /* 180px, Popover sm. A short action menu. */
     --haus-panel-width-md:  16.25rem;   /* 260px, Popover md, the default. */
     --haus-panel-width-lg:  21.25rem;   /* 340px, Popover lg. A panel holding a form. */
@@ -185,8 +188,13 @@
 
     /* ── Component geometry ──────────────────────────────────────────────────── */
     /* On no ladder and not spacing. Literals inside components until haus#53 put width and height into the hardcoded-value rule. */
-    --haus-size-marker-dot:    0.375rem;   /* 6px. Badge's status dot and Radio's centre, the same value written twice with no name, which is haus#34's signal. */
-    --haus-size-toggle-track:  2.25rem;   /* 36px. Reads as control-height-md by coincidence and is not one: it is two thumbs and the travel between them. */
+    --haus-size-marker-dot:           0.375rem;   /* 6px. Badge's status dot and Radio's centre, the same value written twice with no name, which is haus#34's signal. */
+    --haus-size-toggle-track:         2.25rem;   /* 36px. Reads as control-height-md by coincidence and is not one: it is two thumbs and the travel between them. */
+    --haus-size-popover-max-height:   16rem;   /* 256px. How tall a Select panel grows before it scrolls, so a long list stays inside the viewport. */
+    --haus-size-measure-sm:           44ch;   /* 44 characters. The line length a short block of body text wraps at, read by EmptyState. In ch because a measure is counted in characters and follows the typeface. */
+    --haus-size-underline-offset:     0.1875rem;   /* 3px. How far below the baseline the text weight of Button sets its underline. */
+    --haus-size-marker-box:           1rem;   /* 16px. The box a Checkbox draws and the circle a Radio draws, which read the 16px step of the space ladder until the margin that centres them on the first line needed the same value and made it a size rather than a spacing step. */
+    --haus-size-toggle-track-height:  1.25rem;   /* 20px. How tall the Toggle track is, the sibling of toggle-track above it. */
 
   }
 }

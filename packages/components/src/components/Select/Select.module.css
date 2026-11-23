@@ -102,7 +102,7 @@
 
 .panel {
   padding: var(--haus-space-inset-2xs);
-  max-block-size: 16rem;
+  max-block-size: var(--haus-popover-max-height);
   overflow-y: auto;
 }
 
@@ -209,7 +209,7 @@
 
 @media (forced-colors: active) {
   .trigger:focus-visible {
-    outline: 2px solid Highlight;
-    outline-offset: 2px;
+    outline: var(--haus-focus-outline-forced);
+    outline-offset: var(--haus-focus-outline-offset);
   }
 }

@@ -31,9 +31,9 @@ mirrors all of it:
 
 The reference for every token is [`docs/tokens.md`](./docs/tokens.md), and the brand contract is
 [Brands](#brands) below, with its tiers in
-[decision 0014](#0014-brand-contract-tiers). Figma holds the same tokens
-as two variable collections, `haus/primitives` (136 variables) and `haus/semantics` (171), with one
-mode per shipped brand.
+[decision 0014](#0014-brand-contract-tiers). Figma holds the same tokens as four variable collections, counted from the committed snapshot:
+`haus/primitives` (140), `haus/semantics` (175) with one mode per shipped brand, `haus/theme` (54)
+for light and dark, and `haus/motion` (27) in its three modes.
 
 ### Layers
 
@@ -247,7 +247,7 @@ are superseded, and one is not yet true of every component.
 | Typography        | [0026](#0026-type-roles-in-figma), [0027](#0027-mono-ladder)                                                                                                                                                                                                            |
 | Components        | [0008](#0008-toast-scope), [0011](#0011-native-select), [0013](#0013-component-promotion), [0017](#0017-busy-indicator), [0020](#0020-listbox-and-select), [0021](#0021-domain-states-as-badge-tones), [0025](#0025-themed-select)                                      |
 | Component API     | [0005](#0005-variant-and-tone), [0009](#0009-where-classname-lands), [0012](#0012-tone-rules), [0022](#0022-ownership), [0023](#0023-union-prop-type-halves)                                                                                                            |
-| Styling and focus | [0001](#0001-focus-indicator), [0006](#0006-component-stylesheet-layer), [0010](#0010-logical-properties)                                                                                                                                                               |
+| Styling and focus | [0001](#0001-focus-indicator), [0006](#0006-component-stylesheet-layer), [0010](#0010-logical-properties), [0029](#0029-a-control-is-centred-on-the-first-line)                                                                                                         |
 | Packaging         | [0004](#0004-versioning), [0007](#0007-meta-package), [0024](#0024-server-component-guard)                                                                                                                                                                              |
 
 A choice worth recording, one a reviewer would otherwise reopen, gets the next number here.
@@ -364,13 +364,19 @@ system shipped the one picker neither used. The reasoning survives as guidance f
 
 ### 0012 Tone rules
 
-_2026-09-03. Implemented on Button and Toast; Badge pending._
+_2026-09-03. Implemented on Button, Toast and Badge._
 
 A tone rule may remap custom properties and declare nothing else, and a variant rule reads the subset
 its weight needs. Button's tone rules had set colours outright, so `variant="ghost" tone="error"`
 rendered solid. Neutral is a tone, and a component narrows `Tone` only where the roles genuinely do
 not exist. `stylesheet.test.ts` fails any tone rule that declares a non-custom property. The cost is
 indirection: `.primary` no longer says what colour it is.
+
+Badge reached it last, in the release-debt pass. Its twelve `.tone.appearance` compounds were not
+caught by the test, which skips a compound because it already names both things and cannot be
+outvoted on source order, and that is why they survived: the rule was enforced and the shape was
+still wrong. Six tone rules remap four properties and the two appearance rules read the pair their
+weight needs, so a new weight is one rule rather than six.
 
 ### 0013 Component promotion
 
@@ -532,6 +538,24 @@ every `[data-haus-theme]` element, so core, which supplies only the base tier, c
 status colours. The cost is a second map to keep in step, held by `brand.test.ts` (every colour role,
 both selectors identical) and by `contrast.test.ts` running every pair in both modes.
 
+### 0029 A control is centred on the first line
+
+_2026-11-24. Implemented._
+
+A control that sits beside text is centred on the first line of that text, from the type role's
+size and leading, rather than nudged by a literal. Five components did it with a `margin-block-start`
+of 1px, 2px or -2px: Checkbox, Radio, Toggle, Callout and Modal. Each was measured against Manrope
+at one size, so it was wrong at any other size, on any other typeface, and at any other density,
+and nothing in the repository would have reported it. The offset is now the line box less the box
+it centres, both read from tokens.
+
+The cost is that the box can no longer be a step of the space ladder, because a margin may not read
+that ladder (`tokens.test.ts`): Checkbox and Radio took `--haus-marker-box` and Toggle
+`--haus-toggle-track-height`, which is the more honest name anyway. Alternatives rejected: `1lh`,
+which is the same arithmetic but resolves against whatever font the element itself inherited, and
+which is wrong wherever the label sets the type and the box does not; and aligning on cap height,
+which is the more accurate centre and needs a typeface metric no token holds.
+
 ## Known gaps
 
 - **Dark mode is not checked component by component.** The token pairs are measured in both modes;
@@ -539,8 +563,6 @@ both selectors identical) and by `contrast.test.ts` running every pair in both m
   dark story in CI. The Storybook toolbar switches mode for a manual check.
 - **Borders below 3:1.** `border-default` is 1.23:1 on the light page and 1.80:1 on the dark one. A
   field whose border is its only edge falls short of WCAG 1.4.11 in both modes.
-- **Badge's tones** still declare colours directly rather than remapping custom properties, the last
-  component decision 0012 has not reached.
 - **No screen reader run.** The accessibility checks are automated; they cover the markup, not the
   experience of using it.
 - **No right-to-left visual test.** The components are written in logical properties and a source

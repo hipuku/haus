@@ -45,13 +45,13 @@ role takes; a semantic token carries the decision. Components read the semantic 
 elevation and motion, and reaching past it is what makes a theme swap
 impossible later.
 
-Two kinds of primitive read are documented rather than hidden. Sizes: 31
+Two kinds of primitive read are documented rather than hidden. Sizes: 26
 declarations across the haus components take a size off the space ladder, on
 `height`, `width`, `min-*`/`max-*` and `transform` offsets, because a size is a
-value rather than a role. They are the avatar sizes, the checkbox and radio
-boxes, the toggle track and thumb, and a few min/max bounds. And 31 read a
-primitive that has no semantic alias because the primitive's own name already is
-the role: thirteen control heights and eighteen icon sizes. No component reads a
+value rather than a role. They are the avatar sizes, the toggle thumb, and a few
+min/max bounds. And 33 read a primitive that has no semantic alias because the
+primitive's own name already is the role: thirteen control heights and twenty
+icon sizes. No component reads a
 colour, radius, shadow, stacking or motion primitive, and a test in
 `haus-components` holds that line.
 

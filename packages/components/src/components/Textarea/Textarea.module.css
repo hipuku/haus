@@ -97,7 +97,7 @@
    rather than ours. */
 @media (forced-colors: active) {
   .textarea:focus-visible {
-    outline: 2px solid Highlight;
-    outline-offset: 2px;
+    outline: var(--haus-focus-outline-forced);
+    outline-offset: var(--haus-focus-outline-offset);
   }
 }

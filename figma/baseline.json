@@ -1,5 +1,5 @@
 {
-  "acceptedAt": "2026-11-23T12:51:01.919Z",
+  "acceptedAt": "2026-11-23T14:16:57.141Z",
   "items": {
     "axis Avatar.size": {
       "code": "lg|md|sm|xl|xs",
@@ -268,6 +268,9 @@
     "token --haus-aronia-950": {
       "code": "#070310",
       "figma": "#070310"
+    },
+    "token --haus-border-width-accent": {
+      "code": "3"
     },
     "token --haus-border-width-default": {
       "code": "1",
@@ -701,6 +704,9 @@
       "code": "#683200",
       "figma": "#683200"
     },
+    "token --haus-marker-box": {
+      "code": "16"
+    },
     "token --haus-marker-dot": {
       "code": "6",
       "figma": "6"
@@ -833,9 +839,15 @@
       "code": "0.4",
       "figma": "0.4"
     },
+    "token --haus-opacity-muted": {
+      "code": "0.6"
+    },
     "token --haus-opacity-overlay": {
       "code": "0.6",
       "figma": "0.6"
+    },
+    "token --haus-opacity-subtle": {
+      "code": "0.35"
     },
     "token --haus-overlay-width-lg": {
       "code": "720",
@@ -872,6 +884,9 @@
     "token --haus-panel-width-xl": {
       "code": "420",
       "figma": "420"
+    },
+    "token --haus-panel-width-xs": {
+      "code": "240"
     },
     "token --haus-paper-0": {
       "code": "#fffefd",
@@ -912,6 +927,9 @@
     "token --haus-paper-950": {
       "code": "#0e0a07",
       "figma": "#0e0a07"
+    },
+    "token --haus-popover-max-height": {
+      "code": "256"
     },
     "token --haus-popover-width-lg": {
       "code": "340",
@@ -1017,13 +1035,25 @@
       "code": "#1c010c",
       "figma": "#1c010c"
     },
+    "token --haus-size-marker-box": {
+      "code": "16"
+    },
     "token --haus-size-marker-dot": {
       "code": "6",
       "figma": "6"
     },
+    "token --haus-size-popover-max-height": {
+      "code": "256"
+    },
     "token --haus-size-toggle-track": {
       "code": "36",
       "figma": "36"
+    },
+    "token --haus-size-toggle-track-height": {
+      "code": "20"
+    },
+    "token --haus-size-underline-offset": {
+      "code": "3"
     },
     "token --haus-space-0-5": {
       "code": "2",
@@ -1089,6 +1119,9 @@
       "code": "32",
       "figma": "32"
     },
+    "token --haus-space-gap-3xs": {
+      "code": "2"
+    },
     "token --haus-space-gap-4xl": {
       "code": "40",
       "figma": "40"
@@ -1136,6 +1169,9 @@
     "token --haus-space-inset-3xl": {
       "code": "32",
       "figma": "32"
+    },
+    "token --haus-space-inset-3xs": {
+      "code": "2"
     },
     "token --haus-space-inset-4xl": {
       "code": "40",
@@ -1188,6 +1224,9 @@
     "token --haus-space-stack-3xl": {
       "code": "32",
       "figma": "32"
+    },
+    "token --haus-space-stack-3xs": {
+      "code": "2"
     },
     "token --haus-space-stack-4xl": {
       "code": "40",
@@ -1261,13 +1300,22 @@
       "code": "30",
       "figma": "30"
     },
+    "token --haus-text-underline-offset": {
+      "code": "3"
+    },
     "token --haus-toast-width": {
       "code": "360",
       "figma": "360"
     },
+    "token --haus-toggle-track-height": {
+      "code": "20"
+    },
     "token --haus-toggle-track-width": {
       "code": "36",
       "figma": "36"
+    },
+    "token --haus-tooltip-width": {
+      "code": "240"
     },
     "token --haus-type-body-leading": {
       "code": "21",
