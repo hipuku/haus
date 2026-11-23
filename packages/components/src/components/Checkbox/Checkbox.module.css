@@ -35,7 +35,9 @@
   width: var(--haus-marker-box);
   height: var(--haus-marker-box);
   border-radius: var(--haus-radius-marker);
-  border: var(--haus-border-width-thick) solid var(--haus-color-border-strong);
+  /* WCAG 1.4.11: an unchecked box is a border and nothing else. border-strong
+     is 1.53:1 against the page. Decision 0031. */
+  border: var(--haus-border-width-thick) solid var(--haus-color-border-control);
   background-color: var(--haus-color-surface-default);
   display: flex;
   align-items: center;

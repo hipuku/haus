@@ -166,6 +166,11 @@ jobs:
           path: |
             apps/storybook/stories/**/__screenshots__/**
             apps/storybook/.vitest/attachments/**
+          # `.vitest` is a hidden directory and the action skips those by
+          # default, even when the path names them, so without this the artifact
+          # carries the references and not the actual image or the diff, which
+          # are the two things a person opens it for.
+          include-hidden-files: true
           if-no-files-found: ignore
           retention-days: 7
 

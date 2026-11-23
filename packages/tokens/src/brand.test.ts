@@ -80,7 +80,8 @@ describe('the brand map', () => {
   it('splits into a required tier and two optional ones', () => {
     // haus#52 and haus#53. Every tier has to be non-empty or the split has
     // collapsed and every assertion below it passes vacuously.
-    expect(BASE_ENTRIES.length).toBe(28)
+    // 30 since decision 0031 added border-control and ink-placeholder.
+    expect(BASE_ENTRIES.length).toBe(30)
     expect(FEEDBACK_ENTRIES.length).toBe(26)
     expect(FORM_ENTRIES.length).toBe(17)
     expect(BASE_ENTRIES.length + FEEDBACK_ENTRIES.length + FORM_ENTRIES.length).toBe(BRAND_ENTRIES.length)

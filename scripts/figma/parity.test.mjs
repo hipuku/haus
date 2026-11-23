@@ -131,7 +131,9 @@ describe('the dark colour map', () => {
 
   it('reads every colour role from brand-dark.css, resolved', () => {
     const items = codeDarkTokens()
-    expect(Object.keys(items)).toHaveLength(54)
+    // 56 since decision 0031 added border-control and ink-placeholder to the
+    // dark map as well as the light one.
+    expect(Object.keys(items)).toHaveLength(56)
     expect(items['token dark --haus-brand-surface-default']).toBe('#111113')
     // A translucent role resolves through relative colour syntax to an alpha hex.
     expect(items['token dark --haus-brand-border-inverse']).toBe('#0404054d')

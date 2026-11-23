@@ -247,7 +247,7 @@ are superseded, and one is not yet true of every component.
 | Typography        | [0026](#0026-type-roles-in-figma), [0027](#0027-mono-ladder)                                                                                                                                                                                                            |
 | Components        | [0008](#0008-toast-scope), [0011](#0011-native-select), [0013](#0013-component-promotion), [0017](#0017-busy-indicator), [0020](#0020-listbox-and-select), [0021](#0021-domain-states-as-badge-tones), [0025](#0025-themed-select)                                      |
 | Component API     | [0005](#0005-variant-and-tone), [0009](#0009-where-classname-lands), [0012](#0012-tone-rules), [0022](#0022-ownership), [0023](#0023-union-prop-type-halves)                                                                                                            |
-| Styling and focus | [0001](#0001-focus-indicator), [0006](#0006-component-stylesheet-layer), [0010](#0010-logical-properties), [0029](#0029-a-control-is-centred-on-the-first-line)                                                                                                         |
+| Styling and focus | [0001](#0001-focus-indicator), [0006](#0006-component-stylesheet-layer), [0010](#0010-logical-properties), [0029](#0029-first-line-control-alignment)                                                                                                                   |
 | Packaging         | [0004](#0004-versioning), [0007](#0007-meta-package), [0024](#0024-server-component-guard)                                                                                                                                                                              |
 
 A choice worth recording, one a reviewer would otherwise reopen, gets the next number here.
@@ -538,7 +538,7 @@ every `[data-haus-theme]` element, so core, which supplies only the base tier, c
 status colours. The cost is a second map to keep in step, held by `brand.test.ts` (every colour role,
 both selectors identical) and by `contrast.test.ts` running every pair in both modes.
 
-### 0029 A control is centred on the first line
+### 0029 First-line control alignment
 
 _2026-11-24. Implemented._
 
@@ -581,13 +581,40 @@ The five optical nudges came out first for exactly this reason (decision 0029): 
 measurements written into five components. The Typography section above still describes the old
 pair and is corrected in the documentation pass.
 
+### 0031 Control edge contrast
+
+_2026-11-24. Implemented._
+
+A control whose boundary is its only edge draws that edge with `--haus-color-border-control`, which
+measures at least 3:1 against both the default surface and the subtle one, in light and in dark.
+WCAG 1.4.11 asks for 3:1 from the parts of a component that say where it is, and Input, Textarea
+and Select drew theirs with `border-default` at 1.23:1 while Checkbox, Radio and the Toggle track
+used `border-strong` at 1.53:1. `contrast.test.ts` measured no border at all, so nothing reported
+it; `DESIGN.md` listed it as a known gap instead.
+
+It is a new role rather than a change to `border-default`, because 1.4.11 is about controls and
+not about every line in the system: moving `border-default` would darken cards, dividers and table
+rules to make a checkbox legible. Both brand maps take damson-500 for it, which is the first rung
+that clears 3:1 from either direction, and the shipped brands take their own: vault damson-500,
+core paper-600 at 3.93:1, where core's own `--border-strong` is 1.57:1.
+
+**`--haus-color-ink-placeholder` came out of the same measurement.** `ink-tertiary` is 3.97:1 on
+the default surface: sound for the glyphs and the hover fill it carries, and never safe for the
+words in an empty field, which are text and want 4.5:1. The two jobs are two roles now. A
+placeholder takes damson-600 at 6.55:1 and stays lighter than a real value, which is the thing the
+colour exists to say. Select's option hint moved to `ink-secondary`, because a hint is text and
+was never a glyph. Both roles are base-tier brand entries, so the base tier is 30 rather than 28
+and a brand file that omits one fails `brand.test.ts`.
+
+The cost is visible: every field, checkbox, radio and toggle has a darker edge than it did, and a
+placeholder is darker than it was. That is the point, and it is the kind of change the screenshot
+suite exists to show, which it did, in 43 stories across both modes.
+
 ## Known gaps
 
 - **Dark mode is not checked component by component.** The token pairs are measured in both modes;
   a component that pairs roles outside those pairs is not, and nothing runs axe against a rendered
   dark story in CI. The Storybook toolbar switches mode for a manual check.
-- **Borders below 3:1.** `border-default` is 1.23:1 on the light page and 1.80:1 on the dark one. A
-  field whose border is its only edge falls short of WCAG 1.4.11 in both modes.
 - **No screen reader run.** The accessibility checks are automated; they cover the markup, not the
   experience of using it.
 - **No right-to-left visual test.** The components are written in logical properties and a source

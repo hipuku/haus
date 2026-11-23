@@ -27,6 +27,12 @@ An app that is light only keeps haus light with `<html data-theme="light">`. A r
 `data-haus-theme` (vault, core) is left light. Every surface and ink pair in `contrast.test.ts`
 clears 4.5:1 in both modes. Decision 0028.
 
+**Added** · **`--haus-color-border-control` and `--haus-color-ink-placeholder`**, with the brand
+entries under them, which takes the required base tier from 28 entries to 30: a brand file that
+omits either fails the build. A control's edge now measures at least 3:1 against the page in both
+modes, where `border-default` was 1.23:1 and `border-strong` 1.53:1, and a placeholder measures
+4.5:1, where `ink-tertiary` was 3.97:1. `ink-tertiary` is unchanged and is for glyphs. Decision 0031.
+
 **Changed, breaking** · **The default brand's faces are DM Sans and DM Mono**, from Manrope and
 Fira Code. `--haus-brand-font-sans` and `--haus-brand-font-mono` are the only two entries that
 change, so `--haus-font-sans` and `--haus-font-mono` keep their names and every component read
@@ -37,7 +43,7 @@ A product that keeps Manrope states it in its own brand file, which is what vaul
 The two faces have different metrics, so text set at the same size and leading occupies a different
 amount of room: check any layout tuned to the old face. Decision 0030.
 
-**Added** · **Eleven tokens the components used to write as raw values.** Every length, colour and
+**Added** · **Twenty-two tokens the components used to write as raw values**, fourteen roles and the eight primitives under them. Every length, colour and
 time in a component stylesheet now resolves to a token, which a stricter stylelint rule holds.
 Roles: `--haus-space-inset-3xs`, `--haus-space-gap-3xs` and `--haus-space-stack-3xs` (2px, the step
 below the 4px one on all three ladders), `--haus-border-width-accent` (3px, Toast's leading edge),
@@ -215,6 +221,17 @@ component decision 0012 had not reached. Twelve compound rules became six tone r
 appearance rules. No badge changes colour. A consumer overriding `--haus-badge-subtle-bg`,
 `--haus-badge-subtle-ink`, `--haus-badge-solid-bg` or `--haus-badge-solid-ink` can now retone a
 badge without restating both weights.
+
+**Changed** · **`--haus-type-display-tracking` is `-0.02em`**, from `-0.03em`. The old value was
+tuned to Manrope, which is the wider face; DM Sans tightens on its own, and at 30px bold the two
+compounded. Read at the real size against three alternatives. `heading-lg` and `label-xs` were
+read the same way and are unchanged.
+
+**Changed** · **Every field, checkbox, radio and toggle has a darker edge, and a placeholder is
+darker.** Input, Textarea and Select read `border-control` instead of `border-default`, Checkbox,
+Radio and the Toggle track instead of `border-strong`, and the placeholders read `ink-placeholder`
+instead of `ink-tertiary`. Select's option hint takes `ink-secondary`, because it is text. Nothing
+moves or resizes; 43 of the 198 story screenshots changed colour. Decision 0031.
 
 **Changed** · **No stylesheet writes a raw length, colour or time.** The values that were literals
 read tokens now: Badge's 2px padding, the 2px gaps in Checkbox, Radio and Toggle, Toast's 3px accent

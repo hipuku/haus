@@ -26,6 +26,16 @@ const MODES = ['light', 'dark'] as const
  * A local run on another platform writes and compares its own set, which is
  * useful while working and is ignored by git, so it can never be the thing that
  * passes a change.
+ *
+ * **The CI runner is the authority for the committed images.** They were first
+ * generated in the Playwright container for the version the Stories job
+ * installs, which got 168 of 198 to match and is not the same thing: the runner
+ * laid one specimen page out 6px shorter, which is a text measurement
+ * difference and not antialiasing, and a dimension mismatch fails before any
+ * threshold applies. So the loop is: change the code, let the Stories job fail,
+ * take the references it wrote from its artifact, commit those. The threshold
+ * below stays where it is; loosening it would not have helped, because the
+ * images were a different size.
  */
 async function modeProject(mode: (typeof MODES)[number]) {
   return {

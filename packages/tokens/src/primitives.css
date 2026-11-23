@@ -32,7 +32,7 @@
     --haus-damson-200:  oklch(93% 0.008 290);   /* Sunken surface / default border */
     --haus-damson-300:  oklch(86% 0.010 290);   /* Strong border */
     --haus-damson-400:  oklch(74% 0.010 290);   /* Disabled / muted */
-    --haus-damson-500:  oklch(60% 0.008 290);   /* Placeholder text */
+    --haus-damson-500:  oklch(60% 0.008 290);   /* Glyphs and a control edge. 3.97:1 on the default surface, which clears 3:1 and not 4.5:1, so it is never text. It was labelled placeholder text until decision 0031 moved that to 600. */
     --haus-damson-600:  oklch(48% 0.007 290);   /* Tertiary text */
     --haus-damson-700:  oklch(37% 0.006 290);   /* Secondary text */
     --haus-damson-800:  oklch(27% 0.005 290);

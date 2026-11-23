@@ -105,6 +105,25 @@ const PAIRS: Array<[surface: string, ink: string, min: number]> = [
   // The inverse surface, which Toast's solid neutral and Badge's solid neutral
   // both paint and nothing asserted.
   ['--haus-color-surface-inverse', '--haus-color-ink-inverse', 4.5],
+
+  // WCAG 1.4.11, at 3:1 rather than 4.5:1, because a control's edge is a
+  // graphic and not text. Input, Textarea, Select, Checkbox, Radio and the
+  // Toggle track draw their whole boundary with this one role, on both the
+  // default surface and the subtle one, since a form sits on either. Decision
+  // 0031. Before it they drew `border-default` at 1.23:1 and `border-strong` at
+  // 1.53:1, and nothing here measured a border at all.
+  ['--haus-color-surface-default', '--haus-color-border-control', 3],
+  ['--haus-color-surface-subtle', '--haus-color-border-control', 3],
+
+  // A placeholder is text, so it is 4.5:1 and not 3:1. It read `ink-tertiary`,
+  // which is 3.97:1 in light: the role is sound for the glyphs and the hover
+  // fill it also carries, and was never safe for the words in an empty field.
+  ['--haus-color-surface-default', '--haus-color-ink-placeholder', 4.5],
+
+  // `ink-tertiary` keeps its own row at the bar it actually meets, so the
+  // number is asserted rather than assumed the next time someone reaches for
+  // it. It is for glyphs: EmptyState's mark, Select's chevron, Modal's close.
+  ['--haus-color-surface-default', '--haus-color-ink-tertiary', 3],
 ]
 
 describe.each(MODES)('contrast, %s', (mode, map) => {

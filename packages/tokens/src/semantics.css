@@ -87,6 +87,7 @@
     --haus-color-ink-primary:    var(--haus-brand-ink-primary);
     --haus-color-ink-secondary:  var(--haus-brand-ink-secondary);
     --haus-color-ink-tertiary:   var(--haus-brand-ink-tertiary);
+    --haus-color-ink-placeholder: var(--haus-brand-ink-placeholder);
     --haus-color-ink-disabled:   var(--haus-brand-ink-disabled);
     --haus-color-ink-inverse:    var(--haus-brand-ink-inverse);
     --haus-color-ink-link:       var(--haus-brand-ink-link);
@@ -96,6 +97,7 @@
     --haus-color-border-subtle:   var(--haus-brand-border-subtle);
     --haus-color-border-default:  var(--haus-brand-border-default);
     --haus-color-border-strong:   var(--haus-brand-border-strong);
+    --haus-color-border-control:  var(--haus-brand-border-control);
     --haus-color-border-focus:    var(--haus-color-primary-default);
     --haus-color-border-disabled: var(--haus-brand-border-disabled);
 
@@ -282,7 +284,15 @@
     --haus-type-display-size:        var(--haus-text-30);
     --haus-type-display-weight:      var(--haus-weight-bold);
     --haus-type-display-leading:     var(--haus-leading-tight);
-    --haus-type-display-tracking:    var(--haus-tracking-tightest);
+    /* tracking-tighter, not tightest, since the DM faces landed (decision 0030).
+       -0.03em was tuned to Manrope, which is the wider face; DM Sans is a
+       geometric with closed apertures and tight sidebearings of its own, and at
+       30px bold the two tightenings compounded into crowding around the round
+       letters. Read at the real size against -0.02em, -0.015em and -0.01em:
+       -0.02em is the step that still reads as deliberate without closing up.
+       heading-lg was read the same way and stays, and label-xs's 0.08em stays
+       too: it is open, and uppercase at 11px is meant to be. */
+    --haus-type-display-tracking:    var(--haus-tracking-tighter);
 
     /* Weight on its own, for text that is not on a type role at all.
 

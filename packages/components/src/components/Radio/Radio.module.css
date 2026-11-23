@@ -73,7 +73,8 @@
   width: var(--haus-marker-box);
   height: var(--haus-marker-box);
   border-radius: 50%;
-  border: var(--haus-border-width-thick) solid var(--haus-color-border-strong);
+  /* WCAG 1.4.11, as Checkbox's box. Decision 0031. */
+  border: var(--haus-border-width-thick) solid var(--haus-color-border-control);
   background-color: var(--haus-color-surface-default);
   display: flex;
   align-items: center;

@@ -27,6 +27,7 @@ export interface BrandMapBase {
   '--haus-brand-ink-primary': string
   '--haus-brand-ink-secondary': string
   '--haus-brand-ink-tertiary': string
+  '--haus-brand-ink-placeholder': string
   '--haus-brand-ink-disabled': string
   '--haus-brand-ink-inverse': string
   '--haus-brand-ink-link': string
@@ -34,6 +35,7 @@ export interface BrandMapBase {
   '--haus-brand-border-subtle': string
   '--haus-brand-border-default': string
   '--haus-brand-border-strong': string
+  '--haus-brand-border-control': string
   '--haus-brand-border-disabled': string
   '--haus-brand-border-inverse': string
   '--haus-brand-border-inverse-hover': string
@@ -128,6 +130,7 @@ export const brandRoles = [
   '--haus-brand-ink-primary',
   '--haus-brand-ink-secondary',
   '--haus-brand-ink-tertiary',
+  '--haus-brand-ink-placeholder',
   '--haus-brand-ink-disabled',
   '--haus-brand-ink-inverse',
   '--haus-brand-ink-link',
@@ -135,6 +138,7 @@ export const brandRoles = [
   '--haus-brand-border-subtle',
   '--haus-brand-border-default',
   '--haus-brand-border-strong',
+  '--haus-brand-border-control',
   '--haus-brand-border-disabled',
   '--haus-brand-border-inverse',
   '--haus-brand-border-inverse-hover',
@@ -203,6 +207,7 @@ export const brandRolesBase = [
   '--haus-brand-ink-primary',
   '--haus-brand-ink-secondary',
   '--haus-brand-ink-tertiary',
+  '--haus-brand-ink-placeholder',
   '--haus-brand-ink-disabled',
   '--haus-brand-ink-inverse',
   '--haus-brand-ink-link',
@@ -210,6 +215,7 @@ export const brandRolesBase = [
   '--haus-brand-border-subtle',
   '--haus-brand-border-default',
   '--haus-brand-border-strong',
+  '--haus-brand-border-control',
   '--haus-brand-border-disabled',
   '--haus-brand-border-inverse',
   '--haus-brand-border-inverse-hover',

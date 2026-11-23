@@ -17,7 +17,8 @@
    should not see the control move. */
 
 .trigger {
-  --haus-lb-border: var(--haus-color-border-default);
+  /* WCAG 1.4.11, as Input's border. Decision 0031. */
+  --haus-lb-border: var(--haus-color-border-control);
 
   display: flex;
   align-items: center;
@@ -37,7 +38,7 @@
 }
 
 .trigger:hover:not(:disabled) {
-  --haus-lb-border: var(--haus-color-border-strong);
+  --haus-lb-border: var(--haus-color-ink-secondary);
 }
 
 .trigger:focus-visible {
@@ -57,7 +58,7 @@
 }
 
 .placeholder {
-  color: var(--haus-color-ink-tertiary);
+  color: var(--haus-color-ink-placeholder);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -170,7 +171,9 @@
 .optionHint {
   font-size: var(--haus-type-label-sm-size);
   line-height: var(--haus-type-label-sm-leading);
-  color: var(--haus-color-ink-tertiary);
+  /* A hint is text, so it takes the ink every other hint takes rather than the
+     glyph role, which is 3.97:1 and fails AA at this size. */
+  color: var(--haus-color-ink-secondary);
 }
 
 .trigger.error {

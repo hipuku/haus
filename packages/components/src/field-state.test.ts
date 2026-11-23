@@ -28,15 +28,19 @@ const CSS = stylesheets()
 
 describe('placeholder colour (haus#42)', () => {
   it('every ::placeholder rule reads the placeholder role, never a darker ink', () => {
-    // ink-tertiary is the step primitives.css labels "Placeholder text". The
-    // point of the colour is that an empty field reads as empty, so a
+    // The point of the colour is that an empty field reads as empty, so a
     // placeholder painted at ink-secondary, as dark as a real value, is the one
     // thing it must not be. Input read the right one and Textarea did not.
+    //
+    // The role was ink-tertiary until decision 0031, which split the two jobs
+    // that token was doing: it is 3.97:1 on the page, which clears 3:1 for the
+    // glyphs and the hover fill it also carries and fails 4.5:1 for words in a
+    // field. ink-placeholder is the text one, still lighter than a real value.
     const offenders: string[] = []
     for (const [name, css] of Object.entries(CSS)) {
       for (const m of css.matchAll(/::placeholder\s*\{([^}]*)\}/g)) {
         const colour = /color:\s*var\((--haus-color-[\w-]+)\)/.exec(m[1])?.[1]
-        if (colour && colour !== '--haus-color-ink-tertiary') offenders.push(`${name}: ${colour}`)
+        if (colour && colour !== '--haus-color-ink-placeholder') offenders.push(`${name}: ${colour}`)
       }
     }
     expect(offenders).toEqual([])

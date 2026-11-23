@@ -1,5 +1,5 @@
 {
-  "acceptedAt": "2026-11-23T14:57:15.621Z",
+  "acceptedAt": "2026-11-23T16:33:18.846Z",
   "items": {
     "axis Avatar.size": {
       "code": "lg|md|sm|xl|xs",
@@ -324,6 +324,9 @@
       "code": "#04040599",
       "figma": "#04040599"
     },
+    "token --haus-color-border-control": {
+      "code": "#807f85"
+    },
     "token --haus-color-border-default": {
       "code": "#e7e7ed",
       "figma": "#e7e7ed"
@@ -415,6 +418,9 @@
     "token --haus-color-ink-on-primary": {
       "code": "#ffffff",
       "figma": "#ffffff"
+    },
+    "token --haus-color-ink-placeholder": {
+      "code": "#5d5d61"
     },
     "token --haus-color-ink-primary": {
       "code": "#111113",
@@ -1374,7 +1380,7 @@
       "figma": "30"
     },
     "token --haus-type-display-tracking": {
-      "code": "-0.9",
+      "code": "-0.6",
       "figma": "-0.9"
     },
     "token --haus-type-display-weight": {
@@ -1633,6 +1639,9 @@
       "code": "#04040599",
       "figma": "#04040599"
     },
+    "token dark --haus-brand-border-control": {
+      "code": "#807f85"
+    },
     "token dark --haus-brand-border-default": {
       "code": "#3f3f43",
       "figma": "#3f3f43"
@@ -1720,6 +1729,9 @@
     "token dark --haus-brand-ink-on-primary": {
       "code": "#040405",
       "figma": "#040405"
+    },
+    "token dark --haus-brand-ink-placeholder": {
+      "code": "#aaaab1"
     },
     "token dark --haus-brand-ink-primary": {
       "code": "#fcfbfe",
