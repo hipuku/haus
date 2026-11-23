@@ -27,7 +27,8 @@ const result = convert([{ name: 'tokens.json', text }], 'tailwind')
 
 ## The dtcg command
 
-The package installs a `dtcg` command.
+The package installs a `dtcg` command. Run it from a project that has `@hipuku/dtcg`
+installed: without a local install, `npx dtcg` fetches the unrelated `dtcg` package from npm.
 
 ```bash
 npx dtcg tokens.json --to tailwind > theme.css

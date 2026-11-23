@@ -115,8 +115,9 @@ Moved from the tokenise app, where it was the engine, under plan decision 19. ES
 `tsc` for Node and bundlers alike. Coverage arrived at 77% of statements and 66% of branches, and
 the floors are set just under that rather than at a target.
 
-**Added** · **The `dtcg` command**, as the package's bin: `dtcg <file...> --to <format>`. One output
-file goes to stdout and several go to `--out`; the loss report goes to stderr, one line per loss, so
+**Added** · **The `dtcg` command**, as the package's bin: `dtcg <file...> --to <format>`. With `--out`,
+every output file is written to that directory; without it, one output file goes to stdout and
+several are an error; the loss report goes to stderr, one line per loss, so
 stdout can be redirected. `--from` skips detection, and `--rem-base` and `--mode-selector` set the
 write options. Exit codes: 0 converted, 1 the input could not be read or names an output file
 outside `--out`, 2 the command was wrong, 3 the output could not be written. It was built as a
