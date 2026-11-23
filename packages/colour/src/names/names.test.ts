@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { createNamedColourMatcher } from '../namedColour.js'
 import { COLOUR_NAME_COUNT, colourNameEntries, colourNames } from './index.js'
 
 describe('the dataset', () => {
@@ -31,5 +32,25 @@ describe('colourNameEntries', () => {
 
   it('returns the same array on a second call rather than rebuilding it', () => {
     expect(colourNameEntries()).toBe(all)
+  })
+})
+
+describe('naming against the full dataset', () => {
+  // The behaviours hexicon's own tests held its matcher to, so hexicon can be
+  // archived without losing them.
+  const nameColour = createNamedColourMatcher(colourNameEntries())
+
+  it.each([
+    ['#000000', 'black'],
+    ['#ffffff', 'white'],
+  ])('names %s exactly, at distance 0', (hex, word) => {
+    const [best] = nameColour(hex)
+    expect(best.distance).toBe(0)
+    expect(best.name.toLowerCase()).toContain(word)
+  })
+
+  it('returns the number of matches asked for', () => {
+    expect(nameColour('#a1b2c3')).toHaveLength(5)
+    expect(nameColour('#a1b2c3', 3)).toHaveLength(3)
   })
 })
