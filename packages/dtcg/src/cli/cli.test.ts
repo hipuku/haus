@@ -4,7 +4,7 @@ import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { run, USAGE } from './cli.js'
 
-const MODES = join(import.meta.dirname, 'fixtures/modes.dtcg.json')
+const MODES = join(import.meta.dirname, '..', 'fixtures', 'modes.dtcg.json')
 
 function dir() {
   return mkdtempSync(join(tmpdir(), 'dtcg-cli-'))

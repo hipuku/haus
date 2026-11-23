@@ -7,7 +7,7 @@
     "declaration": true,
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "types": []
+    "types": ["node"]
   },
   "include": ["src"],
   "exclude": ["src/**/*.test.ts", "src/fixtures"]

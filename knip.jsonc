@@ -18,9 +18,9 @@
       "entry": ["bin/*.mjs", "prettier/*.js", "test/*.test.mjs"],
       "project": ["bin/**/*.mjs", "prettier/**/*.js", "test/**/*.mjs"],
     },
-    // A command, not a library: the bin and the module the tests drive.
-    "packages/dtcg-cli": {
-      "entry": ["src/bin.ts", "src/cli.ts", "src/**/*.test.ts"],
+    // The library, and the dtcg command it ships as a bin.
+    "packages/dtcg": {
+      "entry": ["src/index.ts", "src/cli/bin.ts", "src/**/*.test.ts"],
       "project": ["src/**/*.ts"],
     },
     "packages/motion": {
