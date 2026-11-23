@@ -74,8 +74,9 @@ bundler leaves the dataset out unless `/names` is imported.
 `@hipuku/*` packages; the two old packages also shipped CommonJS. No current consumer calls
 `require` on them.
 
-To move: replace `haus-colour-utils` with `@hipuku/colour` and `haus-colour-names` with
-`@hipuku/colour/names`. Both old names get a final release pointing here (RELEASING.md).
+To move: install `@hipuku/colour` in place of both packages, then import from `@hipuku/colour` where
+the code imported `haus-colour-utils`, and from `@hipuku/colour/names` where it imported
+`haus-colour-names`. Both old names get a final release pointing here (RELEASING.md).
 
 ## @hipuku/dtcg-cli 0.1.0
 
