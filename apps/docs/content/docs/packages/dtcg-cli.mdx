@@ -1,0 +1,35 @@
+---
+title: dtcg command
+description: Convert design tokens from the command line.
+---
+
+`@hipuku/dtcg-cli`, unreleased at 0.1.0. The `dtcg` command, on top of [`@hipuku/dtcg`](./dtcg).
+
+## Install
+
+Not on npm yet.
+
+```bash
+npm install --save-dev @hipuku/dtcg-cli
+```
+
+## Usage
+
+```bash
+dtcg tokens.json --to tailwind > theme.css
+dtcg theme.css --from tailwind --to figma --out figma/
+```
+
+With `--out`, every output file is written into that directory. Without it, a single output file
+goes to stdout, and more than one is an error. The loss report goes to stderr, one line per loss.
+
+| Option | Meaning |
+| ------ | ------- |
+| `--to <format>` | `dtcg`, `figma`, `tokens-studio` or `tailwind`. Required |
+| `--from <format>` | The input format. Detected when left out |
+| `--out <dir>` | Write the output files here |
+| `--rem-base <px>` | Pixels per rem. Default 16 |
+| `--mode-selector <kind>` | How a Tailwind stylesheet switches modes: `data-theme`, `class` or `media` |
+
+Exit codes: 0 converted, 1 the input could not be read or names an output file outside `--out`, 2
+the command was wrong, 3 the output could not be written.

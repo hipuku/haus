@@ -1,0 +1,17 @@
+---
+title: Config
+description: Shared TypeScript, Prettier and prose configuration for hipuku repositories.
+---
+
+`@hipuku/config`, unreleased at 0.1.0. One place to change, so a fix reaches every repository
+through a version bump.
+
+## What it holds
+
+- TypeScript bases: `base`, `react` and `node`.
+- Two Prettier presets, `prettier` and `prettier/wide`.
+- Two checks, as commands: `hipuku-check-prose`, which fails on an em dash against a per-file
+  baseline, and `hipuku-check-names`, which fails on a blocked name in files and commit messages.
+
+It has no JavaScript API. The full reference is the
+[package README](https://github.com/hipuku/haus/tree/main/packages/config).

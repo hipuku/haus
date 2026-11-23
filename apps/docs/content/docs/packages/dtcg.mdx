@@ -1,0 +1,36 @@
+---
+title: DTCG
+description: Convert design tokens between four formats, with a report of what each conversion loses.
+---
+
+`@hipuku/dtcg`, unreleased at 0.1.0. Reads DTCG (resolver documents with modes included), Figma
+variables exports, Tokens Studio and Tailwind v4 `@theme` stylesheets into one model, writes that
+model to any of them, and reports what each conversion loses, per token, with a reason.
+
+## Install
+
+Not on npm yet.
+
+```bash
+npm install @hipuku/dtcg
+```
+
+## Usage
+
+```ts
+import { convert } from '@hipuku/dtcg'
+
+const result = convert([{ name: 'tokens.json', text }], 'tailwind')
+result.format // the format detected in the input
+result.files // the written output, one or more files
+result.allLosses // what was lost reading, then writing, each with the token, reason and detail
+```
+
+`read` and `write` are the two halves of `convert`. `detectFormat` names the format of a set of
+documents from their shape.
+
+## API
+
+<ModuleApi file="dtcg/src/index.ts" />
+
+The full reference is the [package README](https://github.com/hipuku/haus/tree/main/packages/dtcg).

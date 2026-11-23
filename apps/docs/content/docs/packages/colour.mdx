@@ -1,0 +1,36 @@
+---
+title: Colour
+description: Colour maths for design tools, with 31,900 colour names on a subpath.
+---
+
+`@hipuku/colour`, unreleased at 0.1.0. It replaces `haus-colour-utils` and `haus-colour-names`.
+
+## Install
+
+Not on npm yet.
+
+```bash
+npm install @hipuku/colour
+```
+
+## Usage
+
+```ts
+import { deltaE, wcagContrast, createNamedColourMatcher } from '@hipuku/colour'
+import { colourNameEntries } from '@hipuku/colour/names'
+
+deltaE('#4f84ba', '#4e83bd') // 0.66
+wcagContrast('#000', '#fff').ratio // 21
+
+const nameColour = createNamedColourMatcher(colourNameEntries())
+nameColour('#4f84ba')[0] // { name: 'Blue Vault', hex: '#4e83bd', distance: 0.7 }
+```
+
+The 764KB of names is on its own subpath, so a bundler leaves it out unless `/names` is imported.
+
+## API
+
+<ModuleApi file="colour/src/index.ts" />
+
+`@hipuku/colour/names` exports `colourNames`, `colourNameEntries` and `COLOUR_NAME_COUNT`. The full
+reference is the [package README](https://github.com/hipuku/haus/tree/main/packages/colour).

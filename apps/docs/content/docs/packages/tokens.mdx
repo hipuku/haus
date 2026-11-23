@@ -1,0 +1,40 @@
+---
+title: Tokens
+description: The haus design tokens as CSS custom properties, typed constants and DTCG JSON, from one source.
+---
+
+Published as `haus-tokens` 5.2.0. It will be published as `@hipuku/tokens`, and the old name gets a
+final release that points there.
+
+## Install
+
+```bash
+npm install haus-tokens
+```
+
+## Usage
+
+Import the stylesheets once, at the root of your app. The barrel loads every layer in the right
+order:
+
+```ts
+import 'haus-tokens/index.css'
+```
+
+| Form | Import | For |
+| ---- | ------ | --- |
+| CSS custom properties | `haus-tokens/index.css`, or a single layer such as `haus-tokens/motion.css` | Styling |
+| Typed constants | `import { tokens } from 'haus-tokens'` | Build config and media queries |
+| DTCG JSON | `haus-tokens/tokens.json` | Design tools and other token tooling |
+| Brand files | `haus-tokens/brands/core.css`, `haus-tokens/brands/vault.css` | A product's own brand |
+
+Every custom property starts with `--haus-`. The motion roles switch mode with a `data-haus-motion`
+attribute (`expressive` or `reduced`); reduced also applies under `prefers-reduced-motion`.
+
+## The token guard
+
+`haus-tokens/guard` checks a consumer's stylesheets against the tokens:
+
+<ModuleApi file="tokens/src/guard.ts" />
+
+The full reference is the [package README](https://github.com/hipuku/haus/tree/main/packages/tokens).

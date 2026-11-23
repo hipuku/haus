@@ -2,7 +2,7 @@ import { mkdirSync, mkdtempSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { findUndocumented } from './check-docs-coverage.mjs'
+import { findUndocumented, findUndocumentedPackages } from './check-docs-coverage.mjs'
 
 function repo(items, pages) {
   const root = mkdtempSync(join(tmpdir(), 'docs-coverage-'))
@@ -51,5 +51,28 @@ describe('run as a script', () => {
       code = error.status
     }
     expect(code).toBe(1)
+  })
+})
+
+describe('findUndocumentedPackages', () => {
+  function workspace(packages, pages) {
+    const root = mkdtempSync(join(tmpdir(), 'docs-coverage-packages-'))
+    for (const name of packages) {
+      mkdirSync(join(root, 'packages', name), { recursive: true })
+      writeFileSync(join(root, 'packages', name, 'package.json'), '{}')
+    }
+    mkdirSync(join(root, 'packages', 'not-a-package'), { recursive: true })
+    const dir = join(root, 'apps/docs/content/docs/packages')
+    mkdirSync(dir, { recursive: true })
+    for (const page of pages) writeFileSync(join(dir, `${page}.mdx`), '')
+    return root
+  }
+
+  it('names a package with no page, and skips components and folders that are not packages', () => {
+    expect(findUndocumentedPackages(workspace(['motion', 'colour', 'components'], ['motion']))).toEqual(['colour'])
+  })
+
+  it('holds for this repository', () => {
+    expect(findUndocumentedPackages(join(import.meta.dirname, '..'))).toEqual([])
   })
 })
