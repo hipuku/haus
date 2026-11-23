@@ -18,8 +18,10 @@ npm install @hipuku/dtcg
 ## Usage
 
 ```ts
+import { readFileSync } from 'node:fs'
 import { convert } from '@hipuku/dtcg'
 
+const text = readFileSync('tokens.json', 'utf8')
 const result = convert([{ name: 'tokens.json', text }], 'tailwind')
 result.format // the format detected in the input
 result.files // the written output, one or more files

@@ -6,12 +6,40 @@ description: Shared TypeScript, Prettier and prose configuration for hipuku repo
 `@hipuku/config`, unreleased at 0.1.0. One place to change, so a fix reaches every repository
 through a version bump.
 
-## What it holds
+## Install
 
-- TypeScript bases: `base`, `react` and `node`.
-- Two Prettier presets, `prettier` and `prettier/wide`.
-- Two checks, as commands: `hipuku-check-prose`, which fails on an em dash against a per-file
-  baseline, and `hipuku-check-names`, which fails on a blocked name in files and commit messages.
+Not on npm yet.
 
-It has no JavaScript API. The full reference is the
+```bash
+npm install --save-dev @hipuku/config
+```
+
+## Usage
+
+A TypeScript base, extended from `tsconfig.json` (`base`, `react` or `node`):
+
+```json
+{ "extends": "@hipuku/config/tsconfig/react.json" }
+```
+
+A Prettier preset, named in `package.json` (`prettier`, or `prettier/wide` for 120 columns, no
+semicolons and single quotes):
+
+```json
+{ "prettier": "@hipuku/config/prettier/wide" }
+```
+
+The two checks, as scripts:
+
+```json
+{
+  "scripts": {
+    "lint:prose": "hipuku-check-prose",
+    "lint:names": "hipuku-check-names"
+  }
+}
+```
+
+`hipuku-check-prose` fails on an em dash against a per-file baseline; `hipuku-check-names` fails on a
+blocked name in files and commit messages. The package has no JavaScript API. The full reference is the
 [package README](https://github.com/hipuku/haus/tree/main/packages/config).

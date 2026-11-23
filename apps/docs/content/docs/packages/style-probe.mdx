@@ -16,7 +16,19 @@ npm install haus-style-probe
 Two halves, split at the browser boundary. `extractRawElements` runs in the page and reads each
 element's computed style; the normalising functions run anywhere and turn those strings into values
 you can compare, such as `"rgb(37, 99, 235)"` into `#2563eb` and `"0.5rem"` resolved to `"8px"` into
-a number.
+a number. With Playwright, mount a component and read it:
+
+```ts
+import { extractRawElements, normaliseElement } from 'haus-style-probe'
+
+const raw = await page.evaluate(extractRawElements, { root: '#probe' })
+const [button] = raw.map(normaliseElement)
+
+button.styles.backgroundColor // '#2563eb'
+button.styles.padding // [8, 16, 8, 16]
+```
+
+Leave out `root` to walk the whole page.
 
 ## API
 
