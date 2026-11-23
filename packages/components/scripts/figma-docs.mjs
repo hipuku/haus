@@ -55,7 +55,7 @@ const shell = (here, title, intro, body) => `<!doctype html>
 <title>${esc(title)}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Fira+Code:wght@400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,100..1000&family=DM+Mono:wght@400&display=swap">
 <style>
 ${read('layers.css')}
 ${primitives}
@@ -462,7 +462,7 @@ const startedPage = shell(
     <tr><th>Property</th><th>Bind to</th><th>Resolves to</th></tr>
     <tr><td>Corner radius</td><td class="mono">semantic/radius/control</td><td><b>8px</b></td></tr>
     <tr><td>Gap, icon to label</td><td class="mono">semantic/space/gap-xs</td><td><b>8px</b></td></tr>
-    <tr><td>Font family</td><td class="mono">font-family/sans</td><td>Manrope</td></tr>
+    <tr><td>Font family</td><td class="mono">font-family/sans</td><td>DM Sans</td></tr>
     <tr><td>Letter spacing</td><td class="mono">tracking/normal</td><td><b>0</b></td></tr>
     <tr><td>Stroke width, where there is a stroke</td><td class="mono">border-width/default</td><td><b>1px</b></td></tr>
     <tr><td>Disabled opacity</td><td class="mono">opacity/disabled</td><td><b>40</b></td></tr>

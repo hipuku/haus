@@ -27,6 +27,16 @@ An app that is light only keeps haus light with `<html data-theme="light">`. A r
 `data-haus-theme` (vault, core) is left light. Every surface and ink pair in `contrast.test.ts`
 clears 4.5:1 in both modes. Decision 0028.
 
+**Changed, breaking** · **The default brand's faces are DM Sans and DM Mono**, from Manrope and
+Fira Code. `--haus-brand-font-sans` and `--haus-brand-font-mono` are the only two entries that
+change, so `--haus-font-sans` and `--haus-font-mono` keep their names and every component read
+stays where it was. Neither file ships with this package: load the two families, as before. From
+Google Fonts that is
+`https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,100..1000&family=DM+Mono:wght@400&display=swap`.
+A product that keeps Manrope states it in its own brand file, which is what vault already does.
+The two faces have different metrics, so text set at the same size and leading occupies a different
+amount of room: check any layout tuned to the old face. Decision 0030.
+
 **Added** · **Eleven tokens the components used to write as raw values.** Every length, colour and
 time in a component stylesheet now resolves to a token, which a stricter stylelint rule holds.
 Roles: `--haus-space-inset-3xs`, `--haus-space-gap-3xs` and `--haus-space-stack-3xs` (2px, the step

@@ -556,6 +556,31 @@ which is the same arithmetic but resolves against whatever font the element itse
 which is wrong wherever the label sets the type and the box does not; and aligning on cap height,
 which is the more accurate centre and needs a typeface metric no token holds.
 
+### 0030 The DM typeface
+
+_2026-11-24. Implemented in the tokens; the Figma file follows in the same pull request._
+
+The default brand sets **DM Sans** for the interface and **DM Mono** for monospace, replacing
+Manrope and Fira Code. Chosen by the owner from the family's own specimen. DM Sans is variable on
+two axes, weight 100 to 1000 and optical size 9 to 40, so the whole ladder is one file and the
+optical axis follows the size each role sets, which Manrope's single axis could not do. DM Mono
+ships 300, 400 and 500 as static files and all three mono roles are regular, so one is loaded.
+
+**No serif role.** The specimen also holds DM Serif Display and DM Serif Text. No product here has
+a use for a serif, and a role nothing reads is a role that drifts out of true without anything
+reporting it. A serif belongs to a marketing surface, which is not this contract.
+
+Only `--haus-brand-font-sans` and `--haus-brand-font-mono` change, so `--haus-font-sans` and
+`--haus-font-mono` keep their names and no component read moved; it is breaking because a consumer
+loading Manrope gets a fallback until it loads the new faces. vault keeps Manrope in its own brand
+file, which is decision 0019 working as intended.
+
+The cost is that the two faces do not share metrics, so text at the same size and leading does not
+occupy the same room, and anything tuned to the old face has to be read again at its real size.
+The five optical nudges came out first for exactly this reason (decision 0029): they were Manrope's
+measurements written into five components. The Typography section above still describes the old
+pair and is corrected in the documentation pass.
+
 ## Known gaps
 
 - **Dark mode is not checked component by component.** The token pairs are measured in both modes;

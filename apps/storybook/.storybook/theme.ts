@@ -28,8 +28,8 @@ export const hausTheme = create({
   brandImage: '/brand/wordmark.svg',
   brandTarget: '_self',
 
-  fontBase: '"Manrope", system-ui, sans-serif',
-  fontCode: '"Fira Code", ui-monospace, monospace',
+  fontBase: '"DM Sans", system-ui, sans-serif',
+  fontCode: '"DM Mono", ui-monospace, monospace',
 
   colorPrimary: '#7653ab', // aronia-500, primary-default
   colorSecondary: '#7653ab',
@@ -52,8 +52,8 @@ export const hausDarkTheme = create({
   brandImage: '/brand/wordmark.svg',
   brandTarget: '_self',
 
-  fontBase: '"Manrope", system-ui, sans-serif',
-  fontCode: '"Fira Code", ui-monospace, monospace',
+  fontBase: '"DM Sans", system-ui, sans-serif',
+  fontCode: '"DM Mono", ui-monospace, monospace',
 
   colorPrimary: '#d0c3ec', // aronia-300, ink-link in dark
   colorSecondary: '#d0c3ec',

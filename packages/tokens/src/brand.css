@@ -217,9 +217,17 @@
        primitives.css to here, which is a removal for a primitives-only consumer
        and so a major under decision 0004. `semantics.css` exposes the unchanged
        role name `--haus-font-sans` reading this entry, so no component read
-       moved. */
-    --haus-brand-font-sans:  'Manrope', system-ui, sans-serif;
-    --haus-brand-font-mono:  'Fira Code', ui-monospace, monospace;
+       moved.
+
+       The faces are DM Sans and DM Mono, both Colophon Foundry, from Manrope and
+       Fira Code (decision 0030). DM Sans is variable on two axes, weight 100 to
+       1000 and optical size 9 to 40, so the whole ladder is one file and the
+       optical axis follows the size a role sets. DM Mono ships 300, 400 and 500
+       as static files and haus's three mono roles are all regular, so one is
+       loaded. Neither file is shipped by this package: a consumer loads the two
+       families and this entry names them, the same contract as before. */
+    --haus-brand-font-sans:  'DM Sans', system-ui, sans-serif;
+    --haus-brand-font-mono:  'DM Mono', ui-monospace, monospace;
 
   }
 }
