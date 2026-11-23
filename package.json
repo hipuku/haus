@@ -11,6 +11,7 @@
     "build-storybook": "pnpm run build && pnpm --filter storybook run build-storybook",
     "build-registry": "shadcn build -o apps/storybook/storybook-static/r",
     "test:registry": "node scripts/registry-smoke.mjs",
+    "lint:docs": "node scripts/check-docs-coverage.mjs",
     "lint": "eslint .",
     "typecheck": "pnpm -r run typecheck",
     "lint:fix": "eslint . --fix",
