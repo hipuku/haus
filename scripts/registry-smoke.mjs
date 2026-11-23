@@ -13,6 +13,10 @@
 // Badge's `.join(' ')` into `.join('')`, which typechecks and builds. Check 1
 // exists for that case.
 //
+// The registry is for TypeScript projects, so components.json always has
+// tsx: true here. With tsx: false, shadcn renames the files to .js and .jsx
+// but leaves their content as it is, and the build fails; README says so.
+//
 // Needs the network (npm create, npm install). Not run in CI.
 
 import { execFileSync, spawn } from 'node:child_process'
@@ -61,7 +65,10 @@ try {
     )
     const label = `cssVariables: ${cssVariables}`
     for (const item of registry.items) {
-      run('npx', ['shadcn', 'add', `@haus/${item.name}`, '--yes', '--overwrite'], app)
+      // The workspace's pinned shadcn, run from the root with --cwd, so the CLI
+      // that installs is the one that built the registry. npx in the app
+      // would fetch whatever version is latest.
+      run('pnpm', ['exec', 'shadcn', 'add', `@haus/${item.name}`, '--cwd', app, '--yes', '--overwrite'], root)
       for (const file of item.files) {
         const installed = readFileSync(join(app, 'src', file.target), 'utf8')
         if (installed !== readFileSync(join(root, file.path), 'utf8')) {

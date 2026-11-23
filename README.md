@@ -55,6 +55,31 @@ React 18 or 19 is a peer dependency. The colour libraries install on their own:
 `haus-colour-utils`, `haus-colour-names` and `haus-style-probe`. Each package's README covers its
 API.
 
+### From the registry
+
+Components also install as source, copied into your repository with
+[shadcn](https://ui.shadcn.com). Map the `@haus` namespace in `components.json`:
+
+```json
+{
+  "registries": {
+    "@haus": "https://haus.hipuku.dev/r/{name}.json"
+  }
+}
+```
+
+```bash
+npx shadcn add @haus/badge
+```
+
+Badge is the only component in the registry so far. Its tokens come from `haus-tokens`, which the
+install adds as a dependency.
+
+**The registry is for TypeScript projects.** Every file installs byte for byte, so a project with
+`"tsx": false` in `components.json` receives `.js` and `.jsx` files that still contain TypeScript,
+and its build fails. The files are not rewritten because shadcn's rewriting of component source
+broke Badge: with `cssVariables: false` it changed `.join(' ')` to `.join('')`.
+
 ## Develop
 
 Node 22 (`.nvmrc`) and pnpm 10 (`packageManager` in `package.json`).
