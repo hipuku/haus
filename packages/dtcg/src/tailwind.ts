@@ -126,8 +126,15 @@ function scan(css: string): { declarations: Declaration[]; inline: boolean } {
 
   const flushDeclaration = () => {
     const mode = stack[stack.length - 1]
-    const match = /^\s*(--[\w-]+)\s*:\s*([\s\S]*?)\s*$/.exec(buffer)
-    if (mode && match && !match[1].endsWith('-*')) declarations.push({ name: match[1], value: match[2], mode })
+    // Split at the first colon and trim, rather than matching
+    // /^\s*(--[\w-]+)\s*:\s*([\s\S]*?)\s*$/: the lazy value followed by \s*$
+    // backtracks quadratically on a long run of spaces, over a second at 80KB.
+    // A custom property name cannot contain a colon, so the first one ends it.
+    const colon = buffer.indexOf(':')
+    const name = colon === -1 ? '' : buffer.slice(0, colon).trim()
+    if (mode && /^--[\w-]+$/.test(name) && !name.endsWith('-*')) {
+      declarations.push({ name, value: buffer.slice(colon + 1).trim(), mode })
+    }
     buffer = ''
   }
 

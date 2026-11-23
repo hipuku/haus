@@ -301,6 +301,15 @@ describe('input that names a prototype key or never closes a comment', () => {
     expect(performance.now() - started).toBeLessThan(1000)
   })
 
+  it('reads a declaration with a long run of spaces in linear time', () => {
+    // The declaration regex this replaced took over a second on 80KB like this.
+    const value = 'x' + ' '.repeat(100_000) + 'y' + ' '.repeat(100_000)
+    const started = performance.now()
+    const set = read([{ name: 'theme.css', text: `@theme {\n  --color-brand:${value};\n}\n` }], 'tailwind').set
+    expect(performance.now() - started).toBeLessThan(1000)
+    expect(set.tokens.map(t => joinPath(t.path))).toEqual(['color.brand'])
+  })
+
   it('blanks closed comments and leaves an unclosed one as it was', () => {
     const set = read(
       [{ name: 'theme.css', text: '@theme {\n  /* --color-hidden: #000; */\n  --color-brand: #ff0000;\n}\n/* open' }],
