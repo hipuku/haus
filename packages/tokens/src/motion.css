@@ -35,4 +35,128 @@
     --haus-motion-interactive:  var(--haus-duration-normal) var(--haus-ease-move);   /* Hover, focus */
 
   }
+
+  /* ── Motion roles: subtle, the default ─────────────────────────────────── */
+  :root {
+      --haus-motion-press-duration:          120ms;
+      --haus-motion-press-easing:            cubic-bezier(0.65, 0, 0.35, 1);
+      --haus-motion-press-scale:             0.98;
+      --haus-motion-highlight-duration:      353ms;
+      --haus-motion-highlight-easing:        linear(0, 0.0229, 0.0789, 0.1534, 0.2364, 0.3211, 0.4034, 0.4806, 0.5514, 0.615, 0.6715, 0.7211, 0.7642, 0.8014, 0.8332, 0.8604, 0.8835, 0.903, 0.9194, 0.9331, 0.9447, 0.9543, 0.9623, 0.9689, 0.9744, 0.979, 0.9828, 0.9859, 0.9884, 0.9905, 0.9923, 0.9937, 0.9948, 0.9958, 0.9966, 0.9972, 0.9977, 0.9981, 0.9985, 0.9988, 1);
+      --haus-motion-feedback-duration:       353ms;
+      --haus-motion-feedback-easing:         linear(0, 0.0229, 0.0789, 0.1534, 0.2364, 0.3211, 0.4034, 0.4806, 0.5514, 0.615, 0.6715, 0.7211, 0.7642, 0.8014, 0.8332, 0.8604, 0.8835, 0.903, 0.9194, 0.9331, 0.9447, 0.9543, 0.9623, 0.9689, 0.9744, 0.979, 0.9828, 0.9859, 0.9884, 0.9905, 0.9923, 0.9937, 0.9948, 0.9958, 0.9966, 0.9972, 0.9977, 0.9981, 0.9985, 0.9988, 1);
+      --haus-motion-layout-duration:         530ms;
+      --haus-motion-layout-easing:           linear(0, 0.023, 0.0791, 0.1536, 0.2367, 0.3215, 0.4039, 0.4811, 0.5519, 0.6156, 0.672, 0.7216, 0.7646, 0.8018, 0.8336, 0.8608, 0.8838, 0.9033, 0.9196, 0.9334, 0.9449, 0.9544, 0.9624, 0.969, 0.9745, 0.9791, 0.9828, 0.9859, 0.9885, 0.9906, 0.9923, 0.9937, 0.9949, 0.9958, 0.9966, 0.9972, 0.9977, 0.9982, 0.9985, 0.9988, 1);
+      --haus-motion-popover-enter-duration:  180ms;
+      --haus-motion-popover-enter-easing:    cubic-bezier(0.16, 1, 0.3, 1);
+      --haus-motion-popover-enter-offset:    4px;
+      --haus-motion-popover-enter-scale:     0.96;
+      --haus-motion-popover-exit-duration:   120ms;
+      --haus-motion-popover-exit-easing:     cubic-bezier(0.4, 0, 1, 1);
+      --haus-motion-dialog-enter-duration:   240ms;
+      --haus-motion-dialog-enter-easing:     cubic-bezier(0.16, 1, 0.3, 1);
+      --haus-motion-dialog-enter-offset:     4px;
+      --haus-motion-dialog-enter-scale:      0.96;
+      --haus-motion-dialog-exit-duration:    180ms;
+      --haus-motion-dialog-exit-easing:      cubic-bezier(0.4, 0, 1, 1);
+      --haus-motion-sheet-enter-duration:    320ms;
+      --haus-motion-sheet-enter-easing:      cubic-bezier(0.16, 1, 0.3, 1);
+      --haus-motion-sheet-enter-offset:      4px;
+      --haus-motion-sheet-enter-scale:       0.96;
+      --haus-motion-sheet-exit-duration:     240ms;
+      --haus-motion-sheet-exit-easing:       cubic-bezier(0.4, 0, 1, 1);
+  }
+
+  [data-haus-motion='expressive'] {
+      --haus-motion-press-duration:          180ms;
+      --haus-motion-press-easing:            cubic-bezier(0.65, 0, 0.35, 1);
+      --haus-motion-press-scale:             0.96;
+      --haus-motion-highlight-duration:      335ms;
+      --haus-motion-highlight-easing:        linear(0, 0.0212, 0.075, 0.149, 0.234, 0.3231, 0.4116, 0.4961, 0.5744, 0.6454, 0.7084, 0.7635, 0.8109, 0.8511, 0.8848, 0.9126, 0.9352, 0.9534, 0.9678, 0.979, 0.9875, 0.9939, 0.9986, 1.0018, 1.004, 1.0053, 1.006, 1.0063, 1.0062, 1.0059, 1.0055, 1.0049, 1.0044, 1.0038, 1.0033, 1.0028, 1.0023, 1.0019, 1.0016, 1.0012, 1);
+      --haus-motion-feedback-duration:       335ms;
+      --haus-motion-feedback-easing:         linear(0, 0.0212, 0.075, 0.149, 0.234, 0.3231, 0.4116, 0.4961, 0.5744, 0.6454, 0.7084, 0.7635, 0.8109, 0.8511, 0.8848, 0.9126, 0.9352, 0.9534, 0.9678, 0.979, 0.9875, 0.9939, 0.9986, 1.0018, 1.004, 1.0053, 1.006, 1.0063, 1.0062, 1.0059, 1.0055, 1.0049, 1.0044, 1.0038, 1.0033, 1.0028, 1.0023, 1.0019, 1.0016, 1.0012, 1);
+      --haus-motion-layout-duration:         512ms;
+      --haus-motion-layout-easing:           linear(0, 0.0193, 0.0683, 0.1358, 0.2136, 0.2956, 0.3775, 0.4563, 0.5302, 0.598, 0.6591, 0.7134, 0.7611, 0.8026, 0.8382, 0.8685, 0.8941, 0.9155, 0.9332, 0.9478, 0.9598, 0.9694, 0.9771, 0.9833, 0.9881, 0.9918, 0.9947, 0.9968, 0.9984, 0.9996, 1.0004, 1.0009, 1.0013, 1.0014, 1.0015, 1.0015, 1.0015, 1.0014, 1.0012, 1.0011, 1);
+      --haus-motion-popover-enter-duration:  240ms;
+      --haus-motion-popover-enter-easing:    cubic-bezier(0.16, 1, 0.3, 1);
+      --haus-motion-popover-enter-offset:    8px;
+      --haus-motion-popover-enter-scale:     0.94;
+      --haus-motion-popover-exit-duration:   180ms;
+      --haus-motion-popover-exit-easing:     cubic-bezier(0.4, 0, 1, 1);
+      --haus-motion-dialog-enter-duration:   320ms;
+      --haus-motion-dialog-enter-easing:     cubic-bezier(0.16, 1, 0.3, 1);
+      --haus-motion-dialog-enter-offset:     8px;
+      --haus-motion-dialog-enter-scale:      0.94;
+      --haus-motion-dialog-exit-duration:    240ms;
+      --haus-motion-dialog-exit-easing:      cubic-bezier(0.4, 0, 1, 1);
+      --haus-motion-sheet-enter-duration:    400ms;
+      --haus-motion-sheet-enter-easing:      cubic-bezier(0.16, 1, 0.3, 1);
+      --haus-motion-sheet-enter-offset:      8px;
+      --haus-motion-sheet-enter-scale:       0.94;
+      --haus-motion-sheet-exit-duration:     320ms;
+      --haus-motion-sheet-exit-easing:       cubic-bezier(0.4, 0, 1, 1);
+  }
+
+  [data-haus-motion='reduced'] {
+      --haus-motion-press-duration:          120ms;
+      --haus-motion-press-easing:            cubic-bezier(0.65, 0, 0.35, 1);
+      --haus-motion-press-scale:             1;
+      --haus-motion-highlight-duration:      0ms;
+      --haus-motion-highlight-easing:        linear;
+      --haus-motion-feedback-duration:       0ms;
+      --haus-motion-feedback-easing:         linear;
+      --haus-motion-layout-duration:         0ms;
+      --haus-motion-layout-easing:           linear;
+      --haus-motion-popover-enter-duration:  120ms;
+      --haus-motion-popover-enter-easing:    cubic-bezier(0.65, 0, 0.35, 1);
+      --haus-motion-popover-enter-offset:    0px;
+      --haus-motion-popover-enter-scale:     1;
+      --haus-motion-popover-exit-duration:   120ms;
+      --haus-motion-popover-exit-easing:     cubic-bezier(0.65, 0, 0.35, 1);
+      --haus-motion-dialog-enter-duration:   120ms;
+      --haus-motion-dialog-enter-easing:     cubic-bezier(0.65, 0, 0.35, 1);
+      --haus-motion-dialog-enter-offset:     0px;
+      --haus-motion-dialog-enter-scale:      1;
+      --haus-motion-dialog-exit-duration:    120ms;
+      --haus-motion-dialog-exit-easing:      cubic-bezier(0.65, 0, 0.35, 1);
+      --haus-motion-sheet-enter-duration:    120ms;
+      --haus-motion-sheet-enter-easing:      cubic-bezier(0.65, 0, 0.35, 1);
+      --haus-motion-sheet-enter-offset:      0px;
+      --haus-motion-sheet-enter-scale:       1;
+      --haus-motion-sheet-exit-duration:     120ms;
+      --haus-motion-sheet-exit-easing:       cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :root,
+    [data-haus-motion] {
+        --haus-motion-press-duration:          120ms;
+        --haus-motion-press-easing:            cubic-bezier(0.65, 0, 0.35, 1);
+        --haus-motion-press-scale:             1;
+        --haus-motion-highlight-duration:      0ms;
+        --haus-motion-highlight-easing:        linear;
+        --haus-motion-feedback-duration:       0ms;
+        --haus-motion-feedback-easing:         linear;
+        --haus-motion-layout-duration:         0ms;
+        --haus-motion-layout-easing:           linear;
+        --haus-motion-popover-enter-duration:  120ms;
+        --haus-motion-popover-enter-easing:    cubic-bezier(0.65, 0, 0.35, 1);
+        --haus-motion-popover-enter-offset:    0px;
+        --haus-motion-popover-enter-scale:     1;
+        --haus-motion-popover-exit-duration:   120ms;
+        --haus-motion-popover-exit-easing:     cubic-bezier(0.65, 0, 0.35, 1);
+        --haus-motion-dialog-enter-duration:   120ms;
+        --haus-motion-dialog-enter-easing:     cubic-bezier(0.65, 0, 0.35, 1);
+        --haus-motion-dialog-enter-offset:     0px;
+        --haus-motion-dialog-enter-scale:      1;
+        --haus-motion-dialog-exit-duration:    120ms;
+        --haus-motion-dialog-exit-easing:      cubic-bezier(0.65, 0, 0.35, 1);
+        --haus-motion-sheet-enter-duration:    120ms;
+        --haus-motion-sheet-enter-easing:      cubic-bezier(0.65, 0, 0.35, 1);
+        --haus-motion-sheet-enter-offset:      0px;
+        --haus-motion-sheet-enter-scale:       1;
+        --haus-motion-sheet-exit-duration:     120ms;
+        --haus-motion-sheet-exit-easing:       cubic-bezier(0.65, 0, 0.35, 1);
+    }
+  }
 }
