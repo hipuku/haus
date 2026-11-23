@@ -1,4 +1,4 @@
-// The public API: what the tokenise app uses, plus detectFormat. Everything
+// The public API: what the converter uses, plus detectFormat. Everything
 // else in src is internal to the readers and writers.
 export { convert, read, write, type Conversion, type ReadOutcome } from './convert.js'
 export { detectFormat } from './detect.js'

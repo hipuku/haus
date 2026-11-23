@@ -21,7 +21,7 @@ import {
    too, one file per mode, so its reader calls into here.
 
    Leniency is never silent. Every value accepted outside the 2025.10 grammar
-   adds a `lenient-read` entry, so a file that looks fine because tokenise
+   adds a `lenient-read` entry, so a file that looks fine because the reader
    forgave it still says what it forgave.
    ────────────────────────────────────────────────────────────────────────── */
 
@@ -232,7 +232,7 @@ export const isResolverDocument = (value: unknown): value is Record<string, unkn
 
 /**
  * Read a 2025.10 resolver. Sets and modifier contexts are sources: inline token
- * objects, or `$ref`s to the other pasted documents by file name. tokenise reads
+ * objects, or `$ref`s to the other pasted documents by file name. The reader takes
  * one modifier as the mode switch; a second modifier would multiply the modes
  * into combinations, which none of the other three formats can hold.
  */
