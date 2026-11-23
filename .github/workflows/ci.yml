@@ -124,6 +124,51 @@ jobs:
       - name: Script tests
         run: pnpm run test:scripts
 
+  # Every story rendered in a real browser, with the stylesheet on, checked by
+  # axe and compared against a committed screenshot, in light and in dark. The
+  # component suites run under `css: false`, so a contrast pair is not
+  # measurable there and this is the only place one is.
+  #
+  # Separate from Test because it is the slow one and because the ruleset names
+  # checks: a red Stories tick says the thing it says.
+  stories:
+    name: Stories
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Build packages
+        run: pnpm run build
+
+      # The browser the committed screenshots were taken with. `--with-deps`
+      # installs the system libraries Chromium needs on a clean runner.
+      - name: Install Chromium
+        run: pnpm --filter storybook exec playwright install --with-deps chromium
+
+      - name: Stories
+        run: pnpm --filter storybook run test:stories
+
+      # A failed run has written whatever it saw: the actual image beside the
+      # reference, and a diff. Without this the log says a screenshot changed
+      # and shows nobody the change. It also carries the Linux references the
+      # first run on a new story writes, which is how a new baseline gets into
+      # the repository.
+      - name: Keep the images from a failed run
+        if: failure()
+        uses: actions/upload-artifact@v5
+        with:
+          name: story-screenshots
+          path: |
+            apps/storybook/stories/**/__screenshots__/**
+            apps/storybook/.vitest/attachments/**
+          if-no-files-found: ignore
+          retention-days: 7
+
   build:
     name: Build
     needs: [lint, format, typecheck, test]

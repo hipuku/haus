@@ -109,7 +109,21 @@ export const Tones: Story = {
     <table style={{ borderCollapse: 'separate', borderSpacing: 'var(--haus-space-3)' }}>
       <thead>
         <tr>
-          <th />
+          {/* The corner cell of a two-axis grid names the two axes. Empty, it
+              is an unlabelled header, which axe reports and a screen reader
+              reads as nothing before every column. */}
+          <th
+            scope="col"
+            style={{
+              font: 'inherit',
+              fontSize: 'var(--haus-type-label-xs-size)',
+              color: 'var(--haus-color-ink-secondary)',
+              textAlign: 'start',
+              textTransform: 'uppercase',
+            }}
+          >
+            Tone by weight
+          </th>
           {WEIGHTS.map(weight => (
             <th
               key={weight}

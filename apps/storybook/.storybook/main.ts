@@ -24,7 +24,7 @@ const config: StorybookConfig = {
       options: { mdxPluginOptions: { mdxCompileOptions: { remarkPlugins: [remarkGfm] } } },
     },
     '@storybook/addon-a11y',
-    '@chromatic-com/storybook',
+    '@storybook/addon-vitest',
   ],
   // A published reference site, not a working Storybook: suppress the onboarding
   // checklist and update toasts, which are noise for a visitor here to read the
