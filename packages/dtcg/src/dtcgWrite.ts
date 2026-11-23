@@ -178,8 +178,12 @@ export function writeDtcg(set: TokenSet): WriteResult {
   if (otherModes.length === 0) {
     files.push({ name: 'tokens.json', text: JSON.stringify(build(defaultMode, false), null, 2) })
   } else {
-    const contexts: Record<string, unknown[]> = { [defaultMode]: [] }
-    for (const mode of otherModes) contexts[mode] = [build(mode, true)]
+    // Mode names come from the input too, so they are defined as own
+    // properties: `contexts['__proto__'] = …` would set the prototype and the
+    // mode would vanish from the JSON with no loss reported.
+    const contexts: Record<string, unknown[]> = {}
+    define(contexts, defaultMode, [])
+    for (const mode of otherModes) define(contexts, mode, [build(mode, true)])
     const resolver = {
       version: '2025.10',
       sets: { base: { sources: [build(defaultMode, false)] } },

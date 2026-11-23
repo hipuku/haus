@@ -293,6 +293,12 @@ describe('input that names a prototype key or never closes a comment', () => {
     expect(JSON.parse(JSON.stringify(root))).toEqual(JSON.parse('{"__proto__":{"polluted":{"$value":1}}}'))
   })
 
+  it('keeps a mode named __proto__ in the resolver it writes', () => {
+    const css = '@theme {\n  --color-brand: #ff0000;\n}\n[data-theme="__proto__"] {\n  --color-brand: #00ff00;\n}\n'
+    const resolver = JSON.parse(convert([{ name: 'theme.css', text: css }], 'dtcg').files[0].text)
+    expect(Object.keys(resolver.modifiers.mode.contexts)).toEqual(['default', '__proto__'])
+  })
+
   it('reads a stylesheet of unclosed comments in linear time', () => {
     // 480KB, under the input cap. The lazy regex this replaced took seconds.
     const text = '/*' + 'a/*'.repeat(160_000)

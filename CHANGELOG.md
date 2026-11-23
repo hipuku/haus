@@ -68,7 +68,8 @@ _Unreleased. A new package: the `dtcg` command._
 **Added** · **`dtcg <file...> --to <format>`** converts with `@hipuku/dtcg`. One output file goes
 to stdout and several go to `--out`; the loss report goes to stderr, one line per loss, so stdout
 can be redirected. `--from` skips detection, and `--rem-base` and `--mode-selector` set the write
-options. Exit codes: 0 converted, 1 the input could not be read, 2 the command was wrong.
+options. Exit codes: 0 converted, 1 the input could not be read or names an output file outside
+`--out`, 2 the command was wrong, 3 the output could not be written.
 
 Moved from the tokenise repository, where it was built, under plan decision 19.
 
