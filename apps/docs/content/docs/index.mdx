@@ -12,12 +12,14 @@ repository: restyle it freely, and take behaviour fixes from haus with `shadcn a
 The registry is for TypeScript projects. The files install exactly as written, so a project with
 `"tsx": false` in `components.json` would receive TypeScript in `.js` files.
 
-Map the `@haus` namespace in your `components.json`:
+Components and packages share the `@hipuku` name. A component such as `@hipuku/badge` is copied
+into your repository with `shadcn add`; a package such as `@hipuku/colour` installs from npm. Map the
+`@hipuku` namespace in your `components.json`:
 
 ```json title="components.json"
 {
   "registries": {
-    "@haus": "https://haus.hipuku.dev/r/{name}.json"
+    "@hipuku": "https://haus.hipuku.dev/r/{name}.json"
   }
 }
 ```

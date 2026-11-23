@@ -59,19 +59,22 @@ API.
 ### From the registry
 
 Components also install as source, copied into your repository with
-[shadcn](https://ui.shadcn.com). Map the `@haus` namespace in `components.json`:
+[shadcn](https://ui.shadcn.com). Map the `@hipuku` namespace in `components.json`:
 
 ```json
 {
   "registries": {
-    "@haus": "https://haus.hipuku.dev/r/{name}.json"
+    "@hipuku": "https://haus.hipuku.dev/r/{name}.json"
   }
 }
 ```
 
 ```bash
-npx shadcn add @haus/badge
+npx shadcn add @hipuku/badge
 ```
+
+`@hipuku/badge` is a registry name, installed with `shadcn add`. Components are not npm packages, so
+`npm install @hipuku/badge` finds nothing.
 
 Badge is the only component in the registry so far. Its tokens come from `haus-tokens`, which the
 install adds as a dependency.

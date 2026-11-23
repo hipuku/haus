@@ -47,7 +47,7 @@ try {
   // One app is created and installed once, then copied for every install, so
   // each item lands in an app that holds nothing else. Installing every item
   // into one shared app let an earlier install supply a file a later item
-  // forgot to depend on: with Badge's dependency on @haus/types removed, the
+  // forgot to depend on: with Badge's dependency on @hipuku/types removed, the
   // test still passed.
   // create-vite reads an absolute path as relative, so pass a bare name.
   const base = join(work, 'base')
@@ -74,14 +74,14 @@ try {
             utils: '@/lib/utils',
             hooks: '@/hooks',
           },
-          registries: { '@haus': `http://127.0.0.1:${port}/{name}.json` },
+          registries: { '@hipuku': `http://127.0.0.1:${port}/{name}.json` },
         }),
       )
 
       // The workspace's pinned shadcn, run from the root with --cwd, so the CLI
       // that installs is the one that built the registry. npx in the app
       // would fetch whatever version is latest.
-      run('pnpm', ['exec', 'shadcn', 'add', `@haus/${item.name}`, '--cwd', app, '--yes', '--overwrite'], root)
+      run('pnpm', ['exec', 'shadcn', 'add', `@hipuku/${item.name}`, '--cwd', app, '--yes', '--overwrite'], root)
       for (const file of item.files) {
         const installed = readFileSync(join(app, 'src', file.target), 'utf8')
         if (installed !== readFileSync(join(root, file.path), 'utf8')) {
