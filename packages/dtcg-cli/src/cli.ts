@@ -24,7 +24,8 @@ Options:
 
 Losses are printed to stderr, so stdout carries only the converted tokens.
 
-Exit codes: 0 converted, 1 the input could not be read, 2 the command was wrong.
+Exit codes: 0 converted, 1 the input could not be read or names a file outside --out,
+2 the command was wrong, 3 the output could not be written.
 `
 
 export interface Output {
@@ -33,6 +34,10 @@ export interface Output {
 }
 
 const isFormat = (value: string): value is FormatId => (FORMATS as string[]).includes(value)
+
+/** A name that stays in the directory it is joined to: no separator, not `.` or `..`. */
+const isPlainFileName = (name: string) =>
+  name !== '' && name !== '.' && name !== '..' && !name.includes('/') && !name.includes('\\') && basename(name) === name
 
 /** Runs the command and returns the exit code. */
 export async function run(argv: string[], out: Output): Promise<number> {
@@ -103,11 +108,34 @@ export async function run(argv: string[], out: Output): Promise<number> {
   }
 
   if (values.out) {
-    await mkdir(values.out, { recursive: true })
-    for (const file of result.files) {
-      const path = join(values.out, file.name)
-      await writeFile(path, file.text)
-      out.stderr(`wrote ${path}\n`)
+    // An output name comes from the input: Figma's files are named after the
+    // modes, and a mode name is whatever the source document says. A name with
+    // a directory in it, such as `../escaped`, would write outside --out, so
+    // every name is checked before anything is written.
+    const unsafe = result.files.filter(file => !isPlainFileName(file.name))
+    if (unsafe.length) {
+      out.stderr(
+        `Refusing to write outside ${values.out}: ${unsafe.map(f => JSON.stringify(f.name)).join(', ')} ` +
+          `${unsafe.length === 1 ? 'is not a plain file name' : 'are not plain file names'}. ` +
+          `Rename the mode in the source. Nothing was written.\n`,
+      )
+      return 1
+    }
+    const written: string[] = []
+    try {
+      await mkdir(values.out, { recursive: true })
+      for (const file of result.files) {
+        const path = join(values.out, file.name)
+        await writeFile(path, file.text)
+        written.push(path)
+        out.stderr(`wrote ${path}\n`)
+      }
+    } catch (error) {
+      out.stderr(
+        `${(error as Error).message}\n` +
+          (written.length ? `Already written: ${written.join(', ')}\n` : 'Nothing was written.\n'),
+      )
+      return 3
     }
   } else if (result.files.length === 1) {
     out.stdout(result.files[0].text)

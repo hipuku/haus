@@ -1,4 +1,4 @@
-import { mkdtempSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { mkdirSync, mkdtempSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
@@ -114,5 +114,51 @@ describe('dtcg', () => {
     const { code, stdout } = await cli('--help')
     expect(code).toBe(0)
     expect(stdout).toBe(USAGE)
+  })
+})
+
+describe('dtcg output safety', () => {
+  it('refuses a mode name that would write outside --out, and writes nothing', async () => {
+    const source = JSON.parse(readFileSync(MODES, 'utf8'))
+    const contexts = source.modifiers.theme.contexts
+    contexts['../escaped'] = contexts.dark
+    delete contexts.dark
+    const input = file('evil.resolver.json', JSON.stringify(source))
+    const parent = dir()
+    const out = join(parent, 'inner')
+    const { code, stderr } = await cli(input, '--to', 'figma', '--out', out)
+    expect(code).toBe(1)
+    expect(stderr).toContain('"../escaped.tokens.json" is not a plain file name')
+    expect(readdirSync(parent)).toEqual([])
+  })
+
+  it('exits 3 and names what was written when the output cannot be written', async () => {
+    const out = dir()
+    mkdirSync(join(out, 'tokens.json'))
+    const { code, stderr } = await cli(REM, '--to', 'figma', '--out', out)
+    expect(code).toBe(3)
+    expect(stderr).toContain('Nothing was written.')
+  })
+})
+
+describe('dtcg output safety, the remaining paths', () => {
+  it('says which files were written before a later one failed', async () => {
+    const out = dir()
+    mkdirSync(join(out, 'dark.tokens.json'))
+    const { code, stderr } = await cli(MODES, '--to', 'figma', '--out', out)
+    expect(code).toBe(3)
+    expect(stderr).toMatch(/Already written: .*light\.tokens\.json/)
+  })
+
+  it('names every unsafe output when there is more than one', async () => {
+    const source = JSON.parse(readFileSync(MODES, 'utf8'))
+    const contexts = source.modifiers.theme.contexts
+    contexts['../a'] = contexts.dark
+    contexts['b/c'] = contexts.dark
+    delete contexts.dark
+    const input = file('evil.resolver.json', JSON.stringify(source))
+    const { code, stderr } = await cli(input, '--to', 'figma', '--out', dir())
+    expect(code).toBe(1)
+    expect(stderr).toContain('are not plain file names')
   })
 })
