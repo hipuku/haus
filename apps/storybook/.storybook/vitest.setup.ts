@@ -85,6 +85,9 @@ beforeEach(async () => {
 const isChrome = (el: Element) => el.classList.contains('sb-wrapper') || el.id === 'storybook-a11y-vision-filters'
 
 afterEach(async () => {
+  // A contract story (stories/contracts) asserts behaviour, pausing animations
+  // to read them, so it has no stable picture to compare and is not one.
+  if (document.querySelector('[data-contract]')) return
   const mounted = [...document.body.children].filter(el => !isChrome(el))
   const target = mounted.length === 1 ? mounted[0] : document.body
   await expect.element(page.elementLocator(target)).toMatchScreenshot()

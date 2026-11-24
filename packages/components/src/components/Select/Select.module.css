@@ -153,7 +153,7 @@
   cursor: pointer;
   color: var(--haus-color-ink-primary);
   /* Expressive staggers the rows in after the panel, one stagger step each,
-     capped at the sixth so the sequence stays inside stagger-max. Subtle and
+     capped at the fifth so the sequence stays inside stagger-max (five steps). Subtle and
      reduced have a 0ms step, so the rows arrive with the panel. */
   animation: haus-option-in var(--haus-motion-popover-enter-duration) var(--haus-motion-popover-enter-easing) both;
   animation-delay: calc(var(--haus-motion-stagger-step) * (var(--haus-option-index) + 1));

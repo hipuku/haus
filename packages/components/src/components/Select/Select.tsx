@@ -248,7 +248,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(function Sel
                 aria-selected={i === selectedIndex}
                 aria-disabled={o.disabled || undefined}
                 // Its place in the list, for expressive's stagger (finding 13).
-                style={{ '--haus-option-index': Math.min(i, 5) } as React.CSSProperties}
+                style={{ '--haus-option-index': Math.min(i, 4) } as React.CSSProperties}
                 className={[
                   styles.option,
                   i === selectedIndex ? styles.selected : '',
