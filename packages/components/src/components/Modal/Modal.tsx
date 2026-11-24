@@ -107,7 +107,9 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(function Modal
    * `e.target === e.currentTarget` is true and the latch is already true, and
    * the dialog closed on a release that happened inside it. The mirror of
    * haus#56, which guarded only the other direction. Both endpoints are now
-   * read where the click gave an answer for neither.
+   * read where the click gave an answer for neither, and the release is read as
+   * a point rather than a target, because touch input captures the pointer to
+   * whatever took the press and reports that element either way.
    */
   const releasedBackdrop = React.useRef(false)
   // The dialog is the node a caller wants: className already lands there, and
@@ -272,7 +274,30 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(function Modal
       onPointerUp={
         dismissOnBackdrop
           ? e => {
-              releasedBackdrop.current = e.target === e.currentTarget
+              /* Where the pointer physically was, not what the event says it
+                 hit. Touch input gets implicit pointer capture on the element
+                 that took the `pointerdown`, so a finger that presses the
+                 backdrop, slides into the dialog and lifts still reports the
+                 backdrop as its target: the same defect as the one above, for
+                 touch, and unreachable by reading `target`.
+
+                 The target is still required. The point alone would accept a
+                 release anywhere outside the dialog's box, including on a
+                 sibling the backdrop does not own.
+
+                 A zero-area rect means there is no layout to consult, which is
+                 every jsdom test and server render. The target decides there,
+                 because it is the only thing that carries information. */
+              const dialog = dialogRef.current
+              const rect = dialog?.getBoundingClientRect()
+              const onBackdropTarget = e.target === e.currentTarget
+              if (!rect || rect.width === 0 || rect.height === 0) {
+                releasedBackdrop.current = onBackdropTarget
+                return
+              }
+              const insideDialog =
+                e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom
+              releasedBackdrop.current = onBackdropTarget && !insideDialog
             }
           : undefined
       }
@@ -327,11 +352,15 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(function Modal
           </div>
         )}
 
-        <div className={styles.body}>
-          <PortalHostContext.Provider value={portalHost}>{children}</PortalHostContext.Provider>
-        </div>
+        {/* Both slots, not just the body. A footer is where a confirm dialog's
+            actions live, so "pick a colour" in a footer popover is an ordinary
+            thing to build, and a provider around `children` alone sent it to
+            `document.body` with every bug this change exists to fix. */}
+        <PortalHostContext.Provider value={portalHost}>
+          <div className={styles.body}>{children}</div>
 
-        {footer && <div className={styles.footer}>{footer}</div>}
+          {footer && <div className={styles.footer}>{footer}</div>}
+        </PortalHostContext.Provider>
       </div>
     </div>,
     document.body,

@@ -406,6 +406,71 @@ describe('the backdrop dismiss guard (haus#56)', () => {
     expect(onClose).not.toHaveBeenCalled()
   })
 
+  it('does not close when a touch slides into the dialog before lifting', () => {
+    const onClose = vi.fn()
+    const { container } = render(
+      <Modal open onClose={onClose} title="Confirm">
+        Body
+      </Modal>,
+    )
+    const backdrop = container.ownerDocument.querySelector('[class*="backdrop"]')!
+    const dialog = screen.getByRole('dialog')
+    /* Touch gets implicit pointer capture on whatever took the press, so a
+       finger that presses the backdrop, slides into the dialog and lifts
+       reports the backdrop as the release target too. Reading `target` cannot
+       see this one at all, which is why the release is read as a point.
+
+       jsdom has no layout, so the rect is stubbed: the component falls back to
+       the target when it sees a zero-area rect, and that fallback is what the
+       other tests in this block exercise. */
+    vi.spyOn(dialog, 'getBoundingClientRect').mockReturnValue({
+      x: 100,
+      y: 100,
+      left: 100,
+      top: 100,
+      right: 300,
+      bottom: 300,
+      width: 200,
+      height: 200,
+      toJSON: () => ({}),
+    } as DOMRect)
+
+    fireEvent.pointerDown(backdrop, { clientX: 10, clientY: 10 })
+    // Target says backdrop, because of the capture. The point says dialog.
+    fireEvent.pointerUp(backdrop, { clientX: 200, clientY: 200 })
+    fireEvent.click(backdrop, { clientX: 200, clientY: 200 })
+    expect(onClose).not.toHaveBeenCalled()
+  })
+
+  it('still closes when the release point is outside the dialog', () => {
+    const onClose = vi.fn()
+    const { container } = render(
+      <Modal open onClose={onClose} title="Confirm">
+        Body
+      </Modal>,
+    )
+    const backdrop = container.ownerDocument.querySelector('[class*="backdrop"]')!
+    const dialog = screen.getByRole('dialog')
+    /* The other side of the test above, so the point check cannot pass by
+       refusing everything. */
+    vi.spyOn(dialog, 'getBoundingClientRect').mockReturnValue({
+      x: 100,
+      y: 100,
+      left: 100,
+      top: 100,
+      right: 300,
+      bottom: 300,
+      width: 200,
+      height: 200,
+      toJSON: () => ({}),
+    } as DOMRect)
+
+    fireEvent.pointerDown(backdrop, { clientX: 10, clientY: 10 })
+    fireEvent.pointerUp(backdrop, { clientX: 10, clientY: 10 })
+    fireEvent.click(backdrop, { clientX: 10, clientY: 10 })
+    expect(onClose).toHaveBeenCalledTimes(1)
+  })
+
   it('does not leave a stale latch behind for the next click', () => {
     const onClose = vi.fn()
     const { container } = render(
@@ -556,5 +621,46 @@ describe('portalled content inside the dialog', () => {
        nothing above it the panel escapes to the body exactly as before. */
     expect(container.contains(field)).toBe(false)
     expect(document.body.contains(field)).toBe(true)
+  })
+})
+
+describe('portalled content in the footer', () => {
+  /**
+   * A footer is where a confirm dialog's actions live, so a popover opened from
+   * one is ordinary. The provider wrapped `children` alone at first, which left
+   * a footer popover going to `document.body` with every defect the change was
+   * made to fix.
+   */
+  it('lets a portalled input in the footer hold focus', async () => {
+    const user = userEvent.setup()
+    function Harness() {
+      const trigger = React.useRef<HTMLButtonElement>(null)
+      const [open, setOpen] = React.useState(false)
+      return (
+        <Modal
+          open
+          onClose={() => {}}
+          title="Edit"
+          footer={
+            <>
+              <button type="button" ref={trigger} onClick={() => setOpen(true)}>
+                Pick
+              </button>
+              <Popover open={open} onClose={() => setOpen(false)} triggerRef={trigger} portal aria-label="Colour">
+                <input aria-label="Hex" />
+              </Popover>
+            </>
+          }
+        >
+          Body
+        </Modal>
+      )
+    }
+    render(<Harness />)
+    await user.click(screen.getByRole('button', { name: 'Pick' }))
+    const field = screen.getByLabelText('Hex')
+    field.focus()
+    expect(field).toHaveFocus()
+    expect(screen.getByRole('dialog', { name: 'Edit' }).contains(field)).toBe(true)
   })
 })

@@ -239,15 +239,18 @@ between it and the trigger so there is no strip where the pointer is over neithe
 **Fixed** · **`Modal` no longer closes when a press starts on the backdrop and ends inside the
 dialog.** The guard read the press and the click, and a click's target is the nearest common
 ancestor of its two endpoints, so that gesture produced a click on the backdrop and passed. The
-release is now read on its own event. The mirror case, a press starting in the dialog and ending on
-the backdrop, was already guarded.
+release is now read on its own event, and as a point rather than a target: touch input captures the
+pointer to whatever took the press, so a finger that presses the backdrop, slides into the dialog
+and lifts reports the backdrop either way. The mirror case, a press starting in the dialog and
+ending on the backdrop, was already guarded.
 
 **Fixed** · **A `Popover` with `portal` inside a `Modal` can be used.** The panel rendered into
 `document.body`, outside the dialog, and `Modal` returns focus to the dialog whenever focus lands
 outside it, so every control in the panel lost focus as soon as it was given and the panel could
 not be typed into. A `Modal` is now the portal host for its descendants, so the panel renders in
 the dialog: inside the focus trap, in Tab's order, and covered by the dialog's `inert`. A portalled
-panel with no dialog above it still renders into `document.body`.
+panel with no dialog above it still renders into `document.body`. Both the body and the `footer`
+are inside the host, so a popover opened from a dialog's actions behaves like one in its body.
 
 **Changed** · **Five optical nudges are gone.** Checkbox's box, Radio's circle, Toggle's track,
 Callout's icon and Modal's close button were each pushed 1px or 2px to sit level with the text
