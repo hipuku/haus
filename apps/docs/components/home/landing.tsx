@@ -39,6 +39,10 @@ export function Landing() {
         <pre className={styles.install}>
           <code>npx shadcn add @hipuku/badge</code>
         </pre>
+        <p className={styles.installNote}>
+          Once <code>@hipuku</code> is pointed at the registry in your <code>components.json</code>.{' '}
+          <Link href="/docs">Set up</Link> is two lines.
+        </p>
       </section>
 
       <section className={styles.section}>

@@ -3,7 +3,11 @@ title: IconButton
 description: 'A control that is an icon and nothing else.'
 ---
 
-A control that is an icon and nothing else. Promoted on evidence (haus#58), and the evidence had to be found by behaviour rather than by name: an earlier sweep recorded core as having none, because
+A control that is an icon and nothing else. Promoted on evidence (haus#58), and the evidence had to be found by behaviour rather than by name: an earlier sweep recorded core as having none, because core's is a CSS class and not a component file. Measured properly, core has seven sites and vault a full set, and both independently grew a size axis and a tone axis. 
+
+**It is not a Button with an icon in it.** Button is a labelled control with inset padding and a 36px minimum, so an icon as its only child gives the wrong box and the wrong target size. 
+
+`label` is required, and that is the whole accessibility contract: an SVG contributes nothing to the accessible name, so without it the control announces as "button" and nothing else.
 
 ## Examples
 

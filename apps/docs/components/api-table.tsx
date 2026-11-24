@@ -6,6 +6,10 @@ const generator = createGenerator()
 
 const componentsSrc = path.resolve(process.cwd(), '../../packages/components/src')
 
+/** Every key of the attribute set, less the ones the component redefines. */
+const keys = (attributes: string, kept?: string) =>
+  kept ? `Exclude<keyof ${attributes}, ${kept}>` : `keyof ${attributes}`
+
 /**
  * The props a component adds, generated from its source. The element's own
  * HTML attributes are left out because they are standard and would bury the
@@ -21,6 +25,7 @@ export function ApiTable({
   name,
   element = 'HTMLElement',
   attributes,
+  keep,
 }: {
   file: string
   name: string
@@ -32,14 +37,25 @@ export function ApiTable({
    * buries the four props that are.
    */
   attributes?: string
+  /**
+   * Attributes the component redefines, comma separated, which stay in the
+   * table. Checkbox and Toggle take an `onChange` of their own shape,
+   * `(checked, event)`, and omitting the whole attribute set took the one prop
+   * a caller most needs to see with it.
+   */
+  keep?: string
 }) {
+  const kept = keep
+    ?.split(',')
+    .map(attribute => `'${attribute.trim()}'`)
+    .join(' | ')
   return (
     <AutoTypeTable
       generator={generator}
       options={{ basePath: componentsSrc }}
       path={file}
       name="Api"
-      type={`Omit<${name}, keyof ${attributes ?? `React.HTMLAttributes<${element}>`}>`}
+      type={`Omit<${name}, ${keys(attributes ?? `React.HTMLAttributes<${element}>`, kept)}>`}
     />
   )
 }

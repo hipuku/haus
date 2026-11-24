@@ -49,8 +49,9 @@ in an empty field, which is a different job from a glyph and so is a different r
 />
 
 The numbers are WCAG 2.1 ratios, measured with `@hipuku/colour`, the same function the contrast
-suite runs in CI. `contrast.test.ts` holds every ink and surface pair at 4.5:1 in both modes, so a
-pair that fails here fails the build.
+suite runs in CI. `contrast.test.ts` holds each pair at the bar that pair is for, in both modes:
+4.5:1 for text on its surface, 4.5:1 for the placeholder, and 3:1 for `ink-tertiary`, which carries
+glyphs and furniture rather than words. A pair that drops below its own bar fails the build.
 
 ## Borders
 

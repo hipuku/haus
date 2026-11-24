@@ -82,7 +82,7 @@
 @keyframes arrive {
   from {
     opacity: 0;
-    transform: translateY(var(--haus-space-3)) scale(0.96);
+    transform: translateY(var(--offset, 0px)) scale(var(--scale, 1));
   }
   to {
     opacity: 1;

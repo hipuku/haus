@@ -61,6 +61,21 @@
   width: fit-content;
 }
 
+.installNote {
+  color: var(--haus-color-ink-tertiary);
+  font-size: var(--haus-type-body-sm-size);
+  line-height: var(--haus-type-body-sm-leading);
+  margin-block-start: var(--haus-space-2);
+}
+
+.installNote code {
+  font-family: var(--haus-font-mono);
+}
+
+.installNote a {
+  color: var(--haus-color-ink-link);
+}
+
 .section {
   padding-block-start: var(--haus-space-12);
 }

@@ -34,9 +34,11 @@ installation.
 @import '@hipuku/tokens/brands/vault.css';
 ```
 
-A brand that omits a required entry fails the build rather than resolving to nothing: the entries
-are generated into a TypeScript type, so a brand written as an object is checked by the compiler,
-and the CSS build checks the files.
+A brand that omits a required entry is caught rather than left resolving to nothing, in two places
+and neither of them the browser. The entry list is generated into a TypeScript type, so a brand
+written as an object is checked by the compiler; and the token build checks the brand files it
+ships. A hand-written CSS file dropped into an app is checked by neither, and a role it leaves out
+falls back to whatever the cascade has.
 
 ## What a brand may change
 

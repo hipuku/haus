@@ -28,4 +28,9 @@ import { Tabs } from '@/components/haus/components/Tabs'
 Tabs also takes the attributes its element has, and forwards its ref to it. These are the props
 it adds.
 
+The table is the shape where Tabs renders the panel, which is the one to reach for. The other
+shape leaves the panel to the caller: pass `panelId` instead of `children` and wire your own
+element with `aria-labelledby`, using the exported `tabId` rather than writing the template
+yourself. A label is required either way, as `aria-label` or `aria-labelledby`.
+
 <ApiTable file="components/Tabs/Tabs.tsx" name="TabsOwnPanelProps" element="HTMLDivElement" />

@@ -1,5 +1,6 @@
 'use client'
 
+import type React from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { Button } from 'haus-components'
 import styles from './motion.module.css'
@@ -11,14 +12,16 @@ import styles from './motion.module.css'
  * numbers the default mode happens to use.
  */
 const ROLES = [
-  { role: 'micro', what: 'A control answering a press or a hover.' },
+  { role: 'press', what: 'A control answering a press.' },
   { role: 'feedback', what: 'A state change the eye should catch: a check, a toggle.' },
   { role: 'indicator', what: 'A marker moving between positions, as a tab underline does.' },
+  { role: 'highlight', what: 'Something drawing attention to itself where it already is.' },
+  { role: 'draw', what: 'A mark drawing itself, as a tick does.' },
+  { role: 'layout', what: 'A layout settling after something is added or removed.' },
   { role: 'popover-enter', what: 'A popover or a menu arriving.' },
   { role: 'dialog-enter', what: 'A modal arriving over a backdrop.' },
   { role: 'sheet-enter', what: 'A drawer coming in from an edge.' },
   { role: 'toast-enter', what: 'A toast arriving at the corner.' },
-  { role: 'layout', what: 'A layout settling after something is added or removed.' },
 ] as const
 
 export function MotionRoles() {
@@ -66,7 +69,14 @@ function MotionRole({ role, what, play }: { role: string; what: string; play: nu
     read()
     const observer = new MutationObserver(read)
     observer.observe(document.documentElement, { attributeFilter: ['class', 'data-theme', 'data-haus-motion'] })
-    return () => observer.disconnect()
+    // Reduced is a system setting as well as a toolbar one, so the page has to
+    // answer a reader turning it on while they are reading.
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)')
+    reduced.addEventListener('change', read)
+    return () => {
+      observer.disconnect()
+      reduced.removeEventListener('change', read)
+    }
   }, [role])
 
   useEffect(() => {
@@ -93,10 +103,18 @@ function MotionRole({ role, what, play }: { role: string; what: string; play: nu
           className={`${styles.sample} ${styles.playing}`}
           data-role={role}
           ref={sample}
-          style={{
-            animationDuration: `var(--haus-motion-${role}-duration)`,
-            animationTimingFunction: `var(--haus-motion-${role}-easing)`,
-          }}
+          style={
+            {
+              animationDuration: `var(--haus-motion-${role}-duration)`,
+              animationTimingFunction: `var(--haus-motion-${role}-easing)`,
+              // The role's own travel and scale, so a role with neither, press
+              // and highlight, is still and a sheet moves the distance the
+              // token says. A fixed offset in the keyframe showed every role
+              // doing the same thing at different speeds.
+              '--offset': `var(--haus-motion-${role}-offset, 0px)`,
+              '--scale': `var(--haus-motion-${role}-scale, 1)`,
+            } as React.CSSProperties
+          }
         />
       </div>
     </div>
