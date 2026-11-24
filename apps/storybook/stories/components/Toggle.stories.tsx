@@ -77,7 +77,12 @@ export const Motion: Story = {
     'Switch each one. Subtle eases the thumb across; expressive springs it and lets it settle at the far ' +
       'end; reduced jumps.',
   ),
-  render: args => <MotionCompare render={() => <Toggle {...args} />} />,
+  render: args => (
+    <MotionCompare
+      remount={false}
+      render={(_mode, run) => <Toggle {...args} checked={run % 2 === 1} onChange={() => {}} />}
+    />
+  ),
 }
 
 export const Content: Story = {

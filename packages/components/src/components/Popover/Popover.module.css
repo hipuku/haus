@@ -82,11 +82,15 @@
   inset-block-end: calc(100% + var(--haus-space-gap-2xs));
 }
 
-/* `trigger` is the stretch case sized by the anchor; the fixed steps are for
+/* `trigger` is at least the trigger's width and grows to fit its widest
+   item, so nothing in it is cut off or ellipsed, up to the widest popover
+   step, past which its content wraps (owner, 4.5: no ellipses, and a menu
+   item's hover fill must stay inside the panel). The fixed steps are for
    panels holding a form, where content width is not a useful measure. */
 .w-trigger {
-  inline-size: 100%;
-  min-inline-size: 0;
+  min-inline-size: 100%;
+  inline-size: max-content;
+  max-inline-size: var(--haus-popover-width-xl);
 }
 .w-sm {
   inline-size: var(--haus-popover-width-sm);

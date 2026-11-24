@@ -83,7 +83,14 @@ export const Motion: Story = {
     'Pick an option in each. Subtle shows the dot; expressive grows it in on a spring and springs the circle ' +
       'back from the press; reduced shows it at once.',
   ),
-  render: args => <MotionCompare render={mode => <RadioGroup {...args} name={`m-${mode}`} />} />,
+  render: args => (
+    <MotionCompare
+      remount={false}
+      render={(mode, run) => (
+        <RadioGroup {...args} name={`m-${mode}`} value={['sm', 'md', 'lg'][run % 3]} onChange={() => {}} />
+      )}
+    />
+  ),
 }
 
 export const ArrowsMoveTheSelection: Story = {

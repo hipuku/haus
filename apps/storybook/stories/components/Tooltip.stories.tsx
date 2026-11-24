@@ -71,6 +71,7 @@ export const Motion: Story = {
   ),
   render: args => (
     <MotionCompare
+      replay={false}
       render={() => (
         <div style={frame}>
           <Tooltip {...args}>

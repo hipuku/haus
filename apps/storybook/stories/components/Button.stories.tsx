@@ -168,7 +168,9 @@ export const Motion: Story = {
       'and springs back with a settle; reduced changes colour only. Replay restarts the loading cross-fade, which ' +
       'expressive sequences.',
   ),
-  render: args => <MotionCompare render={() => <Button {...args} loading />} />,
+  render: args => (
+    <MotionCompare remount={false} render={(_mode, run) => <Button {...args} loading={run % 2 === 1} />} />
+  ),
 }
 
 export const Content: Story = {

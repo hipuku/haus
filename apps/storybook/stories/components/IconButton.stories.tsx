@@ -53,7 +53,7 @@ const meta = {
     disabled: { control: 'boolean' },
     label: { control: 'text' },
   },
-  args: { icon: <Plus />, label: 'Add item', variant: 'secondary', tone: 'neutral', size: 'md' },
+  args: { icon: <Plus />, label: 'Add item', variant: 'primary', tone: 'neutral', size: 'md' },
 } satisfies Meta<typeof IconButton>
 
 export default meta
@@ -167,5 +167,7 @@ export const Motion: Story = {
   parameters: story(
     "Press and hold each, then release: Button's press, a spring back in expressive, colour only in reduced.",
   ),
-  render: args => <MotionCompare render={() => <IconButton {...args} />} />,
+  render: args => (
+    <MotionCompare remount={false} render={(_mode, run) => <IconButton {...args} loading={run % 2 === 1} />} />
+  ),
 }

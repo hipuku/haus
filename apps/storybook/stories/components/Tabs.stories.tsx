@@ -47,9 +47,19 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-function Controlled(props: Partial<React.ComponentProps<typeof Tabs>> & { initial?: string }) {
-  const { initial = 'overview', ...rest } = props
+const ENABLED = ITEMS.filter(item => !item.disabled).map(item => item.value)
+
+/**
+ * `step`, when given, selects the next enabled tab each time it changes, so a
+ * Motion story's Replay moves the marker rather than doing nothing.
+ */
+function Controlled(props: Partial<React.ComponentProps<typeof Tabs>> & { initial?: string; step?: number }) {
+  const { initial = 'overview', step, ...rest } = props
   const [value, setValue] = useState(initial)
+  React.useEffect(() => {
+    if (step === undefined || step === 0) return
+    setValue(ENABLED[step % ENABLED.length]!)
+  }, [step])
   return (
     <Tabs
       items={ITEMS}
@@ -124,15 +134,17 @@ export const Size: Story = {
 
 export const Motion: Story = {
   parameters: story(
-    'Click between tabs in each. The marker is one element: subtle moves it at once, expressive slides it to ' +
-      'the new tab on a spring, reduced moves it at once.',
+    'Replay moves every instance to the next tab. Subtle slides the marker with a short ease; expressive ' +
+      'slides it on a spring that settles; reduced jumps.',
   ),
   render: () => (
     <MotionCompare
-      render={() => (
+      remount={false}
+      layout="column"
+      render={(_mode, run) => (
         <Stack>
-          <Controlled />
-          <Controlled appearance="segmented" />
+          <Controlled step={run} />
+          <Controlled step={run} appearance="segmented" />
         </Stack>
       )}
     />

@@ -1,5 +1,7 @@
+import type React from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Divider } from 'haus-components'
+import { Item, Stack } from '../helpers'
 
 const meta = {
   title: 'Components/Divider',
@@ -38,23 +40,37 @@ export const Playground: Story = {
   ),
 }
 
+const story = (text: string) => ({ docs: { description: { story: text } } })
+
+const line: React.CSSProperties = {
+  margin: 0,
+  fontFamily: 'var(--haus-font-sans)',
+  fontSize: 'var(--haus-type-body-sm-size)',
+  color: 'var(--haus-color-ink-primary)',
+}
+
 export const Spacing: Story = {
+  parameters: story('The space above and below the rule, on the stack scale.'),
   render: args => (
-    <div style={{ maxWidth: 420 }}>
+    <Stack>
       {(['none', 'sm', 'md', 'lg'] as const).map(spacing => (
-        <div key={spacing}>
-          <p style={{ margin: 0, fontSize: 13 }}>{spacing}</p>
-          <Divider {...args} spacing={spacing} />
-        </div>
+        <Item key={spacing} label={spacing}>
+          <div style={{ inlineSize: '100%' }}>
+            <p style={line}>Above the rule.</p>
+            <Divider {...args} spacing={spacing} />
+            <p style={line}>Below the rule.</p>
+          </div>
+        </Item>
       ))}
-    </div>
+    </Stack>
   ),
 }
 
 export const Vertical: Story = {
   name: 'Vertical, in a toolbar',
+  parameters: story('Between items in a row. Decorative by default there, so it is not announced.'),
   render: args => (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 0 }}>
+    <div style={{ ...line, display: 'flex', alignItems: 'center' }}>
       <span>Copy</span>
       <Divider {...args} orientation="vertical" />
       <span>Rename</span>

@@ -242,7 +242,12 @@ export const Popover = React.forwardRef<HTMLDivElement, PopoverProps>(function P
         // Which viewport edge the panel is pinned to: the trigger's left edge
         // when its alignment edge is on the left, otherwise its right edge.
         ...((align === 'end') === rtl ? { left: rect.left } : { right: window.innerWidth - rect.right }),
-        ...(align === 'stretch' || width === 'trigger' ? { inlineSize: rect.width } : {}),
+        // stretch is exactly the trigger's width; trigger is at least it.
+        ...(align === 'stretch'
+          ? { inlineSize: rect.width }
+          : width === 'trigger'
+            ? { minInlineSize: rect.width }
+            : {}),
       }
     : { position: 'fixed', visibility: 'hidden' }
 

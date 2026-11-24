@@ -1,27 +1,30 @@
+import { Badge, Button } from 'haus-components'
 import React, { useState } from 'react'
 
 /**
  * Layout for stories, so every component's stories are laid out and labelled
  * the same way. STORIES.md is the standard these serve.
  *
- * Styles are inline and read haus tokens: these are the workbench's own frame,
- * not components, and a story should show the component and nothing else of
- * ours.
+ * **Labels are Badges.** A label in plain text is set in the same type as the
+ * component it names and reads as part of the content; a Badge is visibly
+ * furniture. Every label in a story goes through `Label`.
  */
 
-const caption: React.CSSProperties = {
-  fontFamily: 'var(--haus-font-sans)',
-  fontSize: 'var(--haus-type-label-caption-size)',
-  lineHeight: 'var(--haus-type-label-caption-leading)',
-  color: 'var(--haus-color-ink-secondary)',
+/** The one way a story labels something: a neutral Badge. */
+export function Label({ children }: { children: React.ReactNode }) {
+  return (
+    <Badge tone="neutral" appearance="subtle">
+      {children}
+    </Badge>
+  )
 }
 
-/** One labelled item: the component, and the value it shows underneath. */
+/** One labelled item: the label above, the component under it. */
 export function Item({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 'var(--haus-space-2)' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 'var(--haus-space-3)' }}>
+      <Label>{label}</Label>
       {children}
-      <span style={caption}>{label}</span>
     </div>
   )
 }
@@ -35,7 +38,7 @@ export function Row({ children, stretch = false }: { children: React.ReactNode; 
         gridTemplateColumns: stretch ? 'repeat(auto-fit, minmax(16rem, 1fr))' : undefined,
         flexWrap: 'wrap',
         alignItems: 'flex-start',
-        gap: 'var(--haus-space-6)',
+        gap: 'var(--haus-space-8)',
       }}
     >
       {children}
@@ -43,10 +46,10 @@ export function Row({ children, stretch = false }: { children: React.ReactNode; 
   )
 }
 
-/** Items stacked, for components that fill their width (fields, toasts). */
+/** Items stacked, for components that fill their width (fields, toasts, tabs). */
 export function Stack({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--haus-space-6)', maxInlineSize: '28rem' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--haus-space-8)', maxInlineSize: '32rem' }}>
       {children}
     </div>
   )
@@ -78,13 +81,15 @@ export function Grid<R extends string, C extends string>({
     >
       <span />
       {columns.map(c => (
-        <span key={c} style={caption}>
-          {c}
+        <span key={c}>
+          <Label>{c}</Label>
         </span>
       ))}
       {rows.map(r => (
         <React.Fragment key={r}>
-          <span style={caption}>{r}</span>
+          <span>
+            <Label>{r}</Label>
+          </span>
           {columns.map(c => (
             <div key={c}>{render(r, c)}</div>
           ))}
@@ -94,40 +99,60 @@ export function Grid<R extends string, C extends string>({
   )
 }
 
-const MODES = ['subtle', 'expressive', 'reduced'] as const
+export const MODES = ['subtle', 'expressive', 'reduced'] as const
+export type Mode = (typeof MODES)[number]
 
 /**
  * The three motion modes side by side, each in its own `data-haus-motion`
- * scope, with one button that replays all three. `render` is called again on
- * every replay with a fresh key, so an enter animation runs from the start.
+ * scope, with one Replay for all three.
+ *
+ * `render(mode, run)` is called with a run count that Replay increments. A
+ * component whose motion plays on mount (a toast, an error) remounts on each
+ * run, because the count is in the key. A component whose motion is a change
+ * of state (a tab, a checkbox, a press) reads `run` and makes that change, so
+ * Replay plays its motion too rather than doing nothing.
+ *
+ * `remount={false}` keeps the instances mounted, for those state-change
+ * components, so the change animates from where it was. `layout="column"`
+ * stacks the modes, for components wider than a third of the canvas.
+ * `replay={false}` drops the button for motion nothing can replay: a hover,
+ * or an animation that never stops.
  */
-export function MotionCompare({ render }: { render: (mode: (typeof MODES)[number]) => React.ReactNode }) {
+export function MotionCompare({
+  render,
+  remount = true,
+  layout = 'row',
+  replay = true,
+}: {
+  render: (mode: Mode, run: number) => React.ReactNode
+  remount?: boolean
+  layout?: 'row' | 'column'
+  replay?: boolean
+}) {
   const [run, setRun] = useState(0)
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--haus-space-4)' }}>
-      <div>
-        <button
-          type="button"
-          onClick={() => setRun(n => n + 1)}
-          style={{
-            ...caption,
-            cursor: 'pointer',
-            textDecoration: 'underline',
-            background: 'none',
-            border: 0,
-            padding: 0,
-          }}
-        >
-          Replay
-        </button>
-      </div>
-      <Row stretch>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--haus-space-6)' }}>
+      {replay && (
+        <div>
+          <Button size="sm" variant="secondary" onClick={() => setRun(n => n + 1)}>
+            Replay
+          </Button>
+        </div>
+      )}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: layout === 'row' ? 'repeat(3, minmax(0, 1fr))' : '1fr',
+          alignItems: 'start',
+          gap: 'var(--haus-space-8)',
+        }}
+      >
         {MODES.map(mode => (
-          <div key={`${mode}-${run}`} data-haus-motion={mode === 'subtle' ? undefined : mode}>
-            <Item label={mode}>{render(mode)}</Item>
+          <div key={remount ? `${mode}-${run}` : mode} data-haus-motion={mode}>
+            <Item label={mode}>{render(mode, run)}</Item>
           </div>
         ))}
-      </Row>
+      </div>
     </div>
   )
 }

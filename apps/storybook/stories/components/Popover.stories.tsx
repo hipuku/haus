@@ -70,7 +70,7 @@ function Panel({ defaultOpen = false, content = 'menu', ...rest }: PanelProps) {
             <div style={{ display: 'grid' }}>
               {/* haus has no menu item yet, so these are ghost Buttons set to
                   start-align: a Menu is a proposed component (4.5 audit). */}
-              {['Rename', 'Duplicate', 'Move to…'].map(label => (
+              {['Rename', 'Duplicate', 'Move to folder'].map(label => (
                 <Button key={label} role="menuitem" variant="ghost" size="sm" style={{ justifyContent: 'flex-start' }}>
                   {label}
                 </Button>

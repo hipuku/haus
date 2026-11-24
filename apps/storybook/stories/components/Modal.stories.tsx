@@ -102,6 +102,7 @@ export const Motion: Story = {
 
 export const FocusTheAction: Story = {
   name: 'Focus starts on the action',
+  parameters: story('`initialFocus` points focus at the one obvious action, so a confirmation needs no tabbing.'),
   render: args => (
     <Demo {...args} initialFocus={{ current: null }}>
       Focus lands on Delete rather than on the dialog, so a confirm with one obvious action does not make you tab to it.
@@ -111,6 +112,7 @@ export const FocusTheAction: Story = {
 
 export const NoBackdropDismiss: Story = {
   name: 'Refuses a backdrop click',
+  parameters: story('`dismissOnBackdrop={false}` for anything destructive or holding unsaved input.'),
   args: { dismissOnBackdrop: false },
   render: args => <Demo {...args}>A misplaced click should not discard what you were doing.</Demo>,
 }

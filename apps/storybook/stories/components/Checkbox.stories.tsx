@@ -72,7 +72,12 @@ export const Motion: Story = {
     'Check each one. Subtle fills the box; expressive draws the tick on and springs the box back from the ' +
       'press; reduced changes colour only.',
   ),
-  render: args => <MotionCompare render={() => <Checkbox {...args} />} />,
+  render: args => (
+    <MotionCompare
+      remount={false}
+      render={(_mode, run) => <Checkbox {...args} checked={run % 2 === 1} onChange={() => {}} />}
+    />
+  ),
 }
 
 export const Content: Story = {

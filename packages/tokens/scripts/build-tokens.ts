@@ -282,7 +282,9 @@ function buildMotionCss(): string {
   // Roles, per mode. Subtle is the default; data-haus-motion picks another, and
   // reduced motion wins over either, from the user's setting or the attribute.
   lines.push('  /* ── Motion roles: subtle, the default ─────────────────────────────────── */')
-  lines.push('  :root {', ...roleDeclarations('subtle'), '  }', '')
+  // Also under the attribute, so a subtree can ask for subtle inside a page
+  // set to another mode (Storybook's side-by-side Motion stories do).
+  lines.push(`  :root,`, `  [data-haus-motion='subtle'] {`, ...roleDeclarations('subtle'), '  }', '')
   lines.push(`  [data-haus-motion='expressive'] {`, ...roleDeclarations('expressive'), '  }', '')
   lines.push(`  [data-haus-motion='reduced'] {`, ...roleDeclarations('reduced'), '  }', '')
   lines.push('  @media (prefers-reduced-motion: reduce) {')

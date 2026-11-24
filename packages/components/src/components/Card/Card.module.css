@@ -22,28 +22,39 @@
 }
 
 /* ── An interactive card ──
-   A card rendered as a link or a button (asChild, or as="a") said nothing on
-   hover or focus, so a card link gave no feedback at all (4.5, principle 1).
-   Hover strengthens the edge; focus takes the outline every control uses;
-   both on the highlight role. */
+   A card rendered as a link or a button (asChild) said nothing on hover or
+   focus, so a card link gave no feedback (4.5, principle 1). Hover takes the
+   control edge, the strongest border role, and lifts the card; focus takes the
+   outline every control uses. Colour on the highlight role; the lift on the
+   layout role, by a quarter of the role's popover travel: 1.5px in subtle, 4px
+   on a spring in expressive, none in reduced. */
 .card:is(a, button) {
   display: block;
   color: inherit;
   text-decoration: none;
+  text-align: start;
   cursor: pointer;
   transition:
     border-color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
     box-shadow var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
     outline-color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
-    outline-offset var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing);
+    outline-offset var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    transform var(--haus-motion-layout-duration) var(--haus-motion-layout-easing);
 }
 
 .card:is(a, button):hover {
-  border-color: var(--haus-color-border-strong);
+  border-color: var(--haus-color-border-control);
+  transform: translateY(calc(var(--haus-motion-popover-enter-offset) / -4));
 }
 
 .elevated:is(a, button):hover {
   box-shadow: var(--haus-elevation-overlay);
+}
+
+.card:is(a, button):active {
+  transform: scale(var(--haus-motion-press-scale));
+  transition-duration: var(--haus-motion-press-duration);
+  transition-timing-function: var(--haus-motion-press-easing);
 }
 
 @media (forced-colors: none) {

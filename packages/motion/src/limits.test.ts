@@ -48,4 +48,21 @@ describe('motion roles stay inside their limits', () => {
       expect(expressive.visualDurationMs ?? expressive.durationMs).toBeGreaterThan(subtle.durationMs)
     }
   })
+
+  /** What a reader would notice: how long it runs, how far, how much it scales, how much it settles. */
+  const signature = (t: (typeof MOTION_TOKENS)['subtle'][(typeof ROLES)[number]]) =>
+    JSON.stringify([t.visualDurationMs ?? t.durationMs, t.offsetPx ?? 0, t.scale ?? 1, t.bounce ?? 0])
+
+  it('every role does something different in each of the three modes', () => {
+    // Owner, 2026-11-24: "ensure that subtle, expressive and reduced are
+    // different. Otherwise, what's the point?" Subtle once equalled reduced on
+    // the indicator and draw roles, and was barely apart on toast-enter.
+    const same: string[] = []
+    for (const role of ROLES) {
+      const [s, e, r] = (['subtle', 'expressive', 'reduced'] as const).map(m => signature(MOTION_TOKENS[m][role]))
+      if (s === r) same.push(`${role}: subtle = reduced`)
+      if (s === e) same.push(`${role}: subtle = expressive`)
+    }
+    expect(same).toEqual([])
+  })
 })

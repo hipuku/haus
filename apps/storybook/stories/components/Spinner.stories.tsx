@@ -37,14 +37,47 @@ export const Playground: Story = {}
 const story = (text: string) => ({ docs: { description: { story: text } } })
 
 export const Size: Story = {
-  parameters: story('`text` is 1em, so a spinner in a line of text matches the text. That is the case Button has.'),
+  parameters: story(
+    '`text` is 1em: it takes the size of the text around it, so it matches a line at any type size, which ' +
+      'is what Button uses. `sm` (16px) and `md` (24px) are fixed, for a spinner that stands on its own, ' +
+      'such as a loading panel.',
+  ),
   render: args => (
     <Row>
-      {(['text', 'sm', 'md'] as const).map(size => (
-        <Item key={size} label={size}>
-          <Spinner {...args} size={size} />
-        </Item>
-      ))}
+      <Item label="text, in 13px">
+        <span
+          style={{
+            fontFamily: 'var(--haus-font-sans)',
+            fontSize: 'var(--haus-text-13)',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 'var(--haus-space-2)',
+          }}
+        >
+          <Spinner {...args} size="text" announcedBy="Saving" />
+          Saving
+        </span>
+      </Item>
+      <Item label="text, in 20px">
+        <span
+          style={{
+            fontFamily: 'var(--haus-font-sans)',
+            fontSize: 'var(--haus-text-20)',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 'var(--haus-space-2)',
+          }}
+        >
+          <Spinner {...args} size="text" announcedBy="Saving" />
+          Saving
+        </span>
+      </Item>
+      <Item label="sm, 16px">
+        <Spinner {...args} size="sm" />
+      </Item>
+      <Item label="md, 24px">
+        <Spinner {...args} size="md" />
+      </Item>
     </Row>
   ),
 }
@@ -54,7 +87,7 @@ export const Motion: Story = {
     'Reduced keeps turning at a third of the speed rather than stopping: a still ring reads as broken, not as ' +
       'waiting.',
   ),
-  render: args => <MotionCompare render={() => <Spinner {...args} />} />,
+  render: args => <MotionCompare replay={false} render={() => <Spinner {...args} />} />,
 }
 
 export const SilentBesideText: Story = {

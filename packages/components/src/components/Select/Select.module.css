@@ -98,16 +98,14 @@
 }
 
 .value {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  /* Wraps rather than ellipsing (owner, 4.5): a choice the field cuts off is a
+     choice the user cannot read. The field grows a line instead. */
+  overflow-wrap: anywhere;
 }
 
 .placeholder {
   color: var(--haus-color-ink-placeholder);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
 }
 
 .chevron {
@@ -239,9 +237,8 @@
 }
 
 .optionLabel {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  /* Wraps rather than ellipsing, as the value does. */
+  overflow-wrap: anywhere;
   /* The trigger's value role, so the list and the chosen value match. */
   font-size: var(--haus-type-body-sm-size);
   line-height: var(--haus-type-body-sm-leading);

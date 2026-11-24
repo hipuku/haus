@@ -144,7 +144,7 @@
   "motion-role.mode.subtle.draw.duration: lenient-read: Duration written as the string \"…\", not a N duration object.",
   "motion-role.mode.subtle.feedback.visual-duration: lenient-read: Duration written as the string \"…\", not a N duration object.",
   "motion-role.mode.subtle.highlight.visual-duration: lenient-read: Duration written as the string \"…\", not a N duration object.",
-  "motion-role.mode.subtle.indicator.duration: lenient-read: Duration written as the string \"…\", not a N duration object.",
+  "motion-role.mode.subtle.indicator.visual-duration: lenient-read: Duration written as the string \"…\", not a N duration object.",
   "motion-role.mode.subtle.layout.visual-duration: lenient-read: Duration written as the string \"…\", not a N duration object.",
   "motion-role.mode.subtle.popover-enter.duration: lenient-read: Duration written as the string \"…\", not a N duration object.",
   "motion-role.mode.subtle.popover-enter.offset: lenient-read: Dimension written as the string \"…\", not a N dimension object.",
