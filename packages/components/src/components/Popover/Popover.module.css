@@ -11,6 +11,10 @@
    every consumer of every component. `placement` is the caller's answer to the
    same problem, one level up, where the layout is actually known. */
 .panel {
+  /* border-box, so a panel sized to its trigger (w-trigger, inline-size 100%)
+     is the trigger's width. Content-box added the panel's padding and border on
+     top, and a Select's panel overhung its field by that much on one side. */
+  box-sizing: border-box;
   position: absolute;
   z-index: var(--haus-z-dropdown);
   background-color: var(--haus-color-surface-overlay);
