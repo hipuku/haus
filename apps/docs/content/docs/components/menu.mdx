@@ -25,3 +25,91 @@ Menu also takes the attributes its element has, and forwards its ref to it. Thes
 it adds.
 
 <ApiTable file="components/Menu/Menu.tsx" name="MenuProps" element="HTMLDivElement" />
+
+## Anatomy
+
+Four exports. The panel is a `Popover`, so the surface, its inset, the placement, the dismissal,
+the focus return and the motion are all Popover's; the menu is a column of rows inside it.
+
+| Part | Element | What it is for |
+| ---- | ------- | -------------- |
+| `Menu` | `Popover`, `role="menu"` | The panel and the keyboard pattern |
+| `MenuItem` | `button`, `role="menuitem"`, `tabIndex={-1}` | One action: an optional glyph, the label, an optional shortcut |
+| `MenuSeparator` | `div`, `role="separator"` | A rule between groups |
+| `MenuLabel` | `div`, `role="presentation"` | A heading over a group, or the account line at the top of a user menu. Not focusable and not an item |
+
+An item is start-aligned, so a column of actions reads down its leading edge. The Buttons that
+stood in for these centred their labels.
+
+The glyph is sized to the label at `1em` and takes its own ink role. The shortcut is a `kbd` and is
+`aria-hidden`: it is there for reference and binds nothing.
+
+`MenuItem` closes the menu through context rather than through a prop the caller has to wire, so an
+item placed anywhere inside the panel can close it.
+
+## Tones
+
+`neutral` and `error`, narrowed to the two an action has a meaning for, with `error` for an action
+that destroys something.
+
+The tone remaps the item's ink, its glyph colour and its hover fill, and declares nothing else
+(decision 0012).
+
+## Keyboard and screen reader
+
+Focus moves into the menu when it opens, onto the first enabled item: a menu is navigated from its
+items rather than from its trigger.
+
+| Key | What it does |
+| --- | ------------ |
+| Arrow down, arrow up | Moves between items, wrapping at both ends |
+| Home, End | Jumps to the first or last item |
+| Enter, Space | Chooses the focused item, which closes the menu and returns focus to the trigger |
+| Escape, a click outside | Closes the menu, which Popover owns |
+
+The arrow keys read the enabled items out of the panel in document order, so disabled items are
+skipped and an item added by a caller is included without registering it anywhere.
+
+Items are real `button` elements at `tabIndex={-1}`, so DOM focus moves between them while Tab
+does not land on them individually. `role="menu"` promises exactly this navigation, which is why
+Popover's `role` is a closed union: a panel claiming `menu` and not providing it misleads every
+screen reader that believes it.
+
+A disabled item takes `aria-disabled` rather than the native `disabled` attribute, so it is still
+found and announced by a screen reader moving through the menu, and is skipped by the arrows rather
+than being invisible to them.
+
+`aria-label` is required. A menu's name is announced with it, and a panel of actions with no name
+tells a reader nothing about what it belongs to.
+
+A caller's own `onKeyDown` runs first and is respected: if it calls `preventDefault`, the menu's
+own handling stands down.
+
+Hover and keyboard focus are one highlight. The focused item is the active one, and in most menus'
+mental model the pointer moves focus by hovering, so drawing two highlights would be two answers to
+the same question. Under `forced-colors` the fill is dropped, so the focused item marks itself with
+the forced focus outline, inset so it reads inside the row.
+
+## Motion
+
+Popover's enter and exit for the panel. The rows then fade in one stagger step apart, capped so a
+long menu does not cascade indefinitely, which is a visible sequence in expressive and nothing in
+subtle or reduced.
+
+An item's fill and ink run on the highlight role; a press scales the row on the press role and
+releases on layout, as Button's does.
+
+## Decisions
+
+- **Promoted on evidence, three times over.** vault's option rows, core's user menu and maple's
+  four menu components are three products drawing the same thing, where decision 0013 asks for two.
+- **It is a Popover with `role="menu"`, not a second panel.** Placement, dismissal, focus return
+  and motion already exist and should not be written twice.
+- **The menu pattern is what it adds.** Focus into the panel on open, arrows between items, Home
+  and End to the ends, disabled items skipped, and a choice that closes and returns focus.
+- **A disabled item is `aria-disabled`, not `disabled`.** A native disabled button is removed from
+  the accessibility tree, so a reader moving through the menu would not know the action exists.
+- **The shortcut binds nothing.** It is a label for a binding the application owns, and a component
+  that registered global keys would be making a decision about the whole page.
+- **Items are start-aligned.** A column of actions reads down its leading edge, which is what the
+  Buttons that stood in for them did not do.
