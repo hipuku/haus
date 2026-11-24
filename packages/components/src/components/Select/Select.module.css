@@ -53,7 +53,7 @@
 }
 
 /* Input's hover: the edge moves toward the ink (finding 5). */
-.trigger:hover:not(:disabled, .error, :focus-visible) {
+.trigger:hover:not(:disabled, .error, :focus-visible, [aria-expanded='true']) {
   --haus-lb-border: color-mix(in oklch, var(--haus-color-border-control), var(--haus-color-ink-primary) 30%);
 }
 
@@ -64,17 +64,23 @@
     outline-offset: 0;
   }
 
-  .trigger:focus-visible {
+  /* While open as well as on keyboard focus. A button does not match
+     :focus-visible on a click, where a text field does, so a clicked Select
+     showed no ring while a clicked Input did. Open is the state it is in use. */
+  .trigger:focus-visible,
+  .trigger[aria-expanded='true'] {
     outline-color: var(--haus-color-border-focus);
     outline-offset: var(--haus-focus-outline-offset);
   }
 
-  .trigger.error:focus-visible {
+  .trigger.error:focus-visible,
+  .trigger.error[aria-expanded='true'] {
     outline-color: var(--haus-color-error-default);
   }
 }
 
-.trigger:focus-visible {
+.trigger:focus-visible,
+.trigger[aria-expanded='true']:not(.error) {
   --haus-lb-border: var(--haus-color-border-focus);
 }
 
@@ -100,7 +106,9 @@
   flex: none;
   inline-size: 1em;
   block-size: 1em;
-  color: var(--haus-color-ink-tertiary);
+  /* The secondary ink, so the chevron reads with the value it sits beside
+     rather than as a lighter, separate mark. */
+  color: var(--haus-color-ink-secondary);
   transition: transform var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing);
 }
 
@@ -143,7 +151,12 @@
    Popover supplies the surface, the elevation and the placement. What is left
    here is the scroll bound and the rows. */
 
-.panel {
+/* [data-size] for one more step of specificity than Popover's own .panel
+   rule, so the radius wins whichever stylesheet loads last. */
+.panel[data-size] {
+  /* The control's radius, not the overlay's: the panel is the field opened,
+     and a 16px panel under a 4px field read as two different objects. */
+  border-radius: var(--haus-radius-control);
   padding: var(--haus-space-inset-2xs);
   max-block-size: var(--haus-popover-max-height);
   overflow-y: auto;
@@ -157,6 +170,11 @@
 
 .option {
   --haus-option-stagger: 0;
+  /* The highlight moving between rows: instant in subtle and reduced, a fade
+     on the highlight role in expressive, so moving through the list reads as
+     one highlight travelling rather than rows switching on and off. */
+  --haus-option-highlight: 0ms;
+  transition: background-color var(--haus-option-highlight) var(--haus-motion-highlight-easing);
   display: flex;
   align-items: center;
   gap: var(--haus-space-gap-xs);
@@ -166,7 +184,7 @@
      insets its options by inset-2xs, so the highlight matches the container's
      curve (overlay - inset) instead of a tighter marker radius that pokes inside
      the panel's rounded corner on the first and last row. */
-  border-radius: calc(var(--haus-radius-overlay) - var(--haus-space-inset-2xs));
+  border-radius: var(--haus-radius-control);
   cursor: pointer;
   color: var(--haus-color-ink-primary);
   /* Expressive staggers the rows in after the panel, a few milliseconds each,
@@ -178,6 +196,7 @@
 
 [data-haus-motion='expressive'] .option {
   --haus-option-stagger: 0.08;
+  --haus-option-highlight: var(--haus-motion-highlight-duration);
 }
 
 @keyframes haus-option-in {
