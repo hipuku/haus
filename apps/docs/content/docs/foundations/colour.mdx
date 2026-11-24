@@ -1,0 +1,106 @@
+---
+title: Colour
+description: Roles rather than hex codes, with a light and a dark value each, measured on the page you are reading.
+---
+
+import { Ramp, Swatches } from '@/components/foundations/specimens'
+import { tokens } from '@hipuku/tokens'
+
+A component never names a colour. It names a role: the surface it sits on, the ink it writes in,
+the border that is its edge. Each role has a value per mode and per brand, so one component is
+correct in a light hipuku app, a dark one, and in vault's or core's colours, without a line of it
+changing.
+
+Every swatch below is read from this page as you are looking at it, in the mode you are in. Switch
+the mode in the header and the values follow, because they are the same custom properties the
+components are reading.
+
+## Surfaces
+
+What a thing is drawn on. `default` is the page, `subtle` is a quieter area within it, `raised` is a
+card, `overlay` is anything floating, and `sunken` is a well.
+
+<Swatches
+  roles={[
+    '--haus-color-surface-default',
+    '--haus-color-surface-subtle',
+    '--haus-color-surface-raised',
+    '--haus-color-surface-overlay',
+    '--haus-color-surface-sunken',
+    '--haus-color-surface-inverse',
+  ]}
+/>
+
+## Ink
+
+What is written on them, with its measured contrast against the page. `primary` carries the words,
+`secondary` the supporting line, `tertiary` the glyphs and the furniture, and `placeholder` the text
+in an empty field, which is a different job from a glyph and so is a different role.
+
+<Swatches
+  roles={[
+    '--haus-color-ink-primary',
+    '--haus-color-ink-secondary',
+    '--haus-color-ink-tertiary',
+    '--haus-color-ink-placeholder',
+    '--haus-color-ink-link',
+    '--haus-color-ink-disabled',
+  ]}
+/>
+
+The numbers are WCAG 2.1 ratios, measured with `@hipuku/colour`, the same function the contrast
+suite runs in CI. `contrast.test.ts` holds every ink and surface pair at 4.5:1 in both modes, so a
+pair that fails here fails the build.
+
+## Borders
+
+`control` is the edge of an input, a select, a checkbox: the only thing separating it from the page,
+so it carries 3:1 under WCAG 1.4.11. `default` is for cards, dividers and table rules, which are not
+controls and do not need it.
+
+<Swatches
+  roles={[
+    '--haus-color-border-subtle',
+    '--haus-color-border-default',
+    '--haus-color-border-strong',
+    '--haus-color-border-control',
+    '--haus-color-border-focus',
+  ]}
+/>
+
+## Tones
+
+Five meanings, each with a subtle fill, a border, a default, the ink that goes on each, and an
+emphasis for a glyph or a strong word.
+
+<Swatches
+  roles={[
+    '--haus-color-primary-default',
+    '--haus-color-info-default',
+    '--haus-color-success-default',
+    '--haus-color-warning-default',
+    '--haus-color-error-default',
+  ]}
+/>
+
+<Swatches
+  roles={[
+    '--haus-color-primary-subtle',
+    '--haus-color-info-subtle',
+    '--haus-color-success-subtle',
+    '--haus-color-warning-subtle',
+    '--haus-color-error-subtle',
+  ]}
+/>
+
+## The ramps underneath
+
+Roles resolve to steps on a ramp. The ramps are OKLCH, which is why a step is the same lightness
+across hues and why a dark mode can be built by moving along the ramp rather than by inventing a
+second palette.
+
+<Ramp name="aronia" steps={tokens.color.aronia} />
+<Ramp name="damson" steps={tokens.color.damson} />
+<Ramp name="elderberry" steps={tokens.color.elderberry} />
+
+A product never reads a ramp. It reads a role, and a brand file decides which step each role takes.

@@ -1,0 +1,31 @@
+---
+title: Motion
+description: Ten roles and three modes, played here, with a cap on every duration.
+---
+
+import { MotionRoles } from '@/components/foundations/motion'
+
+A component does not choose a duration. It chooses a role, and the role carries a duration, an
+easing, and where relevant an offset and a scale, in whichever of the three motion modes is set.
+
+<MotionRoles />
+
+## Three modes, not a switch
+
+`subtle` is the default and is what an interface should feel like. `expressive` is the same
+vocabulary with more travel, for a product that wants it. `reduced` is what a reader who has asked
+their system for less motion gets: durations under a ceiling, no travel, no scale, and nothing that
+moves for its own sake.
+
+Reduced is a mode in the token layer rather than a media query in each component, which is why it
+cannot be forgotten in one component and remembered in another.
+
+## The caps
+
+Every role's duration is capped, and the cap is tested: `@hipuku/motion` holds each value inside
+its ceiling, and a contract story checks that every animating component runs its role's duration in
+every mode, that staggered delays stay inside the stagger maximum, and that reduced is both under
+its ceiling and still.
+
+That is the part a design system can actually guarantee. A component cannot promise to feel right;
+it can promise never to take 600ms to answer a click, and never to ignore a reduced-motion setting.

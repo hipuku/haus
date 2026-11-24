@@ -1,0 +1,48 @@
+---
+title: Space
+description: One ladder, read through three role families, so a gap and an inset are the same measure.
+---
+
+import { SpaceLadder } from '@/components/foundations/specimens'
+
+One ladder of steps, and three families of roles that read it: `inset` for padding inside a thing,
+`gap` for the space between things, and `stack` for the rhythm down a column. The families are
+deliberately identical ladders, because a 16px gap and a 16px inset should be the same 16px; what
+they buy is that a component says which kind of space it means.
+
+<SpaceLadder
+  steps={[
+    '--haus-space-0-5',
+    '--haus-space-1',
+    '--haus-space-2',
+    '--haus-space-3',
+    '--haus-space-4',
+    '--haus-space-5',
+    '--haus-space-6',
+    '--haus-space-8',
+    '--haus-space-10',
+    '--haus-space-12',
+    '--haus-space-16',
+    '--haus-space-20',
+  ]}
+/>
+
+## Why a component reads a role, not a step
+
+`--haus-space-4` is a number. `--haus-space-gap-md` is a decision. A component that reads the role
+can be re-spaced by changing one map; a component that reads the step can only be re-spaced by
+editing every component.
+
+Thirty-one sizes in the component layer read the ladder directly, on purpose and with the reason
+written beside them in `semantics.css`: a control's height is not a gap, and pretending it is would
+make the density conversation harder rather than easier.
+
+## No raw lengths
+
+Every length in every component stylesheet comes from a token, held by two stylelint rules: one
+fails a raw value where a token already holds it, and a second fails a raw length anywhere in a
+value, including inside `calc()`, which the first misses on a shorthand.
+
+Three kinds of raw value are allowed and documented: `0` and `1`, keywords, and the relative units
+that measure something outside the system: `em` against the element's own text, percentages, and
+viewport units.
