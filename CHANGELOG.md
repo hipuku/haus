@@ -148,6 +148,27 @@ _Unreleased. A new package: the token conversion engine, and the `dtcg` command.
 variables exports, Tokens Studio and Tailwind v4 `@theme` stylesheets into one model, writes that
 model to any of the four, and reports what each conversion loses, per token, with a reason.
 
+**Fixed, before the first release** · **Twenty-seven readings and writings that were wrong on valid
+input**, each reproduced by a test that fails without its fix. The ones a consumer would have met:
+
+- A Tailwind component's own custom properties (`.btn { --btn-padding }`) were read as a theme
+  mode, and a responsive `@media` block's declarations were read as the default values. A class is
+  a mode when it is `dark` or `light` or qualified by `:root` or `html`; everything else is
+  reported and skipped.
+- A `var()` could be written pointing at a property the stylesheet never declared, and an alias
+  could be written to a Figma variable or a DTCG token that the same run had dropped. Every writer
+  now works out what it is actually emitting before it keeps a reference.
+- A Tokens Studio theme's source sets could overwrite the sets the theme owns, and a leading
+  written as `150%` came back as a length. A mode named `global` overwrote the default token set.
+- A raw value holding a semicolon or a brace was written straight into the stylesheet, ending the
+  declaration and opening a rule of its own.
+- `+1rem` and `1e+2ms` were not read as numbers; a comma inside a quoted font-family name split it
+  into two families; a font weight written as `"400"` was read in silence where every other
+  leniency is reported.
+- A resolver naming `colors.json` took whichever pasted file matched first; it now takes the exact
+  name, and says so when two files answer to one base name. Sources are applied in the order the
+  resolver states, with each modifier context in the modifier's own place.
+
 Two defects found by code scanning on the way in, both fixed and tested: a token path segment named
 `__proto__` was written onto `Object.prototype`, and a Tailwind stylesheet of unclosed comments took
 quadratic time to read, about nine seconds at the 500KB input cap.

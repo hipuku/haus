@@ -10,7 +10,7 @@ import {
   parseCurlyReference,
   parseDimensionOrZero,
   parseDuration,
-  parseFontFamily,
+  splitFontFamilies,
   parseFontWeight,
 } from './values.js'
 
@@ -128,14 +128,28 @@ export function readDtcgValue(
       if (typeof raw === 'number') return { value: { kind: 'literal', value: raw }, type }
       if (typeof raw === 'string') {
         const parsed = parseFontWeight(raw)
-        if (parsed !== null) return { value: { kind: 'literal', value: parsed }, type }
+        if (parsed !== null) {
+          // A keyword is a 2025.10 font weight; a number written as a string is
+          // not, and was read silently until this said so.
+          if (/^\s*\d+\s*$/.test(raw)) lenient(`Font weight written as the string "${raw}", not the number ${parsed}.`)
+          return { value: { kind: 'literal', value: parsed }, type }
+        }
       }
       break
     }
     case 'fontFamily': {
-      if (typeof raw === 'string' && raw.includes(',')) {
-        lenient(`Font family list written as one string; split into ${raw.split(',').length} families.`)
-        return { value: { kind: 'literal', value: parseFontFamily(raw) }, type }
+      // A comma inside quotes belongs to the name, so the split decides whether
+      // this is a list or one family that happens to contain a comma.
+      if (typeof raw === 'string' && (raw.includes(',') || /["']/.test(raw))) {
+        const families = splitFontFamilies(raw)
+        if (families.length > 1) {
+          lenient(`Font family list written as one string; split into ${families.length} families.`)
+          return { value: { kind: 'literal', value: families }, type }
+        }
+        if (families.length === 1 && families[0] !== raw.trim()) {
+          lenient(`Font family written as the quoted string ${raw}; the quotes are not part of the name.`)
+          return { value: { kind: 'literal', value: families[0] }, type }
+        }
       }
       if (typeof raw === 'string' || (Array.isArray(raw) && raw.every(f => typeof f === 'string'))) {
         return { value: { kind: 'literal', value: raw }, type }
@@ -212,8 +226,41 @@ export function readDtcgTree(root: unknown, mode: string, losses: Losses, docume
     }
 
     for (const [key, child] of Object.entries(node)) {
-      if (key.startsWith('$') || !isRecord(child)) continue
+      // `$root` is the one $-prefixed member that holds a token rather than
+      // metadata: a group with a value of its own, written by Tokens Studio and
+      // referred to as `{spacing.$root}`. It is read at that explicit path, so
+      // the reference resolves and the group's children keep theirs.
+      if ((key.startsWith('$') && key !== '$root') || !isRecord(child)) continue
       const childPath = [...path, key]
+      // What a leaf carries beside its value, which a token keeps whether the
+      // value was written as `$value` or as a `$ref` of its own.
+      const withMetadata = (token: Token): Token => {
+        if (typeof child.$description === 'string') token.description = child.$description
+        if (typeof child.$deprecated === 'boolean' || typeof child.$deprecated === 'string') {
+          token.deprecated = child.$deprecated
+        }
+        if (isRecord(child.$extensions)) token.extensions = child.$extensions
+        return token
+      }
+
+      if (!('$value' in child) && typeof child.$ref === 'string') {
+        // A leaf that is nothing but a pointer. `pointerToPath` reads a pointer
+        // at a whole `$value`; anything deeper, a pointer into a colour's
+        // components say, has no path in this model and is kept as written.
+        const ref = pointerToPath(child.$ref)
+        const value: TokenValue = ref ? { kind: 'reference', ref } : { kind: 'raw', text: child.$ref }
+        if (!ref) {
+          losses.add(
+            'lenient-read',
+            childPath,
+            `"${child.$ref}" points inside a value rather than at one, so it is kept as written.`,
+            mode,
+          )
+        }
+        const own = typeof child.$type === 'string' ? child.$type : groupType
+        tokens.push(withMetadata({ path: childPath, type: isTokenType(own) ? own : null, values: { [mode]: value } }))
+        continue
+      }
       if ('$value' in child) {
         const own = typeof child.$type === 'string' ? child.$type : groupType
         const declared = isTokenType(own) ? own : null
@@ -224,12 +271,7 @@ export function readDtcgTree(root: unknown, mode: string, losses: Losses, docume
         const { value, type } = readDtcgValue(child.$value, declared, sourceType, childPath, mode, losses)
         const token: Token = { path: childPath, type, values: { [mode]: value } }
         if (sourceType) token.sourceType = sourceType
-        if (typeof child.$description === 'string') token.description = child.$description
-        if (typeof child.$deprecated === 'boolean' || typeof child.$deprecated === 'string') {
-          token.deprecated = child.$deprecated
-        }
-        if (isRecord(child.$extensions)) token.extensions = child.$extensions
-        tokens.push(token)
+        tokens.push(withMetadata(token))
       } else {
         walk(child, childPath, groupType, here)
       }
@@ -264,11 +306,23 @@ export function readResolver(
       const ref = source.$ref
       const local = /^#\/(sets|modifiers)\/(.+)$/.exec(ref)
       if (local) return local[1] === 'sets' ? sets[local[2]] : undefined
-      const match = others.find(d => d.name === ref || baseName(d.name) === baseName(ref))
-      if (!match) {
+      // An exact name first. Only then the base name, and only when one
+      // document has it: two files called `colors.json` in different folders
+      // are a real resolver, and taking the first was silently picking one.
+      const exact = others.find(d => d.name === ref)
+      if (exact) return parseJson(exact)
+      const byBase = others.filter(d => baseName(d.name) === baseName(ref))
+      if (byBase.length > 1) {
+        throw new ReadError(
+          `The resolver refers to "${ref}", and ${byBase.length} of the pasted files answer to that name: ${byBase
+            .map(d => d.name)
+            .join(', ')}. Rename them, or paste the one it means.`,
+        )
+      }
+      if (byBase.length === 0) {
         throw new ReadError(`The resolver refers to "${ref}". Paste that file as another document.`)
       }
-      return parseJson(match)
+      return parseJson(byBase[0])
     }
     return source
   }
@@ -281,7 +335,10 @@ export function readResolver(
 
   const order = resolver.resolutionOrder as unknown[]
   let modifier: { name: string; contexts: Record<string, unknown[]>; defaultContext?: string } | null = null
-  const base: unknown[] = []
+  // The order is the order. A modifier's context takes the modifier's own place
+  // in it, rather than being appended after everything else, because a set
+  // listed after the modifier is meant to win over the context it follows.
+  const slots: ({ sources: unknown[] } | 'modifier')[] = []
 
   for (const entry of order) {
     const ref = isRecord(entry) && typeof entry.$ref === 'string' ? entry.$ref : null
@@ -299,15 +356,19 @@ export function readResolver(
       }
       const contexts: Record<string, unknown[]> = {}
       for (const [context, sources] of Object.entries(modifierDef.contexts)) {
-        contexts[context] = (Array.isArray(sources) ? sources : [sources]).map(loadSource)
+        // A context may name a set rather than hold one, and a named set may
+        // itself be a list of sources. Expanding it here is what makes
+        // `"light": { "$ref": "#/sets/light" }` read the files behind it.
+        contexts[context] = (Array.isArray(sources) ? sources : [sources]).flatMap(sourcesOf)
       }
       modifier = {
         name,
         contexts,
         defaultContext: typeof modifierDef.default === 'string' ? modifierDef.default : undefined,
       }
+      slots.push('modifier')
     } else {
-      base.push(...sourcesOf(entry))
+      slots.push({ sources: sourcesOf(entry) })
     }
   }
 
@@ -319,7 +380,9 @@ export function readResolver(
 
   const merged = new Map<string, Token>()
   for (const mode of contextNames) {
-    const sources = [...base, ...(modifier ? modifier.contexts[mode] : [])]
+    const sources = slots.flatMap(slot =>
+      slot === 'modifier' ? (modifier ? (modifier.contexts[mode] ?? []) : []) : slot.sources,
+    )
     for (const source of sources) {
       for (const token of readDtcgTree(source, mode, losses, 'resolver source')) mergeTokens(merged, token)
     }

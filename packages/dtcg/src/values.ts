@@ -124,7 +124,12 @@ export function colourToSrgb(value: ColorValue): SrgbResult | null {
 
 /* ─── Dimension and duration ──────────────────────────────────────────────── */
 
-const NUMBER = String.raw`(-?\d*\.?\d+(?:e-?\d+)?)`
+/**
+ * CSS's own number grammar: an optional sign, digits with an optional decimal
+ * point, and an exponent whose sign is optional on both sides. `+1rem` and
+ * `1e+2ms` are ordinary CSS and were read as unparseable until this said so.
+ */
+const NUMBER = String.raw`([+-]?\d*\.?\d+(?:[eE][+-]?\d+)?)`
 
 export function parseDimension(text: string): DimensionValue | null {
   const match = new RegExp(`^${NUMBER}(px|rem)$`, 'i').exec(text.trim())
@@ -227,18 +232,88 @@ export function parseFontWeight(text: string): number | null {
   return named ?? null
 }
 
-/** Split a CSS font-family list, dropping quotes. */
+/**
+ * Split a CSS font-family list, dropping the quotes that enclose a name.
+ *
+ * The split walks the string rather than calling `split(',')`, because a comma
+ * inside a quoted family name is part of the name: `"Helvetica, Inc"` is one
+ * family and splitting on commas made it two.
+ *
+ * A quote opens a string only where a name may start. An apostrophe inside a
+ * name, as in `O'Brien`, is a letter of it, and treating every quote as a
+ * delimiter deleted it. A backslash escape is decoded as CSS decodes it: a
+ * hexadecimal escape such as `\27` is the character it names, with its one
+ * optional trailing space consumed.
+ */
+function decodeEscape(text: string, at: number): { char: string; next: number } {
+  const hex = /^[0-9a-fA-F]{1,6}/.exec(text.slice(at))
+  if (!hex) return { char: text[at] ?? '', next: at + 1 }
+  let next = at + hex[0].length
+  // One whitespace character after the digits ends the escape and is not part
+  // of the name; two mean the second is a real space.
+  if (/\s/.test(text[next] ?? '')) next += 1
+  return { char: String.fromCodePoint(Number.parseInt(hex[0], 16)), next }
+}
+
+export function splitFontFamilies(text: string): string[] {
+  const families: string[] = []
+  let current = ''
+  let quote: '"' | "'" | null = null
+  let atNameStart = true
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i]
+    if (char === '\\' && i + 1 < text.length) {
+      const { char: decoded, next } = decodeEscape(text, i + 1)
+      current += decoded
+      i = next - 1
+      atNameStart = false
+      continue
+    }
+    if (quote) {
+      if (char === quote) quote = null
+      else current += char
+      continue
+    }
+    if ((char === '"' || char === "'") && atNameStart) {
+      quote = char
+      atNameStart = false
+      continue
+    }
+    if (char === ',') {
+      families.push(current.trim())
+      current = ''
+      atNameStart = true
+      continue
+    }
+    if (!/\s/.test(char)) atNameStart = false
+    current += char
+  }
+  families.push(current.trim())
+  return families.filter(Boolean)
+}
+
 export function parseFontFamily(text: string): string | string[] {
-  const families = text
-    .split(',')
-    .map(f => f.trim().replace(/^['"]|['"]$/g, ''))
-    .filter(Boolean)
+  const families = splitFontFamilies(text)
   return families.length === 1 ? families[0] : families
 }
 
+/**
+ * A family name may go unquoted only when it is a sequence of CSS identifiers:
+ * each starts with a letter, an underscore, a non-ASCII character or a hyphen
+ * that is not followed by a digit, and continues with those, digits and
+ * hyphens. Anything else, a comma, a quote, a digit at the front or a
+ * backslash, is quoted, and the quote character and the backslash are escaped
+ * inside it. The old rule quoted only on whitespace, so `Helvetica, Inc` was
+ * written back as two families and `O'Font` closed its own quote.
+ */
+const CSS_IDENT = String.raw`(?:-?[A-Za-z_\u00a0-\uffff][A-Za-z0-9_\u00a0-\uffff-]*)`
+const UNQUOTED_FAMILY = new RegExp(`^${CSS_IDENT}(?: ${CSS_IDENT})*$`)
+
 export function fontFamilyToCss(value: string | readonly string[]): string {
   const list = typeof value === 'string' ? [value] : value
-  return list.map(f => (/\s/.test(f) && !/^[a-z-]+$/.test(f) ? `'${f}'` : f)).join(', ')
+  return list
+    .map(family => (UNQUOTED_FAMILY.test(family) ? family : `'${family.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`))
+    .join(', ')
 }
 
 /* ─── References ──────────────────────────────────────────────────────────── */

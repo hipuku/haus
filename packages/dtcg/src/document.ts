@@ -34,7 +34,10 @@ export const isRecord = (value: unknown): value is Record<string, unknown> =>
 
 /** A file name without its directory or token-file extensions: `theme/Dark.tokens.json` → `Dark`. */
 export function baseName(name: string): string {
-  const file = name.split('/').pop() ?? name
+  // Both separators: a Windows shell passes `.\\light.json`, and splitting on
+  // `/` alone left the backslash in what became a Figma mode name, which then
+  // failed the writer's check on output file names.
+  const file = name.split(/[/\\]/).pop() ?? name
   return file.replace(/\.(tokens\.)?json$/i, '').replace(/\.resolver$/i, '')
 }
 
@@ -61,8 +64,12 @@ export function mergeTokens(into: Map<string, Token>, token: Token): void {
     return
   }
   Object.assign(existing.values, token.values)
-  existing.type = existing.type ?? token.type
-  existing.sourceType = existing.sourceType ?? token.sourceType
+  // The later token wins its whole shape, not only its value: a group that
+  // extends another and redeclares a token redeclares its type too, and a
+  // source later in the resolution order is the one being applied. A later
+  // token with no type of its own leaves the earlier type standing.
+  existing.type = token.type ?? existing.type
+  existing.sourceType = token.sourceType ?? existing.sourceType
   existing.description = token.description ?? existing.description
   existing.deprecated = token.deprecated ?? existing.deprecated
   if (token.extensions) existing.extensions = { ...existing.extensions, ...token.extensions }

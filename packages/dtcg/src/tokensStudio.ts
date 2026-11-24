@@ -1,6 +1,6 @@
 import { baseName, isRecord, Losses, mergeTokens, parseJson, type InputDocument } from './document.js'
-import { setAtPath } from './dtcgWrite.js'
-import { indexTokens, resolveValue, sameValue, untypedDetail, valueIn } from './resolve.js'
+import { insertablePaths, setAtPath } from './dtcgWrite.js'
+import { indexTokens, resolveValue, untypedDetail, valueIn } from './resolve.js'
 import {
   ReadError,
   joinPath,
@@ -171,6 +171,13 @@ function readValue(raw: unknown, sourceType: string, path: string[], mode: strin
   return literal(raw as Literal)
 }
 
+/** A set id comes from a mode name, so it can be `__proto__`; written as an own property it stays data. */
+const defineOwn = (node: Record<string, unknown>, key: string, value: unknown) =>
+  Object.defineProperty(node, key, { value, enumerable: true, writable: true, configurable: true })
+
+/** Four places is past any leading anyone writes, and keeps 1.5 as 150 rather than 150.00000000000003. */
+const round = (n: number) => Math.round(n * 10_000) / 10_000
+
 const dimOrRef = (v: unknown) => {
   if (typeof v === 'number') return { value: v, unit: 'px' }
   if (typeof v !== 'string') return v
@@ -193,16 +200,23 @@ function readTypography(t: Record<string, unknown>): Record<string, unknown> {
         : t.fontWeight
   if (t.fontSize !== undefined) out.fontSize = dimOrRef(t.fontSize)
   if (t.lineHeight !== undefined) {
+    // Tokens Studio writes a leading as a percentage of the font size or as a
+    // length. DTCG's typography takes a unitless multiplier or a dimension, so
+    // a percentage becomes the multiplier and a bare number becomes px, which
+    // is what Tokens Studio means by it. Reading both as the same number made
+    // 150% and 1.5px indistinguishable, and the writer then turned every
+    // percentage into a length.
     const lh = t.lineHeight
     out.lineHeight =
-      typeof lh === 'string' && /^\d*\.?\d+%$/.test(lh)
+      typeof lh === 'string' && /^-?\d*\.?\d+%$/.test(lh)
         ? Number(lh.slice(0, -1)) / 100
-        : typeof lh === 'string' && !Number.isNaN(Number(lh))
-          ? Number(lh)
+        : typeof lh === 'number' || (typeof lh === 'string' && /^-?\d*\.?\d+$/.test(lh))
+          ? dimOrRef(lh)
           : lh
   }
   if (t.letterSpacing !== undefined) out.letterSpacing = dimOrRef(t.letterSpacing)
-  for (const key of ['paragraphSpacing', 'textCase', 'textDecoration']) if (t[key] !== undefined) out[key] = t[key]
+  for (const key of ['paragraphSpacing', 'paragraphIndent', 'textCase', 'textDecoration'])
+    if (t[key] !== undefined) out[key] = t[key]
   return out
 }
 
@@ -285,10 +299,27 @@ export function readTokensStudio(documents: readonly InputDocument[], losses: Lo
 
   const merged = new Map<string, Token>()
   const modes: string[] = []
+  /*
+   * A theme marks each set source, enabled or disabled. Source sets are the
+   * ones a theme reads but does not own, so they are merged first whatever
+   * their place in tokenSetOrder; an enabled set is the theme's own answer and
+   * must win. Following tokenSetOrder alone let a source set listed last
+   * overwrite the enabled values.
+   */
+  const byStatus = (theme: { selectedTokenSets?: Record<string, string> }, status: string) =>
+    order.filter(s => theme.selectedTokenSets?.[s] === status)
   const selections = themes.length
     ? themes.map(theme => ({
         mode: theme.name,
-        sets: order.filter(s => theme.selectedTokenSets?.[s] && theme.selectedTokenSets[s] !== 'disabled'),
+        sets: [
+          ...byStatus(theme, 'source'),
+          ...order.filter(
+            s =>
+              theme.selectedTokenSets?.[s] &&
+              theme.selectedTokenSets[s] !== 'disabled' &&
+              theme.selectedTokenSets[s] !== 'source',
+          ),
+        ],
       }))
     : [{ mode: 'default', sets: order }]
 
@@ -367,7 +398,14 @@ function writeLiteral(token: Token, literal: unknown, mode: string, losses: Loss
   switch (token.type) {
     case 'typography': {
       const t = literal as Record<string, unknown>
-      return Object.fromEntries(Object.entries(t).map(([k, v]) => [k, str(token, v, mode, losses) ?? v]))
+      return Object.fromEntries(
+        Object.entries(t).map(([k, v]) => [
+          k,
+          // A multiplier goes back out as the percentage Tokens Studio reads it
+          // as; a length goes out as a length.
+          k === 'lineHeight' && typeof v === 'number' ? `${round(v * 100)}%` : (str(token, v, mode, losses) ?? v),
+        ]),
+      )
     }
     case 'shadow': {
       const layers = (Array.isArray(literal) ? literal : [literal]) as Record<string, unknown>[]
@@ -419,7 +457,34 @@ export function writeTokensStudio(set: TokenSet): WriteResult {
     )
     return true
   })
-  const written = new Set(typed.map(t => joinPath(t.path)))
+  /*
+   * Which paths the writer really inserts, in the order it writes them:
+   * setAtPath turns away a token under a token and a token where a group
+   * already is. Only an inserted token can be an alias target.
+   */
+  const insertable = insertablePaths(typed.map(token => token.path))
+  const candidates = typed.filter(token => insertable.has(joinPath(token.path)))
+
+  /*
+   * Which tokens this mode writes a value for, which is what an alias may point
+   * at. Being of a writable type is not enough, because the value itself can
+   * have no Tokens Studio form; dropping one target can drop an alias that
+   * needed it, so the set is narrowed until it stops shrinking.
+   */
+  const targetsIn = (mode: string, onlyOverrides: boolean): Set<string> => {
+    let targets = new Set(candidates.map(t => joinPath(t.path)))
+    for (;;) {
+      const next = new Set<string>()
+      for (const token of candidates) {
+        const value = onlyOverrides ? token.values[mode] : valueIn(token, mode, set.modes)
+        if (value && writeValue(token, value, mode, set, targets, new Losses()) !== undefined) {
+          next.add(joinPath(token.path))
+        }
+      }
+      if (next.size === targets.size) return targets
+      targets = next
+    }
+  }
 
   const typeOf = (token: Token) =>
     token.sourceType && token.sourceType in TYPE_MAP
@@ -428,13 +493,28 @@ export function writeTokensStudio(set: TokenSet): WriteResult {
 
   const build = (mode: string, onlyOverrides: boolean) => {
     const root: Record<string, unknown> = {}
+    // An override file is read on top of global, so an alias in it may point at
+    // a token global holds.
+    const written = onlyOverrides ? targetsIn(defaultMode, false) : targetsIn(mode, false)
+    // Every token is still attempted; `candidates` only decides what an alias
+    // may point at, and setAtPath reports a path it cannot take.
     for (const token of typed) {
       const own = token.values[mode]
-      if (onlyOverrides && (!own || sameValue(own, token.values[defaultMode]))) continue
+      if (onlyOverrides && !own) continue
       const value = onlyOverrides ? own : valueIn(token, mode, set.modes)
       if (!value) continue
       const tsValue = writeValue(token, value, mode, set, written, losses)
       if (tsValue === undefined) continue
+      // An override is compared as it would be written, not as it was read.
+      // The two modes can hold the same alias and still write different values,
+      // because the alias may be flattened to its target's value in this mode;
+      // comparing the aliases said the mode did not differ, and the override
+      // was left out of a file that needed it.
+      if (onlyOverrides) {
+        const base = token.values[defaultMode]
+        const baseValue = base ? writeValue(token, base, defaultMode, set, written, new Losses()) : undefined
+        if (JSON.stringify(tsValue) === JSON.stringify(baseValue)) continue
+      }
       const leaf: Record<string, unknown> = { value: tsValue, type: typeOf(token) }
       if (token.description) leaf.description = token.description
       if (token.deprecated !== undefined)
@@ -451,13 +531,34 @@ export function writeTokensStudio(set: TokenSet): WriteResult {
       losses: losses.entries,
     }
   }
-  const output: Record<string, unknown> = { global: build(defaultMode, false) }
-  for (const mode of otherModes) output[mode] = build(mode, true)
-  output.$themes = set.modes.map((mode, i) => ({
+  /*
+   * A mode's name is not a set id. `global`, `$themes` and `$metadata` are the
+   * file's own keys, a key starting with `$` is read as metadata rather than a
+   * set, and two modes could want one name after that. So each mode gets an id
+   * that is free, and the id is used in the sets, the themes and the order
+   * alike; a mode named `global` kept its values before by overwriting the
+   * default set.
+   */
+  const taken = new Set(['global', '$themes', '$metadata'])
+  const setIds = new Map<string, string>([[defaultMode, 'global']])
+  for (const mode of otherModes) {
+    const base = mode.replace(/^\$+/, '') || 'mode'
+    let id = base
+    for (let n = 2; taken.has(id); n++) id = `${base}-${n}`
+    taken.add(id)
+    setIds.set(mode, id)
+    if (id !== mode) losses.add('renamed', mode, `The mode "${mode}" is written as the token set "${id}".`, mode)
+  }
+
+  const output: Record<string, unknown> = {}
+  defineOwn(output, 'global', build(defaultMode, false))
+  for (const mode of otherModes) defineOwn(output, setIds.get(mode)!, build(mode, true))
+  output.$themes = set.modes.map(mode => ({
     id: mode,
     name: mode,
-    selectedTokenSets: i === 0 ? { global: 'enabled' } : { global: 'source', [mode]: 'enabled' },
+    selectedTokenSets:
+      mode === defaultMode ? { global: 'enabled' } : { global: 'source', [setIds.get(mode)!]: 'enabled' },
   }))
-  output.$metadata = { tokenSetOrder: ['global', ...otherModes] }
+  output.$metadata = { tokenSetOrder: ['global', ...otherModes.map(mode => setIds.get(mode)!)] }
   return { files: [{ name: 'tokens.json', text: JSON.stringify(output, null, 2) }], losses: losses.entries }
 }
