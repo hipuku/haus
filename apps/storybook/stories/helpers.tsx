@@ -68,6 +68,7 @@ export function Row({
   return (
     <div
       inert={still || undefined}
+      data-story-still={still || undefined}
       style={{
         pointerEvents: still ? 'none' : undefined,
         display: stretch ? 'grid' : 'flex',
@@ -77,10 +78,18 @@ export function Row({
         gap: 'var(--haus-space-8)',
       }}
     >
+      {still && <style>{STILL_CSS}</style>}
       {children}
     </div>
   )
 }
+
+/**
+ * A still row shows each state as drawn, at once: no transition into it and no
+ * enter animation, so it reads as a set of frames rather than as motion.
+ */
+export const STILL_CSS =
+  '[data-story-still], [data-story-still] * { transition: none !important; animation: none !important; }'
 
 /** Items stacked, for components that fill their width (fields, toasts, tabs). */
 export function Stack({ children }: { children: React.ReactNode }) {

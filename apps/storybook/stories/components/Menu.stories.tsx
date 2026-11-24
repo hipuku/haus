@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Button, Menu, MenuItem, MenuLabel, MenuSeparator } from 'haus-components'
 import React, { useRef, useState } from 'react'
-import { MotionCompare } from '../helpers'
+import { MotionCompare, STILL_CSS } from '../helpers'
 
 const meta = {
   title: 'Components/Menu',
@@ -123,7 +123,8 @@ export const States: Story = {
     pseudo: { hover: ['#state-hover'], active: ['#state-pressed'], focusVisible: ['#state-error'] },
   },
   render: () => (
-    <div inert style={{ pointerEvents: 'none' }}>
+    <div inert data-story-still style={{ pointerEvents: 'none' }}>
+      <style>{STILL_CSS}</style>
       <Demo defaultOpen>
         <MenuItem>Rest</MenuItem>
         <MenuItem id="state-hover">Hover</MenuItem>
