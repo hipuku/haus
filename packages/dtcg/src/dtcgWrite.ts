@@ -1,5 +1,5 @@
 import { isRecord, Losses } from './document.js'
-import { indexTokens, resolveValue, sameValue, untypedDetail, valueIn, type Index } from './resolve.js'
+import { indexTokens, resolveValue, untypedDetail, valueIn, type Index } from './resolve.js'
 import {
   COMPOSITE_TYPES,
   joinPath,
@@ -71,7 +71,28 @@ const define = (node: Record<string, unknown>, key: string, value: unknown) =>
  */
 export function toDtcgValue(token: Token, value: TokenValue, mode: string, losses: Losses): unknown {
   if (value.kind === 'reference') return `{${joinPath(value.ref)}}`
-  if (value.kind === 'literal') return value.value
+  if (value.kind === 'literal') {
+    // 2025.10 dimensions are px or rem and nothing else. A reader that was
+    // lenient about `2em` or `50%` hands over a dimension object this format
+    // cannot hold, and writing it made a file that reads back as invalid.
+    const literal = value.value
+    if (
+      token.type === 'dimension' &&
+      isRecord(literal) &&
+      typeof literal.unit === 'string' &&
+      literal.unit !== 'px' &&
+      literal.unit !== 'rem'
+    ) {
+      losses.add(
+        'unrepresentable-value',
+        token.path,
+        `2025.10 dimensions are px or rem, and this one is in ${literal.unit}.`,
+        mode,
+      )
+      return undefined
+    }
+    return literal
+  }
 
   const text = value.text
   const parsed =
@@ -142,14 +163,29 @@ export function writeDtcg(set: TokenSet): WriteResult {
   const index = indexTokens(set)
   const [defaultMode, ...otherModes] = set.modes
 
+  // A path that is also the start of a longer path is a group in the output, so
+  // the token at it is the one setAtPath turns away. Which of the two it turns
+  // away depends on the order they are written in, so neither counts as a
+  // surviving reference target and an alias to it is resolved instead.
+  const groupPaths = new Set<string>()
+  for (const token of set.tokens) {
+    for (let i = 1; i < token.path.length; i++) groupPaths.add(joinPath(token.path.slice(0, i)))
+  }
+
   // Which tokens have a writable default value decides which references survive.
   const written = new Set<string>()
   for (const token of set.tokens) {
     if (!token.type) continue
+    const name = joinPath(token.path)
+    if (groupPaths.has(name)) continue
     const value = valueIn(token, defaultMode, set.modes)
-    if (value && (value.kind !== 'raw' || toDtcgValue(token, value, defaultMode, new Losses()) !== undefined)) {
-      written.add(joinPath(token.path))
-    }
+    if (value && toDtcgValue(token, value, defaultMode, new Losses()) !== undefined) written.add(name)
+  }
+
+  /** The `$value` this token would be written with in this mode, or undefined when it cannot be. */
+  const emit = (token: Token, value: TokenValue, mode: string, losses: Losses): unknown => {
+    const target = writable(token, value, mode, set, index, written, losses)
+    return target === undefined ? undefined : toDtcgValue(token, target, mode, losses)
   }
 
   const build = (mode: string, onlyOverrides: boolean): Record<string, unknown> => {
@@ -162,13 +198,21 @@ export function writeDtcg(set: TokenSet): WriteResult {
         continue
       }
       const own = token.values[mode]
-      if (onlyOverrides && (!own || sameValue(own, token.values[defaultMode]))) continue
+      if (onlyOverrides && !own) continue
       const value = onlyOverrides ? own : valueIn(token, mode, set.modes)
       if (!value) continue
-      const target = writable(token, value, mode, set, index, written, losses)
-      if (!target) continue
-      const dtcgValue = toDtcgValue(token, target, mode, losses)
+      const dtcgValue = emit(token, value, mode, losses)
       if (dtcgValue === undefined) continue
+      // An override is compared as it would be written, not as it was read: a
+      // mode whose value is an alias the output cannot keep becomes that
+      // alias's value here, and comparing the two aliases instead said the
+      // mode did not differ when the written files would have.
+      if (onlyOverrides) {
+        const base = token.values[defaultMode]
+        const quiet = new Losses()
+        const baseValue = base ? emit(token, base, defaultMode, quiet) : undefined
+        if (JSON.stringify(dtcgValue) === JSON.stringify(baseValue)) continue
+      }
       setAtPath(root, token.path, tokenLeaf(token, dtcgValue), losses)
     }
     return root

@@ -92,14 +92,23 @@ export function writeFigma(set: TokenSet, options: WriteOptions): WriteResult {
     }
     return true
   })
-  const written = new Set(accepted.map(t => joinPath(t.path)))
+  /*
+   * A path that is also the start of a longer path becomes a group in the
+   * output, so the token at it is turned away by setAtPath. It cannot be an
+   * alias target either.
+   */
+  const groupPaths = new Set<string>()
+  for (const token of set.tokens) {
+    for (let i = 1; i < token.path.length; i++) groupPaths.add(joinPath(token.path.slice(0, i)))
+  }
+  const candidates = accepted.filter(token => !groupPaths.has(joinPath(token.path)))
 
-  const valueFor = (token: Token, value: TokenValue, mode: string): unknown => {
+  const valueFor = (token: Token, value: TokenValue, mode: string, written: ReadonlySet<string>, sink: Losses): unknown => {
     if (value.kind === 'reference') {
       if (written.has(joinPath(value.ref))) return `{${joinPath(value.ref)}}`
       const resolved = resolveValue(value, mode, set, index)
       if (!resolved.value) {
-        losses.add(
+        sink.add(
           'unrepresentable-value',
           token.path,
           `{${joinPath(value.ref)}} does not resolve (${resolved.problem}).`,
@@ -107,18 +116,18 @@ export function writeFigma(set: TokenSet, options: WriteOptions): WriteResult {
         )
         return undefined
       }
-      losses.add(
+      sink.add(
         'resolved-alias',
         token.path,
         `{${joinPath(value.ref)}} is not a Figma variable, so its value was written instead.`,
         mode,
       )
-      return valueFor(token, resolved.value, mode)
+      return valueFor(token, resolved.value, mode, written, sink)
     }
 
     const literal = value.kind === 'raw' ? rawAsLiteral(token, value.text) : value.value
     if (literal === undefined) {
-      losses.add(
+      sink.add(
         'unrepresentable-value',
         token.path,
         `"${value.kind === 'raw' ? value.text : ''}" has no Figma variable form.`,
@@ -134,7 +143,7 @@ export function writeFigma(set: TokenSet, options: WriteOptions): WriteResult {
         if (!srgb) break
         if (srgb.converted) {
           const moved = srgb.deltaE > 0 ? `, clamped into gamut (ΔE ${srgb.deltaE})` : ''
-          losses.add('converted-colour', token.path, `${literal.colorSpace} written as sRGB ${srgb.hex}${moved}.`, mode)
+          sink.add('converted-colour', token.path, `${literal.colorSpace} written as sRGB ${srgb.hex}${moved}.`, mode)
         }
         const [r, g, b] = [srgb.rgba.r, srgb.rgba.g, srgb.rgba.b]
         const colour: Record<string, unknown> = { colorSpace: 'srgb', components: [r, g, b], hex: srgb.hex.slice(0, 7) }
@@ -145,7 +154,7 @@ export function writeFigma(set: TokenSet, options: WriteOptions): WriteResult {
         if (!isDimensionValue(literal)) break
         if (literal.unit === 'rem') {
           const px = dimensionToPx(literal, options.remBase)
-          losses.add(
+          sink.add(
             'converted-unit',
             token.path,
             `${literal.value}rem written as ${px}px at ${options.remBase}px per rem; Figma has no rem.`,
@@ -163,7 +172,7 @@ export function writeFigma(set: TokenSet, options: WriteOptions): WriteResult {
         if (typeof literal === 'string') return literal
         if (Array.isArray(literal) && typeof literal[0] === 'string') {
           if (literal.length > 1) {
-            losses.add(
+            sink.add(
               'unrepresentable-value',
               token.path,
               `A Figma string variable holds one family; kept "${literal[0]}", dropped ${literal.slice(1).join(', ')}.`,
@@ -177,16 +186,37 @@ export function writeFigma(set: TokenSet, options: WriteOptions): WriteResult {
       default:
         if (typeof literal === 'number') return literal
     }
-    losses.add('unrepresentable-value', token.path, `The value has no Figma ${token.type} variable form.`, mode)
+    sink.add('unrepresentable-value', token.path, `The value has no Figma ${token.type} variable form.`, mode)
     return undefined
+  }
+
+  /*
+   * Which tokens this mode actually emits, which is what an alias may point at.
+   * Being the right type is not enough: a value can still have no Figma form,
+   * and an alias to it was kept and written as a variable reference Figma has
+   * nothing to resolve. Dropping one target can drop an alias that depended on
+   * it, so the set is narrowed until it stops shrinking.
+   */
+  const targetsIn = (mode: string): ReadonlySet<string> => {
+    let targets = new Set(candidates.map(t => joinPath(t.path)))
+    for (;;) {
+      const next = new Set<string>()
+      for (const token of candidates) {
+        const value = valueIn(token, mode, set.modes)
+        if (value !== undefined && valueFor(token, value, mode, targets, new Losses()) !== undefined) next.add(joinPath(token.path))
+      }
+      if (next.size === targets.size) return targets
+      targets = next
+    }
   }
 
   const files: OutputFile[] = set.modes.map(mode => {
     const root: Record<string, unknown> = {}
-    for (const token of accepted) {
+    const written = targetsIn(mode)
+    for (const token of candidates) {
       const value = valueIn(token, mode, set.modes)
       if (!value) continue
-      const figmaValue = valueFor(token, value, mode)
+      const figmaValue = valueFor(token, value, mode, written, losses)
       if (figmaValue === undefined) continue
       const leaf: Record<string, unknown> = { $type: FIGMA_TYPE[token.type!] ?? token.type, $value: figmaValue }
       if (token.description) leaf.$description = token.description
