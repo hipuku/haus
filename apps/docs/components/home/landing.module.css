@@ -1,0 +1,116 @@
+/* Tokens only: the site is the system's first consumer, and a literal here is
+   the same drift the component stylesheets are held to in CI. */
+
+.page {
+  margin-inline: auto;
+  max-width: 68rem;
+  padding: var(--haus-space-16) var(--haus-space-6) var(--haus-space-20);
+}
+
+.hero {
+  border-block-end: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  padding-block-end: var(--haus-space-12);
+}
+
+.eyebrow {
+  color: var(--haus-color-ink-tertiary);
+  font-size: var(--haus-type-label-eyebrow-size);
+  font-weight: var(--haus-type-label-eyebrow-weight);
+  letter-spacing: var(--haus-type-label-eyebrow-tracking);
+  line-height: var(--haus-type-label-eyebrow-leading);
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.title {
+  font-size: var(--haus-type-display-size);
+  font-weight: var(--haus-type-display-weight);
+  letter-spacing: var(--haus-type-display-tracking);
+  line-height: var(--haus-type-display-leading);
+  margin: var(--haus-space-2) 0 var(--haus-space-4);
+}
+
+.lede {
+  color: var(--haus-color-ink-secondary);
+  font-size: var(--haus-type-body-lg-size);
+  font-weight: var(--haus-type-body-lg-weight);
+  letter-spacing: var(--haus-type-body-lg-tracking);
+  line-height: var(--haus-type-body-lg-leading);
+  margin: 0;
+  max-width: var(--haus-measure-sm);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--haus-space-3);
+  margin-block-start: var(--haus-space-8);
+}
+
+.install {
+  background: var(--haus-color-surface-sunken);
+  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  border-radius: var(--haus-radius-md);
+  color: var(--haus-color-ink-primary);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-body-sm-size);
+  line-height: var(--haus-type-body-sm-leading);
+  margin-block-start: var(--haus-space-6);
+  overflow-x: auto;
+  padding: var(--haus-space-3) var(--haus-space-4);
+  width: fit-content;
+}
+
+.section {
+  padding-block-start: var(--haus-space-12);
+}
+
+.heading {
+  font-size: var(--haus-type-heading-lg-size);
+  font-weight: var(--haus-type-heading-lg-weight);
+  letter-spacing: var(--haus-type-heading-lg-tracking);
+  line-height: var(--haus-type-heading-lg-leading);
+  margin: 0 0 var(--haus-space-3);
+}
+
+.body {
+  color: var(--haus-color-ink-secondary);
+  font-size: var(--haus-type-body-size);
+  line-height: var(--haus-type-body-leading);
+  margin: 0;
+  max-width: var(--haus-measure-sm);
+}
+
+.cards {
+  display: grid;
+  gap: var(--haus-space-4);
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  margin-block-start: var(--haus-space-6);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--haus-space-3);
+}
+
+.cardTitle {
+  font-size: var(--haus-type-heading-sm-size);
+  font-weight: var(--haus-type-heading-sm-weight);
+  letter-spacing: var(--haus-type-heading-sm-tracking);
+  line-height: var(--haus-type-heading-sm-leading);
+  margin: 0;
+}
+
+.cardLink {
+  color: var(--haus-color-ink-link);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-body-sm-size);
+  margin-block-start: auto;
+  text-decoration: none;
+  width: fit-content;
+}
+
+.cardLink:hover {
+  text-decoration: underline;
+}

@@ -1,14 +1,11 @@
 @import 'tailwindcss';
 @import 'fumadocs-ui/css/neutral.css';
 @import 'fumadocs-ui/css/preset.css';
+/* Last, so the chrome is drawn with haus's roles rather than the preset's greys. */
+@import './haus-theme.css';
 
 html {
   scrollbar-gutter: stable;
-}
-
-/* A cell that wraps should not pull its row's other cells to the middle. */
-.prose :where(td, th) {
-  vertical-align: top;
 }
 
 html > body[data-scroll-locked] {

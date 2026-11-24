@@ -1,0 +1,53 @@
+/*
+ * Every value here is a haus token. The site is the system's own first
+ * consumer, so a length or a colour written as a literal on this page would be
+ * the same drift the component stylesheets are held to in CI.
+ */
+
+.preview {
+  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  border-radius: var(--haus-radius-surface);
+  margin-block: var(--haus-space-6) var(--haus-space-8);
+  overflow: hidden;
+}
+
+.stage {
+  align-items: center;
+  background: var(--haus-color-surface-subtle);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--haus-space-4);
+  padding: var(--haus-space-8);
+}
+
+.stage[data-layout='column'] {
+  align-items: stretch;
+  flex-direction: column;
+}
+
+.stage[data-layout='centre'] {
+  justify-content: center;
+}
+
+.caption {
+  align-items: baseline;
+  border-block-start: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  color: var(--haus-color-ink-secondary);
+  display: flex;
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-label-caption-size);
+  gap: var(--haus-space-4);
+  justify-content: space-between;
+  letter-spacing: var(--haus-type-label-caption-tracking);
+  line-height: var(--haus-type-label-caption-leading);
+  padding: var(--haus-space-3) var(--haus-space-4);
+}
+
+.caption a {
+  color: var(--haus-color-ink-link);
+  text-decoration: none;
+}
+
+.caption a:hover {
+  text-decoration: underline;
+}

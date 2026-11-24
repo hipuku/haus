@@ -1,0 +1,140 @@
+/*
+ * The docs site, drawn with the system it documents.
+ *
+ * Fumadocs keeps its chrome on seventeen `--color-fd-*` variables and ships a
+ * grey preset for them. The site is where a reader decides whether the system
+ * is worth installing, so the one place it must not be drawn in someone else's
+ * neutrals is here. Each variable is pointed at the haus role that does the
+ * same job, and nothing is restated as a literal: where a role is wrong for a
+ * job, the role is what should change.
+ *
+ * **One mapping, both modes.** The roles already answer to `data-theme` and to
+ * `prefers-color-scheme` (brand-dark.css), and the site's toggle sets `class`
+ * and `data-theme` together, so the chrome follows the mode without a second
+ * block to keep in step. A dark half written out here is a dark half that can
+ * disagree with the components on the page.
+ */
+
+:root {
+  /* The page and the words on it. */
+  --color-fd-background: var(--haus-color-surface-default);
+  --color-fd-foreground: var(--haus-color-ink-primary);
+
+  /* Quieter areas: the sidebar, the table of contents, a disabled row. */
+  --color-fd-muted: var(--haus-color-surface-subtle);
+  --color-fd-muted-foreground: var(--haus-color-ink-secondary);
+
+  /* Anything that floats: search, menus, the mode picker. */
+  --color-fd-popover: var(--haus-color-surface-overlay);
+  --color-fd-popover-foreground: var(--haus-color-ink-primary);
+  --color-fd-overlay: var(--haus-color-backdrop);
+
+  /* A panel on the page: cards, code blocks, callouts. */
+  --color-fd-card: var(--haus-color-surface-raised);
+  --color-fd-card-foreground: var(--haus-color-ink-primary);
+
+  --color-fd-border: var(--haus-color-border-default);
+
+  /* The accent: links, the current page, the cursor in search. */
+  --color-fd-primary: var(--haus-color-primary-default);
+  --color-fd-primary-foreground: var(--haus-color-ink-on-primary);
+
+  /* A control at rest, and the fill it takes under the pointer. */
+  --color-fd-secondary: var(--haus-color-surface-subtle);
+  --color-fd-secondary-foreground: var(--haus-color-ink-primary);
+  --color-fd-accent: var(--haus-color-surface-sunken);
+  --color-fd-accent-foreground: var(--haus-color-ink-primary);
+
+  /* The focus ring is the system's, so the site rings like the components. */
+  --color-fd-ring: var(--haus-color-border-focus);
+
+  /* Callout tones. */
+  --color-fd-info: var(--haus-color-info-emphasis);
+  --color-fd-warning: var(--haus-color-warning-emphasis);
+  --color-fd-error: var(--haus-color-error-emphasis);
+  --color-fd-success: var(--haus-color-success-emphasis);
+  --color-fd-idea: var(--haus-color-primary-default);
+
+  /* Tailwind's own stacks, so anything not written by haus still uses the
+     brand's faces rather than the generic sans. */
+  --font-sans: var(--haus-font-sans);
+  --font-mono: var(--haus-font-mono);
+  --default-font-family: var(--haus-font-sans);
+  --default-mono-font-family: var(--haus-font-mono);
+}
+
+/*
+ * The type on a docs page is the type ladder, read whole: a size that takes its
+ * leading and tracking from somewhere else is the thing the component audit
+ * spent a day undoing, and it would be no better here.
+ */
+.prose {
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-body-size);
+  font-weight: var(--haus-type-body-weight);
+  line-height: var(--haus-type-body-leading);
+  letter-spacing: var(--haus-type-body-tracking);
+}
+
+.prose :where(h1) {
+  font-size: var(--haus-type-display-size);
+  font-weight: var(--haus-type-display-weight);
+  line-height: var(--haus-type-display-leading);
+  letter-spacing: var(--haus-type-display-tracking);
+}
+
+.prose :where(h2) {
+  font-size: var(--haus-type-heading-lg-size);
+  font-weight: var(--haus-type-heading-lg-weight);
+  line-height: var(--haus-type-heading-lg-leading);
+  letter-spacing: var(--haus-type-heading-lg-tracking);
+}
+
+.prose :where(h3) {
+  font-size: var(--haus-type-heading-size);
+  font-weight: var(--haus-type-heading-weight);
+  line-height: var(--haus-type-heading-leading);
+  letter-spacing: var(--haus-type-heading-tracking);
+}
+
+.prose :where(h4) {
+  font-size: var(--haus-type-heading-sm-size);
+  font-weight: var(--haus-type-heading-sm-weight);
+  line-height: var(--haus-type-heading-sm-leading);
+  letter-spacing: var(--haus-type-heading-sm-tracking);
+}
+
+.prose :where(code, kbd, samp, pre) {
+  font-family: var(--haus-font-mono);
+}
+
+/* Inline code is a quiet mark in a sentence, not a second colour in it. */
+.prose :where(:not(pre) > code) {
+  background: var(--haus-color-surface-sunken);
+  border-radius: var(--haus-radius-marker);
+  color: var(--haus-color-ink-primary);
+  font-size: 0.9375em;
+  padding: 0.125em 0.375em;
+}
+
+.prose :where(a) {
+  color: var(--haus-color-ink-link);
+  text-underline-offset: 0.2em;
+}
+
+/* A cell that wraps should not pull its row's other cells to the middle. */
+.prose :where(td, th) {
+  vertical-align: top;
+}
+
+/* The system's own radii, so a card here and a Card component agree. */
+:root {
+  --radius: var(--haus-radius-surface);
+}
+
+#nd-sidebar,
+#nd-toc {
+  font-size: var(--haus-type-body-sm-size);
+  letter-spacing: var(--haus-type-body-sm-tracking);
+  line-height: var(--haus-type-body-sm-leading);
+}

@@ -1,0 +1,34 @@
+.wall {
+  display: grid;
+  gap: var(--haus-space-4);
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  margin-block: var(--haus-space-8);
+}
+
+.demo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--haus-space-4);
+}
+
+.label {
+  color: var(--haus-color-ink-tertiary);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-label-eyebrow-size);
+  letter-spacing: var(--haus-type-label-eyebrow-tracking);
+  line-height: var(--haus-type-label-eyebrow-leading);
+  text-transform: uppercase;
+}
+
+.row {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--haus-space-3);
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--haus-space-3);
+}
