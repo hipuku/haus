@@ -19,7 +19,20 @@ const read = (dir: string) =>
     description?: string
   }
 
-export function PackageMeta({ dir, published = false }: { dir: string; published?: boolean }) {
+export function PackageMeta({
+  dir,
+  publishedAs,
+}: {
+  dir: string
+  /**
+   * The name npm serves this package under today, when that is not the name in
+   * its package.json. Four of the six are on npm under their old `haus-` names
+   * while the repository has already been renamed to `@hipuku`, so a page that
+   * printed only the new name was telling a reader to install something that
+   * returns a 404.
+   */
+  publishedAs?: string
+}) {
   const pkg = read(dir)
   const repo = `https://github.com/hipuku/haus/tree/main/packages/${dir}`
 
@@ -43,10 +56,15 @@ export function PackageMeta({ dir, published = false }: { dir: string; published
           </dd>
         </div>
       </dl>
-      {!published && (
+      {publishedAs ? (
+        <Notice tone="warning">
+          On npm as <code>{publishedAs}</code> today, not yet as <code>{pkg.name}</code>. Install the name below; it
+          takes the new one at the next release, and this page changes with it.
+        </Notice>
+      ) : (
         <Notice tone="info">
-          Not on npm under this name yet. The six packages are published together, so that the install command on this
-          page is one that works the day it appears.
+          Not on npm yet. The six packages are published together, so that the install command on this page is one that
+          works the day it appears.
         </Notice>
       )}
     </div>
