@@ -1,36 +1,77 @@
 /*
- * The wall of live components.
+ * The showcase.
  *
- * Six equal cards in a tight grid read as a table of contents rather than a
- * showcase, so the cells are wider, the gaps are the gaps between sections
- * rather than between rows, and each card gives its specimen room to sit in.
+ * Each component sits in a panel of its own with its name under it, which puts
+ * the specimen where the eye lands and the label where it is read second. The
+ * arrangement before this was a card with the name at the top in small mono
+ * caps, so the first thing read on a card about Button was the word "Button".
  */
 .wall {
   display: grid;
-  gap: var(--haus-space-5);
-  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-  margin-block-start: var(--haus-space-10);
+  gap: var(--haus-space-10) var(--haus-space-6);
+  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
 }
 
-.demo {
+.item {
   display: flex;
   flex-direction: column;
-  gap: var(--haus-space-5);
-  min-block-size: var(--haus-space-20);
+  gap: var(--haus-space-4);
+  margin: 0;
 }
 
 /*
- * The component's name, as a caption rather than a heading: the component under
- * it is the thing being shown, and a card whose loudest element is the word
- * "Button" is a card about the word.
+ * The panel is the specimen's ground, and it is the only tinted surface on the
+ * page: the page itself stays one colour, so the six panels are what the eye
+ * separates rather than a band running behind them.
+ *
+ * It is tall enough that a Badge and a Select sit in panels of the same height,
+ * because six panels of six heights is a wall with a ragged edge.
  */
-.label {
-  color: var(--haus-color-ink-tertiary);
-  font-family: var(--haus-font-mono);
-  font-size: var(--haus-type-mono-xs-size);
-  letter-spacing: var(--haus-tracking-widest);
-  line-height: var(--haus-type-mono-xs-leading);
-  text-transform: uppercase;
+.panel {
+  align-items: center;
+  background: var(--haus-color-surface-subtle);
+  border: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
+  border-radius: var(--haus-radius-surface);
+  display: flex;
+  justify-content: center;
+  min-block-size: 11rem;
+  padding: var(--haus-space-8);
+}
+
+.caption {
+  display: flex;
+  flex-direction: column;
+  gap: var(--haus-space-1);
+}
+
+/*
+ * The name, at a heading's size rather than a caption's. It is the one word
+ * that says what is in the panel above it, and in mono caps at 11px it read as
+ * furniture.
+ */
+.name {
+  font-size: var(--haus-type-heading-size);
+  font-weight: var(--haus-weight-semibold);
+  letter-spacing: var(--haus-type-heading-tracking);
+  line-height: var(--haus-type-heading-leading);
+  margin: 0;
+}
+
+.name a {
+  color: var(--haus-color-ink-primary);
+  text-decoration: none;
+}
+
+.name a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.description {
+  color: var(--haus-color-ink-secondary);
+  font-size: var(--haus-type-body-sm-size);
+  line-height: var(--haus-type-body-sm-leading);
+  margin: 0;
 }
 
 .row {
@@ -38,12 +79,13 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--haus-space-3);
-  margin-block-start: auto;
+  justify-content: center;
 }
 
 .column {
   display: flex;
   flex-direction: column;
   gap: var(--haus-space-3);
-  margin-block-start: auto;
+  inline-size: 100%;
+  max-inline-size: 18rem;
 }

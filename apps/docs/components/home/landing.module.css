@@ -27,6 +27,9 @@
   padding-block: var(--haus-space-20) var(--haus-space-16);
 }
 
+/* The install command and its caveat were here. See components/home/landing.tsx
+   for why they are not. */
+
 /*
  * The name, at the size a name is set at. The system's `display` token is 30px
  * because that is the size of a dialog's title, and at 30px the name was the
@@ -61,38 +64,10 @@
   margin-block-start: var(--haus-space-8);
 }
 
-.install {
-  background: var(--haus-color-surface-sunken);
-  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
-  border-radius: var(--haus-radius-md);
-  color: var(--haus-color-ink-primary);
-  font-family: var(--haus-font-mono);
-  font-size: var(--haus-type-mono-sm-size);
-  line-height: var(--haus-type-mono-sm-leading);
-  margin-block-start: var(--haus-space-10);
-  overflow-x: auto;
-  padding: var(--haus-space-3) var(--haus-space-4);
-  width: fit-content;
-}
+/* ─── The showcase ───────────────────────────────────────────────────────── */
 
-.installNote {
-  color: var(--haus-color-ink-tertiary);
-  font-size: var(--haus-type-body-sm-size);
-  line-height: var(--haus-type-body-sm-leading);
-  margin-block-start: var(--haus-space-3);
-}
-
-/* ─── The one band ────────────────────────────────────────────────────────── */
-
-/*
- * The components sit on their own ground, so a reader scrolling can see where
- * the words end without reading them.
- */
-.section {
-  border-block-start: var(--haus-border-width-default) solid var(--haus-color-border-default);
-  padding-block: var(--haus-space-16);
-}
-
-.sectionSubtle {
-  background: var(--haus-color-surface-subtle);
+/* No band, no rule. The panels in the showcase are its own ground, and a
+   second one behind them would be a surface inside a surface. */
+.showcase {
+  padding-block-end: var(--haus-space-20);
 }

@@ -13,10 +13,17 @@ import styles from './landing.module.css'
  * Nothing below that. It carried three more sections (the three decisions, a
  * contrast specimen, cards for the site, Storybook and the repository) and each
  * was a claim the docs already make on the page that evidences it. A reader on
- * this page has one question, and the Wall answers it: these are the published
- * components, in real states, reading the tokens a consumer gets. They can be
- * tabbed through and the mode can be switched on them, which a screenshot does
- * not allow.
+ * this page has one question, and the showcase answers it: these are the
+ * published components, in real states, reading the tokens a consumer gets.
+ * They can be tabbed through and the mode can be switched on them, which a
+ * screenshot does not allow.
+ *
+ * No install command either. It was `npx shadcn add @hipuku/badge` under a line
+ * explaining that badge is the only one the registry serves, which is a caveat
+ * with a release date on it. The command belongs on each component's own page,
+ * where `components/install.tsx` prints it from registry.json and refuses to
+ * print one that would fail. Here it would be an example that is either stale
+ * or arbitrary.
  *
  * It is a page rather than the overview because the two are read by different
  * people. The overview explains the system to someone who has decided to read
@@ -50,21 +57,13 @@ export function Landing() {
             </a>
           </Button>
         </div>
-        <pre className={styles.install}>
-          <code>npx shadcn add @hipuku/badge</code>
-        </pre>
-        <p className={styles.installNote}>
-          Badge is the one component the registry serves today. The rest go in together when the packages are published.
-        </p>
       </section>
 
-      {/* No heading over it. The paragraph above says what these are, and a
-          label would be the third thing a reader is asked to read before
-          reaching the one thing on the page that is not a claim. */}
-      <section className={`${styles.section} ${styles.sectionSubtle}`}>
-        <div className={styles.inner}>
-          <Wall />
-        </div>
+      {/* No heading over it, and no band behind it. The paragraph above says
+          what these are, and the panels are what separates them from the page.
+          A tinted band would be a second ground competing with theirs. */}
+      <section className={`${styles.inner} ${styles.showcase}`}>
+        <Wall />
       </section>
     </main>
   )
