@@ -32,12 +32,16 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 /** Opened from a button, so the focus restore is visible rather than described. */
-function Demo({ children, ...args }: React.ComponentProps<typeof Modal>) {
+function Demo({
+  children,
+  trigger = 'Open the dialog',
+  ...args
+}: React.ComponentProps<typeof Modal> & { trigger?: string }) {
   const [open, setOpen] = useState(false)
   const confirm = useRef<HTMLButtonElement>(null)
   return (
     <>
-      <Button onClick={() => setOpen(true)}>Open the dialog</Button>
+      <Button onClick={() => setOpen(true)}>{trigger}</Button>
       <Modal
         {...args}
         open={open}
@@ -79,11 +83,22 @@ export const NoBackdropDismiss: Story = {
   render: args => <Demo {...args}>A misplaced click should not discard what you were doing.</Demo>,
 }
 
+const SIZES = [
+  { size: 'sm', label: 'Small, 400px', use: 'A confirmation or a short form: one question, one or two fields.' },
+  { size: 'md', label: 'Medium, 560px', use: 'The default. Most forms and messages.' },
+  { size: 'lg', label: 'Large, 720px', use: 'Code, tables and previews that need the line length.' },
+  { size: 'xl', label: 'Extra large, 896px', use: 'Wide dashboards and previews.' },
+] as const
+
+/** One trigger per width, so the four can be opened one after another and compared. */
 export const Sizes: Story = {
   render: args => (
-    <Demo {...args} size="lg">
-      A larger dialog.
-    </Demo>
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--haus-space-3)' }}>
+      {SIZES.map(({ size, label, use }) => (
+        <Demo key={size} {...args} size={size} title={label} trigger={label}>
+          {use}
+        </Demo>
+      ))}
+    </div>
   ),
-  args: { size: 'lg' },
 }
