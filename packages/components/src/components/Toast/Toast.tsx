@@ -1,6 +1,7 @@
 import React from 'react'
 import type { Appearance, Tone } from '../../types'
 import { ToneIcon } from '../../internal/toneIcons'
+import { IconButton } from '../IconButton'
 import styles from './Toast.module.css'
 
 export type ToastTone = Tone
@@ -53,7 +54,17 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(function Toast
   const cls = [styles.toast, styles[tone], styles[appearance], className].filter(Boolean).join(' ')
 
   return (
-    <div ref={ref} className={cls} role="status" aria-live="polite" aria-atomic {...rest}>
+    // An error interrupts: it is something the user has to act on, and a polite
+    // region waits behind whatever is being read (4.5, Toast finding 5). The
+    // other tones are notices and stay polite.
+    <div
+      ref={ref}
+      className={cls}
+      role={tone === 'error' ? 'alert' : 'status'}
+      aria-live={tone === 'error' ? 'assertive' : 'polite'}
+      aria-atomic
+      {...rest}
+    >
       <ToneIcon tone={tone} className={styles.icon} />
 
       <div className={styles.body}>
@@ -65,11 +76,19 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(function Toast
       </div>
 
       {onClose && (
-        <button type="button" className={styles.close} onClick={onClose} aria-label="Dismiss notification">
-          <svg viewBox="0 0 12 12" fill="none" aria-hidden>
-            <path d="M2 2L10 10M10 2L2 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-          </svg>
-        </button>
+        // haus's IconButton, as Modal's close (finding 4).
+        <IconButton
+          label="Dismiss"
+          variant="ghost"
+          size="md"
+          className={styles.close}
+          onClick={onClose}
+          icon={
+            <svg viewBox="0 0 12 12" fill="none" aria-hidden>
+              <path d="M2 2L10 10M10 2L2 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            </svg>
+          }
+        />
       )}
     </div>
   )

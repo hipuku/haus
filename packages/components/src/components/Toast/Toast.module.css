@@ -2,29 +2,29 @@
   display: flex;
   align-items: center;
   gap: var(--haus-space-gap-sm);
+  /* border-box, so max-width is the toast's whole width and the padding and
+     border are not added on top of it (finding 2). */
+  box-sizing: border-box;
   padding: var(--haus-space-inset-sm) var(--haus-space-inset-md);
-  /* The accent edge is wider than the other three borders, so the leading
-     padding takes the difference back and the content stays centred. */
-  padding-inline-start: calc(var(--haus-space-inset-md) + var(--haus-border-width-accent));
   border-radius: var(--haus-radius-surface);
+  /* One border, no accent stripe: a wider leading edge bent with the corner
+     radius and read as an artefact (finding 1). The tint, the border and the
+     tone's icon, whose shape differs per tone, carry the tone. */
   border: var(--haus-border-width-default) solid;
-  border-inline-start-width: var(--haus-border-width-accent);
   box-shadow: var(--haus-elevation-floating);
   max-width: var(--haus-toast-width);
   width: 100%;
   font-family: var(--haus-font-sans);
   color: var(--haus-color-ink-primary);
-  animation: slideIn var(--haus-motion-slide-in);
+  /* A fade on the feedback role and no travel: in a product the container
+     (sonner, in core) moves the toast in and out, and a second movement would
+     fight it (finding 7). Reduced sets feedback to 0ms. */
+  animation: haus-toast-in var(--haus-motion-feedback-duration) var(--haus-motion-feedback-easing) both;
 }
 
-@keyframes slideIn {
+@keyframes haus-toast-in {
   from {
-    transform: translateY(var(--haus-space-2));
     opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
   }
 }
 
@@ -39,13 +39,11 @@
 
    The tinted ink is deliberately `ink-primary` rather than each tone's
    `on-subtle`: on a notice the body copy is copy, and the tone is carried by
-   the icon and the accent edge. That was the existing design and it survives
-   the refactor unchanged. */
+   the icon, the tint and the border. */
 
 .neutral {
   --haus-toast-bg: var(--haus-color-surface-subtle);
   --haus-toast-border: var(--haus-color-border-default);
-  --haus-toast-accent: var(--haus-color-border-strong);
   --haus-toast-icon: var(--haus-color-ink-secondary);
   --haus-toast-solid-bg: var(--haus-color-surface-inverse);
   --haus-toast-solid-ink: var(--haus-color-ink-inverse);
@@ -54,7 +52,6 @@
 .info {
   --haus-toast-bg: var(--haus-color-info-subtle);
   --haus-toast-border: var(--haus-color-info-border);
-  --haus-toast-accent: var(--haus-color-info-default);
   --haus-toast-icon: var(--haus-color-info-on-subtle);
   --haus-toast-solid-bg: var(--haus-color-info-default);
   --haus-toast-solid-ink: var(--haus-color-info-on-default);
@@ -67,7 +64,6 @@
 .success {
   --haus-toast-bg: var(--haus-color-success-subtle);
   --haus-toast-border: var(--haus-color-success-border);
-  --haus-toast-accent: var(--haus-color-success-default);
   --haus-toast-icon: var(--haus-color-success-on-subtle);
   --haus-toast-solid-bg: var(--haus-color-success-solid);
   --haus-toast-solid-ink: var(--haus-color-ink-inverse);
@@ -76,7 +72,6 @@
 .warning {
   --haus-toast-bg: var(--haus-color-warning-subtle);
   --haus-toast-border: var(--haus-color-warning-border);
-  --haus-toast-accent: var(--haus-color-warning-default);
   --haus-toast-icon: var(--haus-color-warning-on-subtle);
   --haus-toast-solid-bg: var(--haus-color-warning-solid);
   --haus-toast-solid-ink: var(--haus-color-ink-inverse);
@@ -85,7 +80,6 @@
 .error {
   --haus-toast-bg: var(--haus-color-error-subtle);
   --haus-toast-border: var(--haus-color-error-border);
-  --haus-toast-accent: var(--haus-color-error-default);
   --haus-toast-icon: var(--haus-color-error-on-subtle);
   --haus-toast-solid-bg: var(--haus-color-error-default);
   --haus-toast-solid-ink: var(--haus-color-error-on-default);
@@ -96,17 +90,11 @@
 .subtle {
   background-color: var(--haus-toast-bg);
   border-color: var(--haus-toast-border);
-  border-inline-start-color: var(--haus-toast-accent);
 }
 
-/* The accent edge is the tone's own fill here, which is to say there is no
-   visible accent: a stripe of the same colour family against a solid surface
-   reads as a rendering artefact rather than as an indicator. The icon carries
-   the tone instead, as it does at every appearance. */
 .solid {
   background-color: var(--haus-toast-solid-bg);
   border-color: var(--haus-toast-solid-bg);
-  border-inline-start-color: var(--haus-toast-solid-bg);
   color: var(--haus-toast-solid-ink);
 }
 
@@ -117,9 +105,17 @@
    primitives components consume from 61 to 62, which tokens.test.ts holds and
    three documents quote. */
 .icon {
+  --haus-toast-stagger: 0;
   flex-shrink: 0;
   width: var(--haus-icon-sm);
   aspect-ratio: 1;
+  /* Expressive brings the icon in a beat after the surface. */
+  animation: haus-toast-in var(--haus-motion-feedback-duration) var(--haus-motion-feedback-easing) both;
+  animation-delay: calc(var(--haus-motion-feedback-duration) * var(--haus-toast-stagger));
+}
+
+[data-haus-motion='expressive'] .icon {
+  --haus-toast-stagger: 0.33;
 }
 
 /* One rule per appearance rather than one per tone: the tinted appearance puts
@@ -153,6 +149,7 @@
   font-size: var(--haus-type-body-sm-size);
   font-weight: var(--haus-type-body-sm-weight);
   line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
   color: var(--haus-color-ink-secondary);
 }
 
@@ -181,53 +178,8 @@
 
 /* ── Close button ── */
 
+/* IconButton draws the box, the focus and the press; Toast places it. */
 .close {
   flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  /* haus#43: the close button is an icon box, so it binds. 24px is icon-lg. */
-  width: var(--haus-icon-lg);
-  height: var(--haus-icon-lg);
-  border-radius: var(--haus-radius-marker);
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  color: inherit;
-  opacity: var(--haus-opacity-muted);
-  transition: opacity var(--haus-motion-micro);
-  padding: 0;
   align-self: flex-start;
-}
-
-/* haus#43: the glyph is icon-xs (12), sized here rather than on the SVG so the
-   size is a token, not an attribute the strict-value rule cannot see. */
-.close svg {
-  width: var(--haus-icon-xs);
-  height: var(--haus-icon-xs);
-}
-
-.close:hover {
-  opacity: 1;
-}
-.close:focus-visible {
-  outline: none;
-  box-shadow: var(--haus-focus-ring);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .toast {
-    animation-duration: var(--haus-duration-reduced);
-  }
-}
-
-/* forced-colors drops box-shadow entirely, and every ring in this system is one.
-   Without this a Windows High Contrast user gets no focus indicator at all.
-   `Highlight` is the system's own focus colour, so it follows the user's theme
-   rather than ours. */
-@media (forced-colors: active) {
-  .close:focus-visible {
-    outline: var(--haus-focus-outline-forced);
-    outline-offset: var(--haus-focus-outline-offset);
-  }
 }

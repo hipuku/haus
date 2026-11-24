@@ -119,7 +119,10 @@ describe('components read roles, not primitives', () => {
     //
     // Then 26 to 25 when Modal's enter moved onto the dialog-enter role (4.5
     // audit): its travel was --haus-space-3 and is now the role's offset.
-    expect(sizes.length).toBe(25)
+    //
+    // Then 25 to 24 when Toast's enter became a fade with no travel (4.5
+    // audit): its --haus-space-2 offset went.
+    expect(sizes.length).toBe(24)
     // 61 before step 7, rising to 77 as the six new components landed: border
     // widths, font families, shadows and, the sharp one, --haus-z-dropdown.
     // Popover and Tooltip are the pair worth pausing on. They are the first
@@ -206,10 +209,13 @@ describe('components read roles, not primitives', () => {
     // own box read icon-lg three times and icon-xs twice, and what is left is
     // one control-height-sm in the margin that centres it on the title.
     //
-    // What is left is twelve control heights and fifteen icon sizes. A control
+    // Then 27 to 23 when Toast's close became an IconButton as well: its box
+    // read icon-lg twice and icon-xs twice.
+    //
+    // What is left is twelve control heights and eleven icon sizes. A control
     // height and an icon box are sizes whose own name is already the role, with
     // no honest alias to invent.
-    expect(PAST.length - sizes.length).toBe(27)
+    expect(PAST.length - sizes.length).toBe(23)
   })
 })
 
