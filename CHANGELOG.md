@@ -239,10 +239,12 @@ between it and the trigger so there is no strip where the pointer is over neithe
 **Fixed** · **`Modal` no longer closes when a press starts on the backdrop and ends inside the
 dialog.** The guard read the press and the click, and a click's target is the nearest common
 ancestor of its two endpoints, so that gesture produced a click on the backdrop and passed. The
-release is now read on its own event, and as a point rather than a target: touch input captures the
-pointer to whatever took the press, so a finger that presses the backdrop, slides into the dialog
-and lifts reports the backdrop either way. The mirror case, a press starting in the dialog and
-ending on the backdrop, was already guarded.
+release is now read on its own event, and by both its target and its coordinates: the backdrop has
+to be the release target, and the release point has to fall outside the dialog's box. The second
+condition is for touch, which captures the pointer to whatever took the press, so a finger that
+presses the backdrop, slides into the dialog and lifts reports the backdrop as its target either
+way. Where the dialog has no measurable box, as in a server render, the target decides alone. The
+mirror case, a press starting in the dialog and ending on the backdrop, was already guarded.
 
 **Fixed** · **A `Popover` with `portal` inside a `Modal` can be used.** The panel rendered into
 `document.body`, outside the dialog, and `Modal` returns focus to the dialog whenever focus lands

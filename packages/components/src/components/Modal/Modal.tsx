@@ -107,9 +107,10 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(function Modal
    * `e.target === e.currentTarget` is true and the latch is already true, and
    * the dialog closed on a release that happened inside it. The mirror of
    * haus#56, which guarded only the other direction. Both endpoints are now
-   * read where the click gave an answer for neither, and the release is read as
-   * a point rather than a target, because touch input captures the pointer to
-   * whatever took the press and reports that element either way.
+   * read where the click gave an answer for neither, and the release is read by
+   * its target *and* its coordinates: touch input captures the pointer to
+   * whatever took the press and reports that element either way, so the target
+   * alone cannot see a finger that slid into the dialog before lifting.
    */
   const releasedBackdrop = React.useRef(false)
   // The dialog is the node a caller wants: className already lands there, and
