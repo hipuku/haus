@@ -160,7 +160,10 @@
        ════════════════════════════════════════════════════════════════════ */
 
     /* ── Radius ──────────────────────────────────────────────────────────── */
-    --haus-brand-radius-control:  var(--haus-radius-md);   /* Button, Input, Select, Textarea */
+    /* sm, not md, since the 4.5 audit (2026-11-24): at 8px the field's corner
+       curve read as an inset beside a label aligned to its edge. Shared by every
+       control, so a field and a button beside it keep the same corner. */
+    --haus-brand-radius-control:  var(--haus-radius-sm);   /* Button, Input, Select, Textarea */
     --haus-brand-radius-surface:  var(--haus-radius-lg);   /* Card, Toast                     */
     --haus-brand-radius-overlay:  var(--haus-radius-xl);   /* Modal                           */
     --haus-brand-radius-marker:   var(--haus-radius-sm);   /* Checkbox, Modal/Toast icons     */
