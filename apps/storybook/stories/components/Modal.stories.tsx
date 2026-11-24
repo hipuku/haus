@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import React, { useRef, useState } from 'react'
 import { Button, Modal } from 'haus-components'
-import { MotionCompare, usePageMotion, type Mode } from '../helpers'
+import { MotionCompare, rest, type Mode, usePageMotion } from '../helpers'
 
 const meta = {
   title: 'Components/Modal',
@@ -30,15 +30,18 @@ const meta = {
 } satisfies Meta<typeof Modal>
 
 export default meta
-type Story = StoryObj<typeof meta>
+/* The stories render `Demo`, the harness that owns `open` and `onClose`, so the
+   args a story sets are its props rather than Modal's required pair. */
+type Story = StoryObj<typeof Demo>
 
 /** Opened from a button, so the focus restore is visible rather than described. */
 function Demo({
   children,
   trigger = 'Open the dialog',
   motion,
+  title = 'Delete workspace',
   ...args
-}: React.ComponentProps<typeof Modal> & { trigger?: string; motion?: Mode }) {
+}: Partial<React.ComponentProps<typeof Modal>> & { trigger?: string; motion?: Mode }) {
   const [open, setOpen] = useState(false)
   usePageMotion(motion, open)
   const confirm = useRef<HTMLButtonElement>(null)
@@ -46,7 +49,8 @@ function Demo({
     <>
       <Button onClick={() => setOpen(true)}>{trigger}</Button>
       <Modal
-        {...args}
+        {...(args as Record<string, never>)}
+        title={title}
         open={open}
         onClose={() => setOpen(false)}
         initialFocus={args.initialFocus === undefined ? undefined : confirm}
@@ -70,7 +74,7 @@ function Demo({
 const story = (text: string) => ({ docs: { description: { story: text } } })
 
 export const Playground: Story = {
-  render: args => <Demo {...args}>This cannot be undone.</Demo>,
+  render: args => <Demo {...rest(args)}>This cannot be undone.</Demo>,
 }
 
 const SIZES = [
@@ -85,7 +89,7 @@ export const Size: Story = {
   render: args => (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--haus-space-3)' }}>
       {SIZES.map(({ size, label, use }) => (
-        <Demo key={size} {...args} size={size} title={label} trigger={label}>
+        <Demo key={size} {...rest(args)} size={size} title={label} trigger={label}>
           {use}
         </Demo>
       ))}
@@ -104,7 +108,7 @@ export const Motion: Story = {
       replay={false}
       hint="Open each dialog and close it again to compare the modes."
       render={mode => (
-        <Demo {...args} motion={mode} trigger={`Open, ${mode}`}>
+        <Demo {...rest(args)} motion={mode} trigger={`Open, ${mode}`}>
           Watch the backdrop and the dialog arrive, then close it.
         </Demo>
       )}
@@ -116,7 +120,7 @@ export const FocusTheAction: Story = {
   name: 'Focus starts on the action',
   parameters: story('`initialFocus` points focus at the one obvious action, so a confirmation needs no tabbing.'),
   render: args => (
-    <Demo {...args} initialFocus={{ current: null }}>
+    <Demo {...rest(args)} initialFocus={{ current: null }}>
       Focus lands on Delete rather than on the dialog, so a confirm with one obvious action does not make you tab to it.
     </Demo>
   ),
@@ -126,5 +130,5 @@ export const NoBackdropDismiss: Story = {
   name: 'Refuses a backdrop click',
   parameters: story('`dismissOnBackdrop={false}` for anything destructive or holding unsaved input.'),
   args: { dismissOnBackdrop: false },
-  render: args => <Demo {...args}>A misplaced click should not discard what you were doing.</Demo>,
+  render: args => <Demo {...rest(args)}>A misplaced click should not discard what you were doing.</Demo>,
 }

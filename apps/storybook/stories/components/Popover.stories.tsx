@@ -35,9 +35,16 @@ const meta = {
 } satisfies Meta<typeof Popover>
 
 export default meta
-type Story = StoryObj<typeof meta>
 
 type PanelProps = Partial<React.ComponentProps<typeof Popover>> & { defaultOpen?: boolean; content?: 'menu' | 'form' }
+
+/*
+ * The stories render `Panel`, not `Popover` directly: `open`, `onClose` and
+ * `triggerRef` are the harness's job, so the args a story sets are Panel's.
+ * Typed against the meta instead, every story would have to restate those three
+ * required props to satisfy the compiler, which is noise that says nothing.
+ */
+type Story = StoryObj<typeof Panel>
 
 /**
  * A trigger and its panel. The frame leaves room on every side, so a panel

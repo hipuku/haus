@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { IconButton } from 'haus-components'
-import { Grid, Item, MotionCompare, Row } from '../helpers'
+import { Grid, Item, MotionCompare, Row, rest } from '../helpers'
 
 const Plus = () => (
   <svg viewBox="0 0 16 16" fill="none" aria-hidden width="1em" height="1em">
@@ -154,7 +154,7 @@ export const States: Story = {
         <IconButton {...args} id="state-pressed" />
       </Item>
       <Item label="loading">
-        <IconButton {...args} loading label="Saving" />
+        <IconButton {...rest(args)} icon={<Plus />} loading label="Saving" />
       </Item>
       <Item label="disabled">
         <IconButton {...args} disabled />
@@ -171,7 +171,7 @@ export const Motion: Story = {
     <MotionCompare
       hint="Press and hold a button to compare the press. Replay switches loading on and off."
       remount={false}
-      render={(_mode, run) => <IconButton {...args} loading={run % 2 === 1} />}
+      render={(_mode, run) => <IconButton {...rest(args)} icon={<Plus />} label="Add item" loading={run % 2 === 1} />}
     />
   ),
 }

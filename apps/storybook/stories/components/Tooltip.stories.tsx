@@ -32,7 +32,10 @@ const meta = {
 } satisfies Meta<typeof Tooltip>
 
 export default meta
-type Story = StoryObj<typeof meta>
+/* `children` is the trigger each story wraps, supplied in its own render rather
+   than as an arg; typed against the meta, every story would have to declare
+   one to satisfy the compiler. */
+type Story = StoryObj<Omit<React.ComponentProps<typeof Tooltip>, 'children'>>
 
 const story = (text: string) => ({ docs: { description: { story: text } } })
 const frame = { padding: 'var(--haus-space-12) var(--haus-space-4)' }

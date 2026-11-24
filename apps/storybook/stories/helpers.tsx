@@ -240,3 +240,17 @@ export function usePageMotion(mode: Mode | undefined, open: boolean) {
     }
   }, [mode, open])
 }
+
+/**
+ * Storybook's args, on their way into a component whose props are a
+ * discriminated union.
+ *
+ * `Button`, `IconButton` and `Card` take either their own element or a child
+ * (`asChild?: never` against `asChild: true`), and `Modal` and `Tabs` take
+ * either a visible title or an `aria-label`. Args are a wide, all-optional
+ * object, so spreading them gives TypeScript no branch to pick and every such
+ * story failed to compile. The story passes the discriminant explicitly beside
+ * the spread; this says the rest is the rest, in one place with the reason,
+ * rather than a cast repeated down the file.
+ */
+export const rest = (args: object | undefined) => (args ?? {}) as Record<string, never>
