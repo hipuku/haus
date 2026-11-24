@@ -1,8 +1,10 @@
 import { defineConfig } from 'vitest/config'
 import { coverage } from '../../vitest.shared.ts'
 
-/* Floors just under the figures it arrived with from tokenise: 77.32 / 66.05 / 95.36 / 80.63. */
-const shared = coverage({ statements: 77, branches: 66, functions: 95, lines: 80 })
+/* Floors just under what the suite reaches: 85.93 / 75.78 / 99.45 / 88.09. They were 77 / 66 / 95
+   / 80, the figures the package arrived with from tokenise, before the review backlog was worked
+   through and every finding got a test. */
+const shared = coverage({ statements: 85, branches: 75, functions: 99, lines: 87 })
 
 export default defineConfig({
   test: {

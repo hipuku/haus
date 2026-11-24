@@ -283,7 +283,7 @@ export function parseFontFamily(text: string): string | string[] {
  * inside it. The old rule quoted only on whitespace, so `Helvetica, Inc` was
  * written back as two families and `O'Font` closed its own quote.
  */
-const CSS_IDENT = String.raw`(?:-?[A-Za-z_ -￿][A-Za-z0-9_ -￿-]*)`
+const CSS_IDENT = String.raw`(?:-?[A-Za-z_\u00a0-\uffff][A-Za-z0-9_\u00a0-\uffff-]*)`
 const UNQUOTED_FAMILY = new RegExp(`^${CSS_IDENT}(?: ${CSS_IDENT})*$`)
 
 export function fontFamilyToCss(value: string | readonly string[]): string {

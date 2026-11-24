@@ -94,7 +94,11 @@ describe('the writer', () => {
   it('refuses to write a group inside a token', () => {
     const result = write(
       set([
-        { path: ['space'], type: 'dimension', values: { default: { kind: 'literal', value: { value: 8, unit: 'px' } } } },
+        {
+          path: ['space'],
+          type: 'dimension',
+          values: { default: { kind: 'literal', value: { value: 8, unit: 'px' } } },
+        },
         {
           path: ['space', 'large'],
           type: 'dimension',

@@ -103,7 +103,13 @@ export function writeFigma(set: TokenSet, options: WriteOptions): WriteResult {
   }
   const candidates = accepted.filter(token => !groupPaths.has(joinPath(token.path)))
 
-  const valueFor = (token: Token, value: TokenValue, mode: string, written: ReadonlySet<string>, sink: Losses): unknown => {
+  const valueFor = (
+    token: Token,
+    value: TokenValue,
+    mode: string,
+    written: ReadonlySet<string>,
+    sink: Losses,
+  ): unknown => {
     if (value.kind === 'reference') {
       if (written.has(joinPath(value.ref))) return `{${joinPath(value.ref)}}`
       const resolved = resolveValue(value, mode, set, index)
@@ -203,7 +209,8 @@ export function writeFigma(set: TokenSet, options: WriteOptions): WriteResult {
       const next = new Set<string>()
       for (const token of candidates) {
         const value = valueIn(token, mode, set.modes)
-        if (value !== undefined && valueFor(token, value, mode, targets, new Losses()) !== undefined) next.add(joinPath(token.path))
+        if (value !== undefined && valueFor(token, value, mode, targets, new Losses()) !== undefined)
+          next.add(joinPath(token.path))
       }
       if (next.size === targets.size) return targets
       targets = next

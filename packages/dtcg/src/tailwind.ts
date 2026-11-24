@@ -607,8 +607,7 @@ export function writeTailwind(set: TokenSet, options: WriteOptions): WriteResult
    * the two sets are taken together. Dropping one target can drop a value that
    * needed it, so the set is narrowed until it stops shrinking.
    */
-  const targetNames = (targets: ReadonlySet<string>) =>
-    new Map([...names].filter(([key]) => targets.has(key)))
+  const targetNames = (targets: ReadonlySet<string>) => new Map([...names].filter(([key]) => targets.has(key)))
 
   const declaredIn = (mode: string): Set<string> => {
     let targets = new Set(names.keys())

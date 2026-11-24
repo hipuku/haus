@@ -38,7 +38,7 @@ describe('a group that is also a token', () => {
     expect(at(set, 'gap')?.values.default).toEqual({ kind: 'reference', ref: ['spacing', '$root'] })
   })
 
-  it('still skips the group\'s other metadata', () => {
+  it("still skips the group's other metadata", () => {
     const { set } = read([doc('tokens.json', { g: { $type: 'dimension', $description: 'x', a: { $value: '1px' } } })])
     expect(set.tokens.map(t => joinPath(t.path))).toEqual(['g.a'])
   })
@@ -111,10 +111,7 @@ describe('a resolver', () => {
 
   it('applies a source listed after the modifier, not before it', () => {
     const { set } = read([
-      resolver([
-        { $ref: '#/modifiers/theme' },
-        { ink: { $type: 'color', $value: '#ff0000' } },
-      ], {
+      resolver([{ $ref: '#/modifiers/theme' }, { ink: { $type: 'color', $value: '#ff0000' } }], {
         modifiers: {
           theme: {
             default: 'light',

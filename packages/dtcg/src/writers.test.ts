@@ -14,21 +14,39 @@ const json = (text: string) => JSON.parse(text) as Record<string, never>
 describe('the DTCG writer', () => {
   it('omits a dimension it cannot say in px or rem, and reports it', () => {
     const result = write(
-      set([{ path: ['space'], type: 'dimension', values: { default: { kind: 'literal', value: { value: 2, unit: 'em' } } } }]),
+      set([
+        {
+          path: ['space'],
+          type: 'dimension',
+          values: { default: { kind: 'literal', value: { value: 2, unit: 'em' } } },
+        },
+      ]),
       'dtcg',
       DEFAULT_OPTIONS,
     )
     expect(json(result.files[0].text)).toEqual({})
     expect(result.losses).toEqual([
-      expect.objectContaining({ reason: 'unrepresentable-value', token: 'space', detail: expect.stringMatching(/px or rem/) }),
+      expect.objectContaining({
+        reason: 'unrepresentable-value',
+        token: 'space',
+        detail: expect.stringMatching(/px or rem/),
+      }),
     ])
   })
 
   it('resolves an alias whose target is also a group', () => {
     const result = write(
       set([
-        { path: ['space'], type: 'dimension', values: { default: { kind: 'literal', value: { value: 8, unit: 'px' } } } },
-        { path: ['space', 'large'], type: 'dimension', values: { default: { kind: 'literal', value: { value: 16, unit: 'px' } } } },
+        {
+          path: ['space'],
+          type: 'dimension',
+          values: { default: { kind: 'literal', value: { value: 8, unit: 'px' } } },
+        },
+        {
+          path: ['space', 'large'],
+          type: 'dimension',
+          values: { default: { kind: 'literal', value: { value: 16, unit: 'px' } } },
+        },
         { path: ['gap'], type: 'dimension', values: { default: { kind: 'reference', ref: ['space'] } } },
       ]),
       'dtcg',
@@ -61,8 +79,9 @@ describe('the DTCG writer', () => {
       DEFAULT_OPTIONS,
     )
     const resolver = json(result.files[0].text)
-    expect((resolver.modifiers as never as Record<string, { contexts: Record<string, unknown[]> }>).mode.contexts.dark)
-      .toEqual([{}])
+    expect(
+      (resolver.modifiers as never as Record<string, { contexts: Record<string, unknown[]> }>).mode.contexts.dark,
+    ).toEqual([{}])
   })
 
   it('keeps a token named __proto__ as data', () => {
@@ -91,7 +110,8 @@ describe('the DTCG writer', () => {
       DEFAULT_OPTIONS,
     )
     const resolver = json(result.files[0].text)
-    const contexts = (resolver.modifiers as never as Record<string, { contexts: Record<string, unknown> }>).mode.contexts
+    const contexts = (resolver.modifiers as never as Record<string, { contexts: Record<string, unknown> }>).mode
+      .contexts
     expect(Object.keys(contexts)).toEqual(['default', '__proto__'])
   })
 })
@@ -100,7 +120,11 @@ describe('the Figma writer', () => {
   it('does not alias a variable it is not writing', () => {
     const result = write(
       set([
-        { path: ['space', 'fluid'], type: 'dimension', values: { default: { kind: 'raw', text: 'clamp(1rem, 2vw, 2rem)' } } },
+        {
+          path: ['space', 'fluid'],
+          type: 'dimension',
+          values: { default: { kind: 'raw', text: 'clamp(1rem, 2vw, 2rem)' } },
+        },
         { path: ['gap'], type: 'dimension', values: { default: { kind: 'reference', ref: ['space', 'fluid'] } } },
       ]),
       'figma',
@@ -113,7 +137,11 @@ describe('the Figma writer', () => {
   it('keeps an alias to a variable it is writing', () => {
     const result = write(
       set([
-        { path: ['space', 'small'], type: 'dimension', values: { default: { kind: 'literal', value: { value: 8, unit: 'px' } } } },
+        {
+          path: ['space', 'small'],
+          type: 'dimension',
+          values: { default: { kind: 'literal', value: { value: 8, unit: 'px' } } },
+        },
         { path: ['gap'], type: 'dimension', values: { default: { kind: 'reference', ref: ['space', 'small'] } } },
       ]),
       'figma',

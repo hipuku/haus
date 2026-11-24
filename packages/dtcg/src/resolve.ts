@@ -28,10 +28,15 @@ export interface Resolution {
 /** Follow references from a value until a literal or raw value. */
 export function resolveValue(value: TokenValue, mode: string, set: TokenSet, index: Index): Resolution {
   const chain: string[] = []
+  // A set alongside the chain: the chain is the answer, and checking
+  // membership in it was a scan per step, so a long alias chain cost the
+  // square of its length on every value that walked it.
+  const seen = new Set<string>()
   let current: TokenValue | undefined = value
   while (current?.kind === 'reference') {
     const key = joinPath(current.ref)
-    if (chain.includes(key)) return { chain, problem: 'cycle' }
+    if (seen.has(key)) return { chain, problem: 'cycle' }
+    seen.add(key)
     chain.push(key)
     const target = index.get(key)
     if (!target) return { chain, problem: 'missing' }

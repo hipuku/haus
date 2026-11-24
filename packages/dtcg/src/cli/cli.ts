@@ -89,7 +89,12 @@ export async function run(argv: string[], out: Output): Promise<number> {
   let documents
   try {
     documents = await Promise.all(
-      positionals.map(async file => ({ name: basename(file), text: await readFile(file, 'utf8') })),
+      // The path as given, not its base name: a resolver refers to its sources
+      // by the path it was written with, and `tokens/colors.json` reduced to
+      // `colors.json` could match the wrong file when two folders hold one
+      // name. The reader tries the exact name first and a unique base name
+      // after it, so both spellings still resolve.
+      positionals.map(async file => ({ name: file, text: await readFile(file, 'utf8') })),
     )
   } catch (error) {
     out.stderr(`${(error as Error).message}\n`)

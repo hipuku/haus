@@ -1,14 +1,23 @@
-import { mkdirSync, mkdtempSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { describe, expect, it } from 'vitest'
+import { afterAll, describe, expect, it } from 'vitest'
 import { run, USAGE } from './cli.js'
 
 const MODES = join(import.meta.dirname, '..', 'fixtures', 'modes.dtcg.json')
 
+/* One root for the whole suite, removed afterwards, so repeated local runs do
+   not leave a temporary directory behind for every case in the file. */
+const ROOT = mkdtempSync(join(tmpdir(), 'dtcg-cli-'))
+let made = 0
+
 function dir() {
-  return mkdtempSync(join(tmpdir(), 'dtcg-cli-'))
+  const path = join(ROOT, String(made++))
+  mkdirSync(path, { recursive: true })
+  return path
 }
+
+afterAll(() => rmSync(ROOT, { recursive: true, force: true }))
 
 function file(name: string, text: string) {
   const path = join(dir(), name)
@@ -67,7 +76,13 @@ describe('dtcg', () => {
   })
 
   it('reads the format named by --from instead of detecting it', async () => {
-    const css = file('theme.css', '@theme {\n  --color-brand: #ff0000;\n}\n')
+    // Nothing in this file says Tailwind on its own: no @theme, no :root, and
+    // the declaration is indented, so detection refuses it and only --from
+    // gets it read. The earlier fixture was detectable either way, so it did
+    // not show that --from had done anything.
+    const css = file('theme.css', 'html { --color-brand: #ff0000; }\n')
+    const detected = await cli(css, '--to', 'dtcg')
+    expect(detected.code).toBe(1)
     const { code, stderr } = await cli(css, '--from', 'tailwind', '--to', 'dtcg')
     expect(code).toBe(0)
     expect(stderr).toMatch(/^Tailwind v4 to DTCG 2025\.10/)

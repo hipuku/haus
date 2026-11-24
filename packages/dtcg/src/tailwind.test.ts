@@ -71,7 +71,11 @@ describe('the writer', () => {
   })
 
   it('does not put a colour in the text namespace', () => {
-    const result = write(set([{ path: ['text', 'primary'], type: 'color', values: { default: colour('#000000') } }]), 'tailwind', DEFAULT_OPTIONS)
+    const result = write(
+      set([{ path: ['text', 'primary'], type: 'color', values: { default: colour('#000000') } }]),
+      'tailwind',
+      DEFAULT_OPTIONS,
+    )
     expect(result.files[0].text).toContain('--text-primary')
     expect(result.files[0].text).not.toContain('@theme')
   })
@@ -87,7 +91,13 @@ describe('the writer', () => {
 
   it('refuses a raw value that would end the declaration', () => {
     const result = write(
-      set([{ path: ['color', 'ink'], type: null, values: { default: { kind: 'raw', text: 'red; } body { display: none' } } }]),
+      set([
+        {
+          path: ['color', 'ink'],
+          type: null,
+          values: { default: { kind: 'raw', text: 'red; } body { display: none' } },
+        },
+      ]),
       'tailwind',
       DEFAULT_OPTIONS,
     )
