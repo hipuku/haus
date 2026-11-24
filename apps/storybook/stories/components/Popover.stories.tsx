@@ -1,6 +1,7 @@
-import { useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Button, Popover } from 'haus-components'
+import { Button, Input, MenuItem, Popover } from 'haus-components'
+import { Item, MotionCompare, Row } from '../helpers'
 
 const meta = {
   title: 'Components/Popover',
@@ -29,34 +30,149 @@ const meta = {
     align: { control: 'inline-radio', options: ['start', 'end', 'stretch'] },
     placement: { control: 'inline-radio', options: ['bottom', 'top'] },
     width: { control: 'inline-radio', options: ['auto', 'trigger', 'sm', 'md', 'lg', 'xl'] },
-    role: { control: 'inline-radio', options: ['dialog', 'menu', 'listbox', 'group'] },
   },
-  args: { align: 'start', placement: 'bottom', width: 'auto', role: 'dialog' },
+  args: { align: 'start', placement: 'bottom', width: 'auto' },
 } satisfies Meta<typeof Popover>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Playground: Story = {
-  render: function Render(args) {
-    const triggerRef = useRef<HTMLButtonElement>(null)
-    const [open, setOpen] = useState(false)
-    return (
-      <div style={{ position: 'relative', display: 'inline-block', margin: '80px 0' }}>
-        <Button ref={triggerRef} aria-expanded={open} onClick={() => setOpen(o => !o)}>
+type PanelProps = Partial<React.ComponentProps<typeof Popover>> & { defaultOpen?: boolean; content?: 'menu' | 'form' }
+
+/**
+ * A trigger and its panel. The frame leaves room on every side, so a panel
+ * aligned to the end or placed on top stays on the canvas: Popover has no
+ * collision detection, by design, so a panel with no room is clipped.
+ */
+function Panel({ defaultOpen = false, content = 'menu', ...rest }: PanelProps) {
+  const triggerRef = useRef<HTMLButtonElement>(null)
+  const [open, setOpen] = useState(defaultOpen)
+  return (
+    <div style={{ padding: 'calc(var(--haus-space-20) * 2) var(--haus-space-12)' }}>
+      <div style={{ position: 'relative', display: 'inline-block' }}>
+        <Button ref={triggerRef} variant="secondary" aria-expanded={open} onClick={() => setOpen(o => !o)}>
           Options
         </Button>
-        <Popover {...args} open={open} onClose={() => setOpen(false)} triggerRef={triggerRef} aria-label="Options">
-          <div style={{ display: 'grid', gap: 'var(--haus-space-1)', minWidth: 160 }}>
-            <Button variant="ghost" size="sm">
-              Rename
-            </Button>
-            <Button variant="ghost" size="sm" tone="error">
-              Delete
-            </Button>
-          </div>
+        <Popover
+          {...(rest as Record<string, never>)}
+          role={content === 'form' ? 'dialog' : 'menu'}
+          open={open}
+          onClose={() => setOpen(false)}
+          triggerRef={triggerRef}
+          aria-label="Options"
+        >
+          {content === 'form' ? (
+            <div style={{ display: 'grid', gap: 'var(--haus-space-3)', padding: 'var(--haus-space-2)' }}>
+              <Input label="Name" defaultValue="Quarterly plan" />
+              <Button size="sm">Rename</Button>
+            </div>
+          ) : (
+            <div style={{ display: 'grid' }}>
+              {['Rename', 'Duplicate', 'Move to folder'].map(label => (
+                <MenuItem key={label}>{label}</MenuItem>
+              ))}
+            </div>
+          )}
         </Popover>
       </div>
-    )
-  },
+    </div>
+  )
+}
+
+const story = (text: string) => ({ docs: { description: { story: text } } })
+
+export const Playground: Story = {
+  render: args => <Panel {...args} />,
+}
+
+export const Placement: Story = {
+  parameters: story(
+    'Which side of the trigger the panel opens on. `top` is for a trigger near the bottom of the viewport.',
+  ),
+  render: args => (
+    <Row>
+      <Item label="bottom">
+        <Panel {...args} placement="bottom" defaultOpen />
+      </Item>
+      <Item label="top">
+        <Panel {...args} placement="top" defaultOpen />
+      </Item>
+    </Row>
+  ),
+}
+
+export const Align: Story = {
+  parameters: story(
+    'Which edge of the trigger the panel lines up with. `end` suits a trigger at the right of a toolbar; ' +
+      "`stretch` matches the trigger's width.",
+  ),
+  render: args => (
+    <Row>
+      {(['start', 'end', 'stretch'] as const).map(align => (
+        <Item key={align} label={align}>
+          <Panel {...args} align={align} defaultOpen />
+        </Item>
+      ))}
+    </Row>
+  ),
+}
+
+export const Width: Story = {
+  parameters: story(
+    '`auto` fits the content and suits a menu; `trigger` matches the trigger; the four fixed widths are for ' +
+      'panels that hold a form.',
+  ),
+  render: args => (
+    <Row>
+      {(['auto', 'trigger', 'sm', 'md'] as const).map(width => (
+        <Item key={width} label={width}>
+          <Panel
+            {...args}
+            width={width}
+            content={width === 'auto' || width === 'trigger' ? 'menu' : 'form'}
+            defaultOpen
+          />
+        </Item>
+      ))}
+    </Row>
+  ),
+}
+
+export const Role: Story = {
+  parameters: story(
+    'What the panel is. `menu` holds actions; `dialog` holds anything else, such as a small form. The role ' +
+      'is announced, so a panel that claims `menu` and holds a form misleads a screen reader.',
+  ),
+  render: args => (
+    <Row>
+      <Item label="menu">
+        <Panel {...args} content="menu" defaultOpen />
+      </Item>
+      <Item label="dialog">
+        <Panel {...args} content="form" width="sm" defaultOpen />
+      </Item>
+    </Row>
+  ),
+}
+
+export const Motion: Story = {
+  parameters: story(
+    'Replay to see the enter. Subtle drops 4px in 150ms; expressive grows out of the trigger on a spring, ' +
+      '16px from 0.9 scale; reduced is a short fade. Closing runs the exit before the panel leaves.',
+  ),
+  render: args => (
+    <MotionCompare
+      hint="Replay opens each panel again, or close and open one yourself."
+      render={() => <Panel {...args} defaultOpen />}
+    />
+  ),
+}
+
+export const EscapeReturnsFocus: Story = {
+  name: 'Escape returns focus to the trigger',
+  parameters: story(
+    'Open it, Tab into the panel, press Escape: focus goes back to Options, not to the page. Tabbing past the ' +
+      'last item closes it instead of trapping focus.',
+  ),
+  render: args => <Panel {...args} />,
 }

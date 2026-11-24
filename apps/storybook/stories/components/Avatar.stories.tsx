@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Avatar } from 'haus-components'
+import { Item, Row } from '../helpers'
 
 const meta = {
   title: 'Components/Avatar',
@@ -34,44 +35,48 @@ type Story = StoryObj<typeof meta>
 
 export const Playground: Story = {}
 
-export const Sizes: Story = {
+const story = (text: string) => ({ docs: { description: { story: text } } })
+
+export const Size: Story = {
+  parameters: story('Five sizes, 24 to 64px. The initials are centred on the circle at every size.'),
   render: args => (
-    <div style={{ display: 'flex', gap: 'var(--haus-space-3)', alignItems: 'center' }}>
+    <Row>
       {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map(size => (
-        <Avatar key={size} {...args} size={size} />
+        <Item key={size} label={size}>
+          <Avatar {...args} size={size} />
+        </Item>
       ))}
-    </div>
+    </Row>
   ),
 }
 
-export const ColourFollowsTheName: Story = {
+export const Status: Story = {
+  parameters: story('The status dot sits outside the clipped circle, so it is never cut off.'),
   render: args => (
-    <div style={{ display: 'flex', gap: 'var(--haus-space-3)' }}>
-      {['Ada Lovelace', 'Grace Hopper', 'Katherine Johnson', 'Radia Perlman'].map(name => (
-        <Avatar key={name} {...args} name={name} />
-      ))}
-    </div>
-  ),
-}
-
-export const Statuses: Story = {
-  render: args => (
-    <div style={{ display: 'flex', gap: 'var(--haus-space-3)' }}>
+    <Row>
       {(['online', 'away', 'busy', 'offline'] as const).map(status => (
-        <Avatar key={status} {...args} status={status} />
+        <Item key={status} label={status}>
+          <Avatar {...args} status={status} />
+        </Item>
       ))}
-    </div>
+    </Row>
   ),
 }
 
-export const NoName: Story = {
-  name: 'With no name at all',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Renders the fallback glyph. It used to throw: `initials("")` indexed into nothing.',
-      },
-    },
-  },
-  args: { name: '' },
+export const Content: Story = {
+  parameters: story(
+    'The colour follows the name, so one person is one colour everywhere; with no name, a fallback glyph.',
+  ),
+  render: args => (
+    <Row>
+      {['Ada Lovelace', 'Grace Hopper', 'Katherine Johnson', 'Radia Perlman'].map(name => (
+        <Item key={name} label={name}>
+          <Avatar {...args} name={name} />
+        </Item>
+      ))}
+      <Item label="no name">
+        <Avatar {...args} name="" />
+      </Item>
+    </Row>
+  ),
 }

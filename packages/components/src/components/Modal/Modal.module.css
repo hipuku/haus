@@ -7,15 +7,29 @@
   justify-content: center;
   padding: var(--haus-space-inset-md);
   z-index: var(--haus-z-modal);
-  animation: fadeIn var(--haus-motion-fade-in);
+  /* The backdrop fades on the dialog roles' durations. In expressive it leads
+     on the way in and trails on the way out, so the dialog arrives onto a dim
+     page and leaves before it lightens (finding 3); subtle runs both together,
+     and reduced is the tokens' short fade. */
+  animation: haus-modal-fade var(--haus-motion-dialog-enter-duration) var(--haus-motion-dialog-enter-easing) both;
 }
 
-@keyframes fadeIn {
+.backdrop[data-state='closed'] {
+  animation: haus-modal-fade-out var(--haus-motion-dialog-exit-duration) var(--haus-motion-dialog-exit-easing) both;
+  /* Trails the dialog out by two stagger steps: 0ms in subtle, 80ms in
+     expressive. */
+  animation-delay: calc(var(--haus-motion-stagger-step) * 2);
+}
+
+@keyframes haus-modal-fade {
   from {
     opacity: 0;
   }
+}
+
+@keyframes haus-modal-fade-out {
   to {
-    opacity: 1;
+    opacity: 0;
   }
 }
 
@@ -27,18 +41,38 @@
   flex-direction: column;
   max-height: calc(100vh - var(--haus-space-8));
   width: 100%;
-  animation: slideUp var(--haus-motion-slide-in);
   outline: none;
+  /* Enters on dialog-enter (fade, travel up, slight scale, all per mode) and
+     leaves on dialog-exit (finding 2). */
+  animation: haus-modal-in var(--haus-motion-dialog-enter-duration) var(--haus-motion-dialog-enter-easing) both;
+  /* After the backdrop by two stagger steps, then its header, body and footer
+     follow one step apart (below). Subtle's step is 0ms: all at once. */
+  animation-delay: calc(var(--haus-motion-stagger-step) * 2);
 }
 
-@keyframes slideUp {
+.backdrop[data-state='closed'] .dialog {
+  animation: haus-modal-out var(--haus-motion-dialog-exit-duration) var(--haus-motion-dialog-exit-easing) both;
+}
+
+/* Expressive sequences the dialog's header, body and footer after the dialog
+   itself, one stagger step apart. Subtle's step is 0ms: all at once. */
+@keyframes haus-modal-part-in {
   from {
-    transform: translateY(var(--haus-space-3));
     opacity: 0;
   }
+}
+
+@keyframes haus-modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--haus-motion-dialog-enter-offset)) scale(var(--haus-motion-dialog-enter-scale));
+  }
+}
+
+@keyframes haus-modal-out {
   to {
-    transform: translateY(0);
-    opacity: 1;
+    opacity: 0;
+    transform: translateY(var(--haus-motion-dialog-enter-offset)) scale(var(--haus-motion-dialog-enter-scale));
   }
 }
 
@@ -60,6 +94,8 @@
 /* ── Header ── */
 
 .header {
+  animation: haus-modal-part-in var(--haus-motion-dialog-enter-duration) var(--haus-motion-dialog-enter-easing) both;
+  animation-delay: calc(var(--haus-motion-stagger-step) * 3);
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -80,61 +116,36 @@
 
 .close {
   flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  /* haus#43: the same close affordance as Toast, so the same icon box. Was
-     space-7 (28px) with a 14px glyph, which was drift rather than a decision;
-     now icon-lg (24) with an icon-xs glyph, both bound. */
-  width: var(--haus-icon-lg);
-  height: var(--haus-icon-lg);
-  border-radius: var(--haus-radius-marker);
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  color: var(--haus-color-ink-tertiary);
-  transition:
-    color var(--haus-motion-micro),
-    background-color var(--haus-motion-micro);
-  padding: 0;
-  /* Centred in the title's first line. The icon box is taller than that line,
+  /* Centred in the title's first line. The button is taller than that line,
      so the offset is negative; heading-sm is the role the title sets. */
   margin-block-start: calc(
-    (var(--haus-type-heading-sm-size) * var(--haus-type-heading-sm-leading) - var(--haus-icon-lg)) / 2
+    (var(--haus-type-heading-sm-size) * var(--haus-type-heading-sm-leading) - var(--haus-control-height-sm)) / 2
   );
-}
-
-/* haus#43: the glyph is icon-xs (12), the same as Toast's, sized here as a token. */
-.close svg {
-  width: var(--haus-icon-xs);
-  height: var(--haus-icon-xs);
-}
-
-.close:hover {
-  color: var(--haus-color-ink-primary);
-  background-color: var(--haus-color-surface-subtle);
-}
-
-.close:focus-visible {
-  outline: none;
-  box-shadow: var(--haus-focus-ring);
 }
 
 /* ── Body ── */
 
 .body {
+  animation: haus-modal-part-in var(--haus-motion-dialog-enter-duration) var(--haus-motion-dialog-enter-easing) both;
+  animation-delay: calc(var(--haus-motion-stagger-step) * 4);
   flex: 1;
   overflow-y: auto;
   padding: var(--haus-space-inset-lg) var(--haus-space-inset-xl);
   font-family: var(--haus-font-sans);
+  /* The body is what the dialog is for, so it is set in the primary ink and
+     reads body-sm whole (finding 5). */
   font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
   line-height: var(--haus-type-body-sm-leading);
-  color: var(--haus-color-ink-secondary);
+  letter-spacing: var(--haus-type-body-sm-tracking);
+  color: var(--haus-color-ink-primary);
 }
 
 /* ── Footer ── */
 
 .footer {
+  animation: haus-modal-part-in var(--haus-motion-dialog-enter-duration) var(--haus-motion-dialog-enter-easing) both;
+  animation-delay: calc(var(--haus-motion-stagger-step) * 5);
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -143,20 +154,86 @@
   border-top: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .backdrop,
-  .dialog {
-    animation-duration: var(--haus-duration-reduced);
+/* ── Edge placement: the Drawer ──────────────────────────────────────────────
+   Anchored to the start or end edge, full height, entering from that edge on
+   the sheet role. The travel is the panel's own width, so it arrives from
+   off-screen, except in reduced, where the sheet role's offset is 0: the
+   min() below turns a 0 offset into no travel and any other into the full
+   width, so reduced is a fade in place. A spring that overshoots would pull
+   the outer edge away from the viewport, so the panel carries its surface a
+   little past that edge (the ::after) and no gap opens. */
+.backdrop[data-placement] {
+  padding: 0;
+  align-items: stretch;
+}
+
+.backdrop[data-placement='start'] {
+  justify-content: flex-start;
+}
+
+.backdrop[data-placement='end'] {
+  justify-content: flex-end;
+}
+
+.backdrop[data-placement] .dialog {
+  --haus-drawer-travel: min(100%, calc(var(--haus-motion-sheet-enter-offset) * 1000));
+  --haus-drawer-dir: 1;
+  position: relative;
+  block-size: 100%;
+  max-height: none;
+  border-radius: 0;
+  animation: haus-drawer-in var(--haus-motion-sheet-enter-duration) var(--haus-motion-sheet-enter-easing) both;
+}
+
+.backdrop[data-placement='end'] .dialog {
+  border-start-start-radius: var(--haus-radius-overlay);
+  border-end-start-radius: var(--haus-radius-overlay);
+}
+
+.backdrop[data-placement='start'] .dialog {
+  --haus-drawer-dir: -1;
+  border-start-end-radius: var(--haus-radius-overlay);
+  border-end-end-radius: var(--haus-radius-overlay);
+}
+
+[dir='rtl'] .backdrop[data-placement='end'] .dialog {
+  --haus-drawer-dir: -1;
+}
+
+[dir='rtl'] .backdrop[data-placement='start'] .dialog {
+  --haus-drawer-dir: 1;
+}
+
+.backdrop[data-placement] .dialog::after {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  inline-size: var(--haus-space-10);
+  background-color: var(--haus-color-surface-default);
+}
+
+.backdrop[data-placement='end'] .dialog::after {
+  inset-inline-start: 100%;
+}
+
+.backdrop[data-placement='start'] .dialog::after {
+  inset-inline-end: 100%;
+}
+
+.backdrop[data-placement][data-state='closed'] .dialog {
+  animation: haus-drawer-out var(--haus-motion-sheet-exit-duration) var(--haus-motion-sheet-exit-easing) both;
+}
+
+@keyframes haus-drawer-in {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--haus-drawer-travel) * var(--haus-drawer-dir)));
   }
 }
 
-/* forced-colors drops box-shadow entirely, and every ring in this system is one.
-   Without this a Windows High Contrast user gets no focus indicator at all.
-   `Highlight` is the system's own focus colour, so it follows the user's theme
-   rather than ours. */
-@media (forced-colors: active) {
-  .close:focus-visible {
-    outline: var(--haus-focus-outline-forced);
-    outline-offset: var(--haus-focus-outline-offset);
+@keyframes haus-drawer-out {
+  to {
+    opacity: 0;
+    transform: translateX(calc(var(--haus-drawer-travel) * var(--haus-drawer-dir)));
   }
 }

@@ -3,6 +3,8 @@
 }
 
 .list {
+  /* The marker is placed against the list. */
+  position: relative;
   display: flex;
   align-items: stretch;
   gap: var(--haus-space-gap-2xs);
@@ -40,7 +42,13 @@
   gap: var(--haus-space-gap-2xs);
   white-space: nowrap;
   font-family: inherit;
-  font-weight: var(--haus-type-label-md-weight);
+  /* Positioned, so it paints above the marker, which comes first in the
+     list. */
+  position: relative;
+  /* Colour and focus on the highlight role (plan 4.1). */
+  transition:
+    color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    outline-color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing);
 }
 
 .tab:hover:not(:disabled) {
@@ -51,10 +59,19 @@
    flush against the rule beneath the list, and an outset ring is clipped by it
    on the bottom edge, which is WCAG 2.4.11 in the one place it is easy to
    miss. */
-.tab:focus-visible {
-  outline: none;
-  box-shadow: var(--haus-focus-ring);
-  border-radius: var(--haus-radius-control);
+/* The outline every control uses, drawn inside the tab rather than stepping
+   out: a tab sits flush on the rule under the list, and an outline outside it
+   would be clipped there (WCAG 2.4.11). */
+@media (forced-colors: none) {
+  .tab {
+    outline: var(--haus-border-width-thick) solid transparent;
+    outline-offset: calc(-1 * var(--haus-border-width-thick));
+    border-radius: var(--haus-radius-control);
+  }
+
+  .tab:focus-visible {
+    outline-color: var(--haus-color-border-focus);
+  }
 }
 
 .tab:disabled {
@@ -73,7 +90,42 @@
 
 .underline .selected {
   color: var(--haus-color-ink-primary);
-  border-block-end-color: var(--haus-color-primary-default);
+}
+
+/* ── The marker ──
+   One element that travels to the selected tab on the indicator role. Under
+   `underline` it is the bar on the rule; under `segmented` it is the fill
+   behind the tab. */
+.marker {
+  box-sizing: border-box;
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  pointer-events: none;
+  transform: translate(var(--haus-tabs-marker-x), var(--haus-tabs-marker-y));
+}
+
+.marker[data-placed] {
+  transition:
+    transform var(--haus-motion-indicator-duration) var(--haus-motion-indicator-easing),
+    inline-size var(--haus-motion-indicator-duration) var(--haus-motion-indicator-easing);
+}
+
+/* The bar sits on the bottom edge of the selected tab, over the list's rule. */
+.underline .marker {
+  border-block-end: var(--haus-border-width-thick) solid var(--haus-color-primary-default);
+}
+
+.segmented .marker {
+  border-radius: var(--haus-radius-marker);
+  background: var(--haus-color-surface-raised);
+}
+
+/* Forced colours drop the marker's colour, so the selected tab marks itself. */
+@media (forced-colors: active) {
+  .underline .selected {
+    border-block-end-color: Highlight;
+  }
 }
 
 .segmented .tab {
@@ -82,11 +134,15 @@
 
 .segmented .selected {
   color: var(--haus-color-ink-primary);
-  background: var(--haus-color-surface-raised);
 }
 
+/* Each size reads its label role whole (4.5 item 5): the size, weight,
+   leading and tracking it used to take part of. */
 .sm {
   font-size: var(--haus-type-label-sm-size);
+  font-weight: var(--haus-type-label-sm-weight);
+  line-height: var(--haus-type-label-sm-leading);
+  letter-spacing: var(--haus-type-label-sm-tracking);
 }
 .sm .tab {
   padding: var(--haus-space-inset-xs) var(--haus-space-inset-sm);
@@ -94,13 +150,19 @@
 
 .md {
   font-size: var(--haus-type-label-md-size);
+  font-weight: var(--haus-type-label-md-weight);
+  line-height: var(--haus-type-label-md-leading);
+  letter-spacing: var(--haus-type-label-md-tracking);
 }
 .md .tab {
   padding: var(--haus-space-inset-sm) var(--haus-space-inset-md);
 }
 
 .lg {
-  font-size: var(--haus-type-body-size);
+  font-size: var(--haus-type-label-lg-size);
+  font-weight: var(--haus-type-label-lg-weight);
+  line-height: var(--haus-type-label-lg-leading);
+  letter-spacing: var(--haus-type-label-lg-tracking);
 }
 .lg .tab {
   padding: var(--haus-space-inset-md) var(--haus-space-inset-lg);
@@ -112,10 +174,12 @@
 
 /* The panel is focusable so it can be read, but it is not a control and should
    not look like one. The ring is still drawn for keyboard users. */
-.panel:focus-visible {
-  outline: none;
-  box-shadow: var(--haus-focus-ring);
-  border-radius: var(--haus-radius-surface);
+@media (forced-colors: none) {
+  .panel:focus-visible {
+    outline: var(--haus-border-width-thick) solid var(--haus-color-border-focus);
+    outline-offset: var(--haus-focus-outline-offset);
+    border-radius: var(--haus-radius-surface);
+  }
 }
 
 /* forced-colors drops box-shadow entirely, and every ring in this system is one.

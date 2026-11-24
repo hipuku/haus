@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Select } from 'haus-components'
 import React from 'react'
+import { Item, MotionCompare, Row, Stack } from '../helpers'
 
 const roles = [
   { value: 'author', label: 'Author', hint: 'Can propose and revise' },
@@ -50,11 +51,10 @@ const meta = {
     },
   },
   argTypes: {
-    size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] },
     disabled: { control: 'boolean' },
     placeholder: { control: 'text' },
   },
-  args: { options: roles, value: 'author', onChange: () => {}, label: 'Role', size: 'md' },
+  args: { options: roles, value: 'author', onChange: () => {}, label: 'Role' },
 } satisfies Meta<typeof Select>
 
 export default meta
@@ -62,80 +62,87 @@ type Story = StoryObj<typeof meta>
 
 export const Playground: Story = { render: () => <Controlled /> }
 
-export const WithHints: Story = {
-  render: () => <Controlled />,
+const story = (text: string) => ({ docs: { description: { story: text } } })
+const HINT = 'Who can accept a decision in this workspace'
+
+export const States: Story = {
   parameters: {
-    docs: {
-      description: {
-        story:
-          'Open it. Each row carries a label and a hint, which is the case a ' +
-          'native select cannot draw and the reason this component exists.',
-      },
-    },
+    ...story(
+      'Every state side by side. Hover and focus are forced, so they can be reviewed without a pointer. Open ' +
+        'is the Motion story.',
+    ),
+    pseudo: { hover: ['#state-hover button'], focusVisible: ['#state-focus button'] },
   },
+  render: () => (
+    <Row stretch still>
+      <Item label="rest">
+        <Controlled />
+      </Item>
+      <Item label="hover">
+        <Controlled id="state-hover" />
+      </Item>
+      <Item label="focus">
+        <Controlled id="state-focus" />
+      </Item>
+      <Item label="placeholder">
+        <Controlled value="" />
+      </Item>
+      <Item label="error">
+        <Controlled error="Pick a role for this member" />
+      </Item>
+      <Item label="disabled">
+        <Controlled disabled />
+      </Item>
+    </Row>
+  ),
 }
 
-export const LabelOnly: Story = {
+export const Motion: Story = {
+  parameters: story(
+    'Open each one and move through the options. Subtle: the panel drops in and the highlight jumps. ' +
+      'Expressive: the panel grows from the field on a spring, the options stagger in, the highlight slides ' +
+      'between rows, the chevron turns on a spring and the check draws. Reduced: a short fade. Replay restarts ' +
+      'the error growing in.',
+  ),
+  render: () => (
+    <MotionCompare
+      hint="Open each Select and move through the options. Replay brings the error in again."
+      render={() => <Controlled hint={HINT} error="Pick a role for this member" />}
+    />
+  ),
+}
+
+export const Content: Story = {
+  parameters: story(
+    'Options with a second line, which a native select cannot draw; plain options with one disabled, which ' +
+      'the keyboard skips; and a hint under the field.',
+  ),
   render: () => {
     function Plain() {
       const [value, setValue] = React.useState('a')
       return <Select options={plain} value={value} onChange={setValue} label="Sort" />
     }
-    return <Plain />
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Without hints it is a themed select, and the third option is ' +
-          'disabled. A disabled option is skipped by the keyboard and refuses ' +
-          'the click rather than looking pressable.',
-      },
-    },
+    return (
+      <Stack>
+        <Item label="options with hints">
+          <Controlled />
+        </Item>
+        <Item label="plain options, one disabled">
+          <Plain />
+        </Item>
+        <Item label="field hint">
+          <Controlled hint={HINT} />
+        </Item>
+      </Stack>
+    )
   },
 }
 
-export const Sizes: Story = {
-  render: () => (
-    <div style={{ display: 'grid', gap: 16, maxWidth: 320 }}>
-      <Controlled size="sm" />
-      <Controlled size="md" />
-      <Controlled size="lg" />
-    </div>
+export const SubmitsInAForm: Story = {
+  name: 'Submits in a plain form',
+  parameters: story(
+    '`name` renders a hidden input, so the control submits inside a plain `<form action>` with no ' +
+      'JavaScript wiring. Omit it for a purely controlled use.',
   ),
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Three trigger heights, `sm` / `md` / `lg`, matching the other form ' +
-          'controls so a Select sits in a row of inputs without stepping out of it.',
-      },
-    },
-  },
-}
-
-export const InAForm: Story = {
   render: () => <Controlled name="role" />,
-  parameters: {
-    docs: {
-      description: {
-        story:
-          '`name` renders a hidden input, so the control still submits inside a ' +
-          'plain `<form action>` with no JavaScript wiring. Omit it for a purely ' +
-          'controlled use.',
-      },
-    },
-  },
-}
-
-export const Disabled: Story = { render: () => <Controlled disabled /> }
-
-/** A line under the control that describes it, read out with it. */
-export const WithFieldHint: Story = {
-  render: () => <Controlled hint="Who can accept a decision in this workspace" />,
-}
-
-/** The error takes the hint's place, marks the trigger invalid and rings it in the error colour. */
-export const WithError: Story = {
-  render: () => <Controlled hint="Who can accept a decision in this workspace" error="Pick a role for this member" />,
 }

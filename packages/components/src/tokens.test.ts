@@ -116,7 +116,16 @@ describe('components read roles, not primitives', () => {
     // Checkbox's and Radio's 16px boxes took --haus-marker-box and Toggle's
     // 20px track height --haus-toggle-track-height, five declarations off the
     // ladder and onto a size whose name says what it is.
-    expect(sizes.length).toBe(26)
+    //
+    // Then 26 to 25 when Modal's enter moved onto the dialog-enter role (4.5
+    // audit): its travel was --haus-space-3 and is now the role's offset.
+    //
+    // Then 25 to 24 when Toast's enter became a fade with no travel (4.5
+    // audit): its --haus-space-2 offset went.
+    //
+    // Then 24 to 25 with Drawer (4.5 audit): the surface it carries past its
+    // outer edge, so a spring's overshoot opens no gap, is --haus-space-10 wide.
+    expect(sizes.length).toBe(25)
     // 61 before step 7, rising to 77 as the six new components landed: border
     // widths, font families, shadows and, the sharp one, --haus-z-dropdown.
     // Popover and Tooltip are the pair worth pausing on. They are the first
@@ -195,10 +204,28 @@ describe('components read roles, not primitives', () => {
     // and each offset subtracts the icon box, so each margin reads the icon
     // scale a second time.
     //
-    // What is left is thirteen control heights and twenty icon sizes. A control
+    // Then 33 to 31 when Select lost its sizes (4.5 audit, owner 2026-11-24): a
+    // field has one size, as Input does, so its three control-height reads
+    // became one.
+    //
+    // Then 31 to 27 when Modal's close became an IconButton (4.5 audit): its
+    // own box read icon-lg three times and icon-xs twice, and what is left is
+    // one control-height-sm in the margin that centres it on the title.
+    //
+    // Then 27 to 23 when Toast's close became an IconButton as well: its box
+    // read icon-lg twice and icon-xs twice.
+    //
+    // Then 23 to 25 when Toast's icon and close were centred on the title's
+    // first line (4.5 audit), the Callout pattern: each offset subtracts its
+    // box, icon-sm and control-height-sm.
+    //
+    // Then 25 to 26 when Toast's action stopped growing the title row: its
+    // margin subtracts control-height-sm, as the close's does.
+    //
+    // What is left is fourteen control heights and twelve icon sizes. A control
     // height and an icon box are sizes whose own name is already the role, with
     // no honest alias to invent.
-    expect(PAST.length - sizes.length).toBe(33)
+    expect(PAST.length - sizes.length).toBe(26)
   })
 })
 

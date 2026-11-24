@@ -86,4 +86,16 @@ describe('Input', () => {
     )
     expect((await axe(container)).violations).toEqual([])
   })
+
+  it('keeps the hint when an error appears, and describes the field by both, error first', () => {
+    // The hint is what the user needed to fill the field correctly. Hiding it
+    // at the moment they got it wrong removed the help when it mattered most.
+    render(<Input label="Amount" hint="Including GST" error="Enter an amount over zero" />)
+    expect(screen.getByText('Including GST')).toBeInTheDocument()
+    const field = screen.getByLabelText('Amount')
+    const ids = field.getAttribute('aria-describedby')?.split(' ') ?? []
+    expect(ids).toHaveLength(2)
+    expect(document.getElementById(ids[0]!)).toHaveTextContent('Enter an amount over zero')
+    expect(document.getElementById(ids[1]!)).toHaveTextContent('Including GST')
+  })
 })

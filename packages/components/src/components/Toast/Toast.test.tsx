@@ -20,23 +20,23 @@ describe('Toast', () => {
 
   it('shows a dismiss button only when onClose is given', () => {
     const { rerender } = render(<Toast title="Saved" />)
-    expect(screen.queryByRole('button', { name: 'Dismiss notification' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Dismiss' })).not.toBeInTheDocument()
 
     rerender(<Toast title="Saved" onClose={vi.fn()} />)
-    expect(screen.getByRole('button', { name: 'Dismiss notification' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Dismiss' })).toBeInTheDocument()
   })
 
   it('calls onClose when dismissed', async () => {
     const onClose = vi.fn()
     render(<Toast title="Saved" onClose={onClose} />)
-    await userEvent.click(screen.getByRole('button', { name: 'Dismiss notification' }))
+    await userEvent.click(screen.getByRole('button', { name: 'Dismiss' }))
     expect(onClose).toHaveBeenCalledOnce()
   })
 
   it('gives the dismiss button a label, since it only contains an icon', () => {
     // Without aria-label the control announces as "button" with no purpose.
     render(<Toast title="Saved" onClose={vi.fn()} />)
-    expect(screen.getByRole('button', { name: 'Dismiss notification' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Dismiss' })).toBeInTheDocument()
   })
 
   it('renders an action alongside the title', () => {
@@ -60,8 +60,8 @@ describe('Toast', () => {
     // Toast already had two appearances and no word for them: neutral painted
     // a dark solid surface while the other four painted tinted ones, so which
     // one you got was decided by the tone you happened to pick.
-    render(<Toast tone={tone} title="Saved" />)
-    const cls = screen.getByRole('status').className
+    const { container } = render(<Toast tone={tone} title="Saved" />)
+    const cls = (container.firstElementChild as HTMLElement).className
     expect(cls).toContain(tone)
     expect(cls).toContain('subtle')
     expect(cls).not.toContain('solid')
@@ -76,7 +76,20 @@ describe('Toast', () => {
 
   it('applies the variant class', () => {
     render(<Toast title="Failed" tone="error" />)
-    expect(screen.getByRole('status').className).toContain('error')
+    expect(screen.getByRole('alert').className).toContain('error')
+  })
+
+  it('interrupts for an error and stays polite for the other tones', () => {
+    // An error is something to act on, so it does not wait behind whatever the
+    // screen reader is saying.
+    render(
+      <>
+        <Toast title="Failed" tone="error" />
+        <Toast title="Saved" tone="success" />
+      </>,
+    )
+    expect(screen.getByRole('alert')).toHaveAttribute('aria-live', 'assertive')
+    expect(screen.getByRole('status')).toHaveAttribute('aria-live', 'polite')
   })
 
   it('has no axe violations across variants', async () => {

@@ -11,17 +11,54 @@
    every consumer of every component. `placement` is the caller's answer to the
    same problem, one level up, where the layout is actually known. */
 .panel {
+  /* border-box, so a panel sized to its trigger (w-trigger, inline-size 100%)
+     is the trigger's width. Content-box added the panel's padding and border on
+     top, and a Select's panel overhung its field by that much on one side. */
+  box-sizing: border-box;
   position: absolute;
   z-index: var(--haus-z-dropdown);
   background-color: var(--haus-color-surface-overlay);
   border: var(--haus-border-width-default) solid var(--haus-color-border-default);
-  border-radius: var(--haus-radius-overlay);
+  /* The control radius: a popover is anchored to a control and reads as an
+     extension of it, as Select's panel does. Modal, which floats free of any
+     control, keeps the overlay radius (4.5, owner's note). */
+  border-radius: var(--haus-radius-control);
   box-shadow: var(--haus-elevation-floating);
   padding-block: var(--haus-space-inset-xs);
   padding-inline: var(--haus-space-inset-2xs);
   font-family: var(--haus-font-sans);
   color: var(--haus-color-ink-primary);
   min-inline-size: max-content;
+
+  /* Enters on the popover-enter role and leaves on popover-exit: a fade, a few
+     pixels of travel out of the trigger, and a slight scale. The tokens carry
+     the mode: subtle and expressive differ in duration, offset and scale, and
+     reduced has no travel or scale, so it is a short fade. --haus-popover-dir
+     is which way "out of the trigger" is: down for a panel below, up for one
+     above. */
+  --haus-popover-dir: -1;
+  transform-origin: top;
+  animation: haus-popover-in var(--haus-motion-popover-enter-duration) var(--haus-motion-popover-enter-easing) both;
+}
+
+.panel[data-state='closed'] {
+  animation: haus-popover-out var(--haus-motion-popover-exit-duration) var(--haus-motion-popover-exit-easing) both;
+}
+
+@keyframes haus-popover-in {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--haus-motion-popover-enter-offset) * var(--haus-popover-dir)))
+      scale(var(--haus-motion-popover-enter-scale));
+  }
+}
+
+@keyframes haus-popover-out {
+  to {
+    opacity: 0;
+    transform: translateY(calc(var(--haus-motion-popover-enter-offset) * var(--haus-popover-dir)))
+      scale(var(--haus-motion-popover-enter-scale));
+  }
 }
 
 /* Logical, so the panel pins to the side the text starts on and flips with the
@@ -40,14 +77,20 @@
   inset-block-start: calc(100% + var(--haus-space-gap-2xs));
 }
 .top {
+  --haus-popover-dir: 1;
+  transform-origin: bottom;
   inset-block-end: calc(100% + var(--haus-space-gap-2xs));
 }
 
-/* `trigger` is the stretch case sized by the anchor; the fixed steps are for
+/* `trigger` is at least the trigger's width and grows to fit its widest
+   item, so nothing in it is cut off or ellipsed, up to the widest popover
+   step, past which its content wraps (owner, 4.5: no ellipses, and a menu
+   item's hover fill must stay inside the panel). The fixed steps are for
    panels holding a form, where content width is not a useful measure. */
 .w-trigger {
-  inline-size: 100%;
-  min-inline-size: 0;
+  min-inline-size: 100%;
+  inline-size: max-content;
+  max-inline-size: var(--haus-popover-width-xl);
 }
 .w-sm {
   inline-size: var(--haus-popover-width-sm);

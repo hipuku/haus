@@ -21,6 +21,15 @@ import { defineConfig } from 'vitest/config'
 const MODES = ['light', 'dark'] as const
 
 /**
+ * The "Run tests" button in Storybook's sidebar starts Vitest itself (it sets
+ * VITEST_CHILD_PROCESS) and renames every project to one fixed name, so two
+ * projects collide and Vitest refuses to start: "Project name ... is not
+ * unique". From the sidebar it runs light only; the dark half is the toolbar's
+ * job there, and the command line and CI still run both.
+ */
+const RUN_MODES = process.env.VITEST_CHILD_PROCESS === 'true' ? MODES.slice(0, 1) : MODES
+
+/**
  * Screenshots carry the platform in their filename, which is Vitest's default
  * and is right: a font renders differently on macOS and on Linux, so one file
  * cannot serve both. Only the Linux images are committed, and CI is the gate.
@@ -109,6 +118,6 @@ async function modeProject(mode: (typeof MODES)[number]) {
 
 export default defineConfig(async () => ({
   test: {
-    projects: await Promise.all(MODES.map(modeProject)),
+    projects: await Promise.all(RUN_MODES.map(modeProject)),
   },
 }))

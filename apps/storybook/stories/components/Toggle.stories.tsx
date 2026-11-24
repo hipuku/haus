@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Toggle } from 'haus-components'
+import { Item, MotionCompare, Row, Stack } from '../helpers'
 
 const meta = {
   title: 'Components/Toggle',
@@ -29,16 +30,72 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Playground: Story = {}
-export const WithDescription: Story = {
-  args: { description: 'Sends a push to every signed-in device.' },
-}
-export const Sizes: Story = {
+
+const story = (text: string) => ({ docs: { description: { story: text } } })
+
+export const Size: Story = {
+  parameters: story('md is the default; sm sits in a dense settings list.'),
   render: args => (
-    <div style={{ display: 'grid', gap: 'var(--haus-space-3)' }}>
-      <Toggle {...args} size="sm" label="Small" />
-      <Toggle {...args} size="md" label="Medium" />
-    </div>
+    <Row>
+      {(['sm', 'md'] as const).map(size => (
+        <Item key={size} label={size}>
+          <Toggle {...args} size={size} />
+        </Item>
+      ))}
+    </Row>
   ),
 }
-export const LabelOnTheRight: Story = { args: { labelPosition: 'right' } }
-export const Disabled: Story = { args: { disabled: true } }
+
+export const States: Story = {
+  parameters: {
+    ...story('Every state side by side. Hover and focus are forced, so they can be reviewed without a pointer.'),
+    pseudo: { hover: ['#state-hover label'], focusVisible: ['#state-focus input'] },
+  },
+  render: args => (
+    <Row still>
+      <Item label="off">
+        <Toggle {...args} />
+      </Item>
+      <Item label="hover">
+        <Toggle {...args} id="state-hover" />
+      </Item>
+      <Item label="focus">
+        <Toggle {...args} id="state-focus" />
+      </Item>
+      <Item label="on">
+        <Toggle {...args} defaultChecked />
+      </Item>
+      <Item label="disabled">
+        <Toggle {...args} disabled />
+      </Item>
+    </Row>
+  ),
+}
+
+export const Motion: Story = {
+  parameters: story(
+    'Switch each one. Subtle eases the thumb across; expressive springs it and lets it settle at the far ' +
+      'end; reduced jumps.',
+  ),
+  render: args => (
+    <MotionCompare
+      hint="Replay switches each toggle, or switch one yourself."
+      remount={false}
+      render={(_mode, run) => <Toggle {...args} checked={run % 2 === 1} onChange={() => {}} />}
+    />
+  ),
+}
+
+export const Content: Story = {
+  parameters: story('A description under the label, and the label on either side.'),
+  render: args => (
+    <Stack>
+      <Item label="description">
+        <Toggle {...args} description="Sends a push to every signed-in device." />
+      </Item>
+      <Item label="label right">
+        <Toggle {...args} labelPosition="right" />
+      </Item>
+    </Stack>
+  ),
+}

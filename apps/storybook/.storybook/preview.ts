@@ -19,8 +19,21 @@ const setMode = (mode: unknown) => {
   document.documentElement.dataset.theme = mode === 'dark' ? 'dark' : 'light'
 }
 
+/**
+ * Subtle, expressive or reduced, from the toolbar. Sets `data-haus-motion` on
+ * the root, the switch a consumer uses (motion.css). Subtle is the default and
+ * needs no attribute, so it removes it. Reduced here is the attribute, not the
+ * operating system setting, so it can be reviewed without changing the OS.
+ */
+const setMotion = (motion: unknown) => {
+  const root = document.documentElement
+  if (motion === 'expressive' || motion === 'reduced') root.dataset.hausMotion = motion
+  else delete root.dataset.hausMotion
+}
+
 const withMode: Decorator = (Story, context) => {
   setMode(context.globals.mode)
+  setMotion(context.globals.motion)
   return Story()
 }
 
@@ -56,7 +69,7 @@ function ModeDocsContainer(props: DocsContainerProps) {
 }
 
 const preview: Preview = {
-  initialGlobals: { backgrounds: { value: 'surface' }, mode: 'light' },
+  initialGlobals: { backgrounds: { value: 'surface' }, mode: 'light', motion: 'subtle' },
   globalTypes: {
     mode: {
       description: 'Light or dark mode',
@@ -66,6 +79,19 @@ const preview: Preview = {
         items: [
           { value: 'light', title: 'Light' },
           { value: 'dark', title: 'Dark' },
+        ],
+        dynamicTitle: true,
+      },
+    },
+    motion: {
+      description: 'Motion mode',
+      toolbar: {
+        title: 'Motion',
+        icon: 'transfer',
+        items: [
+          { value: 'subtle', title: 'Subtle (default)' },
+          { value: 'expressive', title: 'Expressive' },
+          { value: 'reduced', title: 'Reduced' },
         ],
         dynamicTitle: true,
       },

@@ -26,6 +26,9 @@
   font-size: var(--haus-type-heading-sm-size);
   font-weight: var(--haus-type-heading-sm-weight);
   line-height: var(--haus-type-heading-sm-leading);
+  /* The role read whole: the tracking was left off, which plan 4.5 item 5
+     names as EmptyState's case. */
+  letter-spacing: var(--haus-type-heading-sm-tracking);
   color: var(--haus-color-ink-primary);
 }
 
@@ -33,7 +36,9 @@
   margin: 0;
   max-inline-size: var(--haus-measure-sm);
   font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
   line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
   color: var(--haus-color-ink-secondary);
 }
 

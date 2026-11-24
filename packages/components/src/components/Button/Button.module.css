@@ -26,38 +26,63 @@
   --haus-btn-ink: var(--haus-color-ink-primary);
   --haus-btn-text-ink: inherit;
 
-  /* Pressed-state luminance, for the weights with no darker token to move to.
-     Two properties rather than one declared per variant: a variant rule sits
-     after the tone rules at equal specificity, so anything it declared would
-     have won on source order and silently unmade the tone's value. Neutral's
-     solid weight has a real `primary-pressed` token and needs no shade; its
-     tinted weights press onto `surface-sunken`, which is already the hover
-     fill, so luminance is the only thing left to move. */
-  --haus-btn-shade: none;
-  --haus-btn-shade-soft: brightness(0.97);
+  /* Pressed is the hover fill moved toward the page's ink, so a press reads
+     as a darker fill in light and a lighter one in dark, and the label keeps
+     its own colour. It replaces a brightness() filter that dimmed the label
+     with the fill. A percentage, which the no-raw-values rule allows. */
+  --haus-btn-press-ink: var(--haus-color-ink-primary);
+  --haus-btn-press-amount: 12%;
+
+  position: relative;
+  box-sizing: border-box;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--haus-space-gap-xs);
   font-family: var(--haus-font-sans);
-  font-weight: var(--haus-weight-emphasis);
-  letter-spacing: var(--haus-type-label-md-tracking);
   border-radius: var(--haus-radius-control);
   border: var(--haus-border-width-default) solid transparent;
   cursor: pointer;
+  /* Release and hover run on the highlight role; the press itself runs on the
+     press role (below). Reduced sets highlight to 0ms and press scale to 1, so
+     a reduced-motion press is an instant colour change with no movement. */
+  /* Colour and focus are effects, on highlight, which never bounces. The
+     release of a press is movement, on layout: a spring that settles back in
+     expressive and an ease in subtle (plan 4.1). */
   transition:
-    background-color var(--haus-motion-micro),
-    border-color var(--haus-motion-micro),
-    color var(--haus-motion-micro),
-    box-shadow var(--haus-motion-micro);
+    background-color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    border-color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    outline-color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    outline-offset var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    transform var(--haus-motion-layout-duration) var(--haus-motion-layout-easing);
   text-decoration: none;
   white-space: nowrap;
   user-select: none;
 }
 
-.button:focus-visible {
-  outline: none;
-  box-shadow: var(--haus-focus-ring);
+/* An outline rather than a box-shadow ring: it needs no gap colour, so it is
+   correct on any surface (the shadow ring painted surface-default into its
+   gap, wrong on a card), and meets WCAG 2.4.13 at 2px and 3:1. At rest it is
+   transparent and tight; on focus it gains colour and steps out, which is the
+   draw-in. Inside forced-colors: none, because a transparent outline is
+   painted in forced colours and would show on every button. */
+@media (forced-colors: none) {
+  .button {
+    outline: var(--haus-border-width-thick) solid transparent;
+    outline-offset: 0;
+  }
+
+  .button:focus-visible {
+    outline-color: var(--haus-color-border-focus);
+    outline-offset: var(--haus-focus-outline-offset);
+  }
+}
+
+.button:active:not(:disabled, [aria-disabled='true']) {
+  transform: scale(var(--haus-motion-press-scale));
+  transition-duration: var(--haus-motion-press-duration);
+  transition-timing-function: var(--haus-motion-press-easing);
 }
 
 .button:disabled,
@@ -71,21 +96,27 @@
 
 .sm {
   font-size: var(--haus-type-label-sm-size);
+  font-weight: var(--haus-type-label-sm-weight);
   line-height: var(--haus-type-label-sm-leading);
+  letter-spacing: var(--haus-type-label-sm-tracking);
   padding: var(--haus-space-inset-2xs) var(--haus-space-inset-sm);
   min-height: var(--haus-control-height-sm);
 }
 
 .md {
   font-size: var(--haus-type-label-md-size);
+  font-weight: var(--haus-type-label-md-weight);
   line-height: var(--haus-type-label-md-leading);
+  letter-spacing: var(--haus-type-label-md-tracking);
   padding: var(--haus-space-inset-xs) var(--haus-space-inset-md);
   min-height: var(--haus-control-height-md);
 }
 
 .lg {
-  font-size: var(--haus-type-body-size);
-  line-height: var(--haus-type-body-leading);
+  font-size: var(--haus-type-label-lg-size);
+  font-weight: var(--haus-type-label-lg-weight);
+  line-height: var(--haus-type-label-lg-leading);
+  letter-spacing: var(--haus-type-label-lg-tracking);
   padding: var(--haus-space-inset-sm) var(--haus-space-inset-lg);
   min-height: var(--haus-control-height-lg);
 }
@@ -115,14 +146,6 @@
    carries a `solid` role at 700 and why Badge's solid appearance already
    reaches for it. Hover moves to `emphasis` at 900 in every tone, so the ink
    only ever gains contrast. */
-
-.info,
-.success,
-.warning,
-.error {
-  --haus-btn-shade: brightness(0.94);
-  --haus-btn-shade-soft: brightness(0.94);
-}
 
 .info {
   --haus-btn-solid: var(--haus-color-info-default);
@@ -192,9 +215,16 @@
   border-color: var(--haus-btn-solid-hover);
 }
 .primary:active:not(:disabled) {
-  background-color: var(--haus-btn-solid-pressed);
-  border-color: var(--haus-btn-solid-pressed);
-  filter: var(--haus-btn-shade);
+  background-color: color-mix(
+    in oklch,
+    var(--haus-btn-solid-pressed),
+    var(--haus-btn-press-ink) var(--haus-btn-press-amount)
+  );
+  border-color: color-mix(
+    in oklch,
+    var(--haus-btn-solid-pressed),
+    var(--haus-btn-press-ink) var(--haus-btn-press-amount)
+  );
 }
 
 .secondary {
@@ -207,8 +237,11 @@
   border-color: var(--haus-btn-border-hover);
 }
 .secondary:active:not(:disabled) {
-  background-color: var(--haus-btn-bg-hover);
-  filter: var(--haus-btn-shade-soft);
+  background-color: color-mix(
+    in oklch,
+    var(--haus-btn-bg-hover),
+    var(--haus-btn-press-ink) var(--haus-btn-press-amount)
+  );
 }
 
 .ghost {
@@ -221,7 +254,11 @@
   border-color: var(--haus-btn-border-ghost);
 }
 .ghost:active:not(:disabled) {
-  background-color: var(--haus-btn-bg-hover);
+  background-color: color-mix(
+    in oklch,
+    var(--haus-btn-bg-hover),
+    var(--haus-btn-press-ink) var(--haus-btn-press-amount)
+  );
 }
 
 .text {
@@ -234,8 +271,12 @@
   text-decoration-thickness: var(--haus-border-width-default);
   text-decoration-color: oklch(from currentColor l c h / var(--haus-opacity-subtle));
   transition:
-    text-decoration-color var(--haus-motion-micro),
-    text-decoration-thickness var(--haus-motion-micro);
+    color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    text-decoration-color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    text-decoration-thickness var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    outline-color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    outline-offset var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    transform var(--haus-motion-layout-duration) var(--haus-motion-layout-easing);
 }
 .text:hover:not(:disabled) {
   background-color: transparent;
@@ -253,17 +294,52 @@
    the base inline-flex: forcing display:inline dropped the button out of flex
    layout, so an external button sat off the baseline next to a plain one. */
 .externalIcon {
-  padding-inline-start: 0.15em;
+  display: inline-flex;
+  inline-size: 1em;
+  block-size: 1em;
+}
+
+.externalIcon svg {
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+/* The label, trimmed to its cap height so the control centres the letters
+   rather than DM Sans's line box, which sat them high (4.5 finding 1).
+   text-box is progressive: a browser without it keeps today's centring. */
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--haus-space-gap-xs);
+  text-box: trim-both cap alphabetic;
+  transition: opacity var(--haus-motion-feedback-duration) var(--haus-motion-feedback-easing);
+}
+
+/* Loading holds the width: the label stays in flow, invisible, and the
+   spinner sits over it, so neither the button nor its neighbours move. */
+.loading .label {
+  opacity: 0;
+}
+
+.spinnerSlot {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  animation: haus-btn-spinner-in var(--haus-motion-feedback-duration) var(--haus-motion-feedback-easing) both;
+  /* Two stagger steps after the label starts to leave: 0ms in subtle, which
+     swaps them together, 80ms in expressive. */
+  animation-delay: calc(var(--haus-motion-stagger-step) * 2);
+}
+
+@keyframes haus-btn-spinner-in {
+  from {
+    opacity: 0;
+  }
 }
 
 /* The loading spinner moved to the Spinner component with haus#55. It was the
    fourth independent one in the portfolio and the one inside the design system. */
-
-@media (prefers-reduced-motion: reduce) {
-  .button {
-    transition-duration: var(--haus-duration-reduced);
-  }
-}
 
 /* forced-colors drops box-shadow entirely, and every ring in this system is one.
    Without this a Windows High Contrast user gets no focus indicator at all.

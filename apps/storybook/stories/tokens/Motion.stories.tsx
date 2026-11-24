@@ -14,6 +14,7 @@ import {
   TD,
   TableDivider,
 } from './_shared'
+import { ModesPage } from './motionModes'
 
 /* ─── Duration table ─────────────────────────────────────────────────────── */
 
@@ -407,3 +408,6 @@ const meta: Meta = {
 export default meta
 type Story = StoryObj
 export const Overview: Story = { render: () => <MotionPage /> }
+
+/** Subtle, expressive and reduced, side by side, with every role's values per mode. */
+export const Modes: Story = { render: () => <ModesPage /> }

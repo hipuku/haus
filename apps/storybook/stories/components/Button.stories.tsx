@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Button } from 'haus-components'
+import { Grid, Item, MotionCompare, Row } from '../helpers'
 
 /**
  * One file per component, with the props as controls.
@@ -69,145 +70,141 @@ type Story = StoryObj<typeof meta>
 
 export const Playground: Story = {}
 
-export const Weights: Story = {
+const VARIANTS = ['primary', 'secondary', 'ghost', 'text'] as const
+const TONES = ['neutral', 'info', 'success', 'warning', 'error'] as const
+const SIZES = ['sm', 'md', 'lg'] as const
+
+const story = (text: string) => ({ docs: { description: { story: text } } })
+
+export const Variant: Story = {
+  parameters: story('Visual weight, from most to least emphasis. Weight only: meaning is `tone`.'),
   render: args => (
-    <div style={{ display: 'flex', gap: 'var(--haus-space-3)', flexWrap: 'wrap' }}>
-      <Button {...args} variant="primary">
-        Primary
-      </Button>
-      <Button {...args} variant="secondary">
-        Secondary
-      </Button>
-      <Button {...args} variant="ghost">
-        Ghost
-      </Button>
-      <Button {...args} variant="text">
-        Text
-      </Button>
-    </div>
+    <Row>
+      {VARIANTS.map(variant => (
+        <Item key={variant} label={variant}>
+          <Button {...args} variant={variant} />
+        </Item>
+      ))}
+    </Row>
   ),
 }
 
-const TONES = ['neutral', 'info', 'success', 'warning', 'error'] as const
-const WEIGHTS = ['primary', 'secondary', 'ghost', 'text'] as const
+export const Tone: Story = {
+  parameters: story('What the action means. Every tone works at every variant (see Tone × Variant).'),
+  render: args => (
+    <Row>
+      {TONES.map(tone => (
+        <Item key={tone} label={tone}>
+          <Button {...args} tone={tone} />
+        </Item>
+      ))}
+    </Row>
+  ),
+}
 
-export const Tones: Story = {
-  name: 'Tone is separate from weight',
+export const Size: Story = {
+  parameters: story('sm is 28px for dense pointer UI, md 36px is the default, lg 44px is the AAA target size.'),
+  render: args => (
+    <Row>
+      {SIZES.map(size => (
+        <Item key={size} label={size}>
+          <Button {...args} size={size} />
+        </Item>
+      ))}
+    </Row>
+  ),
+}
+
+export const ToneByVariant: Story = {
+  name: 'Tone × Variant',
+  parameters: story(
+    'Every combination, because the point is that every cell works. A tone remaps custom properties and ' +
+      'decides nothing about weight; a variant reads the ones it needs and decides nothing about meaning.',
+  ),
+  render: args => (
+    <Grid
+      rows={TONES}
+      columns={VARIANTS}
+      render={(tone, variant) => <Button {...args} tone={tone} variant={variant} children="Delete" />}
+    />
+  ),
+}
+
+export const States: Story = {
   parameters: {
-    docs: {
-      description: {
-        story:
-          'The whole grid, because the point is that every cell of it works. A tone remaps ' +
-          'a set of custom properties and decides nothing about weight; a weight reads the ' +
-          'ones it needs and decides nothing about meaning. Before this, `tone="error"` set ' +
-          'background, border and colour outright and won on source order, so the ghost and ' +
-          'text columns below rendered as solid buttons.',
-      },
-    },
+    ...story(
+      'Every state side by side. Hover, focus and pressed are forced, so they can be reviewed without a ' +
+        'pointer. Loading keeps the width of the rest state.',
+    ),
+    pseudo: { hover: ['#state-hover'], focusVisible: ['#state-focus'], active: ['#state-pressed'] },
   },
   render: args => (
-    <table style={{ borderCollapse: 'separate', borderSpacing: 'var(--haus-space-3)' }}>
-      <thead>
-        <tr>
-          {/* The corner cell of a two-axis grid names the two axes. Empty, it
-              is an unlabelled header, which axe reports and a screen reader
-              reads as nothing before every column. */}
-          <th
-            scope="col"
-            style={{
-              font: 'inherit',
-              fontSize: 'var(--haus-type-label-xs-size)',
-              color: 'var(--haus-color-ink-secondary)',
-              textAlign: 'start',
-              textTransform: 'uppercase',
-            }}
-          >
-            Tone by weight
-          </th>
-          {WEIGHTS.map(weight => (
-            <th
-              key={weight}
-              style={{
-                font: 'inherit',
-                fontSize: 'var(--haus-type-label-xs-size)',
-                color: 'var(--haus-color-ink-secondary)',
-                textAlign: 'start',
-                textTransform: 'uppercase',
-              }}
-            >
-              {weight}
-            </th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {TONES.map(tone => (
-          <tr key={tone}>
-            <th
-              scope="row"
-              style={{
-                font: 'inherit',
-                fontSize: 'var(--haus-type-label-xs-size)',
-                color: 'var(--haus-color-ink-secondary)',
-                textAlign: 'start',
-                textTransform: 'uppercase',
-              }}
-            >
-              {tone}
-            </th>
-            {WEIGHTS.map(weight => (
-              <td key={weight}>
-                <Button {...args} variant={weight} tone={tone}>
-                  Delete
-                </Button>
-              </td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <Row still>
+      <Item label="rest">
+        <Button {...args} />
+      </Item>
+      <Item label="hover">
+        <Button {...args} id="state-hover" />
+      </Item>
+      <Item label="focus">
+        <Button {...args} id="state-focus" />
+      </Item>
+      <Item label="pressed">
+        <Button {...args} id="state-pressed" />
+      </Item>
+      <Item label="loading">
+        <Button {...args} loading />
+      </Item>
+      <Item label="disabled">
+        <Button {...args} disabled />
+      </Item>
+    </Row>
   ),
 }
 
-export const Sizes: Story = {
+export const Motion: Story = {
+  parameters: story(
+    'Press and hold each one, then release. Subtle presses to 0.98 and eases back; expressive presses to 0.95 ' +
+      'and springs back with a settle; reduced changes colour only. Replay restarts the loading cross-fade, which ' +
+      'expressive sequences.',
+  ),
   render: args => (
-    <div style={{ display: 'flex', gap: 'var(--haus-space-3)', alignItems: 'center' }}>
-      <Button {...args} size="sm">
-        Small
-      </Button>
-      <Button {...args} size="md">
-        Medium
-      </Button>
-      <Button {...args} size="lg">
-        Large
-      </Button>
-    </div>
+    <MotionCompare
+      hint="Press and hold a button to compare the press. Replay switches loading on and off."
+      remount={false}
+      render={(_mode, run) => <Button {...args} loading={run % 2 === 1} />}
+    />
+  ),
+}
+
+export const Content: Story = {
+  parameters: story('A long label stays on one line, and the external glyph follows any label.'),
+  render: args => (
+    <Row>
+      <Item label="long label">
+        <Button {...args} children="Save changes and continue to the next step" />
+      </Item>
+      <Item label="external">
+        <Button {...args} external children="Documentation" />
+      </Item>
+    </Row>
   ),
 }
 
 export const AsALink: Story = {
-  name: 'As a link, and disabled as a link',
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'A disabled anchor has no `href`, `tabindex="-1"` and no `target`. ' +
-          '`aria-disabled` alone announces a state without creating one: the ' +
-          'link stayed focusable and still navigated.',
-      },
-    },
-  },
+  name: 'A disabled link is really disabled',
+  parameters: story(
+    'A disabled anchor has no `href`, `tabindex="-1"` and no `target`. `aria-disabled` alone announces a ' +
+      'state without creating one: the link stayed focusable and still navigated.',
+  ),
   render: args => (
-    <div style={{ display: 'flex', gap: 'var(--haus-space-3)', alignItems: 'center' }}>
-      <Button {...args} href="https://haus.hipuku.dev" external>
-        Documentation
-      </Button>
-      <Button {...args} href="https://haus.hipuku.dev" disabled>
-        Unavailable
-      </Button>
-    </div>
+    <Row>
+      <Item label="link">
+        <Button {...args} href="https://haus.hipuku.dev" external children="Documentation" />
+      </Item>
+      <Item label="disabled link">
+        <Button {...args} href="https://haus.hipuku.dev" disabled children="Unavailable" />
+      </Item>
+    </Row>
   ),
 }
-
-export const Loading: Story = { args: { loading: true } }
-export const Disabled: Story = { args: { disabled: true } }

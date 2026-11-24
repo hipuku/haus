@@ -26,7 +26,7 @@ export { Card } from './components/Card'
 export type { CardProps, CardOwnProps, CardAsChildProps, CardVariant, CardElement } from './components/Card'
 
 export { Select } from './components/Select'
-export type { SelectProps, SelectOption, SelectSize } from './components/Select'
+export type { SelectProps, SelectOption } from './components/Select'
 
 export { Textarea } from './components/Textarea'
 export type { TextareaProps } from './components/Textarea'
@@ -41,7 +41,13 @@ export { Toast } from './components/Toast'
 export type { ToastProps, ToastTone, ToastVariant, ToastAppearance } from './components/Toast'
 
 export { Modal } from './components/Modal'
-export type { ModalProps, ModalSize } from './components/Modal'
+export type { ModalProps, ModalSize, ModalPlacement } from './components/Modal'
+
+export { Drawer } from './components/Drawer'
+export type { DrawerProps, DrawerSide } from './components/Drawer'
+
+export { ConfirmDialog } from './components/ConfirmDialog'
+export type { ConfirmDialogProps } from './components/ConfirmDialog'
 
 export { Checkbox } from './components/Checkbox'
 export type { CheckboxProps } from './components/Checkbox'
@@ -63,6 +69,9 @@ export type { EmptyStateProps, EmptyStateHeadingLevel, EmptyStateLive } from './
 
 export { Popover } from './components/Popover'
 export type { PopoverProps, PopoverAlign, PopoverPlacement, PopoverWidth, PopoverRole } from './components/Popover'
+
+export { Menu, MenuItem, MenuSeparator, MenuLabel } from './components/Menu'
+export type { MenuProps, MenuItemProps } from './components/Menu'
 
 export { Tabs, tabIdFor } from './components/Tabs'
 export type {

@@ -29,6 +29,19 @@ const REQUIRED: Record<string, Record<string, unknown>> = {
   // An open panel renders a plain div rather than a portal, so unlike Modal
   // it has something to hand back on the server too.
   Popover: { open: true, onClose: () => {}, triggerRef: { current: null }, 'aria-label': 'Options', children: 'Body' },
+  Menu: { open: true, onClose: () => {}, triggerRef: { current: null }, 'aria-label': 'Actions', children: 'Body' },
+  MenuItem: { children: 'Rename' },
+  MenuSeparator: {},
+  MenuLabel: { children: 'Signed in as Ada' },
+  Drawer: { open: false, onClose: () => {}, title: 'Details', children: 'Body' },
+  ConfirmDialog: {
+    open: false,
+    title: 'Delete workspace',
+    description: 'This cannot be undone.',
+    confirmLabel: 'Delete',
+    onConfirm: () => {},
+    onCancel: () => {},
+  },
   RadioGroup: { name: 'size', options: [{ value: 'sm', label: 'Small' }] },
   Select: { options: [{ value: 'a', label: 'A' }], value: 'a', onChange: () => {}, label: 'Pick' },
   Spinner: {},

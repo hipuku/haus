@@ -5,6 +5,18 @@
   inline-size: 100%;
 }
 
+/* Input's label: the field-label role, 8px above the control (4px gap plus
+   this margin), so a form mixing the two reads as one (finding 1). */
+.label {
+  margin-block-end: var(--haus-space-stack-2xs);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-label-field-size);
+  font-weight: var(--haus-type-label-field-weight);
+  line-height: var(--haus-type-label-field-leading);
+  letter-spacing: var(--haus-type-label-field-tracking);
+  color: var(--haus-color-ink-primary);
+}
+
 /* The box the panel is positioned against: the trigger alone, so a hint or an
    error under it does not push the panel down. */
 .control {
@@ -32,18 +44,52 @@
   border-radius: var(--haus-radius-control);
   color: var(--haus-color-ink-primary);
   cursor: pointer;
-  transition:
-    border-color var(--haus-motion-micro),
-    box-shadow var(--haus-motion-micro);
+  /* border-box so min-block-size is the whole control, 36px like Input and an
+     md Button rather than 38px (finding 3). One size, as Input: a field has no
+     size scale (owner, 2026-11-24), and no product used sm or lg. body-sm is
+     the role Input's value reads (finding 2). */
+  box-sizing: border-box;
+  min-block-size: var(--haus-control-height-md);
+  padding: var(--haus-space-inset-xs) var(--haus-space-inset-sm);
+  font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
+  line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
+  transition-property: border-color, outline-color, outline-offset;
+  transition-duration: var(--haus-motion-highlight-duration);
+  transition-timing-function: var(--haus-motion-highlight-easing);
 }
 
-.trigger:hover:not(:disabled) {
-  --haus-lb-border: var(--haus-color-ink-secondary);
+/* Input's hover: the edge moves toward the ink (finding 5). */
+.trigger:hover:not(:disabled, .error, :focus-visible, [aria-expanded='true']) {
+  --haus-lb-border: color-mix(in oklch, var(--haus-color-border-control), var(--haus-color-ink-primary) 30%);
 }
 
-.trigger:focus-visible {
-  outline: none;
-  box-shadow: var(--haus-focus-ring);
+/* The stepped-out outline Button and Input use (finding 6). */
+@media (forced-colors: none) {
+  .trigger {
+    outline: var(--haus-border-width-thick) solid transparent;
+    outline-offset: 0;
+  }
+
+  /* While open as well as on keyboard focus. A button does not match
+     :focus-visible on a click, where a text field does, so a clicked Select
+     showed no ring while a clicked Input did. Open is the state it is in use. */
+  .trigger:focus-visible,
+  .trigger[aria-expanded='true'] {
+    outline-color: var(--haus-color-border-focus);
+    outline-offset: var(--haus-focus-outline-offset);
+  }
+
+  .trigger.error:focus-visible,
+  .trigger.error[aria-expanded='true'] {
+    outline-color: var(--haus-color-error-default);
+  }
+}
+
+.trigger:focus-visible,
+.trigger[aria-expanded='true']:not(.error) {
+  --haus-lb-border: var(--haus-color-border-focus);
 }
 
 .trigger:disabled {
@@ -52,49 +98,29 @@
 }
 
 .value {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  /* Wraps rather than ellipsing (owner, 4.5): a choice the field cuts off is a
+     choice the user cannot read. The field grows a line instead. */
+  overflow-wrap: anywhere;
 }
 
 .placeholder {
   color: var(--haus-color-ink-placeholder);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
 }
 
 .chevron {
   flex: none;
-  color: var(--haus-color-ink-tertiary);
-  transition: transform var(--haus-motion-micro);
+  inline-size: 1em;
+  block-size: 1em;
+  /* The secondary ink, so the chevron reads with the value it sits beside
+     rather than as a lighter, separate mark. */
+  color: var(--haus-color-ink-secondary);
+  /* Turning is movement: the layout spring, which settles in expressive. */
+  transition: transform var(--haus-motion-layout-duration) var(--haus-motion-layout-easing);
 }
 
 .chevronOpen {
   transform: rotate(180deg);
-}
-
-/* ── Sizes ── */
-
-.sm {
-  font-size: var(--haus-type-label-sm-size);
-  line-height: var(--haus-type-label-sm-leading);
-  padding: var(--haus-space-inset-2xs) var(--haus-space-inset-sm);
-  min-block-size: var(--haus-control-height-sm);
-}
-
-.md {
-  font-size: var(--haus-type-label-md-size);
-  line-height: var(--haus-type-label-md-leading);
-  padding: var(--haus-space-inset-xs) var(--haus-space-inset-sm);
-  min-block-size: var(--haus-control-height-md);
-}
-
-.lg {
-  font-size: var(--haus-type-body-size);
-  line-height: var(--haus-type-body-leading);
-  padding: var(--haus-space-inset-sm) var(--haus-space-inset-md);
-  min-block-size: var(--haus-control-height-lg);
 }
 
 /* ── Panel ───────────────────────────────────────────────────────────────────
@@ -114,24 +140,91 @@
 }
 
 .option {
+  /* Above the indicator, which is drawn behind the rows. */
+  position: relative;
   display: flex;
-  flex-direction: column;
-  gap: var(--haus-space-gap-2xs);
-  padding: var(--haus-space-inset-2xs) var(--haus-space-inset-xs);
-  /* Concentric with the panel: the panel corner is radius-overlay and the panel
-     insets its options by inset-2xs, so the highlight matches the container's
-     curve (overlay - inset) instead of a tighter marker radius that pokes inside
-     the panel's rounded corner on the first and last row. */
-  border-radius: calc(var(--haus-radius-overlay) - var(--haus-space-inset-2xs));
+  align-items: center;
+  gap: var(--haus-space-gap-xs);
+  /* 8px top and bottom, a comfortable pointer row (finding 8). */
+  padding: var(--haus-space-inset-xs);
+  /* The control radius, the same as the panel's and the trigger's, so the
+     highlight, the list and the field share one corner. */
+  border-radius: var(--haus-radius-control);
   cursor: pointer;
   color: var(--haus-color-ink-primary);
+  /* Expressive staggers the rows in after the panel, one stagger step each,
+     capped at the fifth so the sequence stays inside stagger-max (five steps). Subtle and
+     reduced have a 0ms step, so the rows arrive with the panel. */
+  animation: haus-option-in var(--haus-motion-popover-enter-duration) var(--haus-motion-popover-enter-easing) both;
+  animation-delay: calc(var(--haus-motion-stagger-step) * (var(--haus-option-index) + 1));
+}
+
+/* The travelling highlight. It moves on the indicator role: a spring in
+   expressive, instant in subtle and reduced. Its first placement after the
+   panel opens is not animated (no data-placed yet). */
+.indicator {
+  position: absolute;
+  inset-inline: var(--haus-space-inset-2xs);
+  inset-block-start: 0;
+  border-radius: var(--haus-radius-control);
+  background-color: var(--haus-color-surface-sunken);
+  pointer-events: none;
+}
+
+.indicator[data-placed] {
+  transition:
+    transform var(--haus-motion-indicator-duration) var(--haus-motion-indicator-easing),
+    block-size var(--haus-motion-indicator-duration) var(--haus-motion-indicator-easing);
+}
+
+/* The check draws its stroke on the draw role: 0ms, already drawn, in subtle
+   and reduced. */
+.check path {
+  stroke-dasharray: 1;
+  animation: haus-select-draw var(--haus-motion-draw-duration) var(--haus-motion-draw-easing) both;
+  animation-delay: calc(var(--haus-motion-stagger-step) * 2);
+}
+
+@keyframes haus-select-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+
+@keyframes haus-option-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.optionText {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--haus-space-gap-2xs);
+  min-inline-size: 0;
+}
+
+.check {
+  flex: none;
+  inline-size: 1em;
+  block-size: 1em;
+  color: var(--haus-color-primary-default);
 }
 
 /* `active` is the highlighted row, which is not DOM focus: focus stays on the
    trigger and this is what aria-activedescendant points at. Hover and keyboard
    both land here, so there is one highlight rather than two competing ones. */
 .active {
-  background-color: var(--haus-color-surface-sunken);
+  /* The indicator draws the highlight. */
+  background-color: transparent;
+}
+
+/* Forced colours drop the indicator's fill, so the active row marks itself. */
+@media (forced-colors: active) {
+  .active {
+    outline: var(--haus-focus-outline-forced);
+  }
 }
 
 .selected {
@@ -144,33 +237,22 @@
 }
 
 .optionLabel {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* The panel is portalled, so it does not inherit the trigger's size. Carry the
-   size onto it (data-size) and match each option label to the value shown in the
-   field, so a small listbox has small options rather than one fixed size that
-   looks oversized under the smallest trigger. */
-.panel[data-size='sm'] .optionLabel {
-  font-size: var(--haus-type-label-sm-size);
-  line-height: var(--haus-type-label-sm-leading);
-}
-.panel[data-size='md'] .optionLabel {
-  font-size: var(--haus-type-label-md-size);
-  line-height: var(--haus-type-label-md-leading);
-}
-.panel[data-size='lg'] .optionLabel {
-  font-size: var(--haus-type-body-size);
-  line-height: var(--haus-type-body-leading);
+  /* Wraps rather than ellipsing, as the value does. */
+  overflow-wrap: anywhere;
+  /* The trigger's value role, so the list and the chosen value match. */
+  font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
+  line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
 }
 
 /* The second line a native option cannot carry, and the reason this component
    exists at all. */
 .optionHint {
-  font-size: var(--haus-type-label-sm-size);
-  line-height: var(--haus-type-label-sm-leading);
+  font-size: var(--haus-type-label-caption-size);
+  font-weight: var(--haus-type-label-caption-weight);
+  line-height: var(--haus-type-label-caption-leading);
+  letter-spacing: var(--haus-type-label-caption-tracking);
   /* A hint is text, so it takes the ink every other hint takes rather than the
      glyph role, which is 3.97:1 and fails AA at this size. */
   color: var(--haus-color-ink-secondary);
@@ -178,10 +260,6 @@
 
 .trigger.error {
   --haus-lb-border: var(--haus-color-error-default);
-}
-
-.trigger.error:focus-visible {
-  box-shadow: var(--haus-focus-ring-error);
 }
 
 /* Input's hint and error lines, so a form mixing the two reads as one. */
@@ -195,6 +273,9 @@
 }
 
 .errorMessage {
+  display: flex;
+  align-items: center;
+  gap: var(--haus-space-gap-2xs);
   font-family: var(--haus-font-sans);
   font-size: var(--haus-type-label-caption-size);
   font-weight: var(--haus-type-label-caption-weight);
@@ -203,11 +284,32 @@
   color: var(--haus-color-error-default);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .trigger,
-  .chevron {
-    transition-duration: var(--haus-duration-reduced);
+/* Input's error: grows in on the layout role, after the border in expressive,
+   instant in reduced. */
+.errorSlot {
+  display: grid;
+  grid-template-rows: 1fr;
+  animation: haus-select-error-in var(--haus-motion-layout-duration) var(--haus-motion-layout-easing) both;
+  /* After the border has turned: 0ms in subtle, 80ms in expressive. */
+  animation-delay: calc(var(--haus-motion-stagger-step) * 2);
+}
+
+.errorSlot > * {
+  min-height: 0;
+  overflow: hidden;
+}
+
+@keyframes haus-select-error-in {
+  from {
+    grid-template-rows: 0fr;
+    opacity: 0;
   }
+}
+
+.errorIcon {
+  flex-shrink: 0;
+  inline-size: 1em;
+  block-size: 1em;
 }
 
 @media (forced-colors: active) {

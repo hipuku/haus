@@ -282,7 +282,9 @@ function buildMotionCss(): string {
   // Roles, per mode. Subtle is the default; data-haus-motion picks another, and
   // reduced motion wins over either, from the user's setting or the attribute.
   lines.push('  /* ── Motion roles: subtle, the default ─────────────────────────────────── */')
-  lines.push('  :root {', ...roleDeclarations('subtle'), '  }', '')
+  // Also under the attribute, so a subtree can ask for subtle inside a page
+  // set to another mode (Storybook's side-by-side Motion stories do).
+  lines.push(`  :root,`, `  [data-haus-motion='subtle'] {`, ...roleDeclarations('subtle'), '  }', '')
   lines.push(`  [data-haus-motion='expressive'] {`, ...roleDeclarations('expressive'), '  }', '')
   lines.push(`  [data-haus-motion='reduced'] {`, ...roleDeclarations('reduced'), '  }', '')
   lines.push('  @media (prefers-reduced-motion: reduce) {')
@@ -468,6 +470,11 @@ function roleDeclarations(mode: string): string[] {
     if (v.offsetPx !== undefined) pairs.push([`${r}-offset`, { $value: `${v.offsetPx}px` }])
     if (v.scale !== undefined) pairs.push([`${r}-scale`, { $value: String(v.scale) }])
   }
+  // The stagger step between siblings that enter in sequence, and the most a
+  // sequence may add in total. Subtle's is 0ms: it moves everything at once.
+  const stagger = sub(sub(motionRoles, 'stagger'), mode)
+  pairs.push(['stagger-step', { $value: `${msOf(stagger.step as DtcgToken)}ms` }])
+  pairs.push(['stagger-max', { $value: `${msOf(stagger.max as DtcgToken)}ms` }])
   return declarations(pairs, '--motion').map(line => `  ${line}`)
 }
 

@@ -42,9 +42,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Fill and edge on the highlight role; the press scale and its release on
+     press and layout, as Button's (plan 4.1). */
   transition:
-    background-color var(--haus-motion-micro),
-    border-color var(--haus-motion-micro);
+    background-color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    border-color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    outline-color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    outline-offset var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    transform var(--haus-motion-layout-duration) var(--haus-motion-layout-easing);
   /* Centred in the label's first line, not nudged: the offset is that line box
      less the box, so it follows the type role rather than one typeface. */
   margin-block-start: calc(
@@ -56,9 +61,39 @@
   border-color: var(--haus-color-primary-default);
 }
 
-.input:focus-visible ~ .box {
-  box-shadow: var(--haus-focus-ring);
-  outline: none;
+/* The stepped-out outline every control uses, right on any surface. */
+@media (forced-colors: none) {
+  .box {
+    outline: var(--haus-border-width-thick) solid transparent;
+    outline-offset: 0;
+  }
+
+  .input:focus-visible ~ .box {
+    outline-color: var(--haus-color-border-focus);
+    outline-offset: var(--haus-focus-outline-offset);
+  }
+
+  .error .input:focus-visible ~ .box {
+    outline-color: var(--haus-color-error-default);
+  }
+}
+
+.wrapper:not(.disabled):active .box {
+  transform: scale(var(--haus-motion-press-scale));
+  transition-duration: var(--haus-motion-press-duration);
+  transition-timing-function: var(--haus-motion-press-easing);
+}
+
+/* The tick draws its stroke on the draw role: 0ms in subtle and reduced. */
+.icon path {
+  stroke-dasharray: 1;
+  animation: haus-checkbox-draw var(--haus-motion-draw-duration) var(--haus-motion-draw-easing) both;
+}
+
+@keyframes haus-checkbox-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
 }
 
 /* ── Checked ── */
@@ -91,9 +126,6 @@
    moment it took focus. The token audit that found it in Select could not find it
    here, because a component that never reads a role never appears in the list of
    components reading it wrongly. */
-.error .input:focus-visible ~ .box {
-  box-shadow: var(--haus-focus-ring-error);
-}
 
 .error.checked .box {
   background-color: var(--haus-color-error-default);
@@ -126,6 +158,7 @@
   font-size: var(--haus-type-body-sm-size);
   font-weight: var(--haus-type-body-sm-weight);
   line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
   color: var(--haus-color-ink-primary);
 }
 
@@ -149,7 +182,9 @@
 }
 
 .errorMessage {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: var(--haus-space-gap-2xs);
   font-family: var(--haus-font-sans);
   font-size: var(--haus-type-label-caption-size);
   font-weight: var(--haus-type-label-caption-weight);
@@ -158,12 +193,6 @@
   color: var(--haus-color-error-default);
   margin-block-start: var(--haus-space-stack-2xs);
   padding-inline-start: calc(var(--haus-space-inset-md) + var(--haus-space-inset-xs)); /* indent past checkbox + gap */
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .box {
-    transition-duration: var(--haus-duration-reduced);
-  }
 }
 
 /* forced-colors drops box-shadow entirely, and every ring in this system is one.
@@ -175,4 +204,12 @@
     outline: var(--haus-focus-outline-forced);
     outline-offset: var(--haus-focus-outline-offset);
   }
+}
+
+/* The error carries the icon every field's error has (4.5), so it is not told
+   by colour alone. */
+.errorIcon {
+  flex-shrink: 0;
+  inline-size: 1em;
+  block-size: 1em;
 }

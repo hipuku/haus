@@ -28,13 +28,30 @@
   color: var(--haus-color-ink-inverse);
   font-family: var(--haus-font-sans);
   font-size: var(--haus-type-label-sm-size);
+  font-weight: var(--haus-type-label-sm-weight);
   line-height: var(--haus-type-label-sm-leading);
+  letter-spacing: var(--haus-type-label-sm-tracking);
   text-align: center;
   box-shadow: var(--haus-elevation-floating);
   /* Reads, does not block. The bubble sits over live content and the pointer
      needs to reach what is beneath it. The travel path from trigger to bubble
      stays inside .root, so `hoverable` still holds. */
   pointer-events: none;
+  /* Enters on the popover role, drifting away from the trigger: a fade and
+     4px in subtle, a spring and 16px in expressive, a fade in reduced. The
+     bubble is `hidden` until shown, and showing it restarts the animation.
+     It leaves at once: a tooltip that lingers covers what the pointer moved
+     on to. --haus-tooltip-dir points back at the trigger. */
+  --haus-tooltip-dir: 1;
+  animation: haus-tooltip-in var(--haus-motion-popover-enter-duration) var(--haus-motion-popover-enter-easing) both;
+}
+
+@keyframes haus-tooltip-in {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--haus-motion-popover-enter-offset) * var(--haus-tooltip-dir)))
+      scale(var(--haus-motion-popover-enter-scale));
+  }
 }
 
 /* The gap is a gap, not a margin on the bubble: a margin would sit inside the
@@ -43,5 +60,6 @@
   inset-block-end: calc(100% + var(--haus-space-gap-2xs));
 }
 .bottom {
+  --haus-tooltip-dir: -1;
   inset-block-start: calc(100% + var(--haus-space-gap-2xs));
 }

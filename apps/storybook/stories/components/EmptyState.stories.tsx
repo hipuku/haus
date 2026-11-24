@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Button, EmptyState } from 'haus-components'
+import { Item, Stack } from '../helpers'
 
 const meta = {
   title: 'Components/EmptyState',
@@ -39,27 +40,33 @@ export const Playground: Story = {}
 export const TheThreeSituations: Story = {
   name: 'The three situations',
   render: args => (
-    <div style={{ display: 'grid', gap: 'var(--haus-space-6)', maxWidth: 520 }}>
-      <EmptyState
-        {...args}
-        title="Add your first colour"
-        description="Add by hex or extract from an image."
-        action={<Button size="sm">Add a colour</Button>}
-      />
-      <EmptyState
-        {...args}
-        title="No colours match this filter"
-        description="Try a wider search, or clear the filter."
-        action={undefined}
-      />
-      <EmptyState
-        {...args}
-        title="Couldn’t open your library"
-        description="The file is there but could not be read."
-        live="polite"
-        action={undefined}
-      />
-    </div>
+    <Stack>
+      <Item label="first use">
+        <EmptyState
+          {...args}
+          title="Add your first colour"
+          description="Add by hex or extract from an image."
+          action={<Button size="sm">Add a colour</Button>}
+        />
+      </Item>
+      <Item label="no results">
+        <EmptyState
+          {...args}
+          title="No colours match this filter"
+          description="Try a wider search, or clear the filter."
+          action={undefined}
+        />
+      </Item>
+      <Item label="error, announced">
+        <EmptyState
+          {...args}
+          title="Couldn’t open your library"
+          description="The file is there but could not be read."
+          live="polite"
+          action={undefined}
+        />
+      </Item>
+    </Stack>
   ),
 }
 

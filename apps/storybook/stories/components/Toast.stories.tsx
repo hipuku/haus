@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Toast, Button } from 'haus-components'
+import { Button, Toast } from 'haus-components'
+import { Grid, Item, MotionCompare, Stack } from '../helpers'
 
 const meta = {
   title: 'Components/Toast',
@@ -15,8 +16,8 @@ const meta = {
           'and a policy about stacking, and a design system that ships one is ' +
           'shipping an opinion most consumers fight. Decision 0008.\n\n' +
           'What it does own: how one looks, and that it is announced. It carries ' +
-          'its own `role="status"`, so a notice dropped into your container is ' +
-          'still read out.',
+          'its own live region, `status` or `alert` for an error, so a notice ' +
+          'dropped into your container is still read out.',
       },
     },
   },
@@ -47,100 +48,107 @@ type Story = StoryObj<typeof meta>
 
 export const Playground: Story = {}
 
-export const Tones: Story = {
+const TONES = ['neutral', 'info', 'success', 'warning', 'error'] as const
+const APPEARANCES = ['subtle', 'solid'] as const
+const story = (text: string) => ({ docs: { description: { story: text } } })
+const undo = (
+  <Button size="sm" variant="text">
+    Undo
+  </Button>
+)
+
+export const Tone: Story = {
+  parameters: story('What the notice means. The tint, border and icon carry it; the icon differs in shape per tone.'),
   render: args => (
-    <div style={{ display: 'grid', gap: 'var(--haus-space-3)', maxWidth: 380 }}>
-      {(['neutral', 'info', 'success', 'warning', 'error'] as const).map(tone => (
-        <Toast key={tone} {...args} tone={tone} title={tone} />
+    <Stack>
+      {TONES.map(tone => (
+        <Item key={tone} label={tone}>
+          <Toast {...args} tone={tone} />
+        </Item>
       ))}
-    </div>
+    </Stack>
   ),
 }
 
-export const Appearances: Story = {
-  name: 'Appearance is separate from tone',
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Both columns, because the point is that the choice is now yours to make. ' +
-          'A `neutral` toast used to be the dark one and the other four tinted, with ' +
-          'no way to ask for the opposite. `subtle` is the default, matching Badge.\n\n' +
-          'The accent edge only appears on the tinted appearance: a stripe of the ' +
-          'same colour family against a solid surface reads as an artefact, so the ' +
-          'icon carries the tone there instead.',
-      },
-    },
-  },
+export const Appearance: Story = {
+  parameters: story('How strongly the tone is expressed: a tinted surface, or the tone as the surface.'),
   render: args => (
-    // Column-major: the flat list below is appearance-then-tone, so the rows
-    // have to be fixed and the flow turned, or the two appearances interleave.
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateRows: 'repeat(5, auto)',
-        gridAutoFlow: 'column',
-        gap: 'var(--haus-space-3)',
-      }}
-    >
-      {(['subtle', 'solid'] as const).map(appearance =>
-        (['neutral', 'info', 'success', 'warning', 'error'] as const).map(tone => (
-          <Toast
-            key={`${appearance}-${tone}`}
-            {...args}
-            tone={tone}
-            appearance={appearance}
-            title={`${tone} ${appearance}`}
-          />
-        )),
+    <Stack>
+      {APPEARANCES.map(appearance => (
+        <Item key={appearance} label={appearance}>
+          <Toast {...args} appearance={appearance} />
+        </Item>
+      ))}
+    </Stack>
+  ),
+}
+
+export const ToneByAppearance: Story = {
+  name: 'Tone × Appearance',
+  parameters: story("Every combination. Solid takes each tone's AA-safe fill, so white ink passes on all five."),
+  render: args => (
+    <Grid
+      rows={TONES}
+      columns={APPEARANCES}
+      render={(tone, appearance) => (
+        <Toast {...args} tone={tone} appearance={appearance} title={`${tone} ${appearance}`} />
       )}
-    </div>
+    />
   ),
 }
 
-export const TitleOnly: Story = { args: { description: undefined } }
-export const Dismissable: Story = { args: { onClose: () => {} } }
+export const Motion: Story = {
+  parameters: story(
+    'Toast owns its entrance. Subtle rises 4px; expressive rises 16px on a spring, then the icon and the ' +
+      'text follow one step apart; reduced is a short fade.',
+  ),
+  render: args => <MotionCompare hint="Replay brings each toast in again." render={() => <Toast {...args} />} />,
+}
 
-export const WithAction: Story = {
-  name: 'With an action',
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'The `action` slot renders in the title row and is pushed to the far ' +
-          'end by `justify-content: space-between`, so the button sits opposite ' +
-          'the title rather than crowding it. It is a `text` button, the quietest ' +
-          'one, because a notice is already competing for attention and its action ' +
-          'should read as a link, not a second surface. On a `solid` toast a ' +
-          '`.solid .action` override keeps the button legible against the filled ' +
-          'surface, which is why both are shown.',
-      },
-    },
-  },
+export const Content: Story = {
+  parameters: story(
+    'Title only, a long description, a dismiss and an action. The icon and the close stay on the title line ' +
+      'however many lines follow. The action is a `text` button so it reads as a link, not a second surface.',
+  ),
   render: args => (
-    <div style={{ display: 'grid', gap: 'var(--haus-space-3)', maxWidth: 380 }}>
-      <Toast
-        {...args}
-        appearance="subtle"
-        title="Message archived"
-        description={undefined}
-        action={
-          <Button size="sm" variant="text">
-            Undo
-          </Button>
-        }
-      />
-      <Toast
-        {...args}
-        appearance="solid"
-        title="Message archived"
-        description={undefined}
-        action={
-          <Button size="sm" variant="text">
-            Undo
-          </Button>
-        }
-      />
-    </div>
+    <Stack>
+      <Item label="title only">
+        <Toast {...args} description={undefined} />
+      </Item>
+      <Item label="long description, dismissable">
+        <Toast
+          {...args}
+          onClose={() => {}}
+          description="Your changes are live for everyone in the workspace, and the previous version is kept in the history."
+        />
+      </Item>
+      <Item label="solid, dismissable">
+        <Toast {...args} appearance="solid" tone="neutral" onClose={() => {}} />
+      </Item>
+      <Item label="action, subtle">
+        <Toast {...args} title="Message archived" description={undefined} action={undo} />
+      </Item>
+      <Item label="action, solid">
+        <Toast {...args} appearance="solid" title="Message archived" description={undefined} action={undo} />
+      </Item>
+    </Stack>
+  ),
+}
+
+export const ErrorInterrupts: Story = {
+  name: 'An error interrupts, a notice waits',
+  parameters: story(
+    'An error toast is `role="alert"` and assertive, because the user has to act on it. The other tones are ' +
+      'polite `status` regions and wait behind whatever the screen reader is saying.',
+  ),
+  render: args => (
+    <Stack>
+      <Item label="alert, assertive">
+        <Toast {...args} tone="error" title="Could not save" description="Check your connection and try again." />
+      </Item>
+      <Item label="status, polite">
+        <Toast {...args} tone="success" />
+      </Item>
+    </Stack>
   ),
 }
