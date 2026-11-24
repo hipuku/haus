@@ -27,7 +27,7 @@ export function Preview({
   story?: string
   /** The component the story belongs to, as Storybook titles it. */
   of?: string
-  layout?: 'row' | 'column' | 'centre'
+  layout?: 'row' | 'column' | 'start'
 }) {
   // Storybook's own id scheme: the title, lowercased and hyphenated, then the
   // story's export name in the same shape.

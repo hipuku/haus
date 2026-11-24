@@ -7,47 +7,89 @@
 .preview {
   border: var(--haus-border-width-default) solid var(--haus-color-border-default);
   border-radius: var(--haus-radius-surface);
-  margin-block: var(--haus-space-6) var(--haus-space-8);
+  margin-block: var(--haus-space-5) var(--haus-space-10);
   overflow: hidden;
 }
 
+/*
+ * The stage.
+ *
+ * A specimen pushed into the top left of a wide grey panel reads as something
+ * that was left there. Centred, on a field that is visibly not the page, it
+ * reads as the thing being shown. The dot grid is what makes the difference:
+ * it says the area is a surface a component has been placed on, so a Button
+ * alone in the middle of it still looks deliberate.
+ *
+ * The grid is drawn in `border-default` rather than `border-subtle`: against
+ * `surface-subtle` in dark mode the subtle line is so close to the fill that
+ * the dots did not render at all, and a texture nobody can see is a texture
+ * that is not there. It sits on `surface-subtle` so the components on it are
+ * still being judged against a real haus surface rather than against a texture.
+ */
 .stage {
   align-items: center;
-  background: var(--haus-color-surface-subtle);
+  background-color: var(--haus-color-surface-subtle);
+  background-image: radial-gradient(circle at center, var(--haus-color-border-default) 1px, transparent 1px);
+  background-position: center;
+  background-size: var(--haus-space-4) var(--haus-space-4);
   display: flex;
   flex-wrap: wrap;
   gap: var(--haus-space-4);
-  padding: var(--haus-space-8);
+  justify-content: center;
+  min-block-size: var(--haus-space-20);
+  padding: var(--haus-space-10) var(--haus-space-8);
+}
+
+/* A row that outgrows the frame scrolls rather than centring its overflow out
+   of reach on the left. */
+.stage[data-layout='row'] {
+  justify-content: safe center;
 }
 
 .stage[data-layout='column'] {
   align-items: stretch;
   flex-direction: column;
-}
-
-.stage[data-layout='centre'] {
   justify-content: center;
 }
 
+/*
+ * A form control is not a specimen to be admired in the middle of a field: it
+ * is a thing of a given width that belongs at the start of a line, and centring
+ * it makes a page of inputs look like a page of poetry.
+ */
+.stage[data-layout='start'] {
+  justify-content: flex-start;
+}
+
+/*
+ * The caption names the story. It is deliberately quiet: the example is the
+ * content and this is the label under it, so it sits on the page's own surface
+ * rather than adding a second panel.
+ */
 .caption {
   align-items: baseline;
   border-block-start: var(--haus-border-width-default) solid var(--haus-color-border-default);
-  color: var(--haus-color-ink-secondary);
+  color: var(--haus-color-ink-tertiary);
   display: flex;
   font-family: var(--haus-font-mono);
-  font-size: var(--haus-type-label-caption-size);
+  font-size: var(--haus-type-mono-xs-size);
   gap: var(--haus-space-4);
   justify-content: space-between;
-  letter-spacing: var(--haus-type-label-caption-tracking);
-  line-height: var(--haus-type-label-caption-leading);
-  padding: var(--haus-space-3) var(--haus-space-4);
+  letter-spacing: var(--haus-type-mono-xs-tracking);
+  line-height: var(--haus-type-mono-xs-leading);
+  padding: var(--haus-space-2) var(--haus-space-4);
 }
 
 .caption a {
-  color: var(--haus-color-ink-link);
+  color: var(--haus-color-ink-tertiary);
   text-decoration: none;
 }
 
-.caption a:hover {
+/* The link is found by looking for it, and then it answers. A second coloured
+   word in every caption on a page of twelve examples is twelve distractions
+   from the examples. */
+.caption a:hover,
+.caption a:focus-visible {
+  color: var(--haus-color-ink-link);
   text-decoration: underline;
 }

@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Button, Callout, Card } from 'haus-components'
+import { Button, Card } from 'haus-components'
 import { Wall } from './wall'
 import { storybookUrl } from '@/lib/shared'
 import styles from './landing.module.css'
@@ -19,7 +19,7 @@ import styles from './landing.module.css'
 export function Landing() {
   return (
     <main className={styles.page}>
-      <section className={styles.hero}>
+      <section className={styles.inner + ' ' + styles.hero}>
         <p className={styles.eyebrow}>Design system</p>
         <h1 className={styles.title}>haus</h1>
         <p className={styles.lede}>
@@ -45,51 +45,56 @@ export function Landing() {
         </p>
       </section>
 
-      <section className={styles.section}>
-        <h2 className={styles.heading}>What you install</h2>
-        <p className={styles.body}>
-          A copy of the component in your own repository, not a dependency you cannot reach into. Every one of these is
-          the published component, rendered here.
-        </p>
-        <Wall />
-        <Callout tone="info">
-          Each component page lists its API, the command that installs it, and the reason it behaves the way it does.
-        </Callout>
+      <section className={styles.section + ' ' + styles.sectionSubtle}>
+        <div className={styles.inner}>
+          <h2 className={styles.heading}>What you install</h2>
+          <p className={styles.body}>
+            A copy of the component in your own repository, not a dependency you cannot reach into. Every one of these
+            is the published component, rendered here: tab through them, or switch the page to dark and watch them
+            follow.
+          </p>
+          <Wall />
+        </div>
       </section>
 
       <section className={styles.section}>
-        <h2 className={styles.heading}>What is underneath</h2>
-        <div className={styles.cards}>
-          <Card className={styles.card} variant="outlined">
-            <h3 className={styles.cardTitle}>Tokens</h3>
-            <p className={styles.body}>
-              Roles rather than hex codes: a surface, an ink, a border, each with a light and a dark value, and a brand
-              map a product can swap. Contrast is a test, not a hope.
-            </p>
-            <Link className={styles.cardLink} href="/docs/packages/tokens">
-              @hipuku/tokens
-            </Link>
-          </Card>
-          <Card className={styles.card} variant="outlined">
-            <h3 className={styles.cardTitle}>Motion</h3>
-            <p className={styles.body}>
-              Ten roles, three modes and a cap on every duration, so an interface moves to one vocabulary and answers a
-              reduced-motion setting by construction.
-            </p>
-            <Link className={styles.cardLink} href="/docs/packages/motion">
-              @hipuku/motion
-            </Link>
-          </Card>
-          <Card className={styles.card} variant="outlined">
-            <h3 className={styles.cardTitle}>Tools</h3>
-            <p className={styles.body}>
-              The token converter runs on this site, on the same package a consumer installs, and so do the colour
-              tools.
-            </p>
-            <Link className={styles.cardLink} href="/docs/tools/converter">
-              Converter
-            </Link>
-          </Card>
+        <div className={styles.inner}>
+          <h2 className={styles.heading}>What is underneath</h2>
+          <p className={styles.body}>
+            Three packages a component rests on, each publishable and usable on its own.
+          </p>
+          <div className={styles.cards}>
+            <Card className={styles.card} variant="outlined">
+              <h3 className={styles.cardTitle}>Tokens</h3>
+              <p className={styles.cardBody}>
+                Roles rather than hex codes: a surface, an ink, a border, each with a light and a dark value, and a
+                brand map a product can swap. Contrast is a test, not a hope.
+              </p>
+              <Link className={styles.cardLink} href="/docs/packages/tokens">
+                @hipuku/tokens
+              </Link>
+            </Card>
+            <Card className={styles.card} variant="outlined">
+              <h3 className={styles.cardTitle}>Motion</h3>
+              <p className={styles.cardBody}>
+                Ten roles, three modes and a cap on every duration, so an interface moves to one vocabulary and answers
+                a reduced-motion setting by construction.
+              </p>
+              <Link className={styles.cardLink} href="/docs/packages/motion">
+                @hipuku/motion
+              </Link>
+            </Card>
+            <Card className={styles.card} variant="outlined">
+              <h3 className={styles.cardTitle}>Tools</h3>
+              <p className={styles.cardBody}>
+                The token converter runs on this site, on the same package a consumer installs, and so do the colour
+                tools.
+              </p>
+              <Link className={styles.cardLink} href="/docs/tools/converter">
+                Converter
+              </Link>
+            </Card>
+          </div>
         </div>
       </section>
     </main>

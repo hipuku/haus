@@ -9,8 +9,11 @@ export function baseOptions(): BaseLayoutProps {
     // explains, the workshop is where the components are exercised, and the
     // repository is where they are built. One job each (plan 4.10).
     links: [
-      { text: 'Docs', url: docsRoute },
-      { text: 'Workshop', url: storybookUrl, external: true },
+      // `on: 'nav'` keeps them in the header only. Fumadocs repeats a link in
+      // the sidebar by default, so a docs page showed "Docs" and "Workshop"
+      // twice, once two centimetres above the other.
+      { text: 'Docs', url: docsRoute, on: 'nav' },
+      { text: 'Workshop', url: storybookUrl, external: true, on: 'nav' },
     ],
   }
 }

@@ -61,6 +61,9 @@
   --font-mono: var(--haus-font-mono);
   --default-font-family: var(--haus-font-sans);
   --default-mono-font-family: var(--haus-font-mono);
+
+  /* The system's own radii, so a card here and a Card component agree. */
+  --radius: var(--haus-radius-surface);
 }
 
 /*
@@ -127,14 +130,28 @@
   vertical-align: top;
 }
 
-/* The system's own radii, so a card here and a Card component agree. */
-:root {
-  --radius: var(--haus-radius-surface);
-}
-
 #nd-sidebar,
 #nd-toc {
   font-size: var(--haus-type-body-sm-size);
   letter-spacing: var(--haus-type-body-sm-tracking);
   line-height: var(--haus-type-body-sm-leading);
+}
+
+/*
+ * The current page, and the current heading, are the most important words in
+ * the sidebar and the table of contents. Fumadocs marks them with the primary
+ * colour alone, and haus's primary is a mid-lightness purple: against
+ * `ink-secondary` it came out lighter than the items it was meant to stand out
+ * from, so the one row a reader is looking for was the quietest row there.
+ * Weight and a rule carry the state; the colour joins in rather than carrying
+ * it by itself.
+ */
+#nd-sidebar a[data-active='true'],
+#nd-toc a[data-active='true'] {
+  color: var(--haus-color-ink-primary);
+  font-weight: var(--haus-weight-semibold);
+}
+
+#nd-toc a[data-active='true'] {
+  border-inline-start-color: var(--haus-color-primary-default);
 }

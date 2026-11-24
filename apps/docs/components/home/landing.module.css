@@ -1,43 +1,65 @@
-/* Tokens only: the site is the system's first consumer, and a literal here is
-   the same drift the component stylesheets are held to in CI. */
+/* Tokens only, except the site's own editorial scale: the system's ladder is a
+   product ladder and stops at 30px, which is a panel title rather than the
+   first thing a reader sees. See app/editorial.css. */
 
+/*
+ * The page is full width and its sections hold their own measure, so a band can
+ * run edge to edge while the words inside it stay where they can be read. The
+ * old page was one 68rem column: at a desktop width that left the right half of
+ * every section empty, and the page read as a document that had been poured
+ * into the corner of a browser.
+ */
 .page {
-  margin-inline: auto;
-  max-width: 68rem;
-  padding: var(--haus-space-16) var(--haus-space-6) var(--haus-space-20);
+  display: flex;
+  flex-direction: column;
 }
 
+.inner {
+  margin-inline: auto;
+  max-width: 72rem;
+  padding-inline: var(--haus-space-6);
+  width: 100%;
+}
+
+/* ─── Hero ────────────────────────────────────────────────────────────────── */
+
 .hero {
-  border-block-end: var(--haus-border-width-default) solid var(--haus-color-border-default);
-  padding-block-end: var(--haus-space-12);
+  padding-block: var(--haus-space-20) var(--haus-space-16);
 }
 
 .eyebrow {
   color: var(--haus-color-ink-tertiary);
-  font-size: var(--haus-type-label-eyebrow-size);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-mono-xs-size);
   font-weight: var(--haus-type-label-eyebrow-weight);
-  letter-spacing: var(--haus-type-label-eyebrow-tracking);
+  letter-spacing: var(--haus-tracking-widest);
   line-height: var(--haus-type-label-eyebrow-leading);
   margin: 0;
   text-transform: uppercase;
 }
 
+/*
+ * The name, at the size a name is set at. The system's `display` token is 30px
+ * because that is what a dialog's title should be; this is a cover, not a
+ * dialog, and at 30px it was the same size as the heading of the section below
+ * it, so nothing on the page was first.
+ */
 .title {
-  font-size: var(--haus-type-display-size);
-  font-weight: var(--haus-type-display-weight);
-  letter-spacing: var(--haus-type-display-tracking);
-  line-height: var(--haus-type-display-leading);
-  margin: var(--haus-space-2) 0 var(--haus-space-4);
+  font-size: var(--site-text-hero);
+  font-weight: var(--haus-weight-bold);
+  letter-spacing: var(--haus-tracking-tightest);
+  line-height: var(--haus-leading-tight);
+  margin: var(--haus-space-4) 0 var(--haus-space-5);
 }
 
 .lede {
   color: var(--haus-color-ink-secondary);
-  font-size: var(--haus-type-body-lg-size);
-  font-weight: var(--haus-type-body-lg-weight);
-  letter-spacing: var(--haus-type-body-lg-tracking);
-  line-height: var(--haus-type-body-lg-leading);
+  font-size: var(--haus-text-20);
+  font-weight: var(--haus-weight-regular);
+  letter-spacing: var(--haus-tracking-normal);
+  line-height: var(--haus-leading-relaxed);
   margin: 0;
-  max-width: var(--haus-measure-sm);
+  max-width: var(--site-measure-lede);
 }
 
 .actions {
@@ -53,9 +75,9 @@
   border-radius: var(--haus-radius-md);
   color: var(--haus-color-ink-primary);
   font-family: var(--haus-font-mono);
-  font-size: var(--haus-type-body-sm-size);
-  line-height: var(--haus-type-body-sm-leading);
-  margin-block-start: var(--haus-space-6);
+  font-size: var(--haus-type-mono-sm-size);
+  line-height: var(--haus-type-mono-sm-leading);
+  margin-block-start: var(--haus-space-10);
   overflow-x: auto;
   padding: var(--haus-space-3) var(--haus-space-4);
   width: fit-content;
@@ -65,7 +87,7 @@
   color: var(--haus-color-ink-tertiary);
   font-size: var(--haus-type-body-sm-size);
   line-height: var(--haus-type-body-sm-leading);
-  margin-block-start: var(--haus-space-2);
+  margin-block-start: var(--haus-space-3);
 }
 
 .installNote code {
@@ -76,31 +98,45 @@
   color: var(--haus-color-ink-link);
 }
 
+/* ─── Bands ───────────────────────────────────────────────────────────────── */
+
+/*
+ * A section is a band rather than a heading with a rule over it. The page has
+ * three things to say and each gets its own ground, so a reader scrolling can
+ * see where one ends without reading either.
+ */
 .section {
-  padding-block-start: var(--haus-space-12);
+  border-block-start: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  padding-block: var(--haus-space-16);
+}
+
+.sectionSubtle {
+  background: var(--haus-color-surface-subtle);
 }
 
 .heading {
-  font-size: var(--haus-type-heading-lg-size);
-  font-weight: var(--haus-type-heading-lg-weight);
-  letter-spacing: var(--haus-type-heading-lg-tracking);
-  line-height: var(--haus-type-heading-lg-leading);
-  margin: 0 0 var(--haus-space-3);
+  font-size: var(--site-text-title);
+  font-weight: var(--haus-weight-semibold);
+  letter-spacing: var(--haus-tracking-tightest);
+  line-height: var(--haus-leading-tight);
+  margin: 0 0 var(--haus-space-4);
 }
 
 .body {
   color: var(--haus-color-ink-secondary);
-  font-size: var(--haus-type-body-size);
-  line-height: var(--haus-type-body-leading);
+  font-size: var(--haus-text-16);
+  line-height: var(--haus-leading-loose);
   margin: 0;
-  max-width: var(--haus-measure-sm);
+  max-width: var(--site-measure-lede);
 }
+
+/* ─── The three packages ──────────────────────────────────────────────────── */
 
 .cards {
   display: grid;
   gap: var(--haus-space-4);
-  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
-  margin-block-start: var(--haus-space-6);
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  margin-block-start: var(--haus-space-10);
 }
 
 .card {
@@ -110,18 +146,26 @@
 }
 
 .cardTitle {
-  font-size: var(--haus-type-heading-sm-size);
-  font-weight: var(--haus-type-heading-sm-weight);
-  letter-spacing: var(--haus-type-heading-sm-tracking);
-  line-height: var(--haus-type-heading-sm-leading);
+  font-size: var(--haus-type-heading-size);
+  font-weight: var(--haus-type-heading-weight);
+  letter-spacing: var(--haus-type-heading-tracking);
+  line-height: var(--haus-type-heading-leading);
+  margin: 0;
+}
+
+.cardBody {
+  color: var(--haus-color-ink-secondary);
+  font-size: var(--haus-type-body-size);
+  line-height: var(--haus-leading-relaxed);
   margin: 0;
 }
 
 .cardLink {
   color: var(--haus-color-ink-link);
   font-family: var(--haus-font-mono);
-  font-size: var(--haus-type-body-sm-size);
+  font-size: var(--haus-type-mono-sm-size);
   margin-block-start: auto;
+  padding-block-start: var(--haus-space-2);
   text-decoration: none;
   width: fit-content;
 }

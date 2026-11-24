@@ -3,8 +3,6 @@ title: Select
 description: 'haus draws this Select: a trigger, and a panel of options.'
 ---
 
-haus draws this Select: a trigger, and a panel of options. 
-
 **It was `Listbox` until decision 0025**, where the native `<select>` it replaces was retired. Measured across core, drift and vault, nothing imported the native one, while two products built this and wrote down the same reason. core: *"a styled listbox standing in for `<select>`, whose native popup can't be themed"*. vault: *"a custom dropdown replacing native `<select>`"*. 
 
 **The hint is the whole argument.** An option carries a second line under its label, which a native `<option>` cannot hold because the operating system draws it. 

@@ -1,0 +1,120 @@
+/*
+ * The reading layer.
+ *
+ * haus is a product ladder. Its largest step is `display` at 30px, which is the
+ * right size for the title of a settings panel and the wrong size for the first
+ * thing a reader sees on a website. Its `body` is 14px, which is a control
+ * label, not a paragraph someone reads four hundred words of. Drawn only in
+ * those tokens, this site came out typeset like a dialog: correct, and with
+ * nothing to look at.
+ *
+ * So the site has a layer of its own, above the system rather than instead of
+ * it. Everything here is prefixed `--site-` so that it can never be mistaken
+ * for a token a consumer gets, and it is confined to two things the product
+ * ladder has no opinion about because a product does not need one: how large
+ * the page shouts, and how wide a line of prose is allowed to run.
+ *
+ * Colour, weight, tracking, spacing and radius are not in here. Those are the
+ * system's answers and the site has no business holding a second set.
+ */
+
+:root {
+  /* Two editorial sizes above the ladder, fluid between a phone and a desktop.
+     The floor of `title` is the ladder's own `display`, so the scale starts
+     where the system stops rather than beside it. */
+  --site-text-hero: clamp(2.75rem, 1.6rem + 4.4vw, 4.5rem);
+  --site-text-title: clamp(1.875rem, 1.45rem + 1.9vw, 2.75rem);
+
+  /* A line of body text wraps near 70 characters because that is where reading
+     is easiest, which is a question about eyes rather than about a component.
+     The system ships `measure-sm` at 44ch for a short block inside a card; this
+     is the long-form counterpart. */
+  --site-measure: 70ch;
+  --site-measure-lede: 54ch;
+
+  /* The gap that separates one section of a page from the next. A heading needs
+     much more space above it than below it, or it reads as belonging to the
+     paragraph it follows. */
+  --site-section-gap: var(--haus-space-16);
+}
+
+/* ─── Prose ───────────────────────────────────────────────────────────────── */
+
+/*
+ * Reading size, not control size. The ladder's `body` is kept for everything
+ * that is interface: the sidebar, the table of contents, captions, labels.
+ */
+.prose {
+  font-size: var(--haus-text-16);
+  line-height: var(--haus-leading-loose);
+}
+
+/*
+ * The measure. The content column is 900px wide because tables, code blocks and
+ * component examples want the room; a paragraph does not, and at 900px it ran
+ * past 120 characters a line. Only the text is held in; anything that is a
+ * figure keeps the full column.
+ */
+.prose :where(p, ul, ol, blockquote, h4, h5, h6) {
+  max-width: var(--site-measure);
+}
+
+/* ─── Rhythm ──────────────────────────────────────────────────────────────── */
+
+/*
+ * A heading belongs to what comes after it. Fumadocs sets the same margin above
+ * and below, so every level of the page sat at one pitch and the structure was
+ * invisible until you read it.
+ */
+.prose :where(h2) {
+  border-block-start: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
+  margin-block: var(--site-section-gap) var(--haus-space-5);
+  padding-block-start: var(--haus-space-8);
+}
+
+.prose :where(h2:first-child) {
+  border-block-start: 0;
+  margin-block-start: 0;
+  padding-block-start: 0;
+}
+
+.prose :where(h3) {
+  margin-block: var(--haus-space-10) var(--haus-space-3);
+}
+
+.prose :where(h4) {
+  margin-block: var(--haus-space-8) var(--haus-space-2);
+}
+
+/* ─── Headings are not links ──────────────────────────────────────────────── */
+
+/*
+ * Fumadocs wraps every heading in an anchor so it can be linked to, which meant
+ * the site's link colour was painting all of its structure: a page of purple
+ * headings that look clickable and are not. The anchor keeps its behaviour and
+ * gives the colour back to the heading.
+ */
+.prose :where(h1, h2, h3, h4, h5, h6) :where(a) {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ─── The page header ─────────────────────────────────────────────────────── */
+
+/*
+ * The title block, set editorially: the title at the site's own size rather
+ * than at a dialog's, and the description as a lede under it.
+ */
+#nd-page > h1:first-of-type {
+  font-size: var(--site-text-title);
+  letter-spacing: var(--haus-tracking-tightest);
+  line-height: var(--haus-leading-tight);
+  margin-block-end: var(--haus-space-3);
+}
+
+#nd-page > h1:first-of-type + p {
+  color: var(--haus-color-ink-secondary);
+  font-size: var(--haus-text-20);
+  line-height: var(--haus-leading-relaxed);
+  max-width: var(--site-measure-lede);
+}

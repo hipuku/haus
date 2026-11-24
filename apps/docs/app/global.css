@@ -3,6 +3,8 @@
 @import 'fumadocs-ui/css/preset.css';
 /* Last, so the chrome is drawn with haus's roles rather than the preset's greys. */
 @import './haus-theme.css';
+/* The site's own reading layer, above the product ladder. */
+@import './editorial.css';
 
 html {
   scrollbar-gutter: stable;

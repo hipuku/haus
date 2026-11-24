@@ -1,22 +1,36 @@
+/*
+ * The wall of live components.
+ *
+ * Six equal cards in a tight grid read as a table of contents rather than a
+ * showcase, so the cells are wider, the gaps are the gaps between sections
+ * rather than between rows, and each card gives its specimen room to sit in.
+ */
 .wall {
   display: grid;
-  gap: var(--haus-space-4);
-  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-  margin-block: var(--haus-space-8);
+  gap: var(--haus-space-5);
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  margin-block-start: var(--haus-space-10);
 }
 
 .demo {
+  background: var(--haus-color-surface-default);
   display: flex;
   flex-direction: column;
-  gap: var(--haus-space-4);
+  gap: var(--haus-space-5);
+  min-block-size: var(--haus-space-20);
 }
 
+/*
+ * The component's name, as a caption rather than a heading: the component under
+ * it is the thing being shown, and a card whose loudest element is the word
+ * "Button" is a card about the word.
+ */
 .label {
   color: var(--haus-color-ink-tertiary);
   font-family: var(--haus-font-mono);
-  font-size: var(--haus-type-label-eyebrow-size);
-  letter-spacing: var(--haus-type-label-eyebrow-tracking);
-  line-height: var(--haus-type-label-eyebrow-leading);
+  font-size: var(--haus-type-mono-xs-size);
+  letter-spacing: var(--haus-tracking-widest);
+  line-height: var(--haus-type-mono-xs-leading);
   text-transform: uppercase;
 }
 
@@ -25,10 +39,12 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--haus-space-3);
+  margin-block-start: auto;
 }
 
 .column {
   display: flex;
   flex-direction: column;
   gap: var(--haus-space-3);
+  margin-block-start: auto;
 }

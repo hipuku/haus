@@ -34,10 +34,14 @@
   min-inline-size: 0;
 }
 
+/* A `<code>` in a stretching column, with the page's filled background on
+   inline code, drew a full-width bar for a one-word role name. */
 .name {
+  align-self: flex-start;
   color: var(--haus-color-ink-primary);
   font-family: var(--haus-font-mono);
-  font-size: var(--haus-type-label-caption-size);
+  font-size: var(--haus-type-mono-sm-size);
+  max-inline-size: 100%;
 }
 
 .what {
