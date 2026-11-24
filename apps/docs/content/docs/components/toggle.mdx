@@ -89,8 +89,10 @@ There is no `error` prop. A switch is for a setting that applies as soon as it i
 there is no later submission for a validity message to belong to. The caller is what applies it:
 `onChange` reports the new state and persisting it is theirs.
 
-It is a native checkbox underneath and it forwards `name`, so it does post a value with a form if
-it is given one. That is the element being honest rather than the pattern being recommended: a
+It is a native checkbox underneath and it forwards `name`, so a named Toggle does post a value with
+a form, `on` unless `value` says otherwise. Only while it is checked: an unchecked checkbox
+contributes no entry at all, so a form handler reads the off state from the key's absence rather
+than from a value. That is the element being honest rather than the pattern being recommended: a
 switch inside a form that is submitted later is a checkbox, and Checkbox has the `error` prop.
 
 ## Motion

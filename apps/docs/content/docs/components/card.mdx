@@ -62,9 +62,12 @@ children, which is the opposite of IconButton.
 
 The two are mutually exclusive in the types, because the child supplies the element and `as` names
 one. Both class names are kept, Card's first and the child's after it, and which declaration wins
-a collision is the ordinary cascade: specificity, then layer, then source order. The order inside
-the attribute decides nothing. Card's own rules are in the `haus.components` layer, so a caller's
-unlayered rule of equal specificity beats them wherever it is declared.
+a collision is the ordinary cascade. The order inside the attribute decides nothing.
+
+What does decide it is that Card's rules are in the `haus.components` layer. The cascade compares
+layers before specificity, and an unlayered rule outranks a layered one, so a caller's own rule
+wins wherever it is declared and however unspecific it is. Specificity only settles collisions
+inside the same layer.
 
 ## Keyboard and screen reader
 

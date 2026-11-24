@@ -78,16 +78,22 @@ places in the tab order.
 
 The component carries its own live region, so a notice dropped into a consumer's container is not
 silent by construction. An `error` takes `role="alert"` with `aria-live="assertive"`, because it is
-something the user has to act on and a polite region waits behind whatever is being read.
+something the user has to act on and a polite region waits behind whatever is being read. The other
+four tones are notices and stay `role="status"` with `aria-live="polite"`. `aria-atomic` is set, so
+the title and the description are announced as one notice rather than as fragments.
 
 **A region that arrives already holding its text is not reliably announced**, which is the limit of
 what the component can do for itself: W3C's status-message technique wants the container present
-before the message. A consumer that needs every notice spoken keeps a region mounted and renders
+before the message. A consumer who wants fewer notices missed keeps a region mounted and renders
 Toasts into it, which is the same container decision ruling B4 leaves with the consumer for
 position, queue and dismissal. The same applies to a Callout or an EmptyState inserted after the
-page has loaded. The other four tones
-are notices and stay `role="status"` with `aria-live="polite"`. `aria-atomic` is set, so the title
-and the description are announced as one notice rather than as fragments.
+page has loaded.
+
+**A mounted region lowers the risk rather than removing it.** An `error` is assertive, and an
+assertive change lets assistive technology drop whatever is queued, so a polite notice waiting
+behind one can be lost without ever being spoken. Nothing a live region can do prevents that.
+Where a notice must survive being missed it needs somewhere durable to be read back, such as a list
+the user can open; a live region is an announcement and not a record.
 
 The close button is haus's own IconButton, as Modal's is, so it is a real target with the system's
 focus and press behaviour, and it is labelled "Dismiss".

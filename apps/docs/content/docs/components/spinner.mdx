@@ -53,12 +53,20 @@ announces the pause rather than the reason.
 "Extracting colours" inserted beside the spinner is seen and not said, and silencing the spinner
 next to it leaves nothing that speaks at all. The region has to be in the document before the wait
 begins and take the text when it starts, which is W3C's status-message technique; a region that
-arrives already populated is not reliably read. Where the consumer has no such region, leave the
-spinner its own role and label. The prop takes the text that speaks instead of
-a boolean, deliberately: every product that got this wrong got it wrong by silencing the spinner
-and putting nothing in its place, and a boolean would make that the easy thing to write again. The
-value is also kept on `data-announced-by`, which nothing reads, so the reason a spinner is silent
-is visible in the DOM and assertable in a test.
+arrives already populated is not reliably read.
+
+**That limit applies to the spinner's own region as well**, and saying otherwise would recommend
+the thing this paragraph calls unreliable. A Spinner that mounts when loading starts brings its
+region and its label in together, so the default is best effort rather than a guarantee: it is
+what makes a silent spinner impossible, not what makes an announcement certain. A wait that has to
+be announced needs a region the consumer keeps mounted, which takes the text when loading begins.
+Where the consumer has one, `announcedBy` names it and silences the spinner, because the two
+together say the same thing twice. Where they have none, the default is the better of what is left.
+
+The prop takes the text that speaks instead of a boolean, deliberately: every product that got this
+wrong got it wrong by silencing the spinner and putting nothing in its place, and a boolean would
+make that the easy thing to write again. The value is also kept on `data-announced-by`, which
+nothing reads, so the reason a spinner is silent is visible in the DOM and assertable in a test.
 
 ## Motion
 
