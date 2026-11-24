@@ -25,3 +25,87 @@ Toggle also takes the attributes its element has, and forwards its ref to it. Th
 it adds.
 
 <ApiTable file="components/Toggle/Toggle.tsx" name="ToggleProps" attributes="React.InputHTMLAttributes<HTMLInputElement>" keep="onChange" />
+
+## Anatomy
+
+| Part | Element | What it is for |
+| ---- | ------- | -------------- |
+| Root | `label`, `htmlFor` the input | The row, clickable as one. Takes `className` |
+| Content | `span` | The label and the description, stacked |
+| Input | `input type="checkbox" role="switch"` | The real control, visually hidden and still in the tree |
+| Track | `span`, `aria-hidden` | The pill the thumb runs in |
+| Thumb | `span` | The circle, on `surface-default` with `elevation-raised` |
+
+The native input is hidden and the track and thumb are what get drawn, so the control keeps a
+checkbox's own keyboard and form behaviour and none of the platform's painting.
+
+`labelPosition` reverses the row. The label sits before the toggle by default, which is the order a
+settings row reads in.
+
+The track height is held in a private custom property, because two things read it and have to
+agree: the track itself, and the offset that centres it on the label's first line. The small size
+changes the height, and with that offset reading the type role directly the small track sat low.
+The property carries the `--haus-` namespace for the reason Button's do.
+
+The thumb's inset and travel are both on the space scale, so it sits centred and ends level at any
+font size.
+
+## Sizes
+
+`sm` and `md`, which are the two the component has designs for. Narrowing the shared scale is
+honest, where adding an `lg` that renders at `md` to satisfy a type is not. A size restates the
+track height, the track width, the thumb and the thumb's travel, and nothing else.
+
+## States
+
+| State | Track |
+| ----- | ----- |
+| Off | `border-control` |
+| Off, hover | `ink-secondary`, which is one step further from the page in both themes |
+| On | `primary-default` |
+| On, hover | `primary-hover` |
+| Focus | The stepped-out outline in `border-focus`, drawn on the track |
+| Disabled | `opacity-disabled` on the row |
+
+The off state is the fill against the page, and it is the only thing saying a toggle is there, so
+it reads `border-control` for the 3:1 WCAG 1.4.11 asks of it (decision 0031).
+
+Hover takes an ink role rather than a border role because the ink roles invert with the theme and
+the border roles do not, so one declaration is a step further from the page in both.
+
+## Keyboard and screen reader
+
+A native checkbox carrying `role="switch"`, so it is announced as on or off rather than as checked,
+and Space operates it.
+
+The `label` element wraps both the label and the description, so its text content was the
+accessible name and the description was read as part of it. `aria-labelledby` points at the label
+span alone, which scopes the name, and `aria-describedby` leaves the description to be a
+description.
+
+`onChange` hands back `(checked, event)`, matching Checkbox and RadioGroup.
+
+There is no `error` prop. A switch applies immediately, so there is no submitted value to be
+invalid.
+
+## Motion
+
+Colour and the focus outline run on the highlight role. The thumb's travel is movement, so it runs
+on the layout role: a spring that settles at the far end in expressive, an ease in subtle, and a
+jump in reduced.
+
+The travel direction is a sign in a custom property, flipped under `[dir="rtl"]`. There is no
+logical equivalent of `translateX`, so without that the thumb slid out of the left-hand end of a
+right-to-left track.
+
+## Decisions
+
+- **It is a checkbox with `role="switch"`, not a button.** The role changes what a reader
+  announces, and the element keeps the platform's keyboard, forms and autofill behaviour.
+- **`size` is narrowed to two.** The shared scale has three, and this component has designs for
+  two.
+- **The name is scoped with `aria-labelledby`.** A wrapping `label` around a label and a
+  description makes both the name, which is the defect this fixes.
+- **The label sits before the toggle by default.** `labelPosition` is there for the layouts where
+  it does not, and reverses the row rather than reordering the markup, so the DOM order stays the
+  reading order.

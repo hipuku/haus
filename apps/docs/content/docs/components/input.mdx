@@ -25,3 +25,95 @@ Input also takes the attributes its element has, and forwards its ref to it. The
 it adds.
 
 <ApiTable file="components/Input/Input.tsx" name="InputProps" attributes="React.InputHTMLAttributes<HTMLInputElement>" />
+
+## Anatomy
+
+| Part | Element | What it is for |
+| ---- | ------- | -------------- |
+| Root | `div` | The block: label, field and messages in a column. Takes `className` |
+| Label | `label`, `htmlFor` the field | The name, at the `label-field` type role |
+| Required mark | `span`, `aria-hidden` | The asterisk, in `error-default`. Hidden, because `aria-required` already says it |
+| Field wrap | `div` | The control's visible box: the edge, the corner and the focus outline. Takes `controlClassName` |
+| Prefix, suffix | `span` | `prefix` and `suffix`, at the field's own type role, in `ink-secondary` |
+| Field | `input` | The control itself, with no border or outline of its own |
+| Error | `span`, `role="alert"` | `error`, with a drawn glyph, in `error-default` at the `label-caption` role |
+| Hint | `span` | `hint`, in `ink-secondary` at the `label-caption` role |
+
+The box is the wrap rather than the `input`, which is why the edge, the corner and the ring are all
+drawn there and the `input` is transparent and borderless inside it. The wrap is `border-box`, so
+its `control-height-md` floor is the whole control and an Input stands level with an `md` Button
+beside it. On `content-box` the edge drew it taller than the token said.
+
+The label clears the field by its own `stack-2xs` on top of the column gap. The gap alone put the
+label against the field's edge and its focus outline.
+
+## States
+
+The edge is the whole of the control's boundary, so it reads `border-control`, the role that
+measures at least 3:1 against both the default and the subtle surface in both themes (decision
+0031 and WCAG 1.4.11). `border-default` at rest was below that.
+
+Hover mixes that edge toward the page's ink, so the field says it can be used before it is
+focused. `border-strong` is lighter than `border-control` and so cannot be the hover step; the mix
+is the one Button presses with.
+
+Focus turns the edge to `border-focus` and steps the outline out. An error turns both the edge and
+the focus outline to `error-default`, so focusing a field that is wrong does not repaint the
+loudest thing on it to say "focused" instead of "wrong". Disabled takes `surface-disabled`,
+`border-disabled` and `ink-disabled`, and the adornments dim with the value: without that rule a
+currency prefix and a unit suffix stayed at `ink-secondary` and became the brightest text in a
+control meant to look unavailable (`haus#41`).
+
+A placeholder reads `ink-placeholder` rather than `ink-tertiary`. The two were one role until
+decision 0031 split them: `ink-tertiary` clears 3:1, which is right for the glyphs and hover fills
+it also carries, and is not the 4.5:1 that words in a field want.
+
+## Keyboard and screen reader
+
+A native `input`. Nothing is added to how it is typed in or tabbed to.
+
+The label is a real `label` with `htmlFor`, so clicking it focuses the field. The hint and the
+error are wired through `aria-describedby`, error first, so they are a description rather than part
+of the name. The error also carries `role="alert"`, so it is announced when it appears.
+
+`required` sets `aria-required` rather than the native attribute. This component owns its error
+display, and the browser's own validation bubble would fight it.
+
+`error` sets `aria-invalid`.
+
+The hint stays when an error appears, and the error sits above it. The hint is what the user needed
+to get the field right, and an error is the moment they most need it.
+
+`controlClassName` lands on the field wrap rather than the root, for the cases where the control
+needs styling and the block around it does not. Ruling B5 puts `className` on the root of every
+component, and this is the named second target that rule asks for rather than a redirection of the
+one every consumer expects.
+
+## Motion
+
+The edge, the focus colour and the outline offset run on the highlight role, which reduced
+collapses to zero.
+
+An error grows in rather than appearing: the slot is a grid row animating from `0fr` to `1fr` on
+the layout role, so the fields below it move rather than jump. It starts two stagger steps in,
+which is immediately in subtle and after the border has turned in expressive. The glyph's ring is
+then drawn on the draw role a step later, which subtle and reduced show already drawn.
+
+## Decisions
+
+- **The native `size` attribute is omitted rather than shadowed.** It counts characters, which is
+  not what `size` means anywhere else in this system, and a prop that means one thing here and
+  another everywhere else is worse than an absent one. There is no replacement, because `sm` and
+  `lg` text controls are a design that does not exist yet.
+- **Focus is `:has(:focus-visible)`, not `:focus-within`.** The ring is drawn on the wrap, which
+  is not itself focusable, so `:focus-visible` cannot sit on it directly. `:focus-within` would
+  also fire for a pointer, where every other control in the system rings only for the keyboard. A
+  text field still rings on a click, because the browser's own heuristic matches `:focus-visible`
+  there.
+- **An invalid field rings in the error colour.** Four pixels of brand colour around a field that
+  is wrong is the loudest thing on the control, and it says "focused" rather than "wrong". The
+  rule is asserted off the API rather than off the stylesheet, so any component with an `error`
+  prop is in the set from the moment it is written.
+- **`required` is `aria-required` only**, because the component owns the error.
+- **The error precedes the hint in `aria-describedby`** and in the DOM, so a reader hears what is
+  wrong before the guidance that was already there.
