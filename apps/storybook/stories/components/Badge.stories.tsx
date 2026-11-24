@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Badge } from 'haus-components'
+import { Grid, Item, Row } from '../helpers'
 
 const meta = {
   title: 'Components/Badge',
@@ -37,32 +38,56 @@ const TONES = ['neutral', 'primary', 'info', 'success', 'warning', 'error'] as c
 
 export const Playground: Story = {}
 
-export const Tones: Story = {
+const story = (text: string) => ({ docs: { description: { story: text } } })
+
+export const Tone: Story = {
+  parameters: story('What the badge says about the thing it labels.'),
   render: args => (
-    <div style={{ display: 'flex', gap: 'var(--haus-space-2)', flexWrap: 'wrap' }}>
+    <Row>
       {TONES.map(tone => (
-        <Badge key={tone} {...args} tone={tone}>
-          {tone}
-        </Badge>
+        <Item key={tone} label={tone}>
+          <Badge {...args} tone={tone} />
+        </Item>
       ))}
-    </div>
+    </Row>
   ),
 }
 
-export const Appearances: Story = {
+export const Appearance: Story = {
+  parameters: story('How strongly the tone is expressed.'),
   render: args => (
-    <div style={{ display: 'grid', gap: 'var(--haus-space-3)' }}>
+    <Row>
       {(['subtle', 'solid'] as const).map(appearance => (
-        <div key={appearance} style={{ display: 'flex', gap: 'var(--haus-space-2)', flexWrap: 'wrap' }}>
-          {TONES.map(tone => (
-            <Badge key={tone} {...args} tone={tone} appearance={appearance}>
-              {tone}
-            </Badge>
-          ))}
-        </div>
+        <Item key={appearance} label={appearance}>
+          <Badge {...args} appearance={appearance} />
+        </Item>
       ))}
-    </div>
+    </Row>
   ),
 }
 
-export const WithDot: Story = { args: { dot: true, tone: 'success', children: 'Online' } }
+export const ToneByAppearance: Story = {
+  name: 'Tone × Appearance',
+  parameters: story("Every combination. Solid takes each tone's AA-safe fill."),
+  render: args => (
+    <Grid
+      rows={TONES}
+      columns={['subtle', 'solid'] as const}
+      render={(tone, appearance) => <Badge {...args} tone={tone} appearance={appearance} />}
+    />
+  ),
+}
+
+export const Content: Story = {
+  parameters: story('A dot for a live status, and a label long enough to test the pill.'),
+  render: args => (
+    <Row>
+      <Item label="dot">
+        <Badge {...args} dot tone="success" children="Online" />
+      </Item>
+      <Item label="long label">
+        <Badge {...args} children="Awaiting review by a maintainer" />
+      </Item>
+    </Row>
+  ),
+}

@@ -36,13 +36,19 @@
 
 /* An indefinite animation is the case prefers-reduced-motion is most clearly
    for, and it is also the one case where stopping outright is wrong: a still
-   ring reads as a broken graphic rather than as waiting. It slows to the
-   reduced duration and keeps turning, which is the same treatment Button's
-   spinner already had. */
+   ring reads as a broken graphic rather than as waiting. It slows to a third
+   of its speed and keeps turning. */
 @media (prefers-reduced-motion: reduce) {
   .spinner {
-    animation-duration: var(--haus-duration-reduced);
+    animation-duration: calc(var(--haus-motion-duration-emphasis) * 3);
   }
+}
+
+/* The same under haus's own reduced mode, which the media query above does not
+   see. It used to set the reduced duration, 0ms, which stopped the ring: the
+   broken graphic this comment says it avoids (4.5 audit). */
+[data-haus-motion='reduced'] .spinner {
+  animation-duration: calc(var(--haus-motion-duration-emphasis) * 3);
 }
 
 /* forced-colors drops currentColor borders to the system text colour, which

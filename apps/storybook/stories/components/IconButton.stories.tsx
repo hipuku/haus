@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { IconButton } from 'haus-components'
+import { Grid, Item, MotionCompare, Row } from '../helpers'
 
 const Plus = () => (
   <svg viewBox="0 0 16 16" fill="none" aria-hidden width="1em" height="1em">
@@ -60,92 +61,111 @@ type Story = StoryObj<typeof meta>
 
 export const Playground: Story = {}
 
-export const Sizes: Story = {
-  render: () => (
-    <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
-      <IconButton icon={<Plus />} label="Add, small" size="sm" />
-      <IconButton icon={<Plus />} label="Add, medium" size="md" />
-      <IconButton icon={<Plus />} label="Add, large" size="lg" />
-    </div>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Three sizes, and each is measured rather than chosen. `md` is 28px, ' +
-          'which is what **both** products already draw their default icon ' +
-          'button at, agreeing to the pixel, and is already `control-height-sm`. ' +
-          '\n\n' +
-          'Below that they disagree: core has 22px, vault has 24px and 20px. ' +
-          'Three answers from two products is not evidence for any of them, so ' +
-          '`sm` takes the one that is also a rule: **24px, the WCAG 2.5.8 AA ' +
-          "minimum target size**. That makes core's 22px and vault's 20px both " +
-          'under the floor, and neither was ported up. ' +
-          '\n\n' +
-          '`lg` is 36px, `control-height-md`, the height of a default `Button`, ' +
-          'so an icon-only action can stand level with a labelled one beside it.',
-      },
-    },
-  },
-}
+const story = (text: string) => ({ docs: { description: { story: text } } })
 
-export const Variants: Story = {
-  render: () => (
-    <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
-      <IconButton icon={<Plus />} label="Primary" variant="primary" />
-      <IconButton icon={<Plus />} label="Secondary" variant="secondary" />
-      <IconButton icon={<Plus />} label="Ghost" variant="ghost" />
-    </div>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: '`ghost` is the weight both products use most: a bare glyph that only ' + 'grows a surface on hover.',
-      },
-    },
-  },
-}
+const VARIANTS = ['primary', 'secondary', 'ghost'] as const
+const TONES = ['neutral', 'info', 'success', 'warning', 'error'] as const
 
-export const Tones: Story = {
-  render: () => (
-    <div style={{ display: 'grid', gap: 12 }}>
-      {(['primary', 'secondary', 'ghost'] as const).map(variant => (
-        <div key={variant} style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-          <span style={{ fontSize: 12, width: 80, opacity: 0.7 }}>{variant}</span>
-          {(['neutral', 'info', 'success', 'warning', 'error'] as const).map(tone => (
-            <IconButton key={tone} icon={<Trash />} label={`${variant} ${tone}`} variant={variant} tone={tone} />
-          ))}
-        </div>
+export const Variant: Story = {
+  parameters: story(
+    'Visual weight. `ghost` is the one both products use most: a bare glyph that grows a surface on hover.',
+  ),
+  render: args => (
+    <Row>
+      {VARIANTS.map(variant => (
+        <Item key={variant} label={variant}>
+          <IconButton {...args} variant={variant} />
+        </Item>
       ))}
-    </div>
+    </Row>
   ),
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Tone and variant compose, exactly as they do on Button: a tone remaps ' +
-          'colour and decides no weight, a variant reads it and decides no ' +
-          'meaning. ' +
-          '\n\n' +
-          '`success` and `warning` take their `solid` role at 700 rather than ' +
-          '`default` at 500, because those two 500s fail contrast with white ' +
-          'ink. That is the pairing the `solid` role exists for.',
-      },
-    },
-  },
 }
 
-export const Loading: Story = {
-  args: { loading: true, label: 'Saving' },
+export const Tone: Story = {
+  parameters: story('What the action means, at every variant (see Tone × Variant).'),
+  render: args => (
+    <Row>
+      {TONES.map(tone => (
+        <Item key={tone} label={tone}>
+          <IconButton {...args} tone={tone} {...(tone === 'error' ? { icon: <Trash />, label: 'Delete' } : {})} />
+        </Item>
+      ))}
+    </Row>
+  ),
+}
+
+export const Size: Story = {
+  parameters: story(
+    'Three sizes, and each is measured rather than chosen. `md` is 28px, ' +
+      'which is what **both** products already draw their default icon ' +
+      'button at, agreeing to the pixel, and is already `control-height-sm`. ' +
+      '\n\n' +
+      'Below that they disagree: core has 22px, vault has 24px and 20px. ' +
+      'Three answers from two products is not evidence for any of them, so ' +
+      '`sm` takes the one that is also a rule: **24px, the WCAG 2.5.8 AA ' +
+      "minimum target size**. That makes core's 22px and vault's 20px both " +
+      'under the floor, and neither was ported up. ' +
+      '\n\n' +
+      '`lg` is 36px, `control-height-md`, the height of a default `Button`, ' +
+      'so an icon-only action can stand level with a labelled one beside it.',
+  ),
+  render: args => (
+    <Row>
+      {(['sm', 'md', 'lg'] as const).map(size => (
+        <Item key={size} label={size}>
+          <IconButton {...args} size={size} />
+        </Item>
+      ))}
+    </Row>
+  ),
+}
+
+export const ToneByVariant: Story = {
+  name: 'Tone × Variant',
+  parameters: story("Every combination works, as Button's does."),
+  render: args => (
+    <Grid
+      rows={TONES}
+      columns={VARIANTS}
+      render={(tone, variant) => <IconButton {...args} tone={tone} variant={variant} />}
+    />
+  ),
+}
+
+export const States: Story = {
   parameters: {
-    docs: {
-      description: {
-        story:
-          'The glyph is **replaced** by the Spinner, not joined by it, and ' +
-          '`aria-busy` announces the wait. The control is disabled while loading ' +
-          'but keeps full opacity: the wait is temporary, and a dimmed control ' +
-          'reads as permanently unavailable.',
-      },
-    },
+    ...story(
+      'Every state side by side. Hover, focus and pressed are forced, so they can be reviewed without a pointer.',
+    ),
+    pseudo: { hover: ['#state-hover'], focusVisible: ['#state-focus'], active: ['#state-pressed'] },
   },
+  render: args => (
+    <Row>
+      <Item label="rest">
+        <IconButton {...args} />
+      </Item>
+      <Item label="hover">
+        <IconButton {...args} id="state-hover" />
+      </Item>
+      <Item label="focus">
+        <IconButton {...args} id="state-focus" />
+      </Item>
+      <Item label="pressed">
+        <IconButton {...args} id="state-pressed" />
+      </Item>
+      <Item label="loading">
+        <IconButton {...args} loading label="Saving" />
+      </Item>
+      <Item label="disabled">
+        <IconButton {...args} disabled />
+      </Item>
+    </Row>
+  ),
+}
+
+export const Motion: Story = {
+  parameters: story(
+    "Press and hold each, then release: Button's press, a spring back in expressive, colour only in reduced.",
+  ),
+  render: args => <MotionCompare render={() => <IconButton {...args} />} />,
 }
