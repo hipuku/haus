@@ -64,8 +64,40 @@ function Demo({
   )
 }
 
+const story = (text: string) => ({ docs: { description: { story: text } } })
+
 export const Playground: Story = {
   render: args => <Demo {...args}>This cannot be undone.</Demo>,
+}
+
+const SIZES = [
+  { size: 'sm', label: 'Small, 400px', use: 'A confirmation or a short form: one question, one or two fields.' },
+  { size: 'md', label: 'Medium, 560px', use: 'The default. Most forms and messages.' },
+  { size: 'lg', label: 'Large, 720px', use: 'Code, tables and previews that need the line length.' },
+  { size: 'xl', label: 'Extra large, 896px', use: 'Wide dashboards and previews.' },
+] as const
+
+export const Size: Story = {
+  parameters: story('The four widths, each for a kind of content. Open them one after another to compare.'),
+  render: args => (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--haus-space-3)' }}>
+      {SIZES.map(({ size, label, use }) => (
+        <Demo key={size} {...args} size={size} title={label} trigger={label}>
+          {use}
+        </Demo>
+      ))}
+    </div>
+  ),
+}
+
+export const Motion: Story = {
+  parameters: story(
+    'Open and close it under each mode from the Motion toolbar. A dialog renders outside the story, so the ' +
+      'side-by-side comparison other components use cannot scope it. Subtle moves the backdrop and dialog ' +
+      'together; expressive leads with the backdrop on the way in and the dialog on the way out; reduced is a ' +
+      'short fade.',
+  ),
+  render: args => <Demo {...args}>Watch the backdrop and the dialog arrive, then close it.</Demo>,
 }
 
 export const FocusTheAction: Story = {
@@ -81,24 +113,4 @@ export const NoBackdropDismiss: Story = {
   name: 'Refuses a backdrop click',
   args: { dismissOnBackdrop: false },
   render: args => <Demo {...args}>A misplaced click should not discard what you were doing.</Demo>,
-}
-
-const SIZES = [
-  { size: 'sm', label: 'Small, 400px', use: 'A confirmation or a short form: one question, one or two fields.' },
-  { size: 'md', label: 'Medium, 560px', use: 'The default. Most forms and messages.' },
-  { size: 'lg', label: 'Large, 720px', use: 'Code, tables and previews that need the line length.' },
-  { size: 'xl', label: 'Extra large, 896px', use: 'Wide dashboards and previews.' },
-] as const
-
-/** One trigger per width, so the four can be opened one after another and compared. */
-export const Sizes: Story = {
-  render: args => (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--haus-space-3)' }}>
-      {SIZES.map(({ size, label, use }) => (
-        <Demo key={size} {...args} size={size} title={label} trigger={label}>
-          {use}
-        </Demo>
-      ))}
-    </div>
-  ),
 }

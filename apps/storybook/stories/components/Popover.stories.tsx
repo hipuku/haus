@@ -1,6 +1,7 @@
-import { useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Button, Popover } from 'haus-components'
+import { MotionCompare } from '../helpers'
 
 const meta = {
   title: 'Components/Popover',
@@ -37,26 +38,66 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+function Menu(args: Partial<React.ComponentProps<typeof Popover>> & { defaultOpen?: boolean }) {
+  const { defaultOpen = false, ...rest } = args
+  const triggerRef = useRef<HTMLButtonElement>(null)
+  const [open, setOpen] = useState(defaultOpen)
+  return (
+    <div style={{ position: 'relative', display: 'inline-block' }}>
+      <Button ref={triggerRef} aria-expanded={open} onClick={() => setOpen(o => !o)}>
+        Options
+      </Button>
+      <Popover
+        {...(rest as Record<string, never>)}
+        open={open}
+        onClose={() => setOpen(false)}
+        triggerRef={triggerRef}
+        aria-label="Options"
+      >
+        <div style={{ display: 'grid', gap: 'var(--haus-space-1)', minWidth: 160 }}>
+          <Button variant="ghost" size="sm">
+            Rename
+          </Button>
+          <Button variant="ghost" size="sm" tone="error">
+            Delete
+          </Button>
+        </div>
+      </Popover>
+    </div>
+  )
+}
+
+const story = (text: string) => ({ docs: { description: { story: text } } })
+
 export const Playground: Story = {
-  render: function Render(args) {
-    const triggerRef = useRef<HTMLButtonElement>(null)
-    const [open, setOpen] = useState(false)
-    return (
-      <div style={{ position: 'relative', display: 'inline-block', margin: '80px 0' }}>
-        <Button ref={triggerRef} aria-expanded={open} onClick={() => setOpen(o => !o)}>
-          Options
-        </Button>
-        <Popover {...args} open={open} onClose={() => setOpen(false)} triggerRef={triggerRef} aria-label="Options">
-          <div style={{ display: 'grid', gap: 'var(--haus-space-1)', minWidth: 160 }}>
-            <Button variant="ghost" size="sm">
-              Rename
-            </Button>
-            <Button variant="ghost" size="sm" tone="error">
-              Delete
-            </Button>
-          </div>
-        </Popover>
-      </div>
-    )
-  },
+  render: args => (
+    <div style={{ margin: 'var(--haus-space-16) 0' }}>
+      <Menu {...args} />
+    </div>
+  ),
+}
+
+export const Motion: Story = {
+  parameters: story(
+    'Open each one, or Replay to see the enter. Subtle is quick with a few pixels of travel; expressive is ' +
+      'longer and travels further; reduced is a short fade. Closing runs the exit before the panel leaves.',
+  ),
+  render: args => (
+    <div style={{ minBlockSize: '10rem' }}>
+      <MotionCompare render={() => <Menu {...args} defaultOpen />} />
+    </div>
+  ),
+}
+
+export const EscapeReturnsFocus: Story = {
+  name: 'Escape returns focus to the trigger',
+  parameters: story(
+    'Open it, Tab into the panel, press Escape: focus goes back to Options, not to the page. Tabbing past the ' +
+      'last item closes it instead of trapping focus.',
+  ),
+  render: args => (
+    <div style={{ margin: 'var(--haus-space-16) 0' }}>
+      <Menu {...args} />
+    </div>
+  ),
 }

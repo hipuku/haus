@@ -25,6 +25,10 @@ const config: StorybookConfig = {
     },
     '@storybook/addon-a11y',
     '@storybook/addon-vitest',
+    // Forces :hover, :focus-visible and :active on chosen elements, so a
+    // States story shows every state side by side rather than one at a time
+    // under the pointer (the story standard, STORIES.md).
+    'storybook-addon-pseudo-states',
   ],
   // A published reference site, not a working Storybook: suppress the onboarding
   // checklist and update toasts, which are noise for a visitor here to read the

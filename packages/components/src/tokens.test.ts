@@ -212,10 +212,17 @@ describe('components read roles, not primitives', () => {
     // Then 27 to 23 when Toast's close became an IconButton as well: its box
     // read icon-lg twice and icon-xs twice.
     //
-    // What is left is twelve control heights and eleven icon sizes. A control
+    // Then 23 to 25 when Toast's icon and close were centred on the title's
+    // first line (4.5 audit), the Callout pattern: each offset subtracts its
+    // box, icon-sm and control-height-sm.
+    //
+    // Then 25 to 26 when Toast's action stopped growing the title row: its
+    // margin subtracts control-height-sm, as the close's does.
+    //
+    // What is left is fourteen control heights and twelve icon sizes. A control
     // height and an icon box are sizes whose own name is already the role, with
     // no honest alias to invent.
-    expect(PAST.length - sizes.length).toBe(23)
+    expect(PAST.length - sizes.length).toBe(26)
   })
 })
 
