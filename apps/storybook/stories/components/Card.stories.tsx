@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Card } from 'haus-components'
+import { Item, Row } from '../helpers'
 
 const meta = {
   title: 'Components/Card',
@@ -29,19 +30,64 @@ type Story = StoryObj<typeof meta>
 
 export const Playground: Story = {}
 
-export const Variants: Story = {
+const story = (text: string) => ({ docs: { description: { story: text } } })
+
+export const Variant: Story = {
+  parameters: story('A bordered surface, a raised one, and a strong outline for a selected or highlighted card.'),
   render: args => (
-    <div style={{ display: 'grid', gap: 'var(--haus-space-4)', maxWidth: 420 }}>
+    <Row stretch>
       {(['default', 'elevated', 'outlined'] as const).map(variant => (
-        <Card key={variant} {...args} variant={variant}>
-          {variant}
-        </Card>
+        <Item key={variant} label={variant}>
+          <Card {...args} variant={variant} />
+        </Item>
       ))}
-    </div>
+    </Row>
   ),
 }
 
-export const AsAListItem: Story = {
+export const States: Story = {
+  parameters: {
+    ...story(
+      'A card that is a link. Hover strengthens the edge (and the shadow, when elevated); focus takes the ' +
+        'outline every control uses. Forced, so they can be reviewed without a pointer.',
+    ),
+    pseudo: { hover: ['#state-hover', '#state-hover-elevated'], focusVisible: ['#state-focus'] },
+  },
+  render: args => (
+    <Row stretch>
+      <Item label="link, rest">
+        <Card {...args} asChild>
+          <a href="#rest">Quarterly plan</a>
+        </Card>
+      </Item>
+      <Item label="link, hover">
+        <Card {...args} asChild>
+          <a href="#hover" id="state-hover">
+            Quarterly plan
+          </a>
+        </Card>
+      </Item>
+      <Item label="elevated link, hover">
+        <Card {...args} variant="elevated" asChild>
+          <a href="#hover-elevated" id="state-hover-elevated">
+            Quarterly plan
+          </a>
+        </Card>
+      </Item>
+      <Item label="link, focus">
+        <Card {...args} asChild>
+          <a href="#focus" id="state-focus">
+            Quarterly plan
+          </a>
+        </Card>
+      </Item>
+    </Row>
+  ),
+}
+
+export const InContext: Story = {
+  name: 'In context',
+  parameters: story('Cards as list items: `as="li"` keeps the list a list for a screen reader.'),
   render: args => (
     <ul
       style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gap: 'var(--haus-space-3)', maxWidth: 420 }}

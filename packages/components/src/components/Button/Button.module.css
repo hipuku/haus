@@ -85,7 +85,6 @@
   transition-timing-function: var(--haus-motion-press-easing);
 }
 
-
 .button:disabled,
 .button[aria-disabled='true'] {
   cursor: not-allowed;
@@ -216,8 +215,16 @@
   border-color: var(--haus-btn-solid-hover);
 }
 .primary:active:not(:disabled) {
-  background-color: color-mix(in oklch, var(--haus-btn-solid-pressed), var(--haus-btn-press-ink) var(--haus-btn-press-amount));
-  border-color: color-mix(in oklch, var(--haus-btn-solid-pressed), var(--haus-btn-press-ink) var(--haus-btn-press-amount));
+  background-color: color-mix(
+    in oklch,
+    var(--haus-btn-solid-pressed),
+    var(--haus-btn-press-ink) var(--haus-btn-press-amount)
+  );
+  border-color: color-mix(
+    in oklch,
+    var(--haus-btn-solid-pressed),
+    var(--haus-btn-press-ink) var(--haus-btn-press-amount)
+  );
 }
 
 .secondary {
@@ -230,7 +237,11 @@
   border-color: var(--haus-btn-border-hover);
 }
 .secondary:active:not(:disabled) {
-  background-color: color-mix(in oklch, var(--haus-btn-bg-hover), var(--haus-btn-press-ink) var(--haus-btn-press-amount));
+  background-color: color-mix(
+    in oklch,
+    var(--haus-btn-bg-hover),
+    var(--haus-btn-press-ink) var(--haus-btn-press-amount)
+  );
 }
 
 .ghost {
@@ -243,7 +254,11 @@
   border-color: var(--haus-btn-border-ghost);
 }
 .ghost:active:not(:disabled) {
-  background-color: color-mix(in oklch, var(--haus-btn-bg-hover), var(--haus-btn-press-ink) var(--haus-btn-press-amount));
+  background-color: color-mix(
+    in oklch,
+    var(--haus-btn-bg-hover),
+    var(--haus-btn-press-ink) var(--haus-btn-press-amount)
+  );
 }
 
 .text {

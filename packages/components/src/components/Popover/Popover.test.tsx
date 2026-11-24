@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { axe } from 'vitest-axe'
 import { Popover } from './Popover'
@@ -256,5 +256,54 @@ describe('portal (haus#68)', () => {
     // A portalled panel is easy to render correctly and label wrongly.
     const { getByRole } = render(<Harness portal />)
     expect(getByRole('dialog', { name: 'Menu' })).toBeInTheDocument()
+  })
+})
+
+describe('exit (4.5, plan 4.1)', () => {
+  /** A panel whose style says it animates, which is what the CSS gives it in a
+   *  browser. The test environment has no stylesheet, so it says so inline. */
+  function Exiting({ open }: { open: boolean }) {
+    const triggerRef = React.useRef<HTMLButtonElement>(null)
+    return (
+      <div>
+        <button ref={triggerRef}>Options</button>
+        <Popover
+          open={open}
+          onClose={() => {}}
+          triggerRef={triggerRef}
+          aria-label="Options"
+          style={{ animationName: 'out', animationDuration: '1s' }}
+        >
+          <button>Rename</button>
+        </Popover>
+      </div>
+    )
+  }
+
+  it('stays mounted and inert until its exit animation ends', () => {
+    const { rerender } = render(<Exiting open />)
+    rerender(<Exiting open={false} />)
+    const panel = screen.getByRole('dialog', { hidden: true })
+    expect(panel).toHaveAttribute('data-state', 'closed')
+    expect(panel).toHaveAttribute('inert')
+    // jsdom has no AnimationEvent, so React listens for the prefixed name there;
+    // a browser fires the unprefixed one. Both are sent.
+    fireEvent.animationEnd(panel)
+    fireEvent(panel, new Event('webkitAnimationEnd', { bubbles: true }))
+    expect(screen.queryByRole('dialog', { hidden: true })).toBeNull()
+  })
+
+  it('unmounts at once when nothing animates', () => {
+    function Plain({ open }: { open: boolean }) {
+      const triggerRef = React.useRef<HTMLButtonElement>(null)
+      return (
+        <Popover open={open} onClose={() => {}} triggerRef={triggerRef} aria-label="Options">
+          <button>Rename</button>
+        </Popover>
+      )
+    }
+    const { rerender } = render(<Plain open />)
+    rerender(<Plain open={false} />)
+    expect(screen.queryByRole('dialog', { hidden: true })).toBeNull()
   })
 })

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Callout } from 'haus-components'
+import { Item, Stack } from '../helpers'
 
 const meta = {
   title: 'Components/Callout',
@@ -31,19 +32,37 @@ type Story = StoryObj<typeof meta>
 
 export const Playground: Story = {}
 
-export const Tones: Story = {
+const story = (text: string) => ({ docs: { description: { story: text } } })
+
+export const Tone: Story = {
+  parameters: story('The tint, edge and icon carry the tone; the copy stays the primary ink in every tone.'),
   render: args => (
-    <div style={{ display: 'grid', gap: 'var(--haus-space-3)', maxWidth: 480 }}>
+    <Stack>
       {(['neutral', 'info', 'success', 'warning', 'error'] as const).map(tone => (
-        <Callout key={tone} {...args} tone={tone}>
-          {tone}
-        </Callout>
+        <Item key={tone} label={tone}>
+          <Callout {...args} tone={tone} />
+        </Item>
       ))}
-    </div>
+    </Stack>
   ),
 }
 
-export const WithoutGlyph: Story = {
-  name: 'No glyph',
-  args: { icon: false, children: 'Sometimes the copy is the whole notice.' },
+export const Content: Story = {
+  parameters: story(
+    'Without the glyph, when the copy is the whole notice; and a long notice, where the icon stays on the ' +
+      'first line.',
+  ),
+  render: args => (
+    <Stack>
+      <Item label="no glyph">
+        <Callout {...args} icon={false} children="Sometimes the copy is the whole notice." />
+      </Item>
+      <Item label="long">
+        <Callout
+          {...args}
+          children="Audited a cached crawl from 3 September. Pages changed since then are not reflected, so run the crawl again before acting on the contrast findings below."
+        />
+      </Item>
+    </Stack>
+  ),
 }

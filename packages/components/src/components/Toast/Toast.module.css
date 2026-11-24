@@ -140,7 +140,6 @@
   animation-delay: calc(var(--haus-motion-stagger-step) * 2);
 }
 
-
 /* One rule per appearance rather than one per tone: the tinted appearance puts
    the tone's own ink on the icon, and the solid one has the tone in the surface
    already, so the icon takes the surface's ink. */

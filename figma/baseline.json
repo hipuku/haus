@@ -1,5 +1,5 @@
 {
-  "acceptedAt": "2026-11-24T03:01:57.267Z",
+  "acceptedAt": "2026-11-24T03:05:50.527Z",
   "items": {
     "axis Avatar.size": {
       "code": "lg|md|sm|xl|xs",
@@ -195,6 +195,9 @@
     "states Button": {
       "code": "disabled|focus|hover|pressed",
       "figma": "disabled|focus|hover|pressed"
+    },
+    "states Card": {
+      "code": "focus|hover"
     },
     "states Checkbox": {
       "code": "disabled|focus|hover|pressed",

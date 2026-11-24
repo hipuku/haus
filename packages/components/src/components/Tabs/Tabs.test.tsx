@@ -287,3 +287,37 @@ describe('panelId, a panel the caller renders', () => {
     expect(x).toBeTruthy()
   })
 })
+
+describe('the marker (4.5, plan 4.1)', () => {
+  it('follows the selected tab, remeasures on resize, and stops observing on unmount', async () => {
+    let resized: (() => void) | undefined
+    const observe = vi.fn()
+    const disconnect = vi.fn()
+    vi.stubGlobal(
+      'ResizeObserver',
+      class {
+        constructor(callback: () => void) {
+          resized = callback
+        }
+        observe = observe
+        disconnect = disconnect
+      },
+    )
+    const { container, unmount } = render(<Harness />)
+    const marker = () => container.querySelector('[aria-hidden="true"][style*="--haus-tabs-marker-x"]')
+    expect(marker()).not.toBeNull()
+    expect(observe).toHaveBeenCalled()
+    // First placement is not animated; a move after it is.
+    expect(marker()).not.toHaveAttribute('data-placed')
+    resized?.()
+    await userEvent.click(screen.getAllByRole('tab')[1]!)
+    unmount()
+    expect(disconnect).toHaveBeenCalled()
+    vi.unstubAllGlobals()
+  })
+
+  it('draws no marker when no tab is selected', () => {
+    const { container } = render(<Tabs items={ITEMS} value="none" onValueChange={() => {}} aria-label="Sections" />)
+    expect(container.querySelector('[style*="--haus-tabs-marker-x"]')).toBeNull()
+  })
+})

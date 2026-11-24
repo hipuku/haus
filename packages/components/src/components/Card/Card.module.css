@@ -20,3 +20,47 @@
 .padded {
   padding: var(--haus-space-inset-lg);
 }
+
+/* ── An interactive card ──
+   A card rendered as a link or a button (asChild, or as="a") said nothing on
+   hover or focus, so a card link gave no feedback at all (4.5, principle 1).
+   Hover strengthens the edge; focus takes the outline every control uses;
+   both on the highlight role. */
+.card:is(a, button) {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    border-color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    box-shadow var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    outline-color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    outline-offset var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing);
+}
+
+.card:is(a, button):hover {
+  border-color: var(--haus-color-border-strong);
+}
+
+.elevated:is(a, button):hover {
+  box-shadow: var(--haus-elevation-overlay);
+}
+
+@media (forced-colors: none) {
+  .card:is(a, button) {
+    outline: var(--haus-border-width-thick) solid transparent;
+    outline-offset: 0;
+  }
+
+  .card:is(a, button):focus-visible {
+    outline-color: var(--haus-color-border-focus);
+    outline-offset: var(--haus-focus-outline-offset);
+  }
+}
+
+@media (forced-colors: active) {
+  .card:is(a, button):focus-visible {
+    outline: var(--haus-focus-outline-forced);
+    outline-offset: var(--haus-focus-outline-offset);
+  }
+}

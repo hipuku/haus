@@ -127,7 +127,6 @@
    here, because a component that never reads a role never appears in the list of
    components reading it wrongly. */
 
-
 .error.checked .box {
   background-color: var(--haus-color-error-default);
   border-color: var(--haus-color-error-default);

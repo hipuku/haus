@@ -164,7 +164,6 @@
   animation-delay: calc(var(--haus-motion-stagger-step) * 2);
 }
 
-
 .errorSlot > * {
   min-height: 0;
   overflow: hidden;

@@ -383,3 +383,33 @@ describe('the backdrop dismiss guard (haus#56)', () => {
     expect(onClose).not.toHaveBeenCalled()
   })
 })
+
+describe('Modal exit (4.5, plan 4.1)', () => {
+  it('stays mounted and inert until the backdrop finishes leaving', () => {
+    // The backdrop's animation ends last in every mode, so it is the one the
+    // component waits for. The test environment has no stylesheet, so the
+    // computed style is the one a browser would report.
+    const spy = vi
+      .spyOn(window, 'getComputedStyle')
+      .mockReturnValue({ animationName: 'out', animationDuration: '0.2s' } as CSSStyleDeclaration)
+    const { rerender } = render(
+      <Modal open onClose={() => {}} title="Delete">
+        Body
+      </Modal>,
+    )
+    rerender(
+      <Modal open={false} onClose={() => {}} title="Delete">
+        Body
+      </Modal>,
+    )
+    const backdrop = document.querySelector('[data-state="closed"]') as HTMLElement
+    expect(backdrop).not.toBeNull()
+    expect(backdrop).toHaveAttribute('inert')
+    spy.mockRestore()
+    // jsdom has no AnimationEvent, so React listens for the prefixed name there;
+    // a browser fires the unprefixed one. Both are sent.
+    fireEvent.animationEnd(backdrop)
+    fireEvent(backdrop, new Event('webkitAnimationEnd', { bubbles: true }))
+    expect(document.querySelector('[data-state]')).toBeNull()
+  })
+})

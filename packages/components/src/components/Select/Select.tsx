@@ -183,9 +183,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(function Sel
           ref={triggerRef}
           id={triggerId}
           type="button"
-          className={[styles.trigger, error ? styles.error : '', controlClassName]
-            .filter(Boolean)
-            .join(' ')}
+          className={[styles.trigger, error ? styles.error : '', controlClassName].filter(Boolean).join(' ')}
           disabled={disabled}
           // A combobox rather than a plain button: it is the role that carries
           // aria-activedescendant, without which the highlighted row is

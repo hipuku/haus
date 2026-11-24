@@ -8,7 +8,9 @@
   background-color: var(--haus-callout-bg);
   font-family: var(--haus-font-sans);
   font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
   line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
   color: var(--haus-color-ink-primary);
 }
 
