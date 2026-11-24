@@ -30,7 +30,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(function Inp
   const inputId = id ?? generatedId
   const hintId = hint ? `${inputId}-hint` : undefined
   const errorId = error ? `${inputId}-error` : undefined
-  const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined
+  const describedBy = [errorId, hintId].filter(Boolean).join(' ') || undefined
 
   const wrapCls = [styles.inputWrap, error ? styles.error : '', disabled ? styles.disabled : '', controlClassName]
     .filter(Boolean)
@@ -64,14 +64,24 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(function Inp
         {suffix && <span className={styles.adornment}>{suffix}</span>}
       </div>
 
-      {hint && !error && (
+      {/* The error sits above the hint and the hint stays: the hint is what
+          the user needed to get the field right, and an error is the moment
+          they most need it (4.5, Input finding 6). */}
+      {error && (
+        <div className={styles.errorSlot}>
+          <span id={errorId} className={styles.errorMessage} role="alert">
+            <svg className={styles.errorIcon} viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <circle cx="8" cy="8" r="6.25" stroke="currentColor" strokeWidth="1.5" />
+              <path d="M8 4.75v3.75" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              <circle cx="8" cy="11" r="0.9" fill="currentColor" />
+            </svg>
+            <span>{error}</span>
+          </span>
+        </div>
+      )}
+      {hint && (
         <span id={hintId} className={styles.hint}>
           {hint}
-        </span>
-      )}
-      {error && (
-        <span id={errorId} className={styles.errorMessage} role="alert">
-          {error}
         </span>
       )}
     </div>

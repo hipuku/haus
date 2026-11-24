@@ -25,13 +25,25 @@
   background-color: var(--haus-color-surface-default);
   /* WCAG 1.4.11: this border is the whole of the control's edge, so it carries
      3:1 against the page. Decision 0031. */
-  border: var(--haus-border-width-default) solid var(--haus-color-border-control);
+  --haus-input-edge: var(--haus-color-border-control);
+  border: var(--haus-border-width-default) solid var(--haus-input-edge);
   border-radius: var(--haus-radius-control);
   padding: 0 var(--haus-space-inset-sm);
-  transition:
-    border-color var(--haus-motion-micro),
-    box-shadow var(--haus-motion-micro);
+  /* border-box so min-height is the whole control: content-box drew it 38px,
+     2px taller than an md Button beside it (4.5, Input finding 1). */
+  box-sizing: border-box;
   min-height: var(--haus-control-height-md);
+  /* Colour and focus run on the highlight role, which reduced sets to 0ms. */
+  transition-property: border-color, outline-color, outline-offset;
+  transition-duration: var(--haus-motion-highlight-duration);
+  transition-timing-function: var(--haus-motion-highlight-easing);
+}
+
+/* Hover moves the edge toward the ink, so the field says it can be used
+   before it is focused. border-strong is lighter than border-control, so it
+   cannot be the hover step; this is the same mix Button presses with. */
+.inputWrap:hover:not(.disabled, .error, :has(:focus-visible)) {
+  --haus-input-edge: color-mix(in oklch, var(--haus-color-border-control), var(--haus-color-ink-primary) 30%);
 }
 
 /* :has(:focus-visible) rather than :focus-within. The ring is drawn on the
@@ -40,18 +52,31 @@
    in the system rings only for the keyboard. This keeps the ring where it has to
    be drawn and the rule everything else follows. Text fields still ring on click,
    because :focus-visible matches them there by the browser's own heuristic. */
+/* An outline that steps out, as Button's: no gap colour, so it is right on
+   any surface, and 2.4.13 at 2px and 3:1. Inside forced-colors: none because
+   a transparent outline is painted in forced colours. */
+@media (forced-colors: none) {
+  .inputWrap {
+    outline: var(--haus-border-width-thick) solid transparent;
+    outline-offset: 0;
+  }
+
+  .inputWrap:has(:focus-visible) {
+    outline-color: var(--haus-color-border-focus);
+    outline-offset: var(--haus-focus-outline-offset);
+  }
+
+  .inputWrap.error:has(:focus-visible) {
+    outline-color: var(--haus-color-error-default);
+  }
+}
+
 .inputWrap:has(:focus-visible) {
   border-color: var(--haus-color-border-focus);
-  box-shadow: var(--haus-focus-ring);
-  outline: none;
 }
 
 .inputWrap.error {
   border-color: var(--haus-color-error-default);
-}
-
-.inputWrap.error:has(:focus-visible) {
-  box-shadow: var(--haus-focus-ring-error);
 }
 
 .inputWrap.disabled {
@@ -88,7 +113,11 @@
   align-items: center;
   flex-shrink: 0;
   color: var(--haus-color-ink-secondary);
+  font-family: var(--haus-font-sans);
   font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
+  line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
 }
 
 /* haus#41: the adornments dim with the field. Without this the value dropped to
@@ -108,6 +137,9 @@
 }
 
 .errorMessage {
+  display: flex;
+  align-items: center;
+  gap: var(--haus-space-gap-2xs);
   font-family: var(--haus-font-sans);
   font-size: var(--haus-type-label-caption-size);
   font-weight: var(--haus-type-label-caption-weight);
@@ -116,10 +148,38 @@
   color: var(--haus-color-error-default);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .inputWrap {
-    transition-duration: var(--haus-duration-reduced);
+/* The error grows in rather than jumping: a grid row animates from 0fr to
+   1fr on the layout role, so the fields below move rather than leap. Reduced
+   sets layout to 0ms. Expressive starts it after the border has turned, a
+   third of the way into the highlight. */
+.errorSlot {
+  --haus-input-stagger: 0;
+  display: grid;
+  grid-template-rows: 1fr;
+  animation: haus-input-error-in var(--haus-motion-layout-duration) var(--haus-motion-layout-easing) both;
+  animation-delay: calc(var(--haus-motion-highlight-duration) * var(--haus-input-stagger));
+}
+
+[data-haus-motion='expressive'] .errorSlot {
+  --haus-input-stagger: 0.33;
+}
+
+.errorSlot > * {
+  min-height: 0;
+  overflow: hidden;
+}
+
+@keyframes haus-input-error-in {
+  from {
+    grid-template-rows: 0fr;
+    opacity: 0;
   }
+}
+
+.errorIcon {
+  flex-shrink: 0;
+  inline-size: 1em;
+  block-size: 1em;
 }
 
 /* forced-colors drops box-shadow entirely, and every ring in this system is one.
