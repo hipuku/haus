@@ -6,6 +6,7 @@ import { Install } from './install'
 import { ModuleApi } from './module-api'
 import { Notice } from './notice'
 import { PackageMeta } from './package-meta'
+import { PageIndex } from './page-index'
 import { MotionRoles } from './foundations/motion'
 import { Ramp, SpaceLadder, SurfaceSamples, Swatches, TypeRole } from './foundations/specimens'
 import { Preview } from './preview'
@@ -19,6 +20,7 @@ export function getMDXComponents(components?: MDXComponents) {
     ModuleApi,
     Notice,
     PackageMeta,
+    PageIndex,
     MotionRoles,
     Preview,
     Ramp,

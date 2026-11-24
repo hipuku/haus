@@ -32,7 +32,7 @@ export function Landing() {
           </Button>
           <Button asChild variant="secondary">
             <a href={storybookUrl} rel="noreferrer" target="_blank">
-              Open the workshop
+              Open Storybook
             </a>
           </Button>
         </div>

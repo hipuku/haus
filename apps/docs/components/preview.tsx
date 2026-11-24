@@ -48,7 +48,7 @@ export function Preview({
           <span>{story}</span>
           {workshop && (
             <a href={workshop} rel="noreferrer" target="_blank">
-              Open in the workshop
+              Open in Storybook
             </a>
           )}
         </figcaption>

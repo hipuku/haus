@@ -13,6 +13,9 @@ import 'haus-components/styles.css'
 export const metadata: Metadata = {
   title: { default: 'haus', template: '%s · haus' },
   description: 'The haus design system: components, tokens and how to install them.',
+  // The repository's own mark, the one Storybook already shows. See
+  // app/brand/logo.svg/route.ts.
+  icons: { icon: [{ url: '/brand/logo.svg', type: 'image/svg+xml' }] },
 }
 
 export default function Layout({ children }: LayoutProps<'/'>) {
