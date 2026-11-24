@@ -251,6 +251,14 @@
     --haus-type-label-md-leading:     var(--haus-leading-normal);
     --haus-type-label-md-tracking:    var(--haus-tracking-normal);
 
+    /* The large control label. Button lg read the body role for its size and
+       leading and label-md's tracking, so its label took parts of two roles
+       and the whole of neither (plan 4.5, item 5). Label scale, one step up. */
+    --haus-type-label-lg-size:        var(--haus-text-14);
+    --haus-type-label-lg-weight:      var(--haus-weight-medium);
+    --haus-type-label-lg-leading:     var(--haus-leading-normal);
+    --haus-type-label-lg-tracking:    var(--haus-tracking-normal);
+
     --haus-type-body-sm-size:      var(--haus-text-13);
     --haus-type-body-sm-weight:    var(--haus-weight-regular);
     --haus-type-body-sm-leading:   var(--haus-leading-relaxed);

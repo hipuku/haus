@@ -1,5 +1,5 @@
 {
-  "acceptedAt": "2026-11-24T00:34:58.782Z",
+  "acceptedAt": "2026-11-24T01:22:44.802Z",
   "items": {
     "axis Avatar.size": {
       "code": "lg|md|sm|xl|xs",
@@ -1500,6 +1500,18 @@
     "token --haus-type-label-field-weight": {
       "code": "600",
       "figma": "600"
+    },
+    "token --haus-type-label-lg-leading": {
+      "code": "19.6"
+    },
+    "token --haus-type-label-lg-size": {
+      "code": "14"
+    },
+    "token --haus-type-label-lg-tracking": {
+      "code": "0"
+    },
+    "token --haus-type-label-lg-weight": {
+      "code": "500"
     },
     "token --haus-type-label-md-leading": {
       "code": "18.2",

@@ -125,6 +125,7 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
     styles[variant],
     tone !== 'neutral' ? styles[tone] : '',
     external ? styles.external : '',
+    loading ? styles.loading : '',
     styles[size],
     className,
   ]
@@ -135,7 +136,9 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
 
   const externalIcon = external ? (
     <span className={styles.externalIcon} aria-hidden="true">
-      ↗
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M5 11 11 5M6 5h5v5" />
+      </svg>
     </span>
   ) : null
 
@@ -199,9 +202,17 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
           isDisabled ? undefined : (domProps.onClickCapture as React.MouseEventHandler<HTMLAnchorElement> | undefined)
         }
       >
-        {loading && <Spinner size="text" announcedBy="the button's aria-busy state" />}
-        {children}
-        {externalIcon}
+        {/* The label stays in flow while loading, so the width holds, and the
+            spinner sits over it in its own slot (4.5, Button finding 11). */}
+        <span className={styles.label}>
+          {children}
+          {externalIcon}
+        </span>
+        {loading && (
+          <span className={styles.spinnerSlot}>
+            <Spinner size="text" announcedBy="the button's aria-busy state" />
+          </span>
+        )}
       </a>
     )
   }
@@ -232,9 +243,17 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
       onClick={loading ? undefined : buttonProps.onClick}
       onClickCapture={loading ? undefined : buttonProps.onClickCapture}
     >
-      {loading && <Spinner size="text" announcedBy="the button's aria-busy state" />}
-      {children}
-      {externalIcon}
+      {/* The label stays in flow while loading, so the width holds, and the
+          spinner sits over it in its own slot (4.5, Button finding 11). */}
+      <span className={styles.label}>
+        {children}
+        {externalIcon}
+      </span>
+      {loading && (
+        <span className={styles.spinnerSlot}>
+          <Spinner size="text" announcedBy="the button's aria-busy state" />
+        </span>
+      )}
     </button>
   )
   return standIn ? (
