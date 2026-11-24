@@ -1,0 +1,86 @@
+---
+title: Install
+description: Point shadcn at the registry, import the tokens once, and add the components you want as source in your own repository.
+---
+
+Components and tokens arrive by different routes, because they are different kinds of thing. A
+component is **copied into your repository as source**, through a [shadcn](https://ui.shadcn.com)
+registry, so you can read it and change it. The tokens underneath it are a **package from npm**, so
+a fix reaches you with a version bump rather than a re-copy.
+
+## 1. Point shadcn at the registry
+
+The `@hipuku` namespace goes in your `components.json`, once.
+
+```json title="components.json"
+{
+  "registries": {
+    "@hipuku": "https://haus.hipuku.dev/r/{name}.json"
+  }
+}
+```
+
+The registry serves TypeScript. The files install exactly as written, so a project with
+`"tsx": false` in its `components.json` would receive TypeScript inside `.js` files and fail to
+build.
+
+## 2. Install the tokens
+
+```bash
+npm install @hipuku/tokens
+```
+
+Import the barrel once, at the root of your app. It loads the four layers in the order they depend
+on each other, which a hand-written set of imports gets wrong eventually.
+
+```ts title="app/layout.tsx"
+import '@hipuku/tokens/index.css'
+```
+
+## 3. Add a component
+
+```bash
+npx shadcn add @hipuku/badge
+```
+
+That writes the component, its stylesheet and the types it shares with the rest of the library into
+your own `components/` directory. Each [component page](/docs/components/badge) carries the command
+that installs it, and prints it only once the registry actually serves that component.
+
+```tsx
+import { Badge } from '@/components/haus/components/Badge'
+
+export function Status() {
+  return <Badge tone="success">Shipped</Badge>
+}
+```
+
+The props follow one vocabulary across the library: `variant` is visual weight, `tone` is meaning,
+`appearance` is `subtle` or `solid`, and `size` is `sm`, `md` or `lg`. A component narrows that
+vocabulary to what it actually offers, and the narrowing is in the type.
+
+## 4. Theme with a brand
+
+The default brand is haus's own. To apply another, set `data-haus-theme` on any element, and every
+role inside that subtree resolves through that brand's map. The attribute nests, so two brands can
+sit on one page.
+
+```tsx
+<div data-haus-theme="vault">
+  <Badge tone="success">Shipped</Badge>
+</div>
+```
+
+`brands/vault.css` is a complete second brand shipped in the token package, built against the same
+contract as the default. `BrandMap` is generated from the brand file, so a missing role is a type
+error.
+
+## Peer dependencies
+
+`react` and `react-dom`, at `^18.0.0 || ^19.0.0`.
+
+## The other packages
+
+Five more packages stand on their own, and none of them is needed to use a component. Each has its
+own page under [Packages](/docs/packages/tokens): the motion engine, the colour maths, the token
+converter, the style probe and the shared configuration.

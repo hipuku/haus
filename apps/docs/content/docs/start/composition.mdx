@@ -1,0 +1,57 @@
+---
+title: Composition
+description: A flat set of components that cohere through a shared vocabulary rather than through nesting.
+---
+
+haus is a flat set of components rather than an atomic hierarchy, so they do not nest inside each
+other. What makes them compose is a shared vocabulary: the same word means the same thing in every
+component, so a screen built from several of them reads as one system rather than as five unrelated
+widgets.
+
+Everything below is live, rendered by the published components.
+
+## A form, from real components
+
+Each control owns its own label, hint and error, so composing a form is placing the controls.
+Nothing here re-implements a field, a label or a validation line, and nothing wires accessibility
+together by hand.
+
+<Preview layout="start">
+  <SignInForm />
+</Preview>
+
+The `Callout` carries meaning through `tone="error"`, the same `tone` word a `Button` or a `Badge`
+takes. The `Input` and the `Checkbox` each render their own label and reserve room for an error, so
+the form is composed by arrangement.
+
+## The vocabulary
+
+Four prop names mean the same thing everywhere. A component narrows each to what it offers, and the
+narrowing lives in the type, so the compiler tells you which values a given component accepts.
+
+| Prop | What it carries |
+| ---- | --------------- |
+| `tone` | What it means: `neutral`, `info`, `success`, `warning`, `error`. Shared by Button, Badge, Callout, Toast and the form controls. |
+| `variant` | Visual weight only, never meaning. On Button: `primary`, `secondary`, `ghost`, `text`. |
+| `appearance` | `subtle` or `solid`. The same surface treatment across Badge and Toast. |
+| `size` | `sm`, `md`, `lg`. Avatar keeps `xs` and `xl` as a documented extension, because an avatar is a picture rather than a control. |
+
+Because `tone` means one thing, a row of them reads as a set:
+
+<Preview>
+  <ToneRow />
+</Preview>
+
+## Why it holds
+
+None of those components names a colour. `tone="error"` resolves to `--haus-color-error-*`, a
+semantic role, which the brand layer points at a ramp step. So the red in an error Callout, an error
+Badge and an invalid Input is one decision resolved once, and a brand can move it without touching
+a component.
+
+```
+tone="error"  →  --haus-color-error-default  →  the brand's ramp step  →  --haus-color-cherry-500
+```
+
+That chain is the whole argument, and the [colour foundation](/docs/foundations/colour) shows every
+role in it with the value it currently resolves to.

@@ -1,0 +1,15 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--haus-space-4);
+  inline-size: 100%;
+  max-inline-size: var(--haus-measure-sm);
+}
+
+.row {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--haus-space-3);
+  justify-content: center;
+}

@@ -3,35 +3,12 @@ title: Overview
 description: The design system every hipuku app is built on.
 ---
 
-haus ships components as source through a [shadcn](https://ui.shadcn.com) registry, and its
-design tokens as the `@hipuku/tokens` package on npm. A component you install is a copy in your own
+haus ships components as source through a [shadcn](https://ui.shadcn.com) registry, and its design
+tokens as the `@hipuku/tokens` package on npm. A component you install is a copy in your own
 repository: restyle it freely, and take behaviour fixes from haus with `shadcn add`.
 
-## Set up
-
-The registry is for TypeScript projects. The files install exactly as written, so a project with
-`"tsx": false` in `components.json` would receive TypeScript in `.js` files.
-
-Components and packages share the `@hipuku` name. A component such as `@hipuku/badge` is copied
-into your repository with `shadcn add`; a package such as `@hipuku/colour` installs from npm once it
-is published, and the package pages say which are. Map the
-`@hipuku` namespace in your `components.json`:
-
-```json title="components.json"
-{
-  "registries": {
-    "@hipuku": "https://haus.hipuku.dev/r/{name}.json"
-  }
-}
-```
-
-Then import the tokens once, at the root of your app:
-
-```ts
-import '@hipuku/tokens/index.css'
-```
-
-Each component page lists the command that installs it.
+New here? [What haus is](/docs/start) explains the four layers and what has already been decided,
+and [Install](/docs/start/install) is the two lines that set it up.
 
 ## Components
 

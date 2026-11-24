@@ -1,0 +1,51 @@
+---
+title: What haus is
+description: A token-first OKLCH design system in light and dark, with four cascade layers and twenty-three React components on top.
+---
+
+haus is the design system the hipuku products are built on, and the argument it makes is adoption
+rather than surface. Two products build on it and each takes a different half: **core** draws
+thirteen of the components and brands them, **vault** takes the token layer in full and takes no
+components at all. **drift** was the third until 4.0.0, when it took its own foundation in house on
+the argument that a tool auditing design systems should not wear one. The gaps in haus were found
+by measuring it against those products rather than by guessing.
+
+It is deliberately not a general-purpose kit. A component earns its place here by being something
+the products actually share, and every value resolves through the four layers below, so a brand
+change is one file rather than a search and replace.
+
+## The four layers
+
+Colour, space, type, radius and motion all enter at the bottom and are renamed on the way up. A
+component never reads a raw number, and a brand never touches a component.
+
+| Layer | What it holds |
+| ----- | ------------- |
+| Primitives | The raw scales, with no meaning attached: `--haus-color-aronia-500`, `--haus-space-4`. No component reads these. |
+| Brand | Which primitive each role takes. The one file a consumer replaces, and `brands/vault.css` is a complete second one. |
+| Semantics | What each role means, named for the decision and never for the palette: `--haus-color-surface-default`. |
+| Components | The React components, which read the semantic roles and nothing below them. |
+
+The direction is strict, and it is what a brand swap rests on. A component reads
+`--haus-color-primary-default`; the semantic layer says that role is the brand's primary; the brand
+layer says which ramp step the brand's primary is. Change the brand file and every component
+follows with no component edited.
+
+Roles are declared on `:root, [data-haus-theme]`, so a brand can apply to a subtree and can nest,
+which is how one page shows two brands at once. The [theming
+foundation](/docs/foundations/theming) covers the two attributes in full.
+
+## What is already decided
+
+These are settled, and are written down here so that a new component does not reopen them.
+
+| Decision | What it means |
+| -------- | ------------- |
+| Light and dark are modes, not brands | Dark is a second colour map of the same roles, set by `data-theme` on the root or taken from the system. Polarity holds inside each mode. |
+| Brand is a layer | Not a toggle. The brand map is a cascade layer with a generated TypeScript type, so an omission is a compile error rather than an unresolved `var()`. |
+| Tone, weight and behaviour are separate props | `variant` is visual weight, `tone` is meaning, and behaviour such as a Button being a link is its own prop. They used to be one word. |
+| One focus mechanism | A double ring, on `:focus-visible` only, with a forced-colors fallback because every ring is a `box-shadow`. |
+| Tokens only | Colour, motion, spacing, radius, z-index and elevation are tokens. A literal fails the stylelint gate. |
+
+The reasoning and the cost behind each is in `DESIGN.md`, and the build and packaging are in
+`ARCHITECTURE.md`.

@@ -2,6 +2,7 @@ import defaultMdxComponents from 'fumadocs-ui/mdx'
 import type { MDXComponents } from 'mdx/types'
 import { ApiTable } from './api-table'
 import { ComponentExamples } from './examples/component-examples'
+import { SignInForm, ToneRow } from './examples/composition'
 import { Install } from './install'
 import { ModuleApi } from './module-api'
 import { Notice } from './notice'
@@ -16,6 +17,8 @@ export function getMDXComponents(components?: MDXComponents) {
     ...defaultMdxComponents,
     ApiTable,
     ComponentExamples,
+    SignInForm,
+    ToneRow,
     Install,
     ModuleApi,
     Notice,

@@ -1,0 +1,73 @@
+---
+title: The quality bar
+description: What a published haus component has already been held to, and which of those checks run on every change.
+---
+
+A design system is a promise that the thing you install has been checked. This page says what the
+checks are, so you can decide whether the promise is worth anything.
+
+Every one of these runs on every change. None of them is a review comment or a convention: a
+failure stops the build.
+
+## Colour
+
+Contrast is a test rather than a hope. `contrast.test.ts` in the token package holds every ink and
+surface pair to the bar that pair is for, **in both modes**: 4.5:1 for text on its surface, 4.5:1
+for the placeholder, and 3:1 for `ink-tertiary`, which carries glyphs and furniture rather than
+words. Borders that are the only thing separating a control from the page carry 3:1 under WCAG
+1.4.11. A pair that drops below its own bar fails the build.
+
+The ratios are measured with `@hipuku/colour`, and the [colour foundation](/docs/foundations/colour)
+shows each one as the page currently resolves it.
+
+## Accessibility
+
+Every story runs axe through Storybook's accessibility addon, with `a11y: { test: 'error' }`, so a
+violation is a failed test rather than a panel someone might read. That covers each component in
+each of its documented states, because the states are the stories.
+
+Keyboard behaviour is asserted rather than described. The stories whose names end in a behaviour
+claim carry play functions: focus returning to the trigger after a dialog closes, a roving tab stop
+leaving one tab stop in a group, Escape dismissing without taking focus with it.
+
+## Appearance
+
+Every story is screenshotted and compared against a committed reference, in light and in dark. A
+change in how any component looks, in either mode, shows up as a diff on a pull request rather than
+as a surprise after release.
+
+## Motion
+
+Motion is a contract. `Motion.contract.stories.tsx` reads the real animations back with
+`getAnimations()` and asserts that each duration equals its role token in each of the three motion
+modes, that delays stay inside the stagger maximum, and that reduced motion is under its ceiling and
+still. The [motion foundation](/docs/foundations/motion) plays each role.
+
+## Tokens
+
+A colour, length, duration or radius written as a literal where a token exists fails stylelint. That
+is what keeps the brand swap honest: a component that hardcodes a hex is a component a brand cannot
+move.
+
+The token source is also checked to be in step with what is committed, so a published token value
+and the source it was generated from cannot disagree.
+
+## Types
+
+The whole repository typechecks, including the story files, which went unchecked for a long time
+because the Storybook app had no `tsconfig` of its own. `BrandMap` is generated from the brand file,
+so a brand that omits a role is a compile error rather than an unresolved `var()` found at runtime.
+
+## Prose
+
+Documentation is linted too: house style, markdown and every link on this site. A link here that
+points at a page that does not exist fails the build.
+
+## What is not checked
+
+Worth saying plainly, because a list of gates reads as a guarantee and this one is not complete.
+
+Nothing checks that a component is the right component, or that the words on this site are true.
+The four generated sections of a component page are read out of the source, the stories and the
+registry, so those cannot drift. The sections written by hand are prose, and prose is held only by
+being read.
