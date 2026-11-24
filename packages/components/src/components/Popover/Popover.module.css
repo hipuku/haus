@@ -22,6 +22,36 @@
   font-family: var(--haus-font-sans);
   color: var(--haus-color-ink-primary);
   min-inline-size: max-content;
+
+  /* Enters on the popover-enter role and leaves on popover-exit: a fade, a few
+     pixels of travel out of the trigger, and a slight scale. The tokens carry
+     the mode: subtle and expressive differ in duration, offset and scale, and
+     reduced has no travel or scale, so it is a short fade. --haus-popover-dir
+     is which way "out of the trigger" is: down for a panel below, up for one
+     above. */
+  --haus-popover-dir: -1;
+  transform-origin: top;
+  animation: haus-popover-in var(--haus-motion-popover-enter-duration) var(--haus-motion-popover-enter-easing) both;
+}
+
+.panel[data-state='closed'] {
+  animation: haus-popover-out var(--haus-motion-popover-exit-duration) var(--haus-motion-popover-exit-easing) both;
+}
+
+@keyframes haus-popover-in {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--haus-motion-popover-enter-offset) * var(--haus-popover-dir)))
+      scale(var(--haus-motion-popover-enter-scale));
+  }
+}
+
+@keyframes haus-popover-out {
+  to {
+    opacity: 0;
+    transform: translateY(calc(var(--haus-motion-popover-enter-offset) * var(--haus-popover-dir)))
+      scale(var(--haus-motion-popover-enter-scale));
+  }
 }
 
 /* Logical, so the panel pins to the side the text starts on and flips with the
@@ -40,6 +70,8 @@
   inset-block-start: calc(100% + var(--haus-space-gap-2xs));
 }
 .top {
+  --haus-popover-dir: 1;
+  transform-origin: bottom;
   inset-block-end: calc(100% + var(--haus-space-gap-2xs));
 }
 

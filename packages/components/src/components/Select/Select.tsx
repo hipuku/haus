@@ -35,8 +35,8 @@ interface SelectBaseProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'on
   /** Lands on the trigger rather than the root. Ruling B5. */
   controlClassName?: string
   /**
-   * A line under the control that describes it, read out with it. Hidden while
-   * there is an `error`, which takes its place. Same as Input's.
+   * A line under the control that describes it, read out with it. Stays when
+   * there is an `error`, which sits above it. Same as Input's.
    */
   hint?: string
   /**
@@ -112,9 +112,16 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(function Sel
 
   // The caller's description first, then the component's own, the order Input
   // reads them in. Every id here is on the trigger, the element announced.
-  const hintId = hint && !error ? `${baseId}-hint` : undefined
+  // The error sits above the hint and the hint stays, as Input's (4.5, Select
+  // finding 10), so both describe the trigger, the error first.
+  const hintId = hint ? `${baseId}-hint` : undefined
   const errorId = error ? `${baseId}-error` : undefined
-  const describedBy = [callerDescribedBy, hintId, errorId].filter(Boolean).join(' ') || undefined
+  const describedBy = [callerDescribedBy, errorId, hintId].filter(Boolean).join(' ') || undefined
+  // A visible label, as Input's, so a Select in a form is labelled like the
+  // fields beside it (finding 1). The trigger is named by it through
+  // aria-labelledby; `<label htmlFor>` also moves focus to the trigger on click.
+  const labelId = `${baseId}-label`
+  const triggerId = `${baseId}-trigger`
 
   const labels = React.useMemo(() => options.map(o => o.label), [options])
   const selectedIndex = options.findIndex(o => o.value === value)
@@ -147,11 +154,17 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(function Sel
       {...(rest as React.HTMLAttributes<HTMLDivElement>)}
     >
       {name && <input type="hidden" name={name} value={value} />}
+      {label !== undefined && (
+        <label id={labelId} htmlFor={triggerId} className={styles.label}>
+          {label}
+        </label>
+      )}
       {/* The panel is placed against this box, so it opens under the trigger
           rather than under a hint or an error below it. */}
       <div className={styles.control}>
         <button
           ref={triggerRef}
+          id={triggerId}
           type="button"
           className={[styles.trigger, styles[size], error ? styles.error : '', controlClassName]
             .filter(Boolean)
@@ -161,8 +174,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(function Sel
           // aria-activedescendant, without which the highlighted row is
           // announced to nobody.
           role="combobox"
-          aria-label={label}
-          aria-labelledby={labelledBy}
+          aria-labelledby={label !== undefined ? labelId : labelledBy}
           aria-describedby={describedBy}
           aria-invalid={error ? true : undefined}
           aria-haspopup="listbox"
@@ -175,12 +187,18 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(function Sel
           <span className={selected ? styles.value : styles.placeholder}>
             {selected ? selected.label : placeholder}
           </span>
-          <span
+          <svg
             className={[styles.chevron, open ? styles.chevronOpen : ''].filter(Boolean).join(' ')}
+            viewBox="0 0 16 16"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             aria-hidden="true"
           >
-            {'▾'}
-          </span>
+            <path d="m4 6 4 4 4-4" />
+          </svg>
         </button>
 
         <Popover
@@ -207,6 +225,8 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(function Sel
                 role="option"
                 aria-selected={i === selectedIndex}
                 aria-disabled={o.disabled || undefined}
+                // Its place in the list, for expressive's stagger (finding 13).
+                style={{ '--haus-option-index': Math.min(i, 8) } as React.CSSProperties}
                 className={[
                   styles.option,
                   i === selectedIndex ? styles.selected : '',
@@ -220,22 +240,47 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(function Sel
                 onMouseEnter={() => listbox.setActiveIndex(i)}
                 onClick={() => commit(i)}
               >
-                <span className={styles.optionLabel}>{o.label}</span>
-                {o.hint && <span className={styles.optionHint}>{o.hint}</span>}
+                <span className={styles.optionText}>
+                  <span className={styles.optionLabel}>{o.label}</span>
+                  {o.hint && <span className={styles.optionHint}>{o.hint}</span>}
+                </span>
+                {/* The selected row carries a check, not only a heavier
+                    weight (finding 7). aria-selected is what is announced. */}
+                {i === selectedIndex && (
+                  <svg
+                    className={styles.check}
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.75"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="m3.5 8.5 3 3 6-7" />
+                  </svg>
+                )}
               </li>
             ))}
           </ul>
         </Popover>
       </div>
 
+      {errorId && (
+        <div className={styles.errorSlot}>
+          <span id={errorId} className={styles.errorMessage} role="alert">
+            <svg className={styles.errorIcon} viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <circle cx="8" cy="8" r="6.25" stroke="currentColor" strokeWidth="1.5" />
+              <path d="M8 4.75v3.75" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              <circle cx="8" cy="11" r="0.9" fill="currentColor" />
+            </svg>
+            <span>{error}</span>
+          </span>
+        </div>
+      )}
       {hintId && (
         <span id={hintId} className={styles.hint}>
           {hint}
-        </span>
-      )}
-      {errorId && (
-        <span id={errorId} className={styles.errorMessage} role="alert">
-          {error}
         </span>
       )}
     </div>

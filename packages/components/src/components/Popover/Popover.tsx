@@ -190,7 +190,34 @@ export const Popover = React.forwardRef<HTMLDivElement, PopoverProps>(function P
     }
   }, [portal, open, triggerRef])
 
-  if (!open) return null
+  /* Kept in the document while the exit animation runs, so the panel leaves on
+     the popover-exit role rather than vanishing in a frame (4.5, Select
+     finding 11). `closing` is the panel on its way out: inert, so nothing in it
+     takes a click or focus, and unmounted when its animation ends. When there
+     is no animation to wait for (none declared, or a 0ms duration) it unmounts
+     at once, which is also what happens in a test environment with no CSS.
+     Reopening during the exit goes straight back to the enter animation. */
+  const [closing, setClosing] = React.useState(false)
+  const wasOpen = React.useRef(open)
+  React.useLayoutEffect(() => {
+    if (wasOpen.current && !open) setClosing(true)
+    if (open) setClosing(false)
+    wasOpen.current = open
+  }, [open])
+
+  React.useLayoutEffect(() => {
+    if (!closing) return
+    const node = panelRef.current
+    const style = node ? getComputedStyle(node) : null
+    const animated =
+      !!style &&
+      style.animationName !== '' &&
+      style.animationName !== 'none' &&
+      parseFloat(style.animationDuration || '0') > 0
+    if (!animated) setClosing(false)
+  }, [closing])
+
+  if (!open && !closing) return null
 
   const cls = [
     styles.panel,
@@ -220,7 +247,18 @@ export const Popover = React.forwardRef<HTMLDivElement, PopoverProps>(function P
     : { position: 'fixed', visibility: 'hidden' }
 
   const panel = (
-    <div ref={setPanel} role={role} className={cls} style={portal ? fixedStyle : undefined} {...rest}>
+    <div
+      ref={setPanel}
+      role={role}
+      className={cls}
+      style={portal ? fixedStyle : undefined}
+      data-state={open ? 'open' : 'closed'}
+      inert={!open || undefined}
+      onAnimationEnd={e => {
+        if (!open && e.target === e.currentTarget) setClosing(false)
+      }}
+      {...rest}
+    >
       {children}
     </div>
   )

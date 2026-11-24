@@ -5,6 +5,18 @@
   inline-size: 100%;
 }
 
+/* Input's label: the field-label role, 8px above the control (4px gap plus
+   this margin), so a form mixing the two reads as one (finding 1). */
+.label {
+  margin-block-end: var(--haus-space-stack-2xs);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-label-field-size);
+  font-weight: var(--haus-type-label-field-weight);
+  line-height: var(--haus-type-label-field-leading);
+  letter-spacing: var(--haus-type-label-field-tracking);
+  color: var(--haus-color-ink-primary);
+}
+
 /* The box the panel is positioned against: the trigger alone, so a hint or an
    error under it does not push the panel down. */
 .control {
@@ -32,18 +44,38 @@
   border-radius: var(--haus-radius-control);
   color: var(--haus-color-ink-primary);
   cursor: pointer;
-  transition:
-    border-color var(--haus-motion-micro),
-    box-shadow var(--haus-motion-micro);
+  /* border-box so min-block-size is the whole control, 36px at md like Input
+     and Button rather than 38px (finding 3). */
+  box-sizing: border-box;
+  transition-property: border-color, outline-color, outline-offset;
+  transition-duration: var(--haus-motion-highlight-duration);
+  transition-timing-function: var(--haus-motion-highlight-easing);
 }
 
-.trigger:hover:not(:disabled) {
-  --haus-lb-border: var(--haus-color-ink-secondary);
+/* Input's hover: the edge moves toward the ink (finding 5). */
+.trigger:hover:not(:disabled, .error, :focus-visible) {
+  --haus-lb-border: color-mix(in oklch, var(--haus-color-border-control), var(--haus-color-ink-primary) 30%);
+}
+
+/* The stepped-out outline Button and Input use (finding 6). */
+@media (forced-colors: none) {
+  .trigger {
+    outline: var(--haus-border-width-thick) solid transparent;
+    outline-offset: 0;
+  }
+
+  .trigger:focus-visible {
+    outline-color: var(--haus-color-border-focus);
+    outline-offset: var(--haus-focus-outline-offset);
+  }
+
+  .trigger.error:focus-visible {
+    outline-color: var(--haus-color-error-default);
+  }
 }
 
 .trigger:focus-visible {
-  outline: none;
-  box-shadow: var(--haus-focus-ring);
+  --haus-lb-border: var(--haus-color-border-focus);
 }
 
 .trigger:disabled {
@@ -66,8 +98,10 @@
 
 .chevron {
   flex: none;
+  inline-size: 1em;
+  block-size: 1em;
   color: var(--haus-color-ink-tertiary);
-  transition: transform var(--haus-motion-micro);
+  transition: transform var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing);
 }
 
 .chevronOpen {
@@ -77,22 +111,30 @@
 /* ── Sizes ── */
 
 .sm {
-  font-size: var(--haus-type-label-sm-size);
+  font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
   line-height: var(--haus-type-label-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
   padding: var(--haus-space-inset-2xs) var(--haus-space-inset-sm);
   min-block-size: var(--haus-control-height-sm);
 }
 
+/* md reads body-sm whole, the role Input's value reads, so a chosen value and
+   a typed one look the same in one form (finding 2). */
 .md {
-  font-size: var(--haus-type-label-md-size);
-  line-height: var(--haus-type-label-md-leading);
+  font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
+  line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
   padding: var(--haus-space-inset-xs) var(--haus-space-inset-sm);
   min-block-size: var(--haus-control-height-md);
 }
 
 .lg {
   font-size: var(--haus-type-body-size);
+  font-weight: var(--haus-type-body-weight);
   line-height: var(--haus-type-body-leading);
+  letter-spacing: var(--haus-type-body-tracking);
   padding: var(--haus-space-inset-sm) var(--haus-space-inset-md);
   min-block-size: var(--haus-control-height-lg);
 }
@@ -114,10 +156,12 @@
 }
 
 .option {
+  --haus-option-stagger: 0;
   display: flex;
-  flex-direction: column;
-  gap: var(--haus-space-gap-2xs);
-  padding: var(--haus-space-inset-2xs) var(--haus-space-inset-xs);
+  align-items: center;
+  gap: var(--haus-space-gap-xs);
+  /* 8px top and bottom, a comfortable pointer row (finding 8). */
+  padding: var(--haus-space-inset-xs);
   /* Concentric with the panel: the panel corner is radius-overlay and the panel
      insets its options by inset-2xs, so the highlight matches the container's
      curve (overlay - inset) instead of a tighter marker radius that pokes inside
@@ -125,6 +169,36 @@
   border-radius: calc(var(--haus-radius-overlay) - var(--haus-space-inset-2xs));
   cursor: pointer;
   color: var(--haus-color-ink-primary);
+  /* Expressive staggers the rows in after the panel, a few milliseconds each,
+     capped at the ninth (finding 13). Subtle and reduced show them with the
+     panel: the stagger is 0. */
+  animation: haus-option-in var(--haus-motion-popover-enter-duration) var(--haus-motion-popover-enter-easing) both;
+  animation-delay: calc(var(--haus-motion-popover-enter-duration) * var(--haus-option-stagger) * var(--haus-option-index));
+}
+
+[data-haus-motion='expressive'] .option {
+  --haus-option-stagger: 0.08;
+}
+
+@keyframes haus-option-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.optionText {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--haus-space-gap-2xs);
+  min-inline-size: 0;
+}
+
+.check {
+  flex: none;
+  inline-size: 1em;
+  block-size: 1em;
+  color: var(--haus-color-primary-default);
 }
 
 /* `active` is the highlighted row, which is not DOM focus: focus stays on the
@@ -153,24 +227,25 @@
    size onto it (data-size) and match each option label to the value shown in the
    field, so a small listbox has small options rather than one fixed size that
    looks oversized under the smallest trigger. */
-.panel[data-size='sm'] .optionLabel {
-  font-size: var(--haus-type-label-sm-size);
-  line-height: var(--haus-type-label-sm-leading);
-}
+.panel[data-size='sm'] .optionLabel,
 .panel[data-size='md'] .optionLabel {
-  font-size: var(--haus-type-label-md-size);
-  line-height: var(--haus-type-label-md-leading);
+  font-size: var(--haus-type-body-sm-size);
+  line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
 }
 .panel[data-size='lg'] .optionLabel {
   font-size: var(--haus-type-body-size);
   line-height: var(--haus-type-body-leading);
+  letter-spacing: var(--haus-type-body-tracking);
 }
 
 /* The second line a native option cannot carry, and the reason this component
    exists at all. */
 .optionHint {
-  font-size: var(--haus-type-label-sm-size);
-  line-height: var(--haus-type-label-sm-leading);
+  font-size: var(--haus-type-label-caption-size);
+  font-weight: var(--haus-type-label-caption-weight);
+  line-height: var(--haus-type-label-caption-leading);
+  letter-spacing: var(--haus-type-label-caption-tracking);
   /* A hint is text, so it takes the ink every other hint takes rather than the
      glyph role, which is 3.97:1 and fails AA at this size. */
   color: var(--haus-color-ink-secondary);
@@ -178,10 +253,6 @@
 
 .trigger.error {
   --haus-lb-border: var(--haus-color-error-default);
-}
-
-.trigger.error:focus-visible {
-  box-shadow: var(--haus-focus-ring-error);
 }
 
 /* Input's hint and error lines, so a form mixing the two reads as one. */
@@ -195,6 +266,9 @@
 }
 
 .errorMessage {
+  display: flex;
+  align-items: center;
+  gap: var(--haus-space-gap-2xs);
   font-family: var(--haus-font-sans);
   font-size: var(--haus-type-label-caption-size);
   font-weight: var(--haus-type-label-caption-weight);
@@ -203,11 +277,36 @@
   color: var(--haus-color-error-default);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .trigger,
-  .chevron {
-    transition-duration: var(--haus-duration-reduced);
+/* Input's error: grows in on the layout role, after the border in expressive,
+   instant in reduced. */
+.errorSlot {
+  --haus-select-stagger: 0;
+  display: grid;
+  grid-template-rows: 1fr;
+  animation: haus-select-error-in var(--haus-motion-layout-duration) var(--haus-motion-layout-easing) both;
+  animation-delay: calc(var(--haus-motion-highlight-duration) * var(--haus-select-stagger));
+}
+
+[data-haus-motion='expressive'] .errorSlot {
+  --haus-select-stagger: 0.33;
+}
+
+.errorSlot > * {
+  min-height: 0;
+  overflow: hidden;
+}
+
+@keyframes haus-select-error-in {
+  from {
+    grid-template-rows: 0fr;
+    opacity: 0;
   }
+}
+
+.errorIcon {
+  flex-shrink: 0;
+  inline-size: 1em;
+  block-size: 1em;
 }
 
 @media (forced-colors: active) {

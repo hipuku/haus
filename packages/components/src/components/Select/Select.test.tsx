@@ -155,13 +155,21 @@ describe('Select', () => {
     expect(screen.getByRole('combobox')).not.toHaveAttribute('aria-invalid')
   })
 
-  it('marks itself invalid and announces the error in place of the hint', () => {
+  it('marks itself invalid, announces the error, and keeps the hint after it', () => {
+    // The hint is what the user needed to choose correctly, so it stays when
+    // the choice is wrong.
     render(<Harness hint="Who can accept a decision" error="Pick a role" />)
     const trigger = screen.getByRole('combobox')
     expect(trigger).toHaveAttribute('aria-invalid', 'true')
-    expect(trigger).toHaveAccessibleDescription('Pick a role')
+    expect(trigger).toHaveAccessibleDescription('Pick a role Who can accept a decision')
     expect(screen.getByRole('alert')).toHaveTextContent('Pick a role')
-    expect(screen.queryByText('Who can accept a decision')).toBeNull()
+    expect(screen.getByText('Who can accept a decision')).toBeInTheDocument()
+  })
+
+  it('shows its label and focuses the trigger when the label is clicked', async () => {
+    render(<Harness />)
+    await userEvent.click(screen.getByText('Role'))
+    expect(screen.getByRole('combobox', { name: 'Role' })).toHaveFocus()
   })
 
   it('keeps the caller description alongside its own', () => {
