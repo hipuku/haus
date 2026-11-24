@@ -16,7 +16,7 @@ export function Wall() {
 
   return (
     <div className={styles.wall}>
-      <Card className={styles.demo} variant="outlined">
+      <Card className={styles.demo} variant="elevated">
         <span className={styles.label}>Badge</span>
         <div className={styles.row}>
           <Badge tone="success">Shipped</Badge>
@@ -27,7 +27,7 @@ export function Wall() {
         </div>
       </Card>
 
-      <Card className={styles.demo} variant="outlined">
+      <Card className={styles.demo} variant="elevated">
         <span className={styles.label}>Button</span>
         <div className={styles.row}>
           <Button variant="primary">Save</Button>
@@ -36,14 +36,14 @@ export function Wall() {
         </div>
       </Card>
 
-      <Card className={styles.demo} variant="outlined">
+      <Card className={styles.demo} variant="elevated">
         <span className={styles.label}>Input</span>
         <div className={styles.column}>
           <Input defaultValue="hello@hipuku.dev" label="Email" />
         </div>
       </Card>
 
-      <Card className={styles.demo} variant="outlined">
+      <Card className={styles.demo} variant="elevated">
         <span className={styles.label}>Select</span>
         <div className={styles.column}>
           <Select
@@ -59,14 +59,14 @@ export function Wall() {
         </div>
       </Card>
 
-      <Card className={styles.demo} variant="outlined">
+      <Card className={styles.demo} variant="elevated">
         <span className={styles.label}>Toggle</span>
         <div className={styles.column}>
           <Toggle defaultChecked description="Follows the system setting" label="Reduced motion" />
         </div>
       </Card>
 
-      <Card className={styles.demo} variant="outlined">
+      <Card className={styles.demo} variant="elevated">
         <span className={styles.label}>Avatar</span>
         <div className={styles.row}>
           <Avatar name="Ada Lovelace" status="online" />

@@ -154,7 +154,8 @@ export function SurfaceSamples({ samples }: { samples: readonly { label: string;
   return (
     <div className={styles.surfaces}>
       {samples.map(sample => (
-        <div className={styles.surface} key={sample.label} style={sample.style}>
+        <div className={styles.surfaceSample} key={sample.label}>
+          <div className={styles.surface} style={sample.style} />
           <code className={styles.name}>{sample.label}</code>
         </div>
       ))}

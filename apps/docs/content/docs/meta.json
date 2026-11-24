@@ -1,13 +1,3 @@
 {
-  "pages": [
-    "index",
-    "---Foundations---",
-    "...foundations",
-    "---Components---",
-    "...components",
-    "---Packages---",
-    "...packages",
-    "---Tools---",
-    "...tools"
-  ]
+  "pages": ["index", "foundations", "components", "packages", "tools"]
 }

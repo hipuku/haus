@@ -5,8 +5,24 @@ description: Convert design tokens between DTCG, Figma, Tokens Studio and Tailwi
 
 import { Converter } from '@/components/tools/converter'
 
-The [`@hipuku/dtcg`](/docs/packages/dtcg) engine, running in your browser. Paste tokens in any of the
-four formats and choose a target. The output is what the engine writes, and the report lists every
-property the target format could not hold, with the reason. Nothing is uploaded.
+Design tools disagree about how a token is written down, and moving between them quietly drops
+things. This converter reads DTCG, Figma variables, Tokens Studio and Tailwind v4, writes any of
+them, and shows you what did not survive.
 
 <Converter />
+
+## How to read the output
+
+Under the output is the loss report: one line per token the target format could not hold, with the
+reason it could not. No losses means the conversion was complete, which is worth knowing before you
+commit the result.
+
+Two examples of why a report is not empty: Tailwind has no way to express a single token that
+changes with a mode, so a two-mode colour arrives as one value. Figma variables have no composite
+type, so a typography token arrives as its four parts or not at all.
+
+## It runs here
+
+This is [`@hipuku/dtcg`](/docs/packages/dtcg) itself, the same build a consumer installs, compiled
+to run in the page. Nothing is uploaded, nothing is stored, and the conversion you see is the
+conversion the command line would give you.

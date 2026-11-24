@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
+import { Notice } from './notice'
 import styles from './install.module.css'
 
 /*
@@ -22,10 +23,10 @@ export function Install({ name }: { name: string }) {
 
   if (!served.has(item)) {
     return (
-      <p className={styles.pending}>
+      <Notice tone="info">
         Not in the registry yet. Badge is the one component the registry serves today; the rest go in together once the
         packages are published, so that a command on this page is a command that works.
-      </p>
+      </Notice>
     )
   }
 

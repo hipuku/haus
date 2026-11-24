@@ -5,6 +5,12 @@
  */
 
 .preview {
+  /* A column, and the caption's margin reset with it: `figcaption` picked up a
+     margin from the prose styles, which left a strip of bare page between the
+     stage and the rule under it. */
+  display: flex;
+  flex-direction: column;
+
   border: var(--haus-border-width-default) solid var(--haus-color-border-default);
   border-radius: var(--haus-radius-surface);
   margin-block: var(--haus-space-5) var(--haus-space-10);
@@ -20,15 +26,19 @@
  * it says the area is a surface a component has been placed on, so a Button
  * alone in the middle of it still looks deliberate.
  *
+ * The ground is `surface-default`, the same as the page. A tinted ground was
+ * worse than no ground: `surface-subtle` is a real role, so any component that
+ * uses it, a quiet panel or a table header, sat on its own colour and vanished.
+ * The dots and the frame are what say "this area is a stage", and they say it
+ * without claiming a colour a component might need.
+ *
  * The grid is drawn in `border-default` rather than `border-subtle`: against
- * `surface-subtle` in dark mode the subtle line is so close to the fill that
- * the dots did not render at all, and a texture nobody can see is a texture
- * that is not there. It sits on `surface-subtle` so the components on it are
- * still being judged against a real haus surface rather than against a texture.
+ * the page in dark mode the subtle line is so close to the fill that the dots
+ * did not render at all, and a texture nobody can see is not there.
  */
 .stage {
   align-items: center;
-  background-color: var(--haus-color-surface-subtle);
+  background-color: var(--haus-color-surface-default);
   background-image: radial-gradient(circle at center, var(--haus-color-border-default) 1px, transparent 1px);
   background-position: center;
   background-size: var(--haus-space-4) var(--haus-space-4);
@@ -68,6 +78,7 @@
  */
 .caption {
   align-items: baseline;
+  margin: 0;
   border-block-start: var(--haus-border-width-default) solid var(--haus-color-border-default);
   color: var(--haus-color-ink-tertiary);
   display: flex;

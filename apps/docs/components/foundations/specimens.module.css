@@ -40,12 +40,23 @@
   padding: var(--haus-space-3);
 }
 
-.name {
+/*
+ * A role's name, set as a label.
+ *
+ * It is written as a `<code>` because it is a token name, and the page gives
+ * inline code a filled background so it reads as a mark inside a sentence.
+ * Inside a specimen there is no sentence: the fill became a grey slab behind
+ * every caption, stretched to whatever column it sat in. The element selector
+ * raises the specificity over the page's `:where()` rule without an override.
+ */
+code.name {
+  background: none;
   color: var(--haus-color-ink-primary);
   font-family: var(--haus-font-mono);
   font-size: var(--haus-type-mono-sm-size);
   line-height: var(--haus-type-mono-sm-leading);
   overflow: hidden;
+  padding: 0;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -64,8 +75,10 @@
   margin-block: var(--haus-space-6);
 }
 
-.rampName {
+code.rampName {
+  background: none;
   color: var(--haus-color-ink-secondary);
+  padding: 0;
   font-family: var(--haus-font-mono);
   font-size: var(--haus-type-mono-sm-size);
 }
@@ -152,16 +165,25 @@
 .surfaces {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--haus-space-5);
-  margin-block: var(--haus-space-6);
+  gap: var(--haus-space-6);
+  margin-block: var(--haus-space-6) var(--haus-space-8);
+}
+
+/*
+ * A radius is the shape of a corner and an elevation is a shadow at an edge.
+ * With the name inside the box, the thing a reader is meant to be looking at
+ * had a label sitting in the middle of it. The name goes underneath, so the
+ * specimen is the only thing in the frame.
+ */
+.surfaceSample {
+  display: flex;
+  flex-direction: column;
+  gap: var(--haus-space-2);
 }
 
 .surface {
-  align-items: center;
   background: var(--haus-color-surface-raised);
   block-size: var(--haus-space-20);
   border: var(--haus-border-width-default) solid var(--haus-color-border-default);
-  display: flex;
   inline-size: var(--haus-space-20);
-  justify-content: center;
 }

@@ -3,13 +3,28 @@ title: DTCG
 description: Convert design tokens between four formats, in code or on the command line, with a report of what each conversion loses.
 ---
 
-`@hipuku/dtcg`, unreleased at 0.1.0. Reads DTCG (resolver documents with modes included), Figma
-variables exports, Tokens Studio and Tailwind v4 `@theme` stylesheets into one model, writes that
-model to any of them, and reports what each conversion loses, per token, with a reason.
+Four tools in a design pipeline, four token formats, and no two of them agree. `@hipuku/dtcg` reads
+all four into one model, writes that model back out as any of them, and tells you exactly what each
+conversion could not carry, per token, with the reason.
+
+That last part is the point. Every converter loses something: Tailwind has no concept of a mode on a
+single token, Figma variables cannot hold a typography composite. A converter that loses it silently
+is worse than one that refuses, so this one hands back a loss report and lets the caller decide.
+
+The [converter tool](/docs/tools/converter) on this site is this package running in your browser.
+
+<PackageMeta dir="dtcg" />
+
+## The four formats
+
+| Format | Read | Written | Notes |
+| ------ | ---- | ------- | ----- |
+| DTCG | Yes | Yes | Resolver documents with modes included |
+| Figma variables | Yes | Yes | The export shape, collections and modes |
+| Tokens Studio | Yes | Yes | Sets and themes |
+| Tailwind v4 | Yes | Yes | `@theme` stylesheets |
 
 ## Install
-
-Not on npm yet.
 
 ```bash
 npm install @hipuku/dtcg

@@ -3,12 +3,20 @@ title: Style probe
 description: Read what a browser actually computed for an element, as typed token values.
 ---
 
-Published as `haus-style-probe` 1.0.0. It will be published as `@hipuku/style-probe`.
+A component's source says what it should look like. The browser says what it does look like, and
+those are different questions. `@hipuku/style-probe` answers the second one: it reads an element's
+computed style out of a live page and hands it back as values you can compare, so a test can assert
+that a Button really is drawing the token it claims rather than that its class list contains a
+word.
+
+This is how the Figma parity check and the component audits are measured.
+
+<PackageMeta dir="style-probe" />
 
 ## Install
 
 ```bash
-npm install haus-style-probe
+npm install @hipuku/style-probe
 ```
 
 ## Usage
@@ -19,7 +27,7 @@ you can compare, such as `"rgb(37, 99, 235)"` into `#2563eb` and `"0.5rem"` reso
 a number. With Playwright, mount a component and read it:
 
 ```ts
-import { extractRawElements, normaliseElement } from 'haus-style-probe'
+import { extractRawElements, normaliseElement } from '@hipuku/style-probe'
 
 const raw = await page.evaluate(extractRawElements, { root: '#probe' })
 const [button] = raw.map(normaliseElement)

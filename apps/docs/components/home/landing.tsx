@@ -64,34 +64,40 @@ export function Landing() {
             Three packages a component rests on, each publishable and usable on its own.
           </p>
           <div className={styles.cards}>
-            <Card className={styles.card} variant="outlined">
-              <h3 className={styles.cardTitle}>Tokens</h3>
-              <p className={styles.cardBody}>
-                Roles rather than hex codes: a surface, an ink, a border, each with a light and a dark value, and a
-                brand map a product can swap. Contrast is a test, not a hope.
-              </p>
-              <Link className={styles.cardLink} href="/docs/packages/tokens">
-                @hipuku/tokens
+            <Card asChild variant="elevated">
+              <Link href="/docs/packages/tokens">
+                <span className={styles.cardInner}>
+                  <span className={styles.cardTitle}>Tokens</span>
+                  <span className={styles.cardBody}>
+                    Roles rather than hex codes: a surface, an ink, a border, each with a light and a dark value, and a
+                    brand map a product can swap. Contrast is a test, not a hope.
+                  </span>
+                  <span className={styles.cardLink}>@hipuku/tokens</span>
+                </span>
               </Link>
             </Card>
-            <Card className={styles.card} variant="outlined">
-              <h3 className={styles.cardTitle}>Motion</h3>
-              <p className={styles.cardBody}>
-                Ten roles, three modes and a cap on every duration, so an interface moves to one vocabulary and answers
-                a reduced-motion setting by construction.
-              </p>
-              <Link className={styles.cardLink} href="/docs/packages/motion">
-                @hipuku/motion
+            <Card asChild variant="elevated">
+              <Link href="/docs/packages/motion">
+                <span className={styles.cardInner}>
+                  <span className={styles.cardTitle}>Motion</span>
+                  <span className={styles.cardBody}>
+                    Ten roles, three modes and a cap on every duration, so an interface moves to one vocabulary and
+                    answers a reduced-motion setting by construction.
+                  </span>
+                  <span className={styles.cardLink}>@hipuku/motion</span>
+                </span>
               </Link>
             </Card>
-            <Card className={styles.card} variant="outlined">
-              <h3 className={styles.cardTitle}>Tools</h3>
-              <p className={styles.cardBody}>
-                The token converter runs on this site, on the same package a consumer installs, and so do the colour
-                tools.
-              </p>
-              <Link className={styles.cardLink} href="/docs/tools/converter">
-                Converter
+            <Card asChild variant="elevated">
+              <Link href="/docs/tools/converter">
+                <span className={styles.cardInner}>
+                  <span className={styles.cardTitle}>Tools</span>
+                  <span className={styles.cardBody}>
+                    The token converter runs on this site, on the same package a consumer installs, and so do the
+                    colour tools.
+                  </span>
+                  <span className={styles.cardLink}>Converter</span>
+                </span>
               </Link>
             </Card>
           </div>

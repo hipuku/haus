@@ -3,6 +3,7 @@
 import { convert, FORMAT_LABEL, ReadError, type FormatId } from '@hipuku/dtcg'
 import { Callout, Select, Textarea } from 'haus-components'
 import { useMemo, useState } from 'react'
+import styles from './tool.module.css'
 
 const SAMPLE = `{
   "color": {
@@ -46,7 +47,7 @@ export function Converter() {
   }, [text, target])
 
   return (
-    <div className="not-prose grid gap-4">
+    <div className={`not-prose ${styles.stack}`}>
       <Textarea
         label="Tokens"
         hint="DTCG, a Figma variables export, Tokens Studio or a Tailwind v4 stylesheet. The format is detected."
@@ -67,7 +68,7 @@ export function Converter() {
         <>
           {/* The summary is announced when it changes, so changing the target is heard;
               the generated files are not, being long and not a status. */}
-          <p role="status">
+          <p className={styles.summary} role="status">
             {outcome.result.allLosses.length === 0
               ? 'Nothing was lost. '
               : `${outcome.result.allLosses.length} ${outcome.result.allLosses.length === 1 ? 'loss' : 'losses'}. `}
@@ -76,9 +77,9 @@ export function Converter() {
             {outcome.result.set.modes.length > 1 ? `, ${outcome.result.set.modes.length} modes` : ''}.
           </p>
           {outcome.result.files.map(file => (
-            <figure key={file.name} className="grid gap-1">
-              <figcaption>{file.name}</figcaption>
-              <pre className="overflow-x-auto rounded border p-3 text-sm">
+            <figure key={file.name} className={styles.output}>
+              <figcaption className={styles.outputName}>{file.name}</figcaption>
+              <pre className={styles.code}>
                 <code>{file.text}</code>
               </pre>
             </figure>
@@ -88,7 +89,7 @@ export function Converter() {
           ) : (
             <Callout tone="warning">
               {outcome.result.allLosses.length} {outcome.result.allLosses.length === 1 ? 'loss' : 'losses'}
-              <ul>
+              <ul className={styles.losses}>
                 {outcome.result.allLosses.map((loss, i) => (
                   <li key={i}>
                     <code>{loss.token}</code>

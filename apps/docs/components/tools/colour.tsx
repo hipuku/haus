@@ -13,6 +13,7 @@ import { Badge, Button, Input, Textarea } from 'haus-components'
 import { useEffect, useMemo, useState } from 'react'
 
 type Matcher = (hex: string, topN?: number) => NamedColourMatch[]
+import styles from './tool.module.css'
 
 const swatch = (hex: string) => (
   <span
@@ -50,7 +51,7 @@ export function NameColour() {
   const matches = hex && matcher ? matcher(hex) : []
 
   return (
-    <div className="not-prose grid gap-3">
+    <div className={`not-prose ${styles.stack}`}>
       <Input
         label="Colour"
         hint="Any CSS colour: hex, rgb(), oklch()."
@@ -68,7 +69,7 @@ export function NameColour() {
         </p>
       )}
       {matches.length > 0 && (
-        <ol className="grid gap-1">
+        <ol className={styles.losses}>
           {matches.map(m => (
             <li key={m.hex + m.name}>
               {swatch(m.hex)} {m.name} <code>{m.hex}</code>, ΔE {m.distance}
@@ -93,7 +94,7 @@ export function CompareColours() {
   }, [ha, hb])
 
   return (
-    <div className="not-prose grid gap-3">
+    <div className={`not-prose ${styles.stack}`}>
       <div className="grid gap-3 sm:grid-cols-2">
         <Input label="First" value={a} onChange={e => setA(e.target.value)} error={ha ? undefined : 'Not a colour.'} />
         <Input label="Second" value={b} onChange={e => setB(e.target.value)} error={hb ? undefined : 'Not a colour.'} />
@@ -144,7 +145,7 @@ export function PaletteAnalysis() {
   const result = useMemo(() => analysePalette(hexes), [hexes])
 
   return (
-    <div className="not-prose grid gap-3">
+    <div className={`not-prose ${styles.stack}`}>
       <Textarea
         label="Palette"
         hint="Colours separated by spaces, commas or new lines."
@@ -154,7 +155,7 @@ export function PaletteAnalysis() {
         error={result ? undefined : 'Give at least two colours.'}
       />
       {result && (
-        <ul className="grid gap-1">
+        <ul className={styles.losses}>
           <li>
             Lightness steps: <Badge>{result.lightness.rating}</Badge> (spread {result.lightness.stdDev.toFixed(1)})
           </li>

@@ -1,3 +1,11 @@
 {
-  "pages": ["colour", "type", "space", "surfaces", "motion", "theming"]
+  "title": "Foundations",
+  "pages": [
+    "colour",
+    "type",
+    "space",
+    "surfaces",
+    "motion",
+    "theming"
+  ]
 }

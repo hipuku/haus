@@ -1,13 +1,14 @@
 import { createMDX } from 'fumadocs-mdx/next'
 
-// `agentRules` writes an AGENTS.md into the app on every dev start. It is a
-// generated file nobody edits and nothing reads, it is not in the repository,
-// and it arrives with prose the house style gate then fails on.
-const withMDX = createMDX({ agentRules: false })
+const withMDX = createMDX()
 
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
+  // Next writes an AGENTS.md into the app on every dev start. It is generated,
+  // nobody edits it, nothing reads it, it is not in the repository, and it
+  // arrives with prose the house style gate then fails on.
+  agentRules: false,
   async rewrites() {
     return [
       {

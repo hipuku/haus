@@ -62,8 +62,19 @@
   --default-font-family: var(--haus-font-sans);
   --default-mono-font-family: var(--haus-font-mono);
 
-  /* The system's own radii, so a card here and a Card component agree. */
+  /* The system's own radii, so a card here and a Card component agree.
+     `--radius` is fumadocs's own; the `--radius-*` steps are Tailwind's, and
+     without them a utility class rounds to Tailwind's scale rather than to
+     haus. The generated API table was `rounded-2xl`, a 16px corner the system
+     has no entry for, next to Cards at 12px. haus stops at 12px for a surface,
+     so everything above `lg` is clamped there rather than invented. */
   --radius: var(--haus-radius-surface);
+  --radius-sm: var(--haus-radius-sm);
+  --radius-md: var(--haus-radius-md);
+  --radius-lg: var(--haus-radius-lg);
+  --radius-xl: var(--haus-radius-lg);
+  --radius-2xl: var(--haus-radius-lg);
+  --radius-3xl: var(--haus-radius-lg);
 }
 
 /*
@@ -154,4 +165,28 @@
 
 #nd-toc a[data-active='true'] {
   border-inline-start-color: var(--haus-color-primary-default);
+}
+
+/*
+ * The sidebar's sections.
+ *
+ * Foundations, Components, Packages and Tools are the four kinds of page on
+ * this site, and they were set in the same colour and weight as the pages
+ * inside them, so the sidebar read as one list of twenty-nine things. They are
+ * headings, so they are given a heading's weight and the page's strongest ink,
+ * and a page under one of them stays quiet.
+ *
+ * The two buttons excluded are the search field and the sidebar's own collapse
+ * toggle, which carry `aria-expanded` for their own reasons.
+ */
+#nd-sidebar button[aria-expanded]:not([data-search-full], [data-collapsed]) {
+  color: var(--haus-color-ink-primary);
+  font-weight: var(--haus-weight-semibold);
+  margin-block-start: var(--haus-space-4);
+}
+
+/* The section a reader is already inside does not need to announce itself
+   twice: its pages are visible under it. */
+#nd-sidebar button[aria-expanded='true']:not([data-search-full], [data-collapsed]) {
+  margin-block-end: var(--haus-space-1);
 }

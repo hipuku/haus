@@ -1,6 +1,7 @@
 import { createGenerator } from 'fumadocs-typescript'
 import { AutoTypeTable } from 'fumadocs-typescript/ui'
 import path from 'node:path'
+import styles from './api-table.module.css'
 
 const generator = createGenerator()
 
@@ -50,12 +51,14 @@ export function ApiTable({
     .map(attribute => `'${attribute.trim()}'`)
     .join(' | ')
   return (
-    <AutoTypeTable
-      generator={generator}
-      options={{ basePath: componentsSrc }}
-      path={file}
-      name="Api"
-      type={`Omit<${name}, ${keys(attributes ?? `React.HTMLAttributes<${element}>`, kept)}>`}
-    />
+    <div className={styles.api}>
+      <AutoTypeTable
+        generator={generator}
+        options={{ basePath: componentsSrc }}
+        path={file}
+        name="Api"
+        type={`Omit<${name}, ${keys(attributes ?? `React.HTMLAttributes<${element}>`, kept)}>`}
+      />
+    </div>
   )
 }

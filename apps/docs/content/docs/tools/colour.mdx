@@ -5,7 +5,9 @@ description: Name a colour, compare two, and analyse a palette, with @hipuku/col
 
 import { NameColour, CompareColours, PaletteAnalysis } from '@/components/tools/colour'
 
-The [`@hipuku/colour`](/docs/packages/colour) functions, running in your browser.
+Three questions that come up whenever a palette is being built, answered by the same functions the
+contrast suite runs in CI. This is [`@hipuku/colour`](/docs/packages/colour) itself, compiled to run
+in the page: nothing is uploaded, and the numbers here are the numbers the tests use.
 
 ## Name a colour
 
@@ -15,7 +17,9 @@ The nearest of 31,900 named colours, by CIEDE2000 distance.
 
 ## Compare two colours
 
-How far apart they look, and the WCAG contrast between them.
+How far apart they look, as a CIEDE2000 distance, and the WCAG contrast between them. The two
+answer different questions: distance is whether a person can tell them apart, contrast is whether
+one can carry text on the other.
 
 <CompareColours />
 
