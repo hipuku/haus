@@ -195,10 +195,14 @@ describe('components read roles, not primitives', () => {
     // and each offset subtracts the icon box, so each margin reads the icon
     // scale a second time.
     //
-    // What is left is thirteen control heights and twenty icon sizes. A control
+    // Then 33 to 31 when Select lost its sizes (4.5 audit, owner 2026-11-24): a
+    // field has one size, as Input does, so its three control-height reads
+    // became one.
+    //
+    // What is left is eleven control heights and twenty icon sizes. A control
     // height and an icon box are sizes whose own name is already the role, with
     // no honest alias to invent.
-    expect(PAST.length - sizes.length).toBe(33)
+    expect(PAST.length - sizes.length).toBe(31)
   })
 })
 

@@ -50,11 +50,10 @@ const meta = {
     },
   },
   argTypes: {
-    size: { control: 'inline-radio', options: ['sm', 'md', 'lg'] },
     disabled: { control: 'boolean' },
     placeholder: { control: 'text' },
   },
-  args: { options: roles, value: 'author', onChange: () => {}, label: 'Role', size: 'md' },
+  args: { options: roles, value: 'author', onChange: () => {}, label: 'Role' },
 } satisfies Meta<typeof Select>
 
 export default meta
@@ -90,25 +89,6 @@ export const LabelOnly: Story = {
           'Without hints it is a themed select, and the third option is ' +
           'disabled. A disabled option is skipped by the keyboard and refuses ' +
           'the click rather than looking pressable.',
-      },
-    },
-  },
-}
-
-export const Sizes: Story = {
-  render: () => (
-    <div style={{ display: 'grid', gap: 16, maxWidth: 320 }}>
-      <Controlled size="sm" />
-      <Controlled size="md" />
-      <Controlled size="lg" />
-    </div>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Three trigger heights, `sm` / `md` / `lg`, matching the other form ' +
-          'controls so a Select sits in a row of inputs without stepping out of it.',
       },
     },
   },

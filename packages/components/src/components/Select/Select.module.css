@@ -44,9 +44,17 @@
   border-radius: var(--haus-radius-control);
   color: var(--haus-color-ink-primary);
   cursor: pointer;
-  /* border-box so min-block-size is the whole control, 36px at md like Input
-     and Button rather than 38px (finding 3). */
+  /* border-box so min-block-size is the whole control, 36px like Input and an
+     md Button rather than 38px (finding 3). One size, as Input: a field has no
+     size scale (owner, 2026-11-24), and no product used sm or lg. body-sm is
+     the role Input's value reads (finding 2). */
   box-sizing: border-box;
+  min-block-size: var(--haus-control-height-md);
+  padding: var(--haus-space-inset-xs) var(--haus-space-inset-sm);
+  font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
+  line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
   transition-property: border-color, outline-color, outline-offset;
   transition-duration: var(--haus-motion-highlight-duration);
   transition-timing-function: var(--haus-motion-highlight-easing);
@@ -116,44 +124,13 @@
   transform: rotate(180deg);
 }
 
-/* ── Sizes ── */
-
-.sm {
-  font-size: var(--haus-type-body-sm-size);
-  font-weight: var(--haus-type-body-sm-weight);
-  line-height: var(--haus-type-label-sm-leading);
-  letter-spacing: var(--haus-type-body-sm-tracking);
-  padding: var(--haus-space-inset-2xs) var(--haus-space-inset-sm);
-  min-block-size: var(--haus-control-height-sm);
-}
-
-/* md reads body-sm whole, the role Input's value reads, so a chosen value and
-   a typed one look the same in one form (finding 2). */
-.md {
-  font-size: var(--haus-type-body-sm-size);
-  font-weight: var(--haus-type-body-sm-weight);
-  line-height: var(--haus-type-body-sm-leading);
-  letter-spacing: var(--haus-type-body-sm-tracking);
-  padding: var(--haus-space-inset-xs) var(--haus-space-inset-sm);
-  min-block-size: var(--haus-control-height-md);
-}
-
-.lg {
-  font-size: var(--haus-type-body-size);
-  font-weight: var(--haus-type-body-weight);
-  line-height: var(--haus-type-body-leading);
-  letter-spacing: var(--haus-type-body-tracking);
-  padding: var(--haus-space-inset-sm) var(--haus-space-inset-md);
-  min-block-size: var(--haus-control-height-lg);
-}
-
 /* ── Panel ───────────────────────────────────────────────────────────────────
    Popover supplies the surface, the elevation and the placement. What is left
    here is the scroll bound and the rows. */
 
-/* [data-size] for one more step of specificity than Popover's own .panel
-   rule, so the radius wins whichever stylesheet loads last. */
-.panel[data-size] {
+/* [role] for one more step of specificity than Popover's own .panel rule,
+   so the radius wins whichever stylesheet loads last. */
+.panel[role] {
   /* The control's radius, not the overlay's: the panel is the field opened,
      and a 16px panel under a 4px field read as two different objects. */
   border-radius: var(--haus-radius-control);
@@ -240,22 +217,10 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-/* The panel is portalled, so it does not inherit the trigger's size. Carry the
-   size onto it (data-size) and match each option label to the value shown in the
-   field, so a small listbox has small options rather than one fixed size that
-   looks oversized under the smallest trigger. */
-.panel[data-size='sm'] .optionLabel,
-.panel[data-size='md'] .optionLabel {
+  /* The trigger's value role, so the list and the chosen value match. */
   font-size: var(--haus-type-body-sm-size);
   line-height: var(--haus-type-body-sm-leading);
   letter-spacing: var(--haus-type-body-sm-tracking);
-}
-.panel[data-size='lg'] .optionLabel {
-  font-size: var(--haus-type-body-size);
-  line-height: var(--haus-type-body-leading);
-  letter-spacing: var(--haus-type-body-tracking);
 }
 
 /* The second line a native option cannot carry, and the reason this component

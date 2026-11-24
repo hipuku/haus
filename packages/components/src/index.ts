@@ -26,7 +26,7 @@ export { Card } from './components/Card'
 export type { CardProps, CardOwnProps, CardAsChildProps, CardVariant, CardElement } from './components/Card'
 
 export { Select } from './components/Select'
-export type { SelectProps, SelectOption, SelectSize } from './components/Select'
+export type { SelectProps, SelectOption } from './components/Select'
 
 export { Textarea } from './components/Textarea'
 export type { TextareaProps } from './components/Textarea'

@@ -1,10 +1,7 @@
 import React from 'react'
-import type { Size } from '../../types'
 import { Popover } from '../Popover'
 import { useListbox } from './useListbox'
 import styles from './Select.module.css'
-
-export type SelectSize = Size
 
 export interface SelectOption {
   /** Stable identity, and what `onChange` hands back. */
@@ -25,7 +22,6 @@ interface SelectBaseProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'on
   onChange: (value: string) => void
   /** Shown when nothing is selected. */
   placeholder?: string
-  size?: SelectSize
   disabled?: boolean
   /**
    * Renders a hidden input so the control still submits inside a plain
@@ -87,7 +83,6 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(function Sel
     value,
     onChange,
     placeholder = 'Select…',
-    size = 'md',
     disabled = false,
     name,
     className,
@@ -166,7 +161,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(function Sel
           ref={triggerRef}
           id={triggerId}
           type="button"
-          className={[styles.trigger, styles[size], error ? styles.error : '', controlClassName]
+          className={[styles.trigger, error ? styles.error : '', controlClassName]
             .filter(Boolean)
             .join(' ')}
           disabled={disabled}
@@ -211,7 +206,6 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(function Sel
           {...panelLabel}
           id={listbox.listId}
           className={styles.panel}
-          data-size={size}
         >
           <ul className={styles.options} role="none">
             {options.map((o, i) => (

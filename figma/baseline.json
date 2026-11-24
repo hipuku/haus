@@ -1,5 +1,5 @@
 {
-  "acceptedAt": "2026-11-24T01:50:54.820Z",
+  "acceptedAt": "2026-11-24T02:06:35.863Z",
   "items": {
     "axis Avatar.size": {
       "code": "lg|md|sm|xl|xs",
@@ -78,7 +78,6 @@
       "figma": "horizontal|vertical"
     },
     "axis Select.size": {
-      "code": "lg|md|sm",
       "figma": "lg|md|sm"
     },
     "axis Spinner.size": {
