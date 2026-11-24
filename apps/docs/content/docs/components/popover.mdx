@@ -55,14 +55,22 @@ wants, `trigger` for a panel at least as wide as the anchor, which is what a sel
 wants, or one of four fixed steps for a panel holding a form. The fixed steps read the
 `popover-width` roles, so a brand can restate them.
 
-`trigger` is a floor rather than a match: the panel starts at the trigger's width and grows to its
-content from there, up to `popover-width-xl`, so a long option is readable instead of wrapped. It
-is the trigger's width exactly only while the content fits inside it.
+`trigger` is a floor rather than a match: the panel grows to its content from there, up to
+`popover-width-xl`, so a long option is readable instead of wrapped.
 
-`align="stretch"` does not override that. Outside `portal` it sets both insets and nothing else, so
-`width="trigger"`'s `max-content` still grows the panel; it is `portal` that measures the trigger
-and sets the width outright. A fixed step keeps its own width under `stretch` either way. For a
-panel that must not exceed its trigger, a fixed step is the setting that holds.
+**Without `portal`, the floor is not the trigger either.** It is `min-inline-size: 100%` on an
+absolutely positioned panel, and a percentage minimum resolves against the containing block, which
+is the caller's nearest positioned ancestor. Where that wrapper is wider than the trigger, so is
+the panel, however short its content. The two coincide when the wrapper is the trigger, which is
+the ordinary case and not a guarantee the component makes.
+
+`portal` is what makes the trigger the reference, by measuring it: the minimum becomes the
+trigger's own rect. With `align="stretch"` it sets the width outright instead, and that pairing is
+the only one that holds a panel to its trigger's width exactly. Outside `portal`, `stretch` sets
+the two insets, so the panel spans that same containing block.
+
+A fixed step is not a limit on any of this. It does not track the trigger at all, so a step wider
+than the trigger gives a panel wider than the trigger.
 
 `portal` renders the panel into `document.body` and positions it from the trigger's rect instead of
 against the caller's positioned ancestor. It is off by default and stays the caller's decision:
