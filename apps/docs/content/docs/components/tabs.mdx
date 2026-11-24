@@ -67,8 +67,8 @@ by its width, which reads as the row twitching. Under `segmented` the track is `
 with one step of inset, so the filled tab sits inside the track rather than against its edge, and
 the marker is the fill in `surface-raised`.
 
-`TabsAppearance` is deliberately not the shared `Appearance` union. That union is subtle and solid,
-which Badge and Toast spend on fill weight, and reusing the name here would put two unrelated
+`TabsAppearance` is deliberately not the `Appearance` of the [shared vocabulary](/docs/start/composition). That union is
+subtle and solid, which Badge and Toast spend on fill weight, and reusing the name here would put two unrelated
 meanings on one type while the compiler accepted every wrong combination of them.
 
 ## Keyboard and screen reader
