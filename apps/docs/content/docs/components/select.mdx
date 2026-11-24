@@ -85,10 +85,11 @@ The trigger is a `combobox` rather than a plain button, because that is the role
 `aria-haspopup`, `aria-expanded` and `aria-controls`, and `aria-invalid` while there is an error.
 
 A name is required, as `label` or as `aria-labelledby`, and the types take exactly one of the two.
-A combobox's name cannot come from its own contents the way a button's can, and a wrapping `label`
-does not reach it either, because a button is not a labelable element. A visible `label` also
-means a Select in a form is labelled like the fields beside it, and its `htmlFor` moves focus to
-the trigger on a click.
+A button can be named by its own contents and a `label` can reach it, since a button is a labelable
+element; what is true here is narrower. The trigger's contents are the selected option, so a name
+taken from them would be the current value rather than what the control is for, and it would change
+every time the value did. A visible `label` also means a Select in a form is labelled like the
+fields beside it, and its `htmlFor` moves focus to the trigger on a click.
 
 The hint and the error are wired to the trigger through `aria-describedby`, the caller's own
 description first, then the error, then the hint. The error sits above the hint and the hint stays,

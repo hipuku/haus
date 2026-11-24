@@ -88,7 +88,10 @@ Enter or Space on a focused button, and a capture handler would run before `onCl
 carries `aria-busy` and `aria-disabled`.
 
 A button with no `type` submits, so while a submit button loads a hidden disabled submit button
-stands in for it. Without that stand-in, Enter in a single-field form would submit nothing.
+stands in for it. Without that stand-in the form has no submit button at all, and a form with one
+field that blocks implicit submission submits when Enter is pressed in it, so the request the
+button is already running would be sent a second time. A form whose default button is disabled
+does nothing on Enter, which is what the stand-in buys.
 
 A disabled anchor is really disabled. `aria-disabled` alone announces a state without creating
 one: the link stayed focusable and still navigated. Dropping `href` is what disables it, so the
@@ -113,8 +116,14 @@ which is the system's own `Highlight` colour and so follows the user's theme rat
 At `border-width-thick` against `border-focus` it meets the 3:1 WCAG 2.2 asks of a focus
 indicator.
 
-While loading, the spinner inside the button is passed `announcedBy`, so the wait is announced
-once, by the button's own `aria-busy`, rather than twice.
+While loading, the spinner inside the button is passed `announcedBy`, so the button does not
+carry two things describing the same wait: `aria-busy` on the button marks its content as being
+updated, and the spinner's own live region is dropped rather than sitting beside it.
+
+`aria-busy` exposes a state. It is not a live region and it does not make a reader say anything,
+so this is one announcement at most rather than one guaranteed. A wait that has to be announced
+needs a live region the consumer owns, holding text, present before the wait begins. IconButton
+is the same.
 
 `external` with `href` is the honest signal that the destination leaves the app, and a `_blank`
 target gets `rel="noopener noreferrer"`.

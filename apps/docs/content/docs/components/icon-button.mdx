@@ -97,7 +97,10 @@ The glyph is `aria-hidden` in every branch, so a caller's icon cannot contribute
 `loading` does not set the native `disabled` attribute, for the reason Button gives: a control that
 becomes disabled while focused drops focus to the document. It carries `aria-busy` and
 `aria-disabled`, cannot submit, and withholds the caller's click handlers. The spinner that
-replaces the glyph is passed `announcedBy`, so the wait is announced once by `aria-busy`.
+replaces the glyph is passed `announcedBy`, so the control does not carry two things describing
+the same wait. `aria-busy` marks the content as updating and is not a live region, so nothing here
+is guaranteed to be spoken; a wait that must be announced needs a region the consumer owns, as
+Button's page sets out.
 
 IconButton defaults to `type="button"`, so only an explicit `type="submit"` needs the hidden
 submit stand-in while it loads.

@@ -107,8 +107,11 @@ releases on layout, as Button's does.
   and motion already exist and should not be written twice.
 - **The menu pattern is what it adds.** Focus into the panel on open, arrows between items, Home
   and End to the ends, disabled items skipped, and a choice that closes and returns focus.
-- **A disabled item is `aria-disabled`, not `disabled`.** A native disabled button is removed from
-  the accessibility tree, so a reader moving through the menu would not know the action exists.
+- **A disabled item is `aria-disabled`, not `disabled`.** A native disabled button is still exposed
+  to a reader, carrying a disabled state, so this is not about whether the item can be found. It is
+  about focus: `aria-disabled` leaves the item programmatically focusable where native `disabled`
+  does not, and the arrow-key navigation here moves focus to items it has decided to skip or land
+  on. With `disabled` those calls would silently fail.
 - **The shortcut binds nothing.** It is a label for a binding the application owns, and a component
   that registered global keys would be making a decision about the whole page.
 - **Items are start-aligned.** A column of actions reads down its leading edge, which is what the

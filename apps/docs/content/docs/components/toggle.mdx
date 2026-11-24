@@ -85,8 +85,13 @@ description.
 
 `onChange` hands back `(checked, event)`, matching Checkbox and RadioGroup.
 
-There is no `error` prop. A switch applies immediately, so there is no submitted value to be
-invalid.
+There is no `error` prop. A switch is for a setting that applies as soon as it is flipped, so
+there is no later submission for a validity message to belong to. The caller is what applies it:
+`onChange` reports the new state and persisting it is theirs.
+
+It is a native checkbox underneath and it forwards `name`, so it does post a value with a form if
+it is given one. That is the element being honest rather than the pattern being recommended: a
+switch inside a form that is submitted later is a checkbox, and Checkbox has the `error` prop.
 
 ## Motion
 

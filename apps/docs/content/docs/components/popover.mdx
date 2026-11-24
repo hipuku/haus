@@ -51,9 +51,13 @@ The caller owns the positioning context. The wrapper holding the trigger and the
 to the side the text starts on and flips with the writing direction.
 
 `width` is `auto` for a panel that takes its content's width, which is what a small action menu
-wants, `trigger` to match the anchor, which is what a select-like menu wants, or one of four fixed
-steps for a panel holding a form. The fixed steps read the `popover-width` roles, so a brand can
-restate them.
+wants, `trigger` for a panel at least as wide as the anchor, which is what a select-like menu
+wants, or one of four fixed steps for a panel holding a form. The fixed steps read the
+`popover-width` roles, so a brand can restate them.
+
+`trigger` is a floor rather than a match: the panel starts at the trigger's width and grows to its
+content from there, up to `popover-width-xl`, so a long option is readable instead of wrapped.
+`align="stretch"` is the one that pins the panel to the trigger's width exactly.
 
 `portal` renders the panel into `document.body` and positions it from the trigger's rect instead of
 against the caller's positioned ancestor. It is off by default and stays the caller's decision:

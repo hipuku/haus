@@ -67,9 +67,13 @@ re-centring is a positioning-engine problem of the kind Popover already declines
 
 ## Keyboard and screen reader
 
-It appears on focus as well as on hover. That is not part of WCAG and it is the most common bug in
-a hand-rolled tooltip: one that only answers the mouse is a hover effect rather than a tooltip. Tab
-to the trigger and the bubble shows.
+It appears on focus as well as on hover, and it is the most common bug in a hand-rolled tooltip:
+one that only answers the mouse is a hover effect rather than a tooltip. Tab to the trigger and the
+bubble shows.
+
+Showing on focus is not one of SC 1.4.13's three conditions, which are about content that is
+already showing. Its Understanding page says such content should be available from the keyboard too
+and sends the reader to SC 2.1.1 Keyboard, so the requirement is there rather than nowhere.
 
 Escape hides it and leaves focus where it is, so it cannot obscure content the user is trying to
 read. The listener is on the document rather than on the trigger, because the pointer case has no

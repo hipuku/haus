@@ -81,7 +81,12 @@ all three products shipped and the opposite of what the pattern is for.
 | --- | ------------ |
 | Arrow right, arrow left | Moves between tabs, wrapping at both ends |
 | Home, End | Jumps to the first or last tab |
-| Tab | Leaves the tablist for the panel |
+| Tab | Leaves the tablist for the next focusable element |
+
+Tabs binds nothing to Tab, so where it goes is document order: the panel when Tabs renders it,
+which is the common case and why the tablist holds one stop rather than one per tab. With `panelId`
+the panel is the consumer's and may sit anywhere, so Tab reaches whatever comes next in the
+markup, and putting a control between the two halves is what makes that visible.
 
 Disabled tabs are skipped rather than landed on and ignored. Movement is in document order;
 right-to-left ought to reverse it and does not, because the package runs its component tests with

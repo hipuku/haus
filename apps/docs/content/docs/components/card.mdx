@@ -61,8 +61,10 @@ must render. The child supplies the element, Card supplies the box, and the chil
 children, which is the opposite of IconButton.
 
 The two are mutually exclusive in the types, because the child supplies the element and `as` names
-one. Card's classes are applied before the child's, so a caller's `className` wins a collision:
-the caller is closer to the problem than the system is.
+one. Both class names are kept, Card's first and the child's after it, and which declaration wins
+a collision is the ordinary cascade: specificity, then layer, then source order. The order inside
+the attribute decides nothing. Card's own rules are in the `haus.components` layer, so a caller's
+unlayered rule of equal specificity beats them wherever it is declared.
 
 ## Keyboard and screen reader
 

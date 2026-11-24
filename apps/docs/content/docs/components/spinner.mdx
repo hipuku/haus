@@ -44,10 +44,17 @@ something is happening without the page having to move focus. `label` is default
 required: the failure this component exists to stop is a spinner that announces nothing, and a
 required prop is one a caller can satisfy with an empty string.
 
-`announcedBy` is for the case where the text beside the spinner already says it, which vault has:
-a ring next to the words "Extracting colours" otherwise announces the wait twice. Passing it drops
-the role and the label together and hides the element, because a reader that meets an empty live
-region announces the pause rather than the reason. The prop takes the text that speaks instead of
+`announcedBy` is for the case where something else already announces the wait, which vault has: a
+ring beside the words "Extracting colours" otherwise announces it twice. Passing it drops the role
+and the label together and hides the element, because a reader that meets an empty live region
+announces the pause rather than the reason.
+
+**Something else announcing it means a live region, not merely visible text.** A span reading
+"Extracting colours" inserted beside the spinner is seen and not said, and silencing the spinner
+next to it leaves nothing that speaks at all. The region has to be in the document before the wait
+begins and take the text when it starts, which is W3C's status-message technique; a region that
+arrives already populated is not reliably read. Where the consumer has no such region, leave the
+spinner its own role and label. The prop takes the text that speaks instead of
 a boolean, deliberately: every product that got this wrong got it wrong by silencing the spinner
 and putting nothing in its place, and a boolean would make that the easy thing to write again. The
 value is also kept on `data-announced-by`, which nothing reads, so the reason a spinner is silent
