@@ -65,7 +65,7 @@ export function Landing() {
           </p>
           <div className={styles.cards}>
             <Card asChild variant="elevated">
-              <Link href="/docs/packages/tokens">
+              <Link aria-label="Tokens" href="/docs/packages/tokens">
                 <span className={styles.cardInner}>
                   <span className={styles.cardTitle}>Tokens</span>
                   <span className={styles.cardBody}>
@@ -77,7 +77,7 @@ export function Landing() {
               </Link>
             </Card>
             <Card asChild variant="elevated">
-              <Link href="/docs/packages/motion">
+              <Link aria-label="Motion" href="/docs/packages/motion">
                 <span className={styles.cardInner}>
                   <span className={styles.cardTitle}>Motion</span>
                   <span className={styles.cardBody}>
@@ -89,7 +89,7 @@ export function Landing() {
               </Link>
             </Card>
             <Card asChild variant="elevated">
-              <Link href="/docs/tools/converter">
+              <Link aria-label="Tools" href="/docs/tools/converter">
                 <span className={styles.cardInner}>
                   <span className={styles.cardTitle}>Tools</span>
                   <span className={styles.cardBody}>

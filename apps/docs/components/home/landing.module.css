@@ -147,6 +147,10 @@
  * part of the target. `Card asChild` renders the card AS the anchor, which is
  * the system's own interactive card: it already carries the hover lift, the
  * border change and the focus outline, so the behaviour is not reinvented here.
+ *
+ * The anchor is labelled, because its name would otherwise be every word in the
+ * card run together: "TokensRoles rather than hex codes". The label repeats the
+ * visible title, so a voice command for what is on screen still reaches it.
  */
 .cardInner {
   block-size: 100%;
