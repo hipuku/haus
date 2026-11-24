@@ -33,10 +33,17 @@
   letter-spacing: var(--haus-type-label-sm-tracking);
   text-align: center;
   box-shadow: var(--haus-elevation-floating);
-  /* Reads, does not block. The bubble sits over live content and the pointer
-     needs to reach what is beneath it. The travel path from trigger to bubble
-     stays inside .root, so `hoverable` still holds. */
-  pointer-events: none;
+  /* Hoverable, which is one of WCAG 1.4.13's three conditions.
+     This used to be `pointer-events: none`, with a comment claiming the travel
+     path stayed inside `.root`. It did not: the bubble is absolutely positioned
+     clear of the root's box, so a pointer that could not land on it counted as
+     having left the root, `onPointerLeave` fired, and the bubble went. The text
+     was never selectable and the condition was never met.
+     The trade this gives up is real and was the old comment's point: the bubble
+     now blocks the content under it. That is what 1.4.13 asks for, and it is
+     bounded by the bubble being one line of text that leaves the moment the
+     pointer does. */
+  pointer-events: auto;
   /* Enters on the popover role, drifting away from the trigger: a fade and
      4px in subtle, a spring and 16px in expressive, a fade in reduced. The
      bubble is `hidden` until shown, and showing it restarts the animation.
@@ -54,12 +61,34 @@
   }
 }
 
-/* The gap is a gap, not a margin on the bubble: a margin would sit inside the
-   hover region and leave a dead strip the pointer crosses on its way in. */
+/* The gap is offset, not margin, so the bubble's own box stays the visible
+   surface. The gap is still a strip the pointer has to cross, and crossing it
+   means touching neither the trigger nor the bubble, which is what breaks
+   `hoverable`. `.bridge` spans it: invisible, no surface of its own, and part
+   of the bubble's hit area because it is a child of it. */
 .top {
   inset-block-end: calc(100% + var(--haus-space-gap-2xs));
 }
 .bottom {
   --haus-tooltip-dir: -1;
   inset-block-start: calc(100% + var(--haus-space-gap-2xs));
+}
+
+.bridge {
+  position: absolute;
+  inset-inline: 0;
+  /* Exactly the gap, which is the geometric complement of it: the strip between
+     the two boxes is this tall, so covering it leaves nothing uncovered.
+     Deliberately not the gap plus a pixel or two of overlap, which is the
+     instinct here. The overlap would have to go somewhere, and on the trigger
+     side it would sit over the top edge of the trigger and swallow clicks
+     meant for it. A raw length is also disallowed in component CSS, and a
+     token for a fudge factor would owe Figma a variable it does not need. */
+  block-size: var(--haus-space-gap-2xs);
+}
+.top > .bridge {
+  inset-block-start: 100%;
+}
+.bottom > .bridge {
+  inset-block-end: 100%;
 }

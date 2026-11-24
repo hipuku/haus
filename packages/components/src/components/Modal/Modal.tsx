@@ -2,6 +2,7 @@ import React from 'react'
 import { createPortal } from 'react-dom'
 import type { Size } from '../../types'
 import { IconButton } from '../IconButton'
+import { PortalHostContext, usePortalHostValue } from '../../internal/portalHost'
 import styles from './Modal.module.css'
 
 export type ModalSize = Size | 'xl'
@@ -97,16 +98,37 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(function Modal
    * relying on emulated mouse events.
    */
   const pressedBackdrop = React.useRef(false)
+  /**
+   * And whether the release that ends it was on the backdrop too.
+   *
+   * The latch above is not enough on its own, and the click target does not
+   * close the gap. Press the backdrop and release just inside the dialog: the
+   * click's target is the nearest common ancestor, which is the backdrop, so
+   * `e.target === e.currentTarget` is true and the latch is already true, and
+   * the dialog closed on a release that happened inside it. The mirror of
+   * haus#56, which guarded only the other direction. Both endpoints are now
+   * read where the click gave an answer for neither, and the release is read by
+   * its target *and* its coordinates: touch input captures the pointer to
+   * whatever took the press and reports that element either way, so the target
+   * alone cannot see a finger that slid into the dialog before lifting.
+   */
+  const releasedBackdrop = React.useRef(false)
   // The dialog is the node a caller wants: className already lands there, and
   // the focus trap needs the same element, so both refs are assigned rather
   // than one replacing the other.
+  /* The dialog is also the host for anything a descendant portals, so the
+     focus trap above keeps covering content that has left the dialog's DOM
+     subtree for a Popover's sake. Held in state by `usePortalHostValue` rather
+     than read off the ref, so a Popover rendering in the same commit sees it. */
+  const [portalHost, setPortalHostElement] = usePortalHostValue()
   const setDialog = React.useCallback(
     (node: HTMLDivElement | null) => {
       dialogRef.current = node
+      setPortalHostElement(node)
       if (typeof ref === 'function') ref(node)
       else if (ref) ref.current = node
     },
-    [ref],
+    [ref, setPortalHostElement],
   )
   const titleId = React.useId()
 
@@ -244,17 +266,55 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(function Modal
         dismissOnBackdrop
           ? e => {
               pressedBackdrop.current = e.target === e.currentTarget
+              // A fresh press clears the previous release, so a press that
+              // never completes cannot lend its answer to the next one.
+              releasedBackdrop.current = false
+            }
+          : undefined
+      }
+      onPointerUp={
+        dismissOnBackdrop
+          ? e => {
+              /* Where the pointer physically was, not what the event says it
+                 hit. Touch input gets implicit pointer capture on the element
+                 that took the `pointerdown`, so a finger that presses the
+                 backdrop, slides into the dialog and lifts still reports the
+                 backdrop as its target: the same defect as the one above, for
+                 touch, and unreachable by reading `target`.
+
+                 The target is still required. The point alone would accept a
+                 release anywhere outside the dialog's box, including on a
+                 sibling the backdrop does not own.
+
+                 A zero-area rect means there is no layout to consult, which is
+                 every jsdom test and server render. The target decides there,
+                 because it is the only thing that carries information. */
+              const dialog = dialogRef.current
+              const rect = dialog?.getBoundingClientRect()
+              const onBackdropTarget = e.target === e.currentTarget
+              if (!rect || rect.width === 0 || rect.height === 0) {
+                releasedBackdrop.current = onBackdropTarget
+                return
+              }
+              const insideDialog =
+                e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom
+              releasedBackdrop.current = onBackdropTarget && !insideDialog
             }
           : undefined
       }
       onClick={
         dismissOnBackdrop
           ? e => {
-              // Both ends of the press have to be on the backdrop.
-              const both = pressedBackdrop.current && e.target === e.currentTarget
+              // Both ends of the press have to be on the backdrop, read from
+              // the press and the release themselves. The click's own target is
+              // still checked: it rules out a click synthesised on a descendant
+              // with no pointer sequence behind it, such as one from a keypress
+              // on a control inside the dialog.
+              const both = pressedBackdrop.current && releasedBackdrop.current && e.target === e.currentTarget
               // Reset first: a press that produces no qualifying click must not
               // leave a true behind for the next one.
               pressedBackdrop.current = false
+              releasedBackdrop.current = false
               if (both) onClose()
             }
           : undefined
@@ -293,9 +353,15 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(function Modal
           </div>
         )}
 
-        <div className={styles.body}>{children}</div>
+        {/* Both slots, not just the body. A footer is where a confirm dialog's
+            actions live, so "pick a colour" in a footer popover is an ordinary
+            thing to build, and a provider around `children` alone sent it to
+            `document.body` with every bug this change exists to fix. */}
+        <PortalHostContext.Provider value={portalHost}>
+          <div className={styles.body}>{children}</div>
 
-        {footer && <div className={styles.footer}>{footer}</div>}
+          {footer && <div className={styles.footer}>{footer}</div>}
+        </PortalHostContext.Provider>
       </div>
     </div>,
     document.body,

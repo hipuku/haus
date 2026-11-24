@@ -1,5 +1,6 @@
 import React from 'react'
 import { createPortal } from 'react-dom'
+import { usePortalHost } from '../../internal/portalHost'
 import styles from './Popover.module.css'
 
 /** Which edge of the trigger the panel lines up with. */
@@ -45,8 +46,15 @@ interface PopoverBaseProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'r
   placement?: PopoverPlacement
   width?: PopoverWidth
   /**
-   * Render the panel into `document.body` and position it from the trigger's
-   * rect, rather than absolutely against the caller's positioned ancestor.
+   * Render the panel out of the caller's positioned ancestor and position it
+   * from the trigger's rect instead.
+   *
+   * The host is `document.body`, except inside a `Modal`, where it is the
+   * dialog. The dialog is what the panel needs to escape *into*: the thing
+   * clipping it is the dialog's scrolling body, not the dialog, and a panel in
+   * `document.body` is outside the focus trap that keeps `aria-modal` honest,
+   * so every control in it lost focus the instant it was given and the panel
+   * could not be used at all.
    *
    * **Off by default, and it stays a caller's decision.** Today's behaviour
    * needs no measuring and no dependency, and is right whenever nothing
@@ -217,6 +225,9 @@ export const Popover = React.forwardRef<HTMLDivElement, PopoverProps>(function P
     if (!animated) setClosing(false)
   }, [closing])
 
+  /* Called here with the other hooks, above the early return. */
+  const host = usePortalHost()
+
   if (!open && !closing) return null
 
   const cls = [
@@ -268,5 +279,12 @@ export const Popover = React.forwardRef<HTMLDivElement, PopoverProps>(function P
     </div>
   )
 
-  return portal ? createPortal(panel, document.body) : panel
+  /* `document.body` unless something above owns the page. Inside a Modal the
+     host is the dialog, so the panel stays inside the focus trap: in the body
+     the dialog's `focusin` handler takes focus off every control in it the
+     moment it is given, and the panel cannot be used at all. Null means the
+     host is not attached yet, and the panel waits a render rather than going to
+     the body, which is the case that was broken. */
+  if (portal) return host ? createPortal(panel, host) : null
+  return panel
 })
