@@ -1,0 +1,27 @@
+---
+title: Input
+description: 'A text field with its label, hint and error.'
+---
+
+The hint and the error are wired through `aria-describedby` in reading order, so they are a description rather than part of the name. `required` sets `aria-required` and not the native attribute: this component owns its error display, and the browser bubble would fight it.
+
+## Examples
+
+<ComponentExamples name="Input" />
+
+## Install
+
+<Install name="Input" />
+
+## Usage
+
+```tsx
+import { Input } from '@/components/haus/components/Input'
+```
+
+## API
+
+Input also takes the attributes its element has, and forwards its ref to it. These are the props
+it adds.
+
+<ApiTable file="components/Input/Input.tsx" name="InputProps" attributes="React.InputHTMLAttributes<HTMLInputElement>" />

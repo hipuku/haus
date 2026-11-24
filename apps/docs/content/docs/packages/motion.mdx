@@ -1,14 +1,25 @@
 ---
 title: Motion
-description: The maths behind haus's motion, as plain functions over numbers.
+description: The maths behind haus's motion, as plain functions over numbers, with no DOM and no framework.
 ---
 
-`@hipuku/motion`, unreleased at 0.1.0. Role duration caps, springs compiled to a CSS `linear()`
-easing, sheet drag physics and presence state, with no DOM and no framework.
+Motion in haus is a vocabulary rather than a set of durations: a component picks the role that
+describes what it is doing, and the role decides how long that takes and how it eases.
+`@hipuku/motion` is the maths underneath, as plain functions over numbers. It touches no DOM and
+imports no framework, which is what lets the same values be used in CSS, in tests and in a canvas.
+
+<PackageMeta dir="motion" />
+
+## What it does
+
+| Piece | For |
+| ----- | --- |
+| Role caps | The longest a given role is allowed to take, so no animation outlives its purpose |
+| Spring compilation | A spring described the way a designer thinks about it, emitted as a CSS `linear()` ramp |
+| Sheet physics | The drag, velocity and dismiss threshold a sheet or drawer follows |
+| Presence state | What an element is doing while it enters and leaves, for the component to read |
 
 ## Install
-
-Not on npm yet.
 
 ```bash
 npm install @hipuku/motion
@@ -25,10 +36,12 @@ springToLinear({ visualDuration: 0.2, bounce: 0 })
 capDuration('highlight', 260) // 200, the highlight role's cap
 ```
 
-A spring is two numbers: how long it looks like it moves (`visualDuration`) and how much it
-overshoots (`bounce`). The CSS has to run until it settles, which is longer, so `durationMs` is the
-settle time. The role values, caps and modes come from the token source; the same values are the
-`--haus-motion-*` custom properties.
+A spring is two numbers a person can reason about: how long it looks like it moves
+(`visualDuration`) and how far it overshoots (`bounce`). CSS has to keep running until the spring
+settles, which is longer than it looks, so `durationMs` is the settle time rather than the
+perceived one. Those are the same values the `--haus-motion-*` custom properties carry, because both
+are generated from the token source. The [motion foundation](/docs/foundations/motion) plays each
+role.
 
 ## API
 

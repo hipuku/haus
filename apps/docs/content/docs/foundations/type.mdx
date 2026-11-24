@@ -1,0 +1,41 @@
+---
+title: Type
+description: Nine roles, each a size with its own weight, leading and tracking, set here at the size it is used at.
+---
+
+import { TypeRole } from '@/components/foundations/specimens'
+
+A type role is four values, not one. A component that takes a size and leaves the leading to the
+browser and the tracking to the face is a component that will not match its own design file, which
+is how 176 text layers in the Figma file ended up matching no style at all.
+
+Read a role whole, or say which role you are not using and why.
+
+<TypeRole role="display" sample="Install one component" />
+<TypeRole role="heading-lg" sample="What you install" />
+<TypeRole role="heading" sample="Tokens, motion and contrast" />
+<TypeRole role="heading-sm" sample="Borders at three to one" />
+<TypeRole role="body-lg" sample="The design system every hipuku app is built on." />
+<TypeRole role="body" sample="A copy of the component in your own repository, not a dependency you cannot reach into." />
+<TypeRole role="body-sm" sample="Shown when nothing is selected." />
+<TypeRole role="label-field" sample="Colour space" />
+<TypeRole role="label-caption" sample="Appearance" />
+
+Each sample above is set with the role's own four custom properties, so what you are reading is
+what a component gets.
+
+## The faces
+
+The default brand is DM Sans and DM Mono. A brand names its two faces and nothing else about them:
+`--haus-brand-font-sans` and `--haus-brand-font-mono` are the only entries that change, so every
+role, every size and every component read stays where it is when a product swaps the family.
+
+`font-optical-sizing` is left at `auto`, so a browser sets the optical axis to the size it is
+rendering. Figma pins the axis per style, which is the one place the file and the code still
+disagree about the face.
+
+## Tracking
+
+Tracking is part of the role because it changes with size: the display role tightens, the 11px
+uppercase label opens up. Reading a size without its tracking gives you the face's default at every
+size, which looks wrong at both ends of the ladder and right in the middle.

@@ -1,0 +1,27 @@
+---
+title: Menu
+description: 'A list of actions opened from a trigger.'
+---
+
+Three products drew their own (vault, core and maple). It is a `Popover` with `role="menu"`, so placement, dismissal and motion are Popover's; it adds the menu pattern: focus moves to the first item on open, the arrows move between items and skip disabled ones, and choosing an item closes the menu and returns focus to the trigger.
+
+## Examples
+
+<ComponentExamples name="Menu" />
+
+## Install
+
+<Install name="Menu" />
+
+## Usage
+
+```tsx
+import { Menu } from '@/components/haus/components/Menu'
+```
+
+## API
+
+Menu also takes the attributes its element has, and forwards its ref to it. These are the props
+it adds.
+
+<ApiTable file="components/Menu/Menu.tsx" name="MenuProps" element="HTMLDivElement" />

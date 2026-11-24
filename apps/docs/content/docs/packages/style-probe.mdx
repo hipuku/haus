@@ -3,7 +3,15 @@ title: Style probe
 description: Read what a browser actually computed for an element, as typed token values.
 ---
 
-Published as `haus-style-probe` 1.0.0. It will be published as `@hipuku/style-probe`.
+A component's source says what it should look like. The browser says what it does look like, and
+those are different questions. `@hipuku/style-probe` answers the second one: it reads an element's
+computed style out of a live page and hands it back as values you can compare, so a test can assert
+that a Button really is drawing the token it claims rather than that its class list contains a
+word.
+
+This is how the Figma parity check and the component audits are measured.
+
+<PackageMeta dir="style-probe" publishedAs="haus-style-probe" />
 
 ## Install
 

@@ -1,40 +1,44 @@
 ---
-title: haus
-description: The design system every hipuku app is built on.
+title: Overview
+description: What haus is, how it reaches your repository, and the three decisions the rest of these pages follow from.
 ---
 
-haus ships components as source through a [shadcn](https://ui.shadcn.com) registry, and its
-design tokens as the `haus-tokens` package on npm. A component you install is a copy in your own
-repository: restyle it freely, and take behaviour fixes from haus with `shadcn add`.
+haus is the design system every hipuku app is built on. A consumer takes two things from it, by
+different routes: components, distributed as source through a [shadcn](https://ui.shadcn.com)
+registry, and the design tokens underneath them, published on npm as `haus-tokens` today and
+`@hipuku/tokens` from the next release.
 
-## Set up
+<GetStarted />
 
-The registry is for TypeScript projects. The files install exactly as written, so a project with
-`"tsx": false` in `components.json` would receive TypeScript in `.js` files.
+## Installing as source
 
-Components and packages share the `@hipuku` name. A component such as `@hipuku/badge` is copied
-into your repository with `shadcn add`; a package such as `@hipuku/colour` installs from npm once it
-is published, and the package pages say which are. Map the
-`@hipuku` namespace in your `components.json`:
+A component you install is a copy in your own repository. Open the file, read it, restyle it,
+delete the parts you do not need. When a behaviour fix lands here, `shadcn add` brings the new copy
+and you merge it like any other change to your own code.
 
-```json title="components.json"
-{
-  "registries": {
-    "@hipuku": "https://haus.hipuku.dev/r/{name}.json"
-  }
-}
-```
+The tokens work the other way. They are a versioned package, because a value is not something a
+product should fork: two apps whose `surface-raised` has drifted apart no longer look like one
+company.
 
-Then import the tokens once, at the root of your app:
+## Three decisions
 
-```ts
-import 'haus-tokens/index.css'
-```
+Most of what is on this site follows from three choices. Each has a page that shows the values
+rather than restating the claim.
 
-Each component page lists the command that installs it.
+**A component never names a value.** It names a role: the surface it sits on, the ink it writes
+in, the border that is its edge. The same component is then correct in a light app, a dark one, and
+in another brand. See [Colour](/docs/foundations/colour).
 
-## Components
+**A dark mode is the same mapping read again.** Every role carries a value per mode, resolved from
+the theme on the document or the reader's system setting, so there is one mapping rather than a
+light set and a dark set. See [Theming](/docs/foundations/theming).
 
-<Cards>
-  <Card title="Badge" href="/docs/components/badge" />
-</Cards>
+**Contrast is tested.** `contrast.test.ts` in the token package holds every ink and surface pair
+against WCAG AA in both modes, so a pair that would fail does not get released. See
+[Quality](/docs/start/quality).
+
+## Where to go next
+
+[Install](/docs/start/install) is the registry entry and two lines of configuration. The
+[foundations](/docs/foundations/colour) pages read their values from the page you are looking at,
+in the mode you are in, so they show the system as it is rather than as it was documented.

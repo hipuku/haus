@@ -1,0 +1,55 @@
+---
+title: Theming
+description: One attribute for the brand, one for the mode, and a brand map that is checked at build time.
+---
+
+Two switches, both on the root element.
+
+```html
+<html data-theme="dark" data-haus-theme="vault">
+```
+
+`data-theme` is the mode: `dark`, `light`, or absent to follow the system. `data-haus-theme` is the
+brand: absent for haus, or the name of a product's own map.
+
+## The mode
+
+Dark is on by default for a reader whose system is set to dark. An app that is light only pins it:
+
+```html
+<html data-theme="light">
+```
+
+Every ink and surface pair clears 4.5:1 in both modes, held by `contrast.test.ts`, which runs the
+suite twice rather than trusting that a dark palette inherits a light one's contrast.
+
+## The brand
+
+A brand is a CSS file of custom properties: thirty base entries, plus the feedback tones and the
+form entries a product that uses them must supply. Importing it after the tokens is the whole
+installation.
+
+```css
+@import '@hipuku/tokens/index.css';
+@import '@hipuku/tokens/brands/vault.css';
+```
+
+A brand that omits one of the thirty base entries is caught rather than left resolving to nothing,
+in two places and neither of them the browser. The entry list is generated into a TypeScript type,
+so a brand written as an object is checked by the compiler. The token build checks the brand files
+this package ships.
+
+What neither checks is a half-filled optional group: the feedback tones and the form entries are
+`Partial` in the type, so a brand giving `error-default` and none of the other error roles
+compiles, and the roles it left out fall back to haus's. Supply a group whole or leave it out. A
+hand-written CSS file dropped into an app is checked by nothing at all.
+
+## What a brand may change
+
+Colour roles, the two faces, the four radii, the three elevations, and the modal and popover
+widths. Not the type ladder, not the space ladder, not the motion roles: those are the system's
+proportions, and a product that needs different ones needs a conversation rather than a brand file.
+
+A named brand is light only today. The dark map applies where no brand is named, so a product
+carrying `data-haus-theme` keeps its own light values on a dark system until it supplies a dark
+half of its own.

@@ -1,0 +1,37 @@
+---
+title: Surfaces
+description: 'Radius and elevation: four radii by what a thing is, three shadows by how far off the page it sits.'
+---
+
+import { SurfaceSamples } from '@/components/foundations/specimens'
+
+Radius is named by what a thing is, not by how round it is. A control, a surface, an overlay and a
+marker each have their own, so a brand can make every input rounder without touching a component,
+and a product that wants square inputs and round cards can have both.
+
+<SurfaceSamples
+  samples={[
+    { label: 'control', style: { borderRadius: 'var(--haus-radius-control)' } },
+    { label: 'surface', style: { borderRadius: 'var(--haus-radius-surface)' } },
+    { label: 'overlay', style: { borderRadius: 'var(--haus-radius-overlay)' } },
+    { label: 'marker', style: { borderRadius: 'var(--haus-radius-marker)' } },
+  ]}
+/>
+
+## Elevation
+
+Three shadows, by how far from the page a thing sits: raised for a card, floating for a popover or
+a menu, overlay for a modal or a drawer. A shadow is a brand entry, so a product with a flatter
+look sets all three to none and every component follows.
+
+<SurfaceSamples
+  samples={[
+    { label: 'raised', style: { boxShadow: 'var(--haus-elevation-raised)', borderRadius: 'var(--haus-radius-surface)' } },
+    { label: 'floating', style: { boxShadow: 'var(--haus-elevation-floating)', borderRadius: 'var(--haus-radius-surface)' } },
+    { label: 'overlay', style: { boxShadow: 'var(--haus-elevation-overlay)', borderRadius: 'var(--haus-radius-surface)' } },
+  ]}
+/>
+
+In dark mode a shadow does less work, because the surfaces are closer together in lightness than
+they are on a white page. The dark map leans on the surface ladder for separation and keeps the
+shadow for the things that really do float.

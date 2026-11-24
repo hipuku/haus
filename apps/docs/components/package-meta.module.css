@@ -1,0 +1,52 @@
+/*
+ * The facts about a package, directly under its lede: what it is called, what
+ * version the repository is at, and where the source is. A reader asking "can
+ * I install this, and what do I get" should not have to read a paragraph.
+ */
+.meta {
+  margin-block: var(--haus-space-6) var(--haus-space-8);
+}
+
+.facts {
+  border-block: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--haus-space-8);
+  margin: 0;
+  padding-block: var(--haus-space-4);
+}
+
+.fact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--haus-space-1);
+}
+
+.fact dt {
+  color: var(--haus-color-ink-tertiary);
+  font-size: var(--haus-type-mono-xs-size);
+  letter-spacing: var(--haus-tracking-widest);
+  line-height: var(--haus-type-mono-xs-leading);
+  text-transform: uppercase;
+}
+
+.fact dd {
+  color: var(--haus-color-ink-primary);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-mono-sm-size);
+  line-height: var(--haus-type-mono-sm-leading);
+  margin: 0;
+}
+
+.fact a {
+  color: var(--haus-color-ink-link);
+  text-decoration: none;
+}
+
+.fact a:hover {
+  text-decoration: underline;
+}
+
+.meta > :last-child {
+  margin-block-start: var(--haus-space-4);
+}

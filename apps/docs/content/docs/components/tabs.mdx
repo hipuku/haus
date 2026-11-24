@@ -1,0 +1,36 @@
+---
+title: Tabs
+description: 'A tablist, and the panel it controls.'
+---
+
+Measured across core, drift and vault: three tablists, **zero** `role="tabpanel"`, **zero** `aria-controls`, **zero** arrow-key handling. Every one announces itself as a tablist and delivers none of what the word promises.
+
+The panel is rendered here rather than left to the caller, because the wiring between a tab and its panel is exactly what all three got wrong. Arrow keys move and wrap, Home and End jump, disabled tabs are skipped, and the tablist is one tab stop rather than one per tab.
+
+## Examples
+
+<ComponentExamples name="Tabs" />
+
+## Install
+
+<Install name="Tabs" />
+
+## Usage
+
+```tsx
+import { Tabs } from '@/components/haus/components/Tabs'
+```
+
+## API
+
+Tabs also takes the attributes its element has, and forwards its ref to it. These are the props
+it adds.
+
+The table is the shape where Tabs renders the panel, which is the one to reach for. The other
+shape leaves the panel to the caller: pass `panelId` instead of `children` and wire your own
+element with `aria-labelledby`, computing the selected tab's id with the exported
+`tabIdFor(id, value)` rather than writing the template yourself. `id` is required in that shape,
+so the ids are computable at all. A label is required either way, as `aria-label` or
+`aria-labelledby`.
+
+<ApiTable file="components/Tabs/Tabs.tsx" name="TabsOwnPanelProps" element="HTMLDivElement" />

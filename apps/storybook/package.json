@@ -6,7 +6,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test:stories": "vitest run",
-    "test:stories:update": "vitest run --update"
+    "test:stories:update": "vitest run --update",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@hipuku/tokens": "workspace:*",

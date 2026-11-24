@@ -1,0 +1,27 @@
+---
+title: RadioGroup
+description: 'A group, not a radio.'
+---
+
+The arrows move the selection and the whole group is one tab stop, which comes free from the native inputs sharing a name. Option ids are indexed rather than built from the value: `"extra large"` or `"50%"` made an id `htmlFor` matched but no selector could address.
+
+## Examples
+
+<ComponentExamples name="RadioGroup" />
+
+## Install
+
+<Install name="RadioGroup" />
+
+## Usage
+
+```tsx
+import { RadioGroup } from '@/components/haus/components/Radio'
+```
+
+## API
+
+RadioGroup also takes the attributes its element has, and forwards its ref to it. These are the props
+it adds.
+
+<ApiTable file="components/Radio/Radio.tsx" name="RadioGroupProps" element="HTMLDivElement" />

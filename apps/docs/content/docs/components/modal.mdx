@@ -1,0 +1,29 @@
+---
+title: Modal
+description: 'A dialog that traps focus and gives it back.'
+---
+
+The types require either a `title` or an `aria-label`, because a dialog with no accessible name is announced as nothing.
+
+`initialFocus` points focus at the action rather than the container, and `dismissOnBackdrop` can refuse a backdrop click, worth turning off for anything destructive or anything holding unsaved input.
+
+## Examples
+
+<ComponentExamples name="Modal" />
+
+## Install
+
+<Install name="Modal" />
+
+## Usage
+
+```tsx
+import { Modal } from '@/components/haus/components/Modal'
+```
+
+## API
+
+Modal also takes the attributes its element has, and forwards its ref to it. These are the props
+it adds.
+
+<ApiTable file="components/Modal/Modal.tsx" name="ModalProps" element="HTMLDivElement" />

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Tabs, type TabItem } from 'haus-components'
-import { Item, MotionCompare, Stack } from '../helpers'
+import { Item, MotionCompare, rest, Stack } from '../helpers'
 
 const ITEMS: TabItem[] = [
   { value: 'overview', label: 'Overview' },
@@ -45,7 +45,9 @@ const meta = {
 } satisfies Meta<typeof Tabs>
 
 export default meta
-type Story = StoryObj<typeof meta>
+/* The stories render `Controlled`, which owns the selected tab, so the args a
+   story sets are its props rather than Tabs' required `value` and `onChange`. */
+type Story = StoryObj<typeof Controlled>
 
 const ENABLED = ITEMS.filter(item => !item.disabled).map(item => item.value)
 
@@ -77,10 +79,10 @@ const story = (text: string) => ({ docs: { description: { story: text } } })
 
 export const Playground: Story = {
   render: function Render(args) {
-    const [value, setValue] = useState(args.value)
+    const [value, setValue] = useState(args.value ?? ITEMS[0]!.value)
     return (
       <div style={{ maxWidth: 560 }}>
-        <Tabs {...args} value={value} onValueChange={setValue}>
+        <Tabs {...rest(args)} items={ITEMS} aria-label="Sections" value={value} onValueChange={setValue}>
           The {value} panel. Tab once more to reach it: the tablist is a single stop.
         </Tabs>
       </div>

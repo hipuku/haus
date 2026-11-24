@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Avatar, Badge, Card } from 'haus-components'
-import { Item, MotionCompare, Row } from '../helpers'
+import { Item, MotionCompare, Row, rest } from '../helpers'
 
 /**
  * What a card usually holds: a title, a line about it, a status, who owns it.
@@ -85,7 +85,7 @@ export const Playground: Story = {}
 const story = (text: string) => ({ docs: { description: { story: text } } })
 
 const link = (args: Story['args'], props: Record<string, string> = {}, extra: Record<string, unknown> = {}) => (
-  <Card {...args} {...extra} asChild>
+  <Card {...rest(args)} {...extra} asChild>
     <a href="#card" {...props}>
       <Content />
     </a>
@@ -146,7 +146,7 @@ export const InContext: Story = {
       style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gap: 'var(--haus-space-3)', maxWidth: 420 }}
     >
       {['Quarterly plan', 'Hiring loop', 'Pricing review'].map(title => (
-        <Card key={title} {...args} as="li">
+        <Card key={title} {...rest(args)} as="li">
           <Content title={title} />
         </Card>
       ))}

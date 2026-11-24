@@ -1,0 +1,34 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+{/*
+  The guides live on the docs site, not here.
+
+  Storybook carried its own Introduction, Installation and Composition pages
+  while the docs site carried the same material, so the two could disagree and
+  did: these said to `npm install haus-components`, which has not been how a
+  component is installed since the registry, they claimed React 19 was required
+  when the peer range is ^18 || ^19, and they counted twenty components when
+  there are twenty-three. They were also hand styled with inline colours, which
+  is why they broke the first time anyone opened them in dark mode.
+
+  One job per surface (plan 4.10): Storybook is where the components are
+  exercised, the docs site is where they are explained.
+
+  No links out yet. The docs site has no address of its own until the DNS move
+  (plan 7.6) gives it haus.hipuku.dev and moves this Storybook to a subdomain.
+  Writing a URL here before then would be writing a dead one, so this page says
+  where the guides are and the links go in with the domain.
+*/}
+
+<Meta title="Getting started" />
+
+# Getting started
+
+The guides are on the haus docs site, which is the one place haus is explained:
+**What haus is** (the four layers, and what has already been decided), **Install** (point shadcn at
+the registry, import the tokens, add a component), **Composition** (the vocabulary that makes a
+screen read as one system) and **The quality bar** (what every published component has been held
+to).
+
+This Storybook is the workshop: every component in every documented state, with its controls, its
+accessibility checks, and the screenshots the tests compare.

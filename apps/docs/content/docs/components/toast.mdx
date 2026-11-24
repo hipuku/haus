@@ -1,0 +1,29 @@
+---
+title: Toast
+description: 'The surface of a notice, and deliberately only that.'
+---
+
+**No provider, no queue, no positioning, no timer, and there will not be**. A toast *system* is an application concern that owns global state, a portal and a policy about stacking, and a design system that ships one is shipping an opinion most consumers fight. Decision 0008.
+
+What it does own: how one looks, and that it is announced. It carries its own live region, `status` or `alert` for an error, so a notice dropped into your container is still read out.
+
+## Examples
+
+<ComponentExamples name="Toast" />
+
+## Install
+
+<Install name="Toast" />
+
+## Usage
+
+```tsx
+import { Toast } from '@/components/haus/components/Toast'
+```
+
+## API
+
+Toast also takes the attributes its element has, and forwards its ref to it. These are the props
+it adds.
+
+<ApiTable file="components/Toast/Toast.tsx" name="ToastProps" element="HTMLDivElement" />

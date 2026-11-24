@@ -1,0 +1,27 @@
+---
+title: Spinner
+description: 'A busy indicator.'
+---
+
+The CSS is a keyframe and is not the point: the contract is whether the wait is announced, and whether it is announced twice when the text beside it already says so. Promoted on evidence (haus#55): all three products built one, plus Button inside haus, and they gave three different answers. One announced nothing at all, one hid itself outright, one was correct. `announcedBy` is that defect turned into a prop, and it takes the text that speaks instead of a boolean, so silencing requires naming what covers it.
+
+## Examples
+
+<ComponentExamples name="Spinner" />
+
+## Install
+
+<Install name="Spinner" />
+
+## Usage
+
+```tsx
+import { Spinner } from '@/components/haus/components/Spinner'
+```
+
+## API
+
+Spinner also takes the attributes its element has, and forwards its ref to it. These are the props
+it adds.
+
+<ApiTable file="components/Spinner/Spinner.tsx" name="SpinnerProps" element="HTMLDivElement" />

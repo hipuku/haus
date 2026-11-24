@@ -1,0 +1,91 @@
+/*
+ * The showcase.
+ *
+ * Each component sits in a panel of its own with its name under it, which puts
+ * the specimen where the eye lands and the label where it is read second. The
+ * arrangement before this was a card with the name at the top in small mono
+ * caps, so the first thing read on a card about Button was the word "Button".
+ */
+.wall {
+  display: grid;
+  gap: var(--haus-space-10) var(--haus-space-6);
+  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--haus-space-4);
+  margin: 0;
+}
+
+/*
+ * The panel is the specimen's ground, and it is the only tinted surface on the
+ * page: the page itself stays one colour, so the six panels are what the eye
+ * separates rather than a band running behind them.
+ *
+ * It is tall enough that a Badge and a Select sit in panels of the same height,
+ * because six panels of six heights is a wall with a ragged edge.
+ */
+.panel {
+  align-items: center;
+  background: var(--haus-color-surface-subtle);
+  border: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
+  border-radius: var(--haus-radius-surface);
+  display: flex;
+  justify-content: center;
+  min-block-size: 11rem;
+  padding: var(--haus-space-8);
+}
+
+.caption {
+  display: flex;
+  flex-direction: column;
+  gap: var(--haus-space-1);
+}
+
+/*
+ * The name, at a heading's size rather than a caption's. It is the one word
+ * that says what is in the panel above it, and in mono caps at 11px it read as
+ * furniture.
+ */
+.name {
+  font-size: var(--haus-type-heading-size);
+  font-weight: var(--haus-weight-semibold);
+  letter-spacing: var(--haus-type-heading-tracking);
+  line-height: var(--haus-type-heading-leading);
+  margin: 0;
+}
+
+.name a {
+  color: var(--haus-color-ink-primary);
+  text-decoration: none;
+}
+
+.name a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.description {
+  color: var(--haus-color-ink-secondary);
+  font-size: var(--haus-type-body-sm-size);
+  line-height: var(--haus-type-body-sm-leading);
+  margin: 0;
+}
+
+.row {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--haus-space-3);
+  justify-content: center;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--haus-space-3);
+  inline-size: 100%;
+  max-inline-size: 18rem;
+}

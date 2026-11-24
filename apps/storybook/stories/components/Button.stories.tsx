@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Button } from 'haus-components'
-import { Grid, Item, MotionCompare, Row } from '../helpers'
+import { Grid, Item, MotionCompare, Row, rest } from '../helpers'
 
 /**
  * One file per component, with the props as controls.
@@ -125,7 +125,7 @@ export const ToneByVariant: Story = {
     <Grid
       rows={TONES}
       columns={VARIANTS}
-      render={(tone, variant) => <Button {...args} tone={tone} variant={variant} children="Delete" />}
+      render={(tone, variant) => <Button {...rest(args)} tone={tone} variant={variant} children="Delete" />}
     />
   ),
 }
@@ -153,7 +153,7 @@ export const States: Story = {
         <Button {...args} id="state-pressed" />
       </Item>
       <Item label="loading">
-        <Button {...args} loading />
+        <Button {...rest(args)} loading />
       </Item>
       <Item label="disabled">
         <Button {...args} disabled />
@@ -172,7 +172,7 @@ export const Motion: Story = {
     <MotionCompare
       hint="Press and hold a button to compare the press. Replay switches loading on and off."
       remount={false}
-      render={(_mode, run) => <Button {...args} loading={run % 2 === 1} />}
+      render={(_mode, run) => <Button {...rest(args)} loading={run % 2 === 1} />}
     />
   ),
 }
@@ -182,10 +182,10 @@ export const Content: Story = {
   render: args => (
     <Row>
       <Item label="long label">
-        <Button {...args} children="Save changes and continue to the next step" />
+        <Button {...rest(args)} children="Save changes and continue to the next step" />
       </Item>
       <Item label="external">
-        <Button {...args} external children="Documentation" />
+        <Button {...rest(args)} external children="Documentation" />
       </Item>
     </Row>
   ),
@@ -200,10 +200,10 @@ export const AsALink: Story = {
   render: args => (
     <Row>
       <Item label="link">
-        <Button {...args} href="https://haus.hipuku.dev" external children="Documentation" />
+        <Button {...rest(args)} href="https://haus.hipuku.dev" external children="Documentation" />
       </Item>
       <Item label="disabled link">
-        <Button {...args} href="https://haus.hipuku.dev" disabled children="Unavailable" />
+        <Button {...rest(args)} href="https://haus.hipuku.dev" disabled children="Unavailable" />
       </Item>
     </Row>
   ),

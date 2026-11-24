@@ -12,6 +12,7 @@ import { getMDXComponents } from '@/components/mdx'
 import type { Metadata } from 'next'
 import { createRelativeLink } from 'fumadocs-ui/mdx'
 import { gitConfig } from '@/lib/shared'
+import { ComponentPrompt } from '@/components/component-prompt'
 
 export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
   const params = await props.params
@@ -27,6 +28,12 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
       <DocsDescription className="mb-0">{page.data.description}</DocsDescription>
       <div className="flex flex-row gap-2 items-center border-b pb-6">
         <MarkdownCopyButton markdownUrl={markdownUrl} />
+        {/* Component pages only: the prompt names a component, its install
+            route and the rules it rests on, which a foundation page has no
+            equivalent of. */}
+        {params.slug?.[0] === 'components' && params.slug[1] && (
+          <ComponentPrompt description={page.data.description} name={page.data.title} slug={params.slug[1]} />
+        )}
         <ViewOptionsPopover
           markdownUrl={markdownUrl}
           githubUrl={`https://github.com/${gitConfig.user}/${gitConfig.repo}/blob/${gitConfig.branch}/apps/docs/content/docs/${encodeURI(page.path)}`}

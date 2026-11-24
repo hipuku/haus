@@ -3,12 +3,13 @@ title: Config
 description: Shared TypeScript, Prettier and prose configuration for hipuku repositories.
 ---
 
-`@hipuku/config`, unreleased at 0.1.0. One place to change, so a fix reaches every repository
-through a version bump.
+Eleven repositories, one house style. `@hipuku/config` holds the TypeScript bases, the Prettier
+preset and the two prose checks in one package, so a decision about how code is written is made
+once and reaches every repository through a version bump rather than through eleven pull requests.
+
+<PackageMeta dir="config" />
 
 ## Install
-
-Not on npm yet.
 
 ```bash
 npm install --save-dev @hipuku/config
@@ -40,6 +41,11 @@ The two checks, as scripts:
 }
 ```
 
-`hipuku-check-prose` fails on an em dash against a per-file baseline; `hipuku-check-names` fails on a
-blocked name in files and commit messages. The package has no JavaScript API. The full reference is the
-[package README](https://github.com/hipuku/haus/tree/main/packages/config).
+`hipuku-check-prose` holds each file to a per-file baseline, so the count can come down and never
+go up; `hipuku-check-names` fails on a blocked name in a file or a commit message.
+
+## API
+
+There is none. The package is configuration and two commands.
+
+The full reference is the [package README](https://github.com/hipuku/haus/tree/main/packages/config).

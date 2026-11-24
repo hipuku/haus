@@ -1,0 +1,73 @@
+/* Tokens only, except the site's own editorial scale: the system's ladder is a
+   product ladder and stops at 30px, which is a panel title rather than the
+   first thing a reader sees. See app/editorial.css. */
+
+/*
+ * The page is full width and its sections hold their own measure, so a band can
+ * run edge to edge while the words inside it stay where they can be read. The
+ * old page was one 68rem column: at a desktop width that left the right half of
+ * every section empty, and the page read as a document that had been poured
+ * into the corner of a browser.
+ */
+.page {
+  display: flex;
+  flex-direction: column;
+}
+
+.inner {
+  margin-inline: auto;
+  max-width: 72rem;
+  padding-inline: var(--haus-space-6);
+  width: 100%;
+}
+
+/* ─── Hero ────────────────────────────────────────────────────────────────── */
+
+.hero {
+  padding-block: var(--haus-space-20) var(--haus-space-16);
+}
+
+/* The install command and its caveat were here. See components/home/landing.tsx
+   for why they are not. */
+
+/*
+ * The name, at the size a name is set at. The system's `display` token is 30px
+ * because that is the size of a dialog's title, and at 30px the name was the
+ * same size as the heading of the section below it.
+ */
+.title {
+  font-size: var(--site-text-hero);
+  font-weight: var(--haus-weight-bold);
+  letter-spacing: var(--haus-tracking-tightest);
+  line-height: var(--haus-leading-tight);
+  margin: 0 0 var(--haus-space-5);
+}
+
+.lede {
+  color: var(--haus-color-ink-secondary);
+  font-size: var(--haus-text-20);
+  font-weight: var(--haus-weight-regular);
+  letter-spacing: var(--haus-tracking-normal);
+  line-height: var(--haus-leading-relaxed);
+  margin: 0;
+  max-width: var(--site-measure-lede);
+}
+
+.lede a {
+  color: var(--haus-color-ink-link);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--haus-space-3);
+  margin-block-start: var(--haus-space-8);
+}
+
+/* ─── The showcase ───────────────────────────────────────────────────────── */
+
+/* No band, no rule. The panels in the showcase are its own ground, and a
+   second one behind them would be a surface inside a surface. */
+.showcase {
+  padding-block-end: var(--haus-space-20);
+}

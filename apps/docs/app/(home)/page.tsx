@@ -1,6 +1,11 @@
-import { redirect } from 'next/navigation'
+import { Landing } from '@/components/home/landing'
 
-// The docs are the site. A landing page comes with the foundations pages (3.3).
+export const metadata = {
+  title: 'haus',
+  description:
+    'The design system every hipuku app is built on: components you install as source, and the tokens under them.',
+}
+
 export default function HomePage() {
-  redirect('/docs')
+  return <Landing />
 }

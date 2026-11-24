@@ -1,0 +1,189 @@
+.swatches {
+  display: grid;
+  gap: var(--haus-space-3);
+  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+  margin-block: var(--haus-space-6) var(--haus-space-8);
+}
+
+/*
+ * A colour role, shown as a colour.
+ *
+ * It used to be a chip the size of a favicon beside three lines of text, which
+ * made the text the specimen and the colour the decoration. The role is the
+ * colour, so the colour gets the card and the names sit under it.
+ */
+.swatch {
+  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  border-radius: var(--haus-radius-md);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/*
+ * The field runs to the edges of the card, so the card's own border draws three
+ * of its sides and the caption's top rule draws the fourth. That is what makes
+ * a white role visible on a light page: as a small chip floating inside a white
+ * card, `surface-default` and `surface-overlay` were blank rectangles with
+ * captions under them, and nothing said where the colour began.
+ */
+.chip {
+  block-size: var(--haus-space-16);
+}
+
+.meta {
+  border-block-start: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  display: flex;
+  flex-direction: column;
+  gap: var(--haus-space-1);
+  min-inline-size: 0;
+  padding: var(--haus-space-3);
+}
+
+/*
+ * A role's name, set as a label.
+ *
+ * It is written as a `<code>` because it is a token name, and the page gives
+ * inline code a filled background so it reads as a mark inside a sentence.
+ * Inside a specimen there is no sentence: the fill became a grey slab behind
+ * every caption, stretched to whatever column it sat in. The element selector
+ * raises the specificity over the page's `:where()` rule without an override.
+ */
+code.name {
+  background: none;
+  color: var(--haus-color-ink-primary);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-mono-sm-size);
+  line-height: var(--haus-type-mono-sm-leading);
+  overflow: hidden;
+  padding: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.value {
+  color: var(--haus-color-ink-tertiary);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-mono-xs-size);
+  line-height: var(--haus-type-mono-xs-leading);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ramp {
+  margin-block: var(--haus-space-6);
+}
+
+code.rampName {
+  background: none;
+  color: var(--haus-color-ink-secondary);
+  padding: 0;
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-mono-sm-size);
+}
+
+/* The ramp reads as one ramp: the steps touch, so the eye can see that the
+   lightness moves evenly instead of comparing eleven separate tiles. */
+.rampSteps {
+  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  border-radius: var(--haus-radius-md);
+  display: flex;
+  margin-block-start: var(--haus-space-2);
+  overflow: hidden;
+}
+
+.rampStep {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  min-inline-size: 0;
+  text-align: center;
+}
+
+.rampChip {
+  block-size: var(--haus-space-16);
+}
+
+.rampLabel {
+  border-block-start: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  color: var(--haus-color-ink-tertiary);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-mono-xs-size);
+  line-height: var(--haus-type-mono-xs-leading);
+  padding-block: var(--haus-space-1);
+}
+
+/* The role's name is a word, not a bar. `.name` is a `<code>` and the page
+   gives inline code a filled background, so in a stretching column it drew a
+   full-width block with one word at the start of it. */
+.typeRole > .name {
+  align-self: flex-start;
+  max-inline-size: 100%;
+}
+
+.typeRole {
+  border-block-start: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: var(--haus-space-2);
+  padding-block: var(--haus-space-5);
+}
+
+.typeSample {
+  color: var(--haus-color-ink-primary);
+  margin: 0;
+}
+
+.ladder {
+  display: flex;
+  flex-direction: column;
+  gap: var(--haus-space-2);
+  margin-block: var(--haus-space-6);
+}
+
+/* A grid, so the step names line up in a column without each one being
+   stretched to the width of that column: `.name` is a `<code>` with a filled
+   background, and a stretched one drew a wide bar with a digit at the end. */
+.ladderRow {
+  align-items: center;
+  display: grid;
+  gap: var(--haus-space-4);
+  grid-template-columns: var(--haus-space-16) 1fr;
+}
+
+.ladderRow .name {
+  justify-self: end;
+}
+
+.bar {
+  background: var(--haus-color-primary-default);
+  block-size: var(--haus-space-3);
+  border-radius: var(--haus-radius-marker);
+}
+
+.surfaces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--haus-space-6);
+  margin-block: var(--haus-space-6) var(--haus-space-8);
+}
+
+/*
+ * A radius is the shape of a corner and an elevation is a shadow at an edge.
+ * With the name inside the box, the thing a reader is meant to be looking at
+ * had a label sitting in the middle of it. The name goes underneath, so the
+ * specimen is the only thing in the frame.
+ */
+.surfaceSample {
+  display: flex;
+  flex-direction: column;
+  gap: var(--haus-space-2);
+}
+
+.surface {
+  background: var(--haus-color-surface-raised);
+  block-size: var(--haus-space-20);
+  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  inline-size: var(--haus-space-20);
+}
