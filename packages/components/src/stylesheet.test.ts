@@ -19,6 +19,22 @@ describe.skipIf(built === null)('the built stylesheet', () => {
     expect(built!.trimEnd().endsWith('}')).toBe(true)
   })
 
+  it('lets the pointer onto a tooltip bubble', () => {
+    /* WCAG 1.4.13's "hoverable", and here rather than in Tooltip's own suite
+       for the same reason as the claim below: jsdom does not compute CSS
+       modules, so the component test can only see that a class was applied.
+
+       The bubble used to be `pointer-events: none`, with a comment asserting
+       that the pointer's travel path stayed inside the wrapper. It did not: the
+       bubble is absolutely positioned clear of the wrapper's box, so a pointer
+       that could not land on it counted as having left, `pointerleave` fired,
+       and the bubble went. The text was never selectable. */
+    const rule = built!.match(/\.[A-Za-z0-9_-]*Tooltip-bubble[A-Za-z0-9_-]*\{[^}]*\}/)
+    expect(rule, 'no Tooltip bubble rule in the built stylesheet').not.toBeNull()
+    expect(rule![0]).toContain('pointer-events:auto')
+    expect(rule![0]).not.toContain('pointer-events:none')
+  })
+
   it('gives a portalled Popover the modal layer, not the dropdown layer', () => {
     /* haus#73, and asserted here rather than in Popover's own suite because
        jsdom does not compute CSS modules: the component test can only see that
@@ -26,9 +42,17 @@ describe.skipIf(built === null)('the built stylesheet', () => {
 
        Portalling is what a caller reaches for when something clips, and the
        thing that clips is usually a Modal at `z-modal`. An un-portalled panel
-       is a descendant of that backdrop and stacks inside it; a portalled one is
-       a sibling, so `z-dropdown` at 100 renders it behind the dialog it was
-       opened from. The first fix for the clipping traded it for that. */
+       is a descendant of that backdrop and stacks inside it; a portalled one
+       used to be a sibling, so `z-dropdown` at 100 rendered it behind the
+       dialog it was opened from. The first fix for the clipping traded it for
+       that.
+
+       **The sibling half of that reasoning stopped being true on 2026-11-25**,
+       when a Modal became the portal host for its own descendants: inside a
+       dialog the panel is a descendant again. The rule still has to say
+       `z-modal`, for the case this test is named after and the one that is
+       left, which is a panel portalled out of a scrolling container that is not
+       a dialog. */
     const rule = built!.match(/\.[A-Za-z0-9_-]*portalled[A-Za-z0-9_-]*\{[^}]*\}/)
     expect(rule, 'no .portalled rule in the built stylesheet').not.toBeNull()
     expect(rule![0]).toContain('z-index:var(--haus-z-modal)')

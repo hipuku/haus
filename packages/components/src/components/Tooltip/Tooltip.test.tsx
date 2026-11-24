@@ -167,6 +167,51 @@ describe('Tooltip', () => {
     expect(screen.getByRole('tooltip').className).toContain('bottom')
   })
 
+  /* WCAG 1.4.13's "hoverable": the pointer can travel from the trigger into the
+     bubble and the bubble stays. Two things made it false, and the component's
+     own comments asserted the opposite of each.
+
+     These assert the mechanism rather than the behaviour, deliberately. jsdom
+     has no layout and no hit testing, so it cannot answer whether a pointer
+     moving across a gap lands on a box, which is the actual question.
+
+     The bubble taking pointer events is the other half, and it is not here:
+     jsdom does not compute CSS modules, so an assertion about
+     `pointer-events` in this file would pass whatever the stylesheet said. It
+     is in `stylesheet.test.ts`, which reads the built CSS, beside the
+     portalled-Popover z-index claim that is there for the same reason. */
+  it('spans the gap between the trigger and the bubble', async () => {
+    const user = userEvent.setup()
+    render(
+      <Tooltip content="Copy">
+        <button>Copy</button>
+      </Tooltip>,
+    )
+    await user.tab()
+    const bubble = screen.getByRole('tooltip')
+    /* The offset is a real strip of page where the pointer is over neither box.
+       The bridge is a child of the bubble, so it is part of the same hit area:
+       a sibling would not keep `pointerleave` on the root from firing. */
+    const bridge = bubble.firstElementChild
+    expect(bridge).not.toBeNull()
+    expect(bridge).toHaveAttribute('aria-hidden')
+    expect(bubble.contains(bridge!)).toBe(true)
+  })
+
+  it('keeps the bubble out of the accessible name of nothing but itself', async () => {
+    /* The bridge is geometry. If it ever gained text it would be read as part
+       of the tooltip, so the assertion is that the bubble's text is the whole
+       of what a reader gets. */
+    const user = userEvent.setup()
+    render(
+      <Tooltip content="Copies the hex value">
+        <button>Copy</button>
+      </Tooltip>,
+    )
+    await user.tab()
+    expect(screen.getByRole('tooltip')).toHaveTextContent('Copies the hex value')
+  })
+
   it('has no axe violations while shown', async () => {
     const user = userEvent.setup()
     const { container } = render(
