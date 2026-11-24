@@ -491,7 +491,7 @@ describe('portalled content inside the dialog', () => {
           <button type="button" ref={trigger} onClick={() => setOpen(true)}>
             Pick
           </button>
-          <Popover open={open} onClose={() => setOpen(false)} triggerRef={trigger} portal>
+          <Popover open={open} onClose={() => setOpen(false)} triggerRef={trigger} portal aria-label="Colour">
             <input aria-label="Hex" />
           </Popover>
         </Modal>
@@ -516,7 +516,7 @@ describe('portalled content inside the dialog', () => {
           <button type="button" ref={trigger} onClick={() => setOpen(true)}>
             Pick
           </button>
-          <Popover open={open} onClose={() => setOpen(false)} triggerRef={trigger} portal>
+          <Popover open={open} onClose={() => setOpen(false)} triggerRef={trigger} portal aria-label="Colour">
             <input aria-label="Hex" />
           </Popover>
         </Modal>
@@ -543,7 +543,7 @@ describe('portalled content inside the dialog', () => {
           <button type="button" ref={trigger} onClick={() => setOpen(true)}>
             Pick
           </button>
-          <Popover open={open} onClose={() => setOpen(false)} triggerRef={trigger} portal>
+          <Popover open={open} onClose={() => setOpen(false)} triggerRef={trigger} portal aria-label="Colour">
             <input aria-label="Hex" />
           </Popover>
         </div>
