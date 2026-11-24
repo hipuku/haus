@@ -28,7 +28,10 @@ export function setAtPath(
   let node = root
   for (const [i, key] of path.slice(0, -1).entries()) {
     const next = own(node, key)
-    if (isRecord(next) && '$value' in next) {
+    // A leaf is `$value` in DTCG and `value` with a `type` in Tokens Studio's
+    // own shape; this writer serves both, and recognising only the first let a
+    // group be written inside a token.
+    if (isRecord(next) && ('$value' in next || ('value' in next && 'type' in next))) {
       losses.add(
         'renamed',
         path,

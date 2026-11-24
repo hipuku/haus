@@ -213,7 +213,9 @@ export function writeFigma(set: TokenSet, options: WriteOptions): WriteResult {
   const files: OutputFile[] = set.modes.map(mode => {
     const root: Record<string, unknown> = {}
     const written = targetsIn(mode)
-    for (const token of candidates) {
+    // Every accepted token is still attempted; `candidates` only decides what
+    // an alias may point at.
+    for (const token of accepted) {
       const value = valueIn(token, mode, set.modes)
       if (!value) continue
       const figmaValue = valueFor(token, value, mode, written, losses)
