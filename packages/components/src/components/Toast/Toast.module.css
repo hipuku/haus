@@ -211,6 +211,16 @@
 
 /* IconButton draws the box, the focus and the press; Toast places it, centred
    on the title's first line like the icon. */
+
+/* On a solid toast the close takes the toast's own ink, as the icon does.
+   IconButton's ghost ink is ink-secondary, a dark grey that all but
+   disappeared on the solid neutral surface (4.5, found comparing Figma). */
+.solid .close {
+  --haus-ibtn-ink: currentColor;
+  --haus-ibtn-ink-hover: currentColor;
+  --haus-ibtn-bg: var(--haus-color-surface-inverse-hover);
+  --haus-ibtn-bg-hover: var(--haus-color-surface-inverse-hover);
+}
 .close {
   flex-shrink: 0;
   margin-block-start: calc(

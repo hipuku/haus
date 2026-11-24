@@ -122,6 +122,9 @@ export const Content: Story = {
           description="Your changes are live for everyone in the workspace, and the previous version is kept in the history."
         />
       </Item>
+      <Item label="solid, dismissable">
+        <Toast {...args} appearance="solid" tone="neutral" onClose={() => {}} />
+      </Item>
       <Item label="action, subtle">
         <Toast {...args} title="Message archived" description={undefined} action={undo} />
       </Item>
