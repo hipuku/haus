@@ -84,11 +84,46 @@ beforeEach(async () => {
  */
 const isChrome = (el: Element) => el.classList.contains('sb-wrapper') || el.id === 'storybook-a11y-vision-filters'
 
+/**
+ * How long to wait for the animations on a story to end before giving up and
+ * capturing anyway. The longest entrance in the system is under a second, so a
+ * wait this long means something is not going to finish.
+ */
+const SETTLE_TIMEOUT_MS = 2000
+
+/** An animation that repeats forever, such as a Spinner's, never resolves. */
+const repeatsForever = (animation: Animation) => animation.effect?.getComputedTiming().iterations === Infinity
+
+/**
+ * Let the story's animations finish before it is photographed.
+ *
+ * Toast's entrance is the case that made this necessary: its Motion story
+ * failed in CI about one run in several with a 2% difference against its
+ * reference, in light mode on one run and dark on another, and passed on a
+ * re-run of the same commit. The capture was landing part-way through the rise,
+ * so which frame it got depended on how busy the runner was.
+ *
+ * A finite animation is awaited through its `finished` promise. One that
+ * repeats forever is skipped, because awaiting it would hang the suite, and the
+ * whole wait is raced against a timeout so an animation that stalls for another
+ * reason costs two seconds rather than the run. `subtree: true` reaches the
+ * children, which is where a staggered entrance lives.
+ */
+async function settleAnimations(target: Element) {
+  const running = target.getAnimations({ subtree: true }).filter(animation => !repeatsForever(animation))
+  if (running.length === 0) return
+  await Promise.race([
+    Promise.allSettled(running.map(animation => animation.finished)),
+    new Promise(resolve => setTimeout(resolve, SETTLE_TIMEOUT_MS)),
+  ])
+}
+
 afterEach(async () => {
   // A contract story (stories/contracts) asserts behaviour, pausing animations
   // to read them, so it has no stable picture to compare and is not one.
   if (document.querySelector('[data-contract]')) return
   const mounted = [...document.body.children].filter(el => !isChrome(el))
   const target = mounted.length === 1 ? mounted[0] : document.body
+  await settleAnimations(target)
   await expect.element(page.elementLocator(target)).toMatchScreenshot()
 })
