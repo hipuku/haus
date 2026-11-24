@@ -4,9 +4,17 @@ export type Index = Map<string, Token>
 
 export const indexTokens = (set: TokenSet): Index => new Map(set.tokens.map(t => [joinPath(t.path), t]))
 
-/** A token's value in a mode, falling back to the default mode when the mode does not override it. */
+/**
+ * A token's value in a mode, falling back to the default mode when the mode
+ * does not override it.
+ *
+ * There is no third fallback. Taking the first value the token happens to hold
+ * promoted a value that exists only in `dark` into every mode that asked,
+ * including the default, which is how a token defined in one mode alone came
+ * out of a writer as though it were the base value.
+ */
 export function valueIn(token: Token, mode: string, modes: readonly string[]): TokenValue | undefined {
-  return token.values[mode] ?? token.values[modes[0]] ?? Object.values(token.values)[0]
+  return token.values[mode] ?? token.values[modes[0]]
 }
 
 export interface Resolution {

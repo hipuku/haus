@@ -61,8 +61,12 @@ export function mergeTokens(into: Map<string, Token>, token: Token): void {
     return
   }
   Object.assign(existing.values, token.values)
-  existing.type = existing.type ?? token.type
-  existing.sourceType = existing.sourceType ?? token.sourceType
+  // The later token wins its whole shape, not only its value: a group that
+  // extends another and redeclares a token redeclares its type too, and a
+  // source later in the resolution order is the one being applied. A later
+  // token with no type of its own leaves the earlier type standing.
+  existing.type = token.type ?? existing.type
+  existing.sourceType = token.sourceType ?? existing.sourceType
   existing.description = token.description ?? existing.description
   existing.deprecated = token.deprecated ?? existing.deprecated
   if (token.extensions) existing.extensions = { ...existing.extensions, ...token.extensions }
