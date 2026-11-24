@@ -22,7 +22,8 @@
   display: block;
   width: 100%;
   background-color: var(--haus-color-surface-default);
-  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  /* WCAG 1.4.11, as Input's border. Decision 0031. */
+  border: var(--haus-border-width-default) solid var(--haus-color-border-control);
   border-radius: var(--haus-radius-control);
   padding: var(--haus-space-inset-xs) var(--haus-space-inset-sm);
   font-family: var(--haus-font-sans);
@@ -42,7 +43,7 @@
   /* haus#42: the placeholder role, the same one Input reads. ink-secondary
      rendered a placeholder as dark as a real value, which is the one thing the
      colour exists to prevent. */
-  color: var(--haus-color-ink-tertiary);
+  color: var(--haus-color-ink-placeholder);
 }
 
 .textarea:focus-visible {
@@ -97,7 +98,7 @@
    rather than ours. */
 @media (forced-colors: active) {
   .textarea:focus-visible {
-    outline: 2px solid Highlight;
-    outline-offset: 2px;
+    outline: var(--haus-focus-outline-forced);
+    outline-offset: var(--haus-focus-outline-offset);
   }
 }

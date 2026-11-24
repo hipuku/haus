@@ -97,7 +97,11 @@
     color var(--haus-motion-micro),
     background-color var(--haus-motion-micro);
   padding: 0;
-  margin-block-start: -2px;
+  /* Centred in the title's first line. The icon box is taller than that line,
+     so the offset is negative; heading-sm is the role the title sets. */
+  margin-block-start: calc(
+    (var(--haus-type-heading-sm-size) * var(--haus-type-heading-sm-leading) - var(--haus-icon-lg)) / 2
+  );
 }
 
 /* haus#43: the glyph is icon-xs (12), the same as Toast's, sized here as a token. */
@@ -152,7 +156,7 @@
    rather than ours. */
 @media (forced-colors: active) {
   .close:focus-visible {
-    outline: 2px solid Highlight;
-    outline-offset: 2px;
+    outline: var(--haus-focus-outline-forced);
+    outline-offset: var(--haus-focus-outline-offset);
   }
 }

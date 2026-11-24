@@ -23,7 +23,9 @@
   align-items: center;
   gap: var(--haus-space-gap-xs);
   background-color: var(--haus-color-surface-default);
-  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  /* WCAG 1.4.11: this border is the whole of the control's edge, so it carries
+     3:1 against the page. Decision 0031. */
+  border: var(--haus-border-width-default) solid var(--haus-color-border-control);
   border-radius: var(--haus-radius-control);
   padding: 0 var(--haus-space-inset-sm);
   transition:
@@ -73,7 +75,7 @@
 }
 
 .input::placeholder {
-  color: var(--haus-color-ink-tertiary);
+  color: var(--haus-color-ink-placeholder);
 }
 
 .input:disabled {
@@ -126,7 +128,7 @@
    rather than ours. */
 @media (forced-colors: active) {
   .inputWrap:has(:focus-visible) {
-    outline: 2px solid Highlight;
-    outline-offset: 2px;
+    outline: var(--haus-focus-outline-forced);
+    outline-offset: var(--haus-focus-outline-offset);
   }
 }

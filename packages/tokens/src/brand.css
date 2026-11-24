@@ -69,7 +69,8 @@
     /* ── Ink ─────────────────────────────────────────────────────────────── */
     --haus-brand-ink-primary:    var(--haus-damson-900);
     --haus-brand-ink-secondary:  var(--haus-damson-700);
-    --haus-brand-ink-tertiary:   var(--haus-damson-500);
+    --haus-brand-ink-tertiary:   var(--haus-damson-500);   /* glyphs and a hover fill, never text: 3.97:1 on the default surface, which clears 3:1 and not 4.5:1 */
+    --haus-brand-ink-placeholder: var(--haus-damson-600);   /* the text in an empty field. Lighter than a real value, and 6.55:1, which a placeholder has to be because it is text */
     --haus-brand-ink-disabled:   var(--haus-damson-400);
     --haus-brand-ink-inverse:    var(--haus-damson-0);
     --haus-brand-ink-link:       var(--haus-aronia-500);
@@ -79,6 +80,7 @@
     --haus-brand-border-subtle:         var(--haus-damson-100);
     --haus-brand-border-default:        var(--haus-damson-200);
     --haus-brand-border-strong:         var(--haus-damson-300);
+    --haus-brand-border-control:        var(--haus-damson-500);   /* the edge of a control that has no fill of its own. 3.97:1 on the default surface and 3.63:1 on the subtle one, so it clears WCAG 1.4.11 on both */
     --haus-brand-border-disabled:       var(--haus-damson-200);
     --haus-brand-border-inverse:        oklch(from var(--haus-damson-0) l c h / 0.30);
     --haus-brand-border-inverse-hover:  oklch(from var(--haus-damson-0) l c h / 0.50);
@@ -217,9 +219,17 @@
        primitives.css to here, which is a removal for a primitives-only consumer
        and so a major under decision 0004. `semantics.css` exposes the unchanged
        role name `--haus-font-sans` reading this entry, so no component read
-       moved. */
-    --haus-brand-font-sans:  'Manrope', system-ui, sans-serif;
-    --haus-brand-font-mono:  'Fira Code', ui-monospace, monospace;
+       moved.
+
+       The faces are DM Sans and DM Mono, both Colophon Foundry, from Manrope and
+       Fira Code (decision 0030). DM Sans is variable on two axes, weight 100 to
+       1000 and optical size 9 to 40, so the whole ladder is one file and the
+       optical axis follows the size a role sets. DM Mono ships 300, 400 and 500
+       as static files and haus's three mono roles are all regular, so one is
+       loaded. Neither file is shipped by this package: a consumer loads the two
+       families and this entry names them, the same contract as before. */
+    --haus-brand-font-sans:  'DM Sans', system-ui, sans-serif;
+    --haus-brand-font-mono:  'DM Mono', ui-monospace, monospace;
 
   }
 }

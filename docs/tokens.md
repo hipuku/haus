@@ -43,8 +43,11 @@ The colour primitives are six OKLCH palettes:
 | **Cherry** (warm red)       | 27°  | error                      |
 
 The spacing ramp is 4px steps from `--haus-space-1`, plus two steps below it for optical
-padding inside small controls: `--haus-space-px` (1px) and `--haus-space-0-5` (2px). No role
-reads those two; a component reaches for them where a 4px step is visibly too much.
+padding inside small controls: `--haus-space-px` (1px) and `--haus-space-0-5` (2px).
+`--haus-space-0-5` gained its roles with the release-debt pass, the `3xs` step on each of the
+three ladders, because a 2px gap and a 2px padding are the same kind of thing as every other step
+and were being written as literals. `--haus-space-px` still has none; a component reaches for it
+where a 4px step is visibly too much.
 
 Aronia is a full 100–950 ramp; Damson runs 0–950 (0 = white). The feedback hues
 (elderberry, greengage, mango, cherry) ship a targeted subset of steps,
@@ -119,12 +122,17 @@ emphasis`; success and warning additionally provide a `solid` step.
 
 Two kinds of primitive read remain in the components, and both are deliberate.
 
-Thirty-one declarations take a size off the space ladder, on `height`, `width`,
+Twenty-six declarations take a size off the space ladder, on `height`, `width`,
 `min-*`/`max-*`, insets and `transform` offsets: the avatar sizes and its bounds, the
-checkbox and radio boxes, the toggle track and thumb and the thumb's travel and inset, the
-modal's max height, the toast and modal entry offsets, and the textarea's minimum height. A
-size is a value rather than a role, and calling a 16px checkbox `--haus-space-inset-md`
-would say something untrue about what it is. No padding, gap or margin does this.
+toggle thumb and the thumb's travel and inset, the modal's max height, the toast and modal
+entry offsets, and the textarea's minimum height. A size is a value rather than a role, and
+calling a 16px checkbox `--haus-space-inset-md` would say something untrue about what it
+is. No padding, gap or margin does this.
+
+It was thirty-one until the five optical nudges came out. Each control is now centred on
+the first line of the text beside it, and that offset is a margin that subtracts the box,
+so the box itself could not stay a step of the ladder: the checkbox box and the radio
+circle read `--haus-marker-box` and the toggle track reads `--haus-toggle-track-height`.
 
 Control heights are a scale of their own rather than a step off the ladder,
 because 36px and 44px are not on it. `--haus-control-height-xs`, `-sm`, `-md` and
@@ -134,7 +142,7 @@ Input reads md, and IconButton reads xs, sm and md on both axes because it is
 square. `min-height` is in stylelint's strict-value list so the next control
 cannot invent a fifth height.
 
-Thirty-one read a primitive that has no semantic alias because the primitive's own
+Thirty-three read a primitive that has no semantic alias because the primitive's own
 name already is the role: `--haus-control-height-*` and the `--haus-icon-*` sizes.
 Border width, opacity and the stacking order left this list with haus#27, which
 gave each a role layer, and Button's `--haus-tracking-normal` left it with haus#37,
@@ -146,8 +154,9 @@ took thirty-two away: `--haus-font-sans` was on this list until typeface became
 brandable, and a font role reading a brand entry is a role read, not a primitive
 one. IconButton then added six and the themed Select three, retiring the native
 select in decision 0025 took four away, and IconButton's lg size added three.
-**Thirty-one now**, thirteen control heights and eighteen icon sizes, and the
-sentence above moves with it.
+Replacing the optical nudges added two more, Callout's icon and Modal's close, each
+subtracting its own icon box from the line it is centred on. **Thirty-three now**, thirteen
+control heights and twenty icon sizes, and the sentence above moves with it.
 
 No component reads a colour, radius, shadow or motion primitive. `tokens.test.ts`
 in `haus-components` checks all of this on every run, so the counts above are

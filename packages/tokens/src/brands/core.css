@@ -88,6 +88,7 @@
     --haus-brand-ink-primary:     var(--haus-paper-900);   /* --text      */
     --haus-brand-ink-secondary:   var(--haus-paper-700);   /* --text-dim  */
     --haus-brand-ink-tertiary:    var(--haus-paper-600);   /* --text-faint */
+    --haus-brand-ink-placeholder: var(--haus-paper-700);   /* --text-dim. The same step as secondary, because core's ramp has nothing between 600 at 3.93:1 and 700 at 7.07:1, and a placeholder is text */
     --haus-brand-ink-disabled:    var(--haus-paper-500);   /* DERIVED: core disables by opacity */
     --haus-brand-ink-inverse:     var(--haus-paper-0);
     --haus-brand-ink-link:        var(--haus-cobalt-500);  /* --accent: links are the accent */
@@ -100,6 +101,7 @@
     --haus-brand-border-subtle:          var(--haus-paper-200);   /* faint divider */
     --haus-brand-border-default:         var(--haus-paper-300);   /* --border        */
     --haus-brand-border-strong:          var(--haus-paper-400);   /* --border-strong */
+    --haus-brand-border-control:         var(--haus-paper-600);   /* 3.93:1 on the card and 3.64:1 on the subtle fill. core's own --border-strong is 1.57:1, so this is the first rung that clears 1.4.11 */
     --haus-brand-border-disabled:        var(--haus-paper-300);
     --haus-brand-border-inverse:         oklch(from var(--haus-paper-0) l c h / 0.30);
     --haus-brand-border-inverse-hover:   oklch(from var(--haus-paper-0) l c h / 0.50);

@@ -67,10 +67,14 @@
 
 .circle {
   flex-shrink: 0;
-  width: var(--haus-space-4);
-  height: var(--haus-space-4);
+  /* The border is inside the 16px, as Checkbox's box is. */
+  box-sizing: border-box;
+  position: relative;
+  width: var(--haus-marker-box);
+  height: var(--haus-marker-box);
   border-radius: 50%;
-  border: var(--haus-border-width-thick) solid var(--haus-color-border-strong);
+  /* WCAG 1.4.11, as Checkbox's box. Decision 0031. */
+  border: var(--haus-border-width-thick) solid var(--haus-color-border-control);
   background-color: var(--haus-color-surface-default);
   display: flex;
   align-items: center;
@@ -78,7 +82,10 @@
   transition:
     background-color var(--haus-motion-micro),
     border-color var(--haus-motion-micro);
-  margin-block-start: 1px;
+  /* Centred in the label's first line, as Checkbox's box is. */
+  margin-block-start: calc(
+    (var(--haus-type-body-sm-size) * var(--haus-type-body-sm-leading) - var(--haus-marker-box)) / 2
+  );
 }
 
 .radio:not(.disabled):hover .circle {
@@ -94,8 +101,11 @@
   border-color: var(--haus-color-primary-default);
 }
 
+/* Absolutely positioned for the reason Checkbox's tick is: in flow it gave the
+   circle a baseline only when selected, so the control moved down the line. */
 .checked .circle::after {
   content: '';
+  position: absolute;
   width: var(--haus-marker-dot);
   height: var(--haus-marker-dot);
   border-radius: 50%;
@@ -123,7 +133,7 @@
 .radioContent {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--haus-space-gap-3xs);
 }
 
 .radioLabel {
@@ -155,7 +165,7 @@
    rather than ours. */
 @media (forced-colors: active) {
   .input:focus-visible ~ .circle {
-    outline: 2px solid Highlight;
-    outline-offset: 2px;
+    outline: var(--haus-focus-outline-forced);
+    outline-offset: var(--haus-focus-outline-offset);
   }
 }

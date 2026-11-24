@@ -31,9 +31,9 @@ mirrors all of it:
 
 The reference for every token is [`docs/tokens.md`](./docs/tokens.md), and the brand contract is
 [Brands](#brands) below, with its tiers in
-[decision 0014](#0014-brand-contract-tiers). Figma holds the same tokens
-as two variable collections, `haus/primitives` (136 variables) and `haus/semantics` (171), with one
-mode per shipped brand.
+[decision 0014](#0014-brand-contract-tiers). Figma holds the same tokens as four variable collections, counted from the committed snapshot:
+`haus/primitives` (140), `haus/semantics` (175) with one mode per shipped brand, `haus/theme` (54)
+for light and dark, and `haus/motion` (27) in its three modes.
 
 ### Layers
 
@@ -247,7 +247,7 @@ are superseded, and one is not yet true of every component.
 | Typography        | [0026](#0026-type-roles-in-figma), [0027](#0027-mono-ladder)                                                                                                                                                                                                            |
 | Components        | [0008](#0008-toast-scope), [0011](#0011-native-select), [0013](#0013-component-promotion), [0017](#0017-busy-indicator), [0020](#0020-listbox-and-select), [0021](#0021-domain-states-as-badge-tones), [0025](#0025-themed-select)                                      |
 | Component API     | [0005](#0005-variant-and-tone), [0009](#0009-where-classname-lands), [0012](#0012-tone-rules), [0022](#0022-ownership), [0023](#0023-union-prop-type-halves)                                                                                                            |
-| Styling and focus | [0001](#0001-focus-indicator), [0006](#0006-component-stylesheet-layer), [0010](#0010-logical-properties)                                                                                                                                                               |
+| Styling and focus | [0001](#0001-focus-indicator), [0006](#0006-component-stylesheet-layer), [0010](#0010-logical-properties), [0029](#0029-first-line-control-alignment)                                                                                                                   |
 | Packaging         | [0004](#0004-versioning), [0007](#0007-meta-package), [0024](#0024-server-component-guard)                                                                                                                                                                              |
 
 A choice worth recording, one a reviewer would otherwise reopen, gets the next number here.
@@ -364,13 +364,19 @@ system shipped the one picker neither used. The reasoning survives as guidance f
 
 ### 0012 Tone rules
 
-_2026-09-03. Implemented on Button and Toast; Badge pending._
+_2026-09-03. Implemented on Button, Toast and Badge._
 
 A tone rule may remap custom properties and declare nothing else, and a variant rule reads the subset
 its weight needs. Button's tone rules had set colours outright, so `variant="ghost" tone="error"`
 rendered solid. Neutral is a tone, and a component narrows `Tone` only where the roles genuinely do
 not exist. `stylesheet.test.ts` fails any tone rule that declares a non-custom property. The cost is
 indirection: `.primary` no longer says what colour it is.
+
+Badge reached it last, in the release-debt pass. Its twelve `.tone.appearance` compounds were not
+caught by the test, which skips a compound because it already names both things and cannot be
+outvoted on source order, and that is why they survived: the rule was enforced and the shape was
+still wrong. Six tone rules remap four properties and the two appearance rules read the pair their
+weight needs, so a new weight is one rule rather than six.
 
 ### 0013 Component promotion
 
@@ -532,15 +538,83 @@ every `[data-haus-theme]` element, so core, which supplies only the base tier, c
 status colours. The cost is a second map to keep in step, held by `brand.test.ts` (every colour role,
 both selectors identical) and by `contrast.test.ts` running every pair in both modes.
 
+### 0029 First-line control alignment
+
+_2026-11-24. Implemented._
+
+A control that sits beside text is centred on the first line of that text, from the type role's
+size and leading, rather than nudged by a literal. Five components did it with a `margin-block-start`
+of 1px, 2px or -2px: Checkbox, Radio, Toggle, Callout and Modal. Each was measured against Manrope
+at one size, so it was wrong at any other size, on any other typeface, and at any other density,
+and nothing in the repository would have reported it. The offset is now the line box less the box
+it centres, both read from tokens.
+
+The cost is that the box can no longer be a step of the space ladder, because a margin may not read
+that ladder (`tokens.test.ts`): Checkbox and Radio took `--haus-marker-box` and Toggle
+`--haus-toggle-track-height`, which is the more honest name anyway. Alternatives rejected: `1lh`,
+which is the same arithmetic but resolves against whatever font the element itself inherited, and
+which is wrong wherever the label sets the type and the box does not; and aligning on cap height,
+which is the more accurate centre and needs a typeface metric no token holds.
+
+### 0030 The DM typeface
+
+_2026-11-24. Implemented in the tokens; the Figma file follows in the same pull request._
+
+The default brand sets **DM Sans** for the interface and **DM Mono** for monospace, replacing
+Manrope and Fira Code. Chosen by the owner from the family's own specimen. DM Sans is variable on
+two axes, weight 100 to 1000 and optical size 9 to 40, so the whole ladder is one file and the
+optical axis follows the size each role sets, which Manrope's single axis could not do. DM Mono
+ships 300, 400 and 500 as static files and all three mono roles are regular, so one is loaded.
+
+**No serif role.** The specimen also holds DM Serif Display and DM Serif Text. No product here has
+a use for a serif, and a role nothing reads is a role that drifts out of true without anything
+reporting it. A serif belongs to a marketing surface, which is not this contract.
+
+Only `--haus-brand-font-sans` and `--haus-brand-font-mono` change, so `--haus-font-sans` and
+`--haus-font-mono` keep their names and no component read moved; it is breaking because a consumer
+loading Manrope gets a fallback until it loads the new faces. vault keeps Manrope in its own brand
+file, which is decision 0019 working as intended.
+
+The cost is that the two faces do not share metrics, so text at the same size and leading does not
+occupy the same room, and anything tuned to the old face has to be read again at its real size.
+The five optical nudges came out first for exactly this reason (decision 0029): they were Manrope's
+measurements written into five components. The Typography section above still describes the old
+pair and is corrected in the documentation pass.
+
+### 0031 Control edge contrast
+
+_2026-11-24. Implemented._
+
+A control whose boundary is its only edge draws that edge with `--haus-color-border-control`, which
+measures at least 3:1 against both the default surface and the subtle one, in light and in dark.
+WCAG 1.4.11 asks for 3:1 from the parts of a component that say where it is, and Input, Textarea
+and Select drew theirs with `border-default` at 1.23:1 while Checkbox, Radio and the Toggle track
+used `border-strong` at 1.53:1. `contrast.test.ts` measured no border at all, so nothing reported
+it; `DESIGN.md` listed it as a known gap instead.
+
+It is a new role rather than a change to `border-default`, because 1.4.11 is about controls and
+not about every line in the system: moving `border-default` would darken cards, dividers and table
+rules to make a checkbox legible. Both brand maps take damson-500 for it, which is the first rung
+that clears 3:1 from either direction, and the shipped brands take their own: vault damson-500,
+core paper-600 at 3.93:1, where core's own `--border-strong` is 1.57:1.
+
+**`--haus-color-ink-placeholder` came out of the same measurement.** `ink-tertiary` is 3.97:1 on
+the default surface: sound for the glyphs and the hover fill it carries, and never safe for the
+words in an empty field, which are text and want 4.5:1. The two jobs are two roles now. A
+placeholder takes damson-600 at 6.55:1 and stays lighter than a real value, which is the thing the
+colour exists to say. Select's option hint moved to `ink-secondary`, because a hint is text and
+was never a glyph. Both roles are base-tier brand entries, so the base tier is 30 rather than 28
+and a brand file that omits one fails `brand.test.ts`.
+
+The cost is visible: every field, checkbox, radio and toggle has a darker edge than it did, and a
+placeholder is darker than it was. That is the point, and it is the kind of change the screenshot
+suite exists to show, which it did, in 43 stories across both modes.
+
 ## Known gaps
 
 - **Dark mode is not checked component by component.** The token pairs are measured in both modes;
   a component that pairs roles outside those pairs is not, and nothing runs axe against a rendered
   dark story in CI. The Storybook toolbar switches mode for a manual check.
-- **Borders below 3:1.** `border-default` is 1.23:1 on the light page and 1.80:1 on the dark one. A
-  field whose border is its only edge falls short of WCAG 1.4.11 in both modes.
-- **Badge's tones** still declare colours directly rather than remapping custom properties, the last
-  component decision 0012 has not reached.
 - **No screen reader run.** The accessibility checks are automated; they cover the markup, not the
   experience of using it.
 - **No right-to-left visual test.** The components are written in logical properties and a source

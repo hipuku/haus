@@ -37,6 +37,33 @@ function readSnapshot() {
 }
 const writeJson = (p, data) => fs.writeFileSync(p, JSON.stringify(data, null, 2) + '\n')
 
+/**
+ * Three decimals on every number in a variable, which is what the comparison
+ * uses anyway (`normalise.mjs`).
+ *
+ * Figma hands back a 32-bit float, so a line height of 28.8 arrives as
+ * 28.799999237060547. Stored raw it compares the same and reads as noise: the
+ * first export taken this way rewrote 19 lines that had not changed, which
+ * buries the two that had in a diff nobody can scan.
+ */
+const compare = (a, b) => (a < b ? -1 : a > b ? 1 : 0)
+const byCollectionThenName = (a, b) => compare(a.collection, b.collection) || compare(a.name, b.name)
+const byPageThenName = (a, b) => compare(a.page, b.page) || compare(a.name, b.name)
+
+const roundNumbers = variable => {
+  const fix = v =>
+    typeof v === 'number'
+      ? Math.round(v * 1000) / 1000
+      : v && typeof v === 'object'
+        ? Object.fromEntries(Object.entries(v).map(([k, inner]) => [k, fix(inner)]))
+        : v
+  return {
+    ...variable,
+    value: fix(variable.value),
+    ...(variable.dark === undefined ? {} : { dark: fix(variable.dark) }),
+  }
+}
+
 async function figmaSide() {
   const warnings = []
   const snapshot = readSnapshot()
@@ -99,8 +126,12 @@ async function main() {
       exportedAt: exported.capturedAt ?? new Date().toISOString(),
       source: 'plugin',
       file: FIGMA_FILE,
-      variables: exported.variables,
-      components: exported.components,
+      // Sorted, because the export's order follows Figma's internal id order
+      // and changes between runs: the first refresh taken this way rewrote 102
+      // lines, six of which were values. The comparison reads a map by name,
+      // so the order was never load-bearing, only unreadable.
+      variables: exported.variables.map(roundNumbers).sort(byCollectionThenName),
+      components: [...exported.components].sort(byPageThenName),
     })
     console.log(`Saved ${PATHS.snapshot}.`)
     return

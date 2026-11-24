@@ -184,8 +184,10 @@ export const tokens = {
   borderWidth: {
     "1": "1px",
     "2": "2px",
+    "3": "3px",
   },
   opacity: {
+    "35": 0.35,
     "40": 0.4,
     "60": 0.6,
   },

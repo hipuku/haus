@@ -24,17 +24,32 @@
 
 .track {
   flex-shrink: 0;
+  /* The track height as a private property, because two things read it and
+     they have to agree: the box itself and the offset that centres it on the
+     label's first line. `.sm` below changes the height, and with the offset
+     reading the role directly the small track sat 2px low. `--haus-` for the
+     reason Button's own properties carry it: the shipped stylesheet must read
+     nothing a consumer could also have declared. */
+  --haus-toggle-track: var(--haus-toggle-track-height);
   width: var(--haus-toggle-track-width);
-  height: var(--haus-space-5);
+  height: var(--haus-toggle-track);
   border-radius: var(--haus-radius-pill);
-  background-color: var(--haus-color-border-strong);
+  /* WCAG 1.4.11: the off state is this fill against the page, which is the
+     only thing saying a toggle is there. Decision 0031. */
+  background-color: var(--haus-color-border-control);
   position: relative;
   transition: background-color var(--haus-motion-micro);
-  margin-block-start: 1px;
+  /* Centred in the label's first line, as Checkbox's box is. The track is
+     taller than that line, so the offset is negative by a quarter pixel. */
+  margin-block-start: calc(
+    (var(--haus-type-body-sm-size) * var(--haus-type-body-sm-leading) - var(--haus-toggle-track)) / 2
+  );
 }
 
 .wrapper:not(.disabled):hover .track {
-  background-color: var(--haus-color-ink-tertiary);
+  /* One step further from the page than the rest state, in both modes: the ink
+     roles invert with the mode and the border roles do not. */
+  background-color: var(--haus-color-ink-secondary);
 }
 
 .input:focus-visible ~ .track {
@@ -83,8 +98,8 @@
 /* ── Sizes ── */
 
 .sm .track {
+  --haus-toggle-track: var(--haus-space-4);
   width: var(--haus-space-7);
-  height: var(--haus-space-4);
 }
 .sm .thumb {
   width: var(--haus-space-3);
@@ -97,7 +112,7 @@
 .content {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--haus-space-gap-3xs);
 }
 
 .label {
@@ -136,7 +151,7 @@
    rather than ours. */
 @media (forced-colors: active) {
   .input:focus-visible ~ .track {
-    outline: 2px solid Highlight;
-    outline-offset: 2px;
+    outline: var(--haus-focus-outline-forced);
+    outline-offset: var(--haus-focus-outline-offset);
   }
 }

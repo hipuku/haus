@@ -257,7 +257,7 @@ function TypographyScale() {
     <div style={pageWrap}>
       <h1 style={pageTitleStyle}>Typography</h1>
       <p style={pageDescStyle}>
-        Manrope (variable, UI) and Fira Code (monospace). All four properties together, always: size, weight, leading,
+        DM Sans (variable, UI) and DM Mono (monospace). All four properties together, always: size, weight, leading,
         tracking. Setting only <code style={{ fontFamily: 'var(--haus-font-mono)' }}>font-size</code> from a type token
         and guessing the rest is using the system wrong. Roles replace heading levels:{' '}
         <code style={{ fontFamily: 'var(--haus-font-mono)' }}>label-xs</code> through{' '}

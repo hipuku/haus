@@ -168,7 +168,7 @@
 /* forced-colors drops box-shadow, and every ring in this system is one. */
 @media (forced-colors: active) {
   .iconButton:focus-visible {
-    outline: 2px solid Highlight;
-    outline-offset: 2px;
+    outline: var(--haus-focus-outline-forced);
+    outline-offset: var(--haus-focus-outline-offset);
   }
 }

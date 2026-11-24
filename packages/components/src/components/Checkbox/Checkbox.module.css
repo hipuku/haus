@@ -26,10 +26,18 @@
 
 .box {
   flex-shrink: 0;
-  width: var(--haus-space-4);
-  height: var(--haus-space-4);
+  /* The 2px border is inside the 16px the token names, so the drawn box is the
+     size the token says whatever reset the consumer has. Without this the box
+     is 20px in an app with no border-box reset and 16px in one that has it,
+     and the centring below subtracts the wrong number in the first. */
+  box-sizing: border-box;
+  position: relative;
+  width: var(--haus-marker-box);
+  height: var(--haus-marker-box);
   border-radius: var(--haus-radius-marker);
-  border: var(--haus-border-width-thick) solid var(--haus-color-border-strong);
+  /* WCAG 1.4.11: an unchecked box is a border and nothing else. border-strong
+     is 1.53:1 against the page. Decision 0031. */
+  border: var(--haus-border-width-thick) solid var(--haus-color-border-control);
   background-color: var(--haus-color-surface-default);
   display: flex;
   align-items: center;
@@ -37,7 +45,11 @@
   transition:
     background-color var(--haus-motion-micro),
     border-color var(--haus-motion-micro);
-  margin-block-start: 1px; /* optical alignment with label text */
+  /* Centred in the label's first line, not nudged: the offset is that line box
+     less the box, so it follows the type role rather than one typeface. */
+  margin-block-start: calc(
+    (var(--haus-type-body-sm-size) * var(--haus-type-body-sm-leading) - var(--haus-marker-box)) / 2
+  );
 }
 
 .wrapper:not(.disabled):hover .box {
@@ -90,9 +102,15 @@
 
 /* ── Check icon ── */
 
+/* Absolutely positioned, which an abs-positioned child of a flex container
+   still centres by the container's own alignment. In flow it was the box's
+   first in-flow child, so the box took its baseline from the tick and had no
+   baseline of its own while unchecked: the whole inline-flex wrapper moved
+   1.25px down the line the moment it was checked. */
 .icon {
   color: var(--haus-color-ink-inverse);
   display: flex;
+  position: absolute;
 }
 
 /* ── Label area ── */
@@ -100,7 +118,7 @@
 .content {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--haus-space-gap-3xs);
 }
 
 .label {
@@ -154,7 +172,7 @@
    rather than ours. */
 @media (forced-colors: active) {
   .input:focus-visible ~ .box {
-    outline: 2px solid Highlight;
-    outline-offset: 2px;
+    outline: var(--haus-focus-outline-forced);
+    outline-offset: var(--haus-focus-outline-offset);
   }
 }

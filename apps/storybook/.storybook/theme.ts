@@ -7,8 +7,18 @@ import { create } from 'storybook/theming'
  * The docs pages need it explicitly. Without a theme they render in Storybook's
  * default palette, so the documentation for haus would sit on chrome that is
  * not haus. The wordmark and logo are served from /brand/* through staticDirs
- * in main.ts; the plum is aronia, the brand primitive, matched to
- * --haus-color-primary-default.
+ * in main.ts.
+ *
+ * The accent is #7653ab, which is --haus-color-primary-default (aronia-500,
+ * oklch(52% 0.138 300)) converted to hex, because Storybook's theme runs colour
+ * functions that cannot read var(). It said it was that token and was #623A8F,
+ * a plum from before the ramp that is nearest aronia-600 and equal to nothing.
+ *
+ * The two brand SVGs drew that plum and a darker one, #48296D, neither on the
+ * ramp. They are aronia-600 (#5b3c89) and aronia-700 (#442a68) now, the steps
+ * they were nearest, so the mark keeps its own two-tone weight and every brand
+ * colour in the repository is a step of the ramp. The mark is therefore one
+ * step darker than this accent, which is the primary role rather than the mark.
  */
 export const hausTheme = create({
   base: 'light',
@@ -18,11 +28,11 @@ export const hausTheme = create({
   brandImage: '/brand/wordmark.svg',
   brandTarget: '_self',
 
-  fontBase: '"Manrope", system-ui, sans-serif',
-  fontCode: '"Fira Code", ui-monospace, monospace',
+  fontBase: '"DM Sans", system-ui, sans-serif',
+  fontCode: '"DM Mono", ui-monospace, monospace',
 
-  colorPrimary: '#623A8F',
-  colorSecondary: '#623A8F',
+  colorPrimary: '#7653ab', // aronia-500, primary-default
+  colorSecondary: '#7653ab',
 
   appBorderRadius: 8,
 })
@@ -42,11 +52,11 @@ export const hausDarkTheme = create({
   brandImage: '/brand/wordmark.svg',
   brandTarget: '_self',
 
-  fontBase: '"Manrope", system-ui, sans-serif',
-  fontCode: '"Fira Code", ui-monospace, monospace',
+  fontBase: '"DM Sans", system-ui, sans-serif',
+  fontCode: '"DM Mono", ui-monospace, monospace',
 
-  colorPrimary: '#d0c3eb', // aronia-300, ink-link in dark
-  colorSecondary: '#d0c3eb',
+  colorPrimary: '#d0c3ec', // aronia-300, ink-link in dark
+  colorSecondary: '#d0c3ec',
 
   appBg: '#111113', // damson-900, surface-default
   appContentBg: '#111113',

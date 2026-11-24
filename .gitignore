@@ -14,3 +14,13 @@ coverage/
 
 # Decision records: kept locally. Their content is in DESIGN.md under Decisions.
 docs/decisions/
+
+# Story screenshots: only the Linux images are committed, because CI compares on
+# Linux and the same text rasterises differently on another platform. A local
+# run writes and compares its own set beside them, which is useful while working
+# and is never the thing that passes a change.
+apps/storybook/**/__screenshots__/**/*-darwin.png
+apps/storybook/**/__screenshots__/**/*-win32.png
+
+# Vitest's attachments: the actual image and the diff from a failed comparison.
+apps/storybook/.vitest/

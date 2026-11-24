@@ -69,7 +69,7 @@ packages are ESM only. `haus-components` has
 
 ## Consumers
 
-Five products use haus, each through the packages it needs and nothing else, which is why there is
+Four products use haus, each through the packages it needs and nothing else, which is why there is
 no meta-package ([decision 0007](./DESIGN.md#0007-meta-package)).
 
 ```mermaid
@@ -84,7 +84,6 @@ flowchart LR
     CORE["core<br/><small>Next.js app</small>"]
     VAULT["vault<br/><small>Electron app</small>"]
     DRIFT["drift<br/><small>design-drift auditor</small>"]
-    HEX["hexicon<br/><small>palette tool</small>"]
     MAPLE["maple<br/><small>brand library for studios</small>"]
 
     T -- "brands/core.css" --> CORE
@@ -94,7 +93,6 @@ flowchart LR
     N --> VAULT
     U --> DRIFT
     P --> DRIFT
-    U --> HEX
     U --> MAPLE
 ```
 
@@ -103,11 +101,13 @@ flowchart LR
 | core    | `haus-tokens` ^5.2.0, `haus-components` ^3.1.0                               | Imports the six token stylesheets and `brands/core.css`, then `haus-components/styles.css`. Renders 13 of the 20 components, including stateless ones from Server Components.                                                                                                                         |
 | vault   | `haus-tokens` ^5.2.0, `haus-colour-utils` ^1.0.0, `haus-colour-names` ^1.0.0 | Imports the token stylesheets and `brands/vault.css`, and builds its own components on the roles. Uses `hueFamily` to sort colours and the name data for its two-pass name search. Its side is in [vault's ARCHITECTURE.md](https://github.com/hipuku/vault/blob/main/ARCHITECTURE.md#haus-packages). |
 | drift   | `haus-colour-utils` ^1.0.0, `haus-style-probe` ^1.0.0                        | Runs `extractRawElements` in each crawled page and `normaliseElement` on the result, then `clusterByPerceptualDistance`, `wcagContrast`, `deltaE` and `hueFamily` in its audit.                                                                                                                       |
-| hexicon | `haus-colour-utils` ^1.0.0                                                   | `deltaE` and `wcagContrast` in its palette analysis.                                                                                                                                                                                                                                                  |
 | maple   | `haus-colour-utils` ^1.0.0                                                   | `oklch`, `toHex` and `generateLightnessScale` build each client colour's scale, `deltaE` and `nearestNamedColour` name it, and `wcagContrast` checks its pairs. maple's repository is private, so it is not linked.                                                                                   |
 
 The products above still install the published `haus-colour-utils` and `haus-colour-names`, which in
 this repository are now `@hipuku/colour`. They move when it is published (plan steps 1.8 and 1.9).
+
+hexicon was a fifth until 2026-11-23. Its palette analysis moved into `@hipuku/colour` and the
+repository was archived, so it is no longer a consumer.
 
 A brand reaches a product as one stylesheet scoped by `data-haus-theme`, so core and vault share
 every role name and differ only in the primitives their brand file chooses.

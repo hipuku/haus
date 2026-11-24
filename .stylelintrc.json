@@ -95,6 +95,106 @@
         "scale-unlimited/declaration-strict-value": null,
         "no-duplicate-selectors": null
       }
+    },
+    {
+      "files": ["packages/components/**/*.css"],
+      "rules": {
+        "scale-unlimited/declaration-strict-value": [
+          [
+            "/color$/",
+            "background",
+            "box-shadow",
+            "outline",
+            "outline-width",
+            "outline-offset",
+            "font-size",
+            "font-weight",
+            "font-family",
+            "line-height",
+            "letter-spacing",
+            "text-underline-offset",
+            "text-decoration-thickness",
+            "/^padding/",
+            "/^margin/",
+            "gap",
+            "row-gap",
+            "column-gap",
+            "/^inset/",
+            "top",
+            "right",
+            "bottom",
+            "left",
+            "/radius$/",
+            "border",
+            "/^border.*width$/",
+            "width",
+            "height",
+            "min-width",
+            "max-width",
+            "min-height",
+            "max-height",
+            "inline-size",
+            "block-size",
+            "min-inline-size",
+            "max-inline-size",
+            "min-block-size",
+            "max-block-size",
+            "z-index",
+            "opacity",
+            "flex-basis",
+            "translate",
+            "transform",
+            "stroke-width"
+          ],
+          {
+            "ignoreKeywords": [
+              "transparent",
+              "currentColor",
+              "currentcolor",
+              "inherit",
+              "initial",
+              "unset",
+              "revert",
+              "none",
+              "auto",
+              "CanvasText",
+              "Canvas",
+              "Highlight",
+              "HighlightText",
+              "ButtonText",
+              "ButtonFace",
+              "GrayText",
+              "LinkText",
+              "FieldText",
+              "Field",
+              "solid",
+              "dashed",
+              "dotted",
+              "max-content",
+              "min-content",
+              "fit-content"
+            ],
+            "ignoreValues": [
+              "0",
+              "1",
+              "/^-?[\\d.]+%$/",
+              "/^-?[\\d.]+em$/",
+              "/^(?!.*[\\d.](px|rem|ch|ex|pt|cm|mm|in|pc|Q)\\b).*var\\(--/",
+              "/^-?[\\d.]+(vh|vw|vmin|vmax|dvh|dvw|svh|lvh)$/"
+            ],
+            "disableFix": true,
+            "message": "Use a design token: `${property}` must resolve to a var(--\u2026). A raw length in a component moves on a typeface or density change and nothing reports it."
+          }
+        ],
+        "declaration-property-value-disallowed-list": [
+          {
+            "/.*/": ["/[0-9](px|rem|ch|ex|pt|cm|mm|in|pc)\\b/"]
+          },
+          {
+            "message": "A component may not write a raw length anywhere in a value, inside calc() included. Add the token in packages/tokens and read it here."
+          }
+        ]
+      }
     }
   ],
   "ignoreFiles": [

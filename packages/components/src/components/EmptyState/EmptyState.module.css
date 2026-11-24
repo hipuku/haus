@@ -31,7 +31,7 @@
 
 .description {
   margin: 0;
-  max-inline-size: 44ch;
+  max-inline-size: var(--haus-measure-sm);
   font-size: var(--haus-type-body-sm-size);
   line-height: var(--haus-type-body-sm-leading);
   color: var(--haus-color-ink-secondary);

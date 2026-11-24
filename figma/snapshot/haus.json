@@ -1,5 +1,5 @@
 {
-  "exportedAt": "2026-11-23T12:50:54.349Z",
+  "exportedAt": "2026-11-24T00:34:11.388Z",
   "source": "plugin",
   "file": {
     "key": "Qo23P38COlJrfQmlM39Fa3",
@@ -7,256 +7,256 @@
   },
   "variables": [
     {
-      "collection": "haus/primitives",
-      "name": "spacing/1",
+      "collection": "haus/motion",
+      "name": "motion/dialog-enter/duration",
+      "type": "STRING",
+      "codeSyntax": {
+        "WEB": "var(--haus-motion-dialog-enter-duration)"
+      },
+      "value": "240ms"
+    },
+    {
+      "collection": "haus/motion",
+      "name": "motion/dialog-enter/easing",
+      "type": "STRING",
+      "codeSyntax": {
+        "WEB": "var(--haus-motion-dialog-enter-easing)"
+      },
+      "value": "cubic-bezier(0.16, 1, 0.3, 1)"
+    },
+    {
+      "collection": "haus/motion",
+      "name": "motion/dialog-enter/offset",
       "type": "FLOAT",
       "codeSyntax": {
-        "WEB": "var(--haus-space-1)"
+        "WEB": "var(--haus-motion-dialog-enter-offset)"
       },
       "value": 4
     },
     {
-      "collection": "haus/primitives",
-      "name": "spacing/2",
+      "collection": "haus/motion",
+      "name": "motion/dialog-enter/scale",
       "type": "FLOAT",
       "codeSyntax": {
-        "WEB": "var(--haus-space-2)"
+        "WEB": "var(--haus-motion-dialog-enter-scale)"
       },
-      "value": 8
+      "value": 0.96
     },
     {
-      "collection": "haus/primitives",
-      "name": "spacing/3",
-      "type": "FLOAT",
+      "collection": "haus/motion",
+      "name": "motion/dialog-exit/duration",
+      "type": "STRING",
       "codeSyntax": {
-        "WEB": "var(--haus-space-3)"
+        "WEB": "var(--haus-motion-dialog-exit-duration)"
       },
-      "value": 12
+      "value": "180ms"
     },
     {
-      "collection": "haus/primitives",
-      "name": "spacing/4",
-      "type": "FLOAT",
+      "collection": "haus/motion",
+      "name": "motion/dialog-exit/easing",
+      "type": "STRING",
       "codeSyntax": {
-        "WEB": "var(--haus-space-4)"
+        "WEB": "var(--haus-motion-dialog-exit-easing)"
       },
-      "value": 16
+      "value": "cubic-bezier(0.4, 0, 1, 1)"
     },
     {
-      "collection": "haus/primitives",
-      "name": "spacing/5",
-      "type": "FLOAT",
+      "collection": "haus/motion",
+      "name": "motion/feedback/duration",
+      "type": "STRING",
       "codeSyntax": {
-        "WEB": "var(--haus-space-5)"
+        "WEB": "var(--haus-motion-feedback-duration)"
       },
-      "value": 20
+      "value": "353ms"
     },
     {
-      "collection": "haus/primitives",
-      "name": "spacing/6",
-      "type": "FLOAT",
+      "collection": "haus/motion",
+      "name": "motion/feedback/easing",
+      "type": "STRING",
       "codeSyntax": {
-        "WEB": "var(--haus-space-6)"
+        "WEB": "var(--haus-motion-feedback-easing)"
       },
-      "value": 24
+      "value": "linear(0, 0.0229, 0.0789, 0.1534, 0.2364, 0.3211, 0.4034, 0.4806, 0.5514, 0.615, 0.6715, 0.7211, 0.7642, 0.8014, 0.8332, 0.8604, 0.8835, 0.903, 0.9194, 0.9331, 0.9447, 0.9543, 0.9623, 0.9689, 0.9744, 0.979, 0.9828, 0.9859, 0.9884, 0.9905, 0.9923, 0.9937, 0.9948, 0.9958, 0.9966, 0.9972, 0.9977, 0.9981, 0.9985, 0.9988, 1)"
     },
     {
-      "collection": "haus/primitives",
-      "name": "spacing/7",
-      "type": "FLOAT",
+      "collection": "haus/motion",
+      "name": "motion/highlight/duration",
+      "type": "STRING",
       "codeSyntax": {
-        "WEB": "var(--haus-space-7)"
+        "WEB": "var(--haus-motion-highlight-duration)"
       },
-      "value": 28
+      "value": "353ms"
     },
     {
-      "collection": "haus/primitives",
-      "name": "spacing/8",
-      "type": "FLOAT",
+      "collection": "haus/motion",
+      "name": "motion/highlight/easing",
+      "type": "STRING",
       "codeSyntax": {
-        "WEB": "var(--haus-space-8)"
+        "WEB": "var(--haus-motion-highlight-easing)"
       },
-      "value": 32
+      "value": "linear(0, 0.0229, 0.0789, 0.1534, 0.2364, 0.3211, 0.4034, 0.4806, 0.5514, 0.615, 0.6715, 0.7211, 0.7642, 0.8014, 0.8332, 0.8604, 0.8835, 0.903, 0.9194, 0.9331, 0.9447, 0.9543, 0.9623, 0.9689, 0.9744, 0.979, 0.9828, 0.9859, 0.9884, 0.9905, 0.9923, 0.9937, 0.9948, 0.9958, 0.9966, 0.9972, 0.9977, 0.9981, 0.9985, 0.9988, 1)"
     },
     {
-      "collection": "haus/primitives",
-      "name": "spacing/10",
-      "type": "FLOAT",
+      "collection": "haus/motion",
+      "name": "motion/layout/duration",
+      "type": "STRING",
       "codeSyntax": {
-        "WEB": "var(--haus-space-10)"
+        "WEB": "var(--haus-motion-layout-duration)"
       },
-      "value": 40
+      "value": "530ms"
     },
     {
-      "collection": "haus/primitives",
-      "name": "spacing/12",
-      "type": "FLOAT",
+      "collection": "haus/motion",
+      "name": "motion/layout/easing",
+      "type": "STRING",
       "codeSyntax": {
-        "WEB": "var(--haus-space-12)"
+        "WEB": "var(--haus-motion-layout-easing)"
       },
-      "value": 48
+      "value": "linear(0, 0.023, 0.0791, 0.1536, 0.2367, 0.3215, 0.4039, 0.4811, 0.5519, 0.6156, 0.672, 0.7216, 0.7646, 0.8018, 0.8336, 0.8608, 0.8838, 0.9033, 0.9196, 0.9334, 0.9449, 0.9544, 0.9624, 0.969, 0.9745, 0.9791, 0.9828, 0.9859, 0.9885, 0.9906, 0.9923, 0.9937, 0.9949, 0.9958, 0.9966, 0.9972, 0.9977, 0.9982, 0.9985, 0.9988, 1)"
     },
     {
-      "collection": "haus/primitives",
-      "name": "spacing/16",
-      "type": "FLOAT",
+      "collection": "haus/motion",
+      "name": "motion/popover-enter/duration",
+      "type": "STRING",
       "codeSyntax": {
-        "WEB": "var(--haus-space-16)"
+        "WEB": "var(--haus-motion-popover-enter-duration)"
       },
-      "value": 64
+      "value": "180ms"
     },
     {
-      "collection": "haus/primitives",
-      "name": "spacing/20",
-      "type": "FLOAT",
+      "collection": "haus/motion",
+      "name": "motion/popover-enter/easing",
+      "type": "STRING",
       "codeSyntax": {
-        "WEB": "var(--haus-space-20)"
+        "WEB": "var(--haus-motion-popover-enter-easing)"
       },
-      "value": 80
+      "value": "cubic-bezier(0.16, 1, 0.3, 1)"
     },
     {
-      "collection": "haus/primitives",
-      "name": "radius/none",
+      "collection": "haus/motion",
+      "name": "motion/popover-enter/offset",
       "type": "FLOAT",
       "codeSyntax": {
-        "WEB": "var(--haus-radius-none)"
-      },
-      "value": 0
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "radius/sm",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-radius-sm)"
+        "WEB": "var(--haus-motion-popover-enter-offset)"
       },
       "value": 4
     },
     {
-      "collection": "haus/primitives",
-      "name": "radius/md",
+      "collection": "haus/motion",
+      "name": "motion/popover-enter/scale",
       "type": "FLOAT",
       "codeSyntax": {
-        "WEB": "var(--haus-radius-md)"
+        "WEB": "var(--haus-motion-popover-enter-scale)"
       },
-      "value": 8
+      "value": 0.96
+    },
+    {
+      "collection": "haus/motion",
+      "name": "motion/popover-exit/duration",
+      "type": "STRING",
+      "codeSyntax": {
+        "WEB": "var(--haus-motion-popover-exit-duration)"
+      },
+      "value": "120ms"
+    },
+    {
+      "collection": "haus/motion",
+      "name": "motion/popover-exit/easing",
+      "type": "STRING",
+      "codeSyntax": {
+        "WEB": "var(--haus-motion-popover-exit-easing)"
+      },
+      "value": "cubic-bezier(0.4, 0, 1, 1)"
+    },
+    {
+      "collection": "haus/motion",
+      "name": "motion/press/duration",
+      "type": "STRING",
+      "codeSyntax": {
+        "WEB": "var(--haus-motion-press-duration)"
+      },
+      "value": "120ms"
+    },
+    {
+      "collection": "haus/motion",
+      "name": "motion/press/easing",
+      "type": "STRING",
+      "codeSyntax": {
+        "WEB": "var(--haus-motion-press-easing)"
+      },
+      "value": "cubic-bezier(0.65, 0, 0.35, 1)"
+    },
+    {
+      "collection": "haus/motion",
+      "name": "motion/press/scale",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-motion-press-scale)"
+      },
+      "value": 0.98
+    },
+    {
+      "collection": "haus/motion",
+      "name": "motion/sheet-enter/duration",
+      "type": "STRING",
+      "codeSyntax": {
+        "WEB": "var(--haus-motion-sheet-enter-duration)"
+      },
+      "value": "320ms"
+    },
+    {
+      "collection": "haus/motion",
+      "name": "motion/sheet-enter/easing",
+      "type": "STRING",
+      "codeSyntax": {
+        "WEB": "var(--haus-motion-sheet-enter-easing)"
+      },
+      "value": "cubic-bezier(0.16, 1, 0.3, 1)"
+    },
+    {
+      "collection": "haus/motion",
+      "name": "motion/sheet-enter/offset",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-motion-sheet-enter-offset)"
+      },
+      "value": 4
+    },
+    {
+      "collection": "haus/motion",
+      "name": "motion/sheet-enter/scale",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-motion-sheet-enter-scale)"
+      },
+      "value": 0.96
+    },
+    {
+      "collection": "haus/motion",
+      "name": "motion/sheet-exit/duration",
+      "type": "STRING",
+      "codeSyntax": {
+        "WEB": "var(--haus-motion-sheet-exit-duration)"
+      },
+      "value": "240ms"
+    },
+    {
+      "collection": "haus/motion",
+      "name": "motion/sheet-exit/easing",
+      "type": "STRING",
+      "codeSyntax": {
+        "WEB": "var(--haus-motion-sheet-exit-easing)"
+      },
+      "value": "cubic-bezier(0.4, 0, 1, 1)"
     },
     {
       "collection": "haus/primitives",
-      "name": "radius/lg",
+      "name": "border-width/accent",
       "type": "FLOAT",
       "codeSyntax": {
-        "WEB": "var(--haus-radius-lg)"
+        "WEB": "var(--haus-border-width-accent)"
       },
-      "value": 12
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "radius/xl",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-radius-xl)"
-      },
-      "value": 16
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "radius/2xl",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-radius-2xl)"
-      },
-      "value": 24
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "radius/full",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-radius-full)"
-      },
-      "value": 9999
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "font-size/11",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-text-11)"
-      },
-      "value": 11
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "font-size/12",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-text-12)"
-      },
-      "value": 12
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "font-size/13",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-text-13)"
-      },
-      "value": 13
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "font-size/14",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-text-14)"
-      },
-      "value": 14
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "font-size/16",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-text-16)"
-      },
-      "value": 16
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "font-size/20",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-text-20)"
-      },
-      "value": 20
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "font-size/24",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-text-24)"
-      },
-      "value": 24
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "font-size/28",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-text-28)"
-      },
-      "value": 28
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "font-size/30",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-text-30)"
-      },
-      "value": 30
+      "value": 3
     },
     {
       "collection": "haus/primitives",
@@ -275,177 +275,6 @@
         "WEB": "var(--haus-border-width-thick)"
       },
       "value": 2
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "icon-size/xs",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-icon-xs)"
-      },
-      "value": 12
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "icon-size/sm",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-icon-sm)"
-      },
-      "value": 16
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "icon-size/md",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-icon-md)"
-      },
-      "value": 20
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "icon-size/lg",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-icon-lg)"
-      },
-      "value": 24
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "icon-size/xl",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-icon-xl)"
-      },
-      "value": 32
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "font-weight/regular",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-weight-regular)"
-      },
-      "value": 400
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "font-weight/medium",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-weight-medium)"
-      },
-      "value": 500
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "font-weight/semibold",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-weight-semibold)"
-      },
-      "value": 600
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "font-weight/bold",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-weight-bold)"
-      },
-      "value": 700
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "opacity/disabled",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-opacity-disabled)"
-      },
-      "value": 40
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "opacity/overlay",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-opacity-overlay)"
-      },
-      "value": 60
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "z-index/base",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-z-base)"
-      },
-      "value": 0
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "z-index/raised",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-z-raised)"
-      },
-      "value": 10
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "z-index/dropdown",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-z-dropdown)"
-      },
-      "value": 100
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "z-index/sticky",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-z-sticky)"
-      },
-      "value": 200
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "z-index/overlay",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-z-overlay)"
-      },
-      "value": 300
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "z-index/modal",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-z-modal)"
-      },
-      "value": 400
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "z-index/toast",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-z-toast)"
-      },
-      "value": 500
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "z-index/tooltip",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-z-tooltip)"
-      },
-      "value": 600
     },
     {
       "collection": "haus/primitives",
@@ -570,6 +399,116 @@
     },
     {
       "collection": "haus/primitives",
+      "name": "color/cherry/100",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-cherry-100)"
+      },
+      "value": {
+        "hex": "#ffeeea"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/cherry/200",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-cherry-200)"
+      },
+      "value": {
+        "hex": "#ffdbd4"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/cherry/400",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-cherry-400)"
+      },
+      "value": {
+        "hex": "#e8594f"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/cherry/500",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-cherry-500)"
+      },
+      "value": {
+        "hex": "#d73431"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/cherry/700",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-cherry-700)"
+      },
+      "value": {
+        "hex": "#9a1316"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/cherry/900",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-cherry-900)"
+      },
+      "value": {
+        "hex": "#621513"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/cobalt/100",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-cobalt-100)"
+      },
+      "value": {
+        "hex": "#e3efff"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/cobalt/500",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-cobalt-500)"
+      },
+      "value": {
+        "hex": "#255ebc"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/cobalt/600",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-cobalt-600)"
+      },
+      "value": {
+        "hex": "#124ca9"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/cobalt/700",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-cobalt-700)"
+      },
+      "value": {
+        "hex": "#043b90"
+      }
+    },
+    {
+      "collection": "haus/primitives",
       "name": "color/damson/0",
       "type": "COLOR",
       "codeSyntax": {
@@ -577,17 +516,6 @@
       },
       "value": {
         "hex": "#ffffff"
-      }
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "color/damson/50",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-damson-50)"
-      },
-      "value": {
-        "hex": "#fcfbfe"
       }
     },
     {
@@ -632,6 +560,17 @@
       },
       "value": {
         "hex": "#aaaab1"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/damson/50",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-damson-50)"
+      },
+      "value": {
+        "hex": "#fcfbfe"
       }
     },
     {
@@ -724,6 +663,17 @@
     },
     {
       "collection": "haus/primitives",
+      "name": "color/elderberry/400",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-elderberry-400)"
+      },
+      "value": {
+        "hex": "#5886f2"
+      }
+    },
+    {
+      "collection": "haus/primitives",
       "name": "color/elderberry/500",
       "type": "COLOR",
       "codeSyntax": {
@@ -775,6 +725,17 @@
       },
       "value": {
         "hex": "#d0f3d4"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/greengage/400",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-greengage-400)"
+      },
+      "value": {
+        "hex": "#39b457"
       }
     },
     {
@@ -834,6 +795,17 @@
     },
     {
       "collection": "haus/primitives",
+      "name": "color/mango/400",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-mango-400)"
+      },
+      "value": {
+        "hex": "#e18600"
+      }
+    },
+    {
+      "collection": "haus/primitives",
       "name": "color/mango/500",
       "type": "COLOR",
       "codeSyntax": {
@@ -867,57 +839,112 @@
     },
     {
       "collection": "haus/primitives",
-      "name": "color/cherry/100",
+      "name": "color/paper/0",
       "type": "COLOR",
       "codeSyntax": {
-        "WEB": "var(--haus-cherry-100)"
+        "WEB": "var(--haus-paper-0)"
       },
       "value": {
-        "hex": "#ffeeea"
+        "hex": "#fffefd"
       }
     },
     {
       "collection": "haus/primitives",
-      "name": "color/cherry/200",
+      "name": "color/paper/100",
       "type": "COLOR",
       "codeSyntax": {
-        "WEB": "var(--haus-cherry-200)"
+        "WEB": "var(--haus-paper-100)"
       },
       "value": {
-        "hex": "#ffdbd4"
+        "hex": "#f8f5f1"
       }
     },
     {
       "collection": "haus/primitives",
-      "name": "color/cherry/500",
+      "name": "color/paper/200",
       "type": "COLOR",
       "codeSyntax": {
-        "WEB": "var(--haus-cherry-500)"
+        "WEB": "var(--haus-paper-200)"
       },
       "value": {
-        "hex": "#d73431"
+        "hex": "#eeebe5"
       }
     },
     {
       "collection": "haus/primitives",
-      "name": "color/cherry/700",
+      "name": "color/paper/300",
       "type": "COLOR",
       "codeSyntax": {
-        "WEB": "var(--haus-cherry-700)"
+        "WEB": "var(--haus-paper-300)"
       },
       "value": {
-        "hex": "#9a1316"
+        "hex": "#e1ddd8"
       }
     },
     {
       "collection": "haus/primitives",
-      "name": "color/cherry/900",
+      "name": "color/paper/400",
       "type": "COLOR",
       "codeSyntax": {
-        "WEB": "var(--haus-cherry-900)"
+        "WEB": "var(--haus-paper-400)"
       },
       "value": {
-        "hex": "#621513"
+        "hex": "#d1cdc7"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/paper/500",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-paper-500)"
+      },
+      "value": {
+        "hex": "#afaaa4"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/paper/600",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-paper-600)"
+      },
+      "value": {
+        "hex": "#857f79"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/paper/700",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-paper-700)"
+      },
+      "value": {
+        "hex": "#5d5751"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/paper/900",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-paper-900)"
+      },
+      "value": {
+        "hex": "#2b2521"
+      }
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "color/paper/950",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-paper-950)"
+      },
+      "value": {
+        "hex": "#0e0a07"
       }
     },
     {
@@ -1032,246 +1059,10 @@
     },
     {
       "collection": "haus/primitives",
-      "name": "control-height/sm",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-control-height-sm)"
-      },
-      "value": 28
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "control-height/md",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-control-height-md)"
-      },
-      "value": 36
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "control-height/lg",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-control-height-lg)"
-      },
-      "value": 44
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "overlay-width/xs",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-overlay-width-xs)"
-      },
-      "value": 360
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "overlay-width/sm",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-overlay-width-sm)"
-      },
-      "value": 400
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "overlay-width/md",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-overlay-width-md)"
-      },
-      "value": 560
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "overlay-width/lg",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-overlay-width-lg)"
-      },
-      "value": 720
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "size/marker-dot",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-size-marker-dot)"
-      },
-      "value": 6
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "size/toggle-track",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-size-toggle-track)"
-      },
-      "value": 36
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "control-height/xs",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-control-height-xs)"
-      },
-      "value": 24
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "color/paper/0",
+      "name": "color/shadow/10",
       "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-paper-0)"
-      },
       "value": {
-        "hex": "#fffefd"
-      }
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "color/paper/100",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-paper-100)"
-      },
-      "value": {
-        "hex": "#f8f5f1"
-      }
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "color/paper/200",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-paper-200)"
-      },
-      "value": {
-        "hex": "#eeebe5"
-      }
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "color/paper/300",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-paper-300)"
-      },
-      "value": {
-        "hex": "#e1ddd8"
-      }
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "color/paper/400",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-paper-400)"
-      },
-      "value": {
-        "hex": "#d1cdc7"
-      }
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "color/paper/500",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-paper-500)"
-      },
-      "value": {
-        "hex": "#afaaa4"
-      }
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "color/paper/600",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-paper-600)"
-      },
-      "value": {
-        "hex": "#857f79"
-      }
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "color/paper/700",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-paper-700)"
-      },
-      "value": {
-        "hex": "#5d5751"
-      }
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "color/paper/900",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-paper-900)"
-      },
-      "value": {
-        "hex": "#2b2521"
-      }
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "color/paper/950",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-paper-950)"
-      },
-      "value": {
-        "hex": "#0e0a07"
-      }
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "color/cobalt/100",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-cobalt-100)"
-      },
-      "value": {
-        "hex": "#e3efff"
-      }
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "color/cobalt/500",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-cobalt-500)"
-      },
-      "value": {
-        "hex": "#255ebc"
-      }
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "color/cobalt/600",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-cobalt-600)"
-      },
-      "value": {
-        "hex": "#124ca9"
-      }
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "color/cobalt/700",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-cobalt-700)"
-      },
-      "value": {
-        "hex": "#043b90"
+        "hex": "#1111131a"
       }
     },
     {
@@ -1292,11 +1083,264 @@
     },
     {
       "collection": "haus/primitives",
-      "name": "color/shadow/10",
-      "type": "COLOR",
-      "value": {
-        "hex": "#1111131a"
-      }
+      "name": "control-height/lg",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-control-height-lg)"
+      },
+      "value": 44
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "control-height/md",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-control-height-md)"
+      },
+      "value": 36
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "control-height/sm",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-control-height-sm)"
+      },
+      "value": 28
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "control-height/xs",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-control-height-xs)"
+      },
+      "value": 24
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "font-size/11",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-text-11)"
+      },
+      "value": 11
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "font-size/12",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-text-12)"
+      },
+      "value": 12
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "font-size/13",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-text-13)"
+      },
+      "value": 13
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "font-size/14",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-text-14)"
+      },
+      "value": 14
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "font-size/16",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-text-16)"
+      },
+      "value": 16
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "font-size/20",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-text-20)"
+      },
+      "value": 20
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "font-size/24",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-text-24)"
+      },
+      "value": 24
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "font-size/28",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-text-28)"
+      },
+      "value": 28
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "font-size/30",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-text-30)"
+      },
+      "value": 30
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "font-weight/bold",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-weight-bold)"
+      },
+      "value": 700
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "font-weight/medium",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-weight-medium)"
+      },
+      "value": 500
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "font-weight/regular",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-weight-regular)"
+      },
+      "value": 400
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "font-weight/semibold",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-weight-semibold)"
+      },
+      "value": 600
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "icon-size/lg",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-icon-lg)"
+      },
+      "value": 24
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "icon-size/md",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-icon-md)"
+      },
+      "value": 20
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "icon-size/sm",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-icon-sm)"
+      },
+      "value": 16
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "icon-size/xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-icon-xl)"
+      },
+      "value": 32
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "icon-size/xs",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-icon-xs)"
+      },
+      "value": 12
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "opacity/disabled",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-opacity-disabled)"
+      },
+      "value": 40
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "opacity/muted",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-opacity-muted)"
+      },
+      "value": 60
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "opacity/overlay",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-opacity-overlay)"
+      },
+      "value": 60
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "opacity/subtle",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-opacity-subtle)"
+      },
+      "value": 35
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "overlay-width/lg",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-overlay-width-lg)"
+      },
+      "value": 720
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "overlay-width/md",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-overlay-width-md)"
+      },
+      "value": 560
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "overlay-width/sm",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-overlay-width-sm)"
+      },
+      "value": 400
     },
     {
       "collection": "haus/primitives",
@@ -1309,21 +1353,12 @@
     },
     {
       "collection": "haus/primitives",
-      "name": "panel-width/sm",
+      "name": "overlay-width/xs",
       "type": "FLOAT",
       "codeSyntax": {
-        "WEB": "var(--haus-panel-width-sm)"
+        "WEB": "var(--haus-overlay-width-xs)"
       },
-      "value": 180
-    },
-    {
-      "collection": "haus/primitives",
-      "name": "panel-width/md",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-panel-width-md)"
-      },
-      "value": 260
+      "value": 360
     },
     {
       "collection": "haus/primitives",
@@ -1336,6 +1371,24 @@
     },
     {
       "collection": "haus/primitives",
+      "name": "panel-width/md",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-panel-width-md)"
+      },
+      "value": 260
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "panel-width/sm",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-panel-width-sm)"
+      },
+      "value": 180
+    },
+    {
+      "collection": "haus/primitives",
       "name": "panel-width/xl",
       "type": "FLOAT",
       "codeSyntax": {
@@ -1345,12 +1398,129 @@
     },
     {
       "collection": "haus/primitives",
-      "name": "spacing/px",
+      "name": "panel-width/xs",
       "type": "FLOAT",
       "codeSyntax": {
-        "WEB": "var(--haus-space-px)"
+        "WEB": "var(--haus-panel-width-xs)"
       },
-      "value": 1
+      "value": 240
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "radius/2xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-radius-2xl)"
+      },
+      "value": 24
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "radius/full",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-radius-full)"
+      },
+      "value": 9999
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "radius/lg",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-radius-lg)"
+      },
+      "value": 12
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "radius/md",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-radius-md)"
+      },
+      "value": 8
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "radius/none",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-radius-none)"
+      },
+      "value": 0
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "radius/sm",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-radius-sm)"
+      },
+      "value": 4
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "radius/xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-radius-xl)"
+      },
+      "value": 16
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "size/marker-box",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-size-marker-box)"
+      },
+      "value": 16
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "size/marker-dot",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-size-marker-dot)"
+      },
+      "value": 6
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "size/popover-max-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-size-popover-max-height)"
+      },
+      "value": 256
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "size/toggle-track",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-size-toggle-track)"
+      },
+      "value": 36
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "size/toggle-track-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-size-toggle-track-height)"
+      },
+      "value": 20
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "size/underline-offset",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-size-underline-offset)"
+      },
+      "value": 3
     },
     {
       "collection": "haus/primitives",
@@ -1363,98 +1533,239 @@
     },
     {
       "collection": "haus/primitives",
-      "name": "color/elderberry/400",
-      "type": "COLOR",
+      "name": "spacing/1",
+      "type": "FLOAT",
       "codeSyntax": {
-        "WEB": "var(--haus-elderberry-400)"
+        "WEB": "var(--haus-space-1)"
       },
-      "value": {
-        "hex": "#5886f2"
-      }
+      "value": 4
     },
     {
       "collection": "haus/primitives",
-      "name": "color/greengage/400",
-      "type": "COLOR",
+      "name": "spacing/10",
+      "type": "FLOAT",
       "codeSyntax": {
-        "WEB": "var(--haus-greengage-400)"
+        "WEB": "var(--haus-space-10)"
       },
-      "value": {
-        "hex": "#39b457"
-      }
+      "value": 40
     },
     {
       "collection": "haus/primitives",
-      "name": "color/mango/400",
-      "type": "COLOR",
+      "name": "spacing/12",
+      "type": "FLOAT",
       "codeSyntax": {
-        "WEB": "var(--haus-mango-400)"
+        "WEB": "var(--haus-space-12)"
       },
-      "value": {
-        "hex": "#e18600"
-      }
+      "value": 48
     },
     {
       "collection": "haus/primitives",
-      "name": "color/cherry/400",
+      "name": "spacing/16",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-16)"
+      },
+      "value": 64
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "spacing/2",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-2)"
+      },
+      "value": 8
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "spacing/20",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-20)"
+      },
+      "value": 80
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "spacing/3",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-3)"
+      },
+      "value": 12
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "spacing/4",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-4)"
+      },
+      "value": 16
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "spacing/5",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-5)"
+      },
+      "value": 20
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "spacing/6",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-6)"
+      },
+      "value": 24
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "spacing/7",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-7)"
+      },
+      "value": 28
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "spacing/8",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-8)"
+      },
+      "value": 32
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "spacing/px",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-px)"
+      },
+      "value": 1
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "z-index/base",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-z-base)"
+      },
+      "value": 0
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "z-index/dropdown",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-z-dropdown)"
+      },
+      "value": 100
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "z-index/modal",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-z-modal)"
+      },
+      "value": 400
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "z-index/overlay",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-z-overlay)"
+      },
+      "value": 300
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "z-index/raised",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-z-raised)"
+      },
+      "value": 10
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "z-index/sticky",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-z-sticky)"
+      },
+      "value": 200
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "z-index/toast",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-z-toast)"
+      },
+      "value": 500
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "z-index/tooltip",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-z-tooltip)"
+      },
+      "value": 600
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "font-family/mono",
+      "type": "STRING",
+      "codeSyntax": {
+        "WEB": "var(--haus-font-mono)"
+      },
+      "value": "DM Mono"
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "font-family/sans",
+      "type": "STRING",
+      "codeSyntax": {
+        "WEB": "var(--haus-font-sans)"
+      },
+      "value": "DM Sans"
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/backdrop",
       "type": "COLOR",
       "codeSyntax": {
-        "WEB": "var(--haus-cherry-400)"
+        "WEB": "var(--haus-color-backdrop)"
       },
       "value": {
-        "hex": "#e8594f"
+        "hex": "#04040599"
       }
     },
     {
       "collection": "haus/semantics",
-      "name": "semantic/surface/default",
+      "name": "semantic/border/control",
       "type": "COLOR",
       "codeSyntax": {
-        "WEB": "var(--haus-color-surface-default)"
+        "WEB": "var(--haus-color-border-control)"
       },
       "value": {
-        "hex": "#ffffff"
+        "hex": "#807f85"
       }
     },
     {
       "collection": "haus/semantics",
-      "name": "semantic/surface/subtle",
+      "name": "semantic/border/default",
       "type": "COLOR",
       "codeSyntax": {
-        "WEB": "var(--haus-color-surface-subtle)"
-      },
-      "value": {
-        "hex": "#f5f4f9"
-      }
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/surface/raised",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-surface-raised)"
-      },
-      "value": {
-        "hex": "#ffffff"
-      }
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/surface/overlay",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-surface-overlay)"
-      },
-      "value": {
-        "hex": "#fcfbfe"
-      }
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/surface/sunken",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-surface-sunken)"
+        "WEB": "var(--haus-color-border-default)"
       },
       "value": {
         "hex": "#e7e7ed"
@@ -1462,21 +1773,65 @@
     },
     {
       "collection": "haus/semantics",
-      "name": "semantic/surface/inverse",
+      "name": "semantic/border/disabled",
       "type": "COLOR",
       "codeSyntax": {
-        "WEB": "var(--haus-color-surface-inverse)"
+        "WEB": "var(--haus-color-border-disabled)"
       },
       "value": {
-        "hex": "#111113"
+        "hex": "#e7e7ed"
       }
     },
     {
       "collection": "haus/semantics",
-      "name": "semantic/surface/disabled",
+      "name": "semantic/border/focus",
       "type": "COLOR",
       "codeSyntax": {
-        "WEB": "var(--haus-color-surface-disabled)"
+        "WEB": "var(--haus-color-border-focus)"
+      },
+      "value": {
+        "hex": "#7653ab"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/border/inverse",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-border-inverse)"
+      },
+      "value": {
+        "hex": "#ffffff4d"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/border/inverse-hover",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-border-inverse-hover)"
+      },
+      "value": {
+        "hex": "#ffffff80"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/border/strong",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-border-strong)"
+      },
+      "value": {
+        "hex": "#d1d0d7"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/border/subtle",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-border-subtle)"
       },
       "value": {
         "hex": "#f5f4f9"
@@ -1484,35 +1839,134 @@
     },
     {
       "collection": "haus/semantics",
-      "name": "semantic/ink/primary",
+      "name": "semantic/error/border",
       "type": "COLOR",
       "codeSyntax": {
-        "WEB": "var(--haus-color-ink-primary)"
+        "WEB": "var(--haus-color-error-border)"
       },
       "value": {
-        "hex": "#111113"
+        "hex": "#ffdbd4"
       }
     },
     {
       "collection": "haus/semantics",
-      "name": "semantic/ink/secondary",
+      "name": "semantic/error/default",
       "type": "COLOR",
       "codeSyntax": {
-        "WEB": "var(--haus-color-ink-secondary)"
+        "WEB": "var(--haus-color-error-default)"
       },
       "value": {
-        "hex": "#3f3f43"
+        "hex": "#d73431"
       }
     },
     {
       "collection": "haus/semantics",
-      "name": "semantic/ink/tertiary",
+      "name": "semantic/error/emphasis",
       "type": "COLOR",
       "codeSyntax": {
-        "WEB": "var(--haus-color-ink-tertiary)"
+        "WEB": "var(--haus-color-error-emphasis)"
       },
       "value": {
-        "hex": "#807f85"
+        "hex": "#621513"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/error/on-default",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-error-on-default)"
+      },
+      "value": {
+        "hex": "#ffffff"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/error/on-subtle",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-error-on-subtle)"
+      },
+      "value": {
+        "hex": "#9a1316"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/error/subtle",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-error-subtle)"
+      },
+      "value": {
+        "hex": "#ffeeea"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/info/border",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-info-border)"
+      },
+      "value": {
+        "hex": "#dbe8ff"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/info/default",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-info-default)"
+      },
+      "value": {
+        "hex": "#3665e4"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/info/emphasis",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-info-emphasis)"
+      },
+      "value": {
+        "hex": "#0f2669"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/info/on-default",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-info-on-default)"
+      },
+      "value": {
+        "hex": "#ffffff"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/info/on-subtle",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-info-on-subtle)"
+      },
+      "value": {
+        "hex": "#2043a3"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/info/subtle",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-info-subtle)"
+      },
+      "value": {
+        "hex": "#eff5ff"
       }
     },
     {
@@ -1561,58 +2015,146 @@
     },
     {
       "collection": "haus/semantics",
-      "name": "semantic/border/subtle",
+      "name": "semantic/ink/placeholder",
       "type": "COLOR",
       "codeSyntax": {
-        "WEB": "var(--haus-color-border-subtle)"
+        "WEB": "var(--haus-color-ink-placeholder)"
       },
       "value": {
-        "hex": "#f5f4f9"
+        "hex": "#5d5d61"
       }
     },
     {
       "collection": "haus/semantics",
-      "name": "semantic/border/default",
+      "name": "semantic/ink/primary",
       "type": "COLOR",
       "codeSyntax": {
-        "WEB": "var(--haus-color-border-default)"
+        "WEB": "var(--haus-color-ink-primary)"
       },
       "value": {
-        "hex": "#e7e7ed"
+        "hex": "#111113"
       }
     },
     {
       "collection": "haus/semantics",
-      "name": "semantic/border/strong",
+      "name": "semantic/ink/secondary",
       "type": "COLOR",
       "codeSyntax": {
-        "WEB": "var(--haus-color-border-strong)"
+        "WEB": "var(--haus-color-ink-secondary)"
       },
       "value": {
-        "hex": "#d1d0d7"
+        "hex": "#3f3f43"
       }
     },
     {
       "collection": "haus/semantics",
-      "name": "semantic/border/focus",
+      "name": "semantic/ink/tertiary",
       "type": "COLOR",
       "codeSyntax": {
-        "WEB": "var(--haus-color-border-focus)"
+        "WEB": "var(--haus-color-ink-tertiary)"
       },
       "value": {
-        "hex": "#7653ab"
+        "hex": "#807f85"
       }
     },
     {
       "collection": "haus/semantics",
-      "name": "semantic/border/disabled",
-      "type": "COLOR",
+      "name": "semantic/marker-box",
+      "type": "FLOAT",
       "codeSyntax": {
-        "WEB": "var(--haus-color-border-disabled)"
+        "WEB": "var(--haus-marker-box)"
       },
-      "value": {
-        "hex": "#e7e7ed"
-      }
+      "value": 16
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/marker-dot",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-marker-dot)"
+      },
+      "value": 6
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/modal-width/lg",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-modal-width-lg)"
+      },
+      "value": 720
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/modal-width/md",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-modal-width-md)"
+      },
+      "value": 560
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/modal-width/sm",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-modal-width-sm)"
+      },
+      "value": 400
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/modal-width/xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-modal-width-xl)"
+      },
+      "value": 896
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/popover-max-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-popover-max-height)"
+      },
+      "value": 256
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/popover-width/lg",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-popover-width-lg)"
+      },
+      "value": 340
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/popover-width/md",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-popover-width-md)"
+      },
+      "value": 260
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/popover-width/sm",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-popover-width-sm)"
+      },
+      "value": 180
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/popover-width/xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-popover-width-xl)"
+      },
+      "value": 420
     },
     {
       "collection": "haus/semantics",
@@ -1627,6 +2169,17 @@
     },
     {
       "collection": "haus/semantics",
+      "name": "semantic/primary/disabled",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-primary-disabled)"
+      },
+      "value": {
+        "hex": "#e7e7ed"
+      }
+    },
+    {
+      "collection": "haus/semantics",
       "name": "semantic/primary/hover",
       "type": "COLOR",
       "codeSyntax": {
@@ -1634,6 +2187,17 @@
       },
       "value": {
         "hex": "#5b3c89"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/primary/on-subtle",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-primary-on-subtle)"
+      },
+      "value": {
+        "hex": "#442a68"
       }
     },
     {
@@ -1660,382 +2224,12 @@
     },
     {
       "collection": "haus/semantics",
-      "name": "semantic/primary/on-subtle",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-primary-on-subtle)"
-      },
-      "value": {
-        "hex": "#442a68"
-      }
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/primary/disabled",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-primary-disabled)"
-      },
-      "value": {
-        "hex": "#e7e7ed"
-      }
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/info/subtle",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-info-subtle)"
-      },
-      "value": {
-        "hex": "#eff5ff"
-      }
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/info/border",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-info-border)"
-      },
-      "value": {
-        "hex": "#dbe8ff"
-      }
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/info/default",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-info-default)"
-      },
-      "value": {
-        "hex": "#3665e4"
-      }
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/info/on-subtle",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-info-on-subtle)"
-      },
-      "value": {
-        "hex": "#2043a3"
-      }
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/info/on-default",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-info-on-default)"
-      },
-      "value": {
-        "hex": "#ffffff"
-      }
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/info/emphasis",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-info-emphasis)"
-      },
-      "value": {
-        "hex": "#0f2669"
-      }
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/success/subtle",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-success-subtle)"
-      },
-      "value": {
-        "hex": "#e8fbea"
-      }
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/success/border",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-success-border)"
-      },
-      "value": {
-        "hex": "#d0f3d4"
-      }
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/success/default",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-success-default)"
-      },
-      "value": {
-        "hex": "#009630"
-      }
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/success/on-subtle",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-success-on-subtle)"
-      },
-      "value": {
-        "hex": "#006a1b"
-      }
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/success/on-default",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-success-on-default)"
-      },
-      "value": {
-        "hex": "#111113"
-      }
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/success/solid",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-success-solid)"
-      },
-      "value": {
-        "hex": "#006a1b"
-      }
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/success/emphasis",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-success-emphasis)"
-      },
-      "value": {
-        "hex": "#00430e"
-      }
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/warning/subtle",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-warning-subtle)"
-      },
-      "value": {
-        "hex": "#fff2e4"
-      }
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/warning/border",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-warning-border)"
-      },
-      "value": {
-        "hex": "#fee2c9"
-      }
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/warning/default",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-warning-default)"
-      },
-      "value": {
-        "hex": "#c46300"
-      }
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/warning/on-subtle",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-warning-on-subtle)"
-      },
-      "value": {
-        "hex": "#8e4400"
-      }
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/warning/on-default",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-warning-on-default)"
-      },
-      "value": {
-        "hex": "#111113"
-      }
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/warning/solid",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-warning-solid)"
-      },
-      "value": {
-        "hex": "#8e4400"
-      }
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/warning/emphasis",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-warning-emphasis)"
-      },
-      "value": {
-        "hex": "#683200"
-      }
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/error/subtle",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-error-subtle)"
-      },
-      "value": {
-        "hex": "#ffeeea"
-      }
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/error/border",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-error-border)"
-      },
-      "value": {
-        "hex": "#ffdbd4"
-      }
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/error/default",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-error-default)"
-      },
-      "value": {
-        "hex": "#d73431"
-      }
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/error/on-subtle",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-error-on-subtle)"
-      },
-      "value": {
-        "hex": "#9a1316"
-      }
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/error/on-default",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-error-on-default)"
-      },
-      "value": {
-        "hex": "#ffffff"
-      }
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/error/emphasis",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-error-emphasis)"
-      },
-      "value": {
-        "hex": "#621513"
-      }
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/backdrop",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-backdrop)"
-      },
-      "value": {
-        "hex": "#04040599"
-      }
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/border/inverse",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-border-inverse)"
-      },
-      "value": {
-        "hex": "#ffffff4d"
-      }
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/border/inverse-hover",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-border-inverse-hover)"
-      },
-      "value": {
-        "hex": "#ffffff80"
-      }
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/surface/inverse-hover",
-      "type": "COLOR",
-      "codeSyntax": {
-        "WEB": "var(--haus-color-surface-inverse-hover)"
-      },
-      "value": {
-        "hex": "#ffffff1a"
-      }
-    },
-    {
-      "collection": "haus/semantics",
       "name": "semantic/radius/control",
       "type": "FLOAT",
       "codeSyntax": {
         "WEB": "var(--haus-radius-control)"
       },
       "value": 8
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/radius/surface",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-radius-surface)"
-      },
-      "value": 12
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/radius/overlay",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-radius-overlay)"
-      },
-      "value": 16
     },
     {
       "collection": "haus/semantics",
@@ -2048,6 +2242,15 @@
     },
     {
       "collection": "haus/semantics",
+      "name": "semantic/radius/overlay",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-radius-overlay)"
+      },
+      "value": 16
+    },
+    {
+      "collection": "haus/semantics",
       "name": "semantic/radius/pill",
       "type": "FLOAT",
       "codeSyntax": {
@@ -2057,165 +2260,12 @@
     },
     {
       "collection": "haus/semantics",
-      "name": "semantic/space/inset-2xs",
+      "name": "semantic/radius/surface",
       "type": "FLOAT",
       "codeSyntax": {
-        "WEB": "var(--haus-space-inset-2xs)"
-      },
-      "value": 4
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/space/inset-xs",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-space-inset-xs)"
-      },
-      "value": 8
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/space/inset-sm",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-space-inset-sm)"
+        "WEB": "var(--haus-radius-surface)"
       },
       "value": 12
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/space/inset-md",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-space-inset-md)"
-      },
-      "value": 16
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/space/inset-lg",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-space-inset-lg)"
-      },
-      "value": 20
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/space/inset-xl",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-space-inset-xl)"
-      },
-      "value": 24
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/space/inset-2xl",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-space-inset-2xl)"
-      },
-      "value": 28
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/space/inset-3xl",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-space-inset-3xl)"
-      },
-      "value": 32
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/space/inset-4xl",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-space-inset-4xl)"
-      },
-      "value": 40
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/space/inset-5xl",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-space-inset-5xl)"
-      },
-      "value": 48
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/space/inset-6xl",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-space-inset-6xl)"
-      },
-      "value": 64
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/space/inset-7xl",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-space-inset-7xl)"
-      },
-      "value": 80
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/space/gap-2xs",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-space-gap-2xs)"
-      },
-      "value": 4
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/space/gap-xs",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-space-gap-xs)"
-      },
-      "value": 8
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/space/gap-sm",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-space-gap-sm)"
-      },
-      "value": 12
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/space/gap-md",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-space-gap-md)"
-      },
-      "value": 16
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/space/gap-lg",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-space-gap-lg)"
-      },
-      "value": 20
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/space/gap-xl",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-space-gap-xl)"
-      },
-      "value": 24
     },
     {
       "collection": "haus/semantics",
@@ -2228,12 +2278,30 @@
     },
     {
       "collection": "haus/semantics",
+      "name": "semantic/space/gap-2xs",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-gap-2xs)"
+      },
+      "value": 4
+    },
+    {
+      "collection": "haus/semantics",
       "name": "semantic/space/gap-3xl",
       "type": "FLOAT",
       "codeSyntax": {
         "WEB": "var(--haus-space-gap-3xl)"
       },
       "value": 32
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/gap-3xs",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-gap-3xs)"
+      },
+      "value": 2
     },
     {
       "collection": "haus/semantics",
@@ -2273,57 +2341,165 @@
     },
     {
       "collection": "haus/semantics",
-      "name": "semantic/space/stack-2xs",
+      "name": "semantic/space/gap-lg",
       "type": "FLOAT",
       "codeSyntax": {
-        "WEB": "var(--haus-space-stack-2xs)"
-      },
-      "value": 4
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/space/stack-xs",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-space-stack-xs)"
-      },
-      "value": 8
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/space/stack-sm",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-space-stack-sm)"
-      },
-      "value": 12
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/space/stack-md",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-space-stack-md)"
-      },
-      "value": 16
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/space/stack-lg",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-space-stack-lg)"
+        "WEB": "var(--haus-space-gap-lg)"
       },
       "value": 20
     },
     {
       "collection": "haus/semantics",
-      "name": "semantic/space/stack-xl",
+      "name": "semantic/space/gap-md",
       "type": "FLOAT",
       "codeSyntax": {
-        "WEB": "var(--haus-space-stack-xl)"
+        "WEB": "var(--haus-space-gap-md)"
+      },
+      "value": 16
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/gap-sm",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-gap-sm)"
+      },
+      "value": 12
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/gap-xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-gap-xl)"
       },
       "value": 24
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/gap-xs",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-gap-xs)"
+      },
+      "value": 8
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/inset-2xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-inset-2xl)"
+      },
+      "value": 28
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/inset-2xs",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-inset-2xs)"
+      },
+      "value": 4
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/inset-3xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-inset-3xl)"
+      },
+      "value": 32
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/inset-3xs",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-inset-3xs)"
+      },
+      "value": 2
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/inset-4xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-inset-4xl)"
+      },
+      "value": 40
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/inset-5xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-inset-5xl)"
+      },
+      "value": 48
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/inset-6xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-inset-6xl)"
+      },
+      "value": 64
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/inset-7xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-inset-7xl)"
+      },
+      "value": 80
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/inset-lg",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-inset-lg)"
+      },
+      "value": 20
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/inset-md",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-inset-md)"
+      },
+      "value": 16
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/inset-sm",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-inset-sm)"
+      },
+      "value": 12
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/inset-xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-inset-xl)"
+      },
+      "value": 24
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/inset-xs",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-inset-xs)"
+      },
+      "value": 8
     },
     {
       "collection": "haus/semantics",
@@ -2336,12 +2512,30 @@
     },
     {
       "collection": "haus/semantics",
+      "name": "semantic/space/stack-2xs",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-stack-2xs)"
+      },
+      "value": 4
+    },
+    {
+      "collection": "haus/semantics",
       "name": "semantic/space/stack-3xl",
       "type": "FLOAT",
       "codeSyntax": {
         "WEB": "var(--haus-space-stack-3xl)"
       },
       "value": 32
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/stack-3xs",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-stack-3xs)"
+      },
+      "value": 2
     },
     {
       "collection": "haus/semantics",
@@ -2381,30 +2575,222 @@
     },
     {
       "collection": "haus/semantics",
-      "name": "semantic/modal-width/sm",
+      "name": "semantic/space/stack-lg",
       "type": "FLOAT",
       "codeSyntax": {
-        "WEB": "var(--haus-modal-width-sm)"
+        "WEB": "var(--haus-space-stack-lg)"
       },
-      "value": 400
+      "value": 20
     },
     {
       "collection": "haus/semantics",
-      "name": "semantic/modal-width/md",
+      "name": "semantic/space/stack-md",
       "type": "FLOAT",
       "codeSyntax": {
-        "WEB": "var(--haus-modal-width-md)"
+        "WEB": "var(--haus-space-stack-md)"
       },
-      "value": 560
+      "value": 16
     },
     {
       "collection": "haus/semantics",
-      "name": "semantic/modal-width/lg",
+      "name": "semantic/space/stack-sm",
       "type": "FLOAT",
       "codeSyntax": {
-        "WEB": "var(--haus-modal-width-lg)"
+        "WEB": "var(--haus-space-stack-sm)"
       },
-      "value": 720
+      "value": 12
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/stack-xl",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-stack-xl)"
+      },
+      "value": 24
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/stack-xs",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-stack-xs)"
+      },
+      "value": 8
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/success/border",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-success-border)"
+      },
+      "value": {
+        "hex": "#d0f3d4"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/success/default",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-success-default)"
+      },
+      "value": {
+        "hex": "#009630"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/success/emphasis",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-success-emphasis)"
+      },
+      "value": {
+        "hex": "#00430e"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/success/on-default",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-success-on-default)"
+      },
+      "value": {
+        "hex": "#111113"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/success/on-subtle",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-success-on-subtle)"
+      },
+      "value": {
+        "hex": "#006a1b"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/success/solid",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-success-solid)"
+      },
+      "value": {
+        "hex": "#006a1b"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/success/subtle",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-success-subtle)"
+      },
+      "value": {
+        "hex": "#e8fbea"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/surface/default",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-surface-default)"
+      },
+      "value": {
+        "hex": "#ffffff"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/surface/disabled",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-surface-disabled)"
+      },
+      "value": {
+        "hex": "#f5f4f9"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/surface/inverse",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-surface-inverse)"
+      },
+      "value": {
+        "hex": "#111113"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/surface/inverse-hover",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-surface-inverse-hover)"
+      },
+      "value": {
+        "hex": "#ffffff1a"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/surface/overlay",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-surface-overlay)"
+      },
+      "value": {
+        "hex": "#fcfbfe"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/surface/raised",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-surface-raised)"
+      },
+      "value": {
+        "hex": "#ffffff"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/surface/subtle",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-surface-subtle)"
+      },
+      "value": {
+        "hex": "#f5f4f9"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/surface/sunken",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-surface-sunken)"
+      },
+      "value": {
+        "hex": "#e7e7ed"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/text-underline-offset",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-text-underline-offset)"
+      },
+      "value": 3
     },
     {
       "collection": "haus/semantics",
@@ -2417,642 +2803,107 @@
     },
     {
       "collection": "haus/semantics",
-      "name": "font-family/sans",
-      "type": "STRING",
-      "codeSyntax": {
-        "WEB": "var(--haus-font-sans)"
-      },
-      "value": "Manrope"
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "font-family/mono",
-      "type": "STRING",
-      "codeSyntax": {
-        "WEB": "var(--haus-font-mono)"
-      },
-      "value": "Fira Code"
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/modal-width/xl",
+      "name": "semantic/toggle-track-height",
       "type": "FLOAT",
       "codeSyntax": {
-        "WEB": "var(--haus-modal-width-xl)"
-      },
-      "value": 896
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/popover-width/sm",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-popover-width-sm)"
-      },
-      "value": 180
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/popover-width/md",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-popover-width-md)"
-      },
-      "value": 260
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/popover-width/lg",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-popover-width-lg)"
-      },
-      "value": 340
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "semantic/popover-width/xl",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-popover-width-xl)"
-      },
-      "value": 420
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/display/size",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-display-size)"
-      },
-      "value": 30
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/display/weight",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-display-weight)"
-      },
-      "value": 700
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/display/line-height",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-display-leading)"
-      },
-      "value": 34.5
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/display/letter-spacing",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-display-tracking)"
-      },
-      "value": -0.9
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/heading-lg/size",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-heading-lg-size)"
-      },
-      "value": 24
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/heading-lg/weight",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-heading-lg-weight)"
-      },
-      "value": 600
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/heading-lg/line-height",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-heading-lg-leading)"
-      },
-      "value": 28.8
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/heading-lg/letter-spacing",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-heading-lg-tracking)"
-      },
-      "value": -0.48
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/heading/size",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-heading-size)"
+        "WEB": "var(--haus-toggle-track-height)"
       },
       "value": 20
     },
     {
       "collection": "haus/semantics",
-      "name": "type/heading/weight",
+      "name": "semantic/toggle-track-width",
       "type": "FLOAT",
       "codeSyntax": {
-        "WEB": "var(--haus-type-heading-weight)"
+        "WEB": "var(--haus-toggle-track-width)"
       },
-      "value": 600
+      "value": 36
     },
     {
       "collection": "haus/semantics",
-      "name": "type/heading/line-height",
+      "name": "semantic/tooltip-width",
       "type": "FLOAT",
       "codeSyntax": {
-        "WEB": "var(--haus-type-heading-leading)"
+        "WEB": "var(--haus-tooltip-width)"
       },
-      "value": 25
+      "value": 240
     },
     {
       "collection": "haus/semantics",
-      "name": "type/heading/letter-spacing",
-      "type": "FLOAT",
+      "name": "semantic/warning/border",
+      "type": "COLOR",
       "codeSyntax": {
-        "WEB": "var(--haus-type-heading-tracking)"
+        "WEB": "var(--haus-color-warning-border)"
       },
-      "value": -0.2
+      "value": {
+        "hex": "#fee2c9"
+      }
     },
     {
       "collection": "haus/semantics",
-      "name": "type/heading-sm/size",
-      "type": "FLOAT",
+      "name": "semantic/warning/default",
+      "type": "COLOR",
       "codeSyntax": {
-        "WEB": "var(--haus-type-heading-sm-size)"
+        "WEB": "var(--haus-color-warning-default)"
       },
-      "value": 16
+      "value": {
+        "hex": "#c46300"
+      }
     },
     {
       "collection": "haus/semantics",
-      "name": "type/heading-sm/weight",
-      "type": "FLOAT",
+      "name": "semantic/warning/emphasis",
+      "type": "COLOR",
       "codeSyntax": {
-        "WEB": "var(--haus-type-heading-sm-weight)"
+        "WEB": "var(--haus-color-warning-emphasis)"
       },
-      "value": 600
+      "value": {
+        "hex": "#683200"
+      }
     },
     {
       "collection": "haus/semantics",
-      "name": "type/heading-sm/line-height",
-      "type": "FLOAT",
+      "name": "semantic/warning/on-default",
+      "type": "COLOR",
       "codeSyntax": {
-        "WEB": "var(--haus-type-heading-sm-leading)"
+        "WEB": "var(--haus-color-warning-on-default)"
       },
-      "value": 20.8
+      "value": {
+        "hex": "#111113"
+      }
     },
     {
       "collection": "haus/semantics",
-      "name": "type/heading-sm/letter-spacing",
-      "type": "FLOAT",
+      "name": "semantic/warning/on-subtle",
+      "type": "COLOR",
       "codeSyntax": {
-        "WEB": "var(--haus-type-heading-sm-tracking)"
+        "WEB": "var(--haus-color-warning-on-subtle)"
       },
-      "value": -0.16
+      "value": {
+        "hex": "#8e4400"
+      }
     },
     {
       "collection": "haus/semantics",
-      "name": "type/body-lg/size",
-      "type": "FLOAT",
+      "name": "semantic/warning/solid",
+      "type": "COLOR",
       "codeSyntax": {
-        "WEB": "var(--haus-type-body-lg-size)"
+        "WEB": "var(--haus-color-warning-solid)"
       },
-      "value": 16
+      "value": {
+        "hex": "#8e4400"
+      }
     },
     {
       "collection": "haus/semantics",
-      "name": "type/body-lg/weight",
-      "type": "FLOAT",
+      "name": "semantic/warning/subtle",
+      "type": "COLOR",
       "codeSyntax": {
-        "WEB": "var(--haus-type-body-lg-weight)"
+        "WEB": "var(--haus-color-warning-subtle)"
       },
-      "value": 400
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/body-lg/line-height",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-body-lg-leading)"
-      },
-      "value": 25.6
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/body-lg/letter-spacing",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-body-lg-tracking)"
-      },
-      "value": 0
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/body/size",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-body-size)"
-      },
-      "value": 14
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/body/weight",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-body-weight)"
-      },
-      "value": 400
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/body/line-height",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-body-leading)"
-      },
-      "value": 21
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/body/letter-spacing",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-body-tracking)"
-      },
-      "value": 0
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/body-sm/size",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-body-sm-size)"
-      },
-      "value": 13
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/body-sm/weight",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-body-sm-weight)"
-      },
-      "value": 400
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/body-sm/line-height",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-body-sm-leading)"
-      },
-      "value": 19.5
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/body-sm/letter-spacing",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-body-sm-tracking)"
-      },
-      "value": 0
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/label-field/size",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-label-field-size)"
-      },
-      "value": 12
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/label-field/weight",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-label-field-weight)"
-      },
-      "value": 600
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/label-field/line-height",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-label-field-leading)"
-      },
-      "value": 16.8
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/label-field/letter-spacing",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-label-field-tracking)"
-      },
-      "value": 0.24
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/label-eyebrow/size",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-label-eyebrow-size)"
-      },
-      "value": 12
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/label-caption/size",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-label-caption-size)"
-      },
-      "value": 11
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/label-caption/weight",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-label-caption-weight)"
-      },
-      "value": 400
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/label-caption/line-height",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-label-caption-leading)"
-      },
-      "value": 15.4
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/label-caption/letter-spacing",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-label-caption-tracking)"
-      },
-      "value": 0
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/label-eyebrow/weight",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-label-eyebrow-weight)"
-      },
-      "value": 600
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/label-eyebrow/line-height",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-label-eyebrow-leading)"
-      },
-      "value": 16.8
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/label-eyebrow/letter-spacing",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-label-eyebrow-tracking)"
-      },
-      "value": 0.48
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/label-md/size",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-label-md-size)"
-      },
-      "value": 13
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/label-md/weight",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-label-md-weight)"
-      },
-      "value": 500
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/label-md/line-height",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-label-md-leading)"
-      },
-      "value": 18.2
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/label-md/letter-spacing",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-label-md-tracking)"
-      },
-      "value": 0
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/label-sm/size",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-label-sm-size)"
-      },
-      "value": 12
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/label-sm/weight",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-label-sm-weight)"
-      },
-      "value": 500
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/label-sm/line-height",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-label-sm-leading)"
-      },
-      "value": 16.8
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/label-sm/letter-spacing",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-label-sm-tracking)"
-      },
-      "value": 0.24
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/label-xs/size",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-label-xs-size)"
-      },
-      "value": 11
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/label-xs/weight",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-label-xs-weight)"
-      },
-      "value": 500
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/label-xs/line-height",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-label-xs-leading)"
-      },
-      "value": 15.4
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/label-xs/letter-spacing",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-label-xs-tracking)"
-      },
-      "value": 0.88
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/mono-md/size",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-mono-md-size)"
-      },
-      "value": 13
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/mono-sm/size",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-mono-sm-size)"
-      },
-      "value": 12
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/mono-sm/weight",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-mono-sm-weight)"
-      },
-      "value": 400
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/mono-sm/line-height",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-mono-sm-leading)"
-      },
-      "value": 18
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/mono-sm/letter-spacing",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-mono-sm-tracking)"
-      },
-      "value": 0
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/mono-md/weight",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-mono-md-weight)"
-      },
-      "value": 400
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/mono-md/line-height",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-mono-md-leading)"
-      },
-      "value": 20.8
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/mono-md/letter-spacing",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-mono-md-tracking)"
-      },
-      "value": 0
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/mono-xs/size",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-mono-xs-size)"
-      },
-      "value": 11
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/mono-xs/weight",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-mono-xs-weight)"
-      },
-      "value": 400
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/mono-xs/line-height",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-mono-xs-leading)"
-      },
-      "value": 15.4
-    },
-    {
-      "collection": "haus/semantics",
-      "name": "type/mono-xs/letter-spacing",
-      "type": "FLOAT",
-      "codeSyntax": {
-        "WEB": "var(--haus-type-mono-xs-tracking)"
-      },
-      "value": 0
+      "value": {
+        "hex": "#fff2e4"
+      }
     },
     {
       "collection": "haus/semantics",
@@ -3074,279 +2925,660 @@
     },
     {
       "collection": "haus/semantics",
-      "name": "semantic/marker-dot",
+      "name": "type/body-lg/letter-spacing",
       "type": "FLOAT",
       "codeSyntax": {
-        "WEB": "var(--haus-marker-dot)"
+        "WEB": "var(--haus-type-body-lg-tracking)"
       },
-      "value": 6
+      "value": 0
     },
     {
       "collection": "haus/semantics",
-      "name": "semantic/toggle-track-width",
+      "name": "type/body-lg/line-height",
       "type": "FLOAT",
       "codeSyntax": {
-        "WEB": "var(--haus-toggle-track-width)"
+        "WEB": "var(--haus-type-body-lg-leading)"
       },
-      "value": 36
+      "value": 25.6
     },
     {
-      "collection": "haus/motion",
-      "name": "motion/press/duration",
-      "type": "STRING",
-      "codeSyntax": {
-        "WEB": "var(--haus-motion-press-duration)"
-      },
-      "value": "120ms"
-    },
-    {
-      "collection": "haus/motion",
-      "name": "motion/press/easing",
-      "type": "STRING",
-      "codeSyntax": {
-        "WEB": "var(--haus-motion-press-easing)"
-      },
-      "value": "cubic-bezier(0.65, 0, 0.35, 1)"
-    },
-    {
-      "collection": "haus/motion",
-      "name": "motion/press/scale",
+      "collection": "haus/semantics",
+      "name": "type/body-lg/size",
       "type": "FLOAT",
       "codeSyntax": {
-        "WEB": "var(--haus-motion-press-scale)"
+        "WEB": "var(--haus-type-body-lg-size)"
       },
-      "value": 0.9800000190734863
+      "value": 16
     },
     {
-      "collection": "haus/motion",
-      "name": "motion/highlight/duration",
-      "type": "STRING",
-      "codeSyntax": {
-        "WEB": "var(--haus-motion-highlight-duration)"
-      },
-      "value": "353ms"
-    },
-    {
-      "collection": "haus/motion",
-      "name": "motion/highlight/easing",
-      "type": "STRING",
-      "codeSyntax": {
-        "WEB": "var(--haus-motion-highlight-easing)"
-      },
-      "value": "linear(0, 0.0229, 0.0789, 0.1534, 0.2364, 0.3211, 0.4034, 0.4806, 0.5514, 0.615, 0.6715, 0.7211, 0.7642, 0.8014, 0.8332, 0.8604, 0.8835, 0.903, 0.9194, 0.9331, 0.9447, 0.9543, 0.9623, 0.9689, 0.9744, 0.979, 0.9828, 0.9859, 0.9884, 0.9905, 0.9923, 0.9937, 0.9948, 0.9958, 0.9966, 0.9972, 0.9977, 0.9981, 0.9985, 0.9988, 1)"
-    },
-    {
-      "collection": "haus/motion",
-      "name": "motion/feedback/duration",
-      "type": "STRING",
-      "codeSyntax": {
-        "WEB": "var(--haus-motion-feedback-duration)"
-      },
-      "value": "353ms"
-    },
-    {
-      "collection": "haus/motion",
-      "name": "motion/feedback/easing",
-      "type": "STRING",
-      "codeSyntax": {
-        "WEB": "var(--haus-motion-feedback-easing)"
-      },
-      "value": "linear(0, 0.0229, 0.0789, 0.1534, 0.2364, 0.3211, 0.4034, 0.4806, 0.5514, 0.615, 0.6715, 0.7211, 0.7642, 0.8014, 0.8332, 0.8604, 0.8835, 0.903, 0.9194, 0.9331, 0.9447, 0.9543, 0.9623, 0.9689, 0.9744, 0.979, 0.9828, 0.9859, 0.9884, 0.9905, 0.9923, 0.9937, 0.9948, 0.9958, 0.9966, 0.9972, 0.9977, 0.9981, 0.9985, 0.9988, 1)"
-    },
-    {
-      "collection": "haus/motion",
-      "name": "motion/layout/duration",
-      "type": "STRING",
-      "codeSyntax": {
-        "WEB": "var(--haus-motion-layout-duration)"
-      },
-      "value": "530ms"
-    },
-    {
-      "collection": "haus/motion",
-      "name": "motion/layout/easing",
-      "type": "STRING",
-      "codeSyntax": {
-        "WEB": "var(--haus-motion-layout-easing)"
-      },
-      "value": "linear(0, 0.023, 0.0791, 0.1536, 0.2367, 0.3215, 0.4039, 0.4811, 0.5519, 0.6156, 0.672, 0.7216, 0.7646, 0.8018, 0.8336, 0.8608, 0.8838, 0.9033, 0.9196, 0.9334, 0.9449, 0.9544, 0.9624, 0.969, 0.9745, 0.9791, 0.9828, 0.9859, 0.9885, 0.9906, 0.9923, 0.9937, 0.9949, 0.9958, 0.9966, 0.9972, 0.9977, 0.9982, 0.9985, 0.9988, 1)"
-    },
-    {
-      "collection": "haus/motion",
-      "name": "motion/popover-enter/duration",
-      "type": "STRING",
-      "codeSyntax": {
-        "WEB": "var(--haus-motion-popover-enter-duration)"
-      },
-      "value": "180ms"
-    },
-    {
-      "collection": "haus/motion",
-      "name": "motion/popover-enter/easing",
-      "type": "STRING",
-      "codeSyntax": {
-        "WEB": "var(--haus-motion-popover-enter-easing)"
-      },
-      "value": "cubic-bezier(0.16, 1, 0.3, 1)"
-    },
-    {
-      "collection": "haus/motion",
-      "name": "motion/popover-enter/offset",
+      "collection": "haus/semantics",
+      "name": "type/body-lg/weight",
       "type": "FLOAT",
       "codeSyntax": {
-        "WEB": "var(--haus-motion-popover-enter-offset)"
+        "WEB": "var(--haus-type-body-lg-weight)"
       },
-      "value": 4
+      "value": 400
     },
     {
-      "collection": "haus/motion",
-      "name": "motion/popover-enter/scale",
+      "collection": "haus/semantics",
+      "name": "type/body-sm/letter-spacing",
       "type": "FLOAT",
       "codeSyntax": {
-        "WEB": "var(--haus-motion-popover-enter-scale)"
+        "WEB": "var(--haus-type-body-sm-tracking)"
       },
-      "value": 0.9599999785423279
+      "value": 0
     },
     {
-      "collection": "haus/motion",
-      "name": "motion/popover-exit/duration",
-      "type": "STRING",
-      "codeSyntax": {
-        "WEB": "var(--haus-motion-popover-exit-duration)"
-      },
-      "value": "120ms"
-    },
-    {
-      "collection": "haus/motion",
-      "name": "motion/popover-exit/easing",
-      "type": "STRING",
-      "codeSyntax": {
-        "WEB": "var(--haus-motion-popover-exit-easing)"
-      },
-      "value": "cubic-bezier(0.4, 0, 1, 1)"
-    },
-    {
-      "collection": "haus/motion",
-      "name": "motion/dialog-enter/duration",
-      "type": "STRING",
-      "codeSyntax": {
-        "WEB": "var(--haus-motion-dialog-enter-duration)"
-      },
-      "value": "240ms"
-    },
-    {
-      "collection": "haus/motion",
-      "name": "motion/dialog-enter/easing",
-      "type": "STRING",
-      "codeSyntax": {
-        "WEB": "var(--haus-motion-dialog-enter-easing)"
-      },
-      "value": "cubic-bezier(0.16, 1, 0.3, 1)"
-    },
-    {
-      "collection": "haus/motion",
-      "name": "motion/dialog-enter/offset",
+      "collection": "haus/semantics",
+      "name": "type/body-sm/line-height",
       "type": "FLOAT",
       "codeSyntax": {
-        "WEB": "var(--haus-motion-dialog-enter-offset)"
+        "WEB": "var(--haus-type-body-sm-leading)"
       },
-      "value": 4
+      "value": 19.5
     },
     {
-      "collection": "haus/motion",
-      "name": "motion/dialog-enter/scale",
+      "collection": "haus/semantics",
+      "name": "type/body-sm/size",
       "type": "FLOAT",
       "codeSyntax": {
-        "WEB": "var(--haus-motion-dialog-enter-scale)"
+        "WEB": "var(--haus-type-body-sm-size)"
       },
-      "value": 0.9599999785423279
+      "value": 13
     },
     {
-      "collection": "haus/motion",
-      "name": "motion/dialog-exit/duration",
-      "type": "STRING",
-      "codeSyntax": {
-        "WEB": "var(--haus-motion-dialog-exit-duration)"
-      },
-      "value": "180ms"
-    },
-    {
-      "collection": "haus/motion",
-      "name": "motion/dialog-exit/easing",
-      "type": "STRING",
-      "codeSyntax": {
-        "WEB": "var(--haus-motion-dialog-exit-easing)"
-      },
-      "value": "cubic-bezier(0.4, 0, 1, 1)"
-    },
-    {
-      "collection": "haus/motion",
-      "name": "motion/sheet-enter/duration",
-      "type": "STRING",
-      "codeSyntax": {
-        "WEB": "var(--haus-motion-sheet-enter-duration)"
-      },
-      "value": "320ms"
-    },
-    {
-      "collection": "haus/motion",
-      "name": "motion/sheet-enter/easing",
-      "type": "STRING",
-      "codeSyntax": {
-        "WEB": "var(--haus-motion-sheet-enter-easing)"
-      },
-      "value": "cubic-bezier(0.16, 1, 0.3, 1)"
-    },
-    {
-      "collection": "haus/motion",
-      "name": "motion/sheet-enter/offset",
+      "collection": "haus/semantics",
+      "name": "type/body-sm/weight",
       "type": "FLOAT",
       "codeSyntax": {
-        "WEB": "var(--haus-motion-sheet-enter-offset)"
+        "WEB": "var(--haus-type-body-sm-weight)"
       },
-      "value": 4
+      "value": 400
     },
     {
-      "collection": "haus/motion",
-      "name": "motion/sheet-enter/scale",
+      "collection": "haus/semantics",
+      "name": "type/body/letter-spacing",
       "type": "FLOAT",
       "codeSyntax": {
-        "WEB": "var(--haus-motion-sheet-enter-scale)"
+        "WEB": "var(--haus-type-body-tracking)"
       },
-      "value": 0.9599999785423279
+      "value": 0
     },
     {
-      "collection": "haus/motion",
-      "name": "motion/sheet-exit/duration",
-      "type": "STRING",
+      "collection": "haus/semantics",
+      "name": "type/body/line-height",
+      "type": "FLOAT",
       "codeSyntax": {
-        "WEB": "var(--haus-motion-sheet-exit-duration)"
+        "WEB": "var(--haus-type-body-leading)"
       },
-      "value": "240ms"
+      "value": 21
     },
     {
-      "collection": "haus/motion",
-      "name": "motion/sheet-exit/easing",
-      "type": "STRING",
+      "collection": "haus/semantics",
+      "name": "type/body/size",
+      "type": "FLOAT",
       "codeSyntax": {
-        "WEB": "var(--haus-motion-sheet-exit-easing)"
+        "WEB": "var(--haus-type-body-size)"
       },
-      "value": "cubic-bezier(0.4, 0, 1, 1)"
+      "value": 14
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/body/weight",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-body-weight)"
+      },
+      "value": 400
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/display/letter-spacing",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-display-tracking)"
+      },
+      "value": -0.6
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/display/line-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-display-leading)"
+      },
+      "value": 34.5
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/display/size",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-display-size)"
+      },
+      "value": 30
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/display/weight",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-display-weight)"
+      },
+      "value": 700
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/heading-lg/letter-spacing",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-heading-lg-tracking)"
+      },
+      "value": -0.48
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/heading-lg/line-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-heading-lg-leading)"
+      },
+      "value": 28.8
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/heading-lg/size",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-heading-lg-size)"
+      },
+      "value": 24
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/heading-lg/weight",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-heading-lg-weight)"
+      },
+      "value": 600
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/heading-sm/letter-spacing",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-heading-sm-tracking)"
+      },
+      "value": -0.16
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/heading-sm/line-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-heading-sm-leading)"
+      },
+      "value": 20.8
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/heading-sm/size",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-heading-sm-size)"
+      },
+      "value": 16
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/heading-sm/weight",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-heading-sm-weight)"
+      },
+      "value": 600
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/heading/letter-spacing",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-heading-tracking)"
+      },
+      "value": -0.2
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/heading/line-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-heading-leading)"
+      },
+      "value": 25
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/heading/size",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-heading-size)"
+      },
+      "value": 20
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/heading/weight",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-heading-weight)"
+      },
+      "value": 600
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-caption/letter-spacing",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-caption-tracking)"
+      },
+      "value": 0
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-caption/line-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-caption-leading)"
+      },
+      "value": 15.4
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-caption/size",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-caption-size)"
+      },
+      "value": 11
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-caption/weight",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-caption-weight)"
+      },
+      "value": 400
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-eyebrow/letter-spacing",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-eyebrow-tracking)"
+      },
+      "value": 0.48
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-eyebrow/line-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-eyebrow-leading)"
+      },
+      "value": 16.8
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-eyebrow/size",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-eyebrow-size)"
+      },
+      "value": 12
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-eyebrow/weight",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-eyebrow-weight)"
+      },
+      "value": 600
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-field/letter-spacing",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-field-tracking)"
+      },
+      "value": 0.24
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-field/line-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-field-leading)"
+      },
+      "value": 16.8
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-field/size",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-field-size)"
+      },
+      "value": 12
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-field/weight",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-field-weight)"
+      },
+      "value": 600
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-md/letter-spacing",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-md-tracking)"
+      },
+      "value": 0
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-md/line-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-md-leading)"
+      },
+      "value": 18.2
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-md/size",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-md-size)"
+      },
+      "value": 13
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-md/weight",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-md-weight)"
+      },
+      "value": 500
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-sm/letter-spacing",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-sm-tracking)"
+      },
+      "value": 0.24
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-sm/line-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-sm-leading)"
+      },
+      "value": 16.8
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-sm/size",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-sm-size)"
+      },
+      "value": 12
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-sm/weight",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-sm-weight)"
+      },
+      "value": 500
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-xs/letter-spacing",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-xs-tracking)"
+      },
+      "value": 0.88
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-xs/line-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-xs-leading)"
+      },
+      "value": 15.4
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-xs/size",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-xs-size)"
+      },
+      "value": 11
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/label-xs/weight",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-label-xs-weight)"
+      },
+      "value": 500
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/mono-md/letter-spacing",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-mono-md-tracking)"
+      },
+      "value": 0
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/mono-md/line-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-mono-md-leading)"
+      },
+      "value": 20.8
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/mono-md/size",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-mono-md-size)"
+      },
+      "value": 13
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/mono-md/weight",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-mono-md-weight)"
+      },
+      "value": 400
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/mono-sm/letter-spacing",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-mono-sm-tracking)"
+      },
+      "value": 0
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/mono-sm/line-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-mono-sm-leading)"
+      },
+      "value": 18
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/mono-sm/size",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-mono-sm-size)"
+      },
+      "value": 12
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/mono-sm/weight",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-mono-sm-weight)"
+      },
+      "value": 400
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/mono-xs/letter-spacing",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-mono-xs-tracking)"
+      },
+      "value": 0
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/mono-xs/line-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-mono-xs-leading)"
+      },
+      "value": 15.4
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/mono-xs/size",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-mono-xs-size)"
+      },
+      "value": 11
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "type/mono-xs/weight",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-type-mono-xs-weight)"
+      },
+      "value": 400
     },
     {
       "collection": "haus/theme",
-      "name": "theme/surface/default",
+      "name": "theme/backdrop",
       "type": "COLOR",
       "value": {
-        "hex": "#ffffff"
+        "hex": "#04040599"
       },
       "dark": {
-        "hex": "#111113"
+        "hex": "#04040599"
       }
     },
     {
       "collection": "haus/theme",
-      "name": "theme/surface/subtle",
+      "name": "theme/border/control",
+      "type": "COLOR",
+      "value": {
+        "hex": "#807f85"
+      },
+      "dark": {
+        "hex": "#807f85"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/border/default",
+      "type": "COLOR",
+      "value": {
+        "hex": "#e7e7ed"
+      },
+      "dark": {
+        "hex": "#3f3f43"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/border/disabled",
+      "type": "COLOR",
+      "value": {
+        "hex": "#e7e7ed"
+      },
+      "dark": {
+        "hex": "#262629"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/border/inverse",
+      "type": "COLOR",
+      "value": {
+        "hex": "#ffffff4d"
+      },
+      "dark": {
+        "hex": "#0404054d"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/border/inverse-hover",
+      "type": "COLOR",
+      "value": {
+        "hex": "#ffffff80"
+      },
+      "dark": {
+        "hex": "#04040580"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/border/strong",
+      "type": "COLOR",
+      "value": {
+        "hex": "#d1d0d7"
+      },
+      "dark": {
+        "hex": "#5d5d61"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/border/subtle",
       "type": "COLOR",
       "value": {
         "hex": "#f5f4f9"
@@ -3357,32 +3589,43 @@
     },
     {
       "collection": "haus/theme",
-      "name": "theme/surface/raised",
+      "name": "theme/error/border",
+      "type": "COLOR",
+      "value": {
+        "hex": "#ffdbd4"
+      },
+      "dark": {
+        "hex": "#9a1316"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/error/default",
+      "type": "COLOR",
+      "value": {
+        "hex": "#d73431"
+      },
+      "dark": {
+        "hex": "#e8594f"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/error/emphasis",
+      "type": "COLOR",
+      "value": {
+        "hex": "#621513"
+      },
+      "dark": {
+        "hex": "#ffdbd4"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/error/on-default",
       "type": "COLOR",
       "value": {
         "hex": "#ffffff"
-      },
-      "dark": {
-        "hex": "#262629"
-      }
-    },
-    {
-      "collection": "haus/theme",
-      "name": "theme/surface/overlay",
-      "type": "COLOR",
-      "value": {
-        "hex": "#fcfbfe"
-      },
-      "dark": {
-        "hex": "#262629"
-      }
-    },
-    {
-      "collection": "haus/theme",
-      "name": "theme/surface/sunken",
-      "type": "COLOR",
-      "value": {
-        "hex": "#e7e7ed"
       },
       "dark": {
         "hex": "#040405"
@@ -3390,57 +3633,90 @@
     },
     {
       "collection": "haus/theme",
-      "name": "theme/surface/inverse",
+      "name": "theme/error/on-subtle",
       "type": "COLOR",
       "value": {
-        "hex": "#111113"
+        "hex": "#9a1316"
       },
       "dark": {
-        "hex": "#f5f4f9"
+        "hex": "#ffdbd4"
       }
     },
     {
       "collection": "haus/theme",
-      "name": "theme/surface/disabled",
+      "name": "theme/error/subtle",
       "type": "COLOR",
       "value": {
-        "hex": "#f5f4f9"
+        "hex": "#ffeeea"
       },
       "dark": {
-        "hex": "#262629"
+        "hex": "#621513"
       }
     },
     {
       "collection": "haus/theme",
-      "name": "theme/ink/primary",
+      "name": "theme/info/border",
       "type": "COLOR",
       "value": {
-        "hex": "#111113"
+        "hex": "#dbe8ff"
       },
       "dark": {
-        "hex": "#fcfbfe"
+        "hex": "#2043a3"
       }
     },
     {
       "collection": "haus/theme",
-      "name": "theme/ink/secondary",
+      "name": "theme/info/default",
       "type": "COLOR",
       "value": {
-        "hex": "#3f3f43"
+        "hex": "#3665e4"
       },
       "dark": {
-        "hex": "#d1d0d7"
+        "hex": "#5886f2"
       }
     },
     {
       "collection": "haus/theme",
-      "name": "theme/ink/tertiary",
+      "name": "theme/info/emphasis",
       "type": "COLOR",
       "value": {
-        "hex": "#807f85"
+        "hex": "#0f2669"
       },
       "dark": {
-        "hex": "#aaaab1"
+        "hex": "#dbe8ff"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/info/on-default",
+      "type": "COLOR",
+      "value": {
+        "hex": "#ffffff"
+      },
+      "dark": {
+        "hex": "#040405"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/info/on-subtle",
+      "type": "COLOR",
+      "value": {
+        "hex": "#2043a3"
+      },
+      "dark": {
+        "hex": "#dbe8ff"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/info/subtle",
+      "type": "COLOR",
+      "value": {
+        "hex": "#eff5ff"
+      },
+      "dark": {
+        "hex": "#0f2669"
       }
     },
     {
@@ -3489,46 +3765,46 @@
     },
     {
       "collection": "haus/theme",
-      "name": "theme/border/subtle",
+      "name": "theme/ink/placeholder",
       "type": "COLOR",
       "value": {
-        "hex": "#f5f4f9"
-      },
-      "dark": {
-        "hex": "#262629"
-      }
-    },
-    {
-      "collection": "haus/theme",
-      "name": "theme/border/default",
-      "type": "COLOR",
-      "value": {
-        "hex": "#e7e7ed"
-      },
-      "dark": {
-        "hex": "#3f3f43"
-      }
-    },
-    {
-      "collection": "haus/theme",
-      "name": "theme/border/strong",
-      "type": "COLOR",
-      "value": {
-        "hex": "#d1d0d7"
-      },
-      "dark": {
         "hex": "#5d5d61"
+      },
+      "dark": {
+        "hex": "#aaaab1"
       }
     },
     {
       "collection": "haus/theme",
-      "name": "theme/border/disabled",
+      "name": "theme/ink/primary",
       "type": "COLOR",
       "value": {
-        "hex": "#e7e7ed"
+        "hex": "#111113"
       },
       "dark": {
-        "hex": "#262629"
+        "hex": "#fcfbfe"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/ink/secondary",
+      "type": "COLOR",
+      "value": {
+        "hex": "#3f3f43"
+      },
+      "dark": {
+        "hex": "#d1d0d7"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/ink/tertiary",
+      "type": "COLOR",
+      "value": {
+        "hex": "#807f85"
+      },
+      "dark": {
+        "hex": "#aaaab1"
       }
     },
     {
@@ -3544,6 +3820,17 @@
     },
     {
       "collection": "haus/theme",
+      "name": "theme/primary/disabled",
+      "type": "COLOR",
+      "value": {
+        "hex": "#e7e7ed"
+      },
+      "dark": {
+        "hex": "#262629"
+      }
+    },
+    {
+      "collection": "haus/theme",
       "name": "theme/primary/hover",
       "type": "COLOR",
       "value": {
@@ -3551,6 +3838,17 @@
       },
       "dark": {
         "hex": "#d0c3ec"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/primary/on-subtle",
+      "type": "COLOR",
+      "value": {
+        "hex": "#442a68"
+      },
+      "dark": {
+        "hex": "#e7e1f5"
       }
     },
     {
@@ -3577,105 +3875,6 @@
     },
     {
       "collection": "haus/theme",
-      "name": "theme/primary/on-subtle",
-      "type": "COLOR",
-      "value": {
-        "hex": "#442a68"
-      },
-      "dark": {
-        "hex": "#e7e1f5"
-      }
-    },
-    {
-      "collection": "haus/theme",
-      "name": "theme/primary/disabled",
-      "type": "COLOR",
-      "value": {
-        "hex": "#e7e7ed"
-      },
-      "dark": {
-        "hex": "#262629"
-      }
-    },
-    {
-      "collection": "haus/theme",
-      "name": "theme/info/subtle",
-      "type": "COLOR",
-      "value": {
-        "hex": "#eff5ff"
-      },
-      "dark": {
-        "hex": "#0f2669"
-      }
-    },
-    {
-      "collection": "haus/theme",
-      "name": "theme/info/border",
-      "type": "COLOR",
-      "value": {
-        "hex": "#dbe8ff"
-      },
-      "dark": {
-        "hex": "#2043a3"
-      }
-    },
-    {
-      "collection": "haus/theme",
-      "name": "theme/info/default",
-      "type": "COLOR",
-      "value": {
-        "hex": "#3665e4"
-      },
-      "dark": {
-        "hex": "#5886f2"
-      }
-    },
-    {
-      "collection": "haus/theme",
-      "name": "theme/info/on-subtle",
-      "type": "COLOR",
-      "value": {
-        "hex": "#2043a3"
-      },
-      "dark": {
-        "hex": "#dbe8ff"
-      }
-    },
-    {
-      "collection": "haus/theme",
-      "name": "theme/info/on-default",
-      "type": "COLOR",
-      "value": {
-        "hex": "#ffffff"
-      },
-      "dark": {
-        "hex": "#040405"
-      }
-    },
-    {
-      "collection": "haus/theme",
-      "name": "theme/info/emphasis",
-      "type": "COLOR",
-      "value": {
-        "hex": "#0f2669"
-      },
-      "dark": {
-        "hex": "#dbe8ff"
-      }
-    },
-    {
-      "collection": "haus/theme",
-      "name": "theme/success/subtle",
-      "type": "COLOR",
-      "value": {
-        "hex": "#e8fbea"
-      },
-      "dark": {
-        "hex": "#00430e"
-      }
-    },
-    {
-      "collection": "haus/theme",
       "name": "theme/success/border",
       "type": "COLOR",
       "value": {
@@ -3698,10 +3897,10 @@
     },
     {
       "collection": "haus/theme",
-      "name": "theme/success/on-subtle",
+      "name": "theme/success/emphasis",
       "type": "COLOR",
       "value": {
-        "hex": "#006a1b"
+        "hex": "#00430e"
       },
       "dark": {
         "hex": "#d0f3d4"
@@ -3720,6 +3919,17 @@
     },
     {
       "collection": "haus/theme",
+      "name": "theme/success/on-subtle",
+      "type": "COLOR",
+      "value": {
+        "hex": "#006a1b"
+      },
+      "dark": {
+        "hex": "#d0f3d4"
+      }
+    },
+    {
+      "collection": "haus/theme",
       "name": "theme/success/solid",
       "type": "COLOR",
       "value": {
@@ -3731,24 +3941,101 @@
     },
     {
       "collection": "haus/theme",
-      "name": "theme/success/emphasis",
+      "name": "theme/success/subtle",
       "type": "COLOR",
       "value": {
-        "hex": "#00430e"
+        "hex": "#e8fbea"
       },
       "dark": {
-        "hex": "#d0f3d4"
+        "hex": "#00430e"
       }
     },
     {
       "collection": "haus/theme",
-      "name": "theme/warning/subtle",
+      "name": "theme/surface/default",
       "type": "COLOR",
       "value": {
-        "hex": "#fff2e4"
+        "hex": "#ffffff"
       },
       "dark": {
-        "hex": "#683200"
+        "hex": "#111113"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/surface/disabled",
+      "type": "COLOR",
+      "value": {
+        "hex": "#f5f4f9"
+      },
+      "dark": {
+        "hex": "#262629"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/surface/inverse",
+      "type": "COLOR",
+      "value": {
+        "hex": "#111113"
+      },
+      "dark": {
+        "hex": "#f5f4f9"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/surface/inverse-hover",
+      "type": "COLOR",
+      "value": {
+        "hex": "#ffffff1a"
+      },
+      "dark": {
+        "hex": "#0404051a"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/surface/overlay",
+      "type": "COLOR",
+      "value": {
+        "hex": "#fcfbfe"
+      },
+      "dark": {
+        "hex": "#262629"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/surface/raised",
+      "type": "COLOR",
+      "value": {
+        "hex": "#ffffff"
+      },
+      "dark": {
+        "hex": "#262629"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/surface/subtle",
+      "type": "COLOR",
+      "value": {
+        "hex": "#f5f4f9"
+      },
+      "dark": {
+        "hex": "#262629"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/surface/sunken",
+      "type": "COLOR",
+      "value": {
+        "hex": "#e7e7ed"
+      },
+      "dark": {
+        "hex": "#040405"
       }
     },
     {
@@ -3775,10 +4062,10 @@
     },
     {
       "collection": "haus/theme",
-      "name": "theme/warning/on-subtle",
+      "name": "theme/warning/emphasis",
       "type": "COLOR",
       "value": {
-        "hex": "#8e4400"
+        "hex": "#683200"
       },
       "dark": {
         "hex": "#fee2c9"
@@ -3797,6 +4084,17 @@
     },
     {
       "collection": "haus/theme",
+      "name": "theme/warning/on-subtle",
+      "type": "COLOR",
+      "value": {
+        "hex": "#8e4400"
+      },
+      "dark": {
+        "hex": "#fee2c9"
+      }
+    },
+    {
+      "collection": "haus/theme",
       "name": "theme/warning/solid",
       "type": "COLOR",
       "value": {
@@ -3808,123 +4106,13 @@
     },
     {
       "collection": "haus/theme",
-      "name": "theme/warning/emphasis",
+      "name": "theme/warning/subtle",
       "type": "COLOR",
       "value": {
+        "hex": "#fff2e4"
+      },
+      "dark": {
         "hex": "#683200"
-      },
-      "dark": {
-        "hex": "#fee2c9"
-      }
-    },
-    {
-      "collection": "haus/theme",
-      "name": "theme/error/subtle",
-      "type": "COLOR",
-      "value": {
-        "hex": "#ffeeea"
-      },
-      "dark": {
-        "hex": "#621513"
-      }
-    },
-    {
-      "collection": "haus/theme",
-      "name": "theme/error/border",
-      "type": "COLOR",
-      "value": {
-        "hex": "#ffdbd4"
-      },
-      "dark": {
-        "hex": "#9a1316"
-      }
-    },
-    {
-      "collection": "haus/theme",
-      "name": "theme/error/default",
-      "type": "COLOR",
-      "value": {
-        "hex": "#d73431"
-      },
-      "dark": {
-        "hex": "#e8594f"
-      }
-    },
-    {
-      "collection": "haus/theme",
-      "name": "theme/error/on-subtle",
-      "type": "COLOR",
-      "value": {
-        "hex": "#9a1316"
-      },
-      "dark": {
-        "hex": "#ffdbd4"
-      }
-    },
-    {
-      "collection": "haus/theme",
-      "name": "theme/error/on-default",
-      "type": "COLOR",
-      "value": {
-        "hex": "#ffffff"
-      },
-      "dark": {
-        "hex": "#040405"
-      }
-    },
-    {
-      "collection": "haus/theme",
-      "name": "theme/error/emphasis",
-      "type": "COLOR",
-      "value": {
-        "hex": "#621513"
-      },
-      "dark": {
-        "hex": "#ffdbd4"
-      }
-    },
-    {
-      "collection": "haus/theme",
-      "name": "theme/backdrop",
-      "type": "COLOR",
-      "value": {
-        "hex": "#04040599"
-      },
-      "dark": {
-        "hex": "#04040599"
-      }
-    },
-    {
-      "collection": "haus/theme",
-      "name": "theme/border/inverse",
-      "type": "COLOR",
-      "value": {
-        "hex": "#ffffff4d"
-      },
-      "dark": {
-        "hex": "#0404054d"
-      }
-    },
-    {
-      "collection": "haus/theme",
-      "name": "theme/border/inverse-hover",
-      "type": "COLOR",
-      "value": {
-        "hex": "#ffffff80"
-      },
-      "dark": {
-        "hex": "#04040580"
-      }
-    },
-    {
-      "collection": "haus/theme",
-      "name": "theme/surface/inverse-hover",
-      "type": "COLOR",
-      "value": {
-        "hex": "#ffffff1a"
-      },
-      "dark": {
-        "hex": "#0404051a"
       }
     }
   ],
@@ -4238,6 +4426,27 @@
       ]
     },
     {
+      "name": "Icon/Arrow left",
+      "page": "-> IconButton",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "Icon/Plus",
+      "page": "-> IconButton",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
+      "name": "Icon/Settings",
+      "page": "-> IconButton",
+      "type": "COMPONENT",
+      "inSet": false,
+      "props": []
+    },
+    {
       "name": "IconButton",
       "page": "-> IconButton",
       "type": "COMPONENT_SET",
@@ -4289,27 +4498,6 @@
           ]
         }
       ]
-    },
-    {
-      "name": "Icon/Plus",
-      "page": "-> IconButton",
-      "type": "COMPONENT",
-      "inSet": false,
-      "props": []
-    },
-    {
-      "name": "Icon/Arrow left",
-      "page": "-> IconButton",
-      "type": "COMPONENT",
-      "inSet": false,
-      "props": []
-    },
-    {
-      "name": "Icon/Settings",
-      "page": "-> IconButton",
-      "type": "COMPONENT",
-      "inSet": false,
-      "props": []
     },
     {
       "name": "Input",
@@ -4550,33 +4738,6 @@
       ]
     },
     {
-      "name": "Select option",
-      "page": "-> Select",
-      "type": "COMPONENT_SET",
-      "inSet": false,
-      "props": [
-        {
-          "name": "Content",
-          "type": "VARIANT",
-          "options": [
-            "label only",
-            "label and hint"
-          ]
-        },
-        {
-          "name": "State",
-          "type": "VARIANT",
-          "options": [
-            "Default",
-            "Active",
-            "Selected",
-            "Selected active",
-            "Disabled"
-          ]
-        }
-      ]
-    },
-    {
       "name": "Select",
       "page": "-> Select",
       "type": "COMPONENT_SET",
@@ -4610,6 +4771,33 @@
             "Disabled",
             "Error",
             "Error focus"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Select option",
+      "page": "-> Select",
+      "type": "COMPONENT_SET",
+      "inSet": false,
+      "props": [
+        {
+          "name": "Content",
+          "type": "VARIANT",
+          "options": [
+            "label only",
+            "label and hint"
+          ]
+        },
+        {
+          "name": "State",
+          "type": "VARIANT",
+          "options": [
+            "Default",
+            "Active",
+            "Selected",
+            "Selected active",
+            "Disabled"
           ]
         }
       ]

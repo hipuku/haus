@@ -18,6 +18,20 @@ export const metadata: Metadata = {
 export default function Layout({ children }: LayoutProps<'/'>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* The two faces the default brand names, DM Sans and DM Mono. The site
+            loaded neither until now, so every haus component on it fell through
+            to system-ui and the docs showed the system in a typeface it does not
+            use. A link rather than next/font, because next/font hands back a
+            hashed family name and the brand entry names a literal; a product
+            that wants the hashed route forks the entry, as core does. */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,100..1000&family=DM+Mono:wght@400&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body className="flex min-h-screen flex-col">
         {/* `data-theme` as well as fumadocs's `class`: it is haus's own switch
             (brand-dark.css), so the components follow the site's toggle rather
