@@ -27,20 +27,28 @@
   width: 100%;
   background-color: var(--haus-color-surface-default);
   /* WCAG 1.4.11, as Input's border. Decision 0031. */
-  border: var(--haus-border-width-default) solid var(--haus-color-border-control);
+  --haus-textarea-edge: var(--haus-color-border-control);
+  border: var(--haus-border-width-default) solid var(--haus-textarea-edge);
   border-radius: var(--haus-radius-control);
   padding: var(--haus-space-inset-xs) var(--haus-space-inset-sm);
   font-family: var(--haus-font-sans);
   font-size: var(--haus-type-body-sm-size);
   font-weight: var(--haus-type-body-sm-weight);
   line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
   color: var(--haus-color-ink-primary);
   resize: vertical;
   min-height: var(--haus-space-20);
-  transition:
-    border-color var(--haus-motion-micro),
-    box-shadow var(--haus-motion-micro);
+  /* Input's motion: colour and focus on the highlight role. */
+  transition-property: border-color, outline-color, outline-offset;
+  transition-duration: var(--haus-motion-highlight-duration);
+  transition-timing-function: var(--haus-motion-highlight-easing);
   box-sizing: border-box;
+}
+
+/* Input's hover: the edge moves toward the ink (4.5, Textarea). */
+.textarea:hover:not(:disabled, .error, :focus-visible) {
+  --haus-textarea-edge: color-mix(in oklch, var(--haus-color-border-control), var(--haus-color-ink-primary) 30%);
 }
 
 .textarea::placeholder {
@@ -50,18 +58,29 @@
   color: var(--haus-color-ink-placeholder);
 }
 
+/* The stepped-out outline Input uses, right on any surface. */
+@media (forced-colors: none) {
+  .textarea {
+    outline: var(--haus-border-width-thick) solid transparent;
+    outline-offset: 0;
+  }
+
+  .textarea:focus-visible {
+    outline-color: var(--haus-color-border-focus);
+    outline-offset: var(--haus-focus-outline-offset);
+  }
+
+  .textarea.error:focus-visible {
+    outline-color: var(--haus-color-error-default);
+  }
+}
+
 .textarea:focus-visible {
-  outline: none;
   border-color: var(--haus-color-border-focus);
-  box-shadow: var(--haus-focus-ring);
 }
 
 .textarea.error {
   border-color: var(--haus-color-error-default);
-}
-
-.textarea.error:focus-visible {
-  box-shadow: var(--haus-focus-ring-error);
 }
 
 .textarea:disabled {
@@ -82,6 +101,9 @@
 }
 
 .errorMessage {
+  display: flex;
+  align-items: center;
+  gap: var(--haus-space-gap-2xs);
   font-family: var(--haus-font-sans);
   font-size: var(--haus-type-label-caption-size);
   font-weight: var(--haus-type-label-caption-weight);
@@ -90,9 +112,42 @@
   color: var(--haus-color-error-default);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .textarea {
-    transition-duration: var(--haus-duration-reduced);
+/* Input's error: grows in on the layout role after the border, the icon's
+   ring draws in expressive, instant in reduced. */
+.errorSlot {
+  display: grid;
+  grid-template-rows: 1fr;
+  animation: haus-textarea-error-in var(--haus-motion-layout-duration) var(--haus-motion-layout-easing) both;
+  animation-delay: calc(var(--haus-motion-stagger-step) * 2);
+}
+
+.errorSlot > * {
+  min-height: 0;
+  overflow: hidden;
+}
+
+@keyframes haus-textarea-error-in {
+  from {
+    grid-template-rows: 0fr;
+    opacity: 0;
+  }
+}
+
+.errorIcon {
+  flex-shrink: 0;
+  inline-size: 1em;
+  block-size: 1em;
+}
+
+.errorIcon circle:first-child {
+  stroke-dasharray: 40;
+  animation: haus-textarea-draw var(--haus-motion-draw-duration) var(--haus-motion-draw-easing) both;
+  animation-delay: calc(var(--haus-motion-stagger-step) * 3);
+}
+
+@keyframes haus-textarea-draw {
+  from {
+    stroke-dashoffset: 40;
   }
 }
 

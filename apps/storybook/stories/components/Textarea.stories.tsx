@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Textarea } from 'haus-components'
+import { Item, MotionCompare, Row, Stack } from '../helpers'
 
 const meta = {
   title: 'Components/Textarea',
@@ -27,6 +28,60 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Playground: Story = {}
-export const WithHint: Story = { args: { hint: 'Markdown is fine.' } }
-export const WithError: Story = { args: { error: 'This field is required.' } }
-export const Disabled: Story = { args: { disabled: true, value: 'Locked.' } }
+
+const story = (text: string) => ({ docs: { description: { story: text } } })
+
+export const States: Story = {
+  parameters: {
+    ...story('Every state side by side. Hover and focus are forced, so they can be reviewed without a pointer.'),
+    pseudo: { hover: ['#state-hover'], focusVisible: ['#state-focus'] },
+  },
+  render: args => (
+    <Row stretch>
+      <Item label="rest">
+        <Textarea {...args} />
+      </Item>
+      <Item label="hover">
+        <Textarea {...args} id="state-hover" />
+      </Item>
+      <Item label="focus">
+        <Textarea {...args} id="state-focus" />
+      </Item>
+      <Item label="error">
+        <Textarea {...args} error="This field is required." />
+      </Item>
+      <Item label="disabled">
+        <Textarea {...args} disabled defaultValue="Locked." />
+      </Item>
+    </Row>
+  ),
+}
+
+export const Motion: Story = {
+  parameters: story("The error growing in, as Input's: with the border in subtle, after it on a spring in expressive."),
+  render: args => (
+    <MotionCompare render={() => <Textarea {...args} hint="Markdown is fine." error="This field is required." />} />
+  ),
+}
+
+export const Content: Story = {
+  parameters: story('A hint, an error with its hint kept, and a long value that scrolls inside the field.'),
+  render: args => (
+    <Stack>
+      <Item label="hint">
+        <Textarea {...args} hint="Markdown is fine." />
+      </Item>
+      <Item label="error, hint kept">
+        <Textarea {...args} hint="Markdown is fine." error="This field is required." />
+      </Item>
+      <Item label="long value">
+        <Textarea
+          {...args}
+          defaultValue={
+            'Line one of a longer note.\nLine two.\nLine three.\nLine four.\nLine five, past the visible rows.'
+          }
+        />
+      </Item>
+    </Stack>
+  ),
+}

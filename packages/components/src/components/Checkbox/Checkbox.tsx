@@ -61,7 +61,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(functi
   // sit inside the <label>, which made it part of the accessible *name*: a
   // screen reader announced "Accept terms Read them first, checkbox" as one
   // string rather than a name and a description.
-  const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined
+  const describedBy = [errorId, hintId].filter(Boolean).join(' ') || undefined
   const isControlled = checked !== undefined
 
   // Internal state for uncontrolled usage, driving the visual box class
@@ -124,6 +124,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(functi
           ) : isChecked ? (
             <svg width="10" height="8" viewBox="0 0 10 8" fill="none" className={styles.icon}>
               <path
+                pathLength={1}
                 d="M1 4L3.5 6.5L9 1"
                 stroke="currentColor"
                 strokeWidth="1.5"
@@ -150,15 +151,21 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(functi
 
       {/* Outside the label on purpose: anything inside it is read as part of the
           name. Indented to line up under the label text rather than under the box. */}
-      {hint && !error && (
-        <span id={hintId} className={styles.hint}>
-          {hint}
+      {/* As Input: the error first and the hint kept (4.5). */}
+      {error && (
+        <span id={errorId} className={styles.errorMessage} role="alert">
+          <svg className={styles.errorIcon} viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <circle cx="8" cy="8" r="6.25" stroke="currentColor" strokeWidth="1.5" />
+            <path d="M8 4.75v3.75" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            <circle cx="8" cy="11" r="0.9" fill="currentColor" />
+          </svg>
+          <span>{error}</span>
         </span>
       )}
 
-      {error && (
-        <span id={errorId} className={styles.errorMessage} role="alert">
-          {error}
+      {hint && (
+        <span id={hintId} className={styles.hint}>
+          {hint}
         </span>
       )}
     </div>

@@ -23,7 +23,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(fun
   const textareaId = id ?? generatedId
   const hintId = hint ? `${textareaId}-hint` : undefined
   const errorId = error ? `${textareaId}-error` : undefined
-  const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined
+  const describedBy = [errorId, hintId].filter(Boolean).join(' ') || undefined
 
   const textareaCls = [styles.textarea, error ? styles.error : '', controlClassName].filter(Boolean).join(' ')
 
@@ -51,14 +51,22 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(fun
         {...rest}
       />
 
-      {hint && !error && (
+      {/* As Input: the error above the hint, the hint kept (4.5). */}
+      {error && (
+        <div className={styles.errorSlot}>
+          <span id={errorId} className={styles.errorMessage} role="alert">
+            <svg className={styles.errorIcon} viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <circle cx="8" cy="8" r="6.25" stroke="currentColor" strokeWidth="1.5" />
+              <path d="M8 4.75v3.75" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              <circle cx="8" cy="11" r="0.9" fill="currentColor" />
+            </svg>
+            <span>{error}</span>
+          </span>
+        </div>
+      )}
+      {hint && (
         <span id={hintId} className={styles.hint}>
           {hint}
-        </span>
-      )}
-      {error && (
-        <span id={errorId} className={styles.errorMessage} role="alert">
-          {error}
         </span>
       )}
     </div>

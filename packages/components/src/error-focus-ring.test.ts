@@ -69,11 +69,16 @@ const ALL = components()
  *  destructive button or a red toast, and there is nothing to be invalid about. */
 const takesError = (c: Component) => /\berror\?: *string/.test(c.source)
 
-/** Paints the ordinary focus ring. The `)` matters: it separates
- *  `var(--haus-focus-ring)` from `var(--haus-focus-ring-error)`. */
-const paintsRing = (c: Component) => c.css.includes('var(--haus-focus-ring)')
+/** Paints the focus outline every control uses since the 4.5 audit: an outline
+ *  coloured border-focus. It replaced a box-shadow ring (--haus-focus-ring),
+ *  and this test followed it, because a test keyed on the old token found no
+ *  component at all once they moved, and passed on air. */
+const OUTLINE = /outline-color:\s*var\(--haus-color-border-focus\)/
+const ERROR_OUTLINE = /outline-color:\s*var\(--haus-color-error-default\)/
 
-const paintsErrorRing = (c: Component) => c.css.includes('var(--haus-focus-ring-error)')
+const paintsRing = (c: Component) => OUTLINE.test(c.css)
+
+const paintsErrorRing = (c: Component) => ERROR_OUTLINE.test(c.css)
 
 describe('an invalid control rings in the error colour', () => {
   it('found the components it is meant to read', () => {
@@ -82,6 +87,16 @@ describe('an invalid control rings in the error colour', () => {
     expect(ALL.length).toBeGreaterThan(10)
     expect(
       ALL.filter(takesError)
+        .map(c => c.name)
+        .sort(),
+    ).toEqual(['Checkbox', 'Input', 'Radio', 'Select', 'Textarea'])
+  })
+
+  it('found the controls that paint a focus outline', () => {
+    // Every control with an error state paints the outline. If this list
+    // shrinks, the next assertion is checking fewer controls than it should.
+    expect(
+      ALL.filter(c => takesError(c) && paintsRing(c))
         .map(c => c.name)
         .sort(),
     ).toEqual(['Checkbox', 'Input', 'Radio', 'Select', 'Textarea'])
@@ -102,7 +117,7 @@ describe('an invalid control rings in the error colour', () => {
     const unscoped: string[] = []
     for (const c of ALL.filter(paintsErrorRing)) {
       const rules = c.css.match(/[^{}]+\{[^}]*\}/g) ?? []
-      const carrying = rules.filter(r => r.includes('var(--haus-focus-ring-error)'))
+      const carrying = rules.filter(r => ERROR_OUTLINE.test(r))
       expect(carrying.length).toBeGreaterThan(0)
       for (const rule of carrying) {
         const selector = rule.slice(0, rule.indexOf('{'))

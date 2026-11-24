@@ -1,5 +1,5 @@
 {
-  "acceptedAt": "2026-11-24T02:47:22.802Z",
+  "acceptedAt": "2026-11-24T02:54:00.981Z",
   "items": {
     "axis Avatar.size": {
       "code": "lg|md|sm|xl|xs",
@@ -197,7 +197,7 @@
       "figma": "disabled|focus|hover|pressed"
     },
     "states Checkbox": {
-      "code": "disabled|focus|hover",
+      "code": "disabled|focus|hover|pressed",
       "figma": "disabled|focus|hover"
     },
     "states IconButton": {
@@ -209,7 +209,7 @@
       "figma": "disabled|focus"
     },
     "states Radio": {
-      "code": "disabled|focus|hover",
+      "code": "disabled|focus|hover|pressed",
       "figma": "disabled|focus|hover"
     },
     "states Select": {
@@ -217,7 +217,7 @@
       "figma": "disabled|focus|hover"
     },
     "states Textarea": {
-      "code": "disabled|focus",
+      "code": "disabled|focus|hover",
       "figma": "disabled|focus"
     },
     "states Toggle": {

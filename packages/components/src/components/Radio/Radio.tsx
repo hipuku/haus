@@ -123,7 +123,12 @@ export const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>(func
 
       {error && (
         <span id={errorId} className={styles.errorMessage} role="alert">
-          {error}
+          <svg className={styles.errorIcon} viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <circle cx="8" cy="8" r="6.25" stroke="currentColor" strokeWidth="1.5" />
+            <path d="M8 4.75v3.75" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            <circle cx="8" cy="11" r="0.9" fill="currentColor" />
+          </svg>
+          <span>{error}</span>
         </span>
       )}
     </div>

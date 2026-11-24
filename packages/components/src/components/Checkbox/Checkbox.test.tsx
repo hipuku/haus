@@ -43,8 +43,8 @@ describe('Checkbox', () => {
 
   it('describes with the hint and the error together, in reading order', () => {
     render(<Checkbox label="Accept terms" hint="Read them first" error="Required" />)
-    // The hint is hidden while an error shows, so the description is the error.
-    expect(screen.getByRole('checkbox')).toHaveAccessibleDescription('Required')
+    // The error first, then the hint, which stays (4.5, as Input).
+    expect(screen.getByRole('checkbox')).toHaveAccessibleDescription('Required Read them first')
   })
 
   it('associates its label with the input', () => {
@@ -95,9 +95,9 @@ describe('Checkbox', () => {
     expect(box.getAttribute('aria-describedby')).toBe(error.id)
   })
 
-  it('hides the hint when an error replaces it', () => {
+  it('keeps the hint when an error appears', () => {
     render(<Checkbox label="Terms" hint="Read them first" error="Required" />)
-    expect(screen.queryByText('Read them first')).not.toBeInTheDocument()
+    expect(screen.getByText('Read them first')).toBeInTheDocument()
   })
 
   it('does not toggle while disabled', async () => {

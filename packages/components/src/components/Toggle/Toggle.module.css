@@ -38,7 +38,11 @@
      only thing saying a toggle is there. Decision 0031. */
   background-color: var(--haus-color-border-control);
   position: relative;
-  transition: background-color var(--haus-motion-micro);
+  /* Colour and focus on the highlight role (plan 4.1). */
+  transition:
+    background-color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    outline-color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    outline-offset var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing);
   /* Centred in the label's first line, as Checkbox's box is. The track is
      taller than that line, so the offset is negative by a quarter pixel. */
   margin-block-start: calc(
@@ -52,9 +56,16 @@
   background-color: var(--haus-color-ink-secondary);
 }
 
-.input:focus-visible ~ .track {
-  box-shadow: var(--haus-focus-ring);
-  outline: none;
+@media (forced-colors: none) {
+  .track {
+    outline: var(--haus-border-width-thick) solid transparent;
+    outline-offset: 0;
+  }
+
+  .input:focus-visible ~ .track {
+    outline-color: var(--haus-color-border-focus);
+    outline-offset: var(--haus-focus-outline-offset);
+  }
 }
 
 .on .track {
@@ -78,7 +89,9 @@
   border-radius: 50%;
   background-color: var(--haus-color-surface-default);
   box-shadow: var(--haus-elevation-raised);
-  transition: transform var(--haus-motion-micro);
+  /* The thumb's travel is movement, on the layout role: a spring that settles
+     at the far end in expressive, an ease in subtle, a jump in reduced. */
+  transition: transform var(--haus-motion-layout-duration) var(--haus-motion-layout-easing);
   /* How far the thumb travels, and which way. There is no logical equivalent of
      translateX, so the direction is a sign the RTL rule flips: without it the
      thumb slides out of the left-hand end of a right-to-left track. Travel is a
@@ -120,6 +133,7 @@
   font-size: var(--haus-type-body-sm-size);
   font-weight: var(--haus-type-body-sm-weight);
   line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
   color: var(--haus-color-ink-primary);
 }
 
@@ -136,13 +150,6 @@
 
 .labelRight {
   flex-direction: row-reverse;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .track,
-  .thumb {
-    transition-duration: var(--haus-duration-reduced);
-  }
 }
 
 /* forced-colors drops box-shadow entirely, and every ring in this system is one.

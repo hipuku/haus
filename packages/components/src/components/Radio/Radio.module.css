@@ -32,6 +32,9 @@
 }
 
 .errorMessage {
+  display: flex;
+  align-items: center;
+  gap: var(--haus-space-gap-2xs);
   font-family: var(--haus-font-sans);
   font-size: var(--haus-type-label-caption-size);
   font-weight: var(--haus-type-label-caption-weight);
@@ -79,9 +82,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  /* As Checkbox's box: colour on highlight, press and release on press and
+     layout (plan 4.1). */
   transition:
-    background-color var(--haus-motion-micro),
-    border-color var(--haus-motion-micro);
+    background-color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    border-color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    outline-color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    outline-offset var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    transform var(--haus-motion-layout-duration) var(--haus-motion-layout-easing);
   /* Centred in the label's first line, as Checkbox's box is. */
   margin-block-start: calc(
     (var(--haus-type-body-sm-size) * var(--haus-type-body-sm-leading) - var(--haus-marker-box)) / 2
@@ -92,9 +100,26 @@
   border-color: var(--haus-color-primary-default);
 }
 
-.input:focus-visible ~ .circle {
-  box-shadow: var(--haus-focus-ring);
-  outline: none;
+@media (forced-colors: none) {
+  .circle {
+    outline: var(--haus-border-width-thick) solid transparent;
+    outline-offset: 0;
+  }
+
+  .input:focus-visible ~ .circle {
+    outline-color: var(--haus-color-border-focus);
+    outline-offset: var(--haus-focus-outline-offset);
+  }
+
+  .error .input:focus-visible ~ .circle {
+    outline-color: var(--haus-color-error-default);
+  }
+}
+
+.radio:not(.disabled):active .circle {
+  transform: scale(var(--haus-motion-press-scale));
+  transition-duration: var(--haus-motion-press-duration);
+  transition-timing-function: var(--haus-motion-press-easing);
 }
 
 .checked .circle {
@@ -110,6 +135,15 @@
   height: var(--haus-marker-dot);
   border-radius: 50%;
   background-color: var(--haus-color-primary-default);
+  /* The dot grows in on the layout role: a spring in expressive, an ease in
+     subtle, at once in reduced. */
+  animation: haus-radio-dot var(--haus-motion-layout-duration) var(--haus-motion-layout-easing) both;
+}
+
+@keyframes haus-radio-dot {
+  from {
+    transform: scale(0);
+  }
 }
 
 .error .circle {
@@ -124,12 +158,6 @@
   background-color: var(--haus-color-error-default);
 }
 
-/* The pair of the rule in Checkbox: without it an invalid radio rings in the brand
-   colour the moment it takes focus, and the ring is the loudest part of the control. */
-.error .input:focus-visible ~ .circle {
-  box-shadow: var(--haus-focus-ring-error);
-}
-
 .radioContent {
   display: flex;
   flex-direction: column;
@@ -141,6 +169,7 @@
   font-size: var(--haus-type-body-sm-size);
   font-weight: var(--haus-type-body-sm-weight);
   line-height: var(--haus-type-body-sm-leading);
+  letter-spacing: var(--haus-type-body-sm-tracking);
   color: var(--haus-color-ink-primary);
 }
 
@@ -153,12 +182,6 @@
   color: var(--haus-color-ink-secondary);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .circle {
-    transition-duration: var(--haus-duration-reduced);
-  }
-}
-
 /* forced-colors drops box-shadow entirely, and every ring in this system is one.
    Without this a Windows High Contrast user gets no focus indicator at all.
    `Highlight` is the system's own focus colour, so it follows the user's theme
@@ -168,4 +191,12 @@
     outline: var(--haus-focus-outline-forced);
     outline-offset: var(--haus-focus-outline-offset);
   }
+}
+
+/* The error carries the icon every field's error has (4.5), so it is not told
+   by colour alone. */
+.errorIcon {
+  flex-shrink: 0;
+  inline-size: 1em;
+  block-size: 1em;
 }
