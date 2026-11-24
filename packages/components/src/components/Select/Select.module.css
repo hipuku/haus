@@ -117,7 +117,8 @@
   /* The secondary ink, so the chevron reads with the value it sits beside
      rather than as a lighter, separate mark. */
   color: var(--haus-color-ink-secondary);
-  transition: transform var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing);
+  /* Turning is movement: the layout spring, which settles in expressive. */
+  transition: transform var(--haus-motion-layout-duration) var(--haus-motion-layout-easing);
 }
 
 .chevronOpen {
@@ -146,12 +147,8 @@
 }
 
 .option {
-  --haus-option-stagger: 0;
-  /* The highlight moving between rows: instant in subtle and reduced, a fade
-     on the highlight role in expressive, so moving through the list reads as
-     one highlight travelling rather than rows switching on and off. */
-  --haus-option-highlight: 0ms;
-  transition: background-color var(--haus-option-highlight) var(--haus-motion-highlight-easing);
+  /* Above the indicator, which is drawn behind the rows. */
+  position: relative;
   display: flex;
   align-items: center;
   gap: var(--haus-space-gap-xs);
@@ -162,16 +159,43 @@
   border-radius: var(--haus-radius-control);
   cursor: pointer;
   color: var(--haus-color-ink-primary);
-  /* Expressive staggers the rows in after the panel, a few milliseconds each,
-     capped at the ninth (finding 13). Subtle and reduced show them with the
-     panel: the stagger is 0. */
+  /* Expressive staggers the rows in after the panel, one stagger step each,
+     capped at the sixth so the sequence stays inside stagger-max. Subtle and
+     reduced have a 0ms step, so the rows arrive with the panel. */
   animation: haus-option-in var(--haus-motion-popover-enter-duration) var(--haus-motion-popover-enter-easing) both;
-  animation-delay: calc(var(--haus-motion-popover-enter-duration) * var(--haus-option-stagger) * var(--haus-option-index));
+  animation-delay: calc(var(--haus-motion-stagger-step) * (var(--haus-option-index) + 1));
 }
 
-[data-haus-motion='expressive'] .option {
-  --haus-option-stagger: 0.08;
-  --haus-option-highlight: var(--haus-motion-highlight-duration);
+/* The travelling highlight. It moves on the indicator role: a spring in
+   expressive, instant in subtle and reduced. Its first placement after the
+   panel opens is not animated (no data-placed yet). */
+.indicator {
+  position: absolute;
+  inset-inline: var(--haus-space-inset-2xs);
+  inset-block-start: 0;
+  border-radius: var(--haus-radius-control);
+  background-color: var(--haus-color-surface-sunken);
+  pointer-events: none;
+}
+
+.indicator[data-placed] {
+  transition:
+    transform var(--haus-motion-indicator-duration) var(--haus-motion-indicator-easing),
+    block-size var(--haus-motion-indicator-duration) var(--haus-motion-indicator-easing);
+}
+
+/* The check draws its stroke on the draw role: 0ms, already drawn, in subtle
+   and reduced. */
+.check path {
+  stroke-dasharray: 1;
+  animation: haus-select-draw var(--haus-motion-draw-duration) var(--haus-motion-draw-easing) both;
+  animation-delay: calc(var(--haus-motion-stagger-step) * 2);
+}
+
+@keyframes haus-select-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
 }
 
 @keyframes haus-option-in {
@@ -199,7 +223,15 @@
    trigger and this is what aria-activedescendant points at. Hover and keyboard
    both land here, so there is one highlight rather than two competing ones. */
 .active {
-  background-color: var(--haus-color-surface-sunken);
+  /* The indicator draws the highlight. */
+  background-color: transparent;
+}
+
+/* Forced colours drop the indicator's fill, so the active row marks itself. */
+@media (forced-colors: active) {
+  .active {
+    outline: var(--haus-focus-outline-forced);
+  }
 }
 
 .selected {
@@ -262,15 +294,11 @@
 /* Input's error: grows in on the layout role, after the border in expressive,
    instant in reduced. */
 .errorSlot {
-  --haus-select-stagger: 0;
   display: grid;
   grid-template-rows: 1fr;
   animation: haus-select-error-in var(--haus-motion-layout-duration) var(--haus-motion-layout-easing) both;
-  animation-delay: calc(var(--haus-motion-highlight-duration) * var(--haus-select-stagger));
-}
-
-[data-haus-motion='expressive'] .errorSlot {
-  --haus-select-stagger: 0.33;
+  /* After the border has turned: 0ms in subtle, 80ms in expressive. */
+  animation-delay: calc(var(--haus-motion-stagger-step) * 2);
 }
 
 .errorSlot > * {

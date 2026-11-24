@@ -41,60 +41,84 @@
       --haus-motion-press-duration:          120ms;
       --haus-motion-press-easing:            cubic-bezier(0.65, 0, 0.35, 1);
       --haus-motion-press-scale:             0.98;
-      --haus-motion-highlight-duration:      353ms;
-      --haus-motion-highlight-easing:        linear(0, 0.0229, 0.0789, 0.1534, 0.2364, 0.3211, 0.4034, 0.4806, 0.5514, 0.615, 0.6715, 0.7211, 0.7642, 0.8014, 0.8332, 0.8604, 0.8835, 0.903, 0.9194, 0.9331, 0.9447, 0.9543, 0.9623, 0.9689, 0.9744, 0.979, 0.9828, 0.9859, 0.9884, 0.9905, 0.9923, 0.9937, 0.9948, 0.9958, 0.9966, 0.9972, 0.9977, 0.9981, 0.9985, 0.9988, 1);
+      --haus-motion-highlight-duration:      265ms;
+      --haus-motion-highlight-easing:        linear(0, 0.023, 0.0791, 0.1536, 0.2367, 0.3215, 0.4039, 0.4811, 0.5519, 0.6156, 0.672, 0.7216, 0.7646, 0.8018, 0.8336, 0.8608, 0.8838, 0.9033, 0.9196, 0.9334, 0.9449, 0.9544, 0.9624, 0.969, 0.9745, 0.9791, 0.9828, 0.9859, 0.9885, 0.9906, 0.9923, 0.9937, 0.9949, 0.9958, 0.9966, 0.9972, 0.9977, 0.9982, 0.9985, 0.9988, 1);
       --haus-motion-feedback-duration:       353ms;
       --haus-motion-feedback-easing:         linear(0, 0.0229, 0.0789, 0.1534, 0.2364, 0.3211, 0.4034, 0.4806, 0.5514, 0.615, 0.6715, 0.7211, 0.7642, 0.8014, 0.8332, 0.8604, 0.8835, 0.903, 0.9194, 0.9331, 0.9447, 0.9543, 0.9623, 0.9689, 0.9744, 0.979, 0.9828, 0.9859, 0.9884, 0.9905, 0.9923, 0.9937, 0.9948, 0.9958, 0.9966, 0.9972, 0.9977, 0.9981, 0.9985, 0.9988, 1);
-      --haus-motion-layout-duration:         530ms;
-      --haus-motion-layout-easing:           linear(0, 0.023, 0.0791, 0.1536, 0.2367, 0.3215, 0.4039, 0.4811, 0.5519, 0.6156, 0.672, 0.7216, 0.7646, 0.8018, 0.8336, 0.8608, 0.8838, 0.9033, 0.9196, 0.9334, 0.9449, 0.9544, 0.9624, 0.969, 0.9745, 0.9791, 0.9828, 0.9859, 0.9885, 0.9906, 0.9923, 0.9937, 0.9949, 0.9958, 0.9966, 0.9972, 0.9977, 0.9982, 0.9985, 0.9988, 1);
-      --haus-motion-popover-enter-duration:  180ms;
+      --haus-motion-layout-duration:         441ms;
+      --haus-motion-layout-easing:           linear(0, 0.0229, 0.0789, 0.1533, 0.2362, 0.3209, 0.4031, 0.4803, 0.5511, 0.6147, 0.6712, 0.7208, 0.7639, 0.8011, 0.833, 0.8602, 0.8833, 0.9028, 0.9192, 0.933, 0.9445, 0.9542, 0.9622, 0.9688, 0.9744, 0.9789, 0.9827, 0.9858, 0.9884, 0.9905, 0.9922, 0.9936, 0.9948, 0.9958, 0.9966, 0.9972, 0.9977, 0.9981, 0.9985, 0.9988, 1);
+      --haus-motion-popover-enter-duration:  150ms;
       --haus-motion-popover-enter-easing:    cubic-bezier(0.16, 1, 0.3, 1);
       --haus-motion-popover-enter-offset:    4px;
-      --haus-motion-popover-enter-scale:     0.96;
-      --haus-motion-popover-exit-duration:   120ms;
+      --haus-motion-popover-enter-scale:     0.97;
+      --haus-motion-popover-exit-duration:   100ms;
       --haus-motion-popover-exit-easing:     cubic-bezier(0.4, 0, 1, 1);
-      --haus-motion-dialog-enter-duration:   240ms;
+      --haus-motion-dialog-enter-duration:   200ms;
       --haus-motion-dialog-enter-easing:     cubic-bezier(0.16, 1, 0.3, 1);
       --haus-motion-dialog-enter-offset:     4px;
-      --haus-motion-dialog-enter-scale:      0.96;
-      --haus-motion-dialog-exit-duration:    180ms;
+      --haus-motion-dialog-enter-scale:      0.97;
+      --haus-motion-dialog-exit-duration:    140ms;
       --haus-motion-dialog-exit-easing:      cubic-bezier(0.4, 0, 1, 1);
-      --haus-motion-sheet-enter-duration:    320ms;
+      --haus-motion-sheet-enter-duration:    280ms;
       --haus-motion-sheet-enter-easing:      cubic-bezier(0.16, 1, 0.3, 1);
       --haus-motion-sheet-enter-offset:      4px;
-      --haus-motion-sheet-enter-scale:       0.96;
-      --haus-motion-sheet-exit-duration:     240ms;
+      --haus-motion-sheet-enter-scale:       0.97;
+      --haus-motion-sheet-exit-duration:     200ms;
       --haus-motion-sheet-exit-easing:       cubic-bezier(0.4, 0, 1, 1);
+      --haus-motion-toast-enter-duration:    200ms;
+      --haus-motion-toast-enter-easing:      cubic-bezier(0.16, 1, 0.3, 1);
+      --haus-motion-toast-enter-offset:      4px;
+      --haus-motion-toast-enter-scale:       1;
+      --haus-motion-toast-exit-duration:     140ms;
+      --haus-motion-toast-exit-easing:       cubic-bezier(0.4, 0, 1, 1);
+      --haus-motion-indicator-duration:      0ms;
+      --haus-motion-indicator-easing:        linear;
+      --haus-motion-draw-duration:           0ms;
+      --haus-motion-draw-easing:             linear;
+      --haus-motion-stagger-step:            0ms;
+      --haus-motion-stagger-max:             0ms;
   }
 
   [data-haus-motion='expressive'] {
-      --haus-motion-press-duration:          180ms;
+      --haus-motion-press-duration:          160ms;
       --haus-motion-press-easing:            cubic-bezier(0.65, 0, 0.35, 1);
-      --haus-motion-press-scale:             0.96;
-      --haus-motion-highlight-duration:      335ms;
-      --haus-motion-highlight-easing:        linear(0, 0.0212, 0.075, 0.149, 0.234, 0.3231, 0.4116, 0.4961, 0.5744, 0.6454, 0.7084, 0.7635, 0.8109, 0.8511, 0.8848, 0.9126, 0.9352, 0.9534, 0.9678, 0.979, 0.9875, 0.9939, 0.9986, 1.0018, 1.004, 1.0053, 1.006, 1.0063, 1.0062, 1.0059, 1.0055, 1.0049, 1.0044, 1.0038, 1.0033, 1.0028, 1.0023, 1.0019, 1.0016, 1.0012, 1);
-      --haus-motion-feedback-duration:       335ms;
-      --haus-motion-feedback-easing:         linear(0, 0.0212, 0.075, 0.149, 0.234, 0.3231, 0.4116, 0.4961, 0.5744, 0.6454, 0.7084, 0.7635, 0.8109, 0.8511, 0.8848, 0.9126, 0.9352, 0.9534, 0.9678, 0.979, 0.9875, 0.9939, 0.9986, 1.0018, 1.004, 1.0053, 1.006, 1.0063, 1.0062, 1.0059, 1.0055, 1.0049, 1.0044, 1.0038, 1.0033, 1.0028, 1.0023, 1.0019, 1.0016, 1.0012, 1);
-      --haus-motion-layout-duration:         512ms;
-      --haus-motion-layout-easing:           linear(0, 0.0193, 0.0683, 0.1358, 0.2136, 0.2956, 0.3775, 0.4563, 0.5302, 0.598, 0.6591, 0.7134, 0.7611, 0.8026, 0.8382, 0.8685, 0.8941, 0.9155, 0.9332, 0.9478, 0.9598, 0.9694, 0.9771, 0.9833, 0.9881, 0.9918, 0.9947, 0.9968, 0.9984, 0.9996, 1.0004, 1.0009, 1.0013, 1.0014, 1.0015, 1.0015, 1.0015, 1.0014, 1.0012, 1.0011, 1);
-      --haus-motion-popover-enter-duration:  240ms;
-      --haus-motion-popover-enter-easing:    cubic-bezier(0.16, 1, 0.3, 1);
-      --haus-motion-popover-enter-offset:    8px;
-      --haus-motion-popover-enter-scale:     0.94;
-      --haus-motion-popover-exit-duration:   180ms;
+      --haus-motion-press-scale:             0.95;
+      --haus-motion-highlight-duration:      424ms;
+      --haus-motion-highlight-easing:        linear(0, 0.023, 0.0791, 0.1536, 0.2367, 0.3215, 0.4039, 0.4811, 0.5519, 0.6156, 0.672, 0.7216, 0.7646, 0.8018, 0.8336, 0.8608, 0.8838, 0.9033, 0.9196, 0.9334, 0.9449, 0.9544, 0.9624, 0.969, 0.9745, 0.9791, 0.9828, 0.9859, 0.9885, 0.9906, 0.9923, 0.9937, 0.9949, 0.9958, 0.9966, 0.9972, 0.9977, 0.9982, 0.9985, 0.9988, 1);
+      --haus-motion-feedback-duration:       530ms;
+      --haus-motion-feedback-easing:         linear(0, 0.023, 0.0791, 0.1536, 0.2367, 0.3215, 0.4039, 0.4811, 0.5519, 0.6156, 0.672, 0.7216, 0.7646, 0.8018, 0.8336, 0.8608, 0.8838, 0.9033, 0.9196, 0.9334, 0.9449, 0.9544, 0.9624, 0.969, 0.9745, 0.9791, 0.9828, 0.9859, 0.9885, 0.9906, 0.9923, 0.9937, 0.9949, 0.9958, 0.9966, 0.9972, 0.9977, 0.9982, 0.9985, 0.9988, 1);
+      --haus-motion-layout-duration:         581ms;
+      --haus-motion-layout-easing:           linear(0, 0.0181, 0.0654, 0.1326, 0.2123, 0.2986, 0.3866, 0.473, 0.5551, 0.6313, 0.7004, 0.762, 0.8158, 0.862, 0.9009, 0.9332, 0.9594, 0.9802, 0.9963, 1.0084, 1.017, 1.0228, 1.0264, 1.028, 1.0283, 1.0276, 1.0261, 1.024, 1.0217, 1.0192, 1.0167, 1.0143, 1.012, 1.0099, 1.008, 1.0063, 1.0049, 1.0036, 1.0025, 1.0017, 1);
+      --haus-motion-popover-enter-duration:  421ms;
+      --haus-motion-popover-enter-easing:    linear(0, 0.0201, 0.0715, 0.1435, 0.2272, 0.3162, 0.4055, 0.4918, 0.5725, 0.6462, 0.7122, 0.7701, 0.8201, 0.8625, 0.8979, 0.9271, 0.9506, 0.9692, 0.9837, 0.9946, 1.0025, 1.0081, 1.0118, 1.014, 1.015, 1.0151, 1.0147, 1.0138, 1.0126, 1.0113, 1.01, 1.0086, 1.0073, 1.0061, 1.0051, 1.0041, 1.0032, 1.0025, 1.0019, 1.0014, 1);
+      --haus-motion-popover-enter-offset:    16px;
+      --haus-motion-popover-enter-scale:     0.9;
+      --haus-motion-popover-exit-duration:   160ms;
       --haus-motion-popover-exit-easing:     cubic-bezier(0.4, 0, 1, 1);
-      --haus-motion-dialog-enter-duration:   320ms;
-      --haus-motion-dialog-enter-easing:     cubic-bezier(0.16, 1, 0.3, 1);
-      --haus-motion-dialog-enter-offset:     8px;
-      --haus-motion-dialog-enter-scale:      0.94;
+      --haus-motion-dialog-enter-duration:   615ms;
+      --haus-motion-dialog-enter-easing:     linear(0, 0.02, 0.0715, 0.1433, 0.227, 0.316, 0.4053, 0.4915, 0.5722, 0.6459, 0.7119, 0.7698, 0.8198, 0.8622, 0.8977, 0.9269, 0.9504, 0.9691, 0.9835, 0.9945, 1.0025, 1.0081, 1.0118, 1.014, 1.015, 1.0151, 1.0147, 1.0138, 1.0126, 1.0113, 1.01, 1.0086, 1.0074, 1.0062, 1.0051, 1.0041, 1.0033, 1.0025, 1.0019, 1.0014, 1);
+      --haus-motion-dialog-enter-offset:     24px;
+      --haus-motion-dialog-enter-scale:      0.9;
       --haus-motion-dialog-exit-duration:    240ms;
       --haus-motion-dialog-exit-easing:      cubic-bezier(0.4, 0, 1, 1);
-      --haus-motion-sheet-enter-duration:    400ms;
-      --haus-motion-sheet-enter-easing:      cubic-bezier(0.16, 1, 0.3, 1);
-      --haus-motion-sheet-enter-offset:      8px;
-      --haus-motion-sheet-enter-scale:       0.94;
-      --haus-motion-sheet-exit-duration:     320ms;
+      --haus-motion-sheet-enter-duration:    753ms;
+      --haus-motion-sheet-enter-easing:      linear(0, 0.0212, 0.0748, 0.1487, 0.2336, 0.3227, 0.4111, 0.4955, 0.5738, 0.6447, 0.7078, 0.7629, 0.8104, 0.8506, 0.8843, 0.9122, 0.9349, 0.9531, 0.9675, 0.9788, 0.9874, 0.9938, 0.9985, 1.0018, 1.0039, 1.0053, 1.006, 1.0063, 1.0062, 1.0059, 1.0055, 1.0049, 1.0044, 1.0038, 1.0033, 1.0028, 1.0023, 1.0019, 1.0016, 1.0013, 1);
+      --haus-motion-sheet-enter-offset:      24px;
+      --haus-motion-sheet-enter-scale:       0.9;
+      --haus-motion-sheet-exit-duration:     300ms;
       --haus-motion-sheet-exit-easing:       cubic-bezier(0.4, 0, 1, 1);
+      --haus-motion-toast-enter-duration:    612ms;
+      --haus-motion-toast-enter-easing:      linear(0, 0.0181, 0.0655, 0.1328, 0.2126, 0.2989, 0.387, 0.4734, 0.5555, 0.6317, 0.7009, 0.7624, 0.8162, 0.8623, 0.9013, 0.9335, 0.9597, 0.9805, 0.9965, 1.0085, 1.0171, 1.0229, 1.0264, 1.0281, 1.0283, 1.0276, 1.026, 1.024, 1.0217, 1.0192, 1.0167, 1.0143, 1.012, 1.0099, 1.008, 1.0063, 1.0048, 1.0036, 1.0025, 1.0017, 1);
+      --haus-motion-toast-enter-offset:      16px;
+      --haus-motion-toast-enter-scale:       0.92;
+      --haus-motion-toast-exit-duration:     240ms;
+      --haus-motion-toast-exit-easing:       cubic-bezier(0.4, 0, 1, 1);
+      --haus-motion-indicator-duration:      486ms;
+      --haus-motion-indicator-easing:        linear(0, 0.0201, 0.0716, 0.1436, 0.2274, 0.3164, 0.4058, 0.492, 0.5728, 0.6465, 0.7125, 0.7704, 0.8203, 0.8627, 0.8982, 0.9273, 0.9508, 0.9694, 0.9838, 0.9947, 1.0026, 1.0082, 1.0118, 1.014, 1.015, 1.0151, 1.0147, 1.0138, 1.0126, 1.0113, 1.0099, 1.0086, 1.0073, 1.0061, 1.005, 1.0041, 1.0032, 1.0025, 1.0019, 1.0014, 1);
+      --haus-motion-draw-duration:           400ms;
+      --haus-motion-draw-easing:             cubic-bezier(0.16, 1, 0.3, 1);
+      --haus-motion-stagger-step:            40ms;
+      --haus-motion-stagger-max:             200ms;
   }
 
   [data-haus-motion='reduced'] {
@@ -125,6 +149,18 @@
       --haus-motion-sheet-enter-scale:       1;
       --haus-motion-sheet-exit-duration:     120ms;
       --haus-motion-sheet-exit-easing:       cubic-bezier(0.65, 0, 0.35, 1);
+      --haus-motion-toast-enter-duration:    120ms;
+      --haus-motion-toast-enter-easing:      cubic-bezier(0.65, 0, 0.35, 1);
+      --haus-motion-toast-enter-offset:      0px;
+      --haus-motion-toast-enter-scale:       1;
+      --haus-motion-toast-exit-duration:     120ms;
+      --haus-motion-toast-exit-easing:       cubic-bezier(0.65, 0, 0.35, 1);
+      --haus-motion-indicator-duration:      0ms;
+      --haus-motion-indicator-easing:        linear;
+      --haus-motion-draw-duration:           0ms;
+      --haus-motion-draw-easing:             linear;
+      --haus-motion-stagger-step:            0ms;
+      --haus-motion-stagger-max:             0ms;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -157,6 +193,18 @@
         --haus-motion-sheet-enter-scale:       1;
         --haus-motion-sheet-exit-duration:     120ms;
         --haus-motion-sheet-exit-easing:       cubic-bezier(0.65, 0, 0.35, 1);
+        --haus-motion-toast-enter-duration:    120ms;
+        --haus-motion-toast-enter-easing:      cubic-bezier(0.65, 0, 0.35, 1);
+        --haus-motion-toast-enter-offset:      0px;
+        --haus-motion-toast-enter-scale:       1;
+        --haus-motion-toast-exit-duration:     120ms;
+        --haus-motion-toast-exit-easing:       cubic-bezier(0.65, 0, 0.35, 1);
+        --haus-motion-indicator-duration:      0ms;
+        --haus-motion-indicator-easing:        linear;
+        --haus-motion-draw-duration:           0ms;
+        --haus-motion-draw-easing:             linear;
+        --haus-motion-stagger-step:            0ms;
+        --haus-motion-stagger-max:             0ms;
     }
   }
 }

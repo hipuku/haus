@@ -11,17 +11,14 @@
      on the way in and trails on the way out, so the dialog arrives onto a dim
      page and leaves before it lightens (finding 3); subtle runs both together,
      and reduced is the tokens' short fade. */
-  --haus-modal-stagger: 0;
   animation: haus-modal-fade var(--haus-motion-dialog-enter-duration) var(--haus-motion-dialog-enter-easing) both;
 }
 
 .backdrop[data-state='closed'] {
   animation: haus-modal-fade-out var(--haus-motion-dialog-exit-duration) var(--haus-motion-dialog-exit-easing) both;
-  animation-delay: calc(var(--haus-motion-dialog-exit-duration) * var(--haus-modal-stagger));
-}
-
-[data-haus-motion='expressive'] .backdrop {
-  --haus-modal-stagger: 0.33;
+  /* Trails the dialog out by two stagger steps: 0ms in subtle, 80ms in
+     expressive. */
+  animation-delay: calc(var(--haus-motion-stagger-step) * 2);
 }
 
 @keyframes haus-modal-fade {
@@ -48,11 +45,21 @@
   /* Enters on dialog-enter (fade, travel up, slight scale, all per mode) and
      leaves on dialog-exit (finding 2). */
   animation: haus-modal-in var(--haus-motion-dialog-enter-duration) var(--haus-motion-dialog-enter-easing) both;
-  animation-delay: calc(var(--haus-motion-dialog-enter-duration) * var(--haus-modal-stagger));
+  /* After the backdrop by two stagger steps, then its header, body and footer
+     follow one step apart (below). Subtle's step is 0ms: all at once. */
+  animation-delay: calc(var(--haus-motion-stagger-step) * 2);
 }
 
 .backdrop[data-state='closed'] .dialog {
   animation: haus-modal-out var(--haus-motion-dialog-exit-duration) var(--haus-motion-dialog-exit-easing) both;
+}
+
+/* Expressive sequences the dialog's header, body and footer after the dialog
+   itself, one stagger step apart. Subtle's step is 0ms: all at once. */
+@keyframes haus-modal-part-in {
+  from {
+    opacity: 0;
+  }
 }
 
 @keyframes haus-modal-in {
@@ -87,6 +94,8 @@
 /* ── Header ── */
 
 .header {
+  animation: haus-modal-part-in var(--haus-motion-dialog-enter-duration) var(--haus-motion-dialog-enter-easing) both;
+  animation-delay: calc(var(--haus-motion-stagger-step) * 3);
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -117,6 +126,8 @@
 /* ── Body ── */
 
 .body {
+  animation: haus-modal-part-in var(--haus-motion-dialog-enter-duration) var(--haus-motion-dialog-enter-easing) both;
+  animation-delay: calc(var(--haus-motion-stagger-step) * 4);
   flex: 1;
   overflow-y: auto;
   padding: var(--haus-space-inset-lg) var(--haus-space-inset-xl);
@@ -133,6 +144,8 @@
 /* ── Footer ── */
 
 .footer {
+  animation: haus-modal-part-in var(--haus-motion-dialog-enter-duration) var(--haus-motion-dialog-enter-easing) both;
+  animation-delay: calc(var(--haus-motion-stagger-step) * 5);
   display: flex;
   align-items: center;
   justify-content: flex-end;

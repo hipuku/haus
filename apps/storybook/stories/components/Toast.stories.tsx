@@ -99,8 +99,8 @@ export const ToneByAppearance: Story = {
 
 export const Motion: Story = {
   parameters: story(
-    'The enter: a fade with no travel, because the container moves toasts. Expressive brings the icon a beat ' +
-      'later; reduced shows it at once.',
+    'Toast owns its entrance. Subtle rises 4px; expressive rises 16px on a spring, then the icon and the ' +
+      'text follow one step apart; reduced is a short fade.',
   ),
   render: args => <MotionCompare render={() => <Toast {...args} />} />,
 }

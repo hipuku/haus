@@ -99,9 +99,10 @@ export const States: Story = {
 
 export const Motion: Story = {
   parameters: story(
-    'Open each one. The panel enters on the popover role: subtle is quick, expressive travels further and ' +
-      'staggers its options and fades the highlight between rows, reduced is a short fade. Replay restarts the ' +
-      'error growing in.',
+    'Open each one and move through the options. Subtle: the panel drops in and the highlight jumps. ' +
+      'Expressive: the panel grows from the field on a spring, the options stagger in, the highlight slides ' +
+      'between rows, the chevron turns on a spring and the check draws. Reduced: a short fade. Replay restarts ' +
+      'the error growing in.',
   ),
   render: () => <MotionCompare render={() => <Controlled hint={HINT} error="Pick a role for this member" />} />,
 }

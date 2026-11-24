@@ -468,6 +468,11 @@ function roleDeclarations(mode: string): string[] {
     if (v.offsetPx !== undefined) pairs.push([`${r}-offset`, { $value: `${v.offsetPx}px` }])
     if (v.scale !== undefined) pairs.push([`${r}-scale`, { $value: String(v.scale) }])
   }
+  // The stagger step between siblings that enter in sequence, and the most a
+  // sequence may add in total. Subtle's is 0ms: it moves everything at once.
+  const stagger = sub(sub(motionRoles, 'stagger'), mode)
+  pairs.push(['stagger-step', { $value: `${msOf(stagger.step as DtcgToken)}ms` }])
+  pairs.push(['stagger-max', { $value: `${msOf(stagger.max as DtcgToken)}ms` }])
   return declarations(pairs, '--motion').map(line => `  ${line}`)
 }
 

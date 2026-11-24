@@ -164,8 +164,9 @@ export const States: Story = {
 
 export const Motion: Story = {
   parameters: story(
-    'Press and hold to compare the press in each mode. Replay restarts the loading cross-fade, which ' +
-      'expressive staggers.',
+    'Press and hold each one, then release. Subtle presses to 0.98 and eases back; expressive presses to 0.95 ' +
+      'and springs back with a settle; reduced changes colour only. Replay restarts the loading cross-fade, which ' +
+      'expressive sequences.',
   ),
   render: args => <MotionCompare render={() => <Button {...args} loading />} />,
 }

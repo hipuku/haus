@@ -18,13 +18,33 @@
   width: 100%;
   font-family: var(--haus-font-sans);
   color: var(--haus-color-ink-primary);
-  /* A fade on the feedback role and no travel: in a product the container
-     (sonner, in core) moves the toast in and out, and a second movement would
-     fight it (finding 7). Reduced sets feedback to 0ms. */
-  animation: haus-toast-in var(--haus-motion-feedback-duration) var(--haus-motion-feedback-easing) both;
+  /* Toast owns its entrance (owner, 2026-11-24): it rises from below and
+     fades in on the toast-enter role, 4px in subtle, 16px on a spring in
+     expressive, a short fade with no travel in reduced. A container that
+     moves toasts itself (sonner, in core) turns its own movement off. Set
+     data-state="closed" before removing a toast to run its exit. */
+  animation: haus-toast-in var(--haus-motion-toast-enter-duration) var(--haus-motion-toast-enter-easing) both;
+}
+
+.toast[data-state='closed'] {
+  animation: haus-toast-out var(--haus-motion-toast-exit-duration) var(--haus-motion-toast-exit-easing) both;
 }
 
 @keyframes haus-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--haus-motion-toast-enter-offset)) scale(var(--haus-motion-toast-enter-scale));
+  }
+}
+
+@keyframes haus-toast-out {
+  to {
+    opacity: 0;
+    transform: translateY(var(--haus-motion-toast-enter-offset)) scale(var(--haus-motion-toast-enter-scale));
+  }
+}
+
+@keyframes haus-toast-part-in {
   from {
     opacity: 0;
   }
@@ -107,7 +127,6 @@
    primitives components consume from 61 to 62, which tokens.test.ts holds and
    three documents quote. */
 .icon {
-  --haus-toast-stagger: 0;
   flex-shrink: 0;
   width: var(--haus-icon-sm);
   aspect-ratio: 1;
@@ -117,13 +136,10 @@
     (var(--haus-type-label-md-size) * var(--haus-type-label-md-leading) - var(--haus-icon-sm)) / 2
   );
   /* Expressive brings the icon in a beat after the surface. */
-  animation: haus-toast-in var(--haus-motion-feedback-duration) var(--haus-motion-feedback-easing) both;
-  animation-delay: calc(var(--haus-motion-feedback-duration) * var(--haus-toast-stagger));
+  animation: haus-toast-part-in var(--haus-motion-feedback-duration) var(--haus-motion-feedback-easing) both;
+  animation-delay: calc(var(--haus-motion-stagger-step) * 2);
 }
 
-[data-haus-motion='expressive'] .icon {
-  --haus-toast-stagger: 0.33;
-}
 
 /* One rule per appearance rather than one per tone: the tinted appearance puts
    the tone's own ink on the icon, and the solid one has the tone in the surface
@@ -138,6 +154,9 @@
 /* ── Body ── */
 
 .body {
+  /* The text follows the icon by a step in expressive. */
+  animation: haus-toast-part-in var(--haus-motion-feedback-duration) var(--haus-motion-feedback-easing) both;
+  animation-delay: calc(var(--haus-motion-stagger-step) * 3);
   flex: 1;
   min-width: 0;
   display: flex;

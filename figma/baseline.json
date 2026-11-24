@@ -1,5 +1,5 @@
 {
-  "acceptedAt": "2026-11-24T02:17:15.640Z",
+  "acceptedAt": "2026-11-24T02:45:07.937Z",
   "items": {
     "axis Avatar.size": {
       "code": "lg|md|sm|xl|xs",
@@ -737,7 +737,7 @@
       "figma": "896"
     },
     "token --haus-motion-dialog-enter-duration": {
-      "code": "240ms",
+      "code": "200ms",
       "figma": "240ms"
     },
     "token --haus-motion-dialog-enter-easing": {
@@ -749,16 +749,22 @@
       "figma": "4"
     },
     "token --haus-motion-dialog-enter-scale": {
-      "code": "0.96",
+      "code": "0.97",
       "figma": "0.96"
     },
     "token --haus-motion-dialog-exit-duration": {
-      "code": "180ms",
+      "code": "140ms",
       "figma": "180ms"
     },
     "token --haus-motion-dialog-exit-easing": {
       "code": "cubic-bezier(0.4, 0, 1, 1)",
       "figma": "cubic-bezier(0.4, 0, 1, 1)"
+    },
+    "token --haus-motion-draw-duration": {
+      "code": "0ms"
+    },
+    "token --haus-motion-draw-easing": {
+      "code": "linear"
     },
     "token --haus-motion-feedback-duration": {
       "code": "353ms",
@@ -769,23 +775,29 @@
       "figma": "linear(0, 0.0229, 0.0789, 0.1534, 0.2364, 0.3211, 0.4034, 0.4806, 0.5514, 0.615, 0.6715, 0.7211, 0.7642, 0.8014, 0.8332, 0.8604, 0.8835, 0.903, 0.9194, 0.9331, 0.9447, 0.9543, 0.9623, 0.9689, 0.9744, 0.979, 0.9828, 0.9859, 0.9884, 0.9905, 0.9923, 0.9937, 0.9948, 0.9958, 0.9966, 0.9972, 0.9977, 0.9981, 0.9985, 0.9988, 1)"
     },
     "token --haus-motion-highlight-duration": {
-      "code": "353ms",
+      "code": "265ms",
       "figma": "353ms"
     },
     "token --haus-motion-highlight-easing": {
-      "code": "linear(0, 0.0229, 0.0789, 0.1534, 0.2364, 0.3211, 0.4034, 0.4806, 0.5514, 0.615, 0.6715, 0.7211, 0.7642, 0.8014, 0.8332, 0.8604, 0.8835, 0.903, 0.9194, 0.9331, 0.9447, 0.9543, 0.9623, 0.9689, 0.9744, 0.979, 0.9828, 0.9859, 0.9884, 0.9905, 0.9923, 0.9937, 0.9948, 0.9958, 0.9966, 0.9972, 0.9977, 0.9981, 0.9985, 0.9988, 1)",
+      "code": "linear(0, 0.023, 0.0791, 0.1536, 0.2367, 0.3215, 0.4039, 0.4811, 0.5519, 0.6156, 0.672, 0.7216, 0.7646, 0.8018, 0.8336, 0.8608, 0.8838, 0.9033, 0.9196, 0.9334, 0.9449, 0.9544, 0.9624, 0.969, 0.9745, 0.9791, 0.9828, 0.9859, 0.9885, 0.9906, 0.9923, 0.9937, 0.9949, 0.9958, 0.9966, 0.9972, 0.9977, 0.9982, 0.9985, 0.9988, 1)",
       "figma": "linear(0, 0.0229, 0.0789, 0.1534, 0.2364, 0.3211, 0.4034, 0.4806, 0.5514, 0.615, 0.6715, 0.7211, 0.7642, 0.8014, 0.8332, 0.8604, 0.8835, 0.903, 0.9194, 0.9331, 0.9447, 0.9543, 0.9623, 0.9689, 0.9744, 0.979, 0.9828, 0.9859, 0.9884, 0.9905, 0.9923, 0.9937, 0.9948, 0.9958, 0.9966, 0.9972, 0.9977, 0.9981, 0.9985, 0.9988, 1)"
     },
+    "token --haus-motion-indicator-duration": {
+      "code": "0ms"
+    },
+    "token --haus-motion-indicator-easing": {
+      "code": "linear"
+    },
     "token --haus-motion-layout-duration": {
-      "code": "530ms",
+      "code": "441ms",
       "figma": "530ms"
     },
     "token --haus-motion-layout-easing": {
-      "code": "linear(0, 0.023, 0.0791, 0.1536, 0.2367, 0.3215, 0.4039, 0.4811, 0.5519, 0.6156, 0.672, 0.7216, 0.7646, 0.8018, 0.8336, 0.8608, 0.8838, 0.9033, 0.9196, 0.9334, 0.9449, 0.9544, 0.9624, 0.969, 0.9745, 0.9791, 0.9828, 0.9859, 0.9885, 0.9906, 0.9923, 0.9937, 0.9949, 0.9958, 0.9966, 0.9972, 0.9977, 0.9982, 0.9985, 0.9988, 1)",
+      "code": "linear(0, 0.0229, 0.0789, 0.1533, 0.2362, 0.3209, 0.4031, 0.4803, 0.5511, 0.6147, 0.6712, 0.7208, 0.7639, 0.8011, 0.833, 0.8602, 0.8833, 0.9028, 0.9192, 0.933, 0.9445, 0.9542, 0.9622, 0.9688, 0.9744, 0.9789, 0.9827, 0.9858, 0.9884, 0.9905, 0.9922, 0.9936, 0.9948, 0.9958, 0.9966, 0.9972, 0.9977, 0.9981, 0.9985, 0.9988, 1)",
       "figma": "linear(0, 0.023, 0.0791, 0.1536, 0.2367, 0.3215, 0.4039, 0.4811, 0.5519, 0.6156, 0.672, 0.7216, 0.7646, 0.8018, 0.8336, 0.8608, 0.8838, 0.9033, 0.9196, 0.9334, 0.9449, 0.9544, 0.9624, 0.969, 0.9745, 0.9791, 0.9828, 0.9859, 0.9885, 0.9906, 0.9923, 0.9937, 0.9949, 0.9958, 0.9966, 0.9972, 0.9977, 0.9982, 0.9985, 0.9988, 1)"
     },
     "token --haus-motion-popover-enter-duration": {
-      "code": "180ms",
+      "code": "150ms",
       "figma": "180ms"
     },
     "token --haus-motion-popover-enter-easing": {
@@ -797,11 +809,11 @@
       "figma": "4"
     },
     "token --haus-motion-popover-enter-scale": {
-      "code": "0.96",
+      "code": "0.97",
       "figma": "0.96"
     },
     "token --haus-motion-popover-exit-duration": {
-      "code": "120ms",
+      "code": "100ms",
       "figma": "120ms"
     },
     "token --haus-motion-popover-exit-easing": {
@@ -821,7 +833,7 @@
       "figma": "0.98"
     },
     "token --haus-motion-sheet-enter-duration": {
-      "code": "320ms",
+      "code": "280ms",
       "figma": "320ms"
     },
     "token --haus-motion-sheet-enter-easing": {
@@ -833,16 +845,40 @@
       "figma": "4"
     },
     "token --haus-motion-sheet-enter-scale": {
-      "code": "0.96",
+      "code": "0.97",
       "figma": "0.96"
     },
     "token --haus-motion-sheet-exit-duration": {
-      "code": "240ms",
+      "code": "200ms",
       "figma": "240ms"
     },
     "token --haus-motion-sheet-exit-easing": {
       "code": "cubic-bezier(0.4, 0, 1, 1)",
       "figma": "cubic-bezier(0.4, 0, 1, 1)"
+    },
+    "token --haus-motion-stagger-max": {
+      "code": "0ms"
+    },
+    "token --haus-motion-stagger-step": {
+      "code": "0ms"
+    },
+    "token --haus-motion-toast-enter-duration": {
+      "code": "200ms"
+    },
+    "token --haus-motion-toast-enter-easing": {
+      "code": "cubic-bezier(0.16, 1, 0.3, 1)"
+    },
+    "token --haus-motion-toast-enter-offset": {
+      "code": "4"
+    },
+    "token --haus-motion-toast-enter-scale": {
+      "code": "1"
+    },
+    "token --haus-motion-toast-exit-duration": {
+      "code": "140ms"
+    },
+    "token --haus-motion-toast-exit-easing": {
+      "code": "cubic-bezier(0.4, 0, 1, 1)"
     },
     "token --haus-opacity-disabled": {
       "code": "0.4",

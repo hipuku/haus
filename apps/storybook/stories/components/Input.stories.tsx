@@ -71,8 +71,8 @@ export const States: Story = {
 
 export const Motion: Story = {
   parameters: story(
-    'The error growing in. Subtle grows it with the border; expressive starts it a beat after the border ' +
-      'turns; reduced shows it at once.',
+    'The error growing in. Subtle grows it with the border; expressive drops it in on a spring after the ' +
+      'border turns, then draws the icon; reduced shows it at once.',
   ),
   render: args => <MotionCompare render={() => <Input {...args} hint={HINT} error="That address is not valid." />} />,
 }

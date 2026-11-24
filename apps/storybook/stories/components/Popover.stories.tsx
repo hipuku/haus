@@ -79,8 +79,8 @@ export const Playground: Story = {
 
 export const Motion: Story = {
   parameters: story(
-    'Open each one, or Replay to see the enter. Subtle is quick with a few pixels of travel; expressive is ' +
-      'longer and travels further; reduced is a short fade. Closing runs the exit before the panel leaves.',
+    'Replay to see the enter. Subtle drops 4px in 150ms; expressive grows out of the trigger on a spring, ' +
+      '16px from 0.9 scale; reduced is a short fade. Closing runs the exit before the panel leaves.',
   ),
   render: args => (
     <div style={{ minBlockSize: '10rem' }}>

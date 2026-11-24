@@ -157,16 +157,13 @@
    sets layout to 0ms. Expressive starts it after the border has turned, a
    third of the way into the highlight. */
 .errorSlot {
-  --haus-input-stagger: 0;
   display: grid;
   grid-template-rows: 1fr;
   animation: haus-input-error-in var(--haus-motion-layout-duration) var(--haus-motion-layout-easing) both;
-  animation-delay: calc(var(--haus-motion-highlight-duration) * var(--haus-input-stagger));
+  /* After the border has turned: 0ms in subtle, 80ms in expressive. */
+  animation-delay: calc(var(--haus-motion-stagger-step) * 2);
 }
 
-[data-haus-motion='expressive'] .errorSlot {
-  --haus-input-stagger: 0.33;
-}
 
 .errorSlot > * {
   min-height: 0;
@@ -184,6 +181,20 @@
   flex-shrink: 0;
   inline-size: 1em;
   block-size: 1em;
+}
+
+/* Expressive draws the icon's ring on the draw role once the message has
+   landed; subtle and reduced show it drawn (the role is 0ms there). */
+.errorIcon circle:first-child {
+  stroke-dasharray: 40;
+  animation: haus-input-draw var(--haus-motion-draw-duration) var(--haus-motion-draw-easing) both;
+  animation-delay: calc(var(--haus-motion-stagger-step) * 3);
+}
+
+@keyframes haus-input-draw {
+  from {
+    stroke-dashoffset: 40;
+  }
 }
 
 /* forced-colors drops box-shadow entirely, and every ring in this system is one.

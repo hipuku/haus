@@ -133,6 +133,13 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(function Sel
     [options, onChange],
   )
 
+  /* One highlight that travels between rows (plan 4.1, the indicator role):
+     a spring in expressive, an instant swap in subtle and reduced. It is
+     measured from the active option, whose offsetParent is the panel. The
+     first placement after opening is not animated, so it does not fly in from
+     the top. */
+  const [indicator, setIndicator] = React.useState<{ top: number; height: number; placed: boolean } | null>(null)
+
   const listbox = useListbox({
     open,
     labels,
@@ -141,6 +148,21 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(function Sel
     onOpenChange: setOpen,
     baseId,
   })
+
+  const { activeIndex, optionId } = listbox
+  React.useLayoutEffect(() => {
+    if (!open || activeIndex < 0) {
+      setIndicator(null)
+      return
+    }
+    const node = document.getElementById(optionId(activeIndex))
+    if (!node) return
+    const top = node.offsetTop
+    const height = node.offsetHeight
+    setIndicator(prev =>
+      prev && prev.top === top && prev.height === height ? prev : { top, height, placed: prev !== null },
+    )
+  }, [open, activeIndex, optionId])
 
   return (
     <div
@@ -207,6 +229,14 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(function Sel
           id={listbox.listId}
           className={styles.panel}
         >
+          {indicator && (
+            <span
+              className={styles.indicator}
+              data-placed={indicator.placed || undefined}
+              style={{ transform: `translateY(${indicator.top}px)`, blockSize: indicator.height }}
+              aria-hidden="true"
+            />
+          )}
           <ul className={styles.options} role="none">
             {options.map((o, i) => (
               // Keys go to the trigger, which keeps focus and moves the active option
@@ -220,7 +250,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(function Sel
                 aria-selected={i === selectedIndex}
                 aria-disabled={o.disabled || undefined}
                 // Its place in the list, for expressive's stagger (finding 13).
-                style={{ '--haus-option-index': Math.min(i, 8) } as React.CSSProperties}
+                style={{ '--haus-option-index': Math.min(i, 5) } as React.CSSProperties}
                 className={[
                   styles.option,
                   i === selectedIndex ? styles.selected : '',
@@ -251,7 +281,7 @@ export const Select = React.forwardRef<HTMLDivElement, SelectProps>(function Sel
                     strokeLinejoin="round"
                     aria-hidden="true"
                   >
-                    <path d="m3.5 8.5 3 3 6-7" />
+                    <path d="m3.5 8.5 3 3 6-7" pathLength={1} />
                   </svg>
                 )}
               </li>

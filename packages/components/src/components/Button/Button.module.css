@@ -33,10 +33,6 @@
   --haus-btn-press-ink: var(--haus-color-ink-primary);
   --haus-btn-press-amount: 12%;
 
-  /* The loading cross-fade's stagger, as a fraction of the feedback duration.
-     Subtle swaps label and spinner together; expressive lets the label leave
-     before the spinner arrives (decision 27). */
-  --haus-btn-stagger: 0;
   position: relative;
   box-sizing: border-box;
   display: inline-flex;
@@ -50,9 +46,16 @@
   /* Release and hover run on the highlight role; the press itself runs on the
      press role (below). Reduced sets highlight to 0ms and press scale to 1, so
      a reduced-motion press is an instant colour change with no movement. */
-  transition-property: background-color, border-color, color, transform, outline-offset, outline-color;
-  transition-duration: var(--haus-motion-highlight-duration);
-  transition-timing-function: var(--haus-motion-highlight-easing);
+  /* Colour and focus are effects, on highlight, which never bounces. The
+     release of a press is movement, on layout: a spring that settles back in
+     expressive and an ease in subtle (plan 4.1). */
+  transition:
+    background-color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    border-color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    outline-color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    outline-offset var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    transform var(--haus-motion-layout-duration) var(--haus-motion-layout-easing);
   text-decoration: none;
   white-space: nowrap;
   user-select: none;
@@ -82,10 +85,6 @@
   transition-timing-function: var(--haus-motion-press-easing);
 }
 
-[data-haus-motion='expressive'] .button,
-.button[data-haus-motion='expressive'] {
-  --haus-btn-stagger: 0.33;
-}
 
 .button:disabled,
 .button[aria-disabled='true'] {
@@ -256,7 +255,13 @@
   text-underline-offset: var(--haus-text-underline-offset);
   text-decoration-thickness: var(--haus-border-width-default);
   text-decoration-color: oklch(from currentColor l c h / var(--haus-opacity-subtle));
-  transition-property: color, text-decoration-color, text-decoration-thickness, transform, outline-offset, outline-color;
+  transition:
+    color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    text-decoration-color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    text-decoration-thickness var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    outline-color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    outline-offset var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    transform var(--haus-motion-layout-duration) var(--haus-motion-layout-easing);
 }
 .text:hover:not(:disabled) {
   background-color: transparent;
@@ -307,7 +312,9 @@
   display: grid;
   place-items: center;
   animation: haus-btn-spinner-in var(--haus-motion-feedback-duration) var(--haus-motion-feedback-easing) both;
-  animation-delay: calc(var(--haus-motion-feedback-duration) * var(--haus-btn-stagger));
+  /* Two stagger steps after the label starts to leave: 0ms in subtle, which
+     swaps them together, 80ms in expressive. */
+  animation-delay: calc(var(--haus-motion-stagger-step) * 2);
 }
 
 @keyframes haus-btn-spinner-in {
