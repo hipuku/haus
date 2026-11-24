@@ -1,5 +1,5 @@
 {
-  "acceptedAt": "2026-11-24T02:06:35.863Z",
+  "acceptedAt": "2026-11-24T02:17:15.640Z",
   "items": {
     "axis Avatar.size": {
       "code": "lg|md|sm|xl|xs",
@@ -989,7 +989,7 @@
       "figma": "0"
     },
     "token --haus-radius-overlay": {
-      "code": "16",
+      "code": "12",
       "figma": "16"
     },
     "token --haus-radius-pill": {

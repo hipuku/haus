@@ -157,10 +157,8 @@
   gap: var(--haus-space-gap-xs);
   /* 8px top and bottom, a comfortable pointer row (finding 8). */
   padding: var(--haus-space-inset-xs);
-  /* Concentric with the panel: the panel corner is radius-overlay and the panel
-     insets its options by inset-2xs, so the highlight matches the container's
-     curve (overlay - inset) instead of a tighter marker radius that pokes inside
-     the panel's rounded corner on the first and last row. */
+  /* The control radius, the same as the panel's and the trigger's, so the
+     highlight, the list and the field share one corner. */
   border-radius: var(--haus-radius-control);
   cursor: pointer;
   color: var(--haus-color-ink-primary);
