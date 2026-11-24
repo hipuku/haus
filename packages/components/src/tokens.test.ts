@@ -116,7 +116,10 @@ describe('components read roles, not primitives', () => {
     // Checkbox's and Radio's 16px boxes took --haus-marker-box and Toggle's
     // 20px track height --haus-toggle-track-height, five declarations off the
     // ladder and onto a size whose name says what it is.
-    expect(sizes.length).toBe(26)
+    //
+    // Then 26 to 25 when Modal's enter moved onto the dialog-enter role (4.5
+    // audit): its travel was --haus-space-3 and is now the role's offset.
+    expect(sizes.length).toBe(25)
     // 61 before step 7, rising to 77 as the six new components landed: border
     // widths, font families, shadows and, the sharp one, --haus-z-dropdown.
     // Popover and Tooltip are the pair worth pausing on. They are the first
@@ -199,10 +202,14 @@ describe('components read roles, not primitives', () => {
     // field has one size, as Input does, so its three control-height reads
     // became one.
     //
-    // What is left is eleven control heights and twenty icon sizes. A control
+    // Then 31 to 27 when Modal's close became an IconButton (4.5 audit): its
+    // own box read icon-lg three times and icon-xs twice, and what is left is
+    // one control-height-sm in the margin that centres it on the title.
+    //
+    // What is left is twelve control heights and fifteen icon sizes. A control
     // height and an icon box are sizes whose own name is already the role, with
     // no honest alias to invent.
-    expect(PAST.length - sizes.length).toBe(31)
+    expect(PAST.length - sizes.length).toBe(27)
   })
 })
 

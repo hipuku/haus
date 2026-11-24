@@ -1,6 +1,7 @@
 import React from 'react'
 import { createPortal } from 'react-dom'
 import type { Size } from '../../types'
+import { IconButton } from '../IconButton'
 import styles from './Modal.module.css'
 
 export type ModalSize = Size | 'xl'
@@ -168,17 +169,50 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(function Modal
     }
   }, [open, initialFocus])
 
-  // Prevent body scroll when open
+  /* Prevent body scroll when open, without moving the page. Hiding the
+     overflow removes a visible scrollbar, and the page behind shifted sideways
+     by its width (4.5, Modal finding 7). The gutter is reserved only when there
+     was a scrollbar to lose: on a page with none, reserving one would shift it
+     the other way. */
   React.useEffect(() => {
     if (!open) return
+    const root = document.documentElement
+    const hadScrollbar = window.innerWidth > root.clientWidth
     const prev = document.body.style.overflow
+    const prevGutter = root.style.scrollbarGutter
+    if (hadScrollbar) root.style.scrollbarGutter = 'stable'
     document.body.style.overflow = 'hidden'
     return () => {
       document.body.style.overflow = prev
+      root.style.scrollbarGutter = prevGutter
     }
   }, [open])
 
-  if (!open) return null
+  /* Kept in the document while the exit runs, as Popover's, so the dialog
+     leaves on dialog-exit rather than vanishing in a frame (finding 1). The
+     backdrop's animation ends last in every mode, so it is the one listened
+     for. Inert while closing; unmounted at once when nothing animates. */
+  const [closing, setClosing] = React.useState(false)
+  const wasOpen = React.useRef(open)
+  const backdropRef = React.useRef<HTMLDivElement>(null)
+  React.useLayoutEffect(() => {
+    if (wasOpen.current && !open) setClosing(true)
+    if (open) setClosing(false)
+    wasOpen.current = open
+  }, [open])
+  React.useLayoutEffect(() => {
+    if (!closing) return
+    const node = backdropRef.current
+    const style = node ? getComputedStyle(node) : null
+    const animated =
+      !!style &&
+      style.animationName !== '' &&
+      style.animationName !== 'none' &&
+      parseFloat(style.animationDuration || '0') > 0
+    if (!animated) setClosing(false)
+  }, [closing])
+
+  if (!open && !closing) return null
 
   const dialogCls = [styles.dialog, styles[size], dialogClassName].filter(Boolean).join(' ')
 
@@ -188,7 +222,13 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(function Modal
     // and no role: it is not a control, and a screen reader should not find it.
     // eslint-disable-next-line jsx-a11y-x/click-events-have-key-events, jsx-a11y-x/no-static-element-interactions
     <div
+      ref={backdropRef}
       className={[styles.backdrop, className].filter(Boolean).join(' ')}
+      data-state={open ? 'open' : 'closed'}
+      inert={!open || undefined}
+      onAnimationEnd={e => {
+        if (!open && e.target === e.currentTarget) setClosing(false)
+      }}
       onPointerDown={
         dismissOnBackdrop
           ? e => {
@@ -224,11 +264,21 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(function Modal
             <h2 id={titleId} className={styles.title}>
               {title}
             </h2>
-            <button type="button" className={styles.close} onClick={onClose} aria-label="Close modal">
-              <svg viewBox="0 0 12 12" fill="none" aria-hidden>
-                <path d="M2 2L10 10M10 2L2 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-              </svg>
-            </button>
+            {/* haus's own IconButton (finding 6), so the close is a 28px target
+                with the outline focus and the press motion every icon action
+                has. "Close": the dialog's name gives the context. */}
+            <IconButton
+              label="Close"
+              variant="ghost"
+              size="md"
+              className={styles.close}
+              onClick={onClose}
+              icon={
+                <svg viewBox="0 0 12 12" fill="none" aria-hidden>
+                  <path d="M2 2L10 10M10 2L2 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                </svg>
+              }
+            />
           </div>
         )}
 

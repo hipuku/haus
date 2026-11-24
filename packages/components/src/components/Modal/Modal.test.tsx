@@ -205,7 +205,7 @@ describe('Modal', () => {
         Body
       </Modal>,
     )
-    const close = screen.getByRole('button', { name: 'Close modal' })
+    const close = screen.getByRole('button', { name: 'Close' })
     const confirm = screen.getByRole('button', { name: 'Confirm' })
 
     await user.tab()
