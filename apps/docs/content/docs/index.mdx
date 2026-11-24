@@ -1,34 +1,51 @@
 ---
 title: Overview
-description: The design system every hipuku app is built on, as components you install as source and the tokens underneath them.
+description: What haus is, how it reaches your repository, and the three decisions the rest of these pages are consequences of.
 ---
 
-haus ships components as source through a [shadcn](https://ui.shadcn.com) registry, and its design
-tokens as a package on npm (`haus-tokens` today, `@hipuku/tokens` from the next release). A
-component you install is a copy in your own repository: restyle it freely, and take behaviour fixes
-from haus with `shadcn add`.
+haus is the design system every hipuku app is built on. It is two things a consumer takes
+separately: components distributed as source through a [shadcn](https://ui.shadcn.com) registry,
+and the design tokens underneath them, published on npm (`haus-tokens` today, `@hipuku/tokens`
+from the next release).
 
 <GetStarted />
 
-## What you install
+## What arriving as source means
 
-A copy of the component in your own repository, not a dependency you cannot reach into. Every one
-of these is the published component, rendered on this page: tab through them, or switch the mode in
-the header and watch them follow.
+A component you install is a copy in your own repository. There is no package boundary between you
+and it: open the file, read it, restyle it, delete the half you do not need. When a behaviour fix
+lands here, `shadcn add` brings the new copy and you merge it like any other change to your own
+code.
 
-<Wall />
+The trade is deliberate. A dependency can be upgraded in one line and cannot be reached into; a
+copy can be reached into and has to be upgraded on purpose. For an interface, which is the part of
+an app most often wrong in ways only its own team can see, being able to reach in is worth more
+than the upgrade being free.
 
-## Components
+The tokens go the other way. They are a package, versioned and installed, because a value is not
+something a product should fork: two apps whose `surface-raised` has drifted apart are two apps
+that no longer look like one company.
 
-<PageIndex section="components" />
+## Three decisions
 
-## Foundations
+Nearly everything on this site is a consequence of three choices, and each has a page that shows
+the evidence rather than restating the claim.
 
-The decisions underneath every component, each page showing the live values rather than a table of
-them.
+**A component never names a value.** It names a role: the surface it sits on, the ink it writes
+in, the border that is its edge. One component is then correct in a light app, a dark one, and in
+another brand, without a line of it changing. See [Colour](/docs/foundations/colour).
 
-<PageIndex section="foundations" />
+**A dark mode is the same mapping read again.** Every role carries a value per mode, resolved from
+the theme on the document or the reader's system setting, so there is one mapping rather than a
+light set and a dark set that can drift apart. See [Theming](/docs/foundations/theming).
 
-## Packages
+**Contrast is a test, not an intention.** `contrast.test.ts` in the token package holds every ink
+and surface pair against WCAG AA in both modes, so a pair that would fail does not get released.
+See [Quality](/docs/start/quality).
 
-<PageIndex section="packages" />
+## Where to go next
+
+[Install](/docs/start/install) is the registry entry and two lines of configuration. The
+[foundations](/docs/foundations/colour) pages are worth reading before the component pages: they
+read their values from the page you are looking at, in the mode you are in, so they are the system
+as it is rather than as it was documented.

@@ -4,12 +4,10 @@ import { ApiTable } from './api-table'
 import { ComponentExamples } from './examples/component-examples'
 import { SignInForm, ToneRow } from './examples/composition'
 import { GetStarted } from './home/get-started'
-import { Wall } from './home/wall'
 import { Install } from './install'
 import { ModuleApi } from './module-api'
 import { Notice } from './notice'
 import { PackageMeta } from './package-meta'
-import { PageIndex } from './page-index'
 import { MotionRoles } from './foundations/motion'
 import { Ramp, SpaceLadder, SurfaceSamples, Swatches, TypeRole } from './foundations/specimens'
 import { Preview } from './preview'
@@ -20,14 +18,12 @@ export function getMDXComponents(components?: MDXComponents) {
     ApiTable,
     ComponentExamples,
     GetStarted,
-    Wall,
     SignInForm,
     ToneRow,
     Install,
     ModuleApi,
     Notice,
     PackageMeta,
-    PageIndex,
     MotionRoles,
     Preview,
     Ramp,
