@@ -3,6 +3,8 @@ import type { MDXComponents } from 'mdx/types'
 import { ApiTable } from './api-table'
 import { ComponentExamples } from './examples/component-examples'
 import { SignInForm, ToneRow } from './examples/composition'
+import { GetStarted } from './home/get-started'
+import { Wall } from './home/wall'
 import { Install } from './install'
 import { ModuleApi } from './module-api'
 import { Notice } from './notice'
@@ -17,6 +19,8 @@ export function getMDXComponents(components?: MDXComponents) {
     ...defaultMdxComponents,
     ApiTable,
     ComponentExamples,
+    GetStarted,
+    Wall,
     SignInForm,
     ToneRow,
     Install,

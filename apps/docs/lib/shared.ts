@@ -1,4 +1,3 @@
-export const appName = 'haus'
 export const docsRoute = '/docs'
 
 /**

@@ -190,3 +190,29 @@
 #nd-sidebar button[aria-expanded='true']:not([data-search-full], [data-collapsed]) {
   margin-block-end: var(--haus-space-1);
 }
+
+/*
+ * The wordmark, inlined by components/wordmark.tsx.
+ *
+ * The file carries its own `<style>` with a `prefers-color-scheme` query,
+ * which is correct for a favicon and wrong on a page with a mode toggle: a
+ * reader on a dark system who picks light would see the wordmark drawn for
+ * the other mode. That block is stripped as the file is inlined, so these
+ * rules are the only ones in play and the roles answer to `data-theme`.
+ */
+.haus-wordmark {
+  display: inline-flex;
+}
+
+.haus-wordmark svg {
+  block-size: var(--haus-space-5);
+  inline-size: auto;
+}
+
+.haus-wordmark .mark {
+  fill: var(--haus-color-primary-default);
+}
+
+.haus-wordmark .accent {
+  fill: var(--haus-color-primary-hover);
+}

@@ -1,0 +1,6 @@
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--haus-space-3);
+  margin-block: var(--haus-space-6) var(--haus-space-8);
+}
