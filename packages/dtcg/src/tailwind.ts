@@ -131,8 +131,16 @@ const IGNORE = Symbol('not a token block')
 /** Classes that mean a mode rather than a component. Anything else is a component. */
 const MODE_CLASSES = new Set(['dark', 'light'])
 
-/** The mode a block's prelude selects, IGNORE when the block holds no tokens. */
-function modeOf(prelude: string, outer: string | undefined | typeof IGNORE): string | undefined | typeof IGNORE {
+/**
+ * The mode a block's prelude selects, IGNORE when the block holds no tokens.
+ *
+ * Anything unrecognised is IGNORE rather than "no mode in particular", and the
+ * ignoring runs down the tree: a `@media (prefers-color-scheme: dark)` inside
+ * `.btn:hover` is that component's dark styling, not the page's dark mode, and
+ * treating it as the page's let a component's own properties overwrite real
+ * dark tokens.
+ */
+function modeOf(prelude: string, outer: string | undefined | typeof IGNORE): string | typeof IGNORE {
   const p = prelude.trim()
   if (outer === IGNORE) return IGNORE
   if (/^@theme\b/.test(p)) return 'default'
@@ -141,13 +149,13 @@ function modeOf(prelude: string, outer: string | undefined | typeof IGNORE): str
   if (dataTheme) return dataTheme[1]
   // `.dark` is a mode; `.btn` is a component whose custom properties are not
   // tokens. A class qualified by :root or html is a mode whatever it is called,
-  // because that is how a theme class is written.
+  // because that is how a theme class is written, and it is how this package
+  // writes one.
   const cls = /^(:root|html)?\.([\w-]+)$/.exec(p)
   if (cls) return cls[1] !== undefined || MODE_CLASSES.has(cls[2].toLowerCase()) ? cls[2] : IGNORE
   const media = /^@media\s*\(\s*prefers-color-scheme\s*:\s*(dark|light)\s*\)$/i.exec(p)
   if (media) return media[1].toLowerCase()
-  if (p.startsWith('@')) return IGNORE
-  return undefined
+  return IGNORE
 }
 
 function scan(css: string): { declarations: Declaration[]; skipped: Map<string, number> } {
@@ -156,7 +164,7 @@ function scan(css: string): { declarations: Declaration[]; skipped: Map<string, 
   // Selectors whose custom properties were not read, and how many each held,
   // so the reader can say so rather than dropping them in silence.
   const skipped = new Map<string, number>()
-  const stack: (string | undefined | typeof IGNORE)[] = []
+  const stack: (string | typeof IGNORE)[] = []
   const preludes: string[] = []
   let buffer = ''
   let quote: string | null = null
@@ -441,20 +449,39 @@ export function propertyName(token: Token): { name: string; inTheme: boolean; re
   return { name, inTheme: Boolean(namespace && THEME_NAMESPACES.has(namespace)), renamed: cleaned !== joined }
 }
 
+/** Does this text hold a character that would close the declaration it is written into? */
+function endsTheDeclaration(text: string): boolean {
+  let quote: string | null = null
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i]
+    if (quote) {
+      if (char === '\\') i++
+      else if (char === quote) quote = null
+      continue
+    }
+    if (char === '"' || char === "'") quote = char
+    else if (char === ';' || char === '{' || char === '}' || char === '\n' || char === '\r') return true
+  }
+  // An unclosed string runs to the end of the declaration, which is not a value.
+  return quote !== null
+}
+
 function cssValue(
   token: Token,
   value: TokenValue,
   mode: string,
   set: TokenSet,
   index: Index,
-  names: Map<string, string>,
+  names: ReadonlyMap<string, string>,
   losses: Losses,
 ): string | undefined {
   if (value.kind === 'raw') {
     // A raw value is text from the input, written straight into a stylesheet. A
-    // semicolon, a brace or a newline in it would end the declaration and start
-    // something else, so the token is dropped and reported instead.
-    if (/[;{}\n\r]/.test(value.text)) {
+    // semicolon, a brace or a newline outside a string would end the
+    // declaration and start something else, so the token is dropped and
+    // reported instead. Inside a string they are ordinary characters, and
+    // `url("data:image/png;base64,…")` is a value CSS is happy with.
+    if (endsTheDeclaration(value.text)) {
       losses.add(
         'unrepresentable-value',
         token.path,
@@ -489,7 +516,7 @@ function cssValue(
   return literalToCss(token, value.value, mode, names, losses)
 }
 
-const refText = (v: unknown, names: Map<string, string>): string | undefined => {
+const refText = (v: unknown, names: ReadonlyMap<string, string>): string | undefined => {
   if (typeof v !== 'string') return undefined
   const ref = parseCurlyReference(v)
   if (!ref) return undefined
@@ -497,7 +524,7 @@ const refText = (v: unknown, names: Map<string, string>): string | undefined => 
   return target ? `var(${target})` : undefined
 }
 
-function part(v: unknown, names: Map<string, string>): string | undefined {
+function part(v: unknown, names: ReadonlyMap<string, string>): string | undefined {
   const ref = refText(v, names)
   if (ref) return ref
   if (isColorValue(v)) return colourToCss(v) ?? undefined
@@ -513,7 +540,7 @@ function literalToCss(
   token: Token,
   literal: unknown,
   mode: string,
-  names: Map<string, string>,
+  names: ReadonlyMap<string, string>,
   losses: Losses,
 ): string | undefined {
   const single = part(literal, names)
@@ -579,11 +606,17 @@ export function writeTailwind(set: TokenSet, options: WriteOptions): WriteResult
     // otherwise be written over it, each believing the name was its own.
     if (token.type === 'typography') {
       const base = typographyBase(token)
-      if (used.has(base)) {
-        losses.add('renamed', token.path, `${base} is already ${used.get(base)}; this token was not written.`)
+      // The base and its three companions, all four reserved together: a
+      // number token at `text.body--line-height` wants the same name as this
+      // token's leading, and reserving only the base let both be written, so
+      // the stylesheet held the property twice with nothing reported.
+      const wanted = [base, ...TYPOGRAPHY_SUFFIXES.map(suffix => `${base}${suffix}`)]
+      const taken = wanted.find(name => used.has(name))
+      if (taken) {
+        losses.add('renamed', token.path, `${taken} is already ${used.get(taken)}; this token was not written.`)
         continue
       }
-      used.set(base, key)
+      for (const name of wanted) used.set(name, key)
       typographyNames.set(key, base)
       continue
     }
@@ -599,37 +632,47 @@ export function writeTailwind(set: TokenSet, options: WriteOptions): WriteResult
   }
 
   /*
-   * Which tokens this stylesheet actually declares, which is what a `var()` may
-   * point at. A name is reserved before any value is written, and a value can
-   * still turn out to have no CSS form, so pointing at a name alone produced
-   * `var(--x)` with nothing declaring `--x`. A mode block may point at a
-   * property the default block declares, because the cascade still has it, so
-   * the two sets are taken together. Dropping one target can drop a value that
-   * needed it, so the set is narrowed until it stops shrinking.
+   * Which properties each mode's block actually declares, which is what a
+   * `var()` in it may point at. A name is reserved before any value is
+   * written, and a value can still turn out to have no CSS form, so pointing
+   * at a reserved name alone produced `var(--x)` with nothing declaring `--x`.
+   *
+   * The test is the writer's own rule, not a weaker one: the default block
+   * declares a token with a writable value, and a mode block declares only
+   * what it overrides. A mode may still point at a property the default block
+   * declares, because the cascade has it, so the names available in a mode are
+   * its own and the default's together. Dropping one target can drop a value
+   * that needed it, so this is iterated until nothing more falls out.
    */
   const targetNames = (targets: ReadonlySet<string>) => new Map([...names].filter(([key]) => targets.has(key)))
+  const named = [...names.keys()].map(key => [key, index.get(key)!] as const)
 
-  const declaredIn = (mode: string): Set<string> => {
-    let targets = new Set(names.keys())
-    for (;;) {
-      const next = new Set<string>()
-      for (const [key, token] of [...names.keys()].map(k => [k, index.get(k)!] as const)) {
-        const value = valueIn(token, mode, set.modes)
-        if (value && cssValue(token, value, mode, set, index, targetNames(targets), new Losses()) !== undefined) {
-          next.add(key)
-        }
-      }
-      if (next.size === targets.size) return targets
-      targets = next
+  const declares = (mode: string, available: ReadonlyMap<string, string>): Set<string> => {
+    const here = new Set<string>()
+    for (const [key, token] of named) {
+      const own = token.values[mode]
+      if (mode !== defaultMode && (!own || sameValue(own, token.values[defaultMode]))) continue
+      const value = mode === defaultMode ? valueIn(token, mode, set.modes) : own
+      if (value && cssValue(token, value, mode, set, index, available, new Losses()) !== undefined) here.add(key)
     }
+    return here
   }
 
-  const declared = new Map(set.modes.map(mode => [mode, declaredIn(mode)]))
-  const namesFor = (mode: string) => {
-    const here = declared.get(mode) ?? new Set<string>()
-    const base = declared.get(defaultMode) ?? new Set<string>()
-    return targetNames(new Set([...base, ...here]))
+  let declared = new Map(set.modes.map(mode => [mode, new Set(names.keys())]))
+  for (;;) {
+    const before = [...declared.values()].reduce((n, set) => n + set.size, 0)
+    const next = new Map<string, Set<string>>()
+    for (const mode of set.modes) {
+      const available = targetNames(new Set([...(declared.get(defaultMode) ?? []), ...(declared.get(mode) ?? [])]))
+      next.set(mode, declares(mode, available))
+    }
+    declared = next
+    if ([...declared.values()].reduce((n, set) => n + set.size, 0) === before) break
   }
+
+  const namesFor = (mode: string) =>
+    targetNames(new Set([...(declared.get(defaultMode) ?? []), ...(declared.get(mode) ?? [])]))
+  const namesByMode = new Map(set.modes.map(mode => [mode, namesFor(mode)]))
 
   const themeLines: Record<string, string[]> = {}
   const rootLines: Record<string, string[]> = {}
@@ -646,7 +689,7 @@ export function writeTailwind(set: TokenSet, options: WriteOptions): WriteResult
 
     if (token.type === 'typography') {
       const base = typographyNames.get(key)
-      if (base) writeTypography(token, base, set, index, namesFor(defaultMode), emit, losses)
+      if (base) writeTypography(token, base, set, index, namesByMode, emit, losses)
       continue
     }
     if (token.type === 'gradient' || token.type === 'strokeStyle') {
@@ -661,7 +704,7 @@ export function writeTailwind(set: TokenSet, options: WriteOptions): WriteResult
       if (mode !== defaultMode && (!own || sameValue(own, token.values[defaultMode]))) continue
       const value = mode === defaultMode ? valueIn(token, mode, set.modes) : own
       if (!value) continue
-      const css = cssValue(token, value, mode, set, index, namesFor(mode), losses)
+      const css = cssValue(token, value, mode, set, index, namesByMode.get(mode)!, losses)
       if (css !== undefined) emit(mode, name, css, placement.get(key) ?? false)
     }
     if (token.description || token.deprecated !== undefined || token.extensions) {
@@ -719,7 +762,10 @@ export function writeTailwind(set: TokenSet, options: WriteOptions): WriteResult
         `@media (prefers-color-scheme: ${scheme}) {\n  :root {\n${lines.map(l => `  ${l}`).join('\n')}\n  }\n}`,
       )
     } else {
-      const selector = options.tailwindModeSelector === 'class' ? `.${cleaned}` : `[data-theme="${cleaned}"]`
+      // `:root.sepia`, not `.sepia`: a bare class is a component to the
+      // reader, so a stylesheet this package writes has to be one it can read
+      // back. A qualified class is also how a theme class is written.
+      const selector = options.tailwindModeSelector === 'class' ? `:root.${cleaned}` : `[data-theme="${cleaned}"]`
       blocks.push(`${selector} {\n${lines.join('\n')}\n}`)
     }
   }
@@ -732,6 +778,9 @@ export function writeTailwind(set: TokenSet, options: WriteOptions): WriteResult
  * `--text-sm--line-height`, `--text-sm--letter-spacing`, `--text-sm--font-weight`.
  * There is no slot for the family, so a typography token splits, and loses it.
  */
+/** What a typography token writes beside its base name. */
+const TYPOGRAPHY_SUFFIXES = ['--line-height', '--letter-spacing', '--font-weight'] as const
+
 export function typographyBase(token: Token): string {
   const [first, ...rest] = token.path
   const segments = NAMESPACE_ALIASES[first.toLowerCase()] ? rest : token.path
@@ -743,7 +792,7 @@ function writeTypography(
   base: string,
   set: TokenSet,
   index: Index,
-  names: Map<string, string>,
+  namesByMode: ReadonlyMap<string, ReadonlyMap<string, string>>,
   emit: (mode: string, name: string, css: string, inTheme: boolean) => void,
   losses: Losses,
 ) {
@@ -764,10 +813,14 @@ function writeTypography(
     const t = resolved.value.value as Record<string, unknown>
     const fields: [string, unknown][] = [
       ['', t.fontSize],
-      ['--line-height', t.lineHeight],
-      ['--letter-spacing', t.letterSpacing],
-      ['--font-weight', t.fontWeight],
+      [TYPOGRAPHY_SUFFIXES[0], t.lineHeight],
+      [TYPOGRAPHY_SUFFIXES[1], t.letterSpacing],
+      [TYPOGRAPHY_SUFFIXES[2], t.fontWeight],
     ]
+    // Each mode's own name map: a token that exists only in dark is declared
+    // in the dark block, and looking it up in the default map left a dark
+    // typography field with nowhere to point and dropped it.
+    const names = namesByMode.get(mode) ?? new Map<string, string>()
     for (const [suffix, v] of fields) {
       const css = part(v, names)
       if (css === undefined) continue

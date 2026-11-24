@@ -113,3 +113,41 @@ describe('the writer', () => {
     expect(result.losses.map(l => l.reason)).toContain('renamed')
   })
 })
+
+describe('a mode override whose alias is flattened', () => {
+  it('is written when the value it writes differs', () => {
+    // `space` and `space.large` collide, so `space` is written and `gap`'s
+    // alias to it survives; where it did not, the dark value still has to be
+    // the dark one.
+    const result = write(
+      set(
+        [
+          {
+            path: ['space'],
+            type: 'dimension',
+            values: {
+              light: { kind: 'literal', value: { value: 8, unit: 'px' } },
+              dark: { kind: 'literal', value: { value: 16, unit: 'px' } },
+            },
+          },
+          {
+            path: ['space', 'large'],
+            type: 'dimension',
+            values: { light: { kind: 'literal', value: { value: 32, unit: 'px' } } },
+          },
+          {
+            path: ['gap'],
+            type: 'dimension',
+            values: { light: { kind: 'reference', ref: ['space'] }, dark: { kind: 'reference', ref: ['space'] } },
+          },
+        ],
+        ['light', 'dark'],
+      ),
+      'tokens-studio',
+      DEFAULT_OPTIONS,
+    )
+    const file = json(result.files[0].text) as Record<string, { gap?: { value: string } }>
+    expect(file.global.gap?.value).toBe('{space}')
+    expect(file.dark?.gap).toBeUndefined()
+  })
+})

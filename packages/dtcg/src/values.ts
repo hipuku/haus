@@ -233,36 +233,59 @@ export function parseFontWeight(text: string): number | null {
 }
 
 /**
- * Split a CSS font-family list, dropping quotes.
+ * Split a CSS font-family list, dropping the quotes that enclose a name.
  *
  * The split walks the string rather than calling `split(',')`, because a comma
  * inside a quoted family name is part of the name: `"Helvetica, Inc"` is one
  * family and splitting on commas made it two.
+ *
+ * A quote opens a string only where a name may start. An apostrophe inside a
+ * name, as in `O'Brien`, is a letter of it, and treating every quote as a
+ * delimiter deleted it. A backslash escape is decoded as CSS decodes it: a
+ * hexadecimal escape such as `\27` is the character it names, with its one
+ * optional trailing space consumed.
  */
+function decodeEscape(text: string, at: number): { char: string; next: number } {
+  const hex = /^[0-9a-fA-F]{1,6}/.exec(text.slice(at))
+  if (!hex) return { char: text[at] ?? '', next: at + 1 }
+  let next = at + hex[0].length
+  // One whitespace character after the digits ends the escape and is not part
+  // of the name; two mean the second is a real space.
+  if (/\s/.test(text[next] ?? '')) next += 1
+  return { char: String.fromCodePoint(Number.parseInt(hex[0], 16)), next }
+}
+
 export function splitFontFamilies(text: string): string[] {
   const families: string[] = []
   let current = ''
   let quote: '"' | "'" | null = null
+  let atNameStart = true
   for (let i = 0; i < text.length; i++) {
     const char = text[i]
+    if (char === '\\' && i + 1 < text.length) {
+      const { char: decoded, next } = decodeEscape(text, i + 1)
+      current += decoded
+      i = next - 1
+      atNameStart = false
+      continue
+    }
     if (quote) {
-      if (char === '\\' && i + 1 < text.length) {
-        current += text[++i]
-        continue
-      }
       if (char === quote) quote = null
       else current += char
       continue
     }
-    if (char === '"' || char === "'") {
+    if ((char === '"' || char === "'") && atNameStart) {
       quote = char
+      atNameStart = false
       continue
     }
     if (char === ',') {
       families.push(current.trim())
       current = ''
+      atNameStart = true
       continue
     }
+    if (!/\s/.test(char)) atNameStart = false
     current += char
   }
   families.push(current.trim())

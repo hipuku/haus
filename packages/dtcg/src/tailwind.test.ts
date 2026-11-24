@@ -178,3 +178,86 @@ describe('detection', () => {
     ).toThrow(ReadError)
   })
 })
+
+describe('what the writer writes, the reader reads', () => {
+  const colour = (hex: string) => ({
+    kind: 'literal' as const,
+    value: { colorSpace: 'srgb', components: [0, 0, 0], hex },
+  })
+
+  it('round-trips a class mode', () => {
+    const written = write(
+      set(
+        [{ path: ['color', 'ink'], type: 'color', values: { default: colour('#000000'), sepia: colour('#704214') } }],
+        ['default', 'sepia'],
+      ),
+      'tailwind',
+      { ...DEFAULT_OPTIONS, tailwindModeSelector: 'class' },
+    )
+    expect(written.files[0].text).toContain(':root.sepia {')
+    const { set: back } = read([{ name: 'theme.css', text: written.files[0].text }], 'tailwind')
+    expect(back.modes).toEqual(['default', 'sepia'])
+  })
+
+  it("does not read a component's own dark styling as the page's dark mode", () => {
+    const { set: result } = readCss(`
+      @theme { --color-ink: #000000; }
+      .btn:hover { @media (prefers-color-scheme: dark) { --color-ink: #ff0000; } }
+    `)
+    expect(result.modes).toEqual(['default'])
+  })
+
+  it('keeps a semicolon that is inside a string', () => {
+    const result = write(
+      set([
+        {
+          path: ['bg', 'dot'],
+          type: null,
+          values: { default: { kind: 'raw', text: 'url("data:image/png;base64,AAAA")' } },
+        },
+      ]),
+      'tailwind',
+      DEFAULT_OPTIONS,
+    )
+    expect(result.files[0].text).toContain('base64,AAAA')
+  })
+
+  it('declares a property before pointing at it, through a mode-only chain', () => {
+    // `a` exists only in dark, `b` points at it from default, `c` points at `b`
+    // from dark. The default block cannot declare `b`, so `c` cannot point at it.
+    const result = write(
+      set(
+        [
+          { path: ['a'], type: 'dimension', values: { dark: { kind: 'literal', value: { value: 8, unit: 'px' } } } },
+          { path: ['b'], type: 'dimension', values: { default: { kind: 'reference', ref: ['a'] } } },
+          { path: ['c'], type: 'dimension', values: { dark: { kind: 'reference', ref: ['b'] } } },
+        ],
+        ['default', 'dark'],
+      ),
+      'tailwind',
+      DEFAULT_OPTIONS,
+    )
+    expect(result.files[0].text).not.toContain('var(--b)')
+  })
+
+  it('reports a token that wants a name a typography token writes', () => {
+    const result = write(
+      set([
+        {
+          path: ['text', 'body'],
+          type: 'typography',
+          values: { default: { kind: 'literal', value: { fontSize: { value: 16, unit: 'px' } } } },
+        },
+        {
+          path: ['text', 'body--line-height'],
+          type: 'number',
+          values: { default: { kind: 'literal', value: 1.5 } },
+        },
+      ]),
+      'tailwind',
+      DEFAULT_OPTIONS,
+    )
+    expect(result.files[0].text.match(/--text-body--line-height:/g) ?? []).toHaveLength(0)
+    expect(result.losses.some(l => l.reason === 'renamed' && /already/.test(l.detail))).toBe(true)
+  })
+})

@@ -232,6 +232,17 @@ export function readDtcgTree(root: unknown, mode: string, losses: Losses, docume
       // the reference resolves and the group's children keep theirs.
       if ((key.startsWith('$') && key !== '$root') || !isRecord(child)) continue
       const childPath = [...path, key]
+      // What a leaf carries beside its value, which a token keeps whether the
+      // value was written as `$value` or as a `$ref` of its own.
+      const withMetadata = (token: Token): Token => {
+        if (typeof child.$description === 'string') token.description = child.$description
+        if (typeof child.$deprecated === 'boolean' || typeof child.$deprecated === 'string') {
+          token.deprecated = child.$deprecated
+        }
+        if (isRecord(child.$extensions)) token.extensions = child.$extensions
+        return token
+      }
+
       if (!('$value' in child) && typeof child.$ref === 'string') {
         // A leaf that is nothing but a pointer. `pointerToPath` reads a pointer
         // at a whole `$value`; anything deeper, a pointer into a colour's
@@ -247,7 +258,7 @@ export function readDtcgTree(root: unknown, mode: string, losses: Losses, docume
           )
         }
         const own = typeof child.$type === 'string' ? child.$type : groupType
-        tokens.push({ path: childPath, type: isTokenType(own) ? own : null, values: { [mode]: value } })
+        tokens.push(withMetadata({ path: childPath, type: isTokenType(own) ? own : null, values: { [mode]: value } }))
         continue
       }
       if ('$value' in child) {
@@ -260,12 +271,7 @@ export function readDtcgTree(root: unknown, mode: string, losses: Losses, docume
         const { value, type } = readDtcgValue(child.$value, declared, sourceType, childPath, mode, losses)
         const token: Token = { path: childPath, type, values: { [mode]: value } }
         if (sourceType) token.sourceType = sourceType
-        if (typeof child.$description === 'string') token.description = child.$description
-        if (typeof child.$deprecated === 'boolean' || typeof child.$deprecated === 'string') {
-          token.deprecated = child.$deprecated
-        }
-        if (isRecord(child.$extensions)) token.extensions = child.$extensions
-        tokens.push(token)
+        tokens.push(withMetadata(token))
       } else {
         walk(child, childPath, groupType, here)
       }

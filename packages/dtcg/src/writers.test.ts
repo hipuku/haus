@@ -34,7 +34,9 @@ describe('the DTCG writer', () => {
     ])
   })
 
-  it('resolves an alias whose target is also a group', () => {
+  it('keeps an alias to whichever of a colliding pair is written', () => {
+    // `space` is written first, so `space.large` is the one setAtPath turns
+    // away: an alias to `space` is good and an alias to `space.large` is not.
     const result = write(
       set([
         {
@@ -48,12 +50,32 @@ describe('the DTCG writer', () => {
           values: { default: { kind: 'literal', value: { value: 16, unit: 'px' } } },
         },
         { path: ['gap'], type: 'dimension', values: { default: { kind: 'reference', ref: ['space'] } } },
+        { path: ['inset'], type: 'dimension', values: { default: { kind: 'reference', ref: ['space', 'large'] } } },
       ]),
       'dtcg',
       DEFAULT_OPTIONS,
     )
-    expect(json(result.files[0].text).gap).toEqual({ $type: 'dimension', $value: { value: 8, unit: 'px' } })
+    const file = json(result.files[0].text)
+    expect(file.gap).toEqual({ $type: 'dimension', $value: '{space}' })
+    expect(file.inset).toEqual({ $type: 'dimension', $value: { value: 16, unit: 'px' } })
     expect(result.losses.map(l => l.reason)).toContain('resolved-alias')
+  })
+
+  it('drops an alias chain that ends at a value it cannot write', () => {
+    const result = write(
+      set([
+        {
+          path: ['bad'],
+          type: 'dimension',
+          values: { default: { kind: 'literal', value: { value: 2, unit: 'em' } } },
+        },
+        { path: ['middle'], type: 'dimension', values: { default: { kind: 'reference', ref: ['bad'] } } },
+        { path: ['gap'], type: 'dimension', values: { default: { kind: 'reference', ref: ['middle'] } } },
+      ]),
+      'dtcg',
+      DEFAULT_OPTIONS,
+    )
+    expect(json(result.files[0].text)).toEqual({})
   })
 
   it('leaves out a mode override that is written the same way as the default', () => {

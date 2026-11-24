@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { Losses, mergeTokens } from './document.js'
+import { read as readInput } from './convert.js'
 import { readDtcg, readDtcgTree } from './dtcgRead.js'
 import { valueIn } from './resolve.js'
 import { ReadError, joinPath, type Token, type TokenSet } from './types.js'
@@ -177,5 +178,51 @@ describe('merging two readings of one token', () => {
     mergeTokens(into, { path: ['a'], type: 'dimension', values: { default: { kind: 'raw', text: '1px' } } })
     mergeTokens(into, { path: ['a'], type: null, values: { dark: { kind: 'raw', text: '2px' } } })
     expect(into.get('a')?.type).toBe('dimension')
+  })
+})
+
+describe('a reference leaf', () => {
+  it('keeps the description and extensions written beside it', () => {
+    const { set } = read([
+      doc('tokens.json', {
+        base: { $type: 'color', $value: '#ffffff' },
+        alias: { $ref: '#/base/$value', $description: 'The page', $extensions: { 'com.example': 1 } },
+      }),
+    ])
+    const alias = at(set, 'alias')
+    expect(alias?.description).toBe('The page')
+    expect(alias?.extensions).toEqual({ 'com.example': 1 })
+  })
+})
+
+describe('a document named with a Windows path', () => {
+  it('is read under the name the resolver uses', () => {
+    const { set } = read([
+      doc('tokens.resolver.json', { name: 'r', resolutionOrder: [{ $ref: 'colors.json' }] }),
+      { name: String.raw`.\colors.json`, text: JSON.stringify({ a: { $type: 'color', $value: '#000000' } }) },
+    ])
+    expect(at(set, 'a')).toBeDefined()
+  })
+})
+
+describe('an untyped alias that exists in one mode', () => {
+  it('takes its type from the mode it is in', () => {
+    // Through the public read, which is what fills in a reference's type.
+    const { set } = readInput([
+      doc('tokens.resolver.json', {
+        name: 'r',
+        resolutionOrder: [{ $ref: '#/modifiers/theme' }],
+        modifiers: {
+          theme: {
+            default: 'light',
+            contexts: {
+              light: [{ ink: { $type: 'color', $value: '#000000' } }],
+              dark: [{ ink: { $type: 'color', $value: '#ffffff' }, text: { $value: '{ink}' } }],
+            },
+          },
+        },
+      }),
+    ])
+    expect(at(set, 'text')?.type).toBe('color')
   })
 })

@@ -34,7 +34,10 @@ export const isRecord = (value: unknown): value is Record<string, unknown> =>
 
 /** A file name without its directory or token-file extensions: `theme/Dark.tokens.json` → `Dark`. */
 export function baseName(name: string): string {
-  const file = name.split('/').pop() ?? name
+  // Both separators: a Windows shell passes `.\\light.json`, and splitting on
+  // `/` alone left the backslash in what became a Figma mode name, which then
+  // failed the writer's check on output file names.
+  const file = name.split(/[/\\]/).pop() ?? name
   return file.replace(/\.(tokens\.)?json$/i, '').replace(/\.resolver$/i, '')
 }
 

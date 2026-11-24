@@ -54,9 +54,15 @@ export function inferReferenceTypes(set: TokenSet): void {
   const index = indexTokens(set)
   for (const token of set.tokens) {
     if (token.type) continue
-    const value = valueIn(token, set.modes[0], set.modes)
+    // Whichever mode holds the reference, not only the default one: a token
+    // that exists in dark alone has no default value to read, and taking the
+    // type from nothing left it untyped, which is enough for a writer to drop
+    // it from the dark output as well.
+    const [mode, value] =
+      Object.entries(token.values).find(([, v]) => v.kind === 'reference') ??
+      ([set.modes[0], valueIn(token, set.modes[0], set.modes)] as const)
     if (value?.kind !== 'reference') continue
-    const { chain } = resolveValue(value, set.modes[0], set, index)
+    const { chain } = resolveValue(value, mode, set, index)
     for (let i = chain.length - 1; i >= 0; i--) {
       const type = index.get(chain[i])?.type
       if (type) {

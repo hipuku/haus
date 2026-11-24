@@ -28,10 +28,15 @@ export function setAtPath(
   let node = root
   for (const [i, key] of path.slice(0, -1).entries()) {
     const next = own(node, key)
-    // A leaf is `$value` in DTCG and `value` with a `type` in Tokens Studio's
-    // own shape; this writer serves both, and recognising only the first let a
-    // group be written inside a token.
-    if (isRecord(next) && ('$value' in next || ('value' in next && 'type' in next))) {
+    // A leaf is `$value` in DTCG and `value` with a string `type` in Tokens
+    // Studio's own shape; this writer serves both, and recognising only the
+    // first let a group be written inside a token. The type must be a string,
+    // or a group holding tokens named `value` and `type` would look like a
+    // leaf and its siblings would be turned away.
+    if (
+      isRecord(next) &&
+      ('$value' in next || ('value' in next && typeof (next as { type?: unknown }).type === 'string'))
+    ) {
       losses.add(
         'renamed',
         path,
@@ -66,6 +71,30 @@ const own = (node: Record<string, unknown>, key: string): unknown => (Object.has
 
 const define = (node: Record<string, unknown>, key: string, value: unknown) =>
   Object.defineProperty(node, key, { value, enumerable: true, writable: true, configurable: true })
+
+/**
+ * Which of these paths a writer actually inserts, in the order it writes them.
+ *
+ * `setAtPath` turns away a token whose path is a group already, a token under a
+ * token, and a second token at a path already taken, and which of a colliding
+ * pair survives depends on the order. Working that out up front is what lets a
+ * writer keep an alias only to a token the output will really hold: excluding
+ * every path involved in a collision was too blunt, because the first of the
+ * pair is written and is a perfectly good target.
+ */
+export function insertablePaths(paths: readonly (readonly string[])[]): Set<string> {
+  const accepted = new Set<string>()
+  const groups = new Set<string>()
+  for (const path of paths) {
+    const name = joinPath(path)
+    const ancestors = path.slice(0, -1).map((_, i) => joinPath(path.slice(0, i + 1)))
+    if (ancestors.some(a => accepted.has(a))) continue
+    if (accepted.has(name) || groups.has(name)) continue
+    accepted.add(name)
+    for (const ancestor of ancestors) groups.add(ancestor)
+  }
+  return accepted
+}
 
 /**
  * A model value as a 2025.10 `$value`, or undefined when 2025.10 has no way to
@@ -138,7 +167,7 @@ function writable(
   mode: string,
   set: TokenSet,
   index: Index,
-  written: Set<string>,
+  written: ReadonlySet<string>,
   losses: Losses,
 ): TokenValue | undefined {
   if (value.kind !== 'reference' || written.has(joinPath(value.ref))) return value
@@ -166,29 +195,39 @@ export function writeDtcg(set: TokenSet): WriteResult {
   const index = indexTokens(set)
   const [defaultMode, ...otherModes] = set.modes
 
-  // A path that is also the start of a longer path is a group in the output, so
-  // the token at it is the one setAtPath turns away. Which of the two it turns
-  // away depends on the order they are written in, so neither counts as a
-  // surviving reference target and an alias to it is resolved instead.
-  const groupPaths = new Set<string>()
-  for (const token of set.tokens) {
-    for (let i = 1; i < token.path.length; i++) groupPaths.add(joinPath(token.path.slice(0, i)))
-  }
-
-  // Which tokens have a writable default value decides which references survive.
-  const written = new Set<string>()
-  for (const token of set.tokens) {
-    if (!token.type) continue
-    const name = joinPath(token.path)
-    if (groupPaths.has(name)) continue
-    const value = valueIn(token, defaultMode, set.modes)
-    if (value && toDtcgValue(token, value, defaultMode, new Losses()) !== undefined) written.add(name)
-  }
+  const insertable = insertablePaths(set.tokens.map(token => token.path))
 
   /** The `$value` this token would be written with in this mode, or undefined when it cannot be. */
-  const emit = (token: Token, value: TokenValue, mode: string, losses: Losses): unknown => {
-    const target = writable(token, value, mode, set, index, written, losses)
+  const emit = (
+    token: Token,
+    value: TokenValue,
+    mode: string,
+    targets: ReadonlySet<string>,
+    losses: Losses,
+  ): unknown => {
+    const target = writable(token, value, mode, set, index, targets, losses)
     return target === undefined ? undefined : toDtcgValue(token, target, mode, losses)
+  }
+
+  /*
+   * Which tokens the file will really hold, which is what an alias may point
+   * at. A token needs a type, a path the writer can insert, and a default value
+   * this format can say; and a token whose value is an alias to one that falls
+   * out falls out with it, so the set is narrowed until it stops shrinking.
+   */
+  let written = new Set(
+    set.tokens.filter(token => token.type && insertable.has(joinPath(token.path))).map(token => joinPath(token.path)),
+  )
+  for (;;) {
+    const next = new Set<string>()
+    for (const token of set.tokens) {
+      const key = joinPath(token.path)
+      if (!written.has(key)) continue
+      const value = valueIn(token, defaultMode, set.modes)
+      if (value && emit(token, value, defaultMode, written, new Losses()) !== undefined) next.add(key)
+    }
+    if (next.size === written.size) break
+    written = next
   }
 
   const build = (mode: string, onlyOverrides: boolean): Record<string, unknown> => {
@@ -204,7 +243,7 @@ export function writeDtcg(set: TokenSet): WriteResult {
       if (onlyOverrides && !own) continue
       const value = onlyOverrides ? own : valueIn(token, mode, set.modes)
       if (!value) continue
-      const dtcgValue = emit(token, value, mode, losses)
+      const dtcgValue = emit(token, value, mode, written, losses)
       if (dtcgValue === undefined) continue
       // An override is compared as it would be written, not as it was read: a
       // mode whose value is an alias the output cannot keep becomes that
@@ -213,7 +252,7 @@ export function writeDtcg(set: TokenSet): WriteResult {
       if (onlyOverrides) {
         const base = token.values[defaultMode]
         const quiet = new Losses()
-        const baseValue = base ? emit(token, base, defaultMode, quiet) : undefined
+        const baseValue = base ? emit(token, base, defaultMode, written, quiet) : undefined
         if (JSON.stringify(dtcgValue) === JSON.stringify(baseValue)) continue
       }
       setAtPath(root, token.path, tokenLeaf(token, dtcgValue), losses)

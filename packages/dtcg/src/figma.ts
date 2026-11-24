@@ -1,6 +1,6 @@
 import { baseName, isRecord, Losses, mergeTokens, parseJson, type InputDocument } from './document.js'
 import { readDtcgTree } from './dtcgRead.js'
-import { setAtPath } from './dtcgWrite.js'
+import { insertablePaths, setAtPath } from './dtcgWrite.js'
 import { indexTokens, resolveValue, untypedDetail, valueIn } from './resolve.js'
 import {
   COMPOSITE_TYPES,
@@ -93,15 +93,13 @@ export function writeFigma(set: TokenSet, options: WriteOptions): WriteResult {
     return true
   })
   /*
-   * A path that is also the start of a longer path becomes a group in the
-   * output, so the token at it is turned away by setAtPath. It cannot be an
-   * alias target either.
+   * Which paths the writer really inserts, in the order it writes them:
+   * setAtPath turns away a token under a token and a token where a group
+   * already is, and which of a colliding pair that is depends on the order.
+   * Only an inserted token can be an alias target.
    */
-  const groupPaths = new Set<string>()
-  for (const token of set.tokens) {
-    for (let i = 1; i < token.path.length; i++) groupPaths.add(joinPath(token.path.slice(0, i)))
-  }
-  const candidates = accepted.filter(token => !groupPaths.has(joinPath(token.path)))
+  const insertable = insertablePaths(accepted.map(token => token.path))
+  const candidates = accepted.filter(token => insertable.has(joinPath(token.path)))
 
   const valueFor = (
     token: Token,

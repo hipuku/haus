@@ -77,3 +77,15 @@ describe('font weights', () => {
     expect(parseFontWeight('BOLD')).toBe(700)
   })
 })
+
+describe('what a quote means in a family name', () => {
+  it('keeps an apostrophe that is part of the name', () => {
+    expect(parseFontFamily("O'Brien")).toBe("O'Brien")
+    expect(splitFontFamilies("O'Brien, serif")).toEqual(["O'Brien", 'serif'])
+  })
+
+  it('decodes a CSS escape rather than dropping its backslash', () => {
+    expect(splitFontFamilies(String.raw`"O\27 Font", serif`)).toEqual(["O'Font", 'serif'])
+    expect(splitFontFamilies(String.raw`"a\"b"`)).toEqual(['a"b'])
+  })
+})

@@ -1,6 +1,6 @@
 import { baseName, isRecord, Losses, mergeTokens, parseJson, type InputDocument } from './document.js'
-import { setAtPath } from './dtcgWrite.js'
-import { indexTokens, resolveValue, sameValue, untypedDetail, valueIn } from './resolve.js'
+import { insertablePaths, setAtPath } from './dtcgWrite.js'
+import { indexTokens, resolveValue, untypedDetail, valueIn } from './resolve.js'
 import {
   ReadError,
   joinPath,
@@ -458,14 +458,12 @@ export function writeTokensStudio(set: TokenSet): WriteResult {
     return true
   })
   /*
-   * A path that is also the start of a longer path cannot hold a token and a
-   * group at once, so it is no target for an alias either.
+   * Which paths the writer really inserts, in the order it writes them:
+   * setAtPath turns away a token under a token and a token where a group
+   * already is. Only an inserted token can be an alias target.
    */
-  const groupPaths = new Set<string>()
-  for (const token of set.tokens) {
-    for (let i = 1; i < token.path.length; i++) groupPaths.add(joinPath(token.path.slice(0, i)))
-  }
-  const candidates = typed.filter(token => !groupPaths.has(joinPath(token.path)))
+  const insertable = insertablePaths(typed.map(token => token.path))
+  const candidates = typed.filter(token => insertable.has(joinPath(token.path)))
 
   /*
    * Which tokens this mode writes a value for, which is what an alias may point
@@ -502,11 +500,21 @@ export function writeTokensStudio(set: TokenSet): WriteResult {
     // may point at, and setAtPath reports a path it cannot take.
     for (const token of typed) {
       const own = token.values[mode]
-      if (onlyOverrides && (!own || sameValue(own, token.values[defaultMode]))) continue
+      if (onlyOverrides && !own) continue
       const value = onlyOverrides ? own : valueIn(token, mode, set.modes)
       if (!value) continue
       const tsValue = writeValue(token, value, mode, set, written, losses)
       if (tsValue === undefined) continue
+      // An override is compared as it would be written, not as it was read.
+      // The two modes can hold the same alias and still write different values,
+      // because the alias may be flattened to its target's value in this mode;
+      // comparing the aliases said the mode did not differ, and the override
+      // was left out of a file that needed it.
+      if (onlyOverrides) {
+        const base = token.values[defaultMode]
+        const baseValue = base ? writeValue(token, base, defaultMode, set, written, new Losses()) : undefined
+        if (JSON.stringify(tsValue) === JSON.stringify(baseValue)) continue
+      }
       const leaf: Record<string, unknown> = { value: tsValue, type: typeOf(token) }
       if (token.description) leaf.description = token.description
       if (token.deprecated !== undefined)
