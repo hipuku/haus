@@ -65,12 +65,18 @@ the panel, however short its content. The two coincide when the wrapper is the t
 the ordinary case and not a guarantee the component makes.
 
 `portal` is what makes the trigger the reference, by measuring it: the minimum becomes the
-trigger's own rect. With `align="stretch"` it sets the width outright instead, and that pairing is
-the only one that holds a panel to its trigger's width exactly. Outside `portal`, `stretch` sets
-the two insets, so the panel spans that same containing block.
+trigger's own rect rather than a percentage of whatever the panel is positioned against. With
+`align="stretch"` it sets the inline size from that measurement instead. Outside `portal`,
+`stretch` sets the two insets, so the panel spans the containing block.
 
-A fixed step is not a limit on any of this. It does not track the trigger at all, so a step wider
-than the trigger gives a panel wider than the trigger.
+**No combination holds a panel to its trigger's width.** `.panel` carries
+`min-inline-size: max-content`, which survives every one of them, so content wider than the
+trigger widens the panel and that is the intended reading: an option is legible before it is
+aligned. A caller who needs a hard width should set one, and read the next paragraph first.
+
+Do not reach for a fixed step as the cap. It does not track the trigger at all, so a step wider
+than the trigger gives a panel wider than the trigger, and a step narrower than the content is
+still widened by the same minimum.
 
 `portal` renders the panel into `document.body` and positions it from the trigger's rect instead of
 against the caller's positioned ancestor. It is off by default and stays the caller's decision:
