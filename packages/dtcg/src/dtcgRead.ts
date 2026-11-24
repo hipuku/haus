@@ -10,7 +10,7 @@ import {
   parseCurlyReference,
   parseDimensionOrZero,
   parseDuration,
-  parseFontFamily,
+  splitFontFamilies,
   parseFontWeight,
 } from './values.js'
 
@@ -128,14 +128,28 @@ export function readDtcgValue(
       if (typeof raw === 'number') return { value: { kind: 'literal', value: raw }, type }
       if (typeof raw === 'string') {
         const parsed = parseFontWeight(raw)
-        if (parsed !== null) return { value: { kind: 'literal', value: parsed }, type }
+        if (parsed !== null) {
+          // A keyword is a 2025.10 font weight; a number written as a string is
+          // not, and was read silently until this said so.
+          if (/^\s*\d+\s*$/.test(raw)) lenient(`Font weight written as the string "${raw}", not the number ${parsed}.`)
+          return { value: { kind: 'literal', value: parsed }, type }
+        }
       }
       break
     }
     case 'fontFamily': {
-      if (typeof raw === 'string' && raw.includes(',')) {
-        lenient(`Font family list written as one string; split into ${raw.split(',').length} families.`)
-        return { value: { kind: 'literal', value: parseFontFamily(raw) }, type }
+      // A comma inside quotes belongs to the name, so the split decides whether
+      // this is a list or one family that happens to contain a comma.
+      if (typeof raw === 'string' && (raw.includes(',') || /["']/.test(raw))) {
+        const families = splitFontFamilies(raw)
+        if (families.length > 1) {
+          lenient(`Font family list written as one string; split into ${families.length} families.`)
+          return { value: { kind: 'literal', value: families }, type }
+        }
+        if (families.length === 1 && families[0] !== raw.trim()) {
+          lenient(`Font family written as the quoted string ${raw}; the quotes are not part of the name.`)
+          return { value: { kind: 'literal', value: families[0] }, type }
+        }
       }
       if (typeof raw === 'string' || (Array.isArray(raw) && raw.every(f => typeof f === 'string'))) {
         return { value: { kind: 'literal', value: raw }, type }

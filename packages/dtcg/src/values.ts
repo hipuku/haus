@@ -124,7 +124,12 @@ export function colourToSrgb(value: ColorValue): SrgbResult | null {
 
 /* ─── Dimension and duration ──────────────────────────────────────────────── */
 
-const NUMBER = String.raw`(-?\d*\.?\d+(?:e-?\d+)?)`
+/**
+ * CSS's own number grammar: an optional sign, digits with an optional decimal
+ * point, and an exponent whose sign is optional on both sides. `+1rem` and
+ * `1e+2ms` are ordinary CSS and were read as unparseable until this said so.
+ */
+const NUMBER = String.raw`([+-]?\d*\.?\d+(?:[eE][+-]?\d+)?)`
 
 export function parseDimension(text: string): DimensionValue | null {
   const match = new RegExp(`^${NUMBER}(px|rem)$`, 'i').exec(text.trim())
@@ -227,18 +232,65 @@ export function parseFontWeight(text: string): number | null {
   return named ?? null
 }
 
-/** Split a CSS font-family list, dropping quotes. */
+/**
+ * Split a CSS font-family list, dropping quotes.
+ *
+ * The split walks the string rather than calling `split(',')`, because a comma
+ * inside a quoted family name is part of the name: `"Helvetica, Inc"` is one
+ * family and splitting on commas made it two.
+ */
+export function splitFontFamilies(text: string): string[] {
+  const families: string[] = []
+  let current = ''
+  let quote: '"' | "'" | null = null
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i]
+    if (quote) {
+      if (char === '\\' && i + 1 < text.length) {
+        current += text[++i]
+        continue
+      }
+      if (char === quote) quote = null
+      else current += char
+      continue
+    }
+    if (char === '"' || char === "'") {
+      quote = char
+      continue
+    }
+    if (char === ',') {
+      families.push(current.trim())
+      current = ''
+      continue
+    }
+    current += char
+  }
+  families.push(current.trim())
+  return families.filter(Boolean)
+}
+
 export function parseFontFamily(text: string): string | string[] {
-  const families = text
-    .split(',')
-    .map(f => f.trim().replace(/^['"]|['"]$/g, ''))
-    .filter(Boolean)
+  const families = splitFontFamilies(text)
   return families.length === 1 ? families[0] : families
 }
 
+/**
+ * A family name may go unquoted only when it is a sequence of CSS identifiers:
+ * each starts with a letter, an underscore, a non-ASCII character or a hyphen
+ * that is not followed by a digit, and continues with those, digits and
+ * hyphens. Anything else, a comma, a quote, a digit at the front or a
+ * backslash, is quoted, and the quote character and the backslash are escaped
+ * inside it. The old rule quoted only on whitespace, so `Helvetica, Inc` was
+ * written back as two families and `O'Font` closed its own quote.
+ */
+const CSS_IDENT = String.raw`(?:-?[A-Za-z_ -￿][A-Za-z0-9_ -￿-]*)`
+const UNQUOTED_FAMILY = new RegExp(`^${CSS_IDENT}(?: ${CSS_IDENT})*$`)
+
 export function fontFamilyToCss(value: string | readonly string[]): string {
   const list = typeof value === 'string' ? [value] : value
-  return list.map(f => (/\s/.test(f) && !/^[a-z-]+$/.test(f) ? `'${f}'` : f)).join(', ')
+  return list
+    .map(family => (UNQUOTED_FAMILY.test(family) ? family : `'${family.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`))
+    .join(', ')
 }
 
 /* ─── References ──────────────────────────────────────────────────────────── */
