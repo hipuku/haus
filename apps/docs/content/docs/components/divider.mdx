@@ -25,3 +25,53 @@ Divider also takes the attributes its element has, and forwards its ref to it. T
 it adds.
 
 <ApiTable file="components/Divider/Divider.tsx" name="DividerProps" element="HTMLHRElement" />
+
+## Anatomy
+
+One element. The rule is the `hr` itself, drawn as a band of `color-border-default` one
+`border-width-default` thick. The browser's own `hr` is cleared first: a border on all four sides,
+a default margin and, in some engines, a colour that is not `currentColor` all have to go before a
+single side can be drawn, which is most of why three products each rewrote this.
+
+A horizontal rule sets its own thickness on the block axis and takes the full inline size. A
+vertical one stretches to its flex parent rather than declaring a length, because a vertical rule
+always sits between two things laid out in a row and its length is theirs.
+
+## Spacing
+
+`spacing` draws on the `stack` role, which in the token layer is the space a component asks for
+around itself. A divider is the one component where that role is the whole point: the space either
+side of a rule is what makes it read as a break rather than as an underline. `none` removes it.
+
+A vertical rule takes the same steps on the inline axis, so the space sits either side of it and
+flips with the writing direction rather than staying on the left.
+
+## Keyboard and screen reader
+
+Not interactive, and takes no focus.
+
+`decorative` is what a screen reader hears. An `hr` carries `separator` implicitly, so a
+structural break between two groups is announced with nothing added. `decorative` removes the
+element from the accessibility tree instead, which is right for a line drawn because a panel
+looked crowded. Nothing in the markup distinguishes the two cases, so the caller says which this
+is; the default is the meaningful one, because a separator wrongly announced is a smaller failure
+than a structural break that is invisible.
+
+A vertical rule that is not decorative also carries `aria-orientation`, which is valid on an `hr`.
+
+## Motion
+
+None. Divider does not animate.
+
+## Decisions
+
+- **Always an `hr`, including when vertical.** The element carries `separator` implicitly and
+  `aria-orientation` is valid on it, so a `div` with `role="separator"` would add markup and lose
+  something: an `hr` is still a break in a document read with styles off.
+- **A decorative rule is `aria-hidden`, not `role="presentation"`.** An `hr` with a presentation
+  role is still an `hr` to some combinations of browser and reader. `aria-hidden` is unambiguous.
+- **The spacing scale is `stack`, not `inset`.** `inset` is padding inside a component, and the
+  space around a rule belongs to the rule rather than to either neighbour.
+- **One element, promoted because of the duplication.** vault has one of these; core and drift
+  each write `border-top` inline (`haus#32`). What the component settles is that the width, the
+  colour and the space around it stop being decided three times.
