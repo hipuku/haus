@@ -169,7 +169,11 @@ export const Motion: Story = {
       'expressive sequences.',
   ),
   render: args => (
-    <MotionCompare remount={false} render={(_mode, run) => <Button {...args} loading={run % 2 === 1} />} />
+    <MotionCompare
+      hint="Press and hold a button to compare the press. Replay switches loading on and off."
+      remount={false}
+      render={(_mode, run) => <Button {...args} loading={run % 2 === 1} />}
+    />
   ),
 }
 

@@ -104,7 +104,12 @@ export const Motion: Story = {
       'between rows, the chevron turns on a spring and the check draws. Reduced: a short fade. Replay restarts ' +
       'the error growing in.',
   ),
-  render: () => <MotionCompare render={() => <Controlled hint={HINT} error="Pick a role for this member" />} />,
+  render: () => (
+    <MotionCompare
+      hint="Open each Select and move through the options. Replay brings the error in again."
+      render={() => <Controlled hint={HINT} error="Pick a role for this member" />}
+    />
+  ),
 }
 
 export const Content: Story = {

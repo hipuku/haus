@@ -1,4 +1,5 @@
 import { Button, Divider } from 'haus-components'
+import { ColLabel } from './tokens/_shared'
 import React, { useState } from 'react'
 
 /**
@@ -103,7 +104,7 @@ export function Stack({ children }: { children: React.ReactNode }) {
 /**
  * Two props that compose, as a labelled table: one row per value of the first,
  * one column per value of the second. Button's tone-by-variant table is the
- * model.
+ * model. A table takes the token pages' column titles, not story pills.
  */
 export function Grid<R extends string, C extends string>({
   rows,
@@ -127,13 +128,13 @@ export function Grid<R extends string, C extends string>({
       <span />
       {columns.map(c => (
         <span key={c}>
-          <Label>{c}</Label>
+          <ColLabel>{c}</ColLabel>
         </span>
       ))}
       {rows.map(r => (
         <React.Fragment key={r}>
           <span>
-            <Label>{r}</Label>
+            <ColLabel>{r}</ColLabel>
           </span>
           {columns.map(c => (
             <div key={c}>{render(r, c)}</div>
@@ -161,18 +162,22 @@ export type Mode = (typeof MODES)[number]
  * components, so the change animates from where it was. `layout="column"`
  * stacks the modes, for components wider than a third of the canvas.
  * `replay={false}` drops the button for motion nothing can replay: a hover,
- * or an animation that never stops.
+ * or an animation that never stops. Either way a divider and a line of
+ * `hint` say what to do, so every Motion story reads the same way.
  */
 export function MotionCompare({
   render,
   remount = true,
   layout = 'row',
   replay = true,
+  hint,
 }: {
   render: (mode: Mode, run: number) => React.ReactNode
   remount?: boolean
   layout?: 'row' | 'column'
   replay?: boolean
+  /** What to do to see the motion, under the divider. Every Motion story says it. */
+  hint: string
 }) {
   const [run, setRun] = useState(0)
   return (
@@ -191,16 +196,47 @@ export function MotionCompare({
           </div>
         ))}
       </div>
-      {replay && (
-        <>
-          <Divider spacing="none" decorative />
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Button size="sm" variant="secondary" onClick={() => setRun(n => n + 1)}>
-              Replay
-            </Button>
-          </div>
-        </>
-      )}
+      <Divider spacing="none" decorative />
+      <div
+        style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--haus-space-4)' }}
+      >
+        <span
+          style={{
+            fontFamily: 'var(--haus-font-sans)',
+            fontSize: 'var(--haus-type-body-sm-size)',
+            lineHeight: 'var(--haus-type-body-sm-leading)',
+            color: 'var(--haus-color-ink-secondary)',
+          }}
+        >
+          {hint}
+        </span>
+        {replay && (
+          <Button size="sm" variant="secondary" onClick={() => setRun(n => n + 1)}>
+            Replay
+          </Button>
+        )}
+      </div>
     </div>
   )
+}
+
+/**
+ * For a component that portals out of the story (Modal, Drawer): while it is
+ * open, the page takes this column's motion mode, because a portal sits
+ * outside the column's `data-haus-motion` scope. The previous mode comes back
+ * once the exit has had time to run.
+ */
+export function usePageMotion(mode: Mode | undefined, open: boolean) {
+  React.useEffect(() => {
+    if (!mode || !open) return
+    const root = document.documentElement
+    const previous = root.dataset.hausMotion
+    root.dataset.hausMotion = mode
+    return () => {
+      setTimeout(() => {
+        if (previous === undefined) delete root.dataset.hausMotion
+        else root.dataset.hausMotion = previous
+      }, 1000)
+    }
+  }, [mode, open])
 }

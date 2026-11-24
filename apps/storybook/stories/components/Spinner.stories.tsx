@@ -87,7 +87,13 @@ export const Motion: Story = {
     'Reduced keeps turning at a third of the speed rather than stopping: a still ring reads as broken, not as ' +
       'waiting.',
   ),
-  render: args => <MotionCompare replay={false} render={() => <Spinner {...args} />} />,
+  render: args => (
+    <MotionCompare
+      hint="The spinner turns continuously; compare the speed in each mode."
+      replay={false}
+      render={() => <Spinner {...args} />}
+    />
+  ),
 }
 
 export const SilentBesideText: Story = {

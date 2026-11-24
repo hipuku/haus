@@ -74,7 +74,12 @@ export const Motion: Story = {
     'The error growing in. Subtle grows it with the border; expressive drops it in on a spring after the ' +
       'border turns, then draws the icon; reduced shows it at once.',
   ),
-  render: args => <MotionCompare render={() => <Input {...args} hint={HINT} error="That address is not valid." />} />,
+  render: args => (
+    <MotionCompare
+      hint="Replay brings the error in again in each mode."
+      render={() => <Input {...args} hint={HINT} error="That address is not valid." />}
+    />
+  ),
 }
 
 export const Content: Story = {

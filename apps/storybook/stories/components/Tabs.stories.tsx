@@ -139,6 +139,7 @@ export const Motion: Story = {
   ),
   render: () => (
     <MotionCompare
+      hint="Replay moves every instance to the next tab, or click a tab yourself."
       remount={false}
       layout="column"
       render={(_mode, run) => (

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import React, { useRef, useState } from 'react'
 import { Button, Modal } from 'haus-components'
+import { MotionCompare, usePageMotion, type Mode } from '../helpers'
 
 const meta = {
   title: 'Components/Modal',
@@ -35,9 +36,11 @@ type Story = StoryObj<typeof meta>
 function Demo({
   children,
   trigger = 'Open the dialog',
+  motion,
   ...args
-}: React.ComponentProps<typeof Modal> & { trigger?: string }) {
+}: React.ComponentProps<typeof Modal> & { trigger?: string; motion?: Mode }) {
   const [open, setOpen] = useState(false)
+  usePageMotion(motion, open)
   const confirm = useRef<HTMLButtonElement>(null)
   return (
     <>
@@ -92,12 +95,21 @@ export const Size: Story = {
 
 export const Motion: Story = {
   parameters: story(
-    'Open and close it under each mode from the Motion toolbar. A dialog renders outside the story, so the ' +
-      'side-by-side comparison other components use cannot scope it. Subtle moves the backdrop and dialog ' +
-      'together; expressive leads with the backdrop on the way in and the dialog on the way out; reduced is a ' +
-      'short fade.',
+    'Open each dialog and close it again. Subtle moves the backdrop and dialog together; expressive leads with ' +
+      'the backdrop on the way in, rises 24px on a spring, and brings the header, body and footer in one after ' +
+      'another; reduced is a short fade.',
   ),
-  render: args => <Demo {...args}>Watch the backdrop and the dialog arrive, then close it.</Demo>,
+  render: args => (
+    <MotionCompare
+      replay={false}
+      hint="Open each dialog and close it again to compare the modes."
+      render={mode => (
+        <Demo {...args} motion={mode} trigger={`Open, ${mode}`}>
+          Watch the backdrop and the dialog arrive, then close it.
+        </Demo>
+      )}
+    />
+  ),
 }
 
 export const FocusTheAction: Story = {

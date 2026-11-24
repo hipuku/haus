@@ -85,6 +85,7 @@ export const Motion: Story = {
   ),
   render: args => (
     <MotionCompare
+      hint="Replay moves each selection to the next option, or pick one yourself."
       remount={false}
       render={(mode, run) => (
         <RadioGroup {...args} name={`m-${mode}`} value={['sm', 'md', 'lg'][run % 3]} onChange={() => {}} />

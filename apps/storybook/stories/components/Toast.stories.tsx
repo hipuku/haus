@@ -102,7 +102,7 @@ export const Motion: Story = {
     'Toast owns its entrance. Subtle rises 4px; expressive rises 16px on a spring, then the icon and the ' +
       'text follow one step apart; reduced is a short fade.',
   ),
-  render: args => <MotionCompare render={() => <Toast {...args} />} />,
+  render: args => <MotionCompare hint="Replay brings each toast in again." render={() => <Toast {...args} />} />,
 }
 
 export const Content: Story = {

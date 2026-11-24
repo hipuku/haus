@@ -133,7 +133,9 @@ export const Motion: Story = {
     'Hover each card. Subtle lifts it 1.5px with an ease; expressive lifts it 4px on a spring that settles; ' +
       'reduced only changes the edge.',
   ),
-  render: args => <MotionCompare replay={false} render={() => link(args)} />,
+  render: args => (
+    <MotionCompare hint="Hover over each card to compare the lift." replay={false} render={() => link(args)} />
+  ),
 }
 
 export const InContext: Story = {

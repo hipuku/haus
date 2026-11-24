@@ -160,7 +160,12 @@ export const Motion: Story = {
     'Replay to see the enter. Subtle drops 4px in 150ms; expressive grows out of the trigger on a spring, ' +
       '16px from 0.9 scale; reduced is a short fade. Closing runs the exit before the panel leaves.',
   ),
-  render: args => <MotionCompare render={() => <Panel {...args} defaultOpen />} />,
+  render: args => (
+    <MotionCompare
+      hint="Replay opens each panel again, or close and open one yourself."
+      render={() => <Panel {...args} defaultOpen />}
+    />
+  ),
 }
 
 export const EscapeReturnsFocus: Story = {

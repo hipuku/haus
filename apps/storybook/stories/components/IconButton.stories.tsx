@@ -168,6 +168,10 @@ export const Motion: Story = {
     "Press and hold each, then release: Button's press, a spring back in expressive, colour only in reduced.",
   ),
   render: args => (
-    <MotionCompare remount={false} render={(_mode, run) => <IconButton {...args} loading={run % 2 === 1} />} />
+    <MotionCompare
+      hint="Press and hold a button to compare the press. Replay switches loading on and off."
+      remount={false}
+      render={(_mode, run) => <IconButton {...args} loading={run % 2 === 1} />}
+    />
   ),
 }

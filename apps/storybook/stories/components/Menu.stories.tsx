@@ -143,7 +143,13 @@ export const Motion: Story = {
     'Replay opens and closes each menu. Subtle drops the panel in with its items; expressive grows it from ' +
       'the trigger on a spring and brings the items in one after another; reduced fades.',
   ),
-  render: () => <MotionCompare remount={false} render={(_mode, run) => <Demo step={run} />} />,
+  render: () => (
+    <MotionCompare
+      hint="Replay opens and closes each menu, or open one yourself."
+      remount={false}
+      render={(_mode, run) => <Demo step={run} />}
+    />
+  ),
 }
 
 export const Keyboard: Story = {

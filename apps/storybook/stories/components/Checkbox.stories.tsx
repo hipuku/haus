@@ -74,6 +74,7 @@ export const Motion: Story = {
   ),
   render: args => (
     <MotionCompare
+      hint="Replay checks and unchecks each box, or click one yourself."
       remount={false}
       render={(_mode, run) => <Checkbox {...args} checked={run % 2 === 1} onChange={() => {}} />}
     />

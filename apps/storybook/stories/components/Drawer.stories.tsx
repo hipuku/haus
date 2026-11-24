@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Button, Drawer, Input, Select, Toggle } from 'haus-components'
 import React, { useState } from 'react'
-import { Item, Row } from '../helpers'
+import { Item, MotionCompare, Row, usePageMotion, type Mode } from '../helpers'
 
 const meta = {
   title: 'Components/Drawer',
@@ -48,9 +48,11 @@ function Settings() {
 
 function Demo({
   trigger = 'Open settings',
+  motion,
   ...props
-}: Partial<React.ComponentProps<typeof Drawer>> & { trigger?: string }) {
+}: Partial<React.ComponentProps<typeof Drawer>> & { trigger?: string; motion?: Mode }) {
   const [open, setOpen] = useState(false)
+  usePageMotion(motion, open)
   return (
     <>
       <Button variant="secondary" onClick={() => setOpen(true)}>
@@ -110,9 +112,14 @@ export const Size: Story = {
 
 export const Motion: Story = {
   parameters: story(
-    'Open and close it under each mode from the Motion toolbar; a drawer renders outside the story, so the ' +
-      'side-by-side comparison cannot scope it. Subtle slides it in from its edge; expressive slides it on a ' +
-      'spring that settles; reduced fades it in place.',
+    'Open each drawer and close it again. Subtle slides it in from its edge; expressive slides it on a spring ' +
+      'that settles; reduced fades it in place.',
   ),
-  render: () => <Demo />,
+  render: () => (
+    <MotionCompare
+      replay={false}
+      hint="Open each drawer and close it again to compare the modes."
+      render={mode => <Demo motion={mode} trigger={`Open, ${mode}`} />}
+    />
+  ),
 }

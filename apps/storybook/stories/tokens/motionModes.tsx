@@ -1,7 +1,16 @@
 import { Button, Toast } from 'haus-components'
 import React, { useEffect, useRef, useState } from 'react'
-import { Label, MODES, MotionCompare, type Mode } from '../helpers'
-import { SectionHead, pageDescStyle, pageTitleStyle, pageWrap } from './_shared'
+import { MODES, MotionCompare, type Mode } from '../helpers'
+import { ColLabel, SectionHead, pageDescStyle, pageTitleStyle, pageWrap } from './_shared'
+
+/** Table headers take the token pages' titles with an icon; a pill is for story labels only (owner, 4.5). */
+const ICONS = {
+  axis: 'fa-solid fa-sliders',
+  role: 'fa-solid fa-tag',
+  subtle: 'fa-solid fa-feather',
+  expressive: 'fa-solid fa-wand-magic-sparkles',
+  reduced: 'fa-solid fa-pause',
+} as const
 
 /**
  * Subtle, expressive and reduced, explained and shown side by side.
@@ -156,11 +165,11 @@ export function ModesPage() {
         <thead>
           <tr>
             <th style={cell}>
-              <Label>axis</Label>
+              <ColLabel icon={ICONS.axis}>Axis</ColLabel>
             </th>
             {MODES.map(mode => (
               <th key={mode} style={cell}>
-                <Label>{mode}</Label>
+                <ColLabel icon={ICONS[mode]}>{mode}</ColLabel>
               </th>
             ))}
           </tr>
@@ -182,27 +191,38 @@ export function ModesPage() {
       </table>
 
       <SectionHead>Entering</SectionHead>
-      <MotionCompare render={() => <EnteringPanel />} />
+      <MotionCompare hint="Replay brings each panel in again." render={() => <EnteringPanel />} />
 
       <SectionHead>Travelling</SectionHead>
-      <MotionCompare remount={false} render={(_mode, run) => <Travelling run={run} />} />
+      <MotionCompare
+        hint="Replay moves each marker to the other end."
+        remount={false}
+        render={(_mode, run) => <Travelling run={run} />}
+      />
 
       <SectionHead>Pressing and loading</SectionHead>
-      <MotionCompare remount={false} render={(_mode, run) => <Button loading={run % 2 === 1}>Save changes</Button>} />
+      <MotionCompare
+        hint="Replay switches loading on and off; press and hold to compare the press."
+        remount={false}
+        render={(_mode, run) => <Button loading={run % 2 === 1}>Save changes</Button>}
+      />
 
       <SectionHead>A toast arriving</SectionHead>
-      <MotionCompare render={() => <Toast tone="success" title="Saved" description="Your changes are live." />} />
+      <MotionCompare
+        hint="Replay brings each toast in again."
+        render={() => <Toast tone="success" title="Saved" description="Your changes are live." />}
+      />
 
       <SectionHead>Every role, in every mode</SectionHead>
       <table style={{ borderCollapse: 'collapse', inlineSize: '100%' }}>
         <thead>
           <tr>
             <th style={cell}>
-              <Label>role</Label>
+              <ColLabel icon={ICONS.role}>Role</ColLabel>
             </th>
             {MODES.map(mode => (
               <th key={mode} style={cell}>
-                <Label>{mode}</Label>
+                <ColLabel icon={ICONS[mode]}>{mode}</ColLabel>
               </th>
             ))}
           </tr>

@@ -71,6 +71,7 @@ export const Motion: Story = {
   ),
   render: args => (
     <MotionCompare
+      hint="Hover over or tab to each button to compare the tooltip."
       replay={false}
       render={() => (
         <div style={frame}>

@@ -60,7 +60,10 @@ export const States: Story = {
 export const Motion: Story = {
   parameters: story("The error growing in, as Input's: with the border in subtle, after it on a spring in expressive."),
   render: args => (
-    <MotionCompare render={() => <Textarea {...args} hint="Markdown is fine." error="This field is required." />} />
+    <MotionCompare
+      hint="Replay brings the error in again in each mode."
+      render={() => <Textarea {...args} hint="Markdown is fine." error="This field is required." />}
+    />
   ),
 }
 

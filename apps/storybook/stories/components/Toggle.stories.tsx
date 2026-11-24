@@ -79,6 +79,7 @@ export const Motion: Story = {
   ),
   render: args => (
     <MotionCompare
+      hint="Replay switches each toggle, or switch one yourself."
       remount={false}
       render={(_mode, run) => <Toggle {...args} checked={run % 2 === 1} onChange={() => {}} />}
     />
