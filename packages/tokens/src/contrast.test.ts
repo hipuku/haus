@@ -52,7 +52,32 @@ function resolveIn(map: Map<string, string>, name: string, seen = new Set<string
   if (ref) return resolveIn(map, ref[1], seen)
   // Relative colour syntax resolves to a real colour but not to one this can
   // parse without a browser, so those pairs are out of scope here.
-  return value.startsWith('oklch(from') ? null : value
+  return value
+}
+
+/**
+ * A relative-colour value resolves to a real colour and not to one this can
+ * parse without a browser, so a pair holding one is out of scope. Told apart
+ * from `null`, which now means the chain ran out or looped: both used to come
+ * back as null and the pairs below returned early on either, so a token nobody
+ * declares would have passed the test by not being measured.
+ */
+const unmeasurable = (value: string) => value.startsWith('oklch(from')
+
+/**
+ * The threshold read off the exact contrast, not off `ratio`.
+ *
+ * `wcagContrast` rounds `ratio` to two decimals and carries the verdicts
+ * separately, computed from the exact value, so a pair measuring 4.499
+ * rounded to 4.5 and cleared a 4.5 bar it does not meet. 3 is WCAG's large
+ * text bar and the same number SC 1.4.11 asks of a non-text indicator, which
+ * is what `passAALarge` holds.
+ */
+function passes(fg: string, bg: string, min: number) {
+  const result = wcagContrast(fg, bg)
+  const ok = min === 4.5 ? result.passAA : result.passAALarge
+  if (min !== 4.5 && min !== 3) throw new Error(`No exact flag for a ${min}:1 threshold.`)
+  return ok || `${result.ratio.toFixed(2)}:1, under ${min}:1`
 }
 
 /** The `on-*` ink for each surface, as semantics.css pairs them. */
@@ -160,9 +185,10 @@ describe.each(MODES)('contrast, %s', (mode, map) => {
   it.each(PAIRS)('%s pairs with an ink that clears AA', (surface, ink, min) => {
     const bg = resolve(surface)
     const fg = resolve(ink)
-    if (bg === null || fg === null) return // a relative-colour pair, out of scope
-    const { ratio } = wcagContrast(fg, bg)
-    expect(ratio, `${ink} on ${surface} is ${ratio.toFixed(2)}:1`).toBeGreaterThanOrEqual(min)
+    expect(bg, `${surface} resolves to nothing`).not.toBeNull()
+    expect(fg, `${ink} resolves to nothing`).not.toBeNull()
+    if (unmeasurable(bg!) || unmeasurable(fg!)) return // relative colour, out of scope
+    expect(passes(fg!, bg!, min)).toBe(true)
   })
 
   it('the focus ring clears SC 1.4.11 against every surface', () => {
@@ -216,8 +242,9 @@ describe.each(PRESETS)('contrast, the %s brand', preset => {
   it.each(PRESET_PAIRS)('%s and %s clear the bar', (surface, ink, min, why) => {
     const bg = resolve(surface)
     const fg = resolve(ink)
-    if (bg === null || fg === null) return // a relative-colour pair, out of scope
-    const { ratio } = wcagContrast(fg, bg)
-    expect(ratio, `${preset}: ${ink} on ${surface} is ${ratio.toFixed(2)}:1, ${why}`).toBeGreaterThanOrEqual(min)
+    expect(bg, `${preset}: ${surface} resolves to nothing`).not.toBeNull()
+    expect(fg, `${preset}: ${ink} resolves to nothing`).not.toBeNull()
+    if (unmeasurable(bg!) || unmeasurable(fg!)) return // relative colour, out of scope
+    expect(passes(fg!, bg!, min), `${preset}: ${ink} on ${surface}, ${why}`).toBe(true)
   })
 })

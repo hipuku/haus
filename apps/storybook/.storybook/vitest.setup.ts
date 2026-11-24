@@ -31,6 +31,9 @@ setProjectAnnotations([a11yAddonAnnotations, preview])
  * screenshot taken then is a screenshot of system-ui, and the next run, with
  * the font cached, reads as a change in every story at once.
  */
+/** The two families the default brand names. Both have to be on the page. */
+const FACES = ['DM Sans', 'DM Mono']
+
 beforeEach(async () => {
   // Paint the page the surface role, which is what a product does and what
   // Storybook's backgrounds addon does in the browser. Under Vitest nothing
@@ -41,6 +44,21 @@ beforeEach(async () => {
   document.body.style.backgroundColor = 'var(--haus-color-surface-default)'
 
   await document.fonts.ready
+
+  // And then check they are actually there. `fonts.ready` settles when nothing
+  // is pending, which includes nothing having started: a runner that cannot
+  // reach Google Fonts renders every story in system-ui, consistently, and a
+  // whole baseline set taken that way compares clean forever. `fonts.load`
+  // returns the faces that matched, so an empty array is the face missing.
+  for (const family of FACES) {
+    const faces = await document.fonts.load(`400 1rem "${family}"`)
+    if (faces.length === 0) {
+      throw new Error(
+        `${family} did not load, so this would be a screenshot of the fallback. ` +
+          'The faces come from Google Fonts through the preview head; check the network before trusting any image from this run.',
+      )
+    }
+  }
 })
 
 /**
