@@ -34,11 +34,15 @@ installation.
 @import '@hipuku/tokens/brands/vault.css';
 ```
 
-A brand that omits a required entry is caught rather than left resolving to nothing, in two places
-and neither of them the browser. The entry list is generated into a TypeScript type, so a brand
-written as an object is checked by the compiler; and the token build checks the brand files it
-ships. A hand-written CSS file dropped into an app is checked by neither, and a role it leaves out
-falls back to whatever the cascade has.
+A brand that omits one of the thirty base entries is caught rather than left resolving to nothing,
+in two places and neither of them the browser. The entry list is generated into a TypeScript type,
+so a brand written as an object is checked by the compiler. The token build checks the brand files
+this package ships.
+
+What neither checks is a half-filled optional group: the feedback tones and the form entries are
+`Partial` in the type, so a brand giving `error-default` and none of the other error roles
+compiles, and the roles it left out fall back to haus's. Supply a group whole or leave it out. A
+hand-written CSS file dropped into an app is checked by nothing at all.
 
 ## What a brand may change
 

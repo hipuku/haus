@@ -30,7 +30,9 @@ it adds.
 
 The table is the shape where Tabs renders the panel, which is the one to reach for. The other
 shape leaves the panel to the caller: pass `panelId` instead of `children` and wire your own
-element with `aria-labelledby`, using the exported `tabId` rather than writing the template
-yourself. A label is required either way, as `aria-label` or `aria-labelledby`.
+element with `aria-labelledby`, computing the selected tab's id with the exported
+`tabIdFor(id, value)` rather than writing the template yourself. `id` is required in that shape,
+so the ids are computable at all. A label is required either way, as `aria-label` or
+`aria-labelledby`.
 
 <ApiTable file="components/Tabs/Tabs.tsx" name="TabsOwnPanelProps" element="HTMLDivElement" />
