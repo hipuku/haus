@@ -19,7 +19,10 @@
   z-index: var(--haus-z-dropdown);
   background-color: var(--haus-color-surface-overlay);
   border: var(--haus-border-width-default) solid var(--haus-color-border-default);
-  border-radius: var(--haus-radius-overlay);
+  /* The control radius: a popover is anchored to a control and reads as an
+     extension of it, as Select's panel does. Modal, which floats free of any
+     control, keeps the overlay radius (4.5, owner's note). */
+  border-radius: var(--haus-radius-control);
   box-shadow: var(--haus-elevation-floating);
   padding-block: var(--haus-space-inset-xs);
   padding-inline: var(--haus-space-inset-2xs);

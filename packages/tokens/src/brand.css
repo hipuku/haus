@@ -167,7 +167,7 @@
     --haus-brand-radius-surface:  var(--haus-radius-lg);   /* Card, Toast                     */
     /* lg, not xl, since the 4.5 audit (2026-11-24): with controls at 4px, a
        16px dialog read as a different family from what it holds. */
-    --haus-brand-radius-overlay:  var(--haus-radius-lg);   /* Modal, Popover                  */
+    --haus-brand-radius-overlay:  var(--haus-radius-lg);   /* Modal                           */
     --haus-brand-radius-marker:   var(--haus-radius-sm);   /* Checkbox, Modal/Toast icons     */
 
     /* radius-pill stays out of the brand: it is var(--haus-radius-full), which

@@ -129,12 +129,7 @@
    Popover supplies the surface, the elevation and the placement. What is left
    here is the scroll bound and the rows. */
 
-/* [role] for one more step of specificity than Popover's own .panel rule,
-   so the radius wins whichever stylesheet loads last. */
-.panel[role] {
-  /* The control's radius, not the overlay's: the panel is the field opened,
-     and a 16px panel under a 4px field read as two different objects. */
-  border-radius: var(--haus-radius-control);
+.panel {
   padding: var(--haus-space-inset-2xs);
   max-block-size: var(--haus-popover-max-height);
   overflow-y: auto;
