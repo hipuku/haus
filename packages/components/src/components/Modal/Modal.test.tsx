@@ -3,6 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { axe } from 'vitest-axe'
 import { Modal } from './Modal'
+import { Popover } from '../Popover'
 
 describe('Modal', () => {
   it('can put focus on the action rather than the container', async () => {
@@ -318,12 +319,26 @@ describe('Modal', () => {
 describe('the backdrop dismiss guard (haus#56)', () => {
   /**
    * `fireEvent.click` synthesises neither the pointerdown nor the ordering, so
-   * these dispatch the two halves separately. That is also why the original
-   * defect survived a suite that already covered backdrop dismissal.
+   * these dispatch the halves separately. That is also why the original defect
+   * survived a suite that already covered backdrop dismissal.
+   *
+   * **The release is dispatched too, and it did not used to be.** A press is
+   * three events, and a helper that sent two of them could not express "pressed
+   * the backdrop, released inside the dialog" at all. That is the shape the
+   * guard was missing, so the test that would have caught it was unwritable
+   * with this helper. The click's target is the nearest common ancestor of the
+   * two endpoints, which is what a browser dispatches and the whole reason
+   * neither endpoint can be read off the click.
    */
+  const commonAncestor = (a: Element, b: Element): Element => {
+    let node: Element | null = a
+    while (node && !node.contains(b)) node = node.parentElement
+    return node ?? a
+  }
   const press = (down: Element, up: Element) => {
     fireEvent.pointerDown(down)
-    fireEvent.click(up)
+    fireEvent.pointerUp(up)
+    fireEvent.click(commonAncestor(down, up))
   }
 
   it('closes when the press starts and ends on the backdrop', () => {
@@ -351,6 +366,109 @@ describe('the backdrop dismiss guard (haus#56)', () => {
     // target is the backdrop, which is exactly what the old guard accepted.
     press(dialog, backdrop)
     expect(onClose).not.toHaveBeenCalled()
+  })
+
+  it('does not close when the press starts on the backdrop and ends inside the dialog', () => {
+    const onClose = vi.fn()
+    const { container } = render(
+      <Modal open onClose={onClose} title="Confirm">
+        Body
+      </Modal>,
+    )
+    const backdrop = container.ownerDocument.querySelector('[class*="backdrop"]')!
+    const dialog = screen.getByRole('dialog')
+    /* The mirror of haus#56, and open until 2026-11-25. Press the backdrop and
+       release just inside the dialog: the click's target is the backdrop,
+       because that is the common ancestor, so the click agreed with the latch
+       and the dialog closed on a release that happened inside it. Reading the
+       release itself is the only thing that separates this from a genuine
+       backdrop dismiss. */
+    press(backdrop, dialog)
+    expect(onClose).not.toHaveBeenCalled()
+  })
+
+  it('does not leave a stale release behind for the next press', () => {
+    const onClose = vi.fn()
+    const { container } = render(
+      <Modal open onClose={onClose} title="Confirm">
+        Body
+      </Modal>,
+    )
+    const backdrop = container.ownerDocument.querySelector('[class*="backdrop"]')!
+    const dialog = screen.getByRole('dialog')
+    /* A release on the backdrop that belongs to a press which started inside
+       the dialog, so it closes nothing; then a press that starts on the
+       backdrop and never completes. If the first release were still recorded,
+       the second press would inherit it. */
+    press(dialog, backdrop)
+    fireEvent.pointerDown(backdrop)
+    fireEvent.click(backdrop)
+    expect(onClose).not.toHaveBeenCalled()
+  })
+
+  it('does not close when a touch slides into the dialog before lifting', () => {
+    const onClose = vi.fn()
+    const { container } = render(
+      <Modal open onClose={onClose} title="Confirm">
+        Body
+      </Modal>,
+    )
+    const backdrop = container.ownerDocument.querySelector('[class*="backdrop"]')!
+    const dialog = screen.getByRole('dialog')
+    /* Touch gets implicit pointer capture on whatever took the press, so a
+       finger that presses the backdrop, slides into the dialog and lifts
+       reports the backdrop as the release target too. Reading `target` cannot
+       see this one at all, which is why the release is read as a point.
+
+       jsdom has no layout, so the rect is stubbed: the component falls back to
+       the target when it sees a zero-area rect, and that fallback is what the
+       other tests in this block exercise. */
+    vi.spyOn(dialog, 'getBoundingClientRect').mockReturnValue({
+      x: 100,
+      y: 100,
+      left: 100,
+      top: 100,
+      right: 300,
+      bottom: 300,
+      width: 200,
+      height: 200,
+      toJSON: () => ({}),
+    } as DOMRect)
+
+    fireEvent.pointerDown(backdrop, { clientX: 10, clientY: 10 })
+    // Target says backdrop, because of the capture. The point says dialog.
+    fireEvent.pointerUp(backdrop, { clientX: 200, clientY: 200 })
+    fireEvent.click(backdrop, { clientX: 200, clientY: 200 })
+    expect(onClose).not.toHaveBeenCalled()
+  })
+
+  it('still closes when the release point is outside the dialog', () => {
+    const onClose = vi.fn()
+    const { container } = render(
+      <Modal open onClose={onClose} title="Confirm">
+        Body
+      </Modal>,
+    )
+    const backdrop = container.ownerDocument.querySelector('[class*="backdrop"]')!
+    const dialog = screen.getByRole('dialog')
+    /* The other side of the test above, so the point check cannot pass by
+       refusing everything. */
+    vi.spyOn(dialog, 'getBoundingClientRect').mockReturnValue({
+      x: 100,
+      y: 100,
+      left: 100,
+      top: 100,
+      right: 300,
+      bottom: 300,
+      width: 200,
+      height: 200,
+      toJSON: () => ({}),
+    } as DOMRect)
+
+    fireEvent.pointerDown(backdrop, { clientX: 10, clientY: 10 })
+    fireEvent.pointerUp(backdrop, { clientX: 10, clientY: 10 })
+    fireEvent.click(backdrop, { clientX: 10, clientY: 10 })
+    expect(onClose).toHaveBeenCalledTimes(1)
   })
 
   it('does not leave a stale latch behind for the next click', () => {
@@ -411,5 +529,138 @@ describe('Modal exit (4.5, plan 4.1)', () => {
     fireEvent.animationEnd(backdrop)
     fireEvent(backdrop, new Event('webkitAnimationEnd', { bubbles: true }))
     expect(document.querySelector('[data-state]')).toBeNull()
+  })
+})
+
+describe('portalled content inside the dialog', () => {
+  /**
+   * A portalled Popover in a Modal could not be typed into at all.
+   *
+   * Modal keeps `aria-modal="true"` honest with a `focusin` listener that pulls
+   * focus back whenever it lands outside the dialog. A Popover with `portal`
+   * rendered into `document.body`, which is outside, so every control in the
+   * panel lost focus the instant it was given. The panel was visible, correctly
+   * placed, and unusable.
+   *
+   * The dialog is now the portal host for its descendants, so the panel is
+   * inside the subtree the trap measures. That is also what puts it in Tab's
+   * order and under the dialog's `inert`, none of which needed a special case.
+   */
+  it('lets a portalled input hold focus', async () => {
+    const user = userEvent.setup()
+    function Harness() {
+      const trigger = React.useRef<HTMLButtonElement>(null)
+      const [open, setOpen] = React.useState(false)
+      return (
+        <Modal open onClose={() => {}} title="Edit">
+          <button type="button" ref={trigger} onClick={() => setOpen(true)}>
+            Pick
+          </button>
+          <Popover open={open} onClose={() => setOpen(false)} triggerRef={trigger} portal aria-label="Colour">
+            <input aria-label="Hex" />
+          </Popover>
+        </Modal>
+      )
+    }
+    render(<Harness />)
+    await user.click(screen.getByRole('button', { name: 'Pick' }))
+    const field = screen.getByLabelText('Hex')
+    field.focus()
+    expect(field).toHaveFocus()
+    await user.type(field, 'abc')
+    expect(field).toHaveValue('abc')
+  })
+
+  it('puts the portalled panel inside the dialog rather than the body', async () => {
+    const user = userEvent.setup()
+    function Harness() {
+      const trigger = React.useRef<HTMLButtonElement>(null)
+      const [open, setOpen] = React.useState(false)
+      return (
+        <Modal open onClose={() => {}} title="Edit">
+          <button type="button" ref={trigger} onClick={() => setOpen(true)}>
+            Pick
+          </button>
+          <Popover open={open} onClose={() => setOpen(false)} triggerRef={trigger} portal aria-label="Colour">
+            <input aria-label="Hex" />
+          </Popover>
+        </Modal>
+      )
+    }
+    render(<Harness />)
+    await user.click(screen.getByRole('button', { name: 'Pick' }))
+    /* The mechanism behind the test above. Asserted separately because the
+       focus assertion would also pass if the trap were loosened instead, and
+       loosening it is the wrong fix: it would leave the panel out of Tab's
+       order and outside the dialog's `inert`. */
+    /* By name, because Popover's default role is `dialog` too, so there are two
+       on the page the moment the panel opens. */
+    expect(screen.getByRole('dialog', { name: 'Edit' }).contains(screen.getByLabelText('Hex'))).toBe(true)
+  })
+
+  it('still portals to the body with no dialog above it', async () => {
+    const user = userEvent.setup()
+    function Harness() {
+      const trigger = React.useRef<HTMLButtonElement>(null)
+      const [open, setOpen] = React.useState(false)
+      return (
+        <div>
+          <button type="button" ref={trigger} onClick={() => setOpen(true)}>
+            Pick
+          </button>
+          <Popover open={open} onClose={() => setOpen(false)} triggerRef={trigger} portal aria-label="Colour">
+            <input aria-label="Hex" />
+          </Popover>
+        </div>
+      )
+    }
+    const { container } = render(<Harness />)
+    await user.click(screen.getByRole('button', { name: 'Pick' }))
+    const field = screen.getByLabelText('Hex')
+    /* The host is a nearest-ancestor lookup, not a change of default: with
+       nothing above it the panel escapes to the body exactly as before. */
+    expect(container.contains(field)).toBe(false)
+    expect(document.body.contains(field)).toBe(true)
+  })
+})
+
+describe('portalled content in the footer', () => {
+  /**
+   * A footer is where a confirm dialog's actions live, so a popover opened from
+   * one is ordinary. The provider wrapped `children` alone at first, which left
+   * a footer popover going to `document.body` with every defect the change was
+   * made to fix.
+   */
+  it('lets a portalled input in the footer hold focus', async () => {
+    const user = userEvent.setup()
+    function Harness() {
+      const trigger = React.useRef<HTMLButtonElement>(null)
+      const [open, setOpen] = React.useState(false)
+      return (
+        <Modal
+          open
+          onClose={() => {}}
+          title="Edit"
+          footer={
+            <>
+              <button type="button" ref={trigger} onClick={() => setOpen(true)}>
+                Pick
+              </button>
+              <Popover open={open} onClose={() => setOpen(false)} triggerRef={trigger} portal aria-label="Colour">
+                <input aria-label="Hex" />
+              </Popover>
+            </>
+          }
+        >
+          Body
+        </Modal>
+      )
+    }
+    render(<Harness />)
+    await user.click(screen.getByRole('button', { name: 'Pick' }))
+    const field = screen.getByLabelText('Hex')
+    field.focus()
+    expect(field).toHaveFocus()
+    expect(screen.getByRole('dialog', { name: 'Edit' }).contains(field)).toBe(true)
   })
 })

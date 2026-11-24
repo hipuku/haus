@@ -229,6 +229,31 @@ bands now fails where it passed. Reported in [#136](https://github.com/hipuku/ha
 
 _Unreleased. No raw values left in the stylesheets, and Badge's tones remap properties._
 
+**Fixed** · **A tooltip's bubble can be hovered**, which is one of WCAG 1.4.13's three conditions
+and was absent while the component documented it as implemented. The bubble was `pointer-events:
+none` and sits clear of its wrapper's box, so a pointer moving towards it counted as leaving the
+wrapper and the bubble hid; its text could never be selected. The bubble now takes pointer events,
+which means it covers the content under it while shown, and an invisible child spans the offset
+between it and the trigger so there is no strip where the pointer is over neither.
+
+**Fixed** · **`Modal` no longer closes when a press starts on the backdrop and ends inside the
+dialog.** The guard read the press and the click, and a click's target is the nearest common
+ancestor of its two endpoints, so that gesture produced a click on the backdrop and passed. The
+release is now read on its own event, and by both its target and its coordinates: the backdrop has
+to be the release target, and the release point has to fall outside the dialog's box. The second
+condition is for touch, which captures the pointer to whatever took the press, so a finger that
+presses the backdrop, slides into the dialog and lifts reports the backdrop as its target either
+way. Where the dialog has no measurable box, as in a server render, the target decides alone. The
+mirror case, a press starting in the dialog and ending on the backdrop, was already guarded.
+
+**Fixed** · **A `Popover` with `portal` inside a `Modal` can be used.** The panel rendered into
+`document.body`, outside the dialog, and `Modal` returns focus to the dialog whenever focus lands
+outside it, so every control in the panel lost focus as soon as it was given and the panel could
+not be typed into. A `Modal` is now the portal host for its descendants, so the panel renders in
+the dialog: inside the focus trap, in Tab's order, and covered by the dialog's `inert`. A portalled
+panel with no dialog above it still renders into `document.body`. Both the body and the `footer`
+are inside the host, so a popover opened from a dialog's actions behaves like one in its body.
+
 **Changed** · **Five optical nudges are gone.** Checkbox's box, Radio's circle, Toggle's track,
 Callout's icon and Modal's close button were each pushed 1px or 2px to sit level with the text
 beside them, which was Manrope's answer at one size and nothing else's: it moved on a typeface or a

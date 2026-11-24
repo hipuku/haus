@@ -42,7 +42,10 @@ export interface TooltipProps extends Omit<React.HTMLAttributes<HTMLSpanElement>
  * · *Dismissible*. Escape hides it without moving focus, so it cannot obscure
  *   content the user is trying to read.
  * · *Hoverable*. The pointer can travel from the trigger into the bubble
- *   without it vanishing, which is what makes the text selectable.
+ *   without it vanishing, which is what makes the text selectable. The bubble
+ *   takes pointer events and a `.bridge` child spans the gap between the two,
+ *   so there is no strip where the pointer is over neither. Both are load
+ *   bearing: without them `pointerleave` fires on the way across.
  * · *Persistent*. It stays until the pointer leaves, focus leaves, or Escape.
  *   No timeout.
  *
@@ -127,6 +130,12 @@ export const Tooltip = React.forwardRef<HTMLSpanElement, TooltipProps>(function 
           focus, before a render that opens the bubble could attach anything.
           A hidden element still supplies its text to aria-describedby. */}
       <span role="tooltip" id={id} hidden={!open} className={[styles.bubble, styles[placement]].join(' ')}>
+        {/* Spans the offset between trigger and bubble so the pointer is never
+            over neither. A child of the bubble rather than a sibling, so it is
+            part of the same hit area and `pointerleave` on the root does not
+            fire while the pointer is on it. aria-hidden because it is geometry:
+            the bubble's text is the whole of what a reader should get. */}
+        <span aria-hidden className={styles.bridge} />
         {content}
       </span>
     </span>
