@@ -139,7 +139,7 @@ export const States: Story = {
     pseudo: { hover: ['#state-hover'], focusVisible: ['#state-focus'], active: ['#state-pressed'] },
   },
   render: args => (
-    <Row>
+    <Row still>
       <Item label="rest">
         <Button {...args} />
       </Item>

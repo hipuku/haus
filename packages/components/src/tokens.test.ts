@@ -122,7 +122,10 @@ describe('components read roles, not primitives', () => {
     //
     // Then 25 to 24 when Toast's enter became a fade with no travel (4.5
     // audit): its --haus-space-2 offset went.
-    expect(sizes.length).toBe(24)
+    //
+    // Then 24 to 25 with Drawer (4.5 audit): the surface it carries past its
+    // outer edge, so a spring's overshoot opens no gap, is --haus-space-10 wide.
+    expect(sizes.length).toBe(25)
     // 61 before step 7, rising to 77 as the six new components landed: border
     // widths, font families, shadows and, the sharp one, --haus-z-dropdown.
     // Popover and Tooltip are the pair worth pausing on. They are the first

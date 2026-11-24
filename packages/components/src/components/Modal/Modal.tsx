@@ -28,7 +28,16 @@ interface ModalBaseProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'tit
    *  Ruling B5 put `className` on the root, here the backdrop, and this is the
    *  named second target it asks for. */
   dialogClassName?: string
+  /**
+   * Where the dialog sits. `center` is a modal; `start` and `end` anchor it
+   * to that edge, full height, which is what `Drawer` is. Logical, so `end`
+   * is the right edge in a left-to-right page and the left in a right-to-left
+   * one.
+   */
+  placement?: ModalPlacement
 }
+
+export type ModalPlacement = 'center' | 'start' | 'end'
 
 /* A dialog with no accessible name is a dialog a screen reader announces as
    nothing. Either the visible heading names it, or an aria-label does, and the
@@ -61,6 +70,7 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(function Modal
     title,
     'aria-label': ariaLabel,
     size = 'md',
+    placement = 'center',
     footer,
     initialFocus,
     dismissOnBackdrop = true,
@@ -224,6 +234,7 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(function Modal
     <div
       ref={backdropRef}
       className={[styles.backdrop, className].filter(Boolean).join(' ')}
+      data-placement={placement === 'center' ? undefined : placement}
       data-state={open ? 'open' : 'closed'}
       inert={!open || undefined}
       onAnimationEnd={e => {

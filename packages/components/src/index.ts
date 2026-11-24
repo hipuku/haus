@@ -41,7 +41,10 @@ export { Toast } from './components/Toast'
 export type { ToastProps, ToastTone, ToastVariant, ToastAppearance } from './components/Toast'
 
 export { Modal } from './components/Modal'
-export type { ModalProps, ModalSize } from './components/Modal'
+export type { ModalProps, ModalSize, ModalPlacement } from './components/Modal'
+
+export { Drawer } from './components/Drawer'
+export type { DrawerProps, DrawerSide } from './components/Drawer'
 
 export { ConfirmDialog } from './components/ConfirmDialog'
 export type { ConfirmDialogProps } from './components/ConfirmDialog'

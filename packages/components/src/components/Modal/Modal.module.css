@@ -153,3 +153,87 @@
   padding: var(--haus-space-inset-md) var(--haus-space-inset-xl);
   border-top: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
 }
+
+/* ── Edge placement: the Drawer ──────────────────────────────────────────────
+   Anchored to the start or end edge, full height, entering from that edge on
+   the sheet role. The travel is the panel's own width, so it arrives from
+   off-screen, except in reduced, where the sheet role's offset is 0: the
+   min() below turns a 0 offset into no travel and any other into the full
+   width, so reduced is a fade in place. A spring that overshoots would pull
+   the outer edge away from the viewport, so the panel carries its surface a
+   little past that edge (the ::after) and no gap opens. */
+.backdrop[data-placement] {
+  padding: 0;
+  align-items: stretch;
+}
+
+.backdrop[data-placement='start'] {
+  justify-content: flex-start;
+}
+
+.backdrop[data-placement='end'] {
+  justify-content: flex-end;
+}
+
+.backdrop[data-placement] .dialog {
+  --haus-drawer-travel: min(100%, calc(var(--haus-motion-sheet-enter-offset) * 1000));
+  --haus-drawer-dir: 1;
+  position: relative;
+  block-size: 100%;
+  max-height: none;
+  border-radius: 0;
+  animation: haus-drawer-in var(--haus-motion-sheet-enter-duration) var(--haus-motion-sheet-enter-easing) both;
+}
+
+.backdrop[data-placement='end'] .dialog {
+  border-start-start-radius: var(--haus-radius-overlay);
+  border-end-start-radius: var(--haus-radius-overlay);
+}
+
+.backdrop[data-placement='start'] .dialog {
+  --haus-drawer-dir: -1;
+  border-start-end-radius: var(--haus-radius-overlay);
+  border-end-end-radius: var(--haus-radius-overlay);
+}
+
+[dir='rtl'] .backdrop[data-placement='end'] .dialog {
+  --haus-drawer-dir: -1;
+}
+
+[dir='rtl'] .backdrop[data-placement='start'] .dialog {
+  --haus-drawer-dir: 1;
+}
+
+.backdrop[data-placement] .dialog::after {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  inline-size: var(--haus-space-10);
+  background-color: var(--haus-color-surface-default);
+}
+
+.backdrop[data-placement='end'] .dialog::after {
+  inset-inline-start: 100%;
+}
+
+.backdrop[data-placement='start'] .dialog::after {
+  inset-inline-end: 100%;
+}
+
+.backdrop[data-placement][data-state='closed'] .dialog {
+  animation: haus-drawer-out var(--haus-motion-sheet-exit-duration) var(--haus-motion-sheet-exit-easing) both;
+}
+
+@keyframes haus-drawer-in {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--haus-drawer-travel) * var(--haus-drawer-dir)));
+  }
+}
+
+@keyframes haus-drawer-out {
+  to {
+    opacity: 0;
+    transform: translateX(calc(var(--haus-drawer-travel) * var(--haus-drawer-dir)));
+  }
+}

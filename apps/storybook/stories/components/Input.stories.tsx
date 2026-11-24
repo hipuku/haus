@@ -46,7 +46,7 @@ export const States: Story = {
     pseudo: { hover: ['#state-hover [class*="inputWrap"]'], focusVisible: ['#state-focus input'] },
   },
   render: args => (
-    <Row stretch>
+    <Row stretch still>
       <Item label="rest">
         <Input {...args} />
       </Item>

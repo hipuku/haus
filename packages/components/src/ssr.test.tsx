@@ -33,6 +33,7 @@ const REQUIRED: Record<string, Record<string, unknown>> = {
   MenuItem: { children: 'Rename' },
   MenuSeparator: {},
   MenuLabel: { children: 'Signed in as Ada' },
+  Drawer: { open: false, onClose: () => {}, title: 'Details', children: 'Body' },
   ConfirmDialog: {
     open: false,
     title: 'Delete workspace',

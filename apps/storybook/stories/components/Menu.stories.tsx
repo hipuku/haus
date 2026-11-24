@@ -123,15 +123,17 @@ export const States: Story = {
     pseudo: { hover: ['#state-hover'], active: ['#state-pressed'], focusVisible: ['#state-error'] },
   },
   render: () => (
-    <Demo defaultOpen>
-      <MenuItem>Rest</MenuItem>
-      <MenuItem id="state-hover">Hover</MenuItem>
-      <MenuItem id="state-pressed">Pressed</MenuItem>
-      <MenuItem disabled>Disabled</MenuItem>
-      <MenuItem id="state-error" tone="error">
-        Destructive, focused
-      </MenuItem>
-    </Demo>
+    <div inert style={{ pointerEvents: 'none' }}>
+      <Demo defaultOpen>
+        <MenuItem>Rest</MenuItem>
+        <MenuItem id="state-hover">Hover</MenuItem>
+        <MenuItem id="state-pressed">Pressed</MenuItem>
+        <MenuItem disabled>Disabled</MenuItem>
+        <MenuItem id="state-error" tone="error">
+          Destructive, focused
+        </MenuItem>
+      </Demo>
+    </div>
   ),
 }
 

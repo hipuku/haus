@@ -1,4 +1,4 @@
-import { Button } from 'haus-components'
+import { Button, Divider } from 'haus-components'
 import React, { useState } from 'react'
 
 /**
@@ -30,6 +30,7 @@ const labelStyle: React.CSSProperties = {
   fontSize: 'var(--haus-type-label-xs-size)',
   lineHeight: 'var(--haus-type-label-xs-leading)',
   letterSpacing: 'var(--haus-type-label-xs-tracking)',
+  textTransform: 'uppercase',
   whiteSpace: 'nowrap',
 }
 
@@ -47,11 +48,28 @@ export function Item({ label, children }: { label: string; children: React.React
   )
 }
 
-/** Items side by side, wrapping, aligned on their top edge. */
-export function Row({ children, stretch = false }: { children: React.ReactNode; stretch?: boolean }) {
+/**
+ * Items side by side, wrapping, aligned on their top edge.
+ *
+ * `still` is for a States story: the items are inert, so each shows exactly
+ * the state it is drawn in, as a Figma frame would, and the pointer or the
+ * keyboard cannot change it (owner, 4.5). The states themselves are forced by
+ * the pseudo-states add-on (`parameters.pseudo`).
+ */
+export function Row({
+  children,
+  stretch = false,
+  still = false,
+}: {
+  children: React.ReactNode
+  stretch?: boolean
+  still?: boolean
+}) {
   return (
     <div
+      inert={still || undefined}
       style={{
+        pointerEvents: still ? 'none' : undefined,
         display: stretch ? 'grid' : 'flex',
         gridTemplateColumns: stretch ? 'repeat(auto-fit, minmax(16rem, 1fr))' : undefined,
         flexWrap: 'wrap',
@@ -150,13 +168,6 @@ export function MotionCompare({
   const [run, setRun] = useState(0)
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--haus-space-6)' }}>
-      {replay && (
-        <div>
-          <Button size="sm" variant="secondary" onClick={() => setRun(n => n + 1)}>
-            Replay
-          </Button>
-        </div>
-      )}
       <div
         style={{
           display: 'grid',
@@ -171,6 +182,16 @@ export function MotionCompare({
           </div>
         ))}
       </div>
+      {replay && (
+        <>
+          <Divider spacing="none" decorative />
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <Button size="sm" variant="secondary" onClick={() => setRun(n => n + 1)}>
+              Replay
+            </Button>
+          </div>
+        </>
+      )}
     </div>
   )
 }

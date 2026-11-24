@@ -74,7 +74,7 @@ export const States: Story = {
     pseudo: { hover: ['#state-hover button'], focusVisible: ['#state-focus button'] },
   },
   render: () => (
-    <Row stretch>
+    <Row stretch still>
       <Item label="rest">
         <Controlled />
       </Item>

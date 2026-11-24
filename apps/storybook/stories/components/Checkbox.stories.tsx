@@ -41,7 +41,7 @@ export const States: Story = {
     pseudo: { hover: ['#state-hover label'], focusVisible: ['#state-focus input'] },
   },
   render: args => (
-    <Row>
+    <Row still>
       <Item label="unchecked">
         <Checkbox {...args} />
       </Item>

@@ -37,7 +37,7 @@ export const States: Story = {
     pseudo: { hover: ['#state-hover'], focusVisible: ['#state-focus'] },
   },
   render: args => (
-    <Row stretch>
+    <Row stretch still>
       <Item label="rest">
         <Textarea {...args} />
       </Item>

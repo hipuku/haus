@@ -64,7 +64,7 @@ export const States: Story = {
     pseudo: { hover: ['#state-hover label'], focusVisible: ['#state-focus input'] },
   },
   render: args => (
-    <Row>
+    <Row still>
       <Item label="rest">
         <RadioGroup {...args} name="s-rest" />
       </Item>

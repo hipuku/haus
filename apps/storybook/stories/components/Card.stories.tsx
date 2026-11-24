@@ -118,7 +118,7 @@ export const States: Story = {
     },
   },
   render: args => (
-    <Row>
+    <Row still>
       <Item label="rest">{link(args)}</Item>
       <Item label="hover">{link(args, { id: 'state-hover' })}</Item>
       <Item label="hover, elevated">{link(args, { id: 'state-hover-elevated' }, { variant: 'elevated' })}</Item>

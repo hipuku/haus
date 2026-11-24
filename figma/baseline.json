@@ -1,5 +1,5 @@
 {
-  "acceptedAt": "2026-11-24T06:12:44.630Z",
+  "acceptedAt": "2026-11-24T06:17:33.881Z",
   "items": {
     "axis Avatar.size": {
       "code": "lg|md|sm|xl|xs",
@@ -51,6 +51,9 @@
       "code": "lg|md|none|sm",
       "figma": "lg|md|none|sm"
     },
+    "axis Drawer.side": {
+      "code": "end|start"
+    },
     "axis IconButton.size": {
       "code": "lg|md|sm",
       "figma": "lg|md|sm"
@@ -65,6 +68,9 @@
     },
     "axis Menu.tone": {
       "code": "error|neutral"
+    },
+    "axis Modal.placement": {
+      "code": "center|end|start"
     },
     "axis Modal.size": {
       "code": "lg|md|sm|xl",
@@ -151,6 +157,9 @@
     "component Divider": {
       "code": "present",
       "figma": "present"
+    },
+    "component Drawer": {
+      "code": "present"
     },
     "component EmptyState": {
       "code": "present",
