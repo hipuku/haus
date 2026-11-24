@@ -1,5 +1,5 @@
 {
-  "acceptedAt": "2026-11-23T16:33:18.846Z",
+  "acceptedAt": "2026-11-24T00:23:59.022Z",
   "items": {
     "axis Avatar.size": {
       "code": "lg|md|sm|xl|xs",
@@ -636,11 +636,11 @@
     },
     "token --haus-font-mono": {
       "code": "DM Mono",
-      "figma": "Fira Code"
+      "figma": "DM Mono"
     },
     "token --haus-font-sans": {
       "code": "DM Sans",
-      "figma": "Manrope"
+      "figma": "DM Sans"
     },
     "token --haus-greengage-100": {
       "code": "#e8fbea",
