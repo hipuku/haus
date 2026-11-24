@@ -224,14 +224,72 @@ export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(function Tabs(
     return v === active?.value ? ownPanelId(v) : undefined
   }
 
+  /* The selected tab's marker (the underline, or the segmented fill) is one
+     element that travels to the selected tab on the indicator role: a spring
+     in expressive, an instant move in subtle and reduced (plan 4.1). Measured
+     from the selected tab, whose offsetParent is the list; remeasured when the
+     list resizes. The first placement is not animated. */
+  const listRef = React.useRef<HTMLDivElement>(null)
+  const [marker, setMarker] = React.useState<{
+    left: number
+    top: number
+    width: number
+    height: number
+    placed: boolean
+  } | null>(null)
+  const selectedId = active ? tabId(active.value) : undefined
+  React.useLayoutEffect(() => {
+    const list = listRef.current
+    if (!list || !selectedId) {
+      setMarker(null)
+      return
+    }
+    const measure = () => {
+      const node = document.getElementById(selectedId)
+      if (!node) return
+      const next = { left: node.offsetLeft, top: node.offsetTop, width: node.offsetWidth, height: node.offsetHeight }
+      setMarker(prev =>
+        prev &&
+        prev.left === next.left &&
+        prev.top === next.top &&
+        prev.width === next.width &&
+        prev.height === next.height
+          ? prev
+          : { ...next, placed: prev !== null },
+      )
+    }
+    measure()
+    if (typeof ResizeObserver === 'undefined') return
+    const observer = new ResizeObserver(measure)
+    observer.observe(list)
+    return () => observer.disconnect()
+  }, [selectedId])
+
   return (
     <div ref={ref} id={id} className={[styles.tabs, className].filter(Boolean).join(' ')} {...rest}>
       <div
+        ref={listRef}
         role="tablist"
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledBy}
         className={[styles.list, styles[appearance], styles[size], tabListClassName].filter(Boolean).join(' ')}
       >
+        {/* First in the list, so it paints beneath the tabs. */}
+        {marker && (
+          <span
+            className={styles.marker}
+            data-placed={marker.placed || undefined}
+            style={
+              {
+                '--haus-tabs-marker-x': `${marker.left}px`,
+                '--haus-tabs-marker-y': `${marker.top}px`,
+                inlineSize: marker.width,
+                blockSize: marker.height,
+              } as React.CSSProperties
+            }
+            aria-hidden="true"
+          />
+        )}
         {items.map(item => {
           const selected = item.value === value
           return (

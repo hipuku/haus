@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Tabs, type TabItem } from 'haus-components'
+import { Item, MotionCompare, Stack } from '../helpers'
 
 const ITEMS: TabItem[] = [
   { value: 'overview', label: 'Overview' },
@@ -46,6 +47,24 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+function Controlled(props: Partial<React.ComponentProps<typeof Tabs>> & { initial?: string }) {
+  const { initial = 'overview', ...rest } = props
+  const [value, setValue] = useState(initial)
+  return (
+    <Tabs
+      items={ITEMS}
+      aria-label="Sections"
+      {...(rest as Record<string, never>)}
+      value={value}
+      onValueChange={setValue}
+    >
+      The {value} panel.
+    </Tabs>
+  )
+}
+
+const story = (text: string) => ({ docs: { description: { story: text } } })
+
 export const Playground: Story = {
   render: function Render(args) {
     const [value, setValue] = useState(args.value)
@@ -59,37 +78,7 @@ export const Playground: Story = {
   },
 }
 
-export const Sizes: Story = {
-  render: function Render(args) {
-    const [value, setValue] = useState('overview')
-    return (
-      <div style={{ display: 'grid', gap: 'var(--haus-space-8)', maxWidth: 560 }}>
-        {(['sm', 'md', 'lg'] as const).map(size => (
-          <Tabs key={size} {...args} size={size} value={value} onValueChange={setValue}>
-            {size}
-          </Tabs>
-        ))}
-      </div>
-    )
-  },
-}
-
-export const Segmented: Story = {
-  render: function Segmented() {
-    const [value, setValue] = useState('write')
-    return (
-      <Tabs
-        items={[
-          { value: 'write', label: 'Write' },
-          { value: 'preview', label: 'Preview' },
-        ]}
-        value={value}
-        onValueChange={setValue}
-        appearance="segmented"
-        aria-label="Editor mode"
-      />
-    )
-  },
+export const Appearance: Story = {
   parameters: {
     docs: {
       description: {
@@ -108,4 +97,67 @@ export const Segmented: Story = {
       },
     },
   },
+  render: () => (
+    <Stack>
+      <Item label="underline">
+        <Controlled />
+      </Item>
+      <Item label="segmented">
+        <Controlled appearance="segmented" />
+      </Item>
+    </Stack>
+  ),
+}
+
+export const Size: Story = {
+  parameters: story('Each size reads its label role whole: label-sm, label-md, label-lg.'),
+  render: () => (
+    <Stack>
+      {(['sm', 'md', 'lg'] as const).map(size => (
+        <Item key={size} label={size}>
+          <Controlled size={size} />
+        </Item>
+      ))}
+    </Stack>
+  ),
+}
+
+export const Motion: Story = {
+  parameters: story(
+    'Click between tabs in each. The marker is one element: subtle moves it at once, expressive slides it to ' +
+      'the new tab on a spring, reduced moves it at once.',
+  ),
+  render: () => (
+    <MotionCompare
+      render={() => (
+        <Stack>
+          <Controlled />
+          <Controlled appearance="segmented" />
+        </Stack>
+      )}
+    />
+  ),
+}
+
+export const Content: Story = {
+  parameters: story('A disabled tab, which the arrows skip, and labels of different lengths.'),
+  render: () => (
+    <Controlled
+      items={[
+        { value: 'overview', label: 'Overview' },
+        { value: 'decisions', label: 'Decisions and their history' },
+        { value: 'archived', label: 'Archived', disabled: true },
+        { value: 'settings', label: 'Settings' },
+      ]}
+    />
+  ),
+}
+
+export const OneTabStop: Story = {
+  name: 'The tablist is one tab stop',
+  parameters: story(
+    'Tab into the list, use the arrows to move, Home and End to jump, and Tab once more to reach the panel. ' +
+      'Every tab being its own tab stop is what the pattern exists to prevent.',
+  ),
+  render: () => <Controlled />,
 }
