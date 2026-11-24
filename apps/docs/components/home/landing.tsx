@@ -60,9 +60,7 @@ export function Landing() {
       <section className={styles.section}>
         <div className={styles.inner}>
           <h2 className={styles.heading}>What is underneath</h2>
-          <p className={styles.body}>
-            Three packages a component rests on, each publishable and usable on its own.
-          </p>
+          <p className={styles.body}>Three packages a component rests on, each publishable and usable on its own.</p>
           <div className={styles.cards}>
             <Card asChild variant="elevated">
               <Link aria-label="Tokens" href="/docs/packages/tokens">
@@ -93,8 +91,8 @@ export function Landing() {
                 <span className={styles.cardInner}>
                   <span className={styles.cardTitle}>Tools</span>
                   <span className={styles.cardBody}>
-                    The token converter runs on this site, on the same package a consumer installs, and so do the
-                    colour tools.
+                    The token converter runs on this site, on the same package a consumer installs, and so do the colour
+                    tools.
                   </span>
                   <span className={styles.cardLink}>Converter</span>
                 </span>
