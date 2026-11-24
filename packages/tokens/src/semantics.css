@@ -240,11 +240,19 @@
 
        The text above a form control is its own typographic role, and it sets
        all four properties, so it is a role of the ordinary shape rather than
-       another exception. */
-    --haus-type-label-field-size:     var(--haus-text-12);
-    --haus-type-label-field-weight:   var(--haus-weight-semibold);
+       another exception.
+
+       Changed 2026-11-24 in the 4.5 audit: 13px medium at normal tracking,
+       where it was 12px semibold at wide. The label names the field and was
+       smaller than the value it named (13px), so it read as a caption; the
+       weight and tracking were compensating for the size. It now matches the
+       value's size and is told apart from it by weight and colour. It shares
+       label-md's values and stays its own role, because a field label and a
+       control label are free to move apart. */
+    --haus-type-label-field-size:     var(--haus-text-13);
+    --haus-type-label-field-weight:   var(--haus-weight-medium);
     --haus-type-label-field-leading:  var(--haus-leading-normal);
-    --haus-type-label-field-tracking: var(--haus-tracking-wide);
+    --haus-type-label-field-tracking: var(--haus-tracking-normal);
 
     --haus-type-label-md-size:        var(--haus-text-13);
     --haus-type-label-md-weight:      var(--haus-weight-medium);

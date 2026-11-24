@@ -1,5 +1,5 @@
 {
-  "acceptedAt": "2026-11-24T01:22:44.802Z",
+  "acceptedAt": "2026-11-24T01:45:29.889Z",
   "items": {
     "axis Avatar.size": {
       "code": "lg|md|sm|xl|xs",
@@ -206,7 +206,7 @@
       "figma": "disabled|focus|hover"
     },
     "states Input": {
-      "code": "disabled|focus",
+      "code": "disabled|focus|hover",
       "figma": "disabled|focus"
     },
     "states Radio": {
@@ -1486,19 +1486,19 @@
       "figma": "600"
     },
     "token --haus-type-label-field-leading": {
-      "code": "16.8",
+      "code": "18.2",
       "figma": "16.8"
     },
     "token --haus-type-label-field-size": {
-      "code": "12",
+      "code": "13",
       "figma": "12"
     },
     "token --haus-type-label-field-tracking": {
-      "code": "0.24",
+      "code": "0",
       "figma": "0.24"
     },
     "token --haus-type-label-field-weight": {
-      "code": "600",
+      "code": "500",
       "figma": "600"
     },
     "token --haus-type-label-lg-leading": {

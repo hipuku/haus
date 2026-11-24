@@ -5,6 +5,10 @@
 }
 
 .label {
+  /* 8px from the field in all, with the wrapper's 4px gap: the gap alone put
+     the label against the field's edge and its focus outline. The gap stays 4px
+     so the hint and error keep their distance below. */
+  margin-block-end: var(--haus-space-stack-2xs);
   font-family: var(--haus-font-sans);
   font-size: var(--haus-type-label-field-size);
   font-weight: var(--haus-type-label-field-weight);
