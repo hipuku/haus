@@ -241,6 +241,7 @@
   overflow-wrap: anywhere;
   /* The trigger's value role, so the list and the chosen value match. */
   font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-type-body-sm-weight);
   line-height: var(--haus-type-body-sm-leading);
   letter-spacing: var(--haus-type-body-sm-tracking);
 }
