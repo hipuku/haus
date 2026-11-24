@@ -1,5 +1,5 @@
 {
-  "acceptedAt": "2026-11-24T05:56:59.403Z",
+  "acceptedAt": "2026-11-24T06:12:44.630Z",
   "items": {
     "axis Avatar.size": {
       "code": "lg|md|sm|xl|xs",
@@ -37,6 +37,12 @@
       "code": "default|elevated|outlined",
       "figma": "default|elevated|outlined"
     },
+    "axis ConfirmDialog.kind": {
+      "code": "alert|confirm"
+    },
+    "axis ConfirmDialog.tone": {
+      "code": "error|neutral"
+    },
     "axis Divider.orientation": {
       "code": "horizontal|vertical",
       "figma": "horizontal|vertical"
@@ -56,6 +62,9 @@
     "axis IconButton.variant": {
       "code": "ghost|primary|secondary",
       "figma": "ghost|primary|secondary"
+    },
+    "axis Menu.tone": {
+      "code": "error|neutral"
     },
     "axis Modal.size": {
       "code": "lg|md|sm|xl",
@@ -136,6 +145,9 @@
       "code": "present",
       "figma": "present"
     },
+    "component ConfirmDialog": {
+      "code": "present"
+    },
     "component Divider": {
       "code": "present",
       "figma": "present"
@@ -151,6 +163,9 @@
     "component Input": {
       "code": "present",
       "figma": "present"
+    },
+    "component Menu": {
+      "code": "present"
     },
     "component Modal": {
       "code": "present",
@@ -210,6 +225,9 @@
     "states Input": {
       "code": "disabled|focus|hover",
       "figma": "disabled|focus"
+    },
+    "states Menu": {
+      "code": "disabled|focus|hover|pressed"
     },
     "states Radio": {
       "code": "disabled|focus|hover|pressed",

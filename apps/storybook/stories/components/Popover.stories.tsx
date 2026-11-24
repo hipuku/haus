@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Button, Input, Popover } from 'haus-components'
+import { Button, Input, MenuItem, Popover } from 'haus-components'
 import { Item, MotionCompare, Row } from '../helpers'
 
 const meta = {
@@ -68,12 +68,8 @@ function Panel({ defaultOpen = false, content = 'menu', ...rest }: PanelProps) {
             </div>
           ) : (
             <div style={{ display: 'grid' }}>
-              {/* haus has no menu item yet, so these are ghost Buttons set to
-                  start-align: a Menu is a proposed component (4.5 audit). */}
               {['Rename', 'Duplicate', 'Move to folder'].map(label => (
-                <Button key={label} role="menuitem" variant="ghost" size="sm" style={{ justifyContent: 'flex-start' }}>
-                  {label}
-                </Button>
+                <MenuItem key={label}>{label}</MenuItem>
               ))}
             </div>
           )}

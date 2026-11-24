@@ -43,6 +43,9 @@ export type { ToastProps, ToastTone, ToastVariant, ToastAppearance } from './com
 export { Modal } from './components/Modal'
 export type { ModalProps, ModalSize } from './components/Modal'
 
+export { ConfirmDialog } from './components/ConfirmDialog'
+export type { ConfirmDialogProps } from './components/ConfirmDialog'
+
 export { Checkbox } from './components/Checkbox'
 export type { CheckboxProps } from './components/Checkbox'
 
@@ -63,6 +66,9 @@ export type { EmptyStateProps, EmptyStateHeadingLevel, EmptyStateLive } from './
 
 export { Popover } from './components/Popover'
 export type { PopoverProps, PopoverAlign, PopoverPlacement, PopoverWidth, PopoverRole } from './components/Popover'
+
+export { Menu, MenuItem, MenuSeparator, MenuLabel } from './components/Menu'
+export type { MenuProps, MenuItemProps } from './components/Menu'
 
 export { Tabs, tabIdFor } from './components/Tabs'
 export type {

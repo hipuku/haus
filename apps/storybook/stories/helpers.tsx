@@ -1,22 +1,40 @@
-import { Badge, Button } from 'haus-components'
+import { Button } from 'haus-components'
 import React, { useState } from 'react'
 
 /**
  * Layout for stories, so every component's stories are laid out and labelled
  * the same way. STORIES.md is the standard these serve.
  *
- * **Labels are Badges.** A label in plain text is set in the same type as the
- * component it names and reads as part of the content; a Badge is visibly
- * furniture. Every label in a story goes through `Label`.
+ * **Labels are outlined pills.** A label in plain text is set in the same type
+ * as the component it names and reads as part of the content; an outlined,
+ * monospaced pill is visibly furniture. Every label goes through `Label`.
  */
 
-/** The one way a story labels something: a neutral Badge. */
+/**
+ * The one way a story labels something. Badge-shaped but outlined and never
+ * filled, so it reads as the workbench's furniture even on Badge's own
+ * stories, where a filled label sat among the Badges it named (owner, 4.5).
+ * Story-only, so it is drawn here rather than added to Badge's appearances.
+ */
+const labelStyle: React.CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  boxSizing: 'border-box',
+  paddingBlock: 'var(--haus-space-0-5)',
+  paddingInline: 'var(--haus-space-2)',
+  border: 'var(--haus-border-width-default) dashed var(--haus-color-border-control)',
+  borderRadius: 'var(--haus-radius-pill)',
+  background: 'transparent',
+  color: 'var(--haus-color-ink-secondary)',
+  fontFamily: 'var(--haus-font-mono)',
+  fontSize: 'var(--haus-type-label-xs-size)',
+  lineHeight: 'var(--haus-type-label-xs-leading)',
+  letterSpacing: 'var(--haus-type-label-xs-tracking)',
+  whiteSpace: 'nowrap',
+}
+
 export function Label({ children }: { children: React.ReactNode }) {
-  return (
-    <Badge tone="neutral" appearance="subtle">
-      {children}
-    </Badge>
-  )
+  return <span style={labelStyle}>{children}</span>
 }
 
 /** One labelled item: the label above, the component under it. */
