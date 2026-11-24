@@ -1,0 +1,27 @@
+---
+title: Avatar
+description: 'Initials from a name, and a fallback glyph when there is none.'
+---
+
+Initials from a name, and a fallback glyph when there is none. The colour is derived from the name, so the same person is the same colour everywhere without anyone storing a choice. Keeps `xs` and `xl` beyond the shared size scale: an avatar is a picture rather than a control, and a 16px one has a use a 16px button does not.
+
+## Examples
+
+<ComponentExamples name="Avatar" />
+
+## Install
+
+<Install name="Avatar" />
+
+## Usage
+
+```tsx
+import { Avatar } from '@/components/haus/components/Avatar'
+```
+
+## API
+
+Avatar also takes the attributes its element has, and forwards its ref to it. These are the props
+it adds.
+
+<ApiTable file="components/Avatar/Avatar.tsx" name="AvatarProps" element="HTMLDivElement" />

@@ -1,0 +1,27 @@
+---
+title: Checkbox
+description: 'Uncontrolled unless you pass checked.'
+---
+
+Uncontrolled unless you pass `checked`. `onChange` hands back `(checked, event)`: the boolean because it is what you almost always want, the event because without it there was no way to read `event.target.name` in a form with many checkboxes.
+
+## Examples
+
+<ComponentExamples name="Checkbox" />
+
+## Install
+
+<Install name="Checkbox" />
+
+## Usage
+
+```tsx
+import { Checkbox } from '@/components/haus/components/Checkbox'
+```
+
+## API
+
+Checkbox also takes the attributes its element has, and forwards its ref to it. These are the props
+it adds.
+
+<ApiTable file="components/Checkbox/Checkbox.tsx" name="CheckboxProps" attributes="React.InputHTMLAttributes<HTMLInputElement>" />

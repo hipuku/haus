@@ -1,0 +1,27 @@
+---
+title: ConfirmDialog
+description: '"Are you sure", as one component, on Modal.'
+---
+
+"Are you sure", as one component, on Modal. vault and core each built one. Focus starts on Cancel, so Enter does the safe thing; the confirm button carries the tone of the action; while the action runs the button shows it and the dialog cannot be dismissed; a backdrop click never dismisses it. It is an `alertdialog`, so it is announced as interrupting, with its description.
+
+## Examples
+
+<ComponentExamples name="ConfirmDialog" />
+
+## Install
+
+<Install name="ConfirmDialog" />
+
+## Usage
+
+```tsx
+import { ConfirmDialog } from '@/components/haus/components/ConfirmDialog'
+```
+
+## API
+
+ConfirmDialog also takes the attributes its element has, and forwards its ref to it. These are the props
+it adds.
+
+<ApiTable file="components/ConfirmDialog/ConfirmDialog.tsx" name="ConfirmDialogProps" element="HTMLDivElement" />

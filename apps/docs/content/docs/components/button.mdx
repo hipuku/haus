@@ -1,0 +1,27 @@
+---
+title: Button
+description: 'The one button.'
+---
+
+The one button. `variant` is visual weight, `tone` is meaning, and `external` is behaviour: three things that used to be one prop. Renders an `<a>` when given `href`, and a disabled link is really disabled: no `href`, out of the tab order, not activatable.
+
+## Examples
+
+<ComponentExamples name="Button" />
+
+## Install
+
+<Install name="Button" />
+
+## Usage
+
+```tsx
+import { Button } from '@/components/haus/components/Button'
+```
+
+## API
+
+Button also takes the attributes its element has, and forwards its ref to it. These are the props
+it adds.
+
+<ApiTable file="components/Button/Button.tsx" name="ButtonOwnProps" attributes="React.ButtonHTMLAttributes<HTMLButtonElement>" />

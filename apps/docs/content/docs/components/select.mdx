@@ -1,0 +1,33 @@
+---
+title: Select
+description: 'haus draws this Select: a trigger, and a panel of options.'
+---
+
+haus draws this Select: a trigger, and a panel of options. 
+
+**It was `Listbox` until decision 0025**, where the native `<select>` it replaces was retired. Measured across core, drift and vault, nothing imported the native one, while two products built this and wrote down the same reason. core: *"a styled listbox standing in for `<select>`, whose native popup can't be themed"*. vault: *"a custom dropdown replacing native `<select>`"*. 
+
+**The hint is the whole argument.** An option carries a second line under its label, which a native `<option>` cannot hold because the operating system draws it. 
+
+Focus stays on the trigger for the entire interaction and the highlighted row is announced through `aria-activedescendant`. That is what lets the options be plain `<li role="option">`: `role="option"` must be owned by the listbox, so anything focusable in between makes the structure invalid. Dismissal composes `Popover`, which already owns outside-click and Escape and is deliberately not a focus trap.
+
+## Examples
+
+<ComponentExamples name="Select" />
+
+## Install
+
+<Install name="Select" />
+
+## Usage
+
+```tsx
+import { Select } from '@/components/haus/components/Select'
+```
+
+## API
+
+Select also takes the attributes its element has, and forwards its ref to it. These are the props
+it adds.
+
+<ApiTable file="components/Select/Select.tsx" name="SelectProps" element="HTMLDivElement" />

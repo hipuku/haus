@@ -1,0 +1,29 @@
+---
+title: Callout
+description: 'An inline notice attached to the thing it is about.'
+---
+
+An inline notice attached to the thing it is about. Not a Toast: a toast is transient, floats, and is about an event.
+
+`live` is the prop this component exists for. drift puts `role="alert"` on every callout it renders, so a static notice interrupts a screen reader on every render; vault puts `role="note"` on every one, so a validation message that appears after a failed save is never announced. axe flags neither: the markup is valid and wrong in context.
+
+## Examples
+
+<ComponentExamples name="Callout" />
+
+## Install
+
+<Install name="Callout" />
+
+## Usage
+
+```tsx
+import { Callout } from '@/components/haus/components/Callout'
+```
+
+## API
+
+Callout also takes the attributes its element has, and forwards its ref to it. These are the props
+it adds.
+
+<ApiTable file="components/Callout/Callout.tsx" name="CalloutProps" element="HTMLDivElement" />

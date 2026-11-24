@@ -1,0 +1,27 @@
+---
+title: Card
+description: 'A surface.'
+---
+
+A surface. `variant` here is elevation, which is a visual weight, so it keeps the name. `as` is the escape hatch: a card is often a list item or an article, and a `<div>` in those places is a hole in the document outline no styling fixes.
+
+## Examples
+
+<ComponentExamples name="Card" />
+
+## Install
+
+<Install name="Card" />
+
+## Usage
+
+```tsx
+import { Card } from '@/components/haus/components/Card'
+```
+
+## API
+
+Card also takes the attributes its element has, and forwards its ref to it. These are the props
+it adds.
+
+<ApiTable file="components/Card/Card.tsx" name="CardOwnProps" element="HTMLDivElement" />

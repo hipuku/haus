@@ -16,14 +16,30 @@ const componentsSrc = path.resolve(process.cwd(), '../../packages/components/src
  * props type the way the component does: the file must import React as
  * `React`, which every component in the package does.
  */
-export function ApiTable({ file, name, element = 'HTMLElement' }: { file: string; name: string; element?: string }) {
+export function ApiTable({
+  file,
+  name,
+  element = 'HTMLElement',
+  attributes,
+}: {
+  file: string
+  name: string
+  element?: string
+  /**
+   * The attribute set to leave out, when the component extends more than
+   * `HTMLAttributes`. A button also has `disabled`, `form` and `formAction`
+   * from `ButtonHTMLAttributes`, and listing those as the component's API
+   * buries the four props that are.
+   */
+  attributes?: string
+}) {
   return (
     <AutoTypeTable
       generator={generator}
       options={{ basePath: componentsSrc }}
       path={file}
       name="Api"
-      type={`Omit<${name}, keyof React.HTMLAttributes<${element}>>`}
+      type={`Omit<${name}, keyof ${attributes ?? `React.HTMLAttributes<${element}>`}>`}
     />
   )
 }

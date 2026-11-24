@@ -1,0 +1,27 @@
+---
+title: Divider
+description: 'A rule between things.'
+---
+
+A rule between things. Always an `<hr>`, including when vertical: it carries `separator` implicitly and stays a break when the document is read with styles off. `decorative` is the interesting prop: the markup cannot tell a structural break from a line drawn because a panel looked crowded, so the caller says which this is.
+
+## Examples
+
+<ComponentExamples name="Divider" />
+
+## Install
+
+<Install name="Divider" />
+
+## Usage
+
+```tsx
+import { Divider } from '@/components/haus/components/Divider'
+```
+
+## API
+
+Divider also takes the attributes its element has, and forwards its ref to it. These are the props
+it adds.
+
+<ApiTable file="components/Divider/Divider.tsx" name="DividerProps" element="HTMLHRElement" />
