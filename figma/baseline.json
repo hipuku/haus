@@ -1,5 +1,5 @@
 {
-  "acceptedAt": "2026-11-24T00:23:59.022Z",
+  "acceptedAt": "2026-11-24T00:34:58.782Z",
   "items": {
     "axis Avatar.size": {
       "code": "lg|md|sm|xl|xs",
@@ -270,7 +270,8 @@
       "figma": "#070310"
     },
     "token --haus-border-width-accent": {
-      "code": "3"
+      "code": "3",
+      "figma": "3"
     },
     "token --haus-border-width-default": {
       "code": "1",
@@ -325,7 +326,8 @@
       "figma": "#04040599"
     },
     "token --haus-color-border-control": {
-      "code": "#807f85"
+      "code": "#807f85",
+      "figma": "#807f85"
     },
     "token --haus-color-border-default": {
       "code": "#e7e7ed",
@@ -420,7 +422,8 @@
       "figma": "#ffffff"
     },
     "token --haus-color-ink-placeholder": {
-      "code": "#5d5d61"
+      "code": "#5d5d61",
+      "figma": "#5d5d61"
     },
     "token --haus-color-ink-primary": {
       "code": "#111113",
@@ -711,7 +714,8 @@
       "figma": "#683200"
     },
     "token --haus-marker-box": {
-      "code": "16"
+      "code": "16",
+      "figma": "16"
     },
     "token --haus-marker-dot": {
       "code": "6",
@@ -846,14 +850,16 @@
       "figma": "0.4"
     },
     "token --haus-opacity-muted": {
-      "code": "0.6"
+      "code": "0.6",
+      "figma": "0.6"
     },
     "token --haus-opacity-overlay": {
       "code": "0.6",
       "figma": "0.6"
     },
     "token --haus-opacity-subtle": {
-      "code": "0.35"
+      "code": "0.35",
+      "figma": "0.35"
     },
     "token --haus-overlay-width-lg": {
       "code": "720",
@@ -892,7 +898,8 @@
       "figma": "420"
     },
     "token --haus-panel-width-xs": {
-      "code": "240"
+      "code": "240",
+      "figma": "240"
     },
     "token --haus-paper-0": {
       "code": "#fffefd",
@@ -935,7 +942,8 @@
       "figma": "#0e0a07"
     },
     "token --haus-popover-max-height": {
-      "code": "256"
+      "code": "256",
+      "figma": "256"
     },
     "token --haus-popover-width-lg": {
       "code": "340",
@@ -1042,24 +1050,28 @@
       "figma": "#1c010c"
     },
     "token --haus-size-marker-box": {
-      "code": "16"
+      "code": "16",
+      "figma": "16"
     },
     "token --haus-size-marker-dot": {
       "code": "6",
       "figma": "6"
     },
     "token --haus-size-popover-max-height": {
-      "code": "256"
+      "code": "256",
+      "figma": "256"
     },
     "token --haus-size-toggle-track": {
       "code": "36",
       "figma": "36"
     },
     "token --haus-size-toggle-track-height": {
-      "code": "20"
+      "code": "20",
+      "figma": "20"
     },
     "token --haus-size-underline-offset": {
-      "code": "3"
+      "code": "3",
+      "figma": "3"
     },
     "token --haus-space-0-5": {
       "code": "2",
@@ -1126,7 +1138,8 @@
       "figma": "32"
     },
     "token --haus-space-gap-3xs": {
-      "code": "2"
+      "code": "2",
+      "figma": "2"
     },
     "token --haus-space-gap-4xl": {
       "code": "40",
@@ -1177,7 +1190,8 @@
       "figma": "32"
     },
     "token --haus-space-inset-3xs": {
-      "code": "2"
+      "code": "2",
+      "figma": "2"
     },
     "token --haus-space-inset-4xl": {
       "code": "40",
@@ -1232,7 +1246,8 @@
       "figma": "32"
     },
     "token --haus-space-stack-3xs": {
-      "code": "2"
+      "code": "2",
+      "figma": "2"
     },
     "token --haus-space-stack-4xl": {
       "code": "40",
@@ -1307,21 +1322,24 @@
       "figma": "30"
     },
     "token --haus-text-underline-offset": {
-      "code": "3"
+      "code": "3",
+      "figma": "3"
     },
     "token --haus-toast-width": {
       "code": "360",
       "figma": "360"
     },
     "token --haus-toggle-track-height": {
-      "code": "20"
+      "code": "20",
+      "figma": "20"
     },
     "token --haus-toggle-track-width": {
       "code": "36",
       "figma": "36"
     },
     "token --haus-tooltip-width": {
-      "code": "240"
+      "code": "240",
+      "figma": "240"
     },
     "token --haus-type-body-leading": {
       "code": "21",
@@ -1381,7 +1399,7 @@
     },
     "token --haus-type-display-tracking": {
       "code": "-0.6",
-      "figma": "-0.9"
+      "figma": "-0.6"
     },
     "token --haus-type-display-weight": {
       "code": "700",
@@ -1640,7 +1658,8 @@
       "figma": "#04040599"
     },
     "token dark --haus-brand-border-control": {
-      "code": "#807f85"
+      "code": "#807f85",
+      "figma": "#807f85"
     },
     "token dark --haus-brand-border-default": {
       "code": "#3f3f43",
@@ -1731,7 +1750,8 @@
       "figma": "#040405"
     },
     "token dark --haus-brand-ink-placeholder": {
-      "code": "#aaaab1"
+      "code": "#aaaab1",
+      "figma": "#aaaab1"
     },
     "token dark --haus-brand-ink-primary": {
       "code": "#fcfbfe",

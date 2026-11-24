@@ -1,5 +1,5 @@
 {
-  "exportedAt": "2026-11-24T00:22:55.881Z",
+  "exportedAt": "2026-11-24T00:34:11.388Z",
   "source": "plugin",
   "file": {
     "key": "Qo23P38COlJrfQmlM39Fa3",
@@ -248,6 +248,15 @@
         "WEB": "var(--haus-motion-sheet-exit-easing)"
       },
       "value": "cubic-bezier(0.4, 0, 1, 1)"
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "border-width/accent",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-border-width-accent)"
+      },
+      "value": 3
     },
     {
       "collection": "haus/primitives",
@@ -1281,12 +1290,30 @@
     },
     {
       "collection": "haus/primitives",
+      "name": "opacity/muted",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-opacity-muted)"
+      },
+      "value": 60
+    },
+    {
+      "collection": "haus/primitives",
       "name": "opacity/overlay",
       "type": "FLOAT",
       "codeSyntax": {
         "WEB": "var(--haus-opacity-overlay)"
       },
       "value": 60
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "opacity/subtle",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-opacity-subtle)"
+      },
+      "value": 35
     },
     {
       "collection": "haus/primitives",
@@ -1371,6 +1398,15 @@
     },
     {
       "collection": "haus/primitives",
+      "name": "panel-width/xs",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-panel-width-xs)"
+      },
+      "value": 240
+    },
+    {
+      "collection": "haus/primitives",
       "name": "radius/2xl",
       "type": "FLOAT",
       "codeSyntax": {
@@ -1434,6 +1470,15 @@
     },
     {
       "collection": "haus/primitives",
+      "name": "size/marker-box",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-size-marker-box)"
+      },
+      "value": 16
+    },
+    {
+      "collection": "haus/primitives",
       "name": "size/marker-dot",
       "type": "FLOAT",
       "codeSyntax": {
@@ -1443,12 +1488,39 @@
     },
     {
       "collection": "haus/primitives",
+      "name": "size/popover-max-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-size-popover-max-height)"
+      },
+      "value": 256
+    },
+    {
+      "collection": "haus/primitives",
       "name": "size/toggle-track",
       "type": "FLOAT",
       "codeSyntax": {
         "WEB": "var(--haus-size-toggle-track)"
       },
       "value": 36
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "size/toggle-track-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-size-toggle-track-height)"
+      },
+      "value": 20
+    },
+    {
+      "collection": "haus/primitives",
+      "name": "size/underline-offset",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-size-underline-offset)"
+      },
+      "value": 3
     },
     {
       "collection": "haus/primitives",
@@ -1675,6 +1747,17 @@
       },
       "value": {
         "hex": "#04040599"
+      }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/border/control",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-border-control)"
+      },
+      "value": {
+        "hex": "#807f85"
       }
     },
     {
@@ -1932,6 +2015,17 @@
     },
     {
       "collection": "haus/semantics",
+      "name": "semantic/ink/placeholder",
+      "type": "COLOR",
+      "codeSyntax": {
+        "WEB": "var(--haus-color-ink-placeholder)"
+      },
+      "value": {
+        "hex": "#5d5d61"
+      }
+    },
+    {
+      "collection": "haus/semantics",
       "name": "semantic/ink/primary",
       "type": "COLOR",
       "codeSyntax": {
@@ -1962,6 +2056,15 @@
       "value": {
         "hex": "#807f85"
       }
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/marker-box",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-marker-box)"
+      },
+      "value": 16
     },
     {
       "collection": "haus/semantics",
@@ -2007,6 +2110,15 @@
         "WEB": "var(--haus-modal-width-xl)"
       },
       "value": 896
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/popover-max-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-popover-max-height)"
+      },
+      "value": 256
     },
     {
       "collection": "haus/semantics",
@@ -2184,6 +2296,15 @@
     },
     {
       "collection": "haus/semantics",
+      "name": "semantic/space/gap-3xs",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-gap-3xs)"
+      },
+      "value": 2
+    },
+    {
+      "collection": "haus/semantics",
       "name": "semantic/space/gap-4xl",
       "type": "FLOAT",
       "codeSyntax": {
@@ -2292,6 +2413,15 @@
     },
     {
       "collection": "haus/semantics",
+      "name": "semantic/space/inset-3xs",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-inset-3xs)"
+      },
+      "value": 2
+    },
+    {
+      "collection": "haus/semantics",
       "name": "semantic/space/inset-4xl",
       "type": "FLOAT",
       "codeSyntax": {
@@ -2397,6 +2527,15 @@
         "WEB": "var(--haus-space-stack-3xl)"
       },
       "value": 32
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/space/stack-3xs",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-space-stack-3xs)"
+      },
+      "value": 2
     },
     {
       "collection": "haus/semantics",
@@ -2646,6 +2785,15 @@
     },
     {
       "collection": "haus/semantics",
+      "name": "semantic/text-underline-offset",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-text-underline-offset)"
+      },
+      "value": 3
+    },
+    {
+      "collection": "haus/semantics",
       "name": "semantic/toast-width",
       "type": "FLOAT",
       "codeSyntax": {
@@ -2655,12 +2803,30 @@
     },
     {
       "collection": "haus/semantics",
+      "name": "semantic/toggle-track-height",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-toggle-track-height)"
+      },
+      "value": 20
+    },
+    {
+      "collection": "haus/semantics",
       "name": "semantic/toggle-track-width",
       "type": "FLOAT",
       "codeSyntax": {
         "WEB": "var(--haus-toggle-track-width)"
       },
       "value": 36
+    },
+    {
+      "collection": "haus/semantics",
+      "name": "semantic/tooltip-width",
+      "type": "FLOAT",
+      "codeSyntax": {
+        "WEB": "var(--haus-tooltip-width)"
+      },
+      "value": 240
     },
     {
       "collection": "haus/semantics",
@@ -2872,7 +3038,7 @@
       "codeSyntax": {
         "WEB": "var(--haus-type-display-tracking)"
       },
-      "value": -0.9
+      "value": -0.6
     },
     {
       "collection": "haus/semantics",
@@ -3346,6 +3512,17 @@
     },
     {
       "collection": "haus/theme",
+      "name": "theme/border/control",
+      "type": "COLOR",
+      "value": {
+        "hex": "#807f85"
+      },
+      "dark": {
+        "hex": "#807f85"
+      }
+    },
+    {
+      "collection": "haus/theme",
       "name": "theme/border/default",
       "type": "COLOR",
       "value": {
@@ -3584,6 +3761,17 @@
       },
       "dark": {
         "hex": "#040405"
+      }
+    },
+    {
+      "collection": "haus/theme",
+      "name": "theme/ink/placeholder",
+      "type": "COLOR",
+      "value": {
+        "hex": "#5d5d61"
+      },
+      "dark": {
+        "hex": "#aaaab1"
       }
     },
     {
