@@ -15,8 +15,21 @@ export function detectFormat(documents: readonly InputDocument[]): FormatId {
   const nonEmpty = documents.filter(d => d.text.trim())
   if (!nonEmpty.length) throw new ReadError('There is nothing to read.')
 
-  const first = nonEmpty[0].text.trimStart()
-  if (!first.startsWith('{') && !first.startsWith('[')) {
+  // Which documents are JSON and which are stylesheets, by their first
+  // character. A set that mixes the two is two formats pasted together, and
+  // reading it as either one dropped half the input or failed with a JSON
+  // parse error about a stylesheet.
+  const isJson = (text: string) => /^[[{]/.test(text.trimStart())
+  const stylesheets = nonEmpty.filter(d => !isJson(d.text))
+  if (stylesheets.length && stylesheets.length !== nonEmpty.length) {
+    throw new ReadError(
+      `This is a stylesheet and a JSON file together (${stylesheets.map(d => d.name).join(', ')} against ${nonEmpty
+        .filter(d => isJson(d.text))
+        .map(d => d.name)
+        .join(', ')}). Convert one format at a time.`,
+    )
+  }
+  if (stylesheets.length) {
     if (nonEmpty.every(d => looksLikeTailwind(d.text))) return 'tailwind'
     throw new ReadError('This is neither JSON nor a stylesheet with custom properties.')
   }

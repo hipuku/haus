@@ -1,5 +1,5 @@
 import { Losses, mergeTokens, type InputDocument } from './document.js'
-import { indexTokens, resolveValue, sameValue, valueIn } from './resolve.js'
+import { indexTokens, resolveValue, sameValue, valueIn, type Index } from './resolve.js'
 import {
   joinPath,
   type Literal,
@@ -86,42 +86,81 @@ interface Declaration {
  *
  * A scan rather than a lazy regex: `/\*[\s\S]*?\*\//g` retries from every `/*`
  * when one is never closed, which is quadratic, and a pasted stylesheet of
- * `/*` followed by many `a/*` took over half a second at 120KB. An unclosed
- * comment is left as it is, as the regex left it.
+ * `/*` followed by many `a/*` took over half a second at 120KB.
+ *
+ * The scan tracks strings, because `content: "/*"` opens no comment and a
+ * comment marker inside a quoted value was blanking the rest of the file. An
+ * unterminated comment runs to the end, which is what CSS says it does.
  */
 function stripComments(css: string): string {
   let out = ''
-  let from = 0
-  for (;;) {
-    const start = css.indexOf('/*', from)
-    const end = start === -1 ? -1 : css.indexOf('*/', start + 2)
-    if (end === -1) return out + css.slice(from)
-    out += css.slice(from, start) + css.slice(start, end + 2).replace(/[^\n]/g, ' ')
-    from = end + 2
+  let quote: string | null = null
+  for (let i = 0; i < css.length; i++) {
+    const char = css[i]
+    if (quote) {
+      out += char
+      if (char === '\\' && i + 1 < css.length) out += css[++i]
+      else if (char === quote) quote = null
+      continue
+    }
+    if (char === '"' || char === "'") {
+      quote = char
+      out += char
+      continue
+    }
+    if (char === '/' && css[i + 1] === '*') {
+      const end = css.indexOf('*/', i + 2)
+      const comment = end === -1 ? css.slice(i) : css.slice(i, end + 2)
+      out += comment.replace(/[^\n]/g, ' ')
+      i += comment.length - 1
+      continue
+    }
+    out += char
   }
+  return out
 }
 
-/** The mode a block's prelude selects, or undefined when it is not a token block. */
-function modeOf(prelude: string, outer: string | undefined): string | undefined {
+/**
+ * A block that holds no tokens. Its declarations are skipped rather than read
+ * into whatever mode encloses it: `@media (min-width: 40rem) { :root { … } }`
+ * is a responsive override, and reading it as the default replaced the real
+ * default values with it.
+ */
+const IGNORE = Symbol('not a token block')
+
+/** Classes that mean a mode rather than a component. Anything else is a component. */
+const MODE_CLASSES = new Set(['dark', 'light'])
+
+/** The mode a block's prelude selects, IGNORE when the block holds no tokens. */
+function modeOf(prelude: string, outer: string | undefined | typeof IGNORE): string | undefined | typeof IGNORE {
   const p = prelude.trim()
+  if (outer === IGNORE) return IGNORE
   if (/^@theme\b/.test(p)) return 'default'
   if (p === ':root' || p === 'html') return outer ?? 'default'
   const dataTheme = /^(?::root|html)?\[data-theme=["']?([\w-]+)["']?\]$/.exec(p)
   if (dataTheme) return dataTheme[1]
-  const cls = /^(?::root|html)?\.([\w-]+)$/.exec(p)
-  if (cls) return cls[1]
-  const media = /^@media\s*\(\s*prefers-color-scheme\s*:\s*(dark|light)\s*\)$/.exec(p)
-  if (media) return media[1]
+  // `.dark` is a mode; `.btn` is a component whose custom properties are not
+  // tokens. A class qualified by :root or html is a mode whatever it is called,
+  // because that is how a theme class is written.
+  const cls = /^(:root|html)?\.([\w-]+)$/.exec(p)
+  if (cls) return cls[1] !== undefined || MODE_CLASSES.has(cls[2].toLowerCase()) ? cls[2] : IGNORE
+  const media = /^@media\s*\(\s*prefers-color-scheme\s*:\s*(dark|light)\s*\)$/i.exec(p)
+  if (media) return media[1].toLowerCase()
+  if (p.startsWith('@')) return IGNORE
   return undefined
 }
 
-function scan(css: string): { declarations: Declaration[]; inline: boolean } {
+function scan(css: string): { declarations: Declaration[]; skipped: Map<string, number> } {
   const text = stripComments(css)
   const declarations: Declaration[] = []
-  let inline = false
-  const stack: (string | undefined)[] = []
+  // Selectors whose custom properties were not read, and how many each held,
+  // so the reader can say so rather than dropping them in silence.
+  const skipped = new Map<string, number>()
+  const stack: (string | undefined | typeof IGNORE)[] = []
+  const preludes: string[] = []
   let buffer = ''
   let quote: string | null = null
+  let escaped = false
   let parens = 0
 
   const flushDeclaration = () => {
@@ -132,16 +171,26 @@ function scan(css: string): { declarations: Declaration[]; inline: boolean } {
     // A custom property name cannot contain a colon, so the first one ends it.
     const colon = buffer.indexOf(':')
     const name = colon === -1 ? '' : buffer.slice(0, colon).trim()
-    if (mode && /^--[\w-]+$/.test(name) && !name.endsWith('-*')) {
+    const isProperty = /^--[\w-]+$/.test(name) && !name.endsWith('-*')
+    if (mode && mode !== IGNORE && isProperty) {
       declarations.push({ name, value: buffer.slice(colon + 1).trim(), mode })
+    } else if (mode === IGNORE && isProperty) {
+      const where = preludes[preludes.length - 1] ?? '(unknown)'
+      skipped.set(where, (skipped.get(where) ?? 0) + 1)
     }
     buffer = ''
   }
 
-  for (const char of text) {
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i]
     if (quote) {
       buffer += char
-      if (char === quote) quote = null
+      // A backslash escapes the next character, so `"a\"b"` is one string and
+      // not two; the scanner used to leave the string here and read the rest of
+      // the value as CSS.
+      if (escaped) escaped = false
+      else if (char === '\\') escaped = true
+      else if (char === quote) quote = null
       continue
     }
     if (char === '"' || char === "'") {
@@ -153,19 +202,20 @@ function scan(css: string): { declarations: Declaration[]; inline: boolean } {
     if (char === ')') parens--
     if (char === '{' && parens === 0) {
       const prelude = buffer.trim()
-      if (/^@theme\b.*\binline\b/.test(prelude)) inline = true
       stack.push(modeOf(prelude, stack[stack.length - 1]))
+      preludes.push(prelude)
       buffer = ''
     } else if (char === '}' && parens === 0) {
       flushDeclaration()
       stack.pop()
+      preludes.pop()
     } else if (char === ';' && parens === 0) {
       flushDeclaration()
     } else {
       buffer += char
     }
   }
-  return { declarations, inline }
+  return { declarations, skipped }
 }
 
 /** `--color-flare-dark` → namespace `color`, path `['color', 'flare-dark']`. */
@@ -251,14 +301,40 @@ function readValue(
   return { value: { kind: 'raw', text: raw }, type: inferred }
 }
 
-export function readTailwind(documents: readonly InputDocument[]): TokenSet {
-  const declarations = documents.flatMap(d => scan(d.text).declarations)
+export function readTailwind(documents: readonly InputDocument[], losses: Losses): TokenSet {
+  const declarations: Declaration[] = []
+  for (const document of documents) {
+    const { declarations: found, skipped } = scan(document.text)
+    declarations.push(...found)
+    for (const [selector, count] of skipped) {
+      losses.add(
+        'dropped-mode',
+        selector,
+        `${count} custom ${count === 1 ? 'property' : 'properties'} under "${selector}" were not read: it selects a component or a condition, not a mode.`,
+      )
+    }
+  }
   const names = new Map(declarations.map(d => [d.name, nameToPath(d.name).path]))
   const modes = ['default', ...new Set(declarations.map(d => d.mode).filter(m => m !== 'default'))]
   const merged = new Map<string, Token>()
+  // Two property names can land on one path: `--spacing` is read as
+  // `spacing.DEFAULT` and so is `--spacing-DEFAULT`. The later one wins, as it
+  // would in CSS, and the reader says which name it took.
+  const from = new Map<string, string>()
 
   for (const declaration of declarations) {
     const { path, type: namespaceType, namespace } = nameToPath(declaration.name)
+    const key = `${joinPath(path)}|${declaration.mode}`
+    const earlier = from.get(key)
+    if (earlier && earlier !== declaration.name) {
+      losses.add(
+        'renamed',
+        path,
+        `${earlier} and ${declaration.name} are both read as "${joinPath(path)}"; ${declaration.name} won.`,
+        declaration.mode,
+      )
+    }
+    from.set(key, declaration.name)
     const { value, type } = readValue(declaration.value, namespaceType, names)
     const token: Token = { path, type, values: { [declaration.mode]: value } }
     if (!namespace) token.sourceType = CUSTOM_PROPERTY
@@ -321,6 +397,10 @@ const NAMESPACE_ALIASES: Record<string, string> = {
   blur: 'blur',
   container: 'container',
   perspective: 'perspective',
+  // Every namespace Tailwind itself generates utilities from, so a group named
+  // after one lands in @theme rather than becoming a plain custom property in
+  // :root. Only the ones with another common name need an entry above.
+  ...Object.fromEntries(NAMESPACES.map(([n]) => [n, n])),
 }
 
 /** Namespaces Tailwind generates utilities from. Anything else is a plain custom property in `:root`. */
@@ -346,7 +426,13 @@ export function propertyName(token: Token): { name: string; inTheme: boolean; re
   const expected = NAMESPACES.find(([n]) => n === found)?.[1]
   // A group named like a namespace only counts when its token is that namespace's type:
   // haus's `font.lineHeight.tight` is a number, not a font family.
-  const alias = found && (expected === undefined || expected === token.type || found === 'text') ? found : undefined
+  // `text` holds a size and its companions, which are three different types,
+  // so the namespace is allowed to disagree with the token's type there. A
+  // colour is not one of them: `text.primary` is a colour and `--text-primary`
+  // is a font size, and Tailwind would have generated a text-size utility from
+  // it.
+  const textCompanion = found === 'text' && token.type !== 'color'
+  const alias = found && (expected === undefined || expected === token.type || textCompanion) ? found : undefined
   const namespace = alias
   const segments = (alias ? rest : token.path).filter((s, i, all) => !(s === DEFAULT_SEGMENT && i === all.length - 1))
   const joined = (alias ? rest : token.path).filter(s => s !== DEFAULT_SEGMENT).join('-')
@@ -360,14 +446,29 @@ function cssValue(
   value: TokenValue,
   mode: string,
   set: TokenSet,
+  index: Index,
   names: Map<string, string>,
   losses: Losses,
 ): string | undefined {
-  if (value.kind === 'raw') return value.text
+  if (value.kind === 'raw') {
+    // A raw value is text from the input, written straight into a stylesheet. A
+    // semicolon, a brace or a newline in it would end the declaration and start
+    // something else, so the token is dropped and reported instead.
+    if (/[;{}\n\r]/.test(value.text)) {
+      losses.add(
+        'unrepresentable-value',
+        token.path,
+        `"${value.text.replace(/\s+/g, ' ').trim()}" is not one CSS value; it was not written.`,
+        mode,
+      )
+      return undefined
+    }
+    return value.text
+  }
   if (value.kind === 'reference') {
     const target = names.get(joinPath(value.ref))
     if (target) return `var(${target})`
-    const resolved = resolveValue(value, mode, set, indexTokens(set))
+    const resolved = resolveValue(value, mode, set, index)
     if (!resolved.value) {
       losses.add(
         'unrepresentable-value',
@@ -383,7 +484,7 @@ function cssValue(
       `{${joinPath(value.ref)}} is not in the output, so its value was written instead.`,
       mode,
     )
-    return cssValue(token, resolved.value, mode, set, names, losses)
+    return cssValue(token, resolved.value, mode, set, index, names, losses)
   }
   return literalToCss(token, value.value, mode, names, losses)
 }
@@ -463,15 +564,30 @@ function literalToCss(
 
 export function writeTailwind(set: TokenSet, options: WriteOptions): WriteResult {
   const losses = new Losses()
+  const index = indexTokens(set)
   const [defaultMode, ...otherModes] = set.modes
 
   const names = new Map<string, string>()
   const used = new Map<string, string>()
   const placement = new Map<string, boolean>()
+  const typographyNames = new Map<string, string>()
   for (const token of set.tokens) {
-    if (token.type === 'typography' || token.type === 'gradient' || token.type === 'strokeStyle') continue
-    const { name, inTheme, renamed } = propertyName(token)
     const key = joinPath(token.path)
+    if (token.type === 'gradient' || token.type === 'strokeStyle') continue
+    // A typography token is written as `--text-<name>` and its companions, so
+    // it holds that name against the rest: a size token of the same name would
+    // otherwise be written over it, each believing the name was its own.
+    if (token.type === 'typography') {
+      const base = typographyBase(token)
+      if (used.has(base)) {
+        losses.add('renamed', token.path, `${base} is already ${used.get(base)}; this token was not written.`)
+        continue
+      }
+      used.set(base, key)
+      typographyNames.set(key, base)
+      continue
+    }
+    const { name, inTheme, renamed } = propertyName(token)
     if (used.has(name)) {
       losses.add('renamed', token.path, `${name} is already ${used.get(name)}; this token was not written.`)
       continue
@@ -480,6 +596,40 @@ export function writeTailwind(set: TokenSet, options: WriteOptions): WriteResult
     used.set(name, key)
     names.set(key, name)
     placement.set(key, inTheme)
+  }
+
+  /*
+   * Which tokens this stylesheet actually declares, which is what a `var()` may
+   * point at. A name is reserved before any value is written, and a value can
+   * still turn out to have no CSS form, so pointing at a name alone produced
+   * `var(--x)` with nothing declaring `--x`. A mode block may point at a
+   * property the default block declares, because the cascade still has it, so
+   * the two sets are taken together. Dropping one target can drop a value that
+   * needed it, so the set is narrowed until it stops shrinking.
+   */
+  const targetNames = (targets: ReadonlySet<string>) =>
+    new Map([...names].filter(([key]) => targets.has(key)))
+
+  const declaredIn = (mode: string): Set<string> => {
+    let targets = new Set(names.keys())
+    for (;;) {
+      const next = new Set<string>()
+      for (const [key, token] of [...names.keys()].map(k => [k, index.get(k)!] as const)) {
+        const value = valueIn(token, mode, set.modes)
+        if (value && cssValue(token, value, mode, set, index, targetNames(targets), new Losses()) !== undefined) {
+          next.add(key)
+        }
+      }
+      if (next.size === targets.size) return targets
+      targets = next
+    }
+  }
+
+  const declared = new Map(set.modes.map(mode => [mode, declaredIn(mode)]))
+  const namesFor = (mode: string) => {
+    const here = declared.get(mode) ?? new Set<string>()
+    const base = declared.get(defaultMode) ?? new Set<string>()
+    return targetNames(new Set([...base, ...here]))
   }
 
   const themeLines: Record<string, string[]> = {}
@@ -496,7 +646,8 @@ export function writeTailwind(set: TokenSet, options: WriteOptions): WriteResult
     const key = joinPath(token.path)
 
     if (token.type === 'typography') {
-      writeTypography(token, set, names, emit, losses)
+      const base = typographyNames.get(key)
+      if (base) writeTypography(token, base, set, index, namesFor(defaultMode), emit, losses)
       continue
     }
     if (token.type === 'gradient' || token.type === 'strokeStyle') {
@@ -511,7 +662,7 @@ export function writeTailwind(set: TokenSet, options: WriteOptions): WriteResult
       if (mode !== defaultMode && (!own || sameValue(own, token.values[defaultMode]))) continue
       const value = mode === defaultMode ? valueIn(token, mode, set.modes) : own
       if (!value) continue
-      const css = cssValue(token, value, mode, set, names, losses)
+      const css = cssValue(token, value, mode, set, index, namesFor(mode), losses)
       if (css !== undefined) emit(mode, name, css, placement.get(key) ?? false)
     }
     if (token.description || token.deprecated !== undefined || token.extensions) {
@@ -524,20 +675,52 @@ export function writeTailwind(set: TokenSet, options: WriteOptions): WriteResult
   }
 
   const blocks: string[] = ['@import "tailwindcss";']
-  if (themeLines[defaultMode].length) blocks.push(`@theme {\n${themeLines[defaultMode].join('\n')}\n}`)
+  // `@theme inline` tells Tailwind to use the value as written instead of
+  // wrapping it in a var() of its own, which is what a value that is already a
+  // var() needs; the reader knew the difference and the writer dropped it.
+  const themeInline = themeLines[defaultMode].some(line => line.includes('var('))
+  if (themeLines[defaultMode].length) {
+    blocks.push(`@theme${themeInline ? ' inline' : ''} {\n${themeLines[defaultMode].join('\n')}\n}`)
+  }
   if (rootLines[defaultMode].length) blocks.push(`:root {\n${rootLines[defaultMode].join('\n')}\n}`)
+
+  // One sanitised name per mode, whichever selector it goes into: a data-theme
+  // attribute took the mode's name as written, where the class branch cleaned
+  // it, so the same set of modes produced two different vocabularies. Two modes
+  // that clean to one name would silently become one block.
+  const selectorNames = new Map<string, string>()
+  const takenNames = new Map<string, string>()
+  for (const mode of otherModes) {
+    const cleaned = sanitise(mode)
+    if (!cleaned) {
+      losses.add('dropped-mode', mode, `"${mode}" has nothing a selector can be made of; it was not written.`)
+      continue
+    }
+    const clash = takenNames.get(cleaned)
+    if (clash) {
+      losses.add('dropped-mode', mode, `"${mode}" and "${clash}" both select ${cleaned}; "${mode}" was not written.`)
+      continue
+    }
+    if (cleaned !== mode) losses.add('renamed', mode, `The mode "${mode}" is selected as "${cleaned}".`, mode)
+    takenNames.set(cleaned, mode)
+    selectorNames.set(mode, cleaned)
+  }
 
   for (const mode of otherModes) {
     const lines = rootLines[mode]
-    if (!lines.length) continue
+    const cleaned = selectorNames.get(mode)
+    if (!lines.length || !cleaned) continue
     if (options.tailwindModeSelector === 'media') {
-      if (mode !== 'dark' && mode !== 'light') {
+      const scheme = cleaned.toLowerCase()
+      if (scheme !== 'dark' && scheme !== 'light') {
         losses.add('dropped-mode', mode, `prefers-color-scheme has only light and dark; "${mode}" was not written.`)
         continue
       }
-      blocks.push(`@media (prefers-color-scheme: ${mode}) {\n  :root {\n${lines.map(l => `  ${l}`).join('\n')}\n  }\n}`)
+      blocks.push(
+        `@media (prefers-color-scheme: ${scheme}) {\n  :root {\n${lines.map(l => `  ${l}`).join('\n')}\n  }\n}`,
+      )
     } else {
-      const selector = options.tailwindModeSelector === 'class' ? `.${sanitise(mode)}` : `[data-theme="${mode}"]`
+      const selector = options.tailwindModeSelector === 'class' ? `.${cleaned}` : `[data-theme="${cleaned}"]`
       blocks.push(`${selector} {\n${lines.join('\n')}\n}`)
     }
   }
@@ -550,21 +733,26 @@ export function writeTailwind(set: TokenSet, options: WriteOptions): WriteResult
  * `--text-sm--line-height`, `--text-sm--letter-spacing`, `--text-sm--font-weight`.
  * There is no slot for the family, so a typography token splits, and loses it.
  */
+export function typographyBase(token: Token): string {
+  const [first, ...rest] = token.path
+  const segments = NAMESPACE_ALIASES[first.toLowerCase()] ? rest : token.path
+  return `--text-${segments.map(sanitise).filter(Boolean).join('-')}`
+}
+
 function writeTypography(
   token: Token,
+  base: string,
   set: TokenSet,
+  index: Index,
   names: Map<string, string>,
   emit: (mode: string, name: string, css: string, inTheme: boolean) => void,
   losses: Losses,
 ) {
-  const [first, ...rest] = token.path
-  const segments = NAMESPACE_ALIASES[first.toLowerCase()] ? rest : token.path
-  const base = `--text-${segments.map(sanitise).filter(Boolean).join('-')}`
-  const index = indexTokens(set)
+  const written = new Map<string, string>()
 
   for (const mode of set.modes) {
     const own = token.values[mode]
-    if (mode !== set.modes[0] && (!own || sameValue(own, token.values[set.modes[0]]))) continue
+    if (mode !== set.modes[0] && !own) continue
     const resolved = resolveValue(valueIn(token, mode, set.modes)!, mode, set, index)
     if (
       resolved.value?.kind !== 'literal' ||
@@ -583,7 +771,15 @@ function writeTypography(
     ]
     for (const [suffix, v] of fields) {
       const css = part(v, names)
-      if (css !== undefined) emit(mode, `${base}${suffix}`, css, true)
+      if (css === undefined) continue
+      // A mode is an override only where what it writes differs from the
+      // default. Comparing the token values instead called two aliases that
+      // resolve to the same line a difference, and two different lines that
+      // happened to share a value no difference at all.
+      const name = `${base}${suffix}`
+      if (mode !== set.modes[0] && written.get(name) === css) continue
+      if (mode === set.modes[0]) written.set(name, css)
+      emit(mode, name, css, true)
     }
     losses.add(
       'split-composite',
