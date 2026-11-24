@@ -1,5 +1,5 @@
 {
-  "acceptedAt": "2026-11-24T06:17:33.881Z",
+  "acceptedAt": "2026-11-24T07:29:45.043Z",
   "items": {
     "axis Avatar.size": {
       "code": "lg|md|sm|xl|xs",
@@ -38,10 +38,12 @@
       "figma": "default|elevated|outlined"
     },
     "axis ConfirmDialog.kind": {
-      "code": "alert|confirm"
+      "code": "alert|confirm",
+      "figma": "alert|confirm"
     },
     "axis ConfirmDialog.tone": {
-      "code": "error|neutral"
+      "code": "error|neutral",
+      "figma": "error|neutral"
     },
     "axis Divider.orientation": {
       "code": "horizontal|vertical",
@@ -52,7 +54,8 @@
       "figma": "lg|md|none|sm"
     },
     "axis Drawer.side": {
-      "code": "end|start"
+      "code": "end|start",
+      "figma": "end|start"
     },
     "axis IconButton.size": {
       "code": "lg|md|sm",
@@ -67,10 +70,12 @@
       "figma": "ghost|primary|secondary"
     },
     "axis Menu.tone": {
-      "code": "error|neutral"
+      "code": "error|neutral",
+      "figma": "error|neutral"
     },
     "axis Modal.placement": {
-      "code": "center|end|start"
+      "code": "center|end|start",
+      "figma": "center|end|start"
     },
     "axis Modal.size": {
       "code": "lg|md|sm|xl",
@@ -91,9 +96,6 @@
     "axis RadioGroup.orientation": {
       "code": "horizontal|vertical",
       "figma": "horizontal|vertical"
-    },
-    "axis Select.size": {
-      "figma": "lg|md|sm"
     },
     "axis Spinner.size": {
       "code": "md|sm|text",
@@ -152,14 +154,16 @@
       "figma": "present"
     },
     "component ConfirmDialog": {
-      "code": "present"
+      "code": "present",
+      "figma": "present"
     },
     "component Divider": {
       "code": "present",
       "figma": "present"
     },
     "component Drawer": {
-      "code": "present"
+      "code": "present",
+      "figma": "present"
     },
     "component EmptyState": {
       "code": "present",
@@ -174,7 +178,8 @@
       "figma": "present"
     },
     "component Menu": {
-      "code": "present"
+      "code": "present",
+      "figma": "present"
     },
     "component Modal": {
       "code": "present",
@@ -221,26 +226,28 @@
       "figma": "disabled|focus|hover|pressed"
     },
     "states Card": {
-      "code": "focus|hover|pressed"
+      "code": "focus|hover|pressed",
+      "figma": "focus|hover|pressed"
     },
     "states Checkbox": {
       "code": "disabled|focus|hover|pressed",
-      "figma": "disabled|focus|hover"
+      "figma": "disabled|focus|hover|pressed"
     },
     "states IconButton": {
       "code": "disabled|focus|hover|pressed",
-      "figma": "disabled|focus|hover"
+      "figma": "disabled|focus|hover|pressed"
     },
     "states Input": {
       "code": "disabled|focus|hover",
-      "figma": "disabled|focus"
+      "figma": "disabled|focus|hover"
     },
     "states Menu": {
-      "code": "disabled|focus|hover|pressed"
+      "code": "disabled|focus|hover|pressed",
+      "figma": "disabled|focus|hover|pressed"
     },
     "states Radio": {
       "code": "disabled|focus|hover|pressed",
-      "figma": "disabled|focus|hover"
+      "figma": "disabled|focus|hover|pressed"
     },
     "states Select": {
       "code": "disabled|focus|hover",
@@ -248,7 +255,7 @@
     },
     "states Textarea": {
       "code": "disabled|focus|hover",
-      "figma": "disabled|focus"
+      "figma": "disabled|focus|hover"
     },
     "states Toggle": {
       "code": "disabled|focus|hover",
@@ -768,7 +775,7 @@
     },
     "token --haus-motion-dialog-enter-duration": {
       "code": "220ms",
-      "figma": "240ms"
+      "figma": "220ms"
     },
     "token --haus-motion-dialog-enter-easing": {
       "code": "cubic-bezier(0.16, 1, 0.3, 1)",
@@ -776,25 +783,27 @@
     },
     "token --haus-motion-dialog-enter-offset": {
       "code": "8",
-      "figma": "4"
+      "figma": "8"
     },
     "token --haus-motion-dialog-enter-scale": {
       "code": "0.97",
-      "figma": "0.96"
+      "figma": "0.97"
     },
     "token --haus-motion-dialog-exit-duration": {
       "code": "140ms",
-      "figma": "180ms"
+      "figma": "140ms"
     },
     "token --haus-motion-dialog-exit-easing": {
       "code": "cubic-bezier(0.4, 0, 1, 1)",
       "figma": "cubic-bezier(0.4, 0, 1, 1)"
     },
     "token --haus-motion-draw-duration": {
-      "code": "200ms"
+      "code": "200ms",
+      "figma": "200ms"
     },
     "token --haus-motion-draw-easing": {
-      "code": "cubic-bezier(0.16, 1, 0.3, 1)"
+      "code": "cubic-bezier(0.16, 1, 0.3, 1)",
+      "figma": "cubic-bezier(0.16, 1, 0.3, 1)"
     },
     "token --haus-motion-feedback-duration": {
       "code": "353ms",
@@ -806,29 +815,31 @@
     },
     "token --haus-motion-highlight-duration": {
       "code": "265ms",
-      "figma": "353ms"
+      "figma": "265ms"
     },
     "token --haus-motion-highlight-easing": {
       "code": "linear(0, 0.023, 0.0791, 0.1536, 0.2367, 0.3215, 0.4039, 0.4811, 0.5519, 0.6156, 0.672, 0.7216, 0.7646, 0.8018, 0.8336, 0.8608, 0.8838, 0.9033, 0.9196, 0.9334, 0.9449, 0.9544, 0.9624, 0.969, 0.9745, 0.9791, 0.9828, 0.9859, 0.9885, 0.9906, 0.9923, 0.9937, 0.9949, 0.9958, 0.9966, 0.9972, 0.9977, 0.9982, 0.9985, 0.9988, 1)",
-      "figma": "linear(0, 0.0229, 0.0789, 0.1534, 0.2364, 0.3211, 0.4034, 0.4806, 0.5514, 0.615, 0.6715, 0.7211, 0.7642, 0.8014, 0.8332, 0.8604, 0.8835, 0.903, 0.9194, 0.9331, 0.9447, 0.9543, 0.9623, 0.9689, 0.9744, 0.979, 0.9828, 0.9859, 0.9884, 0.9905, 0.9923, 0.9937, 0.9948, 0.9958, 0.9966, 0.9972, 0.9977, 0.9981, 0.9985, 0.9988, 1)"
+      "figma": "linear(0, 0.023, 0.0791, 0.1536, 0.2367, 0.3215, 0.4039, 0.4811, 0.5519, 0.6156, 0.672, 0.7216, 0.7646, 0.8018, 0.8336, 0.8608, 0.8838, 0.9033, 0.9196, 0.9334, 0.9449, 0.9544, 0.9624, 0.969, 0.9745, 0.9791, 0.9828, 0.9859, 0.9885, 0.9906, 0.9923, 0.9937, 0.9949, 0.9958, 0.9966, 0.9972, 0.9977, 0.9982, 0.9985, 0.9988, 1)"
     },
     "token --haus-motion-indicator-duration": {
-      "code": "353ms"
+      "code": "353ms",
+      "figma": "353ms"
     },
     "token --haus-motion-indicator-easing": {
-      "code": "linear(0, 0.0229, 0.0789, 0.1534, 0.2364, 0.3211, 0.4034, 0.4806, 0.5514, 0.615, 0.6715, 0.7211, 0.7642, 0.8014, 0.8332, 0.8604, 0.8835, 0.903, 0.9194, 0.9331, 0.9447, 0.9543, 0.9623, 0.9689, 0.9744, 0.979, 0.9828, 0.9859, 0.9884, 0.9905, 0.9923, 0.9937, 0.9948, 0.9958, 0.9966, 0.9972, 0.9977, 0.9981, 0.9985, 0.9988, 1)"
+      "code": "linear(0, 0.0229, 0.0789, 0.1534, 0.2364, 0.3211, 0.4034, 0.4806, 0.5514, 0.615, 0.6715, 0.7211, 0.7642, 0.8014, 0.8332, 0.8604, 0.8835, 0.903, 0.9194, 0.9331, 0.9447, 0.9543, 0.9623, 0.9689, 0.9744, 0.979, 0.9828, 0.9859, 0.9884, 0.9905, 0.9923, 0.9937, 0.9948, 0.9958, 0.9966, 0.9972, 0.9977, 0.9981, 0.9985, 0.9988, 1)",
+      "figma": "linear(0, 0.0229, 0.0789, 0.1534, 0.2364, 0.3211, 0.4034, 0.4806, 0.5514, 0.615, 0.6715, 0.7211, 0.7642, 0.8014, 0.8332, 0.8604, 0.8835, 0.903, 0.9194, 0.9331, 0.9447, 0.9543, 0.9623, 0.9689, 0.9744, 0.979, 0.9828, 0.9859, 0.9884, 0.9905, 0.9923, 0.9937, 0.9948, 0.9958, 0.9966, 0.9972, 0.9977, 0.9981, 0.9985, 0.9988, 1)"
     },
     "token --haus-motion-layout-duration": {
       "code": "441ms",
-      "figma": "530ms"
+      "figma": "441ms"
     },
     "token --haus-motion-layout-easing": {
       "code": "linear(0, 0.0229, 0.0789, 0.1533, 0.2362, 0.3209, 0.4031, 0.4803, 0.5511, 0.6147, 0.6712, 0.7208, 0.7639, 0.8011, 0.833, 0.8602, 0.8833, 0.9028, 0.9192, 0.933, 0.9445, 0.9542, 0.9622, 0.9688, 0.9744, 0.9789, 0.9827, 0.9858, 0.9884, 0.9905, 0.9922, 0.9936, 0.9948, 0.9958, 0.9966, 0.9972, 0.9977, 0.9981, 0.9985, 0.9988, 1)",
-      "figma": "linear(0, 0.023, 0.0791, 0.1536, 0.2367, 0.3215, 0.4039, 0.4811, 0.5519, 0.6156, 0.672, 0.7216, 0.7646, 0.8018, 0.8336, 0.8608, 0.8838, 0.9033, 0.9196, 0.9334, 0.9449, 0.9544, 0.9624, 0.969, 0.9745, 0.9791, 0.9828, 0.9859, 0.9885, 0.9906, 0.9923, 0.9937, 0.9949, 0.9958, 0.9966, 0.9972, 0.9977, 0.9982, 0.9985, 0.9988, 1)"
+      "figma": "linear(0, 0.0229, 0.0789, 0.1533, 0.2362, 0.3209, 0.4031, 0.4803, 0.5511, 0.6147, 0.6712, 0.7208, 0.7639, 0.8011, 0.833, 0.8602, 0.8833, 0.9028, 0.9192, 0.933, 0.9445, 0.9542, 0.9622, 0.9688, 0.9744, 0.9789, 0.9827, 0.9858, 0.9884, 0.9905, 0.9922, 0.9936, 0.9948, 0.9958, 0.9966, 0.9972, 0.9977, 0.9981, 0.9985, 0.9988, 1)"
     },
     "token --haus-motion-popover-enter-duration": {
       "code": "160ms",
-      "figma": "180ms"
+      "figma": "160ms"
     },
     "token --haus-motion-popover-enter-easing": {
       "code": "cubic-bezier(0.16, 1, 0.3, 1)",
@@ -836,15 +847,15 @@
     },
     "token --haus-motion-popover-enter-offset": {
       "code": "6",
-      "figma": "4"
+      "figma": "6"
     },
     "token --haus-motion-popover-enter-scale": {
       "code": "0.97",
-      "figma": "0.96"
+      "figma": "0.97"
     },
     "token --haus-motion-popover-exit-duration": {
       "code": "100ms",
-      "figma": "120ms"
+      "figma": "100ms"
     },
     "token --haus-motion-popover-exit-easing": {
       "code": "cubic-bezier(0.4, 0, 1, 1)",
@@ -864,7 +875,7 @@
     },
     "token --haus-motion-sheet-enter-duration": {
       "code": "280ms",
-      "figma": "320ms"
+      "figma": "280ms"
     },
     "token --haus-motion-sheet-enter-easing": {
       "code": "cubic-bezier(0.16, 1, 0.3, 1)",
@@ -872,43 +883,51 @@
     },
     "token --haus-motion-sheet-enter-offset": {
       "code": "8",
-      "figma": "4"
+      "figma": "8"
     },
     "token --haus-motion-sheet-enter-scale": {
       "code": "0.97",
-      "figma": "0.96"
+      "figma": "0.97"
     },
     "token --haus-motion-sheet-exit-duration": {
       "code": "200ms",
-      "figma": "240ms"
+      "figma": "200ms"
     },
     "token --haus-motion-sheet-exit-easing": {
       "code": "cubic-bezier(0.4, 0, 1, 1)",
       "figma": "cubic-bezier(0.4, 0, 1, 1)"
     },
     "token --haus-motion-stagger-max": {
-      "code": "0ms"
+      "code": "0ms",
+      "figma": "0ms"
     },
     "token --haus-motion-stagger-step": {
-      "code": "0ms"
+      "code": "0ms",
+      "figma": "0ms"
     },
     "token --haus-motion-toast-enter-duration": {
-      "code": "240ms"
+      "code": "240ms",
+      "figma": "240ms"
     },
     "token --haus-motion-toast-enter-easing": {
-      "code": "cubic-bezier(0.16, 1, 0.3, 1)"
+      "code": "cubic-bezier(0.16, 1, 0.3, 1)",
+      "figma": "cubic-bezier(0.16, 1, 0.3, 1)"
     },
     "token --haus-motion-toast-enter-offset": {
-      "code": "8"
+      "code": "8",
+      "figma": "8"
     },
     "token --haus-motion-toast-enter-scale": {
-      "code": "1"
+      "code": "1",
+      "figma": "1"
     },
     "token --haus-motion-toast-exit-duration": {
-      "code": "140ms"
+      "code": "140ms",
+      "figma": "140ms"
     },
     "token --haus-motion-toast-exit-easing": {
-      "code": "cubic-bezier(0.4, 0, 1, 1)"
+      "code": "cubic-bezier(0.4, 0, 1, 1)",
+      "figma": "cubic-bezier(0.4, 0, 1, 1)"
     },
     "token --haus-opacity-disabled": {
       "code": "0.4",
@@ -1032,7 +1051,7 @@
     },
     "token --haus-radius-control": {
       "code": "4",
-      "figma": "8"
+      "figma": "4"
     },
     "token --haus-radius-full": {
       "code": "9999",
@@ -1056,7 +1075,7 @@
     },
     "token --haus-radius-overlay": {
       "code": "12",
-      "figma": "16"
+      "figma": "12"
     },
     "token --haus-radius-pill": {
       "code": "9999",
@@ -1552,31 +1571,35 @@
     },
     "token --haus-type-label-field-leading": {
       "code": "18.2",
-      "figma": "16.8"
+      "figma": "18.2"
     },
     "token --haus-type-label-field-size": {
       "code": "13",
-      "figma": "12"
+      "figma": "13"
     },
     "token --haus-type-label-field-tracking": {
       "code": "0",
-      "figma": "0.24"
+      "figma": "0"
     },
     "token --haus-type-label-field-weight": {
       "code": "500",
-      "figma": "600"
+      "figma": "500"
     },
     "token --haus-type-label-lg-leading": {
-      "code": "19.6"
+      "code": "19.6",
+      "figma": "19.6"
     },
     "token --haus-type-label-lg-size": {
-      "code": "14"
+      "code": "14",
+      "figma": "14"
     },
     "token --haus-type-label-lg-tracking": {
-      "code": "0"
+      "code": "0",
+      "figma": "0"
     },
     "token --haus-type-label-lg-weight": {
-      "code": "500"
+      "code": "500",
+      "figma": "500"
     },
     "token --haus-type-label-md-leading": {
       "code": "18.2",
