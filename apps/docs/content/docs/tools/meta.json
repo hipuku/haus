@@ -1,4 +1,5 @@
 {
   "title": "Tools",
+  "root": true,
   "pages": ["converter", "colour"]
 }

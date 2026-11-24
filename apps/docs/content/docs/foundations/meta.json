@@ -1,4 +1,5 @@
 {
   "title": "Foundations",
+  "root": true,
   "pages": ["colour", "type", "space", "surfaces", "motion", "theming"]
 }

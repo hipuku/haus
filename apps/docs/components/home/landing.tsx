@@ -8,17 +8,17 @@ import { Wall } from './wall'
 import styles from './landing.module.css'
 
 /*
- * The landing page is drawn with the library it is for. Everything below the
- * first sentence is a published component in a real state, reading the tokens a
- * consumer gets: a screenshot goes stale and a description is always generous,
- * and neither is a thing a reader can tab through.
+ * The landing page, drawn with the library it is for.
  *
- * It is a page rather than the overview because the two have different jobs.
- * The overview explains the system to someone who has decided to read about
- * it; this page is read by someone deciding whether to, and the thing that
- * decides it is the components themselves, above the fold, live. The two said
- * the same thing once and were merged for it; the fix for that is one of them
- * saying something else, not one page doing both.
+ * Everything below the first paragraph is a published component in a real
+ * state, reading the tokens a consumer gets. A reader can tab through it and
+ * switch the mode on it, which a screenshot does not allow.
+ *
+ * It is a page rather than the overview because the two are read by different
+ * people. The overview explains the system to someone who has decided to read
+ * about it; this page is read by someone deciding whether to. The two said the
+ * same thing once and were merged for it, and the fix for that is one of them
+ * saying something else.
  *
  * A client component, because `haus-components` is a client library (hooks, a
  * portal, a focus trap) and the page that renders it has to be one too. The
@@ -27,27 +27,25 @@ import styles from './landing.module.css'
  * No version numbers on the page. They would have to come from the packages'
  * own manifests, which carry the next release's name and number rather than
  * what npm serves today: the token package is `@hipuku/tokens` 5.2.0 here and
- * `haus-tokens` on the registry until the rename ships. A number nobody can
- * install is the same false green as a command that fails.
+ * `haus-tokens` on the registry until the rename ships.
  */
 
-/* The decisions a reader can check on this site, each on the page that shows
-   the evidence for it rather than the page that asserts it. */
+/* Each decision links to the page that shows the values it produces. */
 const DECISIONS = [
   {
-    title: 'Roles, not values',
+    title: 'Colour roles',
     href: '/docs/foundations/colour',
-    body: 'A component never names a colour. It names the surface it sits on and the ink it writes in, so one component is correct in a light app, a dark one, and in another product’s brand without a line of it changing.',
+    body: 'A component names the surface it sits on and the ink it writes in, never a colour. The same component is correct in a light app, a dark one, and in another brand.',
   },
   {
-    title: 'One mapping, both modes',
+    title: 'One mapping for both modes',
     href: '/docs/foundations/theming',
-    body: 'Every role answers to the theme on the document and to the reader’s system setting, so a dark mode is the same mapping read again rather than a second set of values that can drift out of step with the first.',
+    body: 'Each role carries a value per mode, resolved from the theme on the document or the reader’s system setting. There is one mapping rather than a light set and a dark set.',
   },
   {
-    title: 'The tokens ship on their own',
+    title: 'Tokens as their own package',
     href: '/docs/packages/tokens',
-    body: 'Tokens are a package on npm, not a file inside a component library. A product can take the foundations without taking the components, which is what makes this a system rather than a folder of components.',
+    body: 'The tokens are published on npm, separately from the components. A product can take the foundations without taking the components.',
   },
 ]
 
@@ -55,12 +53,10 @@ export function Landing() {
   return (
     <main className={styles.page}>
       <section className={`${styles.inner} ${styles.hero}`}>
-        <p className={styles.eyebrow}>Design system</p>
-        <h1 className={styles.title}>A design system that arrives as source in your own repository.</h1>
+        <h1 className={styles.title}>haus</h1>
         <p className={styles.lede}>
-          haus ships components through a <Link href="/docs/start/install">shadcn registry</Link> and its design tokens
-          as a package on npm. A component you install is a copy you own: restyle it freely, and take behaviour fixes
-          back when they land.
+          The design system every hipuku app is built on. Components install into your own repository as source, through
+          a <Link href="/docs/start/install">shadcn registry</Link>. The tokens underneath them are a package from npm.
         </p>
         <div className={styles.actions}>
           <Button asChild variant="primary">
@@ -76,8 +72,7 @@ export function Landing() {
           <code>npx shadcn add @hipuku/badge</code>
         </pre>
         <p className={styles.installNote}>
-          Badge is the one component the registry serves today. The rest go in together once the packages are published,
-          so that a command on this page is a command that works.
+          Badge is the one component the registry serves today. The rest go in together when the packages are published.
         </p>
       </section>
 
@@ -85,9 +80,8 @@ export function Landing() {
         <div className={styles.inner}>
           <h2 className={styles.heading}>What you install</h2>
           <p className={styles.body}>
-            A copy of the component in your own repository, not a dependency you cannot reach into. Every one of these
-            is the published component, rendered on this page: tab through them, or switch the mode in the header and
-            watch them follow.
+            Each of these is the published component, rendered on this page. Tab through them, or switch the mode in the
+            header.
           </p>
           <Wall />
         </div>
@@ -95,10 +89,8 @@ export function Landing() {
 
       <section className={styles.section}>
         <div className={styles.inner}>
-          <h2 className={styles.heading}>Three decisions</h2>
-          <p className={styles.body}>
-            The system is these three, and each has a page on this site showing the values rather than describing them.
-          </p>
+          <h2 className={styles.heading}>Decisions</h2>
+          <p className={styles.body}>Three choices the rest of the system follows from.</p>
           <ol className={styles.decisions}>
             {DECISIONS.map((decision, index) => (
               <li className={styles.decision} key={decision.href}>
@@ -115,10 +107,11 @@ export function Landing() {
 
       <section className={`${styles.section} ${styles.sectionSubtle}`}>
         <div className={styles.inner}>
-          <h2 className={styles.heading}>Measured, not asserted</h2>
+          <h2 className={styles.heading}>Contrast</h2>
           <p className={styles.body}>
-            Contrast is a test rather than a hope. Each ratio below is computed from the value this page is rendering,
-            in the mode you are reading it in, against the surface the text sits on.
+            Each ratio is computed from the value this page is rendering, in the mode you are reading it in, against the
+            surface the text sits on. <code>contrast.test.ts</code> in the token package holds every pair in the system
+            against WCAG AA.
           </p>
           <div className={styles.specimen}>
             <Swatches
@@ -140,8 +133,8 @@ export function Landing() {
         <div className={styles.inner}>
           <h2 className={styles.heading}>Three surfaces</h2>
           <p className={styles.body}>
-            One job each. This site explains the system, Storybook is where the components are exercised, and the
-            repository is where they are built.
+            This site explains the system. Storybook is where the components are exercised. The repository is where they
+            are built.
           </p>
           <div className={styles.cards}>
             <Card asChild variant="elevated">
@@ -149,8 +142,8 @@ export function Landing() {
                 <span className={styles.cardInner}>
                   <span className={styles.cardTitle}>Documentation</span>
                   <span className={styles.cardBody}>
-                    What each component is for, what it takes, and the foundations underneath it, with every value read
-                    from the page you are on.
+                    What each component takes, and the foundations underneath it, with the values read from the page you
+                    are on.
                   </span>
                   <span className={styles.cardLink}>Read the overview</span>
                 </span>
@@ -161,8 +154,7 @@ export function Landing() {
                 <span className={styles.cardInner}>
                   <span className={styles.cardTitle}>Storybook</span>
                   <span className={styles.cardBody}>
-                    Every component in every state, with its controls exposed: the workshop, where a prop is changed to
-                    see what it does.
+                    Every component in every state, with its controls exposed, for changing a prop to see what it does.
                   </span>
                   <span className={styles.cardLink}>haus.hipuku.dev</span>
                 </span>
@@ -178,8 +170,7 @@ export function Landing() {
                 <span className={styles.cardInner}>
                   <span className={styles.cardTitle}>Repository</span>
                   <span className={styles.cardBody}>
-                    The source, the contrast tests, and the decision record that says why each of these is the way it
-                    is.
+                    The source, the contrast tests, and the decision record behind each of these.
                   </span>
                   <span className={styles.cardLink}>
                     {gitConfig.user}/{gitConfig.repo}

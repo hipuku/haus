@@ -168,30 +168,6 @@
 }
 
 /*
- * The sidebar's sections.
- *
- * Foundations, Components, Packages and Tools are the four kinds of page on
- * this site, and they were set in the same colour and weight as the pages
- * inside them, so the sidebar read as one list of twenty-nine things. They are
- * headings, so they are given a heading's weight and the page's strongest ink,
- * and a page under one of them stays quiet.
- *
- * The two buttons excluded are the search field and the sidebar's own collapse
- * toggle, which carry `aria-expanded` for their own reasons.
- */
-#nd-sidebar button[aria-expanded]:not([data-search-full], [data-collapsed]) {
-  color: var(--haus-color-ink-primary);
-  font-weight: var(--haus-weight-semibold);
-  margin-block-start: var(--haus-space-4);
-}
-
-/* The section a reader is already inside does not need to announce itself
-   twice: its pages are visible under it. */
-#nd-sidebar button[aria-expanded='true']:not([data-search-full], [data-collapsed]) {
-  margin-block-end: var(--haus-space-1);
-}
-
-/*
  * The wordmark, inlined by components/wordmark.tsx.
  *
  * The file carries its own `<style>` with a `prefers-color-scheme` query,

@@ -1,1 +1,5 @@
-{ "title": "Packages", "pages": ["tokens", "motion", "colour", "dtcg", "style-probe", "config"] }
+{
+  "title": "Packages",
+  "root": true,
+  "pages": ["tokens", "motion", "colour", "dtcg", "style-probe", "config"]
+}
