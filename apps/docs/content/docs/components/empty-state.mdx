@@ -27,3 +27,76 @@ EmptyState also takes the attributes its element has, and forwards its ref to it
 it adds.
 
 <ApiTable file="components/EmptyState/EmptyState.tsx" name="EmptyStateProps" element="HTMLDivElement" />
+
+## Anatomy
+
+| Part | Element | What it is for |
+| ---- | ------- | -------------- |
+| Root | `div`, `role="status"` when `live` is `polite` | Centred on both axes, with `space-inset-2xl` on the block axis |
+| Icon | `div`, `aria-hidden` | The optional glyph, in `ink-tertiary`, above the title |
+| Title | `h2` through `h6`, from `headingLevel` | Why the region is empty. Required |
+| Description | `p` | The optional second line, in `ink-secondary`, held to `measure-sm` |
+| Children | | Anything between the description and the action, such as a form |
+| Action | `div` | The optional control |
+
+The block is centred and given a floor rather than a fixed height: it stands in the space content
+would have taken, and that space is the parent's to decide. A fixed height would be right for a
+table and wrong for a drawer.
+
+The title takes the `heading-sm` role rather than a display step. An empty state explains an
+absence, and setting it at display size makes the absence read as a fault.
+
+## The three situations
+
+`title`, `description` and `action` are shaped around the fact that an empty state is mostly a
+writing decision, and the three cases differ in what they say rather than in their shape.
+
+| Situation | What it says | Action |
+| --------- | ------------ | ------ |
+| Nothing yet | There is nothing here, and here is how to start | The control that starts it |
+| Filtered to nothing | There is plenty here, and the filter is too narrow | Clear the filter |
+| Could not load | This failed, which is not the same as empty | Retry, or none |
+
+`description` and `action` are both optional because of the second and third rows. Omit the action
+where nothing the reader can do would fill the space: a permissions case wants no button at all.
+
+The third row is the one worth being careful with. Rendered without `live`, a load failure reads
+as there being nothing there, which is not what happened, and it is announced to nobody.
+
+## Keyboard and screen reader
+
+The block takes no focus. The action inside it is an ordinary control and keeps its own place in
+the tab order.
+
+`headingLevel` is a level rather than a fixed element, because the right one depends entirely on
+what the empty state is nested inside, and a component cannot know. It defaults to `3`, on the
+reasoning that an empty state almost always sits inside a page with an `h1` and a section with an
+`h2`: right often enough to be useful, and named so that the times it is wrong are one prop away.
+Rendering the title as a `p` is what the component was promoted to stop. It looks like a heading,
+so a reader navigating by heading skips straight past the only thing that says why the region is
+empty.
+
+`live` is narrower than Callout's: `off` and `polite`, with no `assertive`. Set it to `polite`
+where the block appears in response to something, such as a search that returned nothing or a load
+that failed, so the result is announced without focus having to move.
+
+The icon is `aria-hidden`. haus ships no icon set, so the glyph is the consumer's, and the title
+carries the meaning in any case.
+
+## Motion
+
+None of its own. The block appears with whatever renders it.
+
+## Decisions
+
+- **Promoted on evidence** (`haus#30`). Twenty-five references across core, drift and vault, and
+  no component anywhere. Every list, every filter and every search result needs one.
+- **`title` is required.** An empty region with no explanation is indistinguishable from one that
+  has not loaded, and the writing is the part a design system can standardise.
+- **`live` has no `assertive`.** Nothing about a region having no content is worth abandoning what
+  a screen reader is already saying, and offering the option would mean somebody eventually takes
+  it.
+- **`headingLevel` is a prop rather than a fixed `h2`.** A fixed level is wrong wherever the
+  nesting differs, and the alternative vault took, a `p`, removes the heading from the outline
+  altogether.
+- **The icon is decorative.** A glyph that carried meaning would be one the system does not ship.
