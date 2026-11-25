@@ -174,6 +174,15 @@ const hoverOnly = (selector: string): Move[] => [
   { at: null },
 ]
 
+/* An arrow pointer, drawn where a hovering pointer would rest. Still. */
+function Pointer() {
+  return (
+    <svg aria-hidden="true" className={styles.pointer} height="20" viewBox="0 0 16 20" width="16">
+      <path d="M1 1v15.5l4.2-4 2.9 6.3 2.6-1.2-2.9-6.2H14L1 1z" />
+    </svg>
+  )
+}
+
 function Tile({ uses, children }: { uses: string[]; children: ReactNode }) {
   return (
     <figure className={styles.tile}>
@@ -274,19 +283,32 @@ function Team() {
   )
 }
 
-const DEPLOY = hoverOnly('[data-demo="redeploy"]')
+/*
+ * A pointer resting on View logs, the secondary button. It does not move: the
+ * button holds its hover state, is pressed, and returns to hover, each
+ * through its own rule and its own transition.
+ */
+const DEPLOY: Move[] = [
+  { at: by('[data-demo="logs"]'), hover: true },
+  { at: by('[data-demo="logs"]'), hover: true },
+  { at: by('[data-demo="logs"]'), hover: true, press: true },
+  { at: by('[data-demo="logs"]'), hover: true },
+]
 function Deploy() {
   const stage = useRef<HTMLDivElement>(null)
-  useStates(stage, DEPLOY, 4, 6)
+  useStates(stage, DEPLOY, 3, 6)
   return (
     <Tile uses={['Callout', 'Button']}>
       <div className={styles.stack} ref={stage}>
         <Callout tone="success">Deployed to production in 41 seconds.</Callout>
         <div className={styles.row}>
-          <Button data-demo="redeploy" variant="primary">
-            Redeploy
-          </Button>
-          <Button variant="ghost">View logs</Button>
+          <Button variant="primary">Redeploy</Button>
+          <span className={styles.pointed}>
+            <Button data-demo="logs" data-pseudo-hover="" variant="secondary">
+              View logs
+            </Button>
+            <Pointer />
+          </span>
         </div>
       </div>
     </Tile>
