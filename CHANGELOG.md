@@ -15,11 +15,14 @@ Versioning follows [decision 0004](./DESIGN.md#0004-versioning): a
 token rename is a major at an identical value, and a contrast change is a major
 even when the hex barely moves.
 
-## @hipuku/tokens 5.3.0
+## @hipuku/tokens 6.0.0
 
-_Unreleased. `haus-tokens`, renamed, with motion roles and a dark mode. The dark mode makes this
-release a major (decision 0004). `RELEASING.md` has the process: the first version of a new name is
-published by hand, and the tag workflow takes over after it._
+_Unreleased. `haus-tokens`, renamed, with motion roles and a dark mode. Two of the entries below are
+breaking, so this is a major under decision 0004: from `haus-tokens`' 5.2.0 that is 6.0.0, not a
+minor. Nobody is carried across by a caret either way, because the name is new and a rename is an
+edit to a manifest, but a minor over two breaking changes would be the number contradicting the
+entries under it. `RELEASING.md` has the process: the first version of a new name is published by
+hand, and the tag workflow takes over after it._
 
 **Changed, breaking** · **A dark mode, on by default for users whose system is set to dark.**
 `index.css` now loads `brand-dark.css`, which gives every colour role a dark value under
