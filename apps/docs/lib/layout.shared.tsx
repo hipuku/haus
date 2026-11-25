@@ -1,6 +1,6 @@
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared'
 import { Wordmark } from '@/components/wordmark'
-import { GitHubButton, SearchButton, StorybookButton, ThemeButton } from '@/components/header-controls'
+import { GitHubButton, SearchButton, SidebarSearch, StorybookButton, ThemeButton } from '@/components/header-controls'
 import { docsRoute, gitConfig, storybookUrl } from './shared'
 
 /*
@@ -30,34 +30,39 @@ const SECTIONS = [
  * `home` drops the header's wordmark on the landing page, where the wordmark
  * is already the page's heading a few lines below it.
  */
+const githubUrl = `https://github.com/${gitConfig.user}/${gitConfig.repo}`
+
 export function baseOptions({ home = false }: { home?: boolean } = {}): BaseLayoutProps {
   return {
     nav: {
-      // The wordmark rather than the word, and it points at the overview. The
-      // site used to have a landing page at `/` and an overview at `/docs`
-      // saying much the same thing, so the brand and the first sidebar item
-      // led to two different pages. The landing page is back and says
-      // something else, so the wordmark goes to the front page again.
+      // The wordmark rather than the word, and it points at the front page.
+      // Not on the landing page, whose heading is the wordmark.
       title: home ? null : <Wordmark />,
       url: '/',
     },
-    // The three header controls are haus IconButtons; see
-    // components/header-controls.tsx for why they replace Fumadocs' own.
-    searchToggle: { components: { lg: <SearchButton />, sm: <SearchButton /> } },
-    themeSwitch: { component: <ThemeButton /> },
+    // haus IconButtons and Buttons in place of Fumadocs' own controls; see
+    // components/header-controls.tsx. The landing page's header has an icon
+    // search; the docs sidebar has a full-width search row in that slot.
+    searchToggle: {
+      components: { lg: home ? <SearchButton /> : <SidebarSearch />, sm: <SearchButton /> },
+    },
+    // The docs layout draws mode, Storybook and GitHub in its sidebar footer
+    // (app/docs/layout.tsx), so the switch and the icon links are the landing
+    // header's alone. Without either, Fumadocs' bordered footer pill hides.
+    themeSwitch: home ? { component: <ThemeButton /> } : { enabled: false },
     links: [
       ...SECTIONS.map(section => ({ ...section, active: 'nested-url' as const, on: 'nav' as const })),
-      // Storybook is an icon in the header, beside GitHub, and stays a labelled
-      // link in the docs sidebar and the mobile menu (`on: 'menu'`), where a
-      // reader looks for it in a list. Labelled "Storybook" rather than
-      // "Workshop": a link that leaves the site should say where it goes.
-      { text: 'Storybook', url: storybookUrl, external: true, on: 'menu' },
-      { type: 'custom', secondary: true, children: <StorybookButton href={storybookUrl} /> },
-      {
-        type: 'custom',
-        secondary: true,
-        children: <GitHubButton href={`https://github.com/${gitConfig.user}/${gitConfig.repo}`} />,
-      },
+      ...(home
+        ? [
+            // A labelled link in the landing page's mobile menu, where a reader
+            // looks for it in a list; an icon in its header.
+            { text: 'Storybook', url: storybookUrl, external: true, on: 'menu' as const },
+            { type: 'custom' as const, secondary: true, children: <StorybookButton href={storybookUrl} /> },
+            { type: 'custom' as const, secondary: true, children: <GitHubButton href={githubUrl} /> },
+          ]
+        : []),
     ],
   }
 }
+
+export { githubUrl }

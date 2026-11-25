@@ -1,6 +1,8 @@
 import { source } from '@/lib/source'
 import { DocsLayout } from 'fumadocs-ui/layouts/docs'
-import { baseOptions } from '@/lib/layout.shared'
+import { baseOptions, githubUrl } from '@/lib/layout.shared'
+import { SectionHeading, SidebarFooter } from '@/components/header-controls'
+import { storybookUrl } from '@/lib/shared'
 
 /*
  * The five sections across the top, the pages of the one you are in down the
@@ -17,7 +19,16 @@ import { baseOptions } from '@/lib/layout.shared'
  */
 export default function Layout({ children }: LayoutProps<'/docs'>) {
   return (
-    <DocsLayout tabMode="top" tree={source.getPageTree()} {...baseOptions()}>
+    <DocsLayout
+      sidebar={{
+        // The section's name above its pages, and one row of controls at the foot.
+        banner: <SectionHeading />,
+        footer: <SidebarFooter github={githubUrl} storybook={storybookUrl} />,
+      }}
+      tabMode="top"
+      tree={source.getPageTree()}
+      {...baseOptions()}
+    >
       {children}
     </DocsLayout>
   )

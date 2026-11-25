@@ -234,3 +234,74 @@
 #nd-nav > nav {
   border-block-end-color: transparent;
 }
+
+/*
+ * The docs sidebar.
+ *
+ * Its page list follows the header's rule rather than Fumadocs' filled pill:
+ * no ground at rest or on hover, the link colour under the pointer, and the
+ * current page in ink-primary at semibold with an accent rule at its leading
+ * edge, the marker the table of contents uses, so the two lists agree.
+ */
+#nd-sidebar a[data-active] {
+  background-color: transparent;
+  border-inline-start: var(--haus-border-width-thick) solid transparent;
+  border-radius: 0;
+  color: var(--haus-color-ink-secondary);
+  transition: color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing);
+}
+
+#nd-sidebar a[data-active]:hover {
+  background-color: transparent;
+  color: var(--haus-color-ink-link);
+}
+
+#nd-sidebar a[data-active='true'] {
+  border-inline-start-color: var(--haus-color-primary-default);
+}
+
+/* The section's name above its pages: a quiet label, not a heading that
+   competes with the page title. */
+.haus-sidebar-section {
+  color: var(--haus-color-ink-tertiary);
+  font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-weight-semibold);
+  letter-spacing: var(--haus-type-body-sm-tracking);
+  line-height: var(--haus-type-body-sm-leading);
+  margin: var(--haus-space-2) 0 0;
+}
+
+/* The search row: a ghost Button laid out as a field, the label at the start
+   and the shortcut keys at the end. */
+.haus-sidebar-search {
+  gap: var(--haus-space-2);
+  inline-size: 100%;
+  justify-content: flex-start;
+}
+
+.haus-sidebar-search-label {
+  color: var(--haus-color-ink-secondary);
+  font-weight: var(--haus-weight-regular);
+}
+
+.haus-sidebar-search-keys {
+  display: inline-flex;
+  gap: var(--haus-space-1);
+  margin-inline-start: auto;
+}
+
+.haus-sidebar-search-keys kbd {
+  border: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
+  border-radius: var(--haus-radius-marker);
+  color: var(--haus-color-ink-tertiary);
+  font-family: var(--haus-font-sans);
+  font-size: var(--haus-type-body-sm-size);
+  line-height: 1;
+  padding: var(--haus-space-1);
+}
+
+/* Mode, Storybook and GitHub in one row at the sidebar's foot. */
+.haus-sidebar-footer {
+  display: flex;
+  gap: var(--haus-space-1);
+}

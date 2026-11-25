@@ -1,9 +1,10 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { usePathname } from 'next/navigation'
 import { useTheme } from 'next-themes'
 import { useSearchContext } from 'fumadocs-ui/contexts/search'
-import { IconButton } from 'haus-components'
+import { Button, IconButton } from 'haus-components'
 
 /*
  * The header's controls, as haus's own IconButton.
@@ -121,4 +122,56 @@ export function StorybookButton({ href }: { href: string }) {
       <a href={href} rel="noreferrer" target="_blank" />
     </IconButton>
   )
+}
+
+/*
+ * The docs sidebar's search: a full-width ghost Button, so it has no stroke at
+ * rest and the ghost hover, as the header's icons do, with the shortcut keys
+ * at its end. It opens the same dialog as the header's search.
+ */
+export function SidebarSearch() {
+  const { setOpenSearch } = useSearchContext()
+  return (
+    <Button className="haus-sidebar-search" onClick={() => setOpenSearch(true)} variant="ghost">
+      <Glyph>
+        <circle cx="11" cy="11" r="7" />
+        <path d="m20 20-3.5-3.5" />
+      </Glyph>
+      <span className="haus-sidebar-search-label">Search</span>
+      <span aria-hidden="true" className="haus-sidebar-search-keys">
+        <kbd>⌘</kbd>
+        <kbd>K</kbd>
+      </span>
+    </Button>
+  )
+}
+
+/* The docs sidebar's footer: mode, Storybook and GitHub, one row of ghost
+   IconButtons, as in the header. */
+export function SidebarFooter({ storybook, github }: { storybook: string; github: string }) {
+  return (
+    <div className="haus-sidebar-footer">
+      <ThemeButton />
+      <StorybookButton href={storybook} />
+      <GitHubButton href={github} />
+    </div>
+  )
+}
+
+/*
+ * The name of the section the reader is in, above its pages. The sections are
+ * tabs in the header, so without this the sidebar lists pages without saying
+ * whose they are.
+ */
+const SECTION_NAMES: [string, string][] = [
+  ['/docs/start', 'Getting started'],
+  ['/docs/foundations', 'Foundations'],
+  ['/docs/components', 'Components'],
+  ['/docs/packages', 'Packages'],
+  ['/docs/tools', 'Tools'],
+]
+export function SectionHeading() {
+  const pathname = usePathname()
+  const name = SECTION_NAMES.find(([prefix]) => pathname === prefix || pathname.startsWith(`${prefix}/`))?.[1]
+  return name ? <p className="haus-sidebar-section">{name}</p> : null
 }
