@@ -119,8 +119,8 @@ function Tile({ uses, children }: { uses: string[]; children: ReactNode }) {
    finishes. */
 const EMAIL = 'ada@hipuku.dev'
 function SignIn() {
-  const beat = useBeat(140, 300)
-  const cycle = EMAIL.length + 16
+  const beat = useBeat(240, 600)
+  const cycle = EMAIL.length + 14
   const step = beat % cycle
   const typed = EMAIL.slice(0, Math.min(step, EMAIL.length))
   return (
@@ -137,7 +137,7 @@ function SignIn() {
 
 /* One switch flips at a time, round the three. */
 function Notifications() {
-  const beat = useBeat(1600, 900)
+  const beat = useBeat(2800, 1400)
   const flipped = beat % 3
   const base = [true, false, true]
   const on = (i: number) => (beat === 0 ? base[i] : base[i] !== (flipped === i && Math.floor(beat / 3) % 2 === 0))
@@ -168,7 +168,7 @@ function Notifications() {
 
 /* Presence changes, one person at a time. */
 function Team() {
-  const beat = useBeat(2200, 1500)
+  const beat = useBeat(3800, 2600)
   const statuses = ['online', 'away', 'busy', 'offline'] as const
   const people = [
     { name: 'Ada Lovelace', role: 'Owner', tone: 'info' as const },
@@ -192,7 +192,7 @@ function Team() {
 
 /* A deploy runs, then lands. */
 function Deploy() {
-  const beat = useBeat(2600, 400)
+  const beat = useBeat(4400, 800)
   const done = beat % 2 === 0
   return (
     <Tile uses={['Callout', 'Button']}>
@@ -217,7 +217,7 @@ function Deploy() {
 
 /* The selected tab moves along, and its marker with it. */
 function Sections() {
-  const beat = useBeat(2000, 1200)
+  const beat = useBeat(3400, 2000)
   const items = [
     { label: 'Tokens', value: 'tokens' },
     { label: 'Components', value: 'components' },
@@ -245,7 +245,7 @@ const NOTICES = [
   { title: 'Sync paused', description: 'Figma is not reachable.', tone: 'warning' as const },
 ]
 function Notices() {
-  const beat = useBeat(2800, 2000)
+  const beat = useBeat(4800, 3200)
   const first = NOTICES[beat % NOTICES.length]
   const second = NOTICES[(beat + 1) % NOTICES.length]
   return (
@@ -274,7 +274,7 @@ function Empty() {
 
 /* The answer moves between the three options. */
 function Feedback() {
-  const beat = useBeat(1800, 700)
+  const beat = useBeat(3200, 1200)
   const options = [
     { label: 'Yes', value: 'yes' },
     { label: 'Partly', value: 'partly' },
@@ -300,7 +300,7 @@ function Feedback() {
 
 /* The document saves, then reports it saved. */
 function Toolbar() {
-  const beat = useBeat(1900, 1000)
+  const beat = useBeat(3400, 1800)
   const saving = beat % 2 === 1
   return (
     <Tile uses={['IconButton', 'Spinner']}>
@@ -319,7 +319,7 @@ function Toolbar() {
 
 /* The chosen format changes. */
 function Export() {
-  const beat = useBeat(2400, 1800)
+  const beat = useBeat(4200, 3000)
   const options = [
     { label: 'CSS custom properties', value: 'css' },
     { label: 'DTCG JSON', value: 'dtcg' },
@@ -343,7 +343,10 @@ const COLUMNS = [
 
 export function Wall() {
   return (
-    <div className={styles.wall}>
+    // The expressive mode: haus's own slower, softer curves for every role,
+    // scoped to the wall, so the screens play at a pace a reader can follow
+    // while the rest of the site keeps the standard timings.
+    <div className={styles.wall} data-haus-motion="expressive">
       <div className={styles.columns}>
         {COLUMNS.map((tiles, i) => (
           <div className={styles.column} key={i}>
