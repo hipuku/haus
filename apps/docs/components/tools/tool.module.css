@@ -26,22 +26,6 @@
   text-transform: uppercase;
 }
 
-.code {
-  background: var(--haus-color-surface-sunken);
-  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
-  /* A pane, so the surface role rather than a value off the raw scale. */
-  border-radius: var(--haus-radius-surface);
-  color: var(--haus-color-ink-primary);
-  font-family: var(--haus-font-mono);
-  font-size: var(--haus-type-mono-sm-size);
-  line-height: var(--haus-type-mono-sm-leading);
-  margin: 0;
-  /* The space ladder stops at 80px, which is a gap rather than the height of a
-     reading pane, so the cap is built from it rather than typed as a number. */
-  max-block-size: calc(var(--haus-space-20) * 5);
-  overflow: auto;
-  padding: var(--haus-space-4);
-}
 
 .summary {
   color: var(--haus-color-ink-secondary);
@@ -89,19 +73,6 @@
   grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
 }
 
-/* One measured fact: its label, the value large, a verdict and what it means. */
-.fact {
-  align-items: flex-start;
-  display: flex;
-  flex-direction: column;
-  gap: var(--haus-space-2);
-}
-
-.factLabel {
-  color: var(--haus-color-ink-tertiary);
-  font-size: var(--haus-type-body-sm-size);
-}
-
 .factValue {
   color: var(--haus-color-ink-primary);
   font-family: var(--haus-font-mono);
@@ -113,12 +84,6 @@
   color: var(--haus-color-ink-secondary);
   font-size: var(--haus-type-body-sm-size);
   margin: 0;
-}
-
-.badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--haus-space-2);
 }
 
 /* A line of text set in one colour on the other: the test contrast stands for. */
@@ -134,28 +99,6 @@
 .sampleLarge {
   font-size: var(--haus-type-heading-size);
   font-weight: var(--haus-weight-semibold);
-}
-
-/* The runners-up under the nearest name. */
-.names {
-  display: grid;
-  gap: var(--haus-space-1);
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.names li {
-  align-items: center;
-  color: var(--haus-color-ink-secondary);
-  display: flex;
-  font-size: var(--haus-type-body-sm-size);
-  gap: var(--haus-space-2);
-}
-
-.names code {
-  font-family: var(--haus-font-mono);
-  margin-inline-start: auto;
 }
 
 /* A colour's readings, each a label and a value. Auto-fit rather than a fixed
@@ -627,4 +570,11 @@
 
 .verdict[data-pass='no'] {
   color: var(--haus-color-error-on-subtle);
+}
+
+/* Three things across, on the same gap as a pair. */
+.trio {
+  display: grid;
+  gap: var(--haus-space-8);
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
 }

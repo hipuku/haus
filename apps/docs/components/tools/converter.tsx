@@ -17,6 +17,7 @@ import {
 import { DynamicCodeBlock } from 'fumadocs-ui/components/dynamic-codeblock'
 import { Badge, Button, Callout, Input, Select, Tabs, Textarea } from 'haus-components'
 import { useMemo, useRef, useState } from 'react'
+import { ToolView } from './tool-view'
 import styles from './tool.module.css'
 
 export interface Example {
@@ -138,10 +139,9 @@ export function Converter({ examples }: { examples: Example[] }) {
     return [...map.entries()]
   }
 
-  return (
-    <div className={`not-prose ${styles.stack}`}>
-      <div className={styles.controls}>
-        <Select
+  const controls = (
+    <>
+      <Select
           label="Start from an example"
           onChange={choose}
           options={examples.map(e => ({ label: e.label, value: e.id }))}
@@ -163,15 +163,18 @@ export function Converter({ examples }: { examples: Example[] }) {
               { label: 'Class', value: 'class' },
               { label: 'Media query', value: 'media' },
             ]}
-            value={selector}
-          />
-        )}
-      </div>
+          value={selector}
+        />
+      )}
+    </>
+  )
 
+  return (
+    <ToolView controls={controls}>
       <div className={styles.workspace}>
         <section aria-label="Input" className={styles.stack}>
           <div className={styles.paneHead}>
-            <span className={styles.factLabel}>Input</span>
+            <span className={styles.panelLabel}>Input</span>
             {result && <Badge tone="info">Read as {FORMAT_LABEL[result.format]}</Badge>}
             <Button onClick={() => upload.current?.click()} size="sm" variant="secondary">
               Upload files
@@ -214,7 +217,7 @@ export function Converter({ examples }: { examples: Example[] }) {
         </section>
 
         <section aria-label="Result" className={styles.stack}>
-          <span className={styles.factLabel}>Result</span>
+          <span className={styles.panelLabel}>Result</span>
           {result && (
             <Tabs
               aria-label="Result"
@@ -284,7 +287,7 @@ export function Converter({ examples }: { examples: Example[] }) {
                     .filter(group => group.losses.length)
                     .map(group => (
                       <div className={styles.stack} key={group.title}>
-                        <span className={styles.factLabel}>
+                        <span className={styles.panelLabel}>
                           {group.title}, {group.losses.length}
                         </span>
                         {grouped(group.losses).map(([reason, entries]) => (
@@ -313,6 +316,6 @@ export function Converter({ examples }: { examples: Example[] }) {
           )}
         </section>
       </div>
-    </div>
+    </ToolView>
   )
 }

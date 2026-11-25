@@ -1,9 +1,10 @@
 'use client'
 
 import { analysePalette, clusterByPerceptualDistance, oklch, toHex } from '@hipuku/colour'
-import { Badge, Card, Textarea } from 'haus-components'
+import { Badge, Textarea } from 'haus-components'
 import { useMemo, useState } from 'react'
 import { Swatch } from './swatch'
+import { Panel, ToolView } from './tool-view'
 import styles from './tool.module.css'
 
 /*
@@ -61,17 +62,20 @@ export function PaletteAnalysis() {
   const contrast = (a: string, b: string) =>
     result?.contrast.find(p => (p.a === a && p.b === b) || (p.a === b && p.b === a))
 
-  return (
-    <div className={`not-prose ${styles.stack}`}>
-      <Textarea
-        error={result ? undefined : 'Give at least two colours.'}
-        hint="Colours separated by spaces, commas or new lines."
-        label="Palette"
-        onChange={e => setText(e.target.value)}
-        rows={3}
-        value={text}
-      />
+  const controls = (
+    <Textarea
+      error={result ? undefined : 'Give at least two colours.'}
+      hint="Colours separated by spaces, commas or new lines."
+      label="Palette"
+      onChange={e => setText(e.target.value)}
+      rows={3}
+      value={text}
+    />
+  )
 
+  return (
+    <ToolView controls={controls}>
+      {/* The palette itself, large, before anything is said about it. */}
       {hexes.length > 0 && (
         <ul aria-label="The palette" className={styles.strip}>
           {hexes.map(hex => (
@@ -85,37 +89,31 @@ export function PaletteAnalysis() {
 
       {result && (
         <>
-          <div className={styles.pair}>
-            <Card>
-              <div className={styles.fact}>
-                <span className={styles.factLabel}>Lightness steps</span>
-                <Badge tone={LIGHTNESS[result.lightness.rating].tone}>{result.lightness.rating}</Badge>
-                <p className={styles.factNote}>{LIGHTNESS[result.lightness.rating].meaning}</p>
-              </div>
-            </Card>
-            <Card>
-              <div className={styles.fact}>
-                <span className={styles.factLabel}>Chroma</span>
-                <Badge tone={CHROMA[result.chroma.rating].tone}>{result.chroma.rating}</Badge>
-                <p className={styles.factNote}>{CHROMA[result.chroma.rating].meaning}</p>
-              </div>
-            </Card>
-            <Card>
-              <div className={styles.fact}>
-                <span className={styles.factLabel}>Hue range</span>
-                <span className={styles.factValue}>{result.hueArc.totalAngle}°</span>
-                <p className={styles.factNote}>
-                  {result.hueArc.isMonotonic
-                    ? 'The hues run one way round the wheel.'
-                    : 'The hues turn back on themselves.'}
-                  {result.hueArc.hasAchromatic ? ' Includes greys, which have no hue.' : ''}
-                </p>
-              </div>
-            </Card>
+          {/* The three ratings keep their Badges: each tone here carries a
+              ground of its own, and a rating is a verdict, which is the thing
+              a Badge is for. */}
+          <div className={styles.trio}>
+            <Panel
+              aside={<Badge tone={LIGHTNESS[result.lightness.rating].tone}>{result.lightness.rating}</Badge>}
+              label="Lightness steps"
+            >
+              <p className={styles.factNote}>{LIGHTNESS[result.lightness.rating].meaning}</p>
+            </Panel>
+            <Panel aside={<Badge tone={CHROMA[result.chroma.rating].tone}>{result.chroma.rating}</Badge>} label="Chroma">
+              <p className={styles.factNote}>{CHROMA[result.chroma.rating].meaning}</p>
+            </Panel>
+            <Panel label="Hue range">
+              <span className={styles.factValue}>{result.hueArc.totalAngle}°</span>
+              <p className={styles.factNote}>
+                {result.hueArc.isMonotonic
+                  ? 'The hues run one way round the wheel.'
+                  : 'The hues turn back on themselves.'}
+                {result.hueArc.hasAchromatic ? ' Includes greys, which have no hue.' : ''}
+              </p>
+            </Panel>
           </div>
 
-          <section aria-label="Lightness ladder" className={styles.fact}>
-            <span className={styles.factLabel}>Lightness, OKLCH, darkest to lightest</span>
+          <Panel label="Lightness, OKLCH, darkest to lightest">
             <div className={styles.ladder}>
               {result.lightness.sortedHexes.map(hex => {
                 const l = oklch(hex)?.l ?? 0
@@ -138,11 +136,10 @@ export function PaletteAnalysis() {
                 </li>
               ))}
             </ol>
-          </section>
+          </Panel>
 
           {clusters.length > 0 && (
-            <section aria-label="Colours that look alike" className={styles.fact}>
-              <span className={styles.factLabel}>Colours that look alike</span>
+            <Panel label="Colours that look alike">
               {clusters.map(cluster => (
                 <div className={styles.cluster} key={cluster.representative}>
                   {cluster.members.map(hex => (
@@ -154,14 +151,17 @@ export function PaletteAnalysis() {
                   <Badge tone="warning">Look alike</Badge>
                 </div>
               ))}
-            </section>
+            </Panel>
           )}
 
-          <section aria-label="Contrast matrix" className={styles.fact}>
-            <span className={styles.factLabel}>
-              Contrast, every colour as text on every other. Pairs passing AA:{' '}
-              {result.contrast.filter(p => p.passAA).length} of {result.contrast.length}
-            </span>
+          <Panel
+            aside={
+              <span className={styles.factNote}>
+                {result.contrast.filter(p => p.passAA).length} of {result.contrast.length} pairs pass AA
+              </span>
+            }
+            label="Contrast, every colour as text on every other"
+          >
             <div className={styles.tableWrap}>
               <table className={styles.matrix}>
                 <thead>
@@ -205,9 +205,9 @@ export function PaletteAnalysis() {
                 </tbody>
               </table>
             </div>
-          </section>
+          </Panel>
         </>
       )}
-    </div>
+    </ToolView>
   )
 }
