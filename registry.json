@@ -17,27 +17,623 @@
       ]
     },
     {
-      "name": "badge",
+      "name": "as-child",
+      "type": "registry:lib",
+      "title": "As child",
+      "description": "A shared helper: renders a component as its single child element.",
+      "files": [
+        {
+          "path": "packages/components/src/internal/asChild.ts",
+          "type": "registry:file",
+          "target": "components/haus/internal/asChild.ts"
+        }
+      ]
+    },
+    {
+      "name": "submit-stand-in",
+      "type": "registry:lib",
+      "title": "Submit stand in",
+      "description": "A shared helper: the hidden submit control a busy button leaves in a form.",
+      "files": [
+        {
+          "path": "packages/components/src/internal/submitStandIn.tsx",
+          "type": "registry:file",
+          "target": "components/haus/internal/submitStandIn.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tone-icons",
+      "type": "registry:lib",
+      "title": "Tone icons",
+      "description": "A shared helper: the glyph for each tone.",
+      "registryDependencies": ["@hipuku/types"],
+      "files": [
+        {
+          "path": "packages/components/src/internal/toneIcons.tsx",
+          "type": "registry:file",
+          "target": "components/haus/internal/toneIcons.tsx"
+        }
+      ]
+    },
+    {
+      "name": "portal-host",
+      "type": "registry:lib",
+      "title": "Portal host",
+      "description": "A shared helper: where a portalled panel mounts, so one inside a Modal stays in its dialog.",
+      "files": [
+        {
+          "path": "packages/components/src/internal/portalHost.tsx",
+          "type": "registry:file",
+          "target": "components/haus/internal/portalHost.tsx"
+        }
+      ]
+    },
+    {
+      "name": "avatar",
       "type": "registry:ui",
-      "title": "Badge",
-      "description": "A short status label in one of six tones, subtle or solid.",
+      "title": "Avatar",
+      "description": "Initials from a name, and a fallback glyph when there is none.",
       "dependencies": ["@hipuku/tokens@^6.0.0"],
       "registryDependencies": ["@hipuku/types"],
       "files": [
         {
-          "path": "packages/components/src/components/Badge/Badge.tsx",
+          "path": "packages/components/src/components/Avatar/Avatar.module.css",
           "type": "registry:file",
-          "target": "components/haus/components/Badge/Badge.tsx"
+          "target": "components/haus/components/Avatar/Avatar.module.css"
         },
+        {
+          "path": "packages/components/src/components/Avatar/Avatar.tsx",
+          "type": "registry:file",
+          "target": "components/haus/components/Avatar/Avatar.tsx"
+        },
+        {
+          "path": "packages/components/src/components/Avatar/index.ts",
+          "type": "registry:file",
+          "target": "components/haus/components/Avatar/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "badge",
+      "type": "registry:ui",
+      "title": "Badge",
+      "description": "A short status word, in one of six tones, subtle or solid.",
+      "dependencies": ["@hipuku/tokens@^6.0.0"],
+      "registryDependencies": ["@hipuku/types"],
+      "files": [
         {
           "path": "packages/components/src/components/Badge/Badge.module.css",
           "type": "registry:file",
           "target": "components/haus/components/Badge/Badge.module.css"
         },
         {
+          "path": "packages/components/src/components/Badge/Badge.tsx",
+          "type": "registry:file",
+          "target": "components/haus/components/Badge/Badge.tsx"
+        },
+        {
           "path": "packages/components/src/components/Badge/index.ts",
           "type": "registry:file",
           "target": "components/haus/components/Badge/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "The one button.",
+      "dependencies": ["@hipuku/tokens@^6.0.0"],
+      "registryDependencies": ["@hipuku/as-child", "@hipuku/spinner", "@hipuku/submit-stand-in", "@hipuku/types"],
+      "files": [
+        {
+          "path": "packages/components/src/components/Button/Button.module.css",
+          "type": "registry:file",
+          "target": "components/haus/components/Button/Button.module.css"
+        },
+        {
+          "path": "packages/components/src/components/Button/Button.tsx",
+          "type": "registry:file",
+          "target": "components/haus/components/Button/Button.tsx"
+        },
+        {
+          "path": "packages/components/src/components/Button/index.ts",
+          "type": "registry:file",
+          "target": "components/haus/components/Button/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "callout",
+      "type": "registry:ui",
+      "title": "Callout",
+      "description": "An inline notice attached to the thing it is about.",
+      "dependencies": ["@hipuku/tokens@^6.0.0"],
+      "registryDependencies": ["@hipuku/tone-icons", "@hipuku/types"],
+      "files": [
+        {
+          "path": "packages/components/src/components/Callout/Callout.module.css",
+          "type": "registry:file",
+          "target": "components/haus/components/Callout/Callout.module.css"
+        },
+        {
+          "path": "packages/components/src/components/Callout/Callout.tsx",
+          "type": "registry:file",
+          "target": "components/haus/components/Callout/Callout.tsx"
+        },
+        {
+          "path": "packages/components/src/components/Callout/index.ts",
+          "type": "registry:file",
+          "target": "components/haus/components/Callout/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "card",
+      "type": "registry:ui",
+      "title": "Card",
+      "description": "A surface.",
+      "dependencies": ["@hipuku/tokens@^6.0.0"],
+      "registryDependencies": ["@hipuku/as-child"],
+      "files": [
+        {
+          "path": "packages/components/src/components/Card/Card.module.css",
+          "type": "registry:file",
+          "target": "components/haus/components/Card/Card.module.css"
+        },
+        {
+          "path": "packages/components/src/components/Card/Card.tsx",
+          "type": "registry:file",
+          "target": "components/haus/components/Card/Card.tsx"
+        },
+        {
+          "path": "packages/components/src/components/Card/index.ts",
+          "type": "registry:file",
+          "target": "components/haus/components/Card/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "checkbox",
+      "type": "registry:ui",
+      "title": "Checkbox",
+      "description": "A checkbox with its label, hint and error, controlled or not.",
+      "dependencies": ["@hipuku/tokens@^6.0.0"],
+      "files": [
+        {
+          "path": "packages/components/src/components/Checkbox/Checkbox.module.css",
+          "type": "registry:file",
+          "target": "components/haus/components/Checkbox/Checkbox.module.css"
+        },
+        {
+          "path": "packages/components/src/components/Checkbox/Checkbox.tsx",
+          "type": "registry:file",
+          "target": "components/haus/components/Checkbox/Checkbox.tsx"
+        },
+        {
+          "path": "packages/components/src/components/Checkbox/index.ts",
+          "type": "registry:file",
+          "target": "components/haus/components/Checkbox/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "confirm-dialog",
+      "type": "registry:ui",
+      "title": "Confirm Dialog",
+      "description": "\"Are you sure\", as one component, on Modal.",
+      "dependencies": ["@hipuku/tokens@^6.0.0"],
+      "registryDependencies": ["@hipuku/button", "@hipuku/modal"],
+      "files": [
+        {
+          "path": "packages/components/src/components/ConfirmDialog/ConfirmDialog.module.css",
+          "type": "registry:file",
+          "target": "components/haus/components/ConfirmDialog/ConfirmDialog.module.css"
+        },
+        {
+          "path": "packages/components/src/components/ConfirmDialog/ConfirmDialog.tsx",
+          "type": "registry:file",
+          "target": "components/haus/components/ConfirmDialog/ConfirmDialog.tsx"
+        },
+        {
+          "path": "packages/components/src/components/ConfirmDialog/index.ts",
+          "type": "registry:file",
+          "target": "components/haus/components/ConfirmDialog/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "divider",
+      "type": "registry:ui",
+      "title": "Divider",
+      "description": "A rule between things.",
+      "dependencies": ["@hipuku/tokens@^6.0.0"],
+      "registryDependencies": ["@hipuku/types"],
+      "files": [
+        {
+          "path": "packages/components/src/components/Divider/Divider.module.css",
+          "type": "registry:file",
+          "target": "components/haus/components/Divider/Divider.module.css"
+        },
+        {
+          "path": "packages/components/src/components/Divider/Divider.tsx",
+          "type": "registry:file",
+          "target": "components/haus/components/Divider/Divider.tsx"
+        },
+        {
+          "path": "packages/components/src/components/Divider/index.ts",
+          "type": "registry:file",
+          "target": "components/haus/components/Divider/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "drawer",
+      "type": "registry:ui",
+      "title": "Drawer",
+      "description": "A panel that slides in from the edge of the page, over it: settings, a record's details, a filter set.",
+      "dependencies": ["@hipuku/tokens@^6.0.0"],
+      "registryDependencies": ["@hipuku/modal"],
+      "files": [
+        {
+          "path": "packages/components/src/components/Drawer/Drawer.tsx",
+          "type": "registry:file",
+          "target": "components/haus/components/Drawer/Drawer.tsx"
+        },
+        {
+          "path": "packages/components/src/components/Drawer/index.ts",
+          "type": "registry:file",
+          "target": "components/haus/components/Drawer/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "empty-state",
+      "type": "registry:ui",
+      "title": "Empty State",
+      "description": "The block that stands in for content that is not there.",
+      "dependencies": ["@hipuku/tokens@^6.0.0"],
+      "files": [
+        {
+          "path": "packages/components/src/components/EmptyState/EmptyState.module.css",
+          "type": "registry:file",
+          "target": "components/haus/components/EmptyState/EmptyState.module.css"
+        },
+        {
+          "path": "packages/components/src/components/EmptyState/EmptyState.tsx",
+          "type": "registry:file",
+          "target": "components/haus/components/EmptyState/EmptyState.tsx"
+        },
+        {
+          "path": "packages/components/src/components/EmptyState/index.ts",
+          "type": "registry:file",
+          "target": "components/haus/components/EmptyState/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "icon-button",
+      "type": "registry:ui",
+      "title": "Icon Button",
+      "description": "A control that is an icon and nothing else.",
+      "dependencies": ["@hipuku/tokens@^6.0.0"],
+      "registryDependencies": ["@hipuku/as-child", "@hipuku/spinner", "@hipuku/submit-stand-in", "@hipuku/types"],
+      "files": [
+        {
+          "path": "packages/components/src/components/IconButton/IconButton.module.css",
+          "type": "registry:file",
+          "target": "components/haus/components/IconButton/IconButton.module.css"
+        },
+        {
+          "path": "packages/components/src/components/IconButton/IconButton.tsx",
+          "type": "registry:file",
+          "target": "components/haus/components/IconButton/IconButton.tsx"
+        },
+        {
+          "path": "packages/components/src/components/IconButton/index.ts",
+          "type": "registry:file",
+          "target": "components/haus/components/IconButton/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "input",
+      "type": "registry:ui",
+      "title": "Input",
+      "description": "A text field with its label, hint and error.",
+      "dependencies": ["@hipuku/tokens@^6.0.0"],
+      "files": [
+        {
+          "path": "packages/components/src/components/Input/Input.module.css",
+          "type": "registry:file",
+          "target": "components/haus/components/Input/Input.module.css"
+        },
+        {
+          "path": "packages/components/src/components/Input/Input.tsx",
+          "type": "registry:file",
+          "target": "components/haus/components/Input/Input.tsx"
+        },
+        {
+          "path": "packages/components/src/components/Input/index.ts",
+          "type": "registry:file",
+          "target": "components/haus/components/Input/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "menu",
+      "type": "registry:ui",
+      "title": "Menu",
+      "description": "A list of actions opened from a trigger.",
+      "dependencies": ["@hipuku/tokens@^6.0.0"],
+      "registryDependencies": ["@hipuku/popover"],
+      "files": [
+        {
+          "path": "packages/components/src/components/Menu/Menu.module.css",
+          "type": "registry:file",
+          "target": "components/haus/components/Menu/Menu.module.css"
+        },
+        {
+          "path": "packages/components/src/components/Menu/Menu.tsx",
+          "type": "registry:file",
+          "target": "components/haus/components/Menu/Menu.tsx"
+        },
+        {
+          "path": "packages/components/src/components/Menu/index.ts",
+          "type": "registry:file",
+          "target": "components/haus/components/Menu/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "modal",
+      "type": "registry:ui",
+      "title": "Modal",
+      "description": "A dialog that traps focus and gives it back.",
+      "dependencies": ["@hipuku/tokens@^6.0.0"],
+      "registryDependencies": ["@hipuku/icon-button", "@hipuku/portal-host", "@hipuku/types"],
+      "files": [
+        {
+          "path": "packages/components/src/components/Modal/Modal.module.css",
+          "type": "registry:file",
+          "target": "components/haus/components/Modal/Modal.module.css"
+        },
+        {
+          "path": "packages/components/src/components/Modal/Modal.tsx",
+          "type": "registry:file",
+          "target": "components/haus/components/Modal/Modal.tsx"
+        },
+        {
+          "path": "packages/components/src/components/Modal/index.ts",
+          "type": "registry:file",
+          "target": "components/haus/components/Modal/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "popover",
+      "type": "registry:ui",
+      "title": "Popover",
+      "description": "A floating panel anchored to a trigger.",
+      "dependencies": ["@hipuku/tokens@^6.0.0"],
+      "registryDependencies": ["@hipuku/portal-host"],
+      "files": [
+        {
+          "path": "packages/components/src/components/Popover/Popover.module.css",
+          "type": "registry:file",
+          "target": "components/haus/components/Popover/Popover.module.css"
+        },
+        {
+          "path": "packages/components/src/components/Popover/Popover.tsx",
+          "type": "registry:file",
+          "target": "components/haus/components/Popover/Popover.tsx"
+        },
+        {
+          "path": "packages/components/src/components/Popover/index.ts",
+          "type": "registry:file",
+          "target": "components/haus/components/Popover/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "radio-group",
+      "type": "registry:ui",
+      "title": "Radio group",
+      "description": "A group, not a radio.",
+      "dependencies": ["@hipuku/tokens@^6.0.0"],
+      "files": [
+        {
+          "path": "packages/components/src/components/Radio/Radio.module.css",
+          "type": "registry:file",
+          "target": "components/haus/components/Radio/Radio.module.css"
+        },
+        {
+          "path": "packages/components/src/components/Radio/Radio.tsx",
+          "type": "registry:file",
+          "target": "components/haus/components/Radio/Radio.tsx"
+        },
+        {
+          "path": "packages/components/src/components/Radio/index.ts",
+          "type": "registry:file",
+          "target": "components/haus/components/Radio/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "select",
+      "type": "registry:ui",
+      "title": "Select",
+      "description": "haus draws this Select: a trigger, and a panel of options.",
+      "dependencies": ["@hipuku/tokens@^6.0.0"],
+      "registryDependencies": ["@hipuku/popover"],
+      "files": [
+        {
+          "path": "packages/components/src/components/Select/Select.module.css",
+          "type": "registry:file",
+          "target": "components/haus/components/Select/Select.module.css"
+        },
+        {
+          "path": "packages/components/src/components/Select/Select.tsx",
+          "type": "registry:file",
+          "target": "components/haus/components/Select/Select.tsx"
+        },
+        {
+          "path": "packages/components/src/components/Select/index.ts",
+          "type": "registry:file",
+          "target": "components/haus/components/Select/index.ts"
+        },
+        {
+          "path": "packages/components/src/components/Select/useListbox.ts",
+          "type": "registry:file",
+          "target": "components/haus/components/Select/useListbox.ts"
+        }
+      ]
+    },
+    {
+      "name": "spinner",
+      "type": "registry:ui",
+      "title": "Spinner",
+      "description": "A busy indicator.",
+      "dependencies": ["@hipuku/tokens@^6.0.0"],
+      "files": [
+        {
+          "path": "packages/components/src/components/Spinner/Spinner.module.css",
+          "type": "registry:file",
+          "target": "components/haus/components/Spinner/Spinner.module.css"
+        },
+        {
+          "path": "packages/components/src/components/Spinner/Spinner.tsx",
+          "type": "registry:file",
+          "target": "components/haus/components/Spinner/Spinner.tsx"
+        },
+        {
+          "path": "packages/components/src/components/Spinner/index.ts",
+          "type": "registry:file",
+          "target": "components/haus/components/Spinner/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "tabs",
+      "type": "registry:ui",
+      "title": "Tabs",
+      "description": "A tablist, and the panel it controls.",
+      "dependencies": ["@hipuku/tokens@^6.0.0"],
+      "registryDependencies": ["@hipuku/types"],
+      "files": [
+        {
+          "path": "packages/components/src/components/Tabs/Tabs.module.css",
+          "type": "registry:file",
+          "target": "components/haus/components/Tabs/Tabs.module.css"
+        },
+        {
+          "path": "packages/components/src/components/Tabs/Tabs.tsx",
+          "type": "registry:file",
+          "target": "components/haus/components/Tabs/Tabs.tsx"
+        },
+        {
+          "path": "packages/components/src/components/Tabs/index.ts",
+          "type": "registry:file",
+          "target": "components/haus/components/Tabs/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "textarea",
+      "type": "registry:ui",
+      "title": "Textarea",
+      "description": "Input’s multi-line sibling, with the same label, hint and error wiring.",
+      "dependencies": ["@hipuku/tokens@^6.0.0"],
+      "files": [
+        {
+          "path": "packages/components/src/components/Textarea/Textarea.module.css",
+          "type": "registry:file",
+          "target": "components/haus/components/Textarea/Textarea.module.css"
+        },
+        {
+          "path": "packages/components/src/components/Textarea/Textarea.tsx",
+          "type": "registry:file",
+          "target": "components/haus/components/Textarea/Textarea.tsx"
+        },
+        {
+          "path": "packages/components/src/components/Textarea/index.ts",
+          "type": "registry:file",
+          "target": "components/haus/components/Textarea/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "toast",
+      "type": "registry:ui",
+      "title": "Toast",
+      "description": "The surface of a notice, and deliberately only that.",
+      "dependencies": ["@hipuku/tokens@^6.0.0"],
+      "registryDependencies": ["@hipuku/icon-button", "@hipuku/tone-icons", "@hipuku/types"],
+      "files": [
+        {
+          "path": "packages/components/src/components/Toast/Toast.module.css",
+          "type": "registry:file",
+          "target": "components/haus/components/Toast/Toast.module.css"
+        },
+        {
+          "path": "packages/components/src/components/Toast/Toast.tsx",
+          "type": "registry:file",
+          "target": "components/haus/components/Toast/Toast.tsx"
+        },
+        {
+          "path": "packages/components/src/components/Toast/index.ts",
+          "type": "registry:file",
+          "target": "components/haus/components/Toast/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "toggle",
+      "type": "registry:ui",
+      "title": "Toggle",
+      "description": "A switch, announced as one rather than as a checkbox.",
+      "dependencies": ["@hipuku/tokens@^6.0.0"],
+      "registryDependencies": ["@hipuku/types"],
+      "files": [
+        {
+          "path": "packages/components/src/components/Toggle/Toggle.module.css",
+          "type": "registry:file",
+          "target": "components/haus/components/Toggle/Toggle.module.css"
+        },
+        {
+          "path": "packages/components/src/components/Toggle/Toggle.tsx",
+          "type": "registry:file",
+          "target": "components/haus/components/Toggle/Toggle.tsx"
+        },
+        {
+          "path": "packages/components/src/components/Toggle/index.ts",
+          "type": "registry:file",
+          "target": "components/haus/components/Toggle/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "tooltip",
+      "type": "registry:ui",
+      "title": "Tooltip",
+      "description": "A short description attached to a control.",
+      "dependencies": ["@hipuku/tokens@^6.0.0"],
+      "files": [
+        {
+          "path": "packages/components/src/components/Tooltip/Tooltip.module.css",
+          "type": "registry:file",
+          "target": "components/haus/components/Tooltip/Tooltip.module.css"
+        },
+        {
+          "path": "packages/components/src/components/Tooltip/Tooltip.tsx",
+          "type": "registry:file",
+          "target": "components/haus/components/Tooltip/Tooltip.tsx"
+        },
+        {
+          "path": "packages/components/src/components/Tooltip/index.ts",
+          "type": "registry:file",
+          "target": "components/haus/components/Tooltip/index.ts"
         }
       ]
     }

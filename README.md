@@ -77,8 +77,9 @@ npx shadcn add @hipuku/badge
 `@hipuku/badge` is a registry name, installed with `shadcn add`. Components are not npm packages, so
 `npm install @hipuku/badge` finds nothing.
 
-Badge is the only component in the registry so far. Its tokens come from `@hipuku/tokens`, which the
-install adds as a dependency.
+Every component in `packages/components` is in the registry, with the four internal helpers and the
+shared types it reaches as registry dependencies, so `shadcn add` brings them along. Each
+component's tokens come from `@hipuku/tokens`, which the install adds as a dependency.
 
 **The registry is for TypeScript projects.** Every file installs byte for byte, so a project with
 `"tsx": false` in `components.json` receives `.js` and `.jsx` files that still contain TypeScript,
