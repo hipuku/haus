@@ -170,33 +170,28 @@
 }
 
 /*
- * Something the page can do without: the options a reader almost never
- * changes, and the input itself once it is an example they did not write.
- * Drawn as a quiet row rather than a panel, so a shut one costs a line.
+ * The settings. A row below the conversion, led by the same label the panels
+ * use and set off by a rule, so it reads as secondary while staying in full
+ * view. The fields take their own width rather than the equal columns above:
+ * a rem base is four characters and does not want a third of the page.
  */
-.disclosure {
+.options {
+  align-items: end;
   border-block-start: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
-  display: grid;
-  gap: var(--haus-space-4);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--haus-space-5);
   padding-block-start: var(--haus-space-4);
 }
 
-.disclosure > summary {
-  color: var(--haus-color-ink-secondary);
-  cursor: pointer;
-  font-size: var(--haus-type-body-sm-size);
-  list-style-position: inside;
+.options > .panelLabel {
+  padding-block-end: var(--haus-space-2);
 }
 
-.disclosure > summary:hover {
-  color: var(--haus-color-ink-primary);
+.options :is(label, [class*='field']) {
+  min-inline-size: 0;
 }
 
-.disclosure > summary:focus-visible {
-  border-radius: var(--haus-radius-control);
-  outline: var(--haus-border-width-thick) solid var(--haus-color-border-focus);
-  outline-offset: var(--haus-focus-outline-offset);
-}
 
 /* A sentence in a table cell, which wraps where the data columns do not. */
 .detail {
@@ -204,17 +199,6 @@
   white-space: normal;
 }
 
-/* A pane's heading row: its name, a Badge, an action at the end. */
-.paneHead {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--haus-space-3);
-}
-
-.paneHead > :last-child:is(button, a) {
-  margin-inline-start: auto;
-}
 
 .hidden {
   display: none;

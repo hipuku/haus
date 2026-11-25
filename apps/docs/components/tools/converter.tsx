@@ -85,13 +85,6 @@ function show(token: Token, value: TokenValue | undefined): string {
 
 const language = (name: string) => (name.endsWith('.css') ? 'css' : 'json')
 
-function download(name: string, text: string) {
-  const url = URL.createObjectURL(new Blob([text], { type: 'text/plain' }))
-  const link = Object.assign(document.createElement('a'), { href: url, download: name })
-  link.click()
-  URL.revokeObjectURL(url)
-}
-
 /*
  * The converter as a workspace. Input on the left, as one tab per file, so a
  * Figma export of one file per mode is read as it is; the result on the right,
@@ -153,6 +146,19 @@ export function Converter({ examples }: { examples: Example[] }) {
     { label: 'Translated', value: String(translated.length) },
   ]
 
+  const field = (
+    <Textarea
+      error={outcome.error}
+      label={current.name}
+      onChange={event =>
+        setFiles(all => all.map(f => (f.name === current.name ? { ...f, text: event.target.value } : f)))
+      }
+      rows={14}
+      spellCheck={false}
+      value={current.text}
+    />
+  )
+
   return (
     <ToolView
       controls={
@@ -194,29 +200,31 @@ export function Converter({ examples }: { examples: Example[] }) {
               />
             </div>
           </div>
-          <details className={styles.disclosure}>
-            <summary>Options</summary>
-            <div className={styles.controls}>
-              <Input
-                inputMode="decimal"
-                label="Rem base, px"
-                onChange={e => setRemBase(e.target.value)}
-                value={remBase}
+          {/* The settings, in a row of their own rather than mixed in with
+              the conversion above: a reader changes the format every visit
+              and the rem base almost never, and that is a difference in
+              weight, not a reason to put one of them out of sight. */}
+          <div className={styles.options}>
+            <span className={styles.panelLabel}>Options</span>
+            <Input
+              inputMode="decimal"
+              label="Rem base, px"
+              onChange={e => setRemBase(e.target.value)}
+              value={remBase}
+            />
+            {target === 'tailwind' && (
+              <Select
+                label="Tailwind modes by"
+                onChange={value => setSelector(value as typeof selector)}
+                options={[
+                  { label: 'data-theme attribute', value: 'data-theme' },
+                  { label: 'Class', value: 'class' },
+                  { label: 'Media query', value: 'media' },
+                ]}
+                value={selector}
               />
-              {target === 'tailwind' && (
-                <Select
-                  label="Tailwind modes by"
-                  onChange={value => setSelector(value as typeof selector)}
-                  options={[
-                    { label: 'data-theme attribute', value: 'data-theme' },
-                    { label: 'Class', value: 'class' },
-                    { label: 'Media query', value: 'media' },
-                  ]}
-                  value={selector}
-                />
-              )}
-            </div>
-          </details>
+            )}
+          </div>
         </>
       }
     >
@@ -259,12 +267,7 @@ export function Converter({ examples }: { examples: Example[] }) {
             <div className={styles.stack}>
               {result.files.map(file => (
                 <div className={styles.output} key={file.name}>
-                  <div className={styles.paneHead}>
-                    <span className={styles.outputName}>{file.name}</span>
-                    <Button onClick={() => download(file.name, file.text)} size="sm" variant="ghost">
-                      Download
-                    </Button>
-                  </div>
+                  <span className={styles.outputName}>{file.name}</span>
                   <DynamicCodeBlock code={file.text} lang={language(file.name)} />
                 </div>
               ))}
@@ -363,35 +366,27 @@ export function Converter({ examples }: { examples: Example[] }) {
         </Tabs>
       )}
 
-      {/* The input last, and shut. On a page that opens on an example, the
-          source is the one thing a reader did not come to read; it was half
-          the page and the heaviest thing on it. Changing the example or
-          uploading is in the controls above, so this is open only when
-          someone wants to edit the text by hand. */}
-      <details className={styles.disclosure}>
-        <summary>
-          The input, {files.length} {files.length === 1 ? 'file' : 'files'}: {files.map(f => f.name).join(', ')}
-        </summary>
-        <Tabs
-          appearance="segmented"
-          aria-label="Input files"
-          items={files.map(f => ({ label: f.name, value: f.name }))}
-          onValueChange={setActive}
-          size="sm"
-          value={current.name}
-        >
-          <Textarea
-            error={outcome.error}
-            label={current.name}
-            onChange={event =>
-              setFiles(all => all.map(f => (f.name === current.name ? { ...f, text: event.target.value } : f)))
-            }
-            rows={16}
-            spellCheck={false}
-            value={current.text}
-          />
-        </Tabs>
-      </details>
+      {/* The source the result came from, below it and in full. A converter
+          reads input and writes output, so the input belongs on the page; it
+          sits after the answer rather than before it because the page opens
+          on an example nobody here wrote. One file needs no tab bar. */}
+      <section aria-label="Input" className={styles.stack}>
+        <span className={styles.panelLabel}>Input</span>
+        {files.length > 1 ? (
+          <Tabs
+            appearance="segmented"
+            aria-label="Input files"
+            items={files.map(f => ({ label: f.name, value: f.name }))}
+            onValueChange={setActive}
+            size="sm"
+            value={current.name}
+          >
+            {field}
+          </Tabs>
+        ) : (
+          field
+        )}
+      </section>
     </ToolView>
   )
 }
