@@ -40,7 +40,7 @@ export function Preview({
 
   return (
     <figure className={styles.preview}>
-      <div className={styles.stage} data-layout={layout}>
+      <div className={styles.stage} data-layout={layout} data-of={of} data-story={story}>
         {children}
       </div>
       {/* The story in the workshop, as the header's Storybook control: a

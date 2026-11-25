@@ -474,3 +474,105 @@ figure.shiki {
   color: var(--haus-color-ink-secondary);
   font-size: var(--haus-type-mono-sm-size);
 }
+
+/*
+ * Example layouts on the docs site.
+ *
+ * The examples are the Storybook stories, laid out for the workshop. These
+ * rules re-lay them out for a docs page, through the `data-story-*` hooks the
+ * story helpers carry and the component and story names the example frame
+ * carries, so Storybook and its screenshots are unchanged. `!important`
+ * because the helpers' layout is inline.
+ */
+.haus-example {
+  inline-size: 100%;
+}
+
+/* A grid of states or values, n to a row. */
+[data-of='Button'][data-story='States'] [data-story-row],
+[data-of='IconButton'][data-story='States'] [data-story-row],
+[data-of='Checkbox'][data-story='States'] [data-story-row],
+[data-of='Select'][data-story='States'] [data-story-row] {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+
+[data-of='Input'][data-story='States'] [data-story-row],
+[data-of='Textarea'][data-story='States'] [data-story-row] {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+/* Stacks of fields and notices, two to a row at full width. */
+[data-of='Input'] [data-story-stack],
+[data-of='Textarea'] [data-story-stack],
+[data-of='Checkbox'] [data-story-stack],
+[data-of='Select'] [data-story-stack],
+[data-of='Toast'] [data-story-stack] {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  max-inline-size: none !important;
+}
+
+[data-of='Input'] [data-story-item] > :not([data-story-label]),
+[data-of='Textarea'] [data-story-item] > :not([data-story-label]),
+[data-of='Select'] [data-story-item] > :not([data-story-label]),
+[data-of='Toast'] [data-story-item] > :not([data-story-label]) {
+  inline-size: 100%;
+}
+
+/* One card to a row. */
+[data-of='Card'] [data-story-row] {
+  flex-direction: column !important;
+}
+
+/* A label centred over its subject. */
+[data-of='EmptyState'] [data-story-item],
+[data-of='IconButton'] [data-story-item] {
+  align-items: center !important;
+}
+
+[data-of='EmptyState'] [data-story-stack] {
+  max-inline-size: none !important;
+}
+
+[data-of='EmptyState'] [data-story-item] {
+  inline-size: 100%;
+}
+
+/* A table's row and column labels in the story pill, as every other label. */
+[data-story-axis] > * {
+  border: var(--haus-border-width-default) dashed var(--haus-color-border-control) !important;
+  border-radius: var(--haus-radius-pill) !important;
+  color: var(--haus-color-ink-secondary) !important;
+  display: inline-flex !important;
+  font-family: var(--haus-font-mono) !important;
+  font-size: var(--haus-type-label-xs-size) !important;
+  letter-spacing: var(--haus-type-label-xs-tracking) !important;
+  line-height: var(--haus-type-label-xs-leading) !important;
+  padding: var(--haus-space-0-5) var(--haus-space-2) !important;
+  text-transform: uppercase !important;
+}
+
+/* RadioGroup's examples name the group in their pills; the group's own
+   "Size" heading repeated it in every one. Hidden visually only, so it still
+   names the group. */
+[data-of='RadioGroup'] [role='radiogroup'] > :first-child:not([role]) {
+  block-size: 1px;
+  clip-path: inset(50%);
+  inline-size: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+}
+
+/* Popover's story leaves room above every trigger for a panel placed on top;
+   on a page that is empty space under each label. Only the top placement
+   keeps it, and every panel keeps room below. */
+[data-of='Popover'] [data-story-item] > :not([data-story-label]) {
+  padding: 0 0 calc(var(--haus-space-20) * 2) !important;
+}
+
+[data-of='Popover'][data-story='Placement'] [data-story-item]:nth-child(2) > :not([data-story-label]) {
+  padding: calc(var(--haus-space-20) * 2) 0 0 !important;
+}

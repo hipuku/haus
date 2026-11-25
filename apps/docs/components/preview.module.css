@@ -15,7 +15,9 @@
   border: var(--haus-border-width-default) solid var(--haus-color-border-default);
   border-radius: var(--haus-radius-surface);
   margin-block: var(--haus-space-5) var(--haus-space-10);
-  overflow: hidden;
+  /* Not clipped, so an open Select or Menu can extend past the frame rather
+     than being cut off at its edge. The stage carries the corners instead. */
+  overflow: visible;
 }
 
 /*
@@ -38,6 +40,7 @@
  * did not render at all, and a texture nobody can see is not there.
  */
 .stage {
+  border-radius: inherit;
   align-items: center;
   background-color: var(--haus-color-surface-default);
   background-image: radial-gradient(circle at center, var(--haus-color-border-default) 1px, transparent 1px);
