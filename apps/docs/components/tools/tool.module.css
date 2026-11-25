@@ -192,8 +192,35 @@
   padding-block-start: var(--haus-space-3);
 }
 
+/*
+ * A table's frame. The site's own tables, the API table included, sit in a
+ * rounded box on the surface radius, so these do too; the wrapper carries the
+ * edge and the corner because a table's own border-collapse cannot be
+ * rounded. It scrolls sideways rather than breaking: the contrast matrix
+ * grows a column per colour.
+ */
 .tableWrap {
+  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  border-radius: var(--haus-radius-surface);
   overflow-x: auto;
+}
+
+/* The wrapper draws the outer edge, so the cells draw only the lines between
+   themselves: an edge on both is a double line at every side. */
+.tableWrap :is(.table, .matrix) tr:last-child :is(td, th) {
+  border-block-end: 0;
+}
+
+.tableWrap .matrix tr > :last-child {
+  border-inline-end: 0;
+}
+
+.tableWrap .matrix tr > :first-child {
+  border-inline-start: 0;
+}
+
+.tableWrap .matrix thead th {
+  border-block-start: 0;
 }
 
 .table {
@@ -238,7 +265,6 @@
 }
 
 .strip code,
-.ladderList code,
 .clusterItem code {
   font-family: var(--haus-font-mono);
   font-size: var(--haus-type-mono-xs-size);
@@ -265,28 +291,14 @@
   transform: translate(-50%, -50%);
 }
 
-.ladderList {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--haus-space-2) var(--haus-space-5);
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.ladderList li {
-  align-items: center;
-  display: flex;
-  font-size: var(--haus-type-body-sm-size);
-  gap: var(--haus-space-2);
-}
-
-/* A group of colours that look alike. */
+/* A group of colours that look alike, as one row's subject. */
 .cluster {
   align-items: center;
   display: flex;
+  flex: 1;
   flex-wrap: wrap;
   gap: var(--haus-space-3);
+  min-inline-size: 0;
 }
 
 .clusterItem {

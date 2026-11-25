@@ -1,6 +1,13 @@
 'use client'
 
-import { analysePalette, clusterByPerceptualDistance, oklch, toHex } from '@hipuku/colour'
+import {
+  analysePalette,
+  clusterByPerceptualDistance,
+  deltaE,
+  NEAR_IDENTICAL_DELTA_E,
+  oklch,
+  toHex,
+} from '@hipuku/colour'
 import { Badge, Textarea } from 'haus-components'
 import { useMemo, useState } from 'react'
 import { Swatch } from './swatch'
@@ -43,6 +50,15 @@ const CHROMA = {
   moderate: { tone: 'warning', meaning: 'Saturation varies somewhat.' },
   wide: { tone: 'info', meaning: 'Saturation varies widely, from greys to vivid colours.' },
 } as const
+
+/* The furthest apart any two members of a group are: what makes it one group. */
+function widest(members: string[]): number {
+  let out = 0
+  for (let i = 0; i < members.length; i++) {
+    for (let j = i + 1; j < members.length; j++) out = Math.max(out, deltaE(members[i], members[j]))
+  }
+  return out
+}
 
 export function PaletteAnalysis() {
   const [text, setText] = useState('#161616 #484848 #808080 #bebebe #ffffff #3366cc #3467cc #cc6633')
@@ -97,10 +113,19 @@ export function PaletteAnalysis() {
               aside={<Badge tone={LIGHTNESS[result.lightness.rating].tone}>{result.lightness.rating}</Badge>}
               label="Lightness steps"
             >
-              <p className={styles.factNote}>{LIGHTNESS[result.lightness.rating].meaning}</p>
+              <span className={styles.factValue}>±{result.lightness.stdDev.toFixed(1)}</span>
+              <p className={styles.factNote}>
+                {LIGHTNESS[result.lightness.rating].meaning} The steps run from{' '}
+                {Math.min(...result.lightness.steps).toFixed(1)} to {Math.max(...result.lightness.steps).toFixed(1)} on
+                a lightness scale of 100, and that is their standard deviation.
+              </p>
             </Panel>
             <Panel aside={<Badge tone={CHROMA[result.chroma.rating].tone}>{result.chroma.rating}</Badge>} label="Chroma">
-              <p className={styles.factNote}>{CHROMA[result.chroma.rating].meaning}</p>
+              <span className={styles.factValue}>{result.chroma.mean.toFixed(3)}</span>
+              <p className={styles.factNote}>
+                {CHROMA[result.chroma.rating].meaning} That is the mean chroma, give or take{' '}
+                {result.chroma.stdDev.toFixed(3)}.
+              </p>
             </Panel>
             <Panel label="Hue range">
               <span className={styles.factValue}>{result.hueArc.totalAngle}°</span>
@@ -127,30 +152,65 @@ export function PaletteAnalysis() {
                 )
               })}
             </div>
-            <ol className={styles.ladderList}>
-              {result.lightness.sortedHexes.map(hex => (
-                <li key={hex}>
-                  <Swatch hex={hex} size="sm" />
-                  <code className={styles.value}>{hex}</code>
-                  <span>{((oklch(hex)?.l ?? 0) * 100).toFixed(1)}%</span>
-                </li>
-              ))}
-            </ol>
+            {/* The marks above place each colour; this says what the places
+                are. The step column is the gap to the colour on the row
+                before, which is the thing the rating above is a rating of. */}
+            <div className={styles.tableWrap}>
+              <table className={styles.table}>
+                <thead>
+                  <tr>
+                    <th scope="col">Colour</th>
+                    <th scope="col">Lightness</th>
+                    <th scope="col">Step from the row above</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {result.lightness.sortedHexes.map((hex, i) => (
+                    <tr key={hex}>
+                      <th scope="row">
+                        <Swatch hex={hex} size="sm" /> <code className={styles.value}>{hex}</code>
+                      </th>
+                      <td>{((oklch(hex)?.l ?? 0) * 100).toFixed(1)}%</td>
+                      <td>{i === 0 ? '' : `+${result.lightness.steps[i - 1].toFixed(1)}`}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </Panel>
 
+          {/* One Badge for the panel rather than one per row: the panel's own
+              heading already says these look alike, so a badge on every row
+              repeats it as many times as there are rows. What a row has to
+              carry instead is how close its members are. */}
           {clusters.length > 0 && (
-            <Panel label="Colours that look alike">
-              {clusters.map(cluster => (
-                <div className={styles.cluster} key={cluster.representative}>
-                  {cluster.members.map(hex => (
-                    <span className={styles.clusterItem} key={hex}>
-                      <Swatch hex={hex} size="md" />
-                      <code className={styles.value}>{hex}</code>
+            <Panel
+              aside={
+                <Badge tone="warning">
+                  {clusters.length} {clusters.length === 1 ? 'group' : 'groups'}
+                </Badge>
+              }
+              label="Colours that look alike"
+            >
+              <ul className={styles.rows}>
+                {clusters.map(cluster => (
+                  <li key={cluster.representative}>
+                    <span className={styles.cluster}>
+                      {cluster.members.map(hex => (
+                        <span className={styles.clusterItem} key={hex}>
+                          <Swatch hex={hex} size="sm" />
+                          <code className={styles.value}>{hex}</code>
+                        </span>
+                      ))}
                     </span>
-                  ))}
-                  <Badge tone="warning">Look alike</Badge>
-                </div>
-              ))}
+                    <span className={styles.rowValue}>ΔE up to {widest(cluster.members).toFixed(1)}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className={styles.factNote}>
+                Anything under ΔE {NEAR_IDENTICAL_DELTA_E} is close enough that a reader is unlikely to see which of
+                them they are looking at.
+              </p>
             </Panel>
           )}
 
