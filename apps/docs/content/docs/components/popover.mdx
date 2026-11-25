@@ -139,20 +139,3 @@ vanishing in a frame. While closing it is `inert`, so nothing in it takes a clic
 unmounts when the animation ends, or at once when there is no animation to wait for, which is also
 what happens in a test environment with no CSS. Reopening during the exit goes straight back to the
 enter animation.
-
-## Decisions
-
-- **`triggerRef` is required.** Focus returning to the trigger is the behaviour the component
-  exists to guarantee, and it cannot be guaranteed from a prop a caller may omit.
-- **Not a focus trap.** A popover sits over live content, so tabbing off its end closes it.
-- **No collision detection.** Nothing flips and nothing shifts: the panel goes exactly where
-  `placement` and `align` say. Detection needs a positioning engine measuring rects on scroll and
-  resize, and this package declares `@hipuku/tokens` and the two React peers and nothing else, so
-  adding one would make it a dependency of every consumer of every component. `placement` is the
-  caller's answer to the same problem, one level up, where the layout is known.
-- **`portal` is not that engine either.** It is the same placement in viewport coordinates rather
-  than the ancestor's, and it is off by default.
-- **`role` is typed, not a string.** A role is a promise about behaviour, and the wrong one is a
-  promise the panel does not keep.
-- **Outside dismissal is on `pointerdown`.** A click-based listener closes a menu on the release of
-  a drag that began inside it.

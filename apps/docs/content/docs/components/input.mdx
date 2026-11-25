@@ -98,22 +98,3 @@ An error grows in rather than appearing: the slot is a grid row animating from `
 the layout role, so the fields below it move rather than jump. It starts two stagger steps in,
 which is immediately in subtle and after the border has turned in expressive. The glyph's ring is
 then drawn on the draw role a step later, which subtle and reduced show already drawn.
-
-## Decisions
-
-- **The native `size` attribute is omitted rather than shadowed.** It counts characters, which is
-  not what `size` means anywhere else in this system, and a prop that means one thing here and
-  another everywhere else is worse than an absent one. There is no replacement, because `sm` and
-  `lg` text controls are a design that does not exist yet.
-- **Focus is `:has(:focus-visible)`, not `:focus-within`.** The ring is drawn on the wrap, which
-  is not itself focusable, so `:focus-visible` cannot sit on it directly. `:focus-within` would
-  also fire for a pointer, where every other control in the system rings only for the keyboard. A
-  text field still rings on a click, because the browser's own heuristic matches `:focus-visible`
-  there.
-- **An invalid field rings in the error colour.** Four pixels of brand colour around a field that
-  is wrong is the loudest thing on the control, and it says "focused" rather than "wrong". The
-  rule is asserted off the API rather than off the stylesheet, so any component with an `error`
-  prop is in the set from the moment it is written.
-- **`required` is `aria-required` only**, because the component owns the error.
-- **The error precedes the hint in `aria-describedby`** and in the DOM, so a reader hears what is
-  wrong before the guidance that was already there.

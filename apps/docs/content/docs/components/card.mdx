@@ -100,20 +100,3 @@ expressive moves it further on a spring that settles, and reduced changes the ed
 else.
 
 An elevated card also raises from `elevation-floating` to `elevation-overlay` on hover.
-
-## Decisions
-
-- **`variant` keeps its name here** (decision 0005). It is elevation, which is visual weight, and
-  `tone` is reserved for meaning.
-- **`as` is a closed union, not a polymorphic generic.** The generic kind costs a page of
-  conditional types and makes every error message about the component unreadable, in exchange for
-  type-safety on props nobody passes to a Card. What a caller needs is the right element in the
-  document outline, not for `href` to typecheck on an `article`.
-- **`as` and `asChild` are both here** (decision 0022), because widening `CardElement` to every
-  element name would still not render a framework's `Link`.
-- **The union prop type exports its halves** (decision 0023), so a consumer can write a function
-  that takes one shape of Card.
-- **`ref` is typed `HTMLElement`.** The union of elements makes React's own ref type an
-  intersection that nothing satisfies, and the caller is the one choosing the element.
-- **An interactive card has hover, focus and pressed states at all.** A card rendered as a link
-  said nothing on either, so the one card in the system a pointer could use gave no feedback.

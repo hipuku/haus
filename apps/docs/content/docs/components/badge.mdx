@@ -73,12 +73,3 @@ either place leaves the meaning out.
 ## Motion
 
 None. Badge does not animate.
-
-## Decisions
-
-- **`primary` is a tone and not only an appearance.** It is a look rather than a meaning, and has
-  no counterpart on Toast. It stays because a brand-coloured badge is something consumers use.
-- **`variant` was renamed to `tone` in 1.0.** `variant` meant meaning here and visual weight on
-  Button. `BadgeVariant` remains as a deprecated alias.
-- **`as` is a closed union**, not a polymorphic generic, for the same reason as Card: four
-  elements cover the real uses and the types stay readable.

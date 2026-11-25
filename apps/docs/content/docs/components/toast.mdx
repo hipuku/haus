@@ -111,21 +111,3 @@ Set `data-state="closed"` before removing a toast to run its exit on the toast-e
 
 A container that moves toasts itself turns its own movement off rather than composing the two, so
 one notice is never animated twice.
-
-## Decisions
-
-- **No provider, no queue, no positioning, no auto-dismiss timer and no z-index, and there will not
-  be** (ruling B4, decision 0008). A toast system is an application concern: it owns global state,
-  a portal, and a policy about how many notices stack and for how long, and a design system that
-  ships one is shipping an opinion most consumers end up fighting.
-- **It still owns being announced.** The boundary is about placement and policy, not about whether
-  a notice reaches a screen reader, so the live region is the component's.
-- **An error is assertive and the rest are polite.** The role follows the tone rather than being a
-  prop, because the tone already says whether the notice can wait.
-- **`appearance` was named rather than inferred** (ruling A5). The two designs existed and the tone
-  decided which one a consumer got.
-- **`variant` was renamed to `tone` in 1.0** (decision 0005), with the old type kept as a
-  deprecated alias.
-- **One border, no accent stripe.** A wider leading edge bends with the corner radius.
-- **The glyphs are shared with Callout**, drawn rather than named as icon-font classes, so a
-  consumer without an icon font gets the mark rather than an empty element.

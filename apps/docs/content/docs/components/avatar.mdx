@@ -76,15 +76,3 @@ user whose name had not loaded yet took the page down.
 ## Motion
 
 None. Avatar does not animate.
-
-## Decisions
-
-- **The colour is derived, not stored.** A hash over the name needs no column, no migration and no
-  agreement between products, and it gives one person one colour everywhere.
-- **The derived pair is a role pair, not two literals.** Picking a tint and an ink separately is
-  how a palette acquires a combination nobody checked; `subtle` with its own `on-subtle` is
-  already contrast-checked in both themes.
-- **The status dot lives on the wrapper.** Inside the circle it is clipped by the `overflow`
-  that makes the circle a circle, and a dot with a bite taken out of it reads as a rendering bug.
-- **`xs` and `xl` stay outside the shared scale** rather than widening it. The extension is
-  Avatar's, with a reason, and Button does not inherit it.

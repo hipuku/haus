@@ -140,7 +140,7 @@
   padding: 0.125em 0.375em;
 }
 
-.prose :where(a) {
+.prose :where(a:not(.not-prose *)) {
   color: var(--haus-color-ink-link);
   text-underline-offset: 0.2em;
 }
@@ -451,8 +451,15 @@ figure.shiki {
   vertical-align: top;
 }
 
-.haus-api-name {
+.haus-api-name,
+.prose :not(pre) > code.haus-api-type {
   white-space: nowrap;
+}
+
+/* The description is the one column that wraps; prop and type keep their
+   width and the table scrolls sideways before either breaks. */
+.haus-api td:last-child {
+  white-space: normal;
 }
 
 .haus-api-required,
@@ -466,5 +473,4 @@ figure.shiki {
 .prose :not(pre) > code.haus-api-type {
   color: var(--haus-color-ink-secondary);
   font-size: var(--haus-type-mono-sm-size);
-  overflow-wrap: anywhere;
 }

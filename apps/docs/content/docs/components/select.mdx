@@ -118,25 +118,3 @@ in on the layout role, as Input's does.
 
 Under `forced-colors` the indicator's fill is dropped, so the active row marks itself with the
 forced focus outline instead.
-
-## Decisions
-
-- **Select is the themed control, and the native `select` is retired** (decision 0025, `haus#61`,
-  superseding 0011 and 0020). Measured across core, drift and vault, nothing imported the native
-  one, while two products had built this and written down the same reason.
-- **The keyboard contract is shared, not copied** (`haus#61`). core's copy of `useListbox` recorded
-  that it was ported alongside vault's with the same signature, so the two stayed diffable until
-  one of them moved into haus. Two products wrote the same keyboard contract, and neither should
-  own it.
-- **Escape and outside-dismissal are not in the listbox hook.** Both components that use it already
-  own them, and one of them shares that ownership with every other popover in its app.
-- **The panel composes `Popover`**, which already owns outside-click and Escape, and is
-  deliberately not a focus trap. Trapping focus is what a modal does, and this is not one.
-- **`portal` exists for a Select inside something that clips** (`haus#68`). A Modal body scrolls,
-  so an absolutely positioned panel is cut off at its edge. The prop is passed straight through to
-  `Popover`.
-- **`name` is optional.** A hidden input is what makes the control submit inside a plain form, and
-  a purely controlled use does not want one.
-- **`scrollIntoView` is called optionally.** jsdom does not implement it, so a bare call throws
-  inside an effect and takes a consumer's whole test render down with it. A published component
-  cannot require a complete DOM to mount.

@@ -77,16 +77,3 @@ Tab cycles within the dialog and focus returns to whatever had it, both from Mod
 
 Modal's, on the dialog roles. The confirm button's pending state is Button's loading cross-fade on
 the feedback role.
-
-## Decisions
-
-- **It is one component rather than a pattern.** vault's `ConfirmDialog` and core's `ConfirmAction`
-  were both built on their own Modal, and what they agreed on is what this keeps.
-- **Focus starts on Cancel** (vault's answer), so the default keystroke is the safe one.
-- **The confirm button carries the tone** (core's answer), so the dialog matches the action that
-  opened it.
-- **There is a pending state** (core's answer). An action that takes time needs the dialog to say
-  so and to stay.
-- **There is an `alert` kind** (vault's answer), for a dialog that reports rather than asks.
-- **A backdrop click is refused, not configurable.** It is the one dialog where an accidental
-  dismissal is the failure the component exists to prevent.

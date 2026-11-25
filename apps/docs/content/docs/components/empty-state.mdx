@@ -86,17 +86,3 @@ carries the meaning in any case.
 ## Motion
 
 None of its own. The block appears with whatever renders it.
-
-## Decisions
-
-- **Promoted on evidence** (`haus#30`). Twenty-five references across core, drift and vault, and
-  no component anywhere. Every list, every filter and every search result needs one.
-- **`title` is required.** An empty region with no explanation is indistinguishable from one that
-  has not loaded, and the writing is the part a design system can standardise.
-- **`live` has no `assertive`.** Nothing about a region having no content is worth abandoning what
-  a screen reader is already saying, and offering the option would mean somebody eventually takes
-  it.
-- **`headingLevel` is a prop rather than a fixed `h2`.** A fixed level is wrong wherever the
-  nesting differs, and the alternative vault took, a `p`, removes the heading from the outline
-  altogether.
-- **The icon is decorative.** A glyph that carried meaning would be one the system does not ship.

@@ -80,17 +80,3 @@ third of its speed. The reduced mode used to take `duration-reduced`, which is z
 the ring, the exact failure the component was written to avoid.
 
 Under `forced-colors` the ring takes `CanvasText`, so it stays visible in the user's own palette.
-
-## Decisions
-
-- **Promoted on evidence** (decision 0017, `haus#55`). Built independently in all three products
-  and once inside haus's own Button, seven call sites, with four separate `.spinner` rules across
-  core and drift, and three different answers to the only hard part: core renders an SVG with no
-  role, no label and no `aria-hidden`; drift renders a span hidden outright, so a reader waiting on
-  a crawl is told nothing is happening; vault gets it right.
-- **`announcedBy` takes the text, not a boolean.** The legitimate silent case is real, and the
-  shape of the prop is what keeps it from being spent on the illegitimate one.
-- **The ring is a border, not an SVG.** A border takes `currentColor` and needs no fill plumbing,
-  so a spinner inside a Button is the button's text colour whatever tone that is.
-- **Reduced motion slows the ring rather than stopping it.** The alternative is a static arc,
-  which reads as a rendering failure.

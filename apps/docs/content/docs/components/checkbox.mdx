@@ -97,22 +97,3 @@ RadioGroup hand back the same pair.
 The fill and the edge run on the highlight role. A press scales the box on the press role and
 releases on layout, as Button's does. The tick draws its stroke on the draw role, which is
 instant in subtle and in reduced.
-
-## Decisions
-
-- **`className` lands on the root** (ruling B5). It used to land on the inner `label`, which left
-  the outer element unreachable by any prop at all. That is the case that decided B5, and
-  `controlClassName` is the named second target the ruling asks for rather than a redirection of
-  the one every consumer expects.
-- **The hint is a description, not part of the name.** Moving it out of the `label` is the fix, and
-  it is also what gave the hint and the error the same indent.
-- **An invalid box rings in the error colour.** Input, Textarea and Select each had this rule and
-  Checkbox and Radio did not, so an invalid box rang in the brand colour and the error signal
-  disappeared the moment it took focus. A token audit could not find it here, because a component
-  that never reads a role never appears in a list of components reading it wrongly, which is why
-  the rule is now asserted off the API instead (`haus#44`).
-- **`useId` is called unconditionally.** Writing `id ?? React.useId()` skips the hook whenever an
-  id is passed, so a parent rendering the component with and without one changes the hook count
-  between renders.
-- **The native input stays in the tree.** Hiding it with `display: none` or replacing it with a
-  `div` and a role would cost the platform's own keyboard, forms and autofill behaviour.

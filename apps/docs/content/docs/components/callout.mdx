@@ -79,26 +79,3 @@ a tone is a second channel rather than the first.
 ## Motion
 
 None. Callout sits in the flow and stays, so there is nothing to enter or leave.
-
-## Decisions
-
-- **`live` is a prop because both products hardcoded it, differently.** drift puts `role="alert"`
-  on every callout, so its static "this audit ran against a cached crawl" notice interrupts a
-  reader on every render. vault puts `role="note"` on every one, so a validation message that
-  appears after a failed save is never announced. axe flags neither: nothing in the markup is
-  invalid, and both are wrong in context.
-- **It is not positioned.** Both products that built a callout used it for form guidance and
-  page-level caveats (`haus#28`), and neither ever gave one a position, which is what separates it
-  from Toast.
-- **A tone rule declares custom properties only** (decision 0012). Callout has one appearance, so
-  only one set of rules reads them today. Written the other way, a tone setting background and
-  border outright would sit at equal specificity to the base rule and the later one would win
-  whatever the caller asked for.
-- **The glyphs are drawn, not named.** The package declares only `@hipuku/tokens` and the two
-  React peers, so a consumer without an icon font loaded would get an empty element where the
-  severity indicator belongs, with nothing to say why. Both products that built a Callout reached
-  for Font Awesome.
-- **The glyphs are shared with Toast, not copied.** Two components with the same five marks drawn
-  twice is the duplication the promotions exist to remove.
-- **`icon` is an override because vault's version has one and uses it**, which makes it a measured
-  need rather than an anticipated one.

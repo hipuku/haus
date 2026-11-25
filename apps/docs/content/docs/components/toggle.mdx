@@ -104,15 +104,3 @@ jump in reduced.
 The travel direction is a sign in a custom property, flipped under `[dir="rtl"]`. There is no
 logical equivalent of `translateX`, so without that the thumb slid out of the left-hand end of a
 right-to-left track.
-
-## Decisions
-
-- **It is a checkbox with `role="switch"`, not a button.** The role changes what a reader
-  announces, and the element keeps the platform's keyboard, forms and autofill behaviour.
-- **`size` is narrowed to two.** The shared scale has three, and this component has designs for
-  two.
-- **The name is scoped with `aria-labelledby`.** A wrapping `label` around a label and a
-  description makes both the name, which is the defect this fixes.
-- **The label sits before the toggle by default.** `labelPosition` is there for the layouts where
-  it does not, and reverses the row rather than reordering the markup, so the DOM order stays the
-  reading order.

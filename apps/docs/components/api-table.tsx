@@ -95,6 +95,10 @@ export async function ApiTable(props: ApiTableProps) {
   const [doc] = await generator.generateTypeTable(table, { basePath })
   const entries = doc?.entries ?? []
   if (!entries.length) return <p>No props beyond the element’s own attributes.</p>
+  const fallbackOf = (entry: (typeof entries)[number]) =>
+    entry.tags.find(tag => tag.name === 'default' || tag.name === 'defaultValue')?.text
+  // A column with nothing in it is left out rather than drawn empty.
+  const described = entries.some(entry => entry.description || fallbackOf(entry))
 
   return (
     <table className="haus-api">
@@ -102,12 +106,12 @@ export async function ApiTable(props: ApiTableProps) {
         <tr>
           <th>Prop</th>
           <th>Type</th>
-          <th>Description</th>
+          {described && <th>Description</th>}
         </tr>
       </thead>
       <tbody>
         {entries.map(entry => {
-          const fallback = entry.tags.find(tag => tag.name === 'default' || tag.name === 'defaultValue')?.text
+          const fallback = fallbackOf(entry)
           return (
             <tr key={entry.name}>
               <td>
@@ -117,14 +121,16 @@ export async function ApiTable(props: ApiTableProps) {
               <td>
                 <code className="haus-api-type">{entry.type.replace(/ \| undefined$/, '')}</code>
               </td>
-              <td>
-                {entry.description}
-                {fallback && (
-                  <span className="haus-api-default">
-                    Default <code className="haus-api-type">{fallback}</code>
-                  </span>
-                )}
-              </td>
+              {described && (
+                <td>
+                  {entry.description}
+                  {fallback && (
+                    <span className="haus-api-default">
+                      Default <code className="haus-api-type">{fallback}</code>
+                    </span>
+                  )}
+                </td>
+              )}
             </tr>
           )
         })}

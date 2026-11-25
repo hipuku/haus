@@ -110,23 +110,3 @@ submit stand-in while it loads.
 Button's motion, on the same roles: colour, border and the focus outline on highlight, the press
 scale on the press role, the release on layout. A press is scoped away from disabled and loading
 states, so neither moves under the pointer.
-
-## Decisions
-
-- **Promoted on evidence** (decision 0013, `haus#58`), and the evidence had to be found by
-  behaviour rather than by name. An earlier sweep recorded core as having none, because core's is
-  a CSS class rather than a component file, so a filename search could not see it. Measured
-  properly, both products had grown a size axis and a tone axis, which is the pair Button already
-  carries.
-- **`icon` is required and is the only child.** An icon button with a label is a Button, and
-  passing text here would produce a square control with text overflowing it. `children` is omitted
-  from the element attributes, so that is stated in the type rather than only in prose.
-- **`label` is required**, because the name cannot come from the content.
-- **`asChild` is here, and the glyph replaces the child's children** rather than being appended to
-  them (`haus#70`). Button appends, because Button's children are the caller's; here they are not,
-  and `icon` is the content. The case was a square icon-only control inside a framework `Link`,
-  which was the last element keeping a hand-written button class alive in core: `Button asChild`
-  plus a class to square it is a consumer overriding haus's geometry, which is what the migration
-  existed to delete.
-- **`loading` is absent from the `asChild` half**, exactly as on Button. The spinner replaces the
-  glyph, and a link that is permanently busy announces a wait that never ends.

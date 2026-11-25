@@ -47,7 +47,7 @@ export function Preview({
           ghost IconButton, floating at the frame's top right. The section's
           heading already names the example, so there is no caption. */}
       {workshop && (
-        <span className={styles.workshop}>
+        <span className={`${styles.workshop} not-prose`}>
           <StorybookButton href={workshop} />
         </span>
       )}

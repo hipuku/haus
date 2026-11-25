@@ -62,16 +62,3 @@ A vertical rule that is not decorative also carries `aria-orientation`, which is
 ## Motion
 
 None. Divider does not animate.
-
-## Decisions
-
-- **Always an `hr`, including when vertical.** The element carries `separator` implicitly and
-  `aria-orientation` is valid on it, so a `div` with `role="separator"` would add markup and lose
-  something: an `hr` is still a break in a document read with styles off.
-- **A decorative rule is `aria-hidden`, not `role="presentation"`.** An `hr` with a presentation
-  role is still an `hr` to some combinations of browser and reader. `aria-hidden` is unambiguous.
-- **The spacing scale is `stack`, not `inset`.** `inset` is padding inside a component, and the
-  space around a rule belongs to the rule rather than to either neighbour.
-- **One element, promoted because of the duplication.** vault has one of these; core and drift
-  each write `border-top` inline (`haus#32`). What the component settles is that the width, the
-  colour and the space around it stop being decided three times.

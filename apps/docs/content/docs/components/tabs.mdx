@@ -142,19 +142,3 @@ move in subtle and reduced. It is measured from the selected tab and remeasured 
 resizes, and the first placement is not animated, so it does not fly in from the start of the row.
 
 A tab's colour and its focus outline run on the highlight role.
-
-## Decisions
-
-- **The component owns both ends.** Measured across core, drift and vault there were three
-  tablists, no `role="tabpanel"`, no `aria-controls` from a tab to its panel, and no arrow-key
-  handling. A component that emitted only the tabs would let the same defect straight back in, so
-  it owns both or it is not worth having.
-- **`panelId` is the exception, and it is stated rather than assumed** (decisions 0022 and 0023). A
-  component may own a subtree only when it owns every part of it, and a consumer who takes the
-  panel and gives it no role has bought the same nothing they had before, so the prop documents
-  what they now owe.
-- **Data-driven, not a compound `Tabs` with `Tab` children.** It is the shape RadioGroup and Select
-  already use, and the shape one product had already written by hand.
-- **Selection follows focus**, because rendering the active panel is cheap here.
-- **`aria-controls` is omitted rather than dangling.**
-- **The appearance union is its own type**, not the shared `Appearance`.

@@ -91,19 +91,3 @@ Checkbox and Toggle hand back the same pair.
 The edge and the focus outline run on the highlight role. A press scales the circle on the press
 role and releases on layout. The dot grows in on the layout role: a spring in expressive, an ease
 in subtle, and at once in reduced.
-
-## Decisions
-
-- **The component is the group, not the radio.** A lone radio is not a control a user can use, and
-  a group is where the shared `name`, the single tab stop and the selected value all live.
-- **Option ids are indexed, not derived from the value.** A value is caller data: a value with a
-  space, a percent sign or a slash produces an id that `htmlFor` still matches but that no
-  `querySelector` or CSS selector can address, and two values differing only in whitespace collide
-  outright.
-- **The group keeps internal state when it is uncontrolled.** Deriving the selection from
-  `value ?? defaultValue` meant it never moved: the native input flipped, because the browser owns
-  that, while the drawn dot stayed on whatever `defaultValue` was, so the visible control and the
-  real one disagreed for the whole life of the component.
-- **An invalid group rings in the error colour.** Radio and Checkbox were both missing this rule,
-  and a token audit could not find it, because a component that never reads a role never appears in
-  a list of components reading it wrongly (`haus#44`).

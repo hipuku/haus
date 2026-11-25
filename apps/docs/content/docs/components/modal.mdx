@@ -114,22 +114,3 @@ edge. In reduced the sheet offset is zero, and the travel is computed so a zero 
 travel at all, which makes reduced a fade in place. A spring that overshoots would pull the outer
 edge away from the viewport, so the panel carries its surface a little past that edge and no gap
 opens.
-
-## Decisions
-
-- **A name is required in the types.** Either the visible heading names the dialog or an
-  `aria-label` does, and the type says so rather than leaving it to a reviewer to notice.
-- **The focus trap is written out rather than assumed.** `aria-modal` is a claim about the page,
-  and the Tab and `focusin` handling is what keeps it.
-- **`tabindex="-1"` is excluded from what Tab can reach.** It is how an element says it is
-  programmatically focusable but not in the tab order, which is what the dialog itself uses.
-- **The backdrop dismissal is latched to the press** (`haus#56`), found by migrating core, whose
-  own modal shell carried this latch where haus did not.
-- **`dismissOnBackdrop` exists at all.** A misplaced click should not discard unsaved work, and
-  there was no way to say so.
-- **The close button is haus's IconButton**, so it is a real target with the system's own focus and
-  press behaviour rather than a bare glyph.
-- **Scroll locking reserves the gutter conditionally.** Reserving it unconditionally shifts a page
-  that never had a scrollbar.
-- **The dialog is kept in the document while it closes.** Unmounting on `open` going false means
-  there is nothing left to animate.

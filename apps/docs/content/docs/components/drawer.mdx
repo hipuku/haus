@@ -65,13 +65,3 @@ what makes it a fade.
 
 The backdrop and the panel's parts follow Modal's sequence, and the panel stays in the document
 until its exit has run.
-
-## Decisions
-
-- **It is a Modal, not a second dialog implementation.** A drawer is a dialog in every way that
-  matters: focus is trapped and returned, Escape closes it, and the page behind holds still.
-  Writing it again would mean keeping two copies of that in step.
-- **Promoted because the roles existed and nothing used them.** vault draws a drawer, and haus had
-  the sheet motion roles with no component reaching for them.
-- **`side` rather than `placement`.** The prop name says what the component is for, and the union
-  it narrows to is the two edges a drawer can come from.

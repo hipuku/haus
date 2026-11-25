@@ -106,18 +106,3 @@ down. Showing the bubble restarts the animation, because it is `hidden` rather t
 
 It leaves at once, with no exit animation, because a tooltip that lingers covers whatever the
 pointer has moved on to.
-
-## Decisions
-
-- **`content` is a `string`, not a node.** A tooltip that can hold a link or a button is a Popover,
-  and the moment it holds one the WCAG 1.4.13 contract stops being satisfiable. The type is what
-  keeps that true rather than a convention.
-- **A tooltip must never be the only place a piece of information lives.** Touch users have no
-  hover and may never see it.
-- **All three parts of 1.4.13 are implemented, not two.** Dismissible, hoverable and persistent are
-  re-derived per implementation, and three of them are silently absent in most hand-rolled
-  tooltips, which is the reason this belongs in the system rather than in a product.
-- **`cloneElement` is used here and nowhere else.** Card's note rejects the generic-polymorphic
-  `as` pattern, which costs a page of conditional types for props nobody passes; adding one
-  attribute to one child is a different thing.
-- **`delay` defaults to zero and never applies to focus.**

@@ -81,15 +81,3 @@ that rule asks for.
 The edge, the focus colour and the outline offset run on the highlight role. The error grows in on
 the layout role, as a grid row from `0fr` to `1fr`, so the content below moves rather than jumps,
 and the glyph's ring is drawn a stagger step later on the draw role.
-
-## Decisions
-
-- **Resizing is vertical only.** A textarea that can be dragged wider breaks out of the form
-  column it was laid out in, and the axis that matters for prose is the one that holds more lines.
-- **No adornments.** `prefix` and `suffix` exist on Input because a currency mark or a unit sits
-  beside a single value. Beside a paragraph they have nowhere to sit, and the absence is what
-  removes the wrap element Input needs.
-- **An invalid field rings in the error colour.** Asserted off the API rather than off the
-  stylesheet, so any component taking an `error` prop is in the set from the moment it is written.
-- **The placeholder reads its own role** (decision 0031, `haus#42`). `ink-tertiary` clears 3:1,
-  which is right for glyphs and hover fills, and is not the 4.5:1 words in a field want.
