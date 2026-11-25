@@ -3,8 +3,6 @@ title: Checkbox
 description: 'A checkbox with its label, hint and error, controlled or not.'
 ---
 
-Uncontrolled unless you pass `checked`. `onChange` hands back `(checked, event)`: the boolean because it is what you almost always want, the event because without it there was no way to read `event.target.name` in a form with many checkboxes.
-
 ## Examples
 
 <ComponentExamples name="Checkbox" />
@@ -17,83 +15,30 @@ Uncontrolled unless you pass `checked`. `onChange` hands back `(checked, event)`
 
 ```tsx
 import { Checkbox } from '@/components/haus/components/Checkbox'
+
+<Checkbox label="Email me about releases" checked={subscribed} onChange={setSubscribed} />
 ```
 
 ## API
 
-Checkbox also takes the attributes its element has, and forwards its ref to it. These are the props
-it adds.
+Checkbox also takes the input's own attributes and forwards its ref to the input. `className`
+lands on the root and `controlClassName` on the row holding the box and label.
 
 <ApiTable file="components/Checkbox/Checkbox.tsx" name="CheckboxProps" attributes="React.InputHTMLAttributes<HTMLInputElement>" keep="onChange" />
 
-## Anatomy
+## Controlled or not
 
-| Part | Element | What it is for |
-| ---- | ------- | -------------- |
-| Root | `div` | Holds the row and the messages below it. Takes `className` |
-| Row | `label`, `htmlFor` the input | The box and the label text, clickable as one. Takes `controlClassName` |
-| Input | `input type="checkbox"` | The real control, visually hidden and never removed from the tree |
-| Box | `span`, `aria-hidden` | The drawn box: `marker-box`, `radius-marker`, a `border-width-thick` edge |
-| Mark | `svg`, inside the box | The tick, or the bar when `indeterminate` |
-| Error | `span`, `role="alert"` | `error`, with the glyph every field's error carries |
-| Hint | `span` | `hint`, at the `label-caption` role |
-
-The native input is hidden and the `span` beside it is what gets drawn, so the control keeps every
-behaviour a checkbox has and none of the platform's painting.
-
-The box is `border-box`, so its edge sits inside the size `marker-box` names and the drawn box is
-that size whatever reset a consumer has. Without that it drew larger in an app with no
-`border-box` reset, and the centring below subtracted the wrong number.
-
-The box is centred in the label's first line rather than nudged into place: the offset is that line
-box less the box, computed from the type role, so it follows the role rather than one typeface.
-
-The mark is absolutely positioned. In flow it was the box's first in-flow child, so the box took
-its baseline from the tick and had none of its own while unchecked, and the whole row moved down
-the line the moment it was checked.
+It is uncontrolled unless you pass `checked`. `onChange` gives you `(checked, event)`: read
+`event.target.name` to tell checkboxes in one form apart.
 
 ## States
 
-| State | Box |
-| ----- | --- |
-| Rest | `surface-default` with a `border-control` edge |
-| Hover | The edge turns `primary-default` |
-| Checked, indeterminate | Filled and edged in `primary-default`, with the mark in `ink-inverse` |
-| Checked and hovered | `primary-hover` |
-| Error | The edge turns `error-default`, and a checked box fills with it |
-| Focus | The stepped-out outline, in `border-focus`, or `error-default` while invalid |
-| Disabled | `opacity-disabled` on the row |
+`indeterminate` shows a bar for a parent whose children are partly checked. `error` marks it
+invalid and shows the message under the label; `hint` adds a line of help.
 
-An unchecked box is an edge and nothing else, so that edge reads `border-control` for the 3:1 WCAG
-1.4.11 asks of it (decision 0031). `border-strong`, which it used, is below that.
+## Accessibility
 
-`indeterminate` has no HTML attribute and can only be set on the node, so it is applied through a
-ref after render. A caller's own ref reaches the same node: both are assigned, rather than one
-replacing the other.
-
-## Keyboard and screen reader
-
-A native checkbox. Space toggles it, and it tabs as itself.
-
-The hint and the error sit outside the `label` on purpose. Inside it they became part of the
-accessible name, so a reader announced the label and the hint as one string instead of a name and a
-description. Both are wired through `aria-describedby`, error first, and both are indented to line
-up under the label text rather than under the box.
-
-`required` sets `aria-required` rather than the native attribute, as every other field in the
-system does: the component owns its error display, and the browser's validation bubble would fight
-it. Checkbox was the one doing the opposite.
-
-`error` sets `aria-invalid`, and the error message carries the same glyph every field's error
-carries, so it is not told by colour alone (WCAG 1.4.1 Use of Color).
-
-`onChange` hands back `(checked, event)`. The boolean is first because it is what a caller almost
-always wants, and the event is there because without it there is no way to read
-`event.target.name`, which is how a form with many checkboxes tells them apart. Toggle and
-RadioGroup hand back the same pair.
-
-## Motion
-
-The fill and the edge run on the highlight role. A press scales the box on the press role and
-releases on layout, as Button's does. The tick draws its stroke on the draw role, which is
-instant in subtle and in reduced.
+- A native checkbox: Space toggles it, and it tabs as itself.
+- The label is the accessible name. The hint and error are read as its description.
+- `required` and `error` set `aria-required` and `aria-invalid`, and the error is not shown by
+  colour alone.

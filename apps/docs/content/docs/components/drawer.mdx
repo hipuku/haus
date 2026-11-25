@@ -1,9 +1,7 @@
 ---
 title: Drawer
-description: 'A panel that slides in from the edge of the page, over it: settings, a record''s details, a filter set.'
+description: 'A panel that slides in from the edge, over the page: settings, a record, a set of filters.'
 ---
-
-It is a Modal anchored to an edge, so it traps and returns focus, closes on Escape, keeps the page behind still, and leaves on its exit. It enters on the sheet motion role.
 
 ## Examples
 
@@ -17,51 +15,30 @@ It is a Modal anchored to an edge, so it traps and returns focus, closes on Esca
 
 ```tsx
 import { Drawer } from '@/components/haus/components/Drawer'
+
+<Drawer open={open} onClose={() => setOpen(false)} title="Filters">
+  {filters}
+</Drawer>
 ```
 
 ## API
 
-Drawer also takes the attributes its element has, and forwards its ref to it. These are the props
-it adds.
+Drawer also takes its element's own attributes and forwards its ref. `className` lands on the
+backdrop and `dialogClassName` on the panel.
 
 <ApiTable file="components/Drawer/Drawer.tsx" name="DrawerProps" element="HTMLDivElement" />
 
-## Anatomy
-
-Modal's, with `placement` set from `side`. The same backdrop, dialog, header, close button, body
-and footer, and the same two class targets: `className` on the backdrop and `dialogClassName` on
-the panel.
-
-The panel is anchored to the `side` edge at full height, so `size` caps its width rather than its
-measure in the middle of the page. The surface runs a little past the outer edge, so a spring that
-overshoots cannot open a gap between the panel and the viewport.
-
 ## Side
 
-`end` by default. The side is logical, so `end` is the right edge in a left-to-right page and the
-left edge in a right-to-left one, and the panel enters from whichever edge that is without the
-caller restating it per direction.
+`side` is `end` by default, which is the right edge on a left-to-right page and flips for
+right-to-left. `size` sets the panel's width.
 
-`placement` is omitted from the props, distributively across both halves of Modal's label union,
-because `side` is the prop that sets it. A Drawer in the centre of the page is a Modal.
+<Notice tone="info">
+A Drawer is a Modal anchored to an edge. For a dialog in the middle of the page, use Modal.
+</Notice>
 
-## Keyboard and screen reader
+## Accessibility
 
-Modal's, unchanged. Focus moves in on open and returns on close, Tab cycles within the panel,
-Escape closes it, `aria-modal` is kept by the component's own Tab and `focusin` handling, and the
-page behind neither scrolls nor shifts.
-
-A name is required, as `title` or as `aria-label`, for the reason Modal's is.
-
-`initialFocus` and `dismissOnBackdrop` behave as they do on Modal, and the backdrop dismissal is
-latched to the press at both ends in the same way.
-
-## Motion
-
-The sheet roles rather than the dialog roles: a slide from its edge in subtle, a spring in
-expressive, and a fade in place in reduced. The travel is the panel's own width, so it arrives
-from off-screen; in reduced the sheet offset is zero and the travel collapses to nothing, which is
-what makes it a fade.
-
-The backdrop and the panel's parts follow Modal's sequence, and the panel stays in the document
-until its exit has run.
+- Needs a name: `title`, or `aria-label` when there is no visible title.
+- Focus moves in on open and returns on close. Tab stays in the panel, and Escape closes it.
+- The page behind does not scroll while it is open.

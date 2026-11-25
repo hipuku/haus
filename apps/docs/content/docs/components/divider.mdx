@@ -1,9 +1,7 @@
 ---
 title: Divider
-description: 'A rule between things.'
+description: 'A rule between things, horizontal or vertical.'
 ---
-
-Always an `<hr>`, including when vertical: it carries `separator` implicitly and stays a break when the document is read with styles off. `decorative` is the interesting prop: the markup cannot tell a structural break from a line drawn because a panel looked crowded, so the caller says which this is.
 
 ## Examples
 
@@ -17,48 +15,29 @@ Always an `<hr>`, including when vertical: it carries `separator` implicitly and
 
 ```tsx
 import { Divider } from '@/components/haus/components/Divider'
+
+<Divider spacing="md" />
 ```
 
 ## API
 
-Divider also takes the attributes its element has, and forwards its ref to it. These are the props
-it adds.
+Divider also takes its element's own attributes and forwards its ref. `className` lands on the
+`hr`.
 
 <ApiTable file="components/Divider/Divider.tsx" name="DividerProps" element="HTMLHRElement" />
 
-## Anatomy
-
-One element. The rule is the `hr` itself, drawn as a band of `color-border-default` one
-`border-width-default` thick. The browser's own `hr` is cleared first: a border on all four sides,
-a default margin and, in some engines, a colour that is not `currentColor` all have to go before a
-single side can be drawn, which is most of why three products each rewrote this.
-
-A horizontal rule sets its own thickness on the block axis and takes the full inline size. A
-vertical one stretches to its flex parent rather than declaring a length, because a vertical rule
-always sits between two things laid out in a row and its length is theirs.
-
 ## Spacing
 
-`spacing` draws on the `stack` role, which in the token layer is the space a component asks for
-around itself. A divider is the one component where that role is the whole point: the space either
-side of a rule is what makes it read as a break rather than as an underline. `none` removes it.
+`spacing` sets the room on either side: `sm`, `md` or `lg`, or `none`. A vertical divider takes it
+on either side horizontally, and stretches to the height of the row it sits in.
 
-A vertical rule takes the same steps on the inline axis, so the space sits either side of it and
-flips with the writing direction rather than staying on the left.
+## Decorative or not
 
-## Keyboard and screen reader
+By default a Divider is announced as a separator between two groups. Set `decorative` when the
+line is only visual, such as one drawn to break up a dense panel, and it is hidden from screen
+readers.
 
-Not interactive, and takes no focus.
+## Accessibility
 
-`decorative` is what a screen reader hears. An `hr` carries `separator` implicitly, so a
-structural break between two groups is announced with nothing added. `decorative` removes the
-element from the accessibility tree instead, which is right for a line drawn because a panel
-looked crowded. Nothing in the markup distinguishes the two cases, so the caller says which this
-is; the default is the meaningful one, because a separator wrongly announced is a smaller failure
-than a structural break that is invisible.
-
-A vertical rule that is not decorative also carries `aria-orientation`, which is valid on an `hr`.
-
-## Motion
-
-None. Divider does not animate.
+- Always an `<hr>`, so it is a break even with styles off.
+- Not interactive.

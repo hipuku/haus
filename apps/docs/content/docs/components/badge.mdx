@@ -5,13 +5,11 @@ description: A short status word, in one of six tones, subtle or solid.
 
 import { BadgeTones, BadgeAppearances } from '@/components/examples/badge'
 
-## Example
+## Examples
 
 <Preview of="Badge" story="Appearance">
   <BadgeAppearances />
 </Preview>
-
-Six tones, each subtle or solid.
 
 <Preview of="Badge" story="Tone">
   <BadgeTones />
@@ -19,17 +17,7 @@ Six tones, each subtle or solid.
 
 ## Install
 
-The registry is for TypeScript projects: with `"tsx": false` in `components.json`, shadcn writes
-`.js` and `.jsx` files that still contain TypeScript, and the build fails.
-
-```bash
-npx shadcn add @hipuku/badge
-```
-
-This adds four files under `components/haus/`: `components/Badge/Badge.tsx`,
-`components/Badge/Badge.module.css`, `components/Badge/index.ts`, and `types.ts`, which holds the
-tone and appearance vocabulary Badge shares with other components. It also adds `@hipuku/tokens` to
-your dependencies.
+<Install name="Badge" />
 
 ## Usage
 
@@ -41,35 +29,22 @@ import { Badge } from '@/components/haus/components/Badge'
 
 ## API
 
-Badge also takes the attributes every HTML element has (`React.HTMLAttributes`), and forwards its
-ref to the element it renders. Attributes only one element has, such as `htmlFor` on an `output`,
-are not in its type.
+Badge also takes the attributes every HTML element has and forwards its ref. `className` lands on
+the root.
 
 <ApiTable file="components/Badge/Badge.tsx" name="BadgeProps" />
 
-## Anatomy
-
-| Part | Element | What it is for |
-| ---- | ------- | -------------- |
-| Root | `span`, or the element `as` names | The label, with the tone's background and ink |
-| Dot | `span`, `aria-hidden` | A leading marker when `dot` is set, for a status list. It repeats the tone and carries nothing a screen reader needs |
-
 ## Tones
 
-`tone` is the meaning. `neutral`, `info`, `success`, `warning` and `error` are the
-[shared vocabulary](/docs/start/composition) Button and Toast share. `primary` is the brand colour and carries no meaning.
+`neutral`, `info`, `success`, `warning` and `error` carry meaning. `primary` is the brand colour
+and carries none. Each tone is `subtle` or `solid` through `appearance`.
 
-<BadgeTones />
+## Choosing the element
 
-## Keyboard and screen reader
+`as` sets the element when a `span` is wrong: a count in a definition list is a `dd`, and a value
+that updates is an `output`, which a screen reader announces when it changes.
 
-Badge is not interactive and takes no focus. It is read as its text. Colour is never the only
-signal: the word carries the meaning, so write one that stands without the colour.
+## Accessibility
 
-`as` exists so the element matches the content. A count in a definition list is a `dd`, and a
-result that updates is an `output`, which a screen reader announces when it changes. A `span` in
-either place leaves the meaning out.
-
-## Motion
-
-None. Badge does not animate.
+- Read as its text and takes no focus.
+- The word carries the meaning, never the colour alone: write a label that stands on its own.

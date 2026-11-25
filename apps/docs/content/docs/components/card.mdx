@@ -1,9 +1,7 @@
 ---
 title: Card
-description: 'A surface.'
+description: 'A surface for grouping content, in three weights.'
 ---
-
-`variant` here is elevation, which is a visual weight, so it keeps the name. `as` is the escape hatch: a card is often a list item or an article, and a `<div>` in those places is a hole in the document outline no styling fixes.
 
 ## Examples
 
@@ -17,86 +15,43 @@ description: 'A surface.'
 
 ```tsx
 import { Card } from '@/components/haus/components/Card'
+
+<Card>
+  <h3>Usage this month</h3>
+  <p>12,400 requests</p>
+</Card>
 ```
 
 ## API
 
-Card also takes the attributes its element has, and forwards its ref to it. These are the props
-it adds.
+Card also takes its element's own attributes and forwards its ref. `className` lands on the root,
+and your own rules win over Card's.
 
 <ApiTable file="components/Card/Card.tsx" name="CardOwnProps" element="HTMLDivElement" />
 
-## Anatomy
-
-One element, whichever one `as` or `asChild` supplies. It sits on `surface-raised` with
-`radius-surface`, clips its own content, and takes `space-inset-lg` while `padding` is on. Turn
-`padding` off for a card whose content runs to its edge, such as one that opens with an image.
-
-A card has no header, body or footer parts. The content is the caller's, and a card that owned the
-layout inside it would be a template rather than a surface.
-
 ## Variants
 
-`variant` is elevation here, which is a visual weight rather than a meaning, so it keeps the name
-`variant` (decision 0005).
+| `variant` | Use it for |
+| --------- | ---------- |
+| `default` | A bordered surface. The one to reach for |
+| `elevated` | A card that floats or overlaps the page |
+| `outlined` | A selected or highlighted card |
 
-| `variant` | Edge | When |
-| --------- | ---- | ---- |
-| `default` | `border-default` | A bordered surface. The one to reach for |
-| `elevated` | `border-subtle`, with `elevation-floating` | Raised off the page, for a card that overlaps or floats |
-| `outlined` | `border-strong` at `border-width-thick` | A selected or highlighted card, where the edge has to read at a glance |
+Turn `padding` off for content that runs to the edge, such as an image at the top.
 
-## Owning the element
+## Choosing the element
 
-Two props, for two different problems, and decision 0022 is the rule behind both: a component owns
-its box and never its element.
+Use `as` for the right element: `li` in a list of cards, `article` or `aside` where they belong.
+For a card that is a link, pass the link as the single child with `asChild`:
 
-`as` is for the cases where the right element is a plain intrinsic one and the reason is the
-document outline. A card is often a list item, an article or an aside, and a `div` in those places
-is a hole in the outline that no styling fixes. The union is closed at five elements.
+```tsx
+<Card asChild>
+  <Link href="/projects/haus">haus</Link>
+</Card>
+```
 
-`asChild` covers what `as` cannot reach: a card that is a router link. `as="a"` would render
-haus's own anchor, and the point of that case is that the framework's `Link` is the thing which
-must render. The child supplies the element, Card supplies the box, and the child keeps its own
-children, which is the opposite of IconButton.
+## Accessibility
 
-The two are mutually exclusive in the types, because the child supplies the element and `as` names
-one. Both class names are kept, Card's first and the child's after it, and which declaration wins
-a collision is the ordinary cascade. The order inside the attribute decides nothing.
-
-What does decide it is that Card's rules are in the `haus.components` layer. The cascade compares
-layers before specificity, and an unlayered rule outranks a layered one, so a caller's own rule
-wins wherever it is declared and however unspecific it is. Specificity only settles collisions
-inside the same layer.
-
-## Keyboard and screen reader
-
-A card is a surface and takes no focus of its own. Anything focusable inside it keeps its own
-place in the tab order.
-
-A card rendered as a link or a button, through `asChild`, becomes the control, and the stylesheet
-picks that up from the element rather than from a prop. Focus is then an `outline` in
-`border-focus`, held off the edge by `focus-outline-offset` so the card's own backdrop shows
-through as a gap. That is the same reading as the system's double ring and for the same reason
-(decision 0001): the band is the accent at full strength, because alpha is what made the
-treatments it replaced fall below the 3:1 WCAG 2.2 SC 1.4.11 asks of a focus indicator. Under
-`forced-colors`, where an outline is all that survives, it takes `focus-outline-forced`, which is
-the system's own `Highlight` rather than haus's accent.
-
-The outline is declared transparent at rest, so it transitions in rather than appearing, and the
-card does not shift by its own outline width when focus lands.
-
-`as="li"` is what keeps a list of cards a list for a screen reader.
-
-## Motion
-
-Only an interactive card moves. Hover takes the `border-control` edge and lifts the card by a
-quarter of `motion-popover-enter-offset`; the colour runs on the highlight role and the lift on
-the layout role, so the two scales stay in step with the rest of the system. Pressing scales the
-card by `motion-press-scale` on the press role.
-
-The lift is therefore a property of the motion mode: subtle moves it a little on an ease,
-expressive moves it further on a spring that settles, and reduced changes the edge and nothing
-else.
-
-An elevated card also raises from `elevation-floating` to `elevation-overlay` on hover.
+- A plain card takes no focus. Controls inside it keep their own.
+- A card made a link or button with `asChild` becomes the control, with a visible focus outline.
+- Render a list of cards with `as="li"` inside a list, so it is announced as a list.
