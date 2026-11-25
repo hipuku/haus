@@ -59,12 +59,6 @@
   }
 }
 
-.wall:hover .track,
-.wall:focus-within .track,
-.wall[data-paused] .track {
-  animation-play-state: paused;
-}
-
 /*
  * With motion reduced, the wall is a still grid of the first set: no drift,
  * no duplicate, and no window to scroll past, so nothing is cut off.
@@ -74,8 +68,7 @@
     animation: none;
   }
 
-  .copy,
-  .pause {
+  .copy {
     display: none;
   }
 
@@ -89,8 +82,7 @@
   animation: none;
 }
 
-:global([data-haus-motion='reduced']) .copy,
-:global([data-haus-motion='reduced']) .pause {
+:global([data-haus-motion='reduced']) .copy {
   display: none;
 }
 
@@ -107,29 +99,6 @@
   flex-direction: column;
   gap: var(--haus-space-6);
   padding-block-end: var(--haus-space-6);
-}
-
-.pause {
-  background: var(--haus-color-surface-default);
-  border: var(--haus-border-width-default) solid var(--haus-color-border-control);
-  border-radius: var(--haus-radius-control);
-  color: var(--haus-color-ink-secondary);
-  cursor: pointer;
-  font: inherit;
-  font-size: var(--haus-type-body-sm-size);
-  inset-block-start: calc(-1 * var(--haus-space-12));
-  inset-inline-end: 0;
-  padding: var(--haus-space-1) var(--haus-space-3);
-  position: absolute;
-}
-
-.pause:hover {
-  color: var(--haus-color-ink-primary);
-}
-
-.pause:focus-visible {
-  outline: var(--haus-border-width-thick) solid var(--haus-color-border-focus);
-  outline-offset: var(--haus-border-width-thick);
 }
 
 /* ─── Tiles ─────────────────────────────────────────────────────────────── */
@@ -237,8 +206,7 @@
     animation: none;
   }
 
-  .copy,
-  .pause {
+  .copy {
     display: none;
   }
 }

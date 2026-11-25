@@ -35,14 +35,10 @@ import styles from './wall.module.css'
  *
  * The columns drift, in alternate directions, so the page shows more than
  * fits in it. The drift is ambient rather than a transition, so no motion
- * role's cap applies to it; it is linear, slow, and stops:
- *
- * - on hover and on keyboard focus anywhere in the wall, so a tile never
- *   moves under the pointer or the caret
- * - from the Pause button, because content that moves for longer than five
- *   seconds needs a control that stops it (WCAG 2.2.2)
- * - entirely, under `prefers-reduced-motion` or `data-haus-motion="reduced"`,
- *   where the wall is a still grid
+ * role's cap applies to it. It is linear and slow, and it does not stop on
+ * hover, on focus or from a control: the owner's call, 2026-11-25. Under
+ * `prefers-reduced-motion` or `data-haus-motion="reduced"` it does not run,
+ * and the wall is a still grid.
  *
  * A column is its tiles twice, so the loop has no seam. The second copy is
  * `inert` and hidden from assistive technology: one set of controls in the tab
@@ -272,13 +268,8 @@ const COLUMNS = [
 ]
 
 export function Wall() {
-  const [paused, setPaused] = useState(false)
-
   return (
-    <div className={styles.wall} data-paused={paused || undefined}>
-      <button aria-pressed={paused} className={styles.pause} onClick={() => setPaused(p => !p)} type="button">
-        {paused ? 'Play motion' : 'Pause motion'}
-      </button>
+    <div className={styles.wall}>
       <div className={styles.columns}>
         {COLUMNS.map((tiles, i) => (
           <div className={styles.column} key={i}>

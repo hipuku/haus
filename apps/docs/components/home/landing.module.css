@@ -24,7 +24,7 @@
 /* ─── Hero ────────────────────────────────────────────────────────────────── */
 
 .hero {
-  padding-block: var(--haus-space-20) var(--haus-space-16);
+  padding-block: var(--haus-space-20) var(--haus-space-8);
 }
 
 /* The install command and its caveat were here. See components/home/landing.tsx
@@ -63,8 +63,21 @@
   max-width: var(--site-measure-lede);
 }
 
+/* An inline link, as haus draws one: the link colour, underlined at rest
+   with a quiet rule, and the rule at full strength and thicker under the
+   pointer, as Button's text variant does. */
 .lede a {
   color: var(--haus-color-ink-link);
+  text-decoration: underline;
+  text-decoration-color: oklch(from currentColor l c h / var(--haus-opacity-subtle));
+  text-decoration-thickness: var(--haus-border-width-default);
+  text-underline-offset: var(--haus-text-underline-offset);
+  transition: text-decoration-color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing);
+}
+
+.lede a:hover {
+  text-decoration-color: currentColor;
+  text-decoration-thickness: var(--haus-border-width-thick);
 }
 
 .lede code {
@@ -84,5 +97,5 @@
 /* No band, no rule. The panels in the showcase are its own ground, and a
    second one behind them would be a surface inside a surface. */
 .showcase {
-  padding-block: var(--haus-space-12) var(--haus-space-20);
+  padding-block: 0 var(--haus-space-20);
 }
