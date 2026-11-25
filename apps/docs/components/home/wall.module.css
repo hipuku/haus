@@ -197,3 +197,29 @@
   stroke: var(--haus-color-surface-default);
   stroke-width: 1.25;
 }
+
+/* A screen a travelling pointer moves over. */
+.stage {
+  position: relative;
+}
+
+/* The travelling pointer: drawn as the still one, and moved between points on
+   the move easing, slowly enough to follow. */
+.travelling {
+  fill: var(--haus-color-ink-primary);
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  stroke: var(--haus-color-surface-default);
+  stroke-width: 1.25;
+  transition:
+    transform var(--haus-duration-slow) var(--haus-ease-move),
+    opacity var(--haus-motion-fade-in);
+  z-index: 1;
+}
+
+.travelling[data-shown] {
+  opacity: 1;
+}

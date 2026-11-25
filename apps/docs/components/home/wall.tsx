@@ -49,7 +49,8 @@ import styles from './wall.module.css'
  * - Toggle `checked`: the thumb slides on the layout role
  * - a button's hover, or hover and press, or a field's keyboard focus, one per
  *   screen, through the components' own rules (see useStates)
- * - Select: opens, shows its options and closes, through its own handler
+ * - Select: stays open while a pointer moves down its options and back, the
+ *   highlight following through its own handler
  * - Checkbox `checked`: the box fills and the tick draws
  * - RadioGroup `value`: the dot grows in the newly chosen option
  * - Tabs `value`: the marker slides to the chosen tab
@@ -170,10 +171,23 @@ function useStates(root: RefObject<HTMLElement | null>, script: Move[], every: n
   }, [step, tick === 0])
 }
 
-/* An arrow pointer, drawn where a hovering pointer would rest. Still. */
-function Pointer() {
+/*
+ * An arrow pointer. Without `at` it is still, drawn where a hovering pointer
+ * would rest on the control it sits beside. With `at` it travels to that
+ * point on the move easing, and is hidden until it has somewhere to be.
+ */
+function Pointer({ at }: { at?: { x: number; y: number } | null }) {
+  const travelling = at !== undefined
   return (
-    <svg aria-hidden="true" className={styles.pointer} height="20" viewBox="0 0 16 20" width="16">
+    <svg
+      aria-hidden="true"
+      className={travelling ? styles.travelling : styles.pointer}
+      data-shown={at ? '' : undefined}
+      height="20"
+      style={at ? { transform: `translate(${at.x}px, ${at.y}px)` } : undefined}
+      viewBox="0 0 16 20"
+      width="16"
+    >
       <path d="M1 1v15.5l4.2-4 2.9 6.3 2.6-1.2-2.9-6.2H14L1 1z" />
     </svg>
   )
@@ -428,18 +442,20 @@ function Feedback() {
 
 /*
  * A still frame, apart from the Spinner: a pointer resting on Bold, which is
- * in its hover state through its own rule.
+ * in its hover state through its own rule. Secondary rather than ghost: in
+ * the dark theme a ghost IconButton's hover fill is surface-subtle, the same
+ * colour as the Card's surface-raised, so its hover would not show here.
  */
 function Toolbar() {
   return (
     <Tile uses={['IconButton', 'Spinner', 'Button']}>
       <div className={styles.row}>
         <span className={styles.pointed}>
-          <IconButton data-pseudo-hover="" icon={<Icon d={ICONS.bold} />} label="Bold" variant="ghost" />
+          <IconButton data-pseudo-hover="" icon={<Icon d={ICONS.bold} />} label="Bold" variant="secondary" />
           <Pointer />
         </span>
-        <IconButton icon={<Icon d={ICONS.italic} />} label="Italic" variant="ghost" />
-        <IconButton icon={<Icon d={ICONS.link} />} label="Link" variant="ghost" />
+        <IconButton icon={<Icon d={ICONS.italic} />} label="Italic" variant="secondary" />
+        <IconButton icon={<Icon d={ICONS.link} />} label="Link" variant="secondary" />
         <span className={styles.saving}>
           <Spinner size="sm" />
           Saving
@@ -453,31 +469,51 @@ function Toolbar() {
 }
 
 /*
- * The Select opens, shows its options, and closes. Nothing is chosen, so the
- * value stays where it is. It opens through its own click handler, and
- * scrolls only its own list.
+ * The Select stays open, and a pointer moves down its options and back up.
+ * The highlight follows the pointer through the Select's own pointer handler,
+ * and travels between rows on its own indicator transition. Nothing is
+ * chosen, so the value stays where it is. The panel opens once, through the
+ * Select's own click handler, and scrolls only its own list.
  */
 const FORMATS = [
   { label: 'CSS custom properties', value: 'css' },
   { label: 'DTCG JSON', value: 'dtcg' },
   { label: 'TypeScript', value: 'ts' },
 ]
-const EXPORT: Move[] = [
-  { at: by('[role="combobox"]'), expanded: false },
-  { at: by('[role="combobox"]'), expanded: true },
-  { at: by('[role="combobox"]'), expanded: true },
-  { at: by('[role="combobox"]'), expanded: false },
-]
+const OVER = [0, 1, 2, 1]
 function Export() {
   const stage = useRef<HTMLDivElement>(null)
-  useStates(stage, EXPORT, 4, 5)
+  const tick = useContext(Clock)
+  const step = Math.floor((tick + 5) / 4) % OVER.length
+  const [pointer, setPointer] = useState<{ x: number; y: number } | null>(null)
+
+  useEffect(() => {
+    const root = stage.current
+    if (!root || tick === 0) return
+    const trigger = root.querySelector<HTMLElement>('[role="combobox"]')
+    if (trigger?.getAttribute('aria-expanded') !== 'true') {
+      trigger?.click()
+      return
+    }
+    const option = root.querySelectorAll<HTMLElement>('[role="option"]')[OVER[step]]
+    if (!option) return
+    root.querySelectorAll('[data-pseudo-hover]').forEach(node => node.removeAttribute('data-pseudo-hover'))
+    option.setAttribute('data-pseudo-hover', '')
+    option.dispatchEvent(new MouseEvent('mouseover', { bubbles: true, relatedTarget: root }))
+    const row = option.getBoundingClientRect()
+    const box = root.getBoundingClientRect()
+    setPointer({ x: row.left - box.left + row.width * 0.7, y: row.top - box.top + row.height * 0.55 })
+    // The step is what moves it; the tick only starts it.
+  }, [step, tick === 0])
+
   return (
     <Tile uses={['Select', 'Checkbox', 'Button']}>
-      <div className={styles.stack} ref={stage}>
+      <div className={`${styles.stack} ${styles.stage}`} ref={stage}>
         <Select label="Export as" onChange={noop} options={FORMATS} value="dtcg" />
         <Select label="Colour space" onChange={noop} options={[{ label: 'OKLCH', value: 'oklch' }]} value="oklch" />
         <Checkbox checked label="Include the dark mode" onChange={noop} />
         <Button variant="primary">Export</Button>
+        <Pointer at={pointer} />
       </div>
     </Tile>
   )
