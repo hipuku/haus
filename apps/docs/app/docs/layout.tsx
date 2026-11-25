@@ -1,7 +1,7 @@
 import { source } from '@/lib/source'
 import { DocsLayout } from 'fumadocs-ui/layouts/docs'
 import { baseOptions, githubUrl } from '@/lib/layout.shared'
-import { SectionHeading, SidebarFooter } from '@/components/header-controls'
+import { SidebarFooter } from '@/components/header-controls'
 import { storybookUrl } from '@/lib/shared'
 
 /*
@@ -21,8 +21,9 @@ export default function Layout({ children }: LayoutProps<'/docs'>) {
   return (
     <DocsLayout
       sidebar={{
-        // The section's name above its pages, and one row of controls at the foot.
-        banner: <SectionHeading />,
+        // GitHub and Storybook at the foot. The collapse control is a haus
+        // IconButton in the top row.
+        collapsible: false,
         footer: <SidebarFooter github={githubUrl} storybook={storybookUrl} />,
       }}
       tabMode="top"

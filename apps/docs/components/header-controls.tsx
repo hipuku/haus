@@ -1,9 +1,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { usePathname } from 'next/navigation'
 import { useTheme } from 'next-themes'
 import { useSearchContext } from 'fumadocs-ui/contexts/search'
+import { useSidebar } from 'fumadocs-ui/layouts/docs/slots/sidebar'
 import { Button, IconButton } from 'haus-components'
 
 /*
@@ -16,6 +16,9 @@ import { Button, IconButton } from 'haus-components'
  * size and one radius, with nothing drawn at rest, so the four read as a set
  * and as the system they document.
  */
+
+const GITHUB_MARK =
+  'M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.4-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z'
 
 const Glyph = ({ children }: { children: React.ReactNode }) => (
   <svg
@@ -93,7 +96,7 @@ export function GitHubButton({ href }: { href: string }) {
       asChild
       icon={
         <svg aria-hidden="true" fill="currentColor" height="16" viewBox="0 0 24 24" width="16">
-          <path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.4-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z" />
+          <path d={GITHUB_MARK} />
         </svg>
       }
       label="GitHub repository"
@@ -125,53 +128,60 @@ export function StorybookButton({ href }: { href: string }) {
 }
 
 /*
- * The docs sidebar's search: a full-width ghost Button, so it has no stroke at
- * rest and the ghost hover, as the header's icons do, with the shortcut keys
- * at its end. It opens the same dialog as the header's search.
+ * The controls at the top of the docs sidebar, after the wordmark: mode,
+ * search and the sidebar's own collapse, as ghost IconButtons. Fumadocs'
+ * collapse trigger is switched off (app/docs/layout.tsx) so this one, which
+ * reads the same sidebar state, takes its place.
  */
-export function SidebarSearch() {
-  const { setOpenSearch } = useSearchContext()
+export function SidebarControls() {
+  const { collapsed, setCollapsed } = useSidebar()
   return (
-    <Button className="haus-sidebar-search" onClick={() => setOpenSearch(true)} variant="ghost">
-      <Glyph>
-        <circle cx="11" cy="11" r="7" />
-        <path d="m20 20-3.5-3.5" />
-      </Glyph>
-      <span className="haus-sidebar-search-label">Search</span>
-      <span aria-hidden="true" className="haus-sidebar-search-keys">
-        <kbd>⌘</kbd>
-        <kbd>K</kbd>
-      </span>
-    </Button>
-  )
-}
-
-/* The docs sidebar's footer: mode, Storybook and GitHub, one row of ghost
-   IconButtons, as in the header. */
-export function SidebarFooter({ storybook, github }: { storybook: string; github: string }) {
-  return (
-    <div className="haus-sidebar-footer">
+    <div className="haus-sidebar-controls">
       <ThemeButton />
-      <StorybookButton href={storybook} />
-      <GitHubButton href={github} />
+      <SearchButton />
+      <IconButton
+        icon={
+          <Glyph>
+            <rect height="16" rx="2" width="18" x="3" y="4" />
+            <path d="M9 4v16" />
+          </Glyph>
+        }
+        label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+        onClick={() => setCollapsed(c => !c)}
+        variant="ghost"
+      />
     </div>
   )
 }
 
 /*
- * The name of the section the reader is in, above its pages. The sections are
- * tabs in the header, so without this the sidebar lists pages without saying
- * whose they are.
+ * The foot of the docs sidebar: GitHub as a secondary IconButton, and
+ * Storybook as the primary Button filling the rest of the row. On a phone,
+ * where the drawer has no top row of controls, the mode switch leads it.
  */
-const SECTION_NAMES: [string, string][] = [
-  ['/docs/start', 'Getting started'],
-  ['/docs/foundations', 'Foundations'],
-  ['/docs/components', 'Components'],
-  ['/docs/packages', 'Packages'],
-  ['/docs/tools', 'Tools'],
-]
-export function SectionHeading() {
-  const pathname = usePathname()
-  const name = SECTION_NAMES.find(([prefix]) => pathname === prefix || pathname.startsWith(`${prefix}/`))?.[1]
-  return name ? <p className="haus-sidebar-section">{name}</p> : null
+export function SidebarFooter({ storybook, github }: { storybook: string; github: string }) {
+  return (
+    <div className="haus-sidebar-footer">
+      <span className="haus-sidebar-footer-mode">
+        <ThemeButton />
+      </span>
+      <IconButton
+        asChild
+        icon={
+          <svg aria-hidden="true" fill="currentColor" height="16" viewBox="0 0 24 24" width="16">
+            <path d={GITHUB_MARK} />
+          </svg>
+        }
+        label="GitHub repository"
+        variant="secondary"
+      >
+        <a href={github} rel="noreferrer" target="_blank" />
+      </IconButton>
+      <Button asChild className="haus-sidebar-footer-storybook" variant="primary">
+        <a href={storybook} rel="noreferrer" target="_blank">
+          Storybook
+        </a>
+      </Button>
+    </div>
+  )
 }

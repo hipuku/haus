@@ -1,6 +1,6 @@
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared'
 import { Wordmark } from '@/components/wordmark'
-import { GitHubButton, SearchButton, SidebarSearch, StorybookButton, ThemeButton } from '@/components/header-controls'
+import { GitHubButton, SearchButton, SidebarControls, StorybookButton, ThemeButton } from '@/components/header-controls'
 import { docsRoute, gitConfig, storybookUrl } from './shared'
 
 /*
@@ -39,16 +39,18 @@ export function baseOptions({ home = false }: { home?: boolean } = {}): BaseLayo
       // Not on the landing page, whose heading is the wordmark.
       title: home ? null : <Wordmark />,
       url: '/',
+      // In the docs sidebar, the row after the wordmark: mode, search, collapse.
+      ...(home ? {} : { children: <SidebarControls /> }),
     },
-    // haus IconButtons and Buttons in place of Fumadocs' own controls; see
-    // components/header-controls.tsx. The landing page's header has an icon
-    // search; the docs sidebar has a full-width search row in that slot.
+    // haus IconButtons in place of Fumadocs' own controls; see
+    // components/header-controls.tsx. The docs sidebar's search is in its top
+    // row, so its own full-width slot is left empty.
     searchToggle: {
-      components: { lg: home ? <SearchButton /> : <SidebarSearch />, sm: <SearchButton /> },
+      components: { lg: home ? <SearchButton /> : <></>, sm: <SearchButton /> },
     },
-    // The docs layout draws mode, Storybook and GitHub in its sidebar footer
-    // (app/docs/layout.tsx), so the switch and the icon links are the landing
-    // header's alone. Without either, Fumadocs' bordered footer pill hides.
+    // The docs sidebar draws mode in its top row and Storybook and GitHub in
+    // its footer, so the switch and the icon links are the landing header's
+    // alone. Without either, Fumadocs' bordered footer pill hides.
     themeSwitch: home ? { component: <ThemeButton /> } : { enabled: false },
     links: [
       ...SECTIONS.map(section => ({ ...section, active: 'nested-url' as const, on: 'nav' as const })),
