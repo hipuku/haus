@@ -7,9 +7,9 @@ import {
   dimensionToCss,
   durationToCss,
   FORMAT_LABEL,
+  LOSS_REASONS,
   ReadError,
   type FormatId,
-  type LossEntry,
   type LossReason,
   type Token,
   type TokenValue,
@@ -17,7 +17,7 @@ import {
 import { DynamicCodeBlock } from 'fumadocs-ui/components/dynamic-codeblock'
 import { Badge, Button, Callout, Input, Select, Tabs, Textarea } from 'haus-components'
 import { useMemo, useRef, useState } from 'react'
-import { ToolView } from './tool-view'
+import { Panel, ToolView } from './tool-view'
 import styles from './tool.module.css'
 
 export interface Example {
@@ -133,189 +133,265 @@ export function Converter({ examples }: { examples: Example[] }) {
   const translated = result?.allLosses.filter(loss => !REASON[loss.reason].lost) ?? []
   const current = files.find(f => f.name === active) ?? files[0]
 
-  const grouped = (losses: LossEntry[]) => {
-    const map = new Map<LossReason, LossEntry[]>()
-    for (const loss of losses) map.set(loss.reason, [...(map.get(loss.reason) ?? []), loss])
-    return [...map.entries()]
-  }
+  /* The reasons this conversion actually hit, in the package's own order,
+     each with how many tokens it touched. Three or four of eleven, usually. */
+  const reasons = result
+    ? LOSS_REASONS.map(reason => ({
+        reason,
+        count: result.allLosses.filter(loss => loss.reason === reason).length,
+      })).filter(entry => entry.count > 0)
+    : []
 
-  const controls = (
-    <>
-      <Select
-          label="Start from an example"
-          onChange={choose}
-          options={examples.map(e => ({ label: e.label, value: e.id }))}
-          value={exampleId}
-        />
-        <Select
-          label="Convert to"
-          onChange={value => setTarget(value as FormatId)}
-          options={FORMATS.map(format => ({ label: FORMAT_LABEL[format], value: format }))}
-          value={target}
-        />
-        <Input inputMode="decimal" label="Rem base, px" onChange={e => setRemBase(e.target.value)} value={remBase} />
-        {target === 'tailwind' && (
-          <Select
-            label="Tailwind modes by"
-            onChange={value => setSelector(value as typeof selector)}
-            options={[
-              { label: 'data-theme attribute', value: 'data-theme' },
-              { label: 'Class', value: 'class' },
-              { label: 'Media query', value: 'media' },
-            ]}
-          value={selector}
-        />
-      )}
-    </>
-  )
+  /* What happened, in the order a reader asks it: what came in, what it was
+     read as, what came out, and what did not survive. */
+  const readings = result && [
+    { label: 'Read as', value: FORMAT_LABEL[result.format] },
+    { label: 'Tokens', value: String(result.set.tokens.length) },
+    { label: 'Modes', value: result.set.modes.join(', ') || 'one' },
+    { label: 'Files written', value: String(result.files.length) },
+    { label: 'Lost', value: String(lost.length), tone: lost.length ? 'no' : 'yes' },
+    { label: 'Translated', value: String(translated.length) },
+  ]
 
   return (
-    <ToolView controls={controls}>
-      <div className={styles.workspace}>
-        <section aria-label="Input" className={styles.stack}>
-          <div className={styles.paneHead}>
-            <span className={styles.panelLabel}>Input</span>
-            {result && <Badge tone="info">Read as {FORMAT_LABEL[result.format]}</Badge>}
-            <Button onClick={() => upload.current?.click()} size="sm" variant="secondary">
-              Upload files
-            </Button>
-            <input
-              accept=".json,.css"
-              className={styles.hidden}
-              multiple
-              onChange={async event => {
-                const chosen = [...(event.target.files ?? [])]
-                if (!chosen.length) return
-                const read = await Promise.all(chosen.map(async f => ({ name: f.name, text: await f.text() })))
-                setFiles(read)
-                setActive(read[0].name)
-                event.target.value = ''
-              }}
-              ref={upload}
-              type="file"
+    <ToolView
+      controls={
+        <>
+          {/* The conversion itself. The two options below are a second row,
+              because a reader changes the format every visit and the rem base
+              almost never. */}
+          <div className={styles.controls}>
+            <Select
+              label="Start from an example"
+              onChange={choose}
+              options={examples.map(e => ({ label: e.label, value: e.id }))}
+              value={exampleId}
             />
+            <Select
+              label="Convert to"
+              onChange={value => setTarget(value as FormatId)}
+              options={FORMATS.map(format => ({ label: FORMAT_LABEL[format], value: format }))}
+              value={target}
+            />
+            <div className={styles.controlAction}>
+              <Button onClick={() => upload.current?.click()} variant="secondary">
+                Upload your own
+              </Button>
+              <input
+                accept=".json,.css"
+                className={styles.hidden}
+                multiple
+                onChange={async event => {
+                  const chosen = [...(event.target.files ?? [])]
+                  if (!chosen.length) return
+                  const read = await Promise.all(chosen.map(async f => ({ name: f.name, text: await f.text() })))
+                  setFiles(read)
+                  setActive(read[0].name)
+                  event.target.value = ''
+                }}
+                ref={upload}
+                type="file"
+              />
+            </div>
           </div>
-          <Tabs
-            appearance="segmented"
-            aria-label="Input files"
-            items={files.map(f => ({ label: f.name, value: f.name }))}
-            onValueChange={setActive}
-            size="sm"
-            value={current.name}
-          >
-            <Textarea
-              error={outcome.error}
-              label={current.name}
-              onChange={event =>
-                setFiles(all => all.map(f => (f.name === current.name ? { ...f, text: event.target.value } : f)))
-              }
-              rows={18}
-              spellCheck={false}
-              value={current.text}
-            />
-          </Tabs>
-        </section>
-
-        <section aria-label="Result" className={styles.stack}>
-          <span className={styles.panelLabel}>Result</span>
-          {result && (
-            <Tabs
-              aria-label="Result"
-              items={[
-                { label: `Files (${result.files.length})`, value: 'files' },
-                { label: `Tokens (${result.set.tokens.length})`, value: 'tokens' },
-                { label: `Report (${result.allLosses.length})`, value: 'report' },
-              ]}
-              onValueChange={setView}
-              size="sm"
-              value={view}
-            >
-              {view === 'files' && (
-                <div className={styles.stack}>
-                  {result.files.map(file => (
-                    <div className={styles.output} key={file.name}>
-                      <div className={styles.paneHead}>
-                        <span className={styles.outputName}>{file.name}</span>
-                        <Button onClick={() => download(file.name, file.text)} size="sm" variant="ghost">
-                          Download
-                        </Button>
-                      </div>
-                      <DynamicCodeBlock code={file.text} lang={language(file.name)} />
-                    </div>
-                  ))}
-                </div>
+          <details className={styles.disclosure}>
+            <summary>Options</summary>
+            <div className={styles.controls}>
+              <Input
+                inputMode="decimal"
+                label="Rem base, px"
+                onChange={e => setRemBase(e.target.value)}
+                value={remBase}
+              />
+              {target === 'tailwind' && (
+                <Select
+                  label="Tailwind modes by"
+                  onChange={value => setSelector(value as typeof selector)}
+                  options={[
+                    { label: 'data-theme attribute', value: 'data-theme' },
+                    { label: 'Class', value: 'class' },
+                    { label: 'Media query', value: 'media' },
+                  ]}
+                  value={selector}
+                />
               )}
+            </div>
+          </details>
+        </>
+      }
+    >
+      {outcome.error && <Callout tone="error">{outcome.error}</Callout>}
 
-              {view === 'tokens' && (
-                <div className={styles.tableWrap}>
-                  <table className={styles.table}>
-                    <thead>
-                      <tr>
-                        <th>Token</th>
-                        <th>Type</th>
-                        {result.set.modes.map(mode => (
-                          <th key={mode}>{mode}</th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {result.set.tokens.map(token => (
-                        <tr key={token.path.join('.')}>
-                          <td>
-                            <code className={styles.value}>{token.path.join('.')}</code>
-                          </td>
-                          <td>{token.type ?? 'none'}</td>
-                          {result.set.modes.map(mode => (
-                            <td key={mode}>
-                              <code className={styles.value}>{show(token, token.values[mode])}</code>
-                            </td>
-                          ))}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
+      {/* The answer, before any of the material it is drawn from. */}
+      {result && readings && (
+        <Panel label="What happened">
+          <dl className={styles.coords}>
+            {readings.map(reading => (
+              <div key={reading.label}>
+                <dt>{reading.label}</dt>
+                <dd>
+                  {reading.tone ? (
+                    <span className={styles.verdict} data-pass={reading.tone}>
+                      {reading.value}
+                    </span>
+                  ) : (
+                    reading.value
+                  )}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </Panel>
+      )}
 
-              {view === 'report' && (
-                <div className={styles.stack} role="status">
-                  {result.allLosses.length === 0 && <Callout tone="success">Nothing was lost or translated.</Callout>}
-                  {[
-                    { title: 'Lost', tone: 'warning' as const, losses: lost },
-                    { title: 'Translated', tone: 'info' as const, losses: translated },
-                  ]
-                    .filter(group => group.losses.length)
-                    .map(group => (
-                      <div className={styles.stack} key={group.title}>
-                        <span className={styles.panelLabel}>
-                          {group.title}, {group.losses.length}
-                        </span>
-                        {grouped(group.losses).map(([reason, entries]) => (
-                          <div className={styles.reason} key={reason}>
-                            <div className={styles.paneHead}>
-                              <Badge tone={group.tone}>
-                                {REASON[reason].label} · {entries.length}
-                              </Badge>
-                              <span className={styles.factNote}>{REASON[reason].meaning}</span>
-                            </div>
-                            <ul className={styles.losses}>
-                              {entries.map((loss, i) => (
-                                <li key={i}>
-                                  <code className={styles.value}>{loss.token}</code>
-                                  {loss.mode ? ` (${loss.mode})` : ''}: {loss.detail}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        ))}
-                      </div>
-                    ))}
+      {result && (
+        <Tabs
+          aria-label="Result"
+          items={[
+            { label: `Files (${result.files.length})`, value: 'files' },
+            { label: `Tokens (${result.set.tokens.length})`, value: 'tokens' },
+            { label: `Report (${result.allLosses.length})`, value: 'report' },
+          ]}
+          onValueChange={setView}
+          value={view}
+        >
+          {view === 'files' && (
+            <div className={styles.stack}>
+              {result.files.map(file => (
+                <div className={styles.output} key={file.name}>
+                  <div className={styles.paneHead}>
+                    <span className={styles.outputName}>{file.name}</span>
+                    <Button onClick={() => download(file.name, file.text)} size="sm" variant="ghost">
+                      Download
+                    </Button>
+                  </div>
+                  <DynamicCodeBlock code={file.text} lang={language(file.name)} />
                 </div>
-              )}
-            </Tabs>
+              ))}
+            </div>
           )}
-        </section>
-      </div>
+
+          {view === 'tokens' && (
+            <div className={styles.tableWrap}>
+              <table className={styles.table}>
+                <thead>
+                  <tr>
+                    <th scope="col">Token</th>
+                    <th scope="col">Type</th>
+                    {result.set.modes.map(mode => (
+                      <th key={mode} scope="col">
+                        {mode}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {result.set.tokens.map(token => (
+                    <tr key={token.path.join('.')}>
+                      <th scope="row">
+                        <code className={styles.value}>{token.path.join('.')}</code>
+                      </th>
+                      <td>{token.type ?? 'none'}</td>
+                      {result.set.modes.map(mode => (
+                        <td key={mode}>
+                          <code className={styles.value}>{show(token, token.values[mode])}</code>
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {/* One flat table, lost first. This was three levels deep: a group,
+              then a reason with its Badge and its meaning, then the tokens it
+              touched. The reason labels say what they mean, and the page
+              above explains lost against translated once, so the nesting was
+              carrying nothing the reader could not already see. */}
+          {view === 'report' && (
+            <div className={styles.stack} role="status">
+              {result.allLosses.length === 0 ? (
+                <Callout tone="success">Nothing was lost or translated.</Callout>
+              ) : (
+                <>
+                  {/* What each badge in the table below means, for the
+                      reasons this conversion actually hit. */}
+                  <ul className={styles.rows}>
+                    {reasons.map(({ reason, count }) => (
+                      <li key={reason}>
+                        <Badge tone={REASON[reason].lost ? 'warning' : 'info'}>{REASON[reason].label}</Badge>
+                        <span className={styles.rowName}>{REASON[reason].meaning}</span>
+                        <span className={styles.rowValue}>
+                          {count} {count === 1 ? 'token' : 'tokens'}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className={styles.tableWrap}>
+                    <table className={styles.table}>
+                      <thead>
+                        <tr>
+                          <th scope="col">Token</th>
+                          <th scope="col">Mode</th>
+                          <th scope="col">What happened</th>
+                          <th scope="col">Detail</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {[...lost, ...translated].map((loss, i) => (
+                          <tr key={`${loss.reason}-${loss.token}-${loss.mode ?? ''}-${i}`}>
+                            <th scope="row">
+                              <code className={styles.value}>{loss.token}</code>
+                            </th>
+                            <td>{loss.mode ?? ''}</td>
+                            <td>
+                              <Badge tone={REASON[loss.reason].lost ? 'warning' : 'info'}>
+                                {REASON[loss.reason].label}
+                              </Badge>
+                            </td>
+                            <td className={styles.detail}>{loss.detail}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+        </Tabs>
+      )}
+
+      {/* The input last, and shut. On a page that opens on an example, the
+          source is the one thing a reader did not come to read; it was half
+          the page and the heaviest thing on it. Changing the example or
+          uploading is in the controls above, so this is open only when
+          someone wants to edit the text by hand. */}
+      <details className={styles.disclosure}>
+        <summary>
+          The input, {files.length} {files.length === 1 ? 'file' : 'files'}: {files.map(f => f.name).join(', ')}
+        </summary>
+        <Tabs
+          appearance="segmented"
+          aria-label="Input files"
+          items={files.map(f => ({ label: f.name, value: f.name }))}
+          onValueChange={setActive}
+          size="sm"
+          value={current.name}
+        >
+          <Textarea
+            error={outcome.error}
+            label={current.name}
+            onChange={event =>
+              setFiles(all => all.map(f => (f.name === current.name ? { ...f, text: event.target.value } : f)))
+            }
+            rows={16}
+            spellCheck={false}
+            value={current.text}
+          />
+        </Tabs>
+      </details>
     </ToolView>
   )
 }

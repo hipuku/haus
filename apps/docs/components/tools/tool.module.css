@@ -34,13 +34,6 @@
   margin: 0;
 }
 
-.losses {
-  display: grid;
-  gap: var(--haus-space-1);
-  margin: var(--haus-space-2) 0 0;
-  padding-inline-start: var(--haus-space-5);
-}
-
 /*
  * A colour chip. Its colour is the reader's input; everything else is a token.
  *
@@ -155,24 +148,60 @@
   border-radius: var(--haus-radius-marker);
 }
 
-/* The converter's settings, in a row that wraps. */
+/* A tool's controls, which may be one field or several rows of them. */
+.controlsArea {
+  display: grid;
+  gap: var(--haus-space-4);
+}
+
+/* Settings in a row that wraps. */
 .controls {
+  align-items: end;
   display: grid;
   gap: var(--haus-space-4);
   grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
 }
 
-/* Input beside result on a wide screen, stacked below. */
-.workspace {
-  align-items: start;
-  display: grid;
-  gap: var(--haus-space-6);
-  grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
+/* A control with no label of its own, standing level with the fields beside
+   it rather than on their labels. */
+.controlAction {
+  display: flex;
+  padding-block-end: var(--haus-space-0-5);
 }
 
-.workspace textarea {
-  font-family: var(--haus-font-mono);
-  font-size: var(--haus-type-mono-sm-size);
+/*
+ * Something the page can do without: the options a reader almost never
+ * changes, and the input itself once it is an example they did not write.
+ * Drawn as a quiet row rather than a panel, so a shut one costs a line.
+ */
+.disclosure {
+  border-block-start: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
+  display: grid;
+  gap: var(--haus-space-4);
+  padding-block-start: var(--haus-space-4);
+}
+
+.disclosure > summary {
+  color: var(--haus-color-ink-secondary);
+  cursor: pointer;
+  font-size: var(--haus-type-body-sm-size);
+  list-style-position: inside;
+}
+
+.disclosure > summary:hover {
+  color: var(--haus-color-ink-primary);
+}
+
+.disclosure > summary:focus-visible {
+  border-radius: var(--haus-radius-control);
+  outline: var(--haus-border-width-thick) solid var(--haus-color-border-focus);
+  outline-offset: var(--haus-focus-outline-offset);
+}
+
+/* A sentence in a table cell, which wraps where the data columns do not. */
+.detail {
+  max-inline-size: 28rem;
+  white-space: normal;
 }
 
 /* A pane's heading row: its name, a Badge, an action at the end. */
@@ -189,14 +218,6 @@
 
 .hidden {
   display: none;
-}
-
-/* One loss reason: its Badge and meaning, then the tokens it touched. */
-.reason {
-  border-block-start: var(--haus-border-width-default) solid var(--haus-color-border-default);
-  display: grid;
-  gap: var(--haus-space-2);
-  padding-block-start: var(--haus-space-3);
 }
 
 /*

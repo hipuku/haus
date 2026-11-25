@@ -27,7 +27,7 @@ import styles from './tool.module.css'
 export function ToolView({ controls, children }: { controls: ReactNode; children?: ReactNode }) {
   return (
     <div className={`not-prose ${styles.view}`}>
-      <div className={styles.controls}>{controls}</div>
+      <div className={styles.controlsArea}>{controls}</div>
       {children}
     </div>
   )
