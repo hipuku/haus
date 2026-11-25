@@ -1,5 +1,5 @@
 import React from 'react'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { axe } from 'vitest-axe'
 import { Popover } from './Popover'
@@ -164,17 +164,53 @@ describe('Popover', () => {
 })
 
 describe('portal (haus#68)', () => {
-  function Harness({ portal }: { portal?: boolean }) {
+  function Harness({ portal, width, align }: { portal?: boolean; width?: PopoverWidth; align?: PopoverAlign }) {
     const triggerRef = React.useRef<HTMLButtonElement>(null)
     return (
       // A scrolling ancestor, which is what Modal's body is and what clips.
       <div data-testid="scroller" style={{ overflowY: 'auto', height: 100, position: 'relative' }}>
         <button ref={triggerRef}>Open</button>
-        <Popover open onClose={() => {}} triggerRef={triggerRef} portal={portal} aria-label="Menu">
+        <Popover
+          open
+          onClose={() => {}}
+          triggerRef={triggerRef}
+          portal={portal}
+          width={width}
+          align={align}
+          aria-label="Menu"
+        >
           <div data-testid="content">Body</div>
         </Popover>
       </div>
     )
+  }
+
+  /**
+   * jsdom measures nothing, so the trigger's rect is supplied and the panel is
+   * made to read it again.
+   *
+   * The component measures once in an effect and then on scroll and resize, so
+   * a spy installed after the first render is not seen by a re-render with the
+   * same props: the effect does not run again. Dispatching `resize` is the
+   * component's own recompute path and the honest way to do this.
+   */
+  const measureTrigger = (px: number) => {
+    const trigger = screen.getByRole('button', { name: 'Open' })
+    vi.spyOn(trigger, 'getBoundingClientRect').mockReturnValue({
+      x: 0,
+      y: 0,
+      left: 0,
+      top: 0,
+      right: px,
+      bottom: 20,
+      width: px,
+      height: 20,
+      toJSON: () => ({}),
+    } as DOMRect)
+    act(() => {
+      window.dispatchEvent(new Event('resize'))
+    })
+    return trigger
   }
 
   it('stays inside the scrolling ancestor by default', () => {
@@ -197,6 +233,41 @@ describe('portal (haus#68)', () => {
     const { getByRole } = render(<Harness portal />)
     const panel = getByRole('dialog')
     expect(panel).toHaveStyle({ position: 'fixed' })
+  })
+
+  /* A portalled panel is `position: fixed`, so every percentage in the
+     stylesheet resolves against the viewport rather than against anything the
+     caller owns. `width="trigger"` carries `min-inline-size: 100%`, so the
+     minimum has to come from the measured rect instead. */
+  it('takes its minimum width from the trigger, not a percentage', () => {
+    const { getByRole } = render(<Harness portal width="trigger" />)
+    measureTrigger(120)
+    expect(getByRole('dialog')).toHaveStyle({ minInlineSize: '120px' })
+  })
+
+  it('takes it from the trigger with stretch as well', () => {
+    /* The defect: `align="stretch"` used to set `inline-size` alone, so
+       `w-trigger`'s `min-inline-size: 100%` survived on a fixed panel and
+       resolved against the viewport. The panel came out at least as wide as
+       the window from two props that each asked for the trigger's width. */
+    const { getByRole } = render(<Harness portal width="trigger" align="stretch" />)
+    measureTrigger(120)
+    const panel = getByRole('dialog')
+    expect(panel).toHaveStyle({ minInlineSize: '120px' })
+    /* And the width mode keeps its growth rather than being pinned: `.panel`
+       has no `overflow`, so a panel too narrow for its content would draw
+       outside its own surface. */
+    expect(panel.style.inlineSize).toBe('')
+  })
+
+  it('sets the width outright for stretch where the mode has no opinion', () => {
+    /* `width="auto"` makes no width claim, so stretch is the only thing
+       speaking and still sets one. Unchanged by the fix above. */
+    const { getByRole } = render(<Harness portal align="stretch" />)
+    measureTrigger(120)
+    const panel = getByRole('dialog')
+    expect(panel).toHaveStyle({ inlineSize: '120px' })
+    expect(panel.style.minInlineSize).toBe('')
   })
 
   it('takes the modal layer when portalled, not the dropdown layer', () => {
