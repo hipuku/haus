@@ -437,3 +437,34 @@ figure.shiki {
   border: 0;
   padding: 0;
 }
+
+/*
+ * The API table, components/api-table.tsx: an ordinary prose table, so its
+ * rules and header row are the site's. The prop name is the inline-code
+ * purple; the type is quieter mono and wraps; the description is body text.
+ */
+.haus-api {
+  inline-size: 100%;
+}
+
+.haus-api td {
+  vertical-align: top;
+}
+
+.haus-api-name {
+  white-space: nowrap;
+}
+
+.haus-api-required,
+.haus-api-default {
+  color: var(--haus-color-ink-tertiary);
+  display: block;
+  font-size: var(--haus-type-body-sm-size);
+  margin-block-start: var(--haus-space-1);
+}
+
+.prose :not(pre) > code.haus-api-type {
+  color: var(--haus-color-ink-secondary);
+  font-size: var(--haus-type-mono-sm-size);
+  overflow-wrap: anywhere;
+}

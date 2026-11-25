@@ -1,8 +1,6 @@
 import { createGenerator } from 'fumadocs-typescript'
-import { AutoTypeTable } from 'fumadocs-typescript/ui'
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
-import styles from './api-table.module.css'
 
 const generator = createGenerator()
 
@@ -85,11 +83,52 @@ export function apiTableSource({ file, name, element = 'HTMLElement', attributes
  * props type the way the component does: the file must import React as
  * `React`, which every component in the package does.
  */
-export function ApiTable(props: ApiTableProps) {
+/*
+ * The props as a plain table, from the same generator: the prop, its full
+ * type, and what it is for. It is an ordinary table in the page's prose, so it
+ * takes the site's table styling, one rule colour and the header row's ground,
+ * rather than Fumadocs' card of expandable rows, whose collapsed Type column
+ * read "union" until opened.
+ */
+export async function ApiTable(props: ApiTableProps) {
   const { generator, basePath, props: table } = apiTableSource(props)
+  const [doc] = await generator.generateTypeTable(table, { basePath })
+  const entries = doc?.entries ?? []
+  if (!entries.length) return <p>No props beyond the element’s own attributes.</p>
+
   return (
-    <div className={styles.api}>
-      <AutoTypeTable generator={generator} options={{ basePath }} {...table} />
-    </div>
+    <table className="haus-api">
+      <thead>
+        <tr>
+          <th>Prop</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        {entries.map(entry => {
+          const fallback = entry.tags.find(tag => tag.name === 'default' || tag.name === 'defaultValue')?.text
+          return (
+            <tr key={entry.name}>
+              <td>
+                <code className="haus-api-name">{entry.name}</code>
+                {entry.required && <span className="haus-api-required">required</span>}
+              </td>
+              <td>
+                <code className="haus-api-type">{entry.type.replace(/ \| undefined$/, '')}</code>
+              </td>
+              <td>
+                {entry.description}
+                {fallback && (
+                  <span className="haus-api-default">
+                    Default <code className="haus-api-type">{fallback}</code>
+                  </span>
+                )}
+              </td>
+            </tr>
+          )
+        })}
+      </tbody>
+    </table>
   )
 }

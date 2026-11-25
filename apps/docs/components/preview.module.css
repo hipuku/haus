@@ -10,6 +10,7 @@
      stage and the rule under it. */
   display: flex;
   flex-direction: column;
+  position: relative;
 
   border: var(--haus-border-width-default) solid var(--haus-color-border-default);
   border-radius: var(--haus-radius-surface);
@@ -71,36 +72,9 @@
   justify-content: flex-start;
 }
 
-/*
- * The caption names the story. It is deliberately quiet: the example is the
- * content and this is the label under it, so it sits on the page's own surface
- * rather than adding a second panel.
- */
-.caption {
-  align-items: baseline;
-  margin: 0;
-  border-block-start: var(--haus-border-width-default) solid var(--haus-color-border-default);
-  color: var(--haus-color-ink-tertiary);
-  display: flex;
-  font-family: var(--haus-font-mono);
-  font-size: var(--haus-type-mono-xs-size);
-  gap: var(--haus-space-4);
-  justify-content: space-between;
-  letter-spacing: var(--haus-type-mono-xs-tracking);
-  line-height: var(--haus-type-mono-xs-leading);
-  padding: var(--haus-space-2) var(--haus-space-4);
-}
-
-.caption a {
-  color: var(--haus-color-ink-tertiary);
-  text-decoration: none;
-}
-
-/* The link is found by looking for it, and then it answers. A second coloured
-   word in every caption on a page of twelve examples is twelve distractions
-   from the examples. */
-.caption a:hover,
-.caption a:focus-visible {
-  color: var(--haus-color-ink-link);
-  text-decoration: underline;
+/* The workshop link, floating at the frame's top right. */
+.workshop {
+  inset-block-start: var(--haus-space-2);
+  inset-inline-end: var(--haus-space-2);
+  position: absolute;
 }
