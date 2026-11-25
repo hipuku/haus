@@ -39,18 +39,6 @@ export function PageActions({ markdownUrl, githubUrl }: { markdownUrl: string; g
 
   return (
     <>
-      <Button
-        onClick={async () => {
-          const text = await fetch(markdownUrl).then(response => response.text())
-          await navigator.clipboard.writeText(text)
-          setCopied(true)
-          setTimeout(() => setCopied(false), 2000)
-        }}
-        variant="secondary"
-      >
-        <Glyph d={COPY} />
-        {copied ? 'Copied' : 'Copy Markdown'}
-      </Button>
       <span className="haus-page-actions-open">
         <Button
           aria-expanded={open}
@@ -67,6 +55,18 @@ export function PageActions({ markdownUrl, githubUrl }: { markdownUrl: string; g
           <MenuItem onSelect={() => window.open(markdownUrl, '_blank', 'noreferrer')}>As Markdown</MenuItem>
         </Menu>
       </span>
+      <Button
+        onClick={async () => {
+          const text = await fetch(markdownUrl).then(response => response.text())
+          await navigator.clipboard.writeText(text)
+          setCopied(true)
+          setTimeout(() => setCopied(false), 2000)
+        }}
+        variant="secondary"
+      >
+        <Glyph d={COPY} />
+        {copied ? 'Copied' : 'Copy Markdown'}
+      </Button>
     </>
   )
 }

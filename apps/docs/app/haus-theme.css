@@ -216,8 +216,11 @@
 }
 
 .prose :where(p, li, td, th, blockquote, figcaption) a:hover {
-  /* The colour holds; only the underline changes, as on the text button. */
+  /* The colour holds; only the underline changes, as on the text button.
+     Fumadocs fades a prose link to 0.8 opacity on hover, which read as a
+     colour change; that is undone here. */
   color: var(--haus-color-ink-link);
+  opacity: 1;
   text-decoration-color: currentColor;
   text-decoration-thickness: var(--haus-border-width-thick);
 }
@@ -374,9 +377,9 @@ figure.shiki {
   inline-size: var(--haus-icon-sm);
 }
 
-/* The rule before the previous and next links sits clear of the page above. */
+/* Room between the page and the previous and next links after it. */
 .haus-page-end {
-  margin-block-start: var(--haus-space-12);
+  block-size: var(--haus-space-12);
 }
 
 /*

@@ -1,12 +1,5 @@
-'use client'
-
-import { Divider } from 'haus-components'
-
-/* The rule between a docs page and the previous and next links after it.
-   A client boundary for the same reason as notice.tsx: haus-components is a
-   client library and the page is a server component. `not-prose` keeps the
-   content's own rule styles off it: it is an <hr> inside the page, and those
-   drew a border on top of its fill, two pixels where every other line is one. */
+/* Room between a docs page and the previous and next links Fumadocs draws
+   after it. A space only: the content's own rules are the page's only lines. */
 export function PageEnd() {
-  return <Divider className="haus-page-end not-prose" spacing="lg" />
+  return <div aria-hidden="true" className="haus-page-end" />
 }
