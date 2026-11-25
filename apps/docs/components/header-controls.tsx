@@ -6,14 +6,14 @@ import { useSearchContext } from 'fumadocs-ui/contexts/search'
 import { IconButton } from 'haus-components'
 
 /*
- * The header's three controls, as haus's own IconButton.
+ * The header's controls, as haus's own IconButton.
  *
  * Fumadocs drew these itself: a field-shaped search button, a two-segment mode
  * pill and a bare GitHub glyph, each with its hover mapped to a surface that
  * in dark mode is darker than the page, so nothing changed under the pointer.
- * The secondary IconButton carries its own hover and press in both modes, one
- * size and one radius, so the three read as a set and as the system they
- * document.
+ * The ghost IconButton carries its own hover and press in both modes, one
+ * size and one radius, with nothing drawn at rest, so the four read as a set
+ * and as the system they document.
  */
 
 const Glyph = ({ children }: { children: React.ReactNode }) => (
@@ -46,7 +46,7 @@ export function SearchButton() {
       }
       label="Search"
       onClick={() => setOpenSearch(true)}
-      variant="secondary"
+      variant="ghost"
     />
   )
 }
@@ -81,7 +81,7 @@ export function ThemeButton() {
       }
       label={label}
       onClick={() => setTheme(next)}
-      variant="secondary"
+      variant="ghost"
     />
   )
 }
@@ -96,7 +96,27 @@ export function GitHubButton({ href }: { href: string }) {
         </svg>
       }
       label="GitHub repository"
-      variant="secondary"
+      variant="ghost"
+    >
+      <a href={href} rel="noreferrer" target="_blank" />
+    </IconButton>
+  )
+}
+
+/* A book, rather than Storybook's own mark: the label names the destination,
+   and the header's glyphs stay one drawing style. */
+export function StorybookButton({ href }: { href: string }) {
+  return (
+    <IconButton
+      asChild
+      icon={
+        <Glyph>
+          <path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2.5z" />
+          <path d="M4 19.5A2 2 0 0 0 6 21h13" />
+        </Glyph>
+      }
+      label="Storybook"
+      variant="ghost"
     >
       <a href={href} rel="noreferrer" target="_blank" />
     </IconButton>

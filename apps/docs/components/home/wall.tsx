@@ -47,8 +47,9 @@ import styles from './wall.module.css'
  * transition and nothing is shown that the component does not do:
  *
  * - Toggle `checked`: the thumb slides on the layout role
- * - a pointer, on three screens: hover, press and focus through the
- *   components' own rules, and real clicks on their own handlers (below)
+ * - a pointer, on three screens, doing one thing on each: focusing a field,
+ *   pressing a button, or opening a Select and choosing; hover, press and
+ *   focus through the components' own rules, clicks on their own handlers
  * - Checkbox `checked`: the box fills and the tick draws
  * - RadioGroup `value`: the dot grows in the newly chosen option
  * - Tabs `value`: the marker slides to the chosen tab
@@ -214,18 +215,11 @@ function Tile({ uses, children }: { uses: string[]; children: ReactNode }) {
   )
 }
 
-/* The pointer focuses each field, ticks the box, and presses Sign in. */
-// Checkbox puts its attributes on its hidden input; the pointer aims at the
-// label a person would click.
-const remember = (root: HTMLElement) => root.querySelector('[data-pointer="remember"]')?.closest('label') ?? null
+/* The pointer clicks into the email field, and that is all. */
 const SIGN_IN: Move[] = [
+  { at: by('input[type="email"]'), hover: true },
   { at: by('input[type="email"]'), focus: true },
-  { at: by('input[type="password"]'), focus: true },
-  { at: remember, hover: true },
-  { at: remember, hover: true, click: true },
-  { at: by('[data-pointer="sign-in"]'), hover: true },
-  { at: by('[data-pointer="sign-in"]'), hover: true, press: true },
-  { at: by('[data-pointer="sign-in"]'), hover: true },
+  { at: by('input[type="email"]'), focus: true },
   { at: null },
 ]
 function SignIn() {
@@ -236,10 +230,8 @@ function SignIn() {
       <div className={`${styles.stack} ${styles.stage}`} ref={stage}>
         <Input label="Email" onChange={noop} type="email" value="ada@hipuku.dev" />
         <Input label="Password" onChange={noop} type="password" value="analytical" />
-        <Checkbox data-pointer="remember" label="Keep me signed in" />
-        <Button data-pointer="sign-in" variant="primary">
-          Sign in
-        </Button>
+        <Checkbox defaultChecked label="Keep me signed in" />
+        <Button variant="primary">Sign in</Button>
         <Cursor position={position} />
       </div>
     </Tile>
@@ -413,13 +405,11 @@ function Feedback() {
   )
 }
 
-/* The pointer tries the formatting buttons, then publishes. */
+/* The pointer presses Publish, and that is all. */
 const TOOLBAR: Move[] = [
-  { at: by('[aria-label="Bold"]'), hover: true },
-  { at: by('[aria-label="Bold"]'), hover: true, press: true },
-  { at: by('[aria-label="Italic"]'), hover: true },
   { at: by('[data-pointer="publish"]'), hover: true },
   { at: by('[data-pointer="publish"]'), hover: true, press: true },
+  { at: by('[data-pointer="publish"]'), hover: true },
   { at: null },
 ]
 function Toolbar() {
@@ -445,8 +435,8 @@ function Toolbar() {
 }
 
 /*
- * The pointer opens the Select, moves to the next format, chooses it, and
- * presses Export. The Select opens through its own click handler and its
+ * The pointer opens the Select, moves to the next format and chooses it, and
+ * that is all. The Select opens through its own click handler and its
  * highlight follows the pointer through its own mouse handler; it scrolls only
  * its own list, so nothing outside the screen moves.
  */
@@ -465,8 +455,6 @@ const EXPORT: Move[] = [
   { at: by('[role="combobox"]'), hover: true, click: true },
   { at: nextOption, hover: true, enter: true },
   { at: nextOption, hover: true, enter: true, click: true },
-  { at: by('[data-pointer="export"]'), hover: true },
-  { at: by('[data-pointer="export"]'), hover: true, press: true },
   { at: null },
 ]
 function Export() {
@@ -479,9 +467,7 @@ function Export() {
         <Select label="Export as" onChange={setFormat} options={FORMATS} value={format} />
         <Select label="Colour space" onChange={noop} options={[{ label: 'OKLCH', value: 'oklch' }]} value="oklch" />
         <Checkbox checked label="Include the dark mode" onChange={noop} />
-        <Button data-pointer="export" variant="primary">
-          Export
-        </Button>
+        <Button variant="primary">Export</Button>
         <Cursor position={position} />
       </div>
     </Tile>

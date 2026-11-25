@@ -1,6 +1,6 @@
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared'
 import { Wordmark } from '@/components/wordmark'
-import { GitHubButton, SearchButton, ThemeButton } from '@/components/header-controls'
+import { GitHubButton, SearchButton, StorybookButton, ThemeButton } from '@/components/header-controls'
 import { docsRoute, gitConfig, storybookUrl } from './shared'
 
 /*
@@ -47,14 +47,12 @@ export function baseOptions({ home = false }: { home?: boolean } = {}): BaseLayo
     themeSwitch: { component: <ThemeButton /> },
     links: [
       ...SECTIONS.map(section => ({ ...section, active: 'nested-url' as const, on: 'nav' as const })),
-      // Storybook carries no `on`, so it stays in the docs sidebar as well as
-      // the header. Dropping it to the header alone is what hid it from every
-      // docs page on desktop before, where the docs layout draws no nav bar.
-      //
-      // Labelled "Storybook" rather than "Workshop": a link that leaves the
-      // site should say where it goes, and a developer already knows what
-      // Storybook is. The word stays in the prose, where it explains the job.
-      { text: 'Storybook', url: storybookUrl, external: true },
+      // Storybook is an icon in the header, beside GitHub, and stays a labelled
+      // link in the docs sidebar and the mobile menu (`on: 'menu'`), where a
+      // reader looks for it in a list. Labelled "Storybook" rather than
+      // "Workshop": a link that leaves the site should say where it goes.
+      { text: 'Storybook', url: storybookUrl, external: true, on: 'menu' },
+      { type: 'custom', secondary: true, children: <StorybookButton href={storybookUrl} /> },
       {
         type: 'custom',
         secondary: true,
