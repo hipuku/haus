@@ -202,3 +202,77 @@
   border: var(--haus-border-width-default) solid var(--haus-color-border-default);
   border-radius: var(--haus-radius-marker);
 }
+
+/* The converter's settings, in a row that wraps. */
+.controls {
+  display: grid;
+  gap: var(--haus-space-4);
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+}
+
+/* Input beside result on a wide screen, stacked below. */
+.workspace {
+  align-items: start;
+  display: grid;
+  gap: var(--haus-space-6);
+  grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
+}
+
+.workspace textarea {
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-mono-sm-size);
+}
+
+/* A pane's heading row: its name, a Badge, an action at the end. */
+.paneHead {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--haus-space-3);
+}
+
+.paneHead > :last-child:is(button, a) {
+  margin-inline-start: auto;
+}
+
+.hidden {
+  display: none;
+}
+
+/* One loss reason: its Badge and meaning, then the tokens it touched. */
+.reason {
+  border-block-start: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  display: grid;
+  gap: var(--haus-space-2);
+  padding-block-start: var(--haus-space-3);
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+.table {
+  border-collapse: collapse;
+  font-size: var(--haus-type-body-sm-size);
+  inline-size: 100%;
+}
+
+.table th,
+.table td {
+  border-block-end: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  padding: var(--haus-space-2) var(--haus-space-3);
+  text-align: start;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.table th {
+  background: var(--haus-color-surface-subtle);
+  color: var(--haus-color-ink-secondary);
+  font-weight: var(--haus-weight-semibold);
+}
+
+.table code {
+  color: var(--haus-color-primary-on-subtle);
+  font-family: var(--haus-font-mono);
+}
