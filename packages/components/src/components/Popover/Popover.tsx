@@ -253,12 +253,25 @@ export const Popover = React.forwardRef<HTMLDivElement, PopoverProps>(function P
         // Which viewport edge the panel is pinned to: the trigger's left edge
         // when its alignment edge is on the left, otherwise its right edge.
         ...((align === 'end') === rtl ? { left: rect.left } : { right: window.innerWidth - rect.right }),
-        // stretch is exactly the trigger's width; trigger is at least it.
-        ...(align === 'stretch'
-          ? { inlineSize: rect.width }
-          : width === 'trigger'
-            ? { minInlineSize: rect.width }
-            : {}),
+        /* The trigger's measured width replaces every percentage the panel
+           would otherwise resolve against the wrong box.
+           `width="trigger"` carries `min-inline-size: 100%` in the stylesheet,
+           and a portalled panel is `position: fixed`, so that percentage
+           resolves against the viewport. The minimum is therefore written from
+           the rect whenever the width mode asks for one, and not only when
+           `align` happens to leave the branch free: with `stretch` the old
+           ternary set `inline-size` alone, the percentage survived, and the
+           panel came out at least as wide as the viewport.
+           `stretch` still sets the width outright where the width mode has no
+           opinion. Where it does, the two agree about the trigger already and
+           the mode's own growth is kept, so a panel that is too narrow for its
+           content widens instead of overflowing: `.panel` has no `overflow`,
+           so the alternative is content drawn outside its surface. For
+           `width="trigger"` that growth is `.w-trigger`'s own
+           `inline-size: max-content` under its `max-inline-size`, not
+           `.panel`'s minimum, which `.w-trigger` overrides. */
+        ...(width === 'trigger' ? { minInlineSize: rect.width } : {}),
+        ...(align === 'stretch' && width !== 'trigger' ? { inlineSize: rect.width } : {}),
       }
     : { position: 'fixed', visibility: 'hidden' }
 
