@@ -31,16 +31,26 @@
    for why they are not. */
 
 /*
- * The name, at the size a name is set at. The system's `display` token is 30px
- * because that is the size of a dialog's title, and at 30px the name was the
- * same size as the heading of the section below it.
+ * The wordmark at the size a name is set at. The system's `display` token is
+ * 30px because that is a dialog's title, so the site's editorial scale sets it.
+ * The global wordmark rule sizes it for the header; this overrides it here.
  */
 .title {
-  font-size: var(--site-text-hero);
-  font-weight: var(--haus-weight-bold);
-  letter-spacing: var(--haus-tracking-tightest);
-  line-height: var(--haus-leading-tight);
-  margin: 0 0 var(--haus-space-5);
+  line-height: 1;
+  margin: 0 0 var(--haus-space-6);
+}
+
+.title :global(.haus-wordmark svg) {
+  block-size: var(--site-text-hero);
+}
+
+.visuallyHidden {
+  block-size: 1px;
+  clip-path: inset(50%);
+  inline-size: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
 }
 
 .lede {
@@ -57,6 +67,11 @@
   color: var(--haus-color-ink-link);
 }
 
+.lede code {
+  font-family: var(--haus-font-mono);
+  font-size: 0.9em;
+}
+
 .actions {
   display: flex;
   flex-wrap: wrap;
@@ -69,5 +84,5 @@
 /* No band, no rule. The panels in the showcase are its own ground, and a
    second one behind them would be a surface inside a surface. */
 .showcase {
-  padding-block-end: var(--haus-space-20);
+  padding-block: var(--haus-space-12) var(--haus-space-20);
 }

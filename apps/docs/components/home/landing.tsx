@@ -1,5 +1,6 @@
 'use client'
 
+import type { ReactNode } from 'react'
 import Link from 'next/link'
 import { Button } from 'haus-components'
 import { storybookUrl } from '@/lib/shared'
@@ -7,8 +8,8 @@ import { Wall } from './wall'
 import styles from './landing.module.css'
 
 /*
- * The landing page: the name, what the thing is, how to start, and the
- * components themselves.
+ * The landing page: the wordmark, what the thing is in two sentences, how to
+ * start, and the components in use.
  *
  * Nothing below that. It carried three more sections (the three decisions, a
  * contrast specimen, cards for the site, Storybook and the repository) and each
@@ -38,14 +39,20 @@ import styles from './landing.module.css'
  * what npm serves today: the token package is `@hipuku/tokens` 5.2.0 here and
  * `@hipuku/tokens` on the registry, since the rename shipped with 6.0.0.
  */
-export function Landing() {
+export function Landing({ wordmark }: { wordmark: ReactNode }) {
   return (
     <main className={styles.page}>
       <section className={`${styles.inner} ${styles.hero}`}>
-        <h1 className={styles.title}>haus</h1>
+        {/* The wordmark is the name, so it is the heading. Its own label is
+            hidden here: the h1 carries the name once, as text. */}
+        <h1 className={styles.title}>
+          <span className={styles.visuallyHidden}>haus</span>
+          <span aria-hidden="true">{wordmark}</span>
+        </h1>
         <p className={styles.lede}>
-          The design system every hipuku app is built on. Components install into your own repository as source, through
-          a <Link href="/docs/start/install">shadcn registry</Link>. The tokens underneath them are a package from npm.
+          Design tokens and 23 React components. The components install into your repository as source through a{' '}
+          <Link href="/docs/start/install">shadcn registry</Link>; the tokens install from npm as{' '}
+          <code>@hipuku/tokens</code>. Light and dark, four cascade layers, CSS modules.
         </p>
         <div className={styles.actions}>
           <Button asChild variant="primary">
@@ -59,9 +66,8 @@ export function Landing() {
         </div>
       </section>
 
-      {/* No heading over it, and no band behind it. The paragraph above says
-          what these are, and the panels are what separates them from the page.
-          A tinted band would be a second ground competing with theirs. */}
+      {/* The components in use. No heading over it: the paragraph above says
+          what they are, and each tile names its own. */}
       <section className={`${styles.inner} ${styles.showcase}`}>
         <Wall />
       </section>

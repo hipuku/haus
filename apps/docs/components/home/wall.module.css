@@ -1,91 +1,244 @@
 /*
- * The showcase.
- *
- * Each component sits in a panel of its own with its name under it, which puts
- * the specimen where the eye lands and the label where it is read second. The
- * arrangement before this was a card with the name at the top in small mono
- * caps, so the first thing read on a card about Button was the word "Button".
+ * The wall: columns of tiles that drift, inside a window with soft top and
+ * bottom edges. See components/home/wall.tsx for what stops the drift.
  */
 .wall {
-  display: grid;
-  gap: var(--haus-space-10) var(--haus-space-6);
-  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
-}
-
-.item {
-  display: flex;
-  flex-direction: column;
-  gap: var(--haus-space-4);
-  margin: 0;
+  --wall-height: 44rem;
+  position: relative;
 }
 
 /*
- * The panel is the specimen's ground, and it is the only tinted surface on the
- * page: the page itself stays one colour, so the six panels are what the eye
- * separates rather than a band running behind them.
- *
- * It is tall enough that a Badge and a Select sit in panels of the same height,
- * because six panels of six heights is a wall with a ragged edge.
+ * The edges fade into the page, so a tile leaving the window goes rather than
+ * being cut. A mask rather than a gradient laid over the top: an overlay
+ * would sit above the controls and take their clicks.
  */
-.panel {
-  align-items: center;
-  background: var(--haus-color-surface-subtle);
-  border: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
-  border-radius: var(--haus-radius-surface);
+.columns {
+  block-size: var(--wall-height);
+  display: grid;
+  gap: var(--haus-space-6);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black var(--haus-space-16),
+    black calc(100% - var(--haus-space-16)),
+    transparent
+  );
+  overflow: hidden;
+}
+
+.column {
+  min-inline-size: 0;
+}
+
+/*
+ * A column is its tiles twice, one above the other, moved up by half its own
+ * height: the second set then sits exactly where the first began, and the
+ * loop restarts on a frame that looks the same. Every other column runs the
+ * other way, and the three differ in speed, so the wall does not move as one
+ * slab.
+ */
+.track {
+  animation: drift var(--wall-duration, 70s) var(--haus-ease-linear) infinite;
   display: flex;
-  justify-content: center;
-  min-block-size: 11rem;
-  padding: var(--haus-space-8);
+  flex-direction: column;
+}
+
+.column:nth-child(2) .track {
+  --wall-duration: 85s;
+  animation-direction: reverse;
+}
+
+.column:nth-child(3) .track {
+  --wall-duration: 60s;
+}
+
+@keyframes drift {
+  to {
+    transform: translateY(-50%);
+  }
+}
+
+.wall:hover .track,
+.wall:focus-within .track,
+.wall[data-paused] .track {
+  animation-play-state: paused;
+}
+
+/*
+ * With motion reduced, the wall is a still grid of the first set: no drift,
+ * no duplicate, and no window to scroll past, so nothing is cut off.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    animation: none;
+  }
+
+  .copy,
+  .pause {
+    display: none;
+  }
+
+  .columns {
+    block-size: auto;
+    mask-image: none;
+  }
+}
+
+:global([data-haus-motion='reduced']) .track {
+  animation: none;
+}
+
+:global([data-haus-motion='reduced']) .copy,
+:global([data-haus-motion='reduced']) .pause {
+  display: none;
+}
+
+:global([data-haus-motion='reduced']) .columns {
+  block-size: auto;
+  mask-image: none;
+}
+
+/* The gap is padding on each set rather than a gap on the track, so the two
+   sets are the same height including the space between them and the loop
+   lands on the same frame. */
+.set {
+  display: flex;
+  flex-direction: column;
+  gap: var(--haus-space-6);
+  padding-block-end: var(--haus-space-6);
+}
+
+.pause {
+  background: var(--haus-color-surface-default);
+  border: var(--haus-border-width-default) solid var(--haus-color-border-control);
+  border-radius: var(--haus-radius-control);
+  color: var(--haus-color-ink-secondary);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--haus-type-body-sm-size);
+  inset-block-start: calc(-1 * var(--haus-space-12));
+  inset-inline-end: 0;
+  padding: var(--haus-space-1) var(--haus-space-3);
+  position: absolute;
+}
+
+.pause:hover {
+  color: var(--haus-color-ink-primary);
+}
+
+.pause:focus-visible {
+  outline: var(--haus-border-width-thick) solid var(--haus-color-border-focus);
+  outline-offset: var(--haus-border-width-thick);
+}
+
+/* ─── Tiles ─────────────────────────────────────────────────────────────── */
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--haus-space-2);
+  margin: 0;
+}
+
+.screen {
+  padding: var(--haus-space-6);
 }
 
 .caption {
-  display: flex;
-  flex-direction: column;
-  gap: var(--haus-space-1);
+  color: var(--haus-color-ink-tertiary);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-caption-size, var(--haus-type-body-sm-size));
 }
 
-/*
- * The name, at a heading's size rather than a caption's. It is the one word
- * that says what is in the panel above it, and in mono caps at 11px it read as
- * furniture.
- */
-.name {
-  font-size: var(--haus-type-heading-size);
-  font-weight: var(--haus-weight-semibold);
-  letter-spacing: var(--haus-type-heading-tracking);
-  line-height: var(--haus-type-heading-leading);
-  margin: 0;
-}
-
-.name a {
-  color: var(--haus-color-ink-primary);
+.caption a {
+  color: inherit;
   text-decoration: none;
 }
 
-.name a:hover {
+.caption a:hover {
+  color: var(--haus-color-ink-primary);
   text-decoration: underline;
   text-underline-offset: 0.2em;
 }
 
-.description {
-  color: var(--haus-color-ink-secondary);
-  font-size: var(--haus-type-body-sm-size);
-  line-height: var(--haus-type-body-sm-leading);
-  margin: 0;
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--haus-space-4);
 }
 
 .row {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
-  gap: var(--haus-space-3);
-  justify-content: center;
+  gap: var(--haus-space-2);
 }
 
-.column {
+.list {
   display: flex;
   flex-direction: column;
   gap: var(--haus-space-3);
-  inline-size: 100%;
-  max-inline-size: 18rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.person {
+  align-items: center;
+  display: flex;
+  gap: var(--haus-space-3);
+}
+
+.personName {
+  flex: 1;
+  font-size: var(--haus-type-body-sm-size);
+}
+
+.panelText {
+  color: var(--haus-color-ink-secondary);
+  font-size: var(--haus-type-body-sm-size);
+  margin: var(--haus-space-4) 0 0;
+}
+
+.saving {
+  align-items: center;
+  color: var(--haus-color-ink-secondary);
+  display: inline-flex;
+  font-size: var(--haus-type-body-sm-size);
+  gap: var(--haus-space-2);
+  margin-inline-start: auto;
+}
+
+/* Two columns, then one. Below that the wall is a still list: a single
+   drifting column on a phone is a page that scrolls itself. */
+@media (max-width: 64rem) {
+  .columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .column:nth-child(3) {
+    display: none;
+  }
+}
+
+@media (max-width: 40rem) {
+  .columns {
+    block-size: auto;
+    grid-template-columns: 1fr;
+    mask-image: none;
+  }
+
+  .column:nth-child(3) {
+    display: block;
+  }
+
+  .track {
+    animation: none;
+  }
+
+  .copy,
+  .pause {
+    display: none;
+  }
 }

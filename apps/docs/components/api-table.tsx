@@ -31,18 +31,29 @@ export type ApiTableProps = {
 }
 
 /**
- * The attributes a component's source takes out of an HTML attribute set,
- * `Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'>`, so it can define
- * its own. Each is part of the component's API, and leaving the whole
- * attribute set out of the table dropped Select's required `onChange`, Modal's
- * `title` and Tooltip's `content` without a word. A key that is removed and
- * not redefined is not in the props type, so keeping it adds no row.
+ * The attributes a component defines for itself, which stay in the table
+ * although they share a name with an HTML attribute. Two ways to do that, and
+ * both dropped the prop without a word when the table left the whole attribute
+ * set out:
+ *
+ * - taken out and redefined, `Omit<React.HTMLAttributes<HTMLDivElement>,
+ *   'onChange'>`: Select's required `onChange`, Tooltip's `content`
+ * - narrowed in place, `title: string` over the attribute's `title?: string`:
+ *   EmptyState's required `title`
+ *
+ * So the keys named in an `Omit` of an attribute set, and every key declared
+ * in an interface or object type in the file. A key that is not in the props
+ * type adds no row, so over-collecting costs nothing.
  */
 function redefined(file: string) {
   const source = readFileSync(path.join(componentsSrc, file), 'utf8')
-  return [...source.matchAll(/Omit<\s*React\.\w*Attributes<\w+>\s*,([^>]+)>/g)].flatMap(([, keys]) =>
+  const omitted = [...source.matchAll(/Omit<\s*React\.\w*Attributes<\w+>\s*,([^>]+)>/g)].flatMap(([, keys]) =>
     [...keys.matchAll(/'([^']+)'/g)].map(([, key]) => key),
   )
+  const declared = [...source.matchAll(/(?:interface\s+\w+[^{]*|=\s*)\{([^{}]*)\}/g)].flatMap(([, body]) =>
+    [...body.matchAll(/^\s*(?:readonly\s+)?'?([\w-]+)'?\??:/gm)].map(([, key]) => key),
+  )
+  return [...omitted, ...declared]
 }
 
 /**
