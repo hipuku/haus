@@ -69,10 +69,12 @@ trigger's own rect rather than a percentage of whatever the panel is positioned 
 `align="stretch"` it sets the inline size from that measurement instead. Outside `portal`,
 `stretch` sets the two insets, so the panel spans the containing block.
 
-**No combination holds a panel to its trigger's width.** `.panel` carries
-`min-inline-size: max-content`, which survives every one of them, so content wider than the
-trigger widens the panel and that is the intended reading: an option is legible before it is
-aligned. A caller who needs a hard width should set one, and read the next paragraph first.
+**No combination holds a panel to its trigger's width**, and the rule that widens the panel depends
+on the mode. `width="auto"` grows by `.panel`'s `min-inline-size: max-content`. `width="trigger"`
+declares its own minimum, which overrides that one, and grows by its `inline-size: max-content`
+under `popover-width-xl`. Either way content wider than the trigger widens the panel, and that is
+the intended reading: an option is legible before it is aligned. A caller who needs a hard width
+should set one, and read the next paragraph first.
 
 Do not reach for a fixed step as the cap. It does not track the trigger at all, so a step wider
 than the trigger gives a panel wider than the trigger, and a step narrower than the content is
