@@ -210,3 +210,11 @@
     display: none;
   }
 }
+
+/* A settings row: the label on the left and the switch at the far end, as a
+   settings list sets them. Toggle's root is inline, so it is stretched. */
+.spread {
+  display: flex;
+  justify-content: space-between;
+  inline-size: 100%;
+}
