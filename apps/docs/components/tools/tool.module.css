@@ -17,13 +17,74 @@
   min-inline-size: 0;
 }
 
+/*
+ * Three kinds of label on these pages, and which to use when.
+ *
+ * 1. The uppercase mono micro-label, `.panelLabel`, names a region of the
+ *    page: a panel, a stage, a section. It is the page talking about its own
+ *    structure, and nothing inside a control uses it.
+ * 2. A control's own label comes from the component, in sentence case, and
+ *    names one thing the reader sets. haus draws it; the page never draws one
+ *    by hand.
+ * 3. A name that came out of the data, a filename or a token path, is not a
+ *    label at all. It is mono, because it is code, and it is set as it was
+ *    written: `theme.css` in capitals is a different string from the one the
+ *    converter produced.
+ *
+ * `.outputName` was drawn as (1) and is (3), which is what made the page look
+ * like it had two label systems and no rule.
+ */
 .outputName {
-  color: var(--haus-color-ink-tertiary);
+  color: var(--haus-color-ink-secondary);
   font-family: var(--haus-font-mono);
-  font-size: var(--haus-type-mono-xs-size);
-  letter-spacing: var(--haus-tracking-widest);
-  line-height: var(--haus-type-mono-xs-leading);
-  text-transform: uppercase;
+  font-size: var(--haus-type-mono-sm-size);
+  line-height: var(--haus-type-mono-sm-leading);
+}
+
+/*
+ * A stage of the page: its number, its name, and what it is for. The
+ * converter is three things in order, input, settings, result, and it read as
+ * five bands of equal weight with the input at the bottom.
+ */
+.stage {
+  display: grid;
+  gap: var(--haus-space-5);
+}
+
+.stageHead {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--haus-space-3);
+}
+
+.stageNumber {
+  align-items: center;
+  background: var(--haus-color-primary-subtle);
+  block-size: var(--haus-control-height-sm);
+  border-radius: var(--haus-radius-pill);
+  color: var(--haus-color-primary-on-subtle);
+  display: inline-flex;
+  flex: none;
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-mono-sm-size);
+  inline-size: var(--haus-control-height-sm);
+  justify-content: center;
+}
+
+.stageName {
+  color: var(--haus-color-ink-primary);
+  font-size: var(--haus-type-heading-sm-size);
+  font-weight: var(--haus-type-heading-sm-weight);
+  letter-spacing: var(--haus-type-heading-sm-tracking);
+  line-height: var(--haus-type-heading-sm-leading);
+  margin: 0;
+}
+
+.stageNote {
+  color: var(--haus-color-ink-secondary);
+  font-size: var(--haus-type-body-sm-size);
+  margin: 0;
 }
 
 
@@ -169,27 +230,13 @@
   padding-block-end: var(--haus-space-0-5);
 }
 
-/*
- * The settings. A row below the conversion, led by the same label the panels
- * use and set off by a rule, so it reads as secondary while staying in full
- * view. The fields take their own width rather than the equal columns above:
- * a rem base is four characters and does not want a third of the page.
- */
+/* Fields that take their own width rather than equal columns: a rem base is
+   four characters and does not want a third of the page. */
 .options {
   align-items: end;
-  border-block-start: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
   display: flex;
   flex-wrap: wrap;
   gap: var(--haus-space-5);
-  padding-block-start: var(--haus-space-4);
-}
-
-.options > .panelLabel {
-  padding-block-end: var(--haus-space-2);
-}
-
-.options :is(label, [class*='field']) {
-  min-inline-size: 0;
 }
 
 

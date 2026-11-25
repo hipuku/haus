@@ -24,10 +24,12 @@ import styles from './tool.module.css'
  * above this, so there is no header slot here. The standalone tools carried
  * their own title because they had no page around them to do it.
  */
-export function ToolView({ controls, children }: { controls: ReactNode; children?: ReactNode }) {
+export function ToolView({ controls, children }: { controls?: ReactNode; children?: ReactNode }) {
   return (
     <div className={`not-prose ${styles.view}`}>
-      <div className={styles.controlsArea}>{controls}</div>
+      {/* A tool with one question puts its field here. One with stages, like
+          the converter, has no single control strip and passes none. */}
+      {controls && <div className={styles.controlsArea}>{controls}</div>}
       {children}
     </div>
   )
@@ -98,6 +100,37 @@ export function Hero({ faces, note }: { faces: HeroFace[]; note?: string }) {
       ))}
       {note && <span className={styles.heroNote}>{note}</span>}
     </div>
+  )
+}
+
+/*
+ * A stage of a tool that has them: its number, its name, and a line on what
+ * the reader does here. A tool with one question and one answer needs none of
+ * this; the converter is three steps in order and was drawn as bands of equal
+ * weight, so nothing on it said which came first.
+ */
+export function Stage({
+  children,
+  name,
+  note,
+  number,
+}: {
+  children: ReactNode
+  name: string
+  note: string
+  number: number
+}) {
+  return (
+    <section className={styles.stage}>
+      <div className={styles.stageHead}>
+        <span aria-hidden="true" className={styles.stageNumber}>
+          {number}
+        </span>
+        <h2 className={styles.stageName}>{name}</h2>
+        <p className={styles.stageNote}>{note}</p>
+      </div>
+      {children}
+    </section>
   )
 }
 

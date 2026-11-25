@@ -17,7 +17,7 @@ import {
 import { DynamicCodeBlock } from 'fumadocs-ui/components/dynamic-codeblock'
 import { Badge, Button, Callout, Input, Select, Tabs, Textarea } from 'haus-components'
 import { useMemo, useRef, useState } from 'react'
-import { Panel, ToolView } from './tool-view'
+import { Panel, Stage, ToolView } from './tool-view'
 import styles from './tool.module.css'
 
 export interface Example {
@@ -160,218 +160,40 @@ export function Converter({ examples }: { examples: Example[] }) {
   )
 
   return (
-    <ToolView
-      controls={
-        <>
-          {/* The conversion itself. The two options below are a second row,
-              because a reader changes the format every visit and the rem base
-              almost never. */}
-          <div className={styles.controls}>
-            <Select
-              label="Start from an example"
-              onChange={choose}
-              options={examples.map(e => ({ label: e.label, value: e.id }))}
-              value={exampleId}
+    <ToolView>
+      {/* The page is three things in order: what you have, what you want, and
+          what you get. It was a control strip, then the answer, then the
+          source it came from at the foot of the page, which is the journey
+          backwards. */}
+      <Stage name="The tokens you have" note="An example, your own files, or either one edited here." number={1}>
+        <div className={styles.controls}>
+          <Select
+            label="Start from an example"
+            onChange={choose}
+            options={examples.map(e => ({ label: e.label, value: e.id }))}
+            value={exampleId}
+          />
+          <div className={styles.controlAction}>
+            <Button onClick={() => upload.current?.click()} variant="secondary">
+              Upload your own
+            </Button>
+            <input
+              accept=".json,.css"
+              className={styles.hidden}
+              multiple
+              onChange={async event => {
+                const chosen = [...(event.target.files ?? [])]
+                if (!chosen.length) return
+                const read = await Promise.all(chosen.map(async f => ({ name: f.name, text: await f.text() })))
+                setFiles(read)
+                setActive(read[0].name)
+                event.target.value = ''
+              }}
+              ref={upload}
+              type="file"
             />
-            <Select
-              label="Convert to"
-              onChange={value => setTarget(value as FormatId)}
-              options={FORMATS.map(format => ({ label: FORMAT_LABEL[format], value: format }))}
-              value={target}
-            />
-            <div className={styles.controlAction}>
-              <Button onClick={() => upload.current?.click()} variant="secondary">
-                Upload your own
-              </Button>
-              <input
-                accept=".json,.css"
-                className={styles.hidden}
-                multiple
-                onChange={async event => {
-                  const chosen = [...(event.target.files ?? [])]
-                  if (!chosen.length) return
-                  const read = await Promise.all(chosen.map(async f => ({ name: f.name, text: await f.text() })))
-                  setFiles(read)
-                  setActive(read[0].name)
-                  event.target.value = ''
-                }}
-                ref={upload}
-                type="file"
-              />
-            </div>
           </div>
-          {/* The settings, in a row of their own rather than mixed in with
-              the conversion above: a reader changes the format every visit
-              and the rem base almost never, and that is a difference in
-              weight, not a reason to put one of them out of sight. */}
-          <div className={styles.options}>
-            <span className={styles.panelLabel}>Options</span>
-            <Input
-              inputMode="decimal"
-              label="Rem base, px"
-              onChange={e => setRemBase(e.target.value)}
-              value={remBase}
-            />
-            {target === 'tailwind' && (
-              <Select
-                label="Tailwind modes by"
-                onChange={value => setSelector(value as typeof selector)}
-                options={[
-                  { label: 'data-theme attribute', value: 'data-theme' },
-                  { label: 'Class', value: 'class' },
-                  { label: 'Media query', value: 'media' },
-                ]}
-                value={selector}
-              />
-            )}
-          </div>
-        </>
-      }
-    >
-      {outcome.error && <Callout tone="error">{outcome.error}</Callout>}
-
-      {/* The answer, before any of the material it is drawn from. */}
-      {result && readings && (
-        <Panel label="What happened">
-          <dl className={styles.coords}>
-            {readings.map(reading => (
-              <div key={reading.label}>
-                <dt>{reading.label}</dt>
-                <dd>
-                  {reading.tone ? (
-                    <span className={styles.verdict} data-pass={reading.tone}>
-                      {reading.value}
-                    </span>
-                  ) : (
-                    reading.value
-                  )}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </Panel>
-      )}
-
-      {result && (
-        <Tabs
-          aria-label="Result"
-          items={[
-            { label: `Files (${result.files.length})`, value: 'files' },
-            { label: `Tokens (${result.set.tokens.length})`, value: 'tokens' },
-            { label: `Report (${result.allLosses.length})`, value: 'report' },
-          ]}
-          onValueChange={setView}
-          value={view}
-        >
-          {view === 'files' && (
-            <div className={styles.stack}>
-              {result.files.map(file => (
-                <div className={styles.output} key={file.name}>
-                  <span className={styles.outputName}>{file.name}</span>
-                  <DynamicCodeBlock code={file.text} lang={language(file.name)} />
-                </div>
-              ))}
-            </div>
-          )}
-
-          {view === 'tokens' && (
-            <div className={styles.tableWrap}>
-              <table className={styles.table}>
-                <thead>
-                  <tr>
-                    <th scope="col">Token</th>
-                    <th scope="col">Type</th>
-                    {result.set.modes.map(mode => (
-                      <th key={mode} scope="col">
-                        {mode}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {result.set.tokens.map(token => (
-                    <tr key={token.path.join('.')}>
-                      <th scope="row">
-                        <code className={styles.value}>{token.path.join('.')}</code>
-                      </th>
-                      <td>{token.type ?? 'none'}</td>
-                      {result.set.modes.map(mode => (
-                        <td key={mode}>
-                          <code className={styles.value}>{show(token, token.values[mode])}</code>
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-
-          {/* One flat table, lost first. This was three levels deep: a group,
-              then a reason with its Badge and its meaning, then the tokens it
-              touched. The reason labels say what they mean, and the page
-              above explains lost against translated once, so the nesting was
-              carrying nothing the reader could not already see. */}
-          {view === 'report' && (
-            <div className={styles.stack} role="status">
-              {result.allLosses.length === 0 ? (
-                <Callout tone="success">Nothing was lost or translated.</Callout>
-              ) : (
-                <>
-                  {/* What each badge in the table below means, for the
-                      reasons this conversion actually hit. */}
-                  <ul className={styles.rows}>
-                    {reasons.map(({ reason, count }) => (
-                      <li key={reason}>
-                        <Badge tone={REASON[reason].lost ? 'warning' : 'info'}>{REASON[reason].label}</Badge>
-                        <span className={styles.rowName}>{REASON[reason].meaning}</span>
-                        <span className={styles.rowValue}>
-                          {count} {count === 1 ? 'token' : 'tokens'}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                  <div className={styles.tableWrap}>
-                    <table className={styles.table}>
-                      <thead>
-                        <tr>
-                          <th scope="col">Token</th>
-                          <th scope="col">Mode</th>
-                          <th scope="col">What happened</th>
-                          <th scope="col">Detail</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {[...lost, ...translated].map((loss, i) => (
-                          <tr key={`${loss.reason}-${loss.token}-${loss.mode ?? ''}-${i}`}>
-                            <th scope="row">
-                              <code className={styles.value}>{loss.token}</code>
-                            </th>
-                            <td>{loss.mode ?? ''}</td>
-                            <td>
-                              <Badge tone={REASON[loss.reason].lost ? 'warning' : 'info'}>
-                                {REASON[loss.reason].label}
-                              </Badge>
-                            </td>
-                            <td className={styles.detail}>{loss.detail}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </>
-              )}
-            </div>
-          )}
-        </Tabs>
-      )}
-
-      {/* The source the result came from, below it and in full. A converter
-          reads input and writes output, so the input belongs on the page; it
-          sits after the answer rather than before it because the page opens
-          on an example nobody here wrote. One file needs no tab bar. */}
-      <section aria-label="Input" className={styles.stack}>
-        <span className={styles.panelLabel}>Input</span>
+        </div>
         {files.length > 1 ? (
           <Tabs
             appearance="segmented"
@@ -386,7 +208,166 @@ export function Converter({ examples }: { examples: Example[] }) {
         ) : (
           field
         )}
-      </section>
+      </Stage>
+
+      <Stage name="What to write" note="The format to write, and how to write it." number={2}>
+        <div className={styles.options}>
+          <Select
+            label="Convert to"
+            onChange={value => setTarget(value as FormatId)}
+            options={FORMATS.map(format => ({ label: FORMAT_LABEL[format], value: format }))}
+            value={target}
+          />
+          <Input inputMode="decimal" label="Rem base, px" onChange={e => setRemBase(e.target.value)} value={remBase} />
+          {target === 'tailwind' && (
+            <Select
+              label="Tailwind modes by"
+              onChange={value => setSelector(value as typeof selector)}
+              options={[
+                { label: 'data-theme attribute', value: 'data-theme' },
+                { label: 'Class', value: 'class' },
+                { label: 'Media query', value: 'media' },
+              ]}
+              value={selector}
+            />
+          )}
+        </div>
+      </Stage>
+
+      <Stage name="What you get" note="What was written, the model behind it, and what did not survive." number={3}>
+        {outcome.error && <Callout tone="error">{outcome.error}</Callout>}
+
+        {/* The answer, before any of the material it is drawn from. */}
+        {result && readings && (
+          <Panel label="What happened">
+            <dl className={styles.coords}>
+              {readings.map(reading => (
+                <div key={reading.label}>
+                  <dt>{reading.label}</dt>
+                  <dd>
+                    {reading.tone ? (
+                      <span className={styles.verdict} data-pass={reading.tone}>
+                        {reading.value}
+                      </span>
+                    ) : (
+                      reading.value
+                    )}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </Panel>
+        )}
+
+        {result && (
+          <Tabs
+            aria-label="Result"
+            items={[
+              { label: `Files (${result.files.length})`, value: 'files' },
+              { label: `Tokens (${result.set.tokens.length})`, value: 'tokens' },
+              { label: `Report (${result.allLosses.length})`, value: 'report' },
+            ]}
+            onValueChange={setView}
+            value={view}
+          >
+            {view === 'files' && (
+              <div className={styles.stack}>
+                {result.files.map(file => (
+                  <div className={styles.output} key={file.name}>
+                    <span className={styles.outputName}>{file.name}</span>
+                    <DynamicCodeBlock code={file.text} lang={language(file.name)} />
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {view === 'tokens' && (
+              <div className={styles.tableWrap}>
+                <table className={styles.table}>
+                  <thead>
+                    <tr>
+                      <th scope="col">Token</th>
+                      <th scope="col">Type</th>
+                      {result.set.modes.map(mode => (
+                        <th key={mode} scope="col">
+                          {mode}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {result.set.tokens.map(token => (
+                      <tr key={token.path.join('.')}>
+                        <th scope="row">
+                          <code className={styles.value}>{token.path.join('.')}</code>
+                        </th>
+                        <td>{token.type ?? 'none'}</td>
+                        {result.set.modes.map(mode => (
+                          <td key={mode}>
+                            <code className={styles.value}>{show(token, token.values[mode])}</code>
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            {/* One flat table, lost first, under a legend of the reasons this
+                conversion actually hit. */}
+            {view === 'report' && (
+              <div className={styles.stack} role="status">
+                {result.allLosses.length === 0 ? (
+                  <Callout tone="success">Nothing was lost or translated.</Callout>
+                ) : (
+                  <>
+                    <ul className={styles.rows}>
+                      {reasons.map(({ reason, count }) => (
+                        <li key={reason}>
+                          <Badge tone={REASON[reason].lost ? 'warning' : 'info'}>{REASON[reason].label}</Badge>
+                          <span className={styles.rowName}>{REASON[reason].meaning}</span>
+                          <span className={styles.rowValue}>
+                            {count} {count === 1 ? 'token' : 'tokens'}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                    <div className={styles.tableWrap}>
+                      <table className={styles.table}>
+                        <thead>
+                          <tr>
+                            <th scope="col">Token</th>
+                            <th scope="col">Mode</th>
+                            <th scope="col">What happened</th>
+                            <th scope="col">Detail</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {[...lost, ...translated].map((loss, i) => (
+                            <tr key={`${loss.reason}-${loss.token}-${loss.mode ?? ''}-${i}`}>
+                              <th scope="row">
+                                <code className={styles.value}>{loss.token}</code>
+                              </th>
+                              <td>{loss.mode ?? ''}</td>
+                              <td>
+                                <Badge tone={REASON[loss.reason].lost ? 'warning' : 'info'}>
+                                  {REASON[loss.reason].label}
+                                </Badge>
+                              </td>
+                              <td className={styles.detail}>{loss.detail}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
+          </Tabs>
+        )}
+      </Stage>
     </ToolView>
   )
 }
