@@ -199,7 +199,7 @@ export function InspectColour() {
               line a reader came to the page for, in the form they paste. */}
           <div className={styles.declaration}>
             <code>{declaration}</code>
-            <CopyValue text={declaration} />
+            <CopyValue size="lg" text={declaration} variant="secondary" />
           </div>
           <p className={styles.factNote}>
             Lightness and chroma are perceptual, so an even step in lightness looks like an even step. Chroma has no

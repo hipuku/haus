@@ -29,7 +29,8 @@
 .code {
   background: var(--haus-color-surface-sunken);
   border: var(--haus-border-width-default) solid var(--haus-color-border-default);
-  border-radius: var(--haus-radius-md);
+  /* A pane, so the surface role rather than a value off the raw scale. */
+  border-radius: var(--haus-radius-surface);
   color: var(--haus-color-ink-primary);
   font-family: var(--haus-font-mono);
   font-size: var(--haus-type-mono-sm-size);
@@ -602,16 +603,22 @@
   gap: var(--haus-space-2);
 }
 
+/* The value sits in a box shaped like the field above it: the control radius,
+   which the brand sets to 4px rather than the 8px of the raw scale, and the
+   control height a default Input and Button both stand at. */
 .declaration code {
+  align-items: center;
   background: var(--haus-color-surface-sunken);
+  block-size: var(--haus-control-height-md);
   border: var(--haus-border-width-default) solid var(--haus-color-border-default);
-  border-radius: var(--haus-radius-md);
+  border-radius: var(--haus-radius-control);
   color: var(--haus-color-ink-primary);
+  display: flex;
   flex: 1;
   font-family: var(--haus-font-mono);
   font-size: var(--haus-type-mono-sm-size);
   min-inline-size: 0;
   overflow: auto;
-  padding: var(--haus-space-2) var(--haus-space-3);
+  padding-inline: var(--haus-space-3);
   white-space: nowrap;
 }
