@@ -204,11 +204,28 @@ export function SidebarIndicator() {
   const [settled, setSettled] = useState(false)
 
   useEffect(() => {
+    // Placed inside the list's scrolling container, so it scrolls with the
+    // links, and measured against that container, scroll included, so a link
+    // inside a folder is placed where it is rather than against whichever
+    // ancestor happens to be positioned.
     const measure = () => {
       const link = document.querySelector<HTMLElement>('#nd-sidebar a[data-active="true"]')
-      const host = link?.offsetParent
-      if (!link || !(host instanceof HTMLElement)) return setPlace(null)
-      setPlace({ host, top: link.offsetTop, left: link.offsetLeft, height: link.offsetHeight })
+      let host = link?.parentElement ?? null
+      while (host && host.id !== 'nd-sidebar') {
+        const overflow = getComputedStyle(host).overflowY
+        if (overflow === 'auto' || overflow === 'scroll') break
+        host = host.parentElement
+      }
+      if (!link || !host || host.id === 'nd-sidebar') return setPlace(null)
+      if (getComputedStyle(host).position === 'static') host.style.position = 'relative'
+      const row = link.getBoundingClientRect()
+      const box = host.getBoundingClientRect()
+      setPlace({
+        host,
+        top: row.top - box.top + host.scrollTop,
+        left: row.left - box.left + host.scrollLeft,
+        height: row.height,
+      })
     }
     const frame = requestAnimationFrame(measure)
     window.addEventListener('resize', measure)
