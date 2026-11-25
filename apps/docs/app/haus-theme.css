@@ -125,6 +125,9 @@
 /* Inline code is a quiet mark in a sentence, not a second colour in it. */
 .prose :where(:not(pre) > code) {
   background: var(--haus-color-surface-sunken);
+  /* No edge in either mode: the ground carries it. Fumadocs drew a border in
+     dark only, so the two modes did not match. */
+  border: 0;
   border-radius: var(--haus-radius-marker);
   color: var(--haus-color-ink-primary);
   font-size: 0.9375em;
@@ -309,4 +312,32 @@
 #nd-sidebar,
 #nd-sidebar-mobile {
   background-color: var(--haus-color-surface-default);
+}
+
+/* Body paragraphs on the relaxed leading: running prose with inline code in
+   it needs the room between lines that the body role's leading does not give. */
+.prose :where(p, li) {
+  line-height: var(--haus-leading-relaxed);
+}
+
+/* A notice's own text sits level with its icon: the prose paragraph margins
+   are taken off inside it, and a second paragraph keeps a small gap. */
+.haus-notice p {
+  margin-block: 0;
+}
+
+.haus-notice p + p {
+  margin-block-start: var(--haus-space-2);
+}
+
+/* Code blocks take the surface radius, as a Card does. */
+.prose figure.shiki,
+figure.shiki {
+  border-radius: var(--haus-radius-surface);
+}
+
+/* The Open menu is placed against its trigger. */
+.haus-page-actions-open {
+  display: inline-flex;
+  position: relative;
 }
