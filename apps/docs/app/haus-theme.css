@@ -378,3 +378,25 @@ figure.shiki {
 .haus-page-end {
   margin-block-start: var(--haus-space-12);
 }
+
+/*
+ * Every rule and edge in a page's content in one colour, border-default, the
+ * colour of the Divider, the header, the sidebar and the page-action row. The
+ * prose plugin drew its own: a markdown rule, table rules and a code block's
+ * frame each took a different shade from its palette.
+ */
+.prose {
+  --tw-prose-hr: var(--haus-color-border-default);
+  --tw-prose-th-borders: var(--haus-color-border-default);
+  --tw-prose-td-borders: var(--haus-color-border-default);
+  --tw-prose-quote-borders: var(--haus-color-border-default);
+}
+
+.prose :where(hr) {
+  border: 0;
+  border-block-start: var(--haus-border-width-default) solid var(--haus-color-border-default);
+}
+
+.prose :where(table, thead, tbody, tr, th, td, blockquote, figure) {
+  border-color: var(--haus-color-border-default);
+}
