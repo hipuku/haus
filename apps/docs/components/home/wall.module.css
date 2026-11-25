@@ -86,23 +86,6 @@
   padding: var(--haus-space-6);
 }
 
-.caption {
-  color: var(--haus-color-ink-tertiary);
-  font-family: var(--haus-font-mono);
-  font-size: var(--haus-type-caption-size, var(--haus-type-body-sm-size));
-}
-
-.caption a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.caption a:hover {
-  color: var(--haus-color-ink-primary);
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
-}
-
 .stack {
   display: flex;
   flex-direction: column;
@@ -189,6 +172,7 @@
 }
 
 .pointer {
+  z-index: var(--haus-z-tooltip);
   fill: var(--haus-color-ink-primary);
   inset-block-start: 55%;
   inset-inline-start: 60%;
@@ -217,7 +201,8 @@
   transition:
     transform var(--haus-duration-slow) var(--haus-ease-move),
     opacity var(--haus-motion-fade-in);
-  z-index: 1;
+  /* Above the open Select's panel, which sits on the dropdown layer. */
+  z-index: var(--haus-z-tooltip);
 }
 
 .travelling[data-shown] {

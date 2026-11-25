@@ -11,7 +11,6 @@ import {
   type RefObject,
   type ReactNode,
 } from 'react'
-import Link from 'next/link'
 import {
   Avatar,
   Badge,
@@ -38,9 +37,7 @@ import styles from './wall.module.css'
  *
  * Each tile is a fragment of an app built from the published components and
  * nothing else. The screens are `inert`: a picture of the system working
- * rather than a place to use it. The caption under each names the components
- * in it and links to their pages, and those links are the only interactive
- * thing in the wall.
+ * rather than a place to use it, and the wall has nothing interactive in it.
  *
  * What moves, and why only that. A screen changes only a prop the component
  * animates itself, so every movement on the wall is the component's own
@@ -193,21 +190,13 @@ function Pointer({ at }: { at?: { x: number; y: number } | null }) {
   )
 }
 
-function Tile({ uses, children }: { uses: string[]; children: ReactNode }) {
+function Tile({ children }: { children: ReactNode }) {
   return (
-    <figure className={styles.tile}>
+    <div className={styles.tile}>
       <Card className={styles.screen} inert>
         {children}
       </Card>
-      <figcaption className={styles.caption}>
-        {uses.map((name, i) => (
-          <span key={name}>
-            {i > 0 && <span aria-hidden="true"> · </span>}
-            <Link href={`/docs/components/${name.replace(/(?<!^)([A-Z])/g, '-$1').toLowerCase()}`}>{name}</Link>
-          </span>
-        ))}
-      </figcaption>
-    </figure>
+    </div>
   )
 }
 
@@ -222,7 +211,7 @@ function SignIn() {
   const cycle = EMAIL.length + 10
   const typed = tick === 0 ? EMAIL : EMAIL.slice(0, Math.min(tick % cycle, EMAIL.length))
   return (
-    <Tile uses={['Input', 'Checkbox', 'Button']}>
+    <Tile>
       <div className={styles.stack}>
         <Input
           data-pseudo-focus=""
@@ -251,7 +240,7 @@ function Notifications() {
   // Steps 1 to 3 flip rows 0 to 2; steps 4 to 6 flip them back in the same order.
   const flipped = (i: number) => step > i && step <= i + 3
   return (
-    <Tile uses={['Toggle', 'Divider', 'Button']}>
+    <Tile>
       <div className={styles.stack}>
         {SETTINGS.map((row, i) => (
           <div className={styles.stack} key={row.label}>
@@ -279,7 +268,7 @@ function Team() {
     { name: 'Alan Turing', role: 'Member', status: 'busy' as const, tone: 'neutral' as const },
   ]
   return (
-    <Tile uses={['Avatar', 'Badge', 'Button']}>
+    <Tile>
       <div className={styles.stack}>
         <ul className={styles.list}>
           {people.map(person => (
@@ -311,7 +300,7 @@ function Deploy() {
   const stage = useRef<HTMLDivElement>(null)
   useStates(stage, DEPLOY, 3, 6)
   return (
-    <Tile uses={['Callout', 'Button']}>
+    <Tile>
       <div className={styles.stack} ref={stage}>
         <Callout tone="success">Deployed to production in 41 seconds.</Callout>
         <div className={styles.row}>
@@ -342,7 +331,7 @@ const PANELS: Record<string, string> = {
 function Sections() {
   const tab = TAB_ITEMS[useStep(3, 8, 5)].value
   return (
-    <Tile uses={['Tabs']}>
+    <Tile>
       <Tabs aria-label="Package contents" items={TAB_ITEMS} onValueChange={noop} value={tab}>
         <p className={styles.panelText}>{PANELS[tab]}</p>
       </Tabs>
@@ -364,7 +353,7 @@ function Notices() {
   const step = useStep(NOTICES.length, 11, 2)
   const previous = (step + NOTICES.length - 1) % NOTICES.length
   return (
-    <Tile uses={['Toast']}>
+    <Tile>
       <div className={styles.slot}>
         {NOTICES.map((notice, i) =>
           i === step || i === previous ? (
@@ -393,7 +382,7 @@ function Empty() {
   const stage = useRef<HTMLDivElement>(null)
   useStates(stage, EMPTY, 3, 0)
   return (
-    <Tile uses={['EmptyState', 'Button']}>
+    <Tile>
       <div ref={stage}>
         <EmptyState
           action={
@@ -423,7 +412,7 @@ const ANSWERS = [
 function Feedback() {
   const answer = ANSWERS[useStep(3, 7, 4)].value
   return (
-    <Tile uses={['RadioGroup', 'Textarea', 'Button']}>
+    <Tile>
       <div className={styles.stack}>
         <RadioGroup
           label="Did this page help?"
@@ -448,7 +437,7 @@ function Feedback() {
  */
 function Toolbar() {
   return (
-    <Tile uses={['IconButton', 'Spinner', 'Button']}>
+    <Tile>
       <div className={styles.row}>
         <span className={styles.pointed}>
           <IconButton data-pseudo-hover="" icon={<Icon d={ICONS.bold} />} label="Bold" variant="secondary" />
@@ -507,7 +496,7 @@ function Export() {
   }, [step, tick === 0])
 
   return (
-    <Tile uses={['Select', 'Checkbox', 'Button']}>
+    <Tile>
       <div className={`${styles.stack} ${styles.stage}`} ref={stage}>
         <Select label="Export as" onChange={noop} options={FORMATS} value="dtcg" />
         <Select label="Colour space" onChange={noop} options={[{ label: 'OKLCH', value: 'oklch' }]} value="oklch" />
