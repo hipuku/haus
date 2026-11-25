@@ -8,6 +8,7 @@ import {
   useRef,
   useState,
   type ComponentType,
+  type RefObject,
   type ReactNode,
 } from 'react'
 import Link from 'next/link'
@@ -46,6 +47,8 @@ import styles from './wall.module.css'
  * transition and nothing is shown that the component does not do:
  *
  * - Toggle `checked`: the thumb slides on the layout role
+ * - a pointer, on three screens: hover, press and focus through the
+ *   components' own rules, and real clicks on their own handlers (below)
  * - Checkbox `checked`: the box fills and the tick draws
  * - RadioGroup `value`: the dot grows in the newly chosen option
  * - Tabs `value`: the marker slides to the chosen tab
@@ -56,7 +59,7 @@ import styles from './wall.module.css'
  * Avatar, Badge, Callout, Input and Button have no transition for a change of
  * content, so they hold still: swapping their text would be a cut, and a cut
  * presented as motion claims something they do not do. Button's hover and
- * press need a real pointer, so they are not faked.
+ * press are shown by the pointer below, through the component's own rules.
  *
  * The whole wall runs in haus's expressive motion mode, scoped to it.
  *
@@ -110,6 +113,89 @@ const ICONS = {
   inbox: 'M3 13h5l1 3h6l1-3h5M5 5h14l2 8v6H3v-6z',
 }
 
+/*
+ * A pointer that plays a short script over a screen.
+ *
+ * Each step names a target and what happens there. The cursor glides to it on
+ * the move easing, and once it has arrived the target takes the state a real
+ * pointer would give it: hover on the target and every ancestor, as the
+ * browser applies it; press; or keyboard focus. Those are the component's own
+ * rules, reached through the attributes postcss-pseudo-states.mjs adds beside
+ * each `:hover`, `:active` and `:focus-visible`. Where the step clicks, it is
+ * a real click on the component's own handler, which is how the Checkbox
+ * changes and the Select opens. Steps follow the shared clock, so every copy
+ * of a screen plays the same frame.
+ */
+type Move = {
+  at: ((root: HTMLElement) => Element | null) | null
+  hover?: boolean
+  press?: boolean
+  focus?: boolean
+  click?: boolean
+  /** Fires the pointer entering the target, for a handler that reads it. */
+  enter?: boolean
+}
+
+const STATES = ['hover', 'active', 'focus', 'focus-visible'] as const
+const ARRIVE = 700
+
+const by = (selector: string) => (root: HTMLElement) => root.querySelector(selector)
+
+function usePointer(root: RefObject<HTMLElement | null>, script: Move[], every: number, offset = 0) {
+  const tick = useContext(Clock)
+  const step = Math.floor((tick + offset) / every) % script.length
+  const [position, setPosition] = useState<{ x: number; y: number } | null>(null)
+
+  useEffect(() => {
+    const stage = root.current
+    if (!stage || tick === 0) return
+    stage.querySelectorAll('*').forEach(node => STATES.forEach(state => node.removeAttribute(`data-pseudo-${state}`)))
+
+    const move = script[step]
+    const target = move.at?.(stage)
+    const box = stage.getBoundingClientRect()
+    if (!target) {
+      setPosition({ x: box.width - 24, y: box.height - 16 })
+      return
+    }
+    const rect = target.getBoundingClientRect()
+    setPosition({ x: rect.left - box.left + rect.width * 0.55, y: rect.top - box.top + rect.height * 0.6 })
+
+    const arrive = setTimeout(() => {
+      const chain: Element[] = []
+      for (let node: Element | null = target; node && node !== stage; node = node.parentElement) chain.push(node)
+      if (move.hover) chain.forEach(node => node.setAttribute('data-pseudo-hover', ''))
+      if (move.press) chain.forEach(node => node.setAttribute('data-pseudo-active', ''))
+      if (move.focus) {
+        target.setAttribute('data-pseudo-focus', '')
+        target.setAttribute('data-pseudo-focus-visible', '')
+      }
+      if (move.enter) target.dispatchEvent(new MouseEvent('mouseover', { bubbles: true, relatedTarget: stage }))
+      if (move.click) (target as HTMLElement).click()
+    }, ARRIVE)
+    return () => clearTimeout(arrive)
+    // The script is a constant per screen; the step is what moves it.
+  }, [step, tick === 0])
+
+  return position
+}
+
+function Cursor({ position }: { position: { x: number; y: number } | null }) {
+  return (
+    <svg
+      aria-hidden="true"
+      className={styles.cursor}
+      data-shown={position ? '' : undefined}
+      height="20"
+      style={position ? { transform: `translate(${position.x}px, ${position.y}px)` } : undefined}
+      viewBox="0 0 16 20"
+      width="16"
+    >
+      <path d="M1 1v15.5l4.2-4 2.9 6.3 2.6-1.2-2.9-6.2H14L1 1z" />
+    </svg>
+  )
+}
+
 function Tile({ uses, children }: { uses: string[]; children: ReactNode }) {
   return (
     <figure className={styles.tile}>
@@ -128,16 +214,33 @@ function Tile({ uses, children }: { uses: string[]; children: ReactNode }) {
   )
 }
 
-/* The box ticks and clears. */
+/* The pointer focuses each field, ticks the box, and presses Sign in. */
+// Checkbox puts its attributes on its hidden input; the pointer aims at the
+// label a person would click.
+const remember = (root: HTMLElement) => root.querySelector('[data-pointer="remember"]')?.closest('label') ?? null
+const SIGN_IN: Move[] = [
+  { at: by('input[type="email"]'), focus: true },
+  { at: by('input[type="password"]'), focus: true },
+  { at: remember, hover: true },
+  { at: remember, hover: true, click: true },
+  { at: by('[data-pointer="sign-in"]'), hover: true },
+  { at: by('[data-pointer="sign-in"]'), hover: true, press: true },
+  { at: by('[data-pointer="sign-in"]'), hover: true },
+  { at: null },
+]
 function SignIn() {
-  const checked = useStep(2, 8, 3) === 0
+  const stage = useRef<HTMLDivElement>(null)
+  const position = usePointer(stage, SIGN_IN, 4, 1)
   return (
     <Tile uses={['Input', 'Checkbox', 'Button']}>
-      <div className={styles.stack}>
+      <div className={`${styles.stack} ${styles.stage}`} ref={stage}>
         <Input label="Email" onChange={noop} type="email" value="ada@hipuku.dev" />
         <Input label="Password" onChange={noop} type="password" value="analytical" />
-        <Checkbox checked={checked} label="Keep me signed in" onChange={noop} />
-        <Button variant="primary">Sign in</Button>
+        <Checkbox data-pointer="remember" label="Keep me signed in" />
+        <Button data-pointer="sign-in" variant="primary">
+          Sign in
+        </Button>
+        <Cursor position={position} />
       </div>
     </Tile>
   )
@@ -310,10 +413,21 @@ function Feedback() {
   )
 }
 
+/* The pointer tries the formatting buttons, then publishes. */
+const TOOLBAR: Move[] = [
+  { at: by('[aria-label="Bold"]'), hover: true },
+  { at: by('[aria-label="Bold"]'), hover: true, press: true },
+  { at: by('[aria-label="Italic"]'), hover: true },
+  { at: by('[data-pointer="publish"]'), hover: true },
+  { at: by('[data-pointer="publish"]'), hover: true, press: true },
+  { at: null },
+]
 function Toolbar() {
+  const stage = useRef<HTMLDivElement>(null)
+  const position = usePointer(stage, TOOLBAR, 4, 3)
   return (
     <Tile uses={['IconButton', 'Spinner', 'Button']}>
-      <div className={styles.row}>
+      <div className={`${styles.row} ${styles.stage}`} ref={stage}>
         <IconButton icon={<Icon d={ICONS.bold} />} label="Bold" variant="ghost" />
         <IconButton icon={<Icon d={ICONS.italic} />} label="Italic" variant="ghost" />
         <IconButton icon={<Icon d={ICONS.link} />} label="Link" variant="ghost" />
@@ -321,34 +435,54 @@ function Toolbar() {
           <Spinner size="sm" />
           Saving
         </span>
-        <Button size="sm" variant="primary">
+        <Button data-pointer="publish" size="sm" variant="primary">
           Publish
         </Button>
+        <Cursor position={position} />
       </div>
     </Tile>
   )
 }
 
 /*
- * The Select holds still. Opening it, or moving its highlight, calls
- * `scrollIntoView` on the highlighted option, which is right when a person is
- * using it and wrong here: driven from a script it scrolled the page down to
- * the wall on load, and scrolled the clipped column under the marquee, which
- * read as the marquee restarting.
+ * The pointer opens the Select, moves to the next format, chooses it, and
+ * presses Export. The Select opens through its own click handler and its
+ * highlight follows the pointer through its own mouse handler; it scrolls only
+ * its own list, so nothing outside the screen moves.
  */
 const FORMATS = [
   { label: 'CSS custom properties', value: 'css' },
   { label: 'DTCG JSON', value: 'dtcg' },
   { label: 'TypeScript', value: 'ts' },
 ]
+const nextOption = (root: HTMLElement) => {
+  const options = [...root.querySelectorAll('[role="option"]')]
+  const chosen = options.findIndex(option => option.getAttribute('aria-selected') === 'true')
+  return options[(chosen + 1) % options.length] ?? null
+}
+const EXPORT: Move[] = [
+  { at: by('[role="combobox"]'), hover: true },
+  { at: by('[role="combobox"]'), hover: true, click: true },
+  { at: nextOption, hover: true, enter: true },
+  { at: nextOption, hover: true, enter: true, click: true },
+  { at: by('[data-pointer="export"]'), hover: true },
+  { at: by('[data-pointer="export"]'), hover: true, press: true },
+  { at: null },
+]
 function Export() {
+  const [format, setFormat] = useState('css')
+  const stage = useRef<HTMLDivElement>(null)
+  const position = usePointer(stage, EXPORT, 4, 5)
   return (
     <Tile uses={['Select', 'Checkbox', 'Button']}>
-      <div className={styles.stack}>
-        <Select label="Export as" onChange={noop} options={FORMATS} value="css" />
+      <div className={`${styles.stack} ${styles.stage}`} ref={stage}>
+        <Select label="Export as" onChange={setFormat} options={FORMATS} value={format} />
         <Select label="Colour space" onChange={noop} options={[{ label: 'OKLCH', value: 'oklch' }]} value="oklch" />
         <Checkbox checked label="Include the dark mode" onChange={noop} />
-        <Button variant="primary">Export</Button>
+        <Button data-pointer="export" variant="primary">
+          Export
+        </Button>
+        <Cursor position={position} />
       </div>
     </Tile>
   )
