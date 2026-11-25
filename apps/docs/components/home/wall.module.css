@@ -34,77 +34,64 @@
 }
 
 .column {
+  min-block-size: 0;
   min-inline-size: 0;
+  overflow: hidden;
 }
 
 /*
- * A column is its tiles twice, one above the other, moved up by half its own
- * height: the second set then sits exactly where the first began, and the
- * loop restarts on a frame that looks the same. Every other column runs the
- * other way, and the three differ in speed, so the wall does not move as one
- * slab.
+ * The track holds one set of tiles and enough identical copies to keep the
+ * window full, and moves by exactly one set's height, measured in
+ * components/home/wall.tsx. At the end of a cycle the copy below sits where
+ * the first set began, in the same state, so the restart is invisible. The
+ * duration is set from the height, so the three columns move at one speed;
+ * the middle one runs the other way.
+ *
+ * Nothing moves until the set has been measured.
  */
 .track {
-  animation: drift var(--wall-duration, 70s) var(--haus-ease-linear) infinite;
   display: flex;
   flex-direction: column;
 }
 
-.column:nth-child(2) .track {
-  --wall-duration: 85s;
-  animation-direction: reverse;
+.track[data-moving] {
+  animation: drift var(--wall-duration) var(--haus-ease-linear) infinite;
+  will-change: transform;
 }
 
-.column:nth-child(3) .track {
-  --wall-duration: 60s;
+.column:nth-child(2) .track[data-moving] {
+  animation-direction: reverse;
 }
 
 @keyframes drift {
   to {
-    transform: translateY(-50%);
+    transform: translateY(calc(-1 * var(--set-height)));
   }
 }
 
-/*
- * With motion reduced, the wall is a still grid of the first set: no drift,
- * no duplicate, and no window to scroll past, so nothing is cut off.
- */
-@media (prefers-reduced-motion: reduce) {
-  .track {
-    animation: none;
-  }
-
-  .copy {
-    display: none;
-  }
-
-  .columns {
-    block-size: auto;
-    mask-image: none;
-  }
-}
-
-:global([data-haus-motion='reduced']) .track {
-  animation: none;
-}
-
-:global([data-haus-motion='reduced']) .copy {
-  display: none;
-}
-
-:global([data-haus-motion='reduced']) .columns {
+/* Still, the wall is one set per column and no window, so nothing is cut. */
+.wall[data-still] .columns {
   block-size: auto;
   mask-image: none;
 }
 
-/* The gap is padding on each set rather than a gap on the track, so the two
-   sets are the same height including the space between them and the loop
-   lands on the same frame. */
+/* The gap is padding on each set rather than a gap on the track, so a set's
+   height includes the space after it and the copies tile without a seam. */
 .set {
   display: flex;
   flex-direction: column;
   gap: var(--haus-space-6);
   padding-block-end: var(--haus-space-6);
+}
+
+/* Two notices in one cell, so the one leaving and the one arriving overlap
+   and the tile keeps one height. */
+.slot {
+  display: grid;
+}
+
+.slot > * {
+  grid-area: 1 / 1;
 }
 
 /* ─── Tiles ─────────────────────────────────────────────────────────────── */
@@ -185,8 +172,8 @@
   margin-inline-start: auto;
 }
 
-/* Two columns, then one. Below that the wall is a still list: a single
-   drifting column on a phone is a page that scrolls itself. */
+/* Two columns, then one, which is still: a single drifting column on a
+   phone is a page that scrolls itself. */
 @media (max-width: 64rem) {
   .columns {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -199,21 +186,11 @@
 
 @media (max-width: 40rem) {
   .columns {
-    block-size: auto;
     grid-template-columns: 1fr;
-    mask-image: none;
   }
 
   .column:nth-child(3) {
     display: block;
-  }
-
-  .track {
-    animation: none;
-  }
-
-  .copy {
-    display: none;
   }
 }
 
@@ -221,18 +198,6 @@
    settings list sets them. Toggle's root is inline, so it is stretched. */
 .spread {
   display: flex;
-  justify-content: space-between;
   inline-size: 100%;
-}
-
-/* A page of the team list arriving: the fade role, so it is the system's own
-   entrance and is instant with reduced motion. */
-.page {
-  animation: page-in var(--haus-motion-fade-in) both;
-}
-
-@keyframes page-in {
-  from {
-    opacity: 0;
-  }
+  justify-content: space-between;
 }
