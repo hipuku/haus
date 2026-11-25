@@ -113,29 +113,15 @@ export function Hero({ faces, note }: { faces: HeroFace[]; note?: string }) {
  * on a Card is the open defect in the tracker: in dark mode its hover fill and
  * `surface-raised` are the same shade, so the hover draws nothing.
  */
-export function CopyValue({
-  size = 'md',
-  text,
-  variant = 'ghost',
-}: {
-  /*
-   * IconButton's steps are 24, 28 and 36, so `lg` is the one that stands level
-   * with a field or a default Button. The size names do not line up with
-   * Button's, which is the open question in the tracker; until it is settled,
-   * a copy control beside a field asks for `lg` on purpose.
-   */
-  size?: 'sm' | 'md' | 'lg'
-  text: string
-  variant?: 'ghost' | 'secondary'
-}) {
+export function CopyValue({ text }: { text: string }) {
   const { copied, copy } = useCopied()
   return (
     <IconButton
       icon={<CopyGlyph copied={copied} />}
       label={`Copy ${text}`}
       onClick={() => void copy(text)}
-      size={size}
-      variant={variant}
+      size="md"
+      variant="ghost"
     />
   )
 }

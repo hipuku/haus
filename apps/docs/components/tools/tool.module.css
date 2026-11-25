@@ -592,36 +592,8 @@
   gap: var(--haus-space-2);
 }
 
-/* A value a reader copies out of the page: the declaration, then the control. */
-.declaration {
-  align-items: center;
-  display: flex;
-  gap: var(--haus-space-2);
-}
 
-/*
- * The value is a field a reader takes something out of, so it is drawn as the
- * field it is: Input's ground, edge, radius, inset and height, read off
- * Input.module.css rather than invented. A sunken ground was the earlier
- * version and is nowhere else on the site; border-control rather than
- * border-default is Input's edge, which carries 3:1 against the page.
- */
-.declaration code {
-  align-items: center;
-  background: var(--haus-color-surface-default);
-  block-size: var(--haus-control-height-md);
-  border: var(--haus-border-width-default) solid var(--haus-color-border-control);
-  border-radius: var(--haus-radius-control);
-  box-sizing: border-box;
-  display: flex;
-  flex: 1;
-  font-family: var(--haus-font-mono);
-  font-size: var(--haus-type-mono-sm-size);
-  min-inline-size: 0;
-  overflow: auto;
-  padding-inline: var(--haus-space-inset-sm);
-  white-space: nowrap;
-}
+
 
 /*
  * Code in the tools, which is always a labelled slot: a band, a step, a token
@@ -635,4 +607,24 @@
  */
 .value {
   font-size: var(--haus-type-mono-xs-size);
+}
+
+/* A pass or fail, as coloured text rather than a Badge: the same roles the
+   contrast matrix uses, and nothing that needs a ground of its own. */
+.verdict {
+  flex: none;
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-mono-xs-size);
+}
+
+.verdict[data-pass='yes'] {
+  color: var(--haus-color-success-on-subtle);
+}
+
+.verdict[data-pass='large'] {
+  color: var(--haus-color-warning-on-subtle);
+}
+
+.verdict[data-pass='no'] {
+  color: var(--haus-color-error-on-subtle);
 }

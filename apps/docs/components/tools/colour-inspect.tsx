@@ -9,10 +9,12 @@ import {
   oklch,
   suggestTextColour,
   toHex,
+  wcagContrast,
   type NamedColourMatch,
 } from '@hipuku/colour'
+import { DynamicCodeBlock } from 'fumadocs-ui/components/dynamic-codeblock'
 import { Badge, Button, Callout, Input, Spinner } from 'haus-components'
-import { useEffect, useState } from 'react'
+import { useDeferredValue, useEffect, useState } from 'react'
 import { Swatch, swatchPrefix } from './swatch'
 import { CopyValue, Hero, Meter, Panel, ToolView } from './tool-view'
 import styles from './tool.module.css'
@@ -80,6 +82,7 @@ export function InspectColour() {
   const declaration = lch
     ? `oklch(${(lch.l * 100).toFixed(1)}% ${lch.c.toFixed(3)} ${lch.h === null ? 'none' : lch.h.toFixed(1)})`
     : ''
+  const deferredDeclaration = useDeferredValue(declaration)
 
   const field = (
     <Input
@@ -201,22 +204,54 @@ export function InspectColour() {
             </div>
           </dl>
           {/* The three readings above are what the numbers are; this is the
-              line a reader came to the page for, in the form they paste. */}
-          <div className={styles.declaration}>
-            <code className={styles.value}>{declaration}</code>
-            <CopyValue size="lg" text={declaration} variant="secondary" />
-          </div>
+              line a reader came to the page for, in the form they paste.
+
+              The site's code block, the same one the install command on every
+              component page uses, rather than a field and a copy control of
+              this page's own: copyable code is already a thing this site
+              draws. Deferred because the block re-highlights as the value
+              changes, and without it React shows the Suspense fallback on
+              every keystroke instead of the line that is already there. */}
+          <DynamicCodeBlock code={deferredDeclaration} lang="css" />
           <p className={styles.factNote}>
             Lightness and chroma are perceptual, so an even step in lightness looks like an even step. Chroma has no
             fixed maximum: how far it can go depends on the hue and the screen.
           </p>
         </Panel>
 
+        {/* The sample asserts an ink; these rows are why it was picked. Both
+            candidates are measured against the colour, so a reader can see
+            the suggestion is the higher of two numbers rather than a
+            judgement. Verdicts are coloured text rather than Badges, which is
+            what the contrast matrix on the palette page already does, and it
+            avoids a neutral Badge on a Card going invisible in dark mode. */}
         <Panel label="Text on this colour">
           <div className={styles.sample} style={{ background: hex, color: ink }}>
             <span className={styles.sampleLarge}>The quick brown fox</span>
             <span>Set in {ink === '#ffffff' ? 'white' : 'near-black'}, the ink the package suggests.</span>
           </div>
+          <ul className={styles.rows}>
+            {INKS.map(candidate => {
+              const { ratio, passAA, passAAA, passAALarge } = wcagContrast(candidate, hex)
+              const verdict = passAAA ? 'AAA' : passAA ? 'AA' : passAALarge ? 'AA large only' : 'Fails'
+              return (
+                <li key={candidate}>
+                  <Swatch hex={candidate} size="sm" />
+                  <span className={styles.rowName}>
+                    {candidate === '#ffffff' ? 'White' : 'Near-black'}
+                    {candidate === ink ? ' (suggested)' : ''}
+                  </span>
+                  <span className={styles.rowValue}>{ratio.toFixed(2)}:1</span>
+                  <span className={styles.verdict} data-pass={passAA ? 'yes' : passAALarge ? 'large' : 'no'}>
+                    {verdict}
+                  </span>
+                </li>
+              )
+            })}
+          </ul>
+          <p className={styles.factNote}>
+            WCAG 2 asks 4.5:1 of body text and 3:1 of text at 18pt, or 14pt bold. AAA raises the first to 7:1.
+          </p>
         </Panel>
       </div>
 
