@@ -1,77 +1,9 @@
 'use client'
 
-import { analysePalette, createNamedColourMatcher, toHex, type NamedColourMatch } from '@hipuku/colour'
-import { Badge, Button, Input, Textarea } from 'haus-components'
-import { useEffect, useMemo, useState } from 'react'
-
-type Matcher = (hex: string, topN?: number) => NamedColourMatch[]
+import { analysePalette, toHex } from '@hipuku/colour'
+import { Badge, Textarea } from 'haus-components'
+import { useMemo, useState } from 'react'
 import styles from './tool.module.css'
-
-const swatch = (hex: string) => (
-  <span
-    aria-hidden
-    style={{
-      display: 'inline-block',
-      width: '1em',
-      height: '1em',
-      borderRadius: 'var(--haus-radius-marker)',
-      background: hex,
-      border: '1px solid var(--haus-color-border-default)',
-      verticalAlign: 'middle',
-    }}
-  />
-)
-
-/** Name a colour against the 31,900-name set, loaded on this page only. */
-export function NameColour() {
-  const [input, setInput] = useState('#4f84ba')
-  const [matcher, setMatcher] = useState<Matcher | null>(null)
-  const [loadFailed, setLoadFailed] = useState(false)
-  const [attempt, setAttempt] = useState(0)
-
-  useEffect(() => {
-    // The names subpath is close to 1MB; importing it here keeps it off every other page.
-    // A failed load (a dropped connection, say) offers a retry rather than
-    // leaving the loading line up for good.
-    setLoadFailed(false)
-    import('@hipuku/colour/names')
-      .then(({ colourNameEntries }) => setMatcher(() => createNamedColourMatcher(colourNameEntries())))
-      .catch(() => setLoadFailed(true))
-  }, [attempt])
-
-  const hex = toHex(input)
-  const matches = hex && matcher ? matcher(hex) : []
-
-  return (
-    <div className={`not-prose ${styles.stack}`}>
-      <Input
-        label="Colour"
-        hint="Any CSS colour: hex, rgb(), oklch()."
-        value={input}
-        onChange={event => setInput(event.target.value)}
-        error={hex ? undefined : 'Not a colour this can read.'}
-      />
-      {hex && !matcher && !loadFailed && <p>Loading 31,900 names…</p>}
-      {loadFailed && (
-        <p role="alert">
-          The colour names did not load.{' '}
-          <Button variant="secondary" size="sm" onClick={() => setAttempt(n => n + 1)}>
-            Retry
-          </Button>
-        </p>
-      )}
-      {matches.length > 0 && (
-        <ol className={styles.losses}>
-          {matches.map(m => (
-            <li key={m.hex + m.name}>
-              {swatch(m.hex)} {m.name} <code>{m.hex}</code>, ΔE {m.distance}
-            </li>
-          ))}
-        </ol>
-      )}
-    </div>
-  )
-}
 
 /**
  * Colours separated by spaces, commas or new lines, split only outside

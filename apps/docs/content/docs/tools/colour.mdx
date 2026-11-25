@@ -1,19 +1,14 @@
 ---
-title: Colour
-description: Name a colour and analyse a palette, with @hipuku/colour.
+title: Analyse a palette
+description: How evenly a palette steps, how consistent it is, and which pairs pass contrast.
 ---
 
-import { NameColour, PaletteAnalysis } from '@/components/tools/colour'
+import { PaletteAnalysis } from '@/components/tools/colour'
 
 Three questions that come up whenever a palette is being built, answered by the same functions the
 contrast suite runs in CI. This is [`@hipuku/colour`](/docs/packages/colour) itself, compiled to run
 in the page: nothing is uploaded, and the numbers here are the numbers the tests use.
 
-## Name a colour
-
-The nearest of 31,900 named colours, by CIEDE2000 distance.
-
-<NameColour />
 
 
 ## Analyse a palette

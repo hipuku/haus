@@ -132,3 +132,73 @@
   font-size: var(--haus-type-heading-size);
   font-weight: var(--haus-weight-semibold);
 }
+
+/* The runners-up under the nearest name. */
+.names {
+  display: grid;
+  gap: var(--haus-space-1);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.names li {
+  align-items: center;
+  color: var(--haus-color-ink-secondary);
+  display: flex;
+  font-size: var(--haus-type-body-sm-size);
+  gap: var(--haus-space-2);
+}
+
+.names code {
+  color: var(--haus-color-ink-tertiary);
+  font-family: var(--haus-font-mono);
+  margin-inline-start: auto;
+}
+
+/* OKLCH as three labelled values. */
+.coords {
+  display: grid;
+  gap: var(--haus-space-4);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+}
+
+.coords dt {
+  color: var(--haus-color-ink-tertiary);
+  font-size: var(--haus-type-body-sm-size);
+}
+
+.coords dd {
+  color: var(--haus-color-ink-primary);
+  font-family: var(--haus-font-mono);
+  margin: 0;
+}
+
+/* A lightness scale as a row of chips, each with its step and value. */
+.scale {
+  display: grid;
+  gap: var(--haus-space-2);
+  grid-template-columns: repeat(auto-fit, minmax(var(--haus-space-16), 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.scale li {
+  display: flex;
+  flex-direction: column;
+  gap: var(--haus-space-1);
+}
+
+.scale code {
+  color: var(--haus-color-ink-secondary);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-mono-xs-size);
+}
+
+.scaleChip {
+  block-size: var(--haus-space-12);
+  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  border-radius: var(--haus-radius-marker);
+}
