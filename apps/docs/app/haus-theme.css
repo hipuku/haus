@@ -298,3 +298,15 @@
     display: none;
   }
 }
+
+/*
+ * The docs sidebar sits on the page's own surface rather than a raised one.
+ * On surface-raised, which in the dark theme is the same colour as the ghost
+ * hover fill (surface-subtle), the hover of its ghost IconButtons did not
+ * show; on surface-default it is a step lighter than its ground in both modes.
+ * The phone drawer takes the same ground.
+ */
+#nd-sidebar,
+#nd-sidebar-mobile {
+  background-color: var(--haus-color-surface-default);
+}
