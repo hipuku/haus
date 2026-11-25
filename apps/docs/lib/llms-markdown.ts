@@ -4,10 +4,16 @@ import { served, registryName } from '@/components/install'
 /*
  * The text the llms routes serve is the page's processed MDX, so a component
  * written as JSX reaches an agent as the bare tag: `<ApiTable ... />` with no
- * props listed, `<Install ... />` with no command. These three carry what an
- * agent most needs from a component page, so they are written out as markdown
- * here. Any other tag is left as it is.
+ * props listed, `<Install ... />` with no command. These carry what an agent
+ * most needs from a component page, so they are written out as markdown here.
+ * Any other tag is left as it is.
+ *
+ * The four tool tags are here for the opposite reason. A tool is a running app
+ * and there is no markdown that is the same thing, so the tag becomes a line
+ * saying where it runs rather than reaching an agent as `<InspectColour />`,
+ * which reads as a component the page forgot to render.
  */
+const TOOLS = ['InspectColour', 'CompareColours', 'PaletteAnalysis', 'ConverterWorkspace'] as const
 
 const attributes = (tag: string) =>
   Object.fromEntries([...tag.matchAll(/(\w+)="([^"]*)"/g)].map(([, key, value]) => [key, value]))
@@ -42,10 +48,17 @@ function install(name: string) {
 
 export async function toMarkdown(text: string, url: string) {
   const replacements = await Promise.all(
-    [...text.matchAll(/<(ApiTable|Install|ComponentExamples)\b(?:"[^"]*"|[^>"])*\/>/g)].map(async ([tag, kind]) => {
+    [
+      ...text.matchAll(
+        new RegExp(`<(ApiTable|Install|ComponentExamples|${TOOLS.join('|')})\\b(?:"[^"]*"|[^>"])*\\/>`, 'g'),
+      ),
+    ].map(async ([tag, kind]) => {
       const props = attributes(tag)
       if (kind === 'Install') return [tag, install(props.name)] as const
       if (kind === 'ComponentExamples') return [tag, `Live examples are on the page: ${url}`] as const
+      if (TOOLS.includes(kind as (typeof TOOLS)[number])) {
+        return [tag, `The tool runs on the page itself: ${url}`] as const
+      }
       return [tag, await apiTable(props as ApiTableProps)] as const
     }),
   )

@@ -410,3 +410,208 @@
   color: var(--haus-color-ink-tertiary);
   font-family: var(--haus-font-sans);
 }
+
+/* ── The ported tool layout ──
+   The arrangements the standalone tools used, on haus roles. See
+   tool-view.tsx for what each one is for. */
+
+/* A tool's controls and its result, on one rhythm. */
+.view {
+  display: grid;
+  gap: var(--haus-space-8);
+  min-inline-size: 0;
+}
+
+/* A labelled box: the heading row, then the facts. */
+.panel {
+  display: grid;
+  gap: var(--haus-space-3);
+  min-inline-size: 0;
+}
+
+.panelTop {
+  align-items: center;
+  display: flex;
+  gap: var(--haus-space-3);
+  justify-content: space-between;
+}
+
+.panelLabel {
+  color: var(--haus-color-ink-tertiary);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-mono-xs-size);
+  letter-spacing: var(--haus-tracking-widest);
+  line-height: var(--haus-type-mono-xs-leading);
+  text-transform: uppercase;
+}
+
+/* A share of a whole: label, track, count. The label and count columns are
+   sized from the space ladder so the tracks of a stack line up. */
+.meter {
+  align-items: center;
+  display: grid;
+  gap: var(--haus-space-3);
+  /* The label column holds the longest band, "ΔE 2 to 10", on one line. Only
+     the track flexes: a label that wraps puts the ranges out of step with each
+     other, which is the one thing a stack of bands is read for. */
+  grid-template-columns: var(--haus-space-20) minmax(0, 1fr) var(--haus-space-8);
+}
+
+.meter code {
+  color: var(--haus-color-ink-secondary);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-mono-xs-size);
+  white-space: nowrap;
+}
+
+.meter code:last-child {
+  color: var(--haus-color-ink-tertiary);
+  text-align: end;
+}
+
+.meterTrack {
+  background: var(--haus-color-surface-sunken);
+  block-size: var(--haus-space-1);
+  border-radius: var(--haus-radius-pill);
+  display: block;
+  overflow: hidden;
+}
+
+.meterFill {
+  background: var(--haus-color-primary-default);
+  border-radius: var(--haus-radius-pill);
+  display: block;
+  block-size: 100%;
+  transition: inline-size var(--haus-motion-layout-duration) var(--haus-motion-layout-easing);
+}
+
+/* The subject of a colour page, drawn large. Two faces sit side by side with
+   no gap, so the pair reads as one block divided rather than two chips. */
+.hero {
+  /* The ladder stops at 5rem, a gap rather than the height of a figure, so
+     the hero's 8rem is built from it rather than typed as a number. */
+  block-size: calc(var(--haus-space-16) * 2);
+  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  border-radius: var(--haus-radius-surface);
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+
+.heroFace {
+  align-items: flex-end;
+  background: var(--face);
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  min-inline-size: 0;
+  padding: var(--haus-space-3);
+}
+
+/* The value, on the colour it names. The ground is the colour itself with a
+   little of its own chosen ink mixed in, so the chip reads as a label on the
+   colour in both themes and on any colour. */
+.heroChip {
+  background: color-mix(in oklab, var(--face-ink) 12%, var(--face));
+  border-radius: var(--haus-radius-pill);
+  color: var(--face-ink);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-mono-xs-size);
+  line-height: var(--haus-type-mono-xs-leading);
+  padding: var(--haus-space-1) var(--haus-space-3);
+  white-space: nowrap;
+}
+
+/* A reading that belongs to the pair rather than to either face. */
+.heroNote {
+  background: var(--haus-color-surface-overlay);
+  border-radius: var(--haus-radius-pill);
+  color: var(--haus-color-ink-primary);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-mono-xs-size);
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  padding: var(--haus-space-1) var(--haus-space-3);
+  position: absolute;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+}
+
+/* The name a colour page answers with, and the control that copies it. */
+.answer {
+  align-items: center;
+  display: flex;
+  gap: var(--haus-space-3);
+}
+
+.answerName {
+  color: var(--haus-color-ink-primary);
+  font-size: var(--haus-type-heading-lg-size);
+  font-weight: var(--haus-weight-semibold);
+  line-height: var(--haus-type-heading-lg-leading);
+  margin: 0;
+}
+
+/* A row of named facts inside a panel, each a label and a value. */
+.rows {
+  display: grid;
+  gap: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.rows li {
+  align-items: center;
+  display: flex;
+  gap: var(--haus-space-3);
+  padding-block: var(--haus-space-2);
+}
+
+.rows li + li {
+  border-block-start: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
+}
+
+.rowName {
+  color: var(--haus-color-ink-secondary);
+  flex: 1;
+  font-size: var(--haus-type-body-sm-size);
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rowValue {
+  color: var(--haus-color-ink-tertiary);
+  flex: none;
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-mono-xs-size);
+}
+
+/* A stack of meters sits tighter than the page's own rhythm. */
+.meters {
+  display: grid;
+  gap: var(--haus-space-2);
+}
+
+/* A value a reader copies out of the page: the declaration, then the control. */
+.declaration {
+  align-items: center;
+  display: flex;
+  gap: var(--haus-space-2);
+}
+
+.declaration code {
+  background: var(--haus-color-surface-sunken);
+  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  border-radius: var(--haus-radius-md);
+  color: var(--haus-color-ink-primary);
+  flex: 1;
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-mono-sm-size);
+  min-inline-size: 0;
+  overflow: auto;
+  padding: var(--haus-space-2) var(--haus-space-3);
+  white-space: nowrap;
+}
