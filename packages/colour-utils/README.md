@@ -1,5 +1,13 @@
 # haus-colour-utils
 
+> **Replaced by [`@hipuku/colour`](https://www.npmjs.com/package/@hipuku/colour).** This is the final release of
+> `haus-colour-utils`: it is unchanged in behaviour and exists to point here. Nothing is unpublished, so an
+> existing install keeps working, but new work should take `@hipuku/colour`.
+>
+> ```bash
+> npm install @hipuku/colour
+> ```
+
 Perceptual colour utilities: the colour science behind the [haus](https://github.com/hipuku/haus) design system, published standalone. Pure ESM, ships its own types, one dependency.
 
 ```bash
