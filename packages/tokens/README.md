@@ -1,5 +1,13 @@
 # haus-tokens
 
+> **Replaced by [`@hipuku/tokens`](https://www.npmjs.com/package/@hipuku/tokens).** This is the final release of
+> `haus-tokens`: it is unchanged in behaviour and exists to point here. Nothing is unpublished, so an
+> existing install keeps working, but new work should take `@hipuku/tokens`.
+>
+> ```bash
+> npm install @hipuku/tokens
+> ```
+
 The haus design tokens: OKLCH colour, type, spacing, radius, shadow and motion,
 in three forms, from one source of truth.
 
