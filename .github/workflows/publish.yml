@@ -117,7 +117,7 @@ jobs:
             const deps = { ...(manifest.dependencies || {}), ...(manifest.peerDependencies || {}) };
             const out = Object.keys(deps)
               .filter((d) => String(deps[d]).startsWith('workspace:'))
-              .map((d) => d + '@' + require('./packages/' + d.replace(/^haus-/, '') + '/package.json').version);
+              .map((d) => d + '@' + require('./packages/' + d.replace(/^(haus-|@hipuku\/)/, '') + '/package.json').version);
             console.log(out.join(' '));
           " "${{ needs.plan.outputs.dir }}")
 
