@@ -403,3 +403,22 @@ figure.shiki {
 .prose :where(table, thead, tbody, tr, th, td, blockquote, figure) {
   border-color: var(--haus-color-border-default);
 }
+
+/*
+ * A table: the header row on surface-subtle and the body on the page's own
+ * surface, in both modes. Fumadocs set the whole table on its card colour,
+ * which in dark is surface-raised, so the body did not read as the page and
+ * inline code in a cell, itself on surface-subtle, disappeared into it.
+ */
+.prose :where(table),
+.prose :where(div:has(> table)) {
+  background-color: var(--haus-color-surface-default);
+}
+
+.prose :where(thead th, thead td) {
+  background-color: var(--haus-color-surface-subtle);
+}
+
+.prose :where(tbody td, tbody th) {
+  background-color: transparent;
+}
