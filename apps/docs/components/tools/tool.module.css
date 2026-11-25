@@ -87,7 +87,6 @@
   margin: 0;
 }
 
-
 .summary {
   color: var(--haus-color-ink-secondary);
   font-size: var(--haus-type-body-sm-size);
@@ -242,15 +241,11 @@
   inline-size: 8rem;
 }
 
-
-
-
 /* A sentence in a table cell, which wraps where the data columns do not. */
 .detail {
   max-inline-size: 28rem;
   white-space: normal;
 }
-
 
 .hidden {
   display: none;
@@ -636,9 +631,6 @@
   display: grid;
   gap: var(--haus-space-2);
 }
-
-
-
 
 /*
  * Code in the tools, which is always a labelled slot: a band, a step, a token

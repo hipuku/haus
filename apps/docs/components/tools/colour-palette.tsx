@@ -126,7 +126,10 @@ export function PaletteAnalysis() {
                 a lightness scale of 100, and that is their standard deviation.
               </p>
             </Panel>
-            <Panel aside={<Badge tone={CHROMA[result.chroma.rating].tone}>{result.chroma.rating}</Badge>} label="Chroma">
+            <Panel
+              aside={<Badge tone={CHROMA[result.chroma.rating].tone}>{result.chroma.rating}</Badge>}
+              label="Chroma"
+            >
               <span className={styles.factValue}>{result.chroma.mean.toFixed(3)}</span>
               <p className={styles.factNote}>
                 {CHROMA[result.chroma.rating].meaning} That is the mean chroma, give or take{' '}
