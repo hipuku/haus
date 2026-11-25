@@ -15,9 +15,45 @@ Versioning follows [decision 0004](./DESIGN.md#0004-versioning): a
 token rename is a major at an identical value, and a contrast change is a major
 even when the hex barely moves.
 
+## @hipuku/tokens 6.0.1
+
+_Unreleased._
+
+**Changed** · No change to the package's contents. The first release of this name through `publish.yml`, which confirms its trusted publisher and restores provenance, absent from the hand-published first version.
+
+## @hipuku/colour 0.1.1
+
+_Unreleased._
+
+**Changed** · No change to the package's contents. The first release of this name through `publish.yml`, which confirms its trusted publisher and restores provenance, absent from the hand-published first version.
+
+## @hipuku/config 0.1.1
+
+_Unreleased._
+
+**Changed** · No change to the package's contents. The first release of this name through `publish.yml`, which confirms its trusted publisher and restores provenance, absent from the hand-published first version.
+
+## @hipuku/dtcg 0.1.1
+
+_Unreleased._
+
+**Changed** · No change to the package's contents. The first release of this name through `publish.yml`, which confirms its trusted publisher and restores provenance, absent from the hand-published first version.
+
+## @hipuku/motion 0.1.1
+
+_Unreleased._
+
+**Changed** · No change to the package's contents. The first release of this name through `publish.yml`, which confirms its trusted publisher and restores provenance, absent from the hand-published first version.
+
+## @hipuku/style-probe 1.0.1
+
+_Unreleased._
+
+**Changed** · No change to the package's contents. The first release of this name through `publish.yml`, which confirms its trusted publisher and restores provenance, absent from the hand-published first version.
+
 ## @hipuku/tokens 6.0.0
 
-_Unreleased. `haus-tokens`, renamed, with motion roles and a dark mode. Two of the entries below are
+_Released 2026-11-25. `haus-tokens`, renamed, with motion roles and a dark mode. Two of the entries below are
 breaking, so this is a major under decision 0004: from `haus-tokens`' 5.2.0 that is 6.0.0, not a
 minor. Nobody is carried across by a caret either way, because the name is new and a rename is an
 edit to a manifest, but a minor over two breaking changes would be the number contradicting the
@@ -88,7 +124,7 @@ now a linear scan, and still leaves an unclosed comment as it was.
 
 ## @hipuku/config 0.1.0
 
-_Unreleased. A new package: the shared TypeScript, Prettier and prose configuration._
+_Released 2026-11-25. A new package: the shared TypeScript, Prettier and prose configuration._
 
 **Added** · **`@hipuku/config`.** TypeScript bases (`base`, `react`, `node`), two Prettier
 presets, and two bin scripts: `hipuku-check-prose` for the em dash rule and `hipuku-check-names`
@@ -114,9 +150,9 @@ unreported: it is a gate on what is being written, not an audit of what has alre
 ESLint, Stylelint and markdownlint are not included. Their configs differ by runtime rather than
 by preference, so a shared base is separate work.
 
-## @hipuku/style-probe 1.1.0
+## @hipuku/style-probe 1.0.0
 
-_Unreleased. `haus-style-probe`, renamed._
+_Released 2026-11-25. `haus-style-probe`, renamed._
 
 **Changed** · **Renamed from `haus-style-probe`**, and it now depends on `@hipuku/colour` in place of
 `haus-colour-utils`. Its exports are unchanged: replace `haus-style-probe` with `@hipuku/style-probe`
@@ -124,7 +160,7 @@ in imports. The old name gets a final release pointing here (RELEASING.md).
 
 ## @hipuku/colour 0.1.0
 
-_Unreleased. `haus-colour-utils` and `haus-colour-names`, merged and renamed._
+_Released 2026-11-25. `haus-colour-utils` and `haus-colour-names`, merged and renamed._
 
 **Changed** · **One package replaces two.** Everything `haus-colour-utils` 1.0.1 exports is exported
 from `@hipuku/colour` under the same names, and the 31,900-name dataset that was
@@ -146,7 +182,7 @@ the code imported `haus-colour-utils`, and from `@hipuku/colour/names` where it 
 
 ## @hipuku/dtcg 0.1.0
 
-_Unreleased. A new package: the token conversion engine, and the `dtcg` command._
+_Released 2026-11-25. A new package: the token conversion engine, and the `dtcg` command._
 
 **Added** · **`@hipuku/dtcg`.** Reads DTCG (including resolver documents with modes), Figma
 variables exports, Tokens Studio and Tailwind v4 `@theme` stylesheets into one model, writes that
@@ -191,7 +227,7 @@ separate package, `@hipuku/dtcg-cli`, and merged in before either was published.
 
 ## @hipuku/motion 0.1.0
 
-_Unreleased. A new package: the maths behind haus's motion._
+_Released 2026-11-25. A new package: the maths behind haus's motion._
 
 **Added** · **`@hipuku/motion`.** Role duration caps, springs sampled and compiled to a CSS
 `linear()` curve, sheet drag physics with a velocity tracker, and presence state across an exit

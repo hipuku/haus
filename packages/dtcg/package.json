@@ -1,6 +1,6 @@
 {
   "name": "@hipuku/dtcg",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Convert design tokens between DTCG, Figma variables, Tokens Studio and Tailwind v4, in code or with the dtcg command, with a report of what each conversion loses.",
   "license": "MIT",
   "engines": {
