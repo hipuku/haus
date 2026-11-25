@@ -626,3 +626,10 @@ figure.shiki {
   color: var(--haus-color-ink-secondary);
   font-size: var(--haus-type-body-sm-size);
 }
+
+/* A package export's signature wraps: a function's full signature is too
+   long for one line. A component prop's type does not wrap. */
+.prose :not(pre) > code.haus-api-signature {
+  overflow-wrap: anywhere;
+  white-space: normal;
+}

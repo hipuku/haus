@@ -44,7 +44,7 @@ export async function ModuleApi({ file }: { file: string }) {
               <code className="haus-api-name">{entry.name}</code>
             </td>
             <td>
-              <code className="haus-api-type">{entry.type}</code>
+              <code className="haus-api-type haus-api-signature">{entry.type}</code>
             </td>
             {described && <td>{withInlineCode(lead(entry.description))}</td>}
           </tr>
