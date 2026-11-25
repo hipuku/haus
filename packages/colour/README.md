@@ -1,7 +1,8 @@
 # @hipuku/colour
 
-Replaces `haus-colour-utils` and `haus-colour-names`, which merged into this package. Unreleased at
-0.1.0.
+Replaces `haus-colour-utils` and `haus-colour-names`, which merged into this package. Each has a
+final deprecated release pointing here, and neither was unpublished. Not a drop-in: the names moved
+to the `/names` subpath and the function names changed.
 
 Perceptual colour utilities: the colour science behind the [haus](https://github.com/hipuku/haus) design system, published standalone. Pure ESM, ships its own types, one dependency.
 
@@ -84,7 +85,7 @@ hueFamily('#2563eb') // "Blue"
 hueFamily('#f7f7fa') // "Neutral". A tinted near-white is still a grey.
 ```
 
-Chroma rather than HSL saturation, which inflates at the extremes of lightness and reads a tinted near-black as a saturated hue. The bins are fitted to 4,275 colours a person named, taken from `haus-colour-names`: the boundaries are the set that maximises mean per-family recall, and `hue-families.test.ts` holds it at 0.77. They are not the HSL wheel's boundaries, which offset every family by about one place, and they are no longer midpoints between the eight colours the families are named after. That construction assumed a family is centred on its namesake, and several are not: the median of 222 colours people call orange is hue 47, while `#ffa500` is at 71, so a midpoint at 50 filed most oranges as red.
+Chroma rather than HSL saturation, which inflates at the extremes of lightness and reads a tinted near-black as a saturated hue. The bins are fitted to 4,275 colours a person named, taken from `@hipuku/colour`: the boundaries are the set that maximises mean per-family recall, and `hue-families.test.ts` holds it at 0.77. They are not the HSL wheel's boundaries, which offset every family by about one place, and they are no longer midpoints between the eight colours the families are named after. That construction assumed a family is centred on its namesake, and several are not: the median of 222 colours people call orange is hue 47, while `#ffa500` is at 71, so a midpoint at 50 filed most oranges as red.
 
 ### `generateLightnessScale(hex, options?): string[]`
 

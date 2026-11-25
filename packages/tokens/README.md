@@ -1,25 +1,26 @@
-# haus-tokens
+# @hipuku/tokens
 
-This package is being renamed to `@hipuku/tokens`. The new name is not on npm yet, so the examples below use
-`haus-tokens`, the name that installs today; they switch when `@hipuku/tokens` is published.
+Published as `@hipuku/tokens` until 6.0.0. That name has a final release, `5.2.1`, which is deprecated
+and points here; nothing was unpublished, so an existing install keeps working. Migrating is a
+change of name in `package.json` and in every import and stylesheet path: the exports are the same.
 
 The haus design tokens: OKLCH colour, type, spacing, radius, shadow and motion,
 in three forms, from one source of truth.
 
-| Form                  | Import                                                        | For                                      |
-| --------------------- | ------------------------------------------------------------- | ---------------------------------------- |
-| CSS custom properties | `haus-tokens/primitives.css`, `/semantics.css`, `/motion.css` | styling components                       |
-| Typed JS constants    | `import { tokens } from 'haus-tokens'`                        | build config, style-in-JS, media queries |
-| W3C-DTCG JSON         | `haus-tokens/tokens.json`                                     | design-tool sync, external tooling       |
+| Form                  | Import                                                           | For                                      |
+| --------------------- | ---------------------------------------------------------------- | ---------------------------------------- |
+| CSS custom properties | `@hipuku/tokens/primitives.css`, `/semantics.css`, `/motion.css` | styling components                       |
+| Typed JS constants    | `import { tokens } from '@hipuku/tokens'`                        | build config, style-in-JS, media queries |
+| W3C-DTCG JSON         | `@hipuku/tokens/tokens.json`                                     | design-tool sync, external tooling       |
 
 ## Install
 
 ```bash
-npm install haus-tokens
+npm install @hipuku/tokens
 ```
 
 ```ts
-import 'haus-tokens/index.css'
+import '@hipuku/tokens/index.css'
 ```
 
 `index.css` loads the layer order, then `primitives`, `brand`, `brand-dark`,
@@ -87,7 +88,7 @@ Custom properties cannot be used inside `@media` conditions, and build tools
 can't read CSS. The JS export covers that:
 
 ```ts
-import { tokens } from 'haus-tokens'
+import { tokens } from '@hipuku/tokens'
 
 tokens.color.aronia[500] // 'oklch(52% 0.138 300)'
 tokens.breakpoint.lg // '1024px', breakpoints are JS-only by necessity
@@ -124,7 +125,7 @@ defines the contract. Import it from your own suite:
 
 ```ts
 import { readFileSync } from 'node:fs'
-import { findUndefinedTokens } from 'haus-tokens/guard'
+import { findUndefinedTokens } from '@hipuku/tokens/guard'
 
 const read = (p: string) => readFileSync(p, 'utf8')
 
@@ -132,9 +133,9 @@ it('reads no role this app does not load', () => {
   const { missing, read: reads } = findUndefinedTokens({
     reads: [read('node_modules/haus-components/dist/styles.css')],
     defines: [
-      read('node_modules/haus-tokens/dist/primitives.css'),
-      read('node_modules/haus-tokens/dist/motion.css'),
-      read('node_modules/haus-tokens/dist/semantics.css'),
+      read('node_modules/@hipuku/tokens/dist/primitives.css'),
+      read('node_modules/@hipuku/tokens/dist/motion.css'),
+      read('node_modules/@hipuku/tokens/dist/semantics.css'),
       read('src/tokens/overrides.css'),
     ],
   })
@@ -157,15 +158,15 @@ already gives, is not an override. It is a copy, and it renders perfectly until
 one of the two moves.
 
 ```ts
-import { findRestatedTokens } from 'haus-tokens/guard'
+import { findRestatedTokens } from '@hipuku/tokens/guard'
 
 it('restates no value haus already ships', () => {
   const copies = findRestatedTokens({
     defines: [read('src/tokens/semantics.css')],
     upstream: [
-      read('node_modules/haus-tokens/dist/primitives.css'),
-      read('node_modules/haus-tokens/dist/motion.css'),
-      read('node_modules/haus-tokens/dist/semantics.css'),
+      read('node_modules/@hipuku/tokens/dist/primitives.css'),
+      read('node_modules/@hipuku/tokens/dist/motion.css'),
+      read('node_modules/@hipuku/tokens/dist/semantics.css'),
     ],
   })
 

@@ -21,7 +21,7 @@
       "type": "registry:ui",
       "title": "Badge",
       "description": "A short status label in one of six tones, subtle or solid.",
-      "dependencies": ["haus-tokens@^5.2.0"],
+      "dependencies": ["@hipuku/tokens@^6.0.0"],
       "registryDependencies": ["@hipuku/types"],
       "files": [
         {

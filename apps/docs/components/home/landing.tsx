@@ -36,7 +36,7 @@ import styles from './landing.module.css'
  * No version numbers on the page. They would have to come from the packages'
  * own manifests, which carry the next release's name and number rather than
  * what npm serves today: the token package is `@hipuku/tokens` 5.2.0 here and
- * `haus-tokens` on the registry until the rename ships.
+ * `@hipuku/tokens` on the registry, since the rename shipped with 6.0.0.
  */
 export function Landing() {
   return (
