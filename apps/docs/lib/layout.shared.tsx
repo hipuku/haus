@@ -35,9 +35,16 @@ const githubUrl = `https://github.com/${gitConfig.user}/${gitConfig.repo}`
 export function baseOptions({ home = false }: { home?: boolean } = {}): BaseLayoutProps {
   return {
     nav: {
-      // The wordmark rather than the word, and it points at the front page.
-      // Not on the landing page, whose heading is the wordmark.
-      title: home ? null : <Wordmark />,
+      /*
+       * The wordmark rather than the word, and it points at the front page.
+       *
+       * The landing page draws no wordmark here, because its own heading is
+       * one a few lines below. `null` left the link Fumadocs renders around
+       * this slot with no children and no name, so a keyboard reached a
+       * focusable link to `/` that announced as "link" and nothing else
+       * (2.4.4, 4.1.2). The name is there and the wordmark is not.
+       */
+      title: home ? <span className="sr-only">haus</span> : <Wordmark />,
       url: '/',
       // In the docs sidebar, the row after the wordmark: mode, search, collapse.
       ...(home ? {} : { children: <SidebarControls /> }),
