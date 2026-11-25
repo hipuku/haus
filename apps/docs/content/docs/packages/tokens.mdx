@@ -8,7 +8,7 @@ built from the same source: custom properties for stylesheets, typed constants f
 cannot reach, and DTCG JSON for design tools. A value cannot differ between them, because none of
 them is written by hand.
 
-<PackageMeta dir="tokens" publishedAs="haus-tokens" />
+<PackageMeta dir="tokens" publishedAs="@hipuku/tokens" />
 
 ## What is in it
 
@@ -29,24 +29,24 @@ with its live values.
 ## Install
 
 ```bash
-npm install haus-tokens
+npm install @hipuku/tokens
 ```
 
 Import the barrel once, at the root of your app. It loads every layer in the order they depend on
 each other, which a hand-written set of imports gets wrong eventually.
 
 ```ts
-import 'haus-tokens/index.css'
+import '@hipuku/tokens/index.css'
 ```
 
 ## The three forms
 
 | Form | Import | For |
 | ---- | ------ | --- |
-| Custom properties | `haus-tokens/index.css`, or one layer such as `haus-tokens/motion.css` | Stylesheets |
-| Typed constants | `import { tokens } from 'haus-tokens'` | Build config, media queries, canvas |
-| DTCG JSON | `haus-tokens/tokens.json` | Figma, Tokens Studio, other token tooling |
-| Brand files | `haus-tokens/brands/core.css`, `/brands/vault.css` | A product's own colours and radii |
+| Custom properties | `@hipuku/tokens/index.css`, or one layer such as `@hipuku/tokens/motion.css` | Stylesheets |
+| Typed constants | `import { tokens } from '@hipuku/tokens'` | Build config, media queries, canvas |
+| DTCG JSON | `@hipuku/tokens/tokens.json` | Figma, Tokens Studio, other token tooling |
+| Brand files | `@hipuku/tokens/brands/core.css`, `/brands/vault.css` | A product's own colours and radii |
 
 Every custom property starts with `--haus-`. Mode is an attribute, not a build: `data-theme` picks
 light or dark, `data-haus-theme` picks the brand, and `data-haus-motion` picks the motion mode
@@ -54,7 +54,7 @@ light or dark, `data-haus-theme` picks the brand, and `data-haus-motion` picks t
 
 ## The guard
 
-Tokens only hold if nothing goes around them. `haus-tokens/guard` reads a consumer's stylesheets
+Tokens only hold if nothing goes around them. `@hipuku/tokens/guard` reads a consumer's stylesheets
 and reports any colour, length or duration written as a literal where a token exists, so the rule is
 a build step rather than a review comment.
 

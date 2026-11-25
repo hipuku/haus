@@ -43,18 +43,18 @@ libraries underneath. Light and dark modes; the product brands are light only.
 ## Install
 
 ```bash
-npm install haus-tokens haus-components
+npm install @hipuku/tokens haus-components
 ```
 
 ```ts
-import 'haus-tokens/index.css'
+import '@hipuku/tokens/index.css'
 import 'haus-components/styles.css'
 ```
 
-React 18 or 19 is a peer dependency. The colour libraries install on their own:
-`@hipuku/colour` (unreleased; it replaces `haus-colour-utils` and `haus-colour-names`) and
-`haus-style-probe`. `haus-tokens` and `haus-style-probe` are being renamed to `@hipuku/tokens` and
-`@hipuku/style-probe`; the new names are not on npm yet. Each package's README covers its
+React 18 or 19 is a peer dependency. The colour libraries install on their own: `@hipuku/colour`,
+which replaces `haus-colour-utils` and `haus-colour-names`, and `@hipuku/style-probe`, previously
+`haus-style-probe`. The token package was `haus-tokens`. Each old name has a final deprecated
+release pointing at its replacement, and nothing was unpublished. Each package's README covers its
 API.
 
 ### From the registry
@@ -77,7 +77,7 @@ npx shadcn add @hipuku/badge
 `@hipuku/badge` is a registry name, installed with `shadcn add`. Components are not npm packages, so
 `npm install @hipuku/badge` finds nothing.
 
-Badge is the only component in the registry so far. Its tokens come from `haus-tokens`, which the
+Badge is the only component in the registry so far. Its tokens come from `@hipuku/tokens`, which the
 install adds as a dependency.
 
 **The registry is for TypeScript projects.** Every file installs byte for byte, so a project with

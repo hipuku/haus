@@ -101,7 +101,7 @@ try {
         writeFileSync(
           join(app, 'src/App.tsx'),
           [
-            "import 'haus-tokens/index.css'",
+            "import '@hipuku/tokens/index.css'",
             `import { ${name} } from './${index.replace(/\.ts$/, '')}'`,
             '',
             'export default function App() {',

@@ -1,11 +1,11 @@
 # haus-components
 
-Twenty accessible React components built on [`haus-tokens`](../tokens).
+Twenty accessible React components built on [`@hipuku/tokens`](../tokens).
 
 ## Install
 
 ```bash
-npm install haus-components haus-tokens
+npm install haus-components @hipuku/tokens
 ```
 
 `react` and `react-dom` are peer dependencies, `^18 || ^19`, so your copy is the only copy.
@@ -17,7 +17,7 @@ font to load and no stylesheet beyond `haus-components/styles.css` and the token
 Import the token layer, then the component stylesheet.
 
 ```ts
-import 'haus-tokens/index.css'
+import '@hipuku/tokens/index.css'
 import 'haus-components/styles.css'
 ```
 
@@ -33,7 +33,7 @@ beats them without a specificity fight.**
 To theme a subtree, put a brand on it:
 
 ```tsx
-import 'haus-tokens/brands/vault.css'
+import '@hipuku/tokens/brands/vault.css'
 
 ;<div data-haus-theme="vault">…</div>
 ```

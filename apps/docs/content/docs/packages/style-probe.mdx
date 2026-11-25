@@ -11,12 +11,12 @@ word.
 
 This is how the Figma parity check and the component audits are measured.
 
-<PackageMeta dir="style-probe" publishedAs="haus-style-probe" />
+<PackageMeta dir="style-probe" publishedAs="@hipuku/style-probe" />
 
 ## Install
 
 ```bash
-npm install haus-style-probe
+npm install @hipuku/style-probe
 ```
 
 ## Usage
@@ -27,7 +27,7 @@ you can compare, such as `"rgb(37, 99, 235)"` into `#2563eb` and `"0.5rem"` reso
 a number. With Playwright, mount a component and read it:
 
 ```ts
-import { extractRawElements, normaliseElement } from 'haus-style-probe'
+import { extractRawElements, normaliseElement } from '@hipuku/style-probe'
 
 const raw = await page.evaluate(extractRawElements, { root: '#probe' })
 const [button] = raw.map(normaliseElement)

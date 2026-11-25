@@ -27,21 +27,20 @@ build.
 ## 2. Install the tokens
 
 ```bash
-npm install haus-tokens
+npm install @hipuku/tokens
 ```
 
 Import the barrel once, at the root of your app. It loads the four layers in the order they depend
 on each other, which a hand-written set of imports gets wrong eventually.
 
 ```ts title="app/layout.tsx"
-import 'haus-tokens/index.css'
+import '@hipuku/tokens/index.css'
 ```
 
 <Notice tone="warning">
-  `haus-tokens` is the name npm serves today. The package is called `@hipuku/tokens` in the
-  repository and takes that name at the next release, alongside the other five. Until then this is
-  the command that works, and the [tokens page](/docs/packages/tokens) says where each package
-  stands.
+  `@hipuku/tokens` is the name npm serves, from 6.0.0. It was `haus-tokens` up to 5.2.0, which has
+  a final deprecated release pointing here and was not unpublished, so an existing install keeps
+  working. The [tokens page](/docs/packages/tokens) says where each package stands.
 </Notice>
 
 ## 3. Add a component
