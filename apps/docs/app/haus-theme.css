@@ -194,66 +194,42 @@
 }
 
 /*
- * The header's controls, drawn as haus draws a control.
+ * The header's section links, drawn as the ghost Button draws itself: no line
+ * at rest, a fill under the pointer, a deeper fill on press, all at the
+ * control radius. Fills rather than an underline, because the header already
+ * has a rule along its bottom edge and an underline above it read as two
+ * lines doing one job.
  *
- * Fumadocs draws the search field and the mode switch as `rounded-full`
- * pills, which is a shape nothing else on the site has: haus's Input and
- * Button take `radius-control`, and these are the same kind of thing. The
- * mode switch's two segments sit inside it, so they take the next step down,
- * and the shortcut keys are markers like inline code.
- *
- * Fumadocs' own attributes are the hooks, `data-search-full`, `data-search`
- * and `data-theme-toggle`, since its class lists are utility strings that
- * change between releases.
- */
-:is([data-search-full], [data-search]) {
-  border-color: var(--haus-color-border-control);
-  border-radius: var(--haus-radius-control);
-}
-
-[data-search-full] kbd {
-  border-radius: var(--haus-radius-marker);
-}
-
-[data-theme-toggle] {
-  border-color: var(--haus-color-border-control);
-  border-radius: var(--haus-radius-control);
-}
-
-[data-theme-toggle] > * {
-  border-radius: var(--haus-radius-marker);
-}
-
-/*
- * The header's section links.
- *
- * At rest they are `ink-secondary`, and Fumadocs' hover moved them to its
- * accent foreground, which in this theme is a grey a step away: the change
- * was there and could not be seen. A link here now does what a link in the
- * prose does, in two steps. Hover takes it to `ink-primary` and draws an
- * underline in from transparent; the current section keeps both, in the
- * primary colour, so the state is carried by the rule and the weight rather
- * than by a hue alone. Both changes run on the fade role, and with reduced
- * motion the role's duration is zero.
+ * The current section keeps the hover fill and takes semibold, so it is told
+ * apart by weight and ground rather than by a hue alone. The fill runs on the
+ * fade role, whose duration is zero with reduced motion.
  */
 #nd-nav a[data-active] {
+  border-radius: var(--haus-radius-control);
   color: var(--haus-color-ink-secondary);
-  text-decoration-color: transparent;
-  text-decoration-line: underline;
-  text-decoration-thickness: var(--haus-border-width-thick);
-  text-underline-offset: 0.45em;
+  padding: var(--haus-space-inset-2xs) var(--haus-space-inset-sm);
+  text-decoration: none;
   transition:
-    color var(--haus-motion-fade-in),
-    text-decoration-color var(--haus-motion-fade-in);
+    background-color var(--haus-motion-fade-in),
+    color var(--haus-motion-fade-in);
 }
 
 #nd-nav a[data-active]:hover {
+  background-color: var(--haus-color-surface-subtle);
   color: var(--haus-color-ink-primary);
-  text-decoration-color: var(--haus-color-border-strong);
+}
+
+#nd-nav a[data-active]:active {
+  background-color: var(--haus-color-surface-sunken);
 }
 
 #nd-nav a[data-active='true'] {
+  background-color: var(--haus-color-surface-subtle);
   color: var(--haus-color-ink-primary);
   font-weight: var(--haus-weight-semibold);
-  text-decoration-color: var(--haus-color-primary-default);
+}
+
+#nd-nav a[data-active]:focus-visible {
+  outline: var(--haus-border-width-thick) solid var(--haus-color-border-focus);
+  outline-offset: var(--haus-border-width-thick);
 }

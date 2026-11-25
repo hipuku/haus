@@ -5,5 +5,5 @@ import { baseOptions } from '@/lib/layout.shared'
    else: a reader who wants the docs, the search or the mode switch has them in
    the same place as on every other page. */
 export default function Layout({ children }: LayoutProps<'/'>) {
-  return <HomeLayout {...baseOptions()}>{children}</HomeLayout>
+  return <HomeLayout {...baseOptions({ home: true })}>{children}</HomeLayout>
 }

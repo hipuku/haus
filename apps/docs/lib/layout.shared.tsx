@@ -1,5 +1,6 @@
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared'
 import { Wordmark } from '@/components/wordmark'
+import { GitHubButton, SearchButton, ThemeButton } from '@/components/header-controls'
 import { docsRoute, gitConfig, storybookUrl } from './shared'
 
 /*
@@ -25,7 +26,11 @@ const SECTIONS = [
   { text: 'Tools', url: `${docsRoute}/tools/converter` },
 ]
 
-export function baseOptions(): BaseLayoutProps {
+/*
+ * `home` drops the header's wordmark on the landing page, where the wordmark
+ * is already the page's heading a few lines below it.
+ */
+export function baseOptions({ home = false }: { home?: boolean } = {}): BaseLayoutProps {
   return {
     nav: {
       // The wordmark rather than the word, and it points at the overview. The
@@ -33,10 +38,13 @@ export function baseOptions(): BaseLayoutProps {
       // saying much the same thing, so the brand and the first sidebar item
       // led to two different pages. The landing page is back and says
       // something else, so the wordmark goes to the front page again.
-      title: <Wordmark />,
+      title: home ? null : <Wordmark />,
       url: '/',
     },
-    githubUrl: `https://github.com/${gitConfig.user}/${gitConfig.repo}`,
+    // The three header controls are haus IconButtons; see
+    // components/header-controls.tsx for why they replace Fumadocs' own.
+    searchToggle: { components: { lg: <SearchButton />, sm: <SearchButton /> } },
+    themeSwitch: { component: <ThemeButton /> },
     links: [
       ...SECTIONS.map(section => ({ ...section, active: 'nested-url' as const, on: 'nav' as const })),
       // Storybook carries no `on`, so it stays in the docs sidebar as well as
@@ -47,6 +55,11 @@ export function baseOptions(): BaseLayoutProps {
       // site should say where it goes, and a developer already knows what
       // Storybook is. The word stays in the prose, where it explains the job.
       { text: 'Storybook', url: storybookUrl, external: true },
+      {
+        type: 'custom',
+        secondary: true,
+        children: <GitHubButton href={`https://github.com/${gitConfig.user}/${gitConfig.repo}`} />,
+      },
     ],
   }
 }
