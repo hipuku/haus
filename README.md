@@ -51,11 +51,10 @@ import '@hipuku/tokens/index.css'
 import 'haus-components/styles.css'
 ```
 
-React 18 or 19 is a peer dependency. The colour libraries install on their own:
-`@hipuku/colour` (unreleased; it replaces `@hipuku/colour` and `@hipuku/colour`) and
-`@hipuku/style-probe`. Both were published as `@hipuku/tokens` and `@hipuku/style-probe` before the
-rename; each old name has a final deprecated release pointing at its replacement, and nothing was
-unpublished. Each package's README covers its
+React 18 or 19 is a peer dependency. The colour libraries install on their own: `@hipuku/colour`,
+which replaces `haus-colour-utils` and `haus-colour-names`, and `@hipuku/style-probe`, previously
+`haus-style-probe`. The token package was `haus-tokens`. Each old name has a final deprecated
+release pointing at its replacement, and nothing was unpublished. Each package's README covers its
 API.
 
 ### From the registry

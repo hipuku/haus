@@ -1,8 +1,9 @@
 # @hipuku/tokens
 
-Published as `@hipuku/tokens` until 6.0.0. That name has a final release, `5.2.1`, which is deprecated
-and points here; nothing was unpublished, so an existing install keeps working. Migrating is a
-change of name in `package.json` and in every import and stylesheet path: the exports are the same.
+Previously published as `haus-tokens`, up to 5.2.0. That name has a final release, `5.2.1`, which
+is deprecated and points here; nothing was unpublished, so an existing install keeps working.
+Migrating is a change of name in `package.json` and in every import and stylesheet path: the
+exports are the same.
 
 The haus design tokens: OKLCH colour, type, spacing, radius, shadow and motion,
 in three forms, from one source of truth.

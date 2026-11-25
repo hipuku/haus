@@ -1,8 +1,8 @@
 # @hipuku/style-probe
 
-Published as `@hipuku/style-probe` until 1.0.0 under this name. That name has a final release,
-`1.0.1`, which is deprecated and points here; nothing was unpublished. Migrating is a change of
-name, since the exports are the same.
+Previously published as `haus-style-probe`, up to 1.0.0. That name has a final release, `1.0.1`,
+which is deprecated and points here; nothing was unpublished. Migrating is a change of name, since
+the exports are the same.
 
 Read a rendered element's design decisions: in-browser computed-style
 extraction, plus pure normalisation into typed token values.

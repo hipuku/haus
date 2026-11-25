@@ -7,7 +7,7 @@ page on the haus docs site.
 Formats: DTCG (including resolver documents with modes), Figma variables exports, Tokens Studio,
 and Tailwind v4 `@theme` stylesheets.
 
-Not published yet. Version 0.1.0 is unreleased.
+Published at 0.1.0. A new name rather than a rename: nothing preceded it on npm.
 
 ## Use
 
