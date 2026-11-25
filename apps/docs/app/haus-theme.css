@@ -200,15 +200,11 @@
 }
 
 /*
- * Every link in running text, and the header's section links, behave as
- * Button's text variant does: an underline at rest in the link's own colour at
- * the subtle opacity, which comes to full strength and thickens under the
- * pointer, on the highlight role. One behaviour for every link a reader meets.
- * The header links keep their colours; the current section is ink-primary at
- * semibold with its underline at full strength.
+ * Every link in running text behaves as Button's text variant does: an
+ * underline at rest in the link's own colour at the subtle opacity, which
+ * comes to full strength and thickens under the pointer, on the highlight role.
  */
-.prose :where(p, li, td, th, blockquote, figcaption) a,
-#nd-nav a[data-active] {
+.prose :where(p, li, td, th, blockquote, figcaption) a {
   text-decoration-color: oklch(from currentColor l c h / var(--haus-opacity-subtle));
   text-decoration-line: underline;
   text-decoration-thickness: var(--haus-border-width-default);
@@ -219,20 +215,30 @@
     text-decoration-thickness var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing);
 }
 
-.prose :where(p, li, td, th, blockquote, figcaption) a:hover,
-#nd-nav a[data-active]:hover {
+.prose :where(p, li, td, th, blockquote, figcaption) a:hover {
   text-decoration-color: currentColor;
   text-decoration-thickness: var(--haus-border-width-thick);
 }
 
+/*
+ * The header's section links are the one exception, by the owner's choice: a
+ * change in the text's colour and nothing else. At rest ink-secondary, under
+ * the pointer ink-link, on the highlight role; the current section ink-primary
+ * at semibold. No underline, so nothing doubles the header's edge.
+ */
 #nd-nav a[data-active] {
   color: var(--haus-color-ink-secondary);
+  text-decoration: none;
+  transition: color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing);
+}
+
+#nd-nav a[data-active]:hover {
+  color: var(--haus-color-ink-link);
 }
 
 #nd-nav a[data-active='true'] {
   color: var(--haus-color-ink-primary);
   font-weight: var(--haus-weight-semibold);
-  text-decoration-color: currentColor;
 }
 
 #nd-nav a[data-active]:focus-visible {
