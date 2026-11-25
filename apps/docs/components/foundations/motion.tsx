@@ -32,7 +32,7 @@ const ROLES = [
  *
  * A row plays as it scrolls into view, and again each time it comes back, so
  * nothing has finished before the reader reaches it. Each row has its own play
- * control, and the header's plays every row.
+ * control above the role's name, and the header's, above Role, plays every row.
  */
 const MODES = [
   { label: 'Default', value: 'subtle' },
@@ -51,13 +51,7 @@ export function MotionRoles() {
   return (
     <div className={styles.grid} role="table" aria-label="Motion roles in each mode">
       <div className={styles.head} role="row">
-        <span role="columnheader">Role</span>
-        {MODES.map(mode => (
-          <span key={mode.value} role="columnheader">
-            {mode.label}
-          </span>
-        ))}
-        <span className={styles.playCell} role="columnheader">
+        <span className={styles.roleHead} role="columnheader">
           <IconButton
             icon={<PlayGlyph />}
             label="Play every role"
@@ -65,7 +59,13 @@ export function MotionRoles() {
             size="sm"
             variant="ghost"
           />
+          Role
         </span>
+        {MODES.map(mode => (
+          <span key={mode.value} role="columnheader">
+            {mode.label}
+          </span>
+        ))}
       </div>
       {ROLES.map(({ role, what }) => (
         <MotionRow all={all} key={role} role={role} what={what} />
@@ -98,13 +98,6 @@ function MotionRow({ role, what, all }: { role: string; what: string; all: numbe
   return (
     <div className={styles.row} ref={row} role="row">
       <div className={styles.meta} role="rowheader">
-        <code className={styles.name}>{role}</code>
-        <span className={styles.what}>{what}</span>
-      </div>
-      {MODES.map(mode => (
-        <MotionCell key={mode.value} label={mode.label} mode={mode.value} play={play} role={role} />
-      ))}
-      <span className={styles.playCell} role="cell">
         <IconButton
           icon={<PlayGlyph />}
           label={`Play ${role}`}
@@ -112,7 +105,12 @@ function MotionRow({ role, what, all }: { role: string; what: string; all: numbe
           size="sm"
           variant="ghost"
         />
-      </span>
+        <code className={styles.name}>{role}</code>
+        <span className={styles.what}>{what}</span>
+      </div>
+      {MODES.map(mode => (
+        <MotionCell key={mode.value} label={mode.label} mode={mode.value} play={play} role={role} />
+      ))}
     </div>
   )
 }

@@ -1,6 +1,6 @@
 /*
- * The motion roles as a grid: a row per role, a column per mode, and a narrow
- * column for each row's play control.
+ * The motion roles as a grid: a row per role and a column per mode, top
+ * aligned.
  */
 .grid {
   display: flex;
@@ -10,10 +10,10 @@
 
 .head,
 .row {
-  align-items: center;
+  align-items: start;
   column-gap: var(--haus-space-4);
   display: grid;
-  grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr)) auto;
+  grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr));
 }
 
 .head {
@@ -97,35 +97,35 @@
   color: var(--haus-color-ink-tertiary);
   font-family: var(--haus-font-mono);
   font-size: var(--haus-type-label-caption-size);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
 }
 
-.playCell {
+/* The play control sits above the role's name, at the start of the column. */
+.meta > :first-child,
+.roleHead > :first-child {
+  align-self: flex-start;
+}
+
+.roleHead {
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
+  gap: var(--haus-space-1);
 }
 
-/* On a narrow screen a row stacks: the role and its play control, then its
-   three cells side by side, each named, and no header row. */
+/* On a narrow screen a row stacks: the role, then its three cells side by
+   side, each named, and no header row. */
 @media (max-width: 48rem) {
   .head {
     display: none;
   }
 
   .row {
-    grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     row-gap: var(--haus-space-3);
   }
 
   .meta {
-    grid-column: 1 / 4;
-    grid-row: 1;
-  }
-
-  .row > .playCell {
-    grid-column: 4;
+    grid-column: 1 / -1;
     grid-row: 1;
   }
 
