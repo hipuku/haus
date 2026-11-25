@@ -170,14 +170,6 @@ function useStates(root: RefObject<HTMLElement | null>, script: Move[], every: n
   }, [step, tick === 0])
 }
 
-/* A button goes into its hover state, holds, and comes out. */
-const hoverOnly = (selector: string): Move[] => [
-  { at: by(selector), hover: true },
-  { at: by(selector), hover: true },
-  { at: null },
-  { at: null },
-]
-
 /* An arrow pointer, drawn where a hovering pointer would rest. Still. */
 function Pointer() {
   return (
@@ -205,20 +197,27 @@ function Tile({ uses, children }: { uses: string[]; children: ReactNode }) {
   )
 }
 
-/* The email field takes keyboard focus, holds it, and lets it go. */
-const SIGN_IN: Move[] = [
-  { at: by('input[type="email"]'), focus: true },
-  { at: by('input[type="email"]'), focus: true },
-  { at: null },
-  { at: null },
-]
+/*
+ * The email field holds keyboard focus, through its own rule, while the
+ * address is typed into it, a character a tick, held, then cleared and typed
+ * again. Nothing else on the screen moves.
+ */
+const EMAIL = 'ada@hipuku.dev'
 function SignIn() {
-  const stage = useRef<HTMLDivElement>(null)
-  useStates(stage, SIGN_IN, 4, 1)
+  const tick = useContext(Clock)
+  const cycle = EMAIL.length + 10
+  const typed = tick === 0 ? EMAIL : EMAIL.slice(0, Math.min(tick % cycle, EMAIL.length))
   return (
     <Tile uses={['Input', 'Checkbox', 'Button']}>
-      <div className={styles.stack} ref={stage}>
-        <Input label="Email" onChange={noop} type="email" value="ada@hipuku.dev" />
+      <div className={styles.stack}>
+        <Input
+          data-pseudo-focus=""
+          data-pseudo-focus-visible=""
+          label="Email"
+          onChange={noop}
+          type="email"
+          value={typed}
+        />
         <Input label="Password" onChange={noop} type="password" value="analytical" />
         <Checkbox defaultChecked label="Keep me signed in" />
         <Button variant="primary">Sign in</Button>
@@ -258,10 +257,8 @@ function Notifications() {
   )
 }
 
-const TEAM = hoverOnly('[data-demo="invite"]')
+/* Nothing moves here. */
 function Team() {
-  const stage = useRef<HTMLDivElement>(null)
-  useStates(stage, TEAM, 4, 2)
   const people = [
     { name: 'Ada Lovelace', role: 'Owner', status: 'online' as const, tone: 'info' as const },
     { name: 'Grace Hopper', role: 'Admin', status: 'away' as const, tone: 'success' as const },
@@ -269,7 +266,7 @@ function Team() {
   ]
   return (
     <Tile uses={['Avatar', 'Badge', 'Button']}>
-      <div className={styles.stack} ref={stage}>
+      <div className={styles.stack}>
         <ul className={styles.list}>
           {people.map(person => (
             <li className={styles.person} key={person.name}>
@@ -279,9 +276,7 @@ function Team() {
             </li>
           ))}
         </ul>
-        <Button data-demo="invite" variant="primary">
-          Invite people
-        </Button>
+        <Button variant="primary">Invite people</Button>
       </div>
     </Tile>
   )
@@ -431,28 +426,25 @@ function Feedback() {
   )
 }
 
-/* Publish is hovered, pressed, and released. */
-const TOOLBAR: Move[] = [
-  { at: by('[data-demo="publish"]'), hover: true },
-  { at: by('[data-demo="publish"]'), hover: true, press: true },
-  { at: by('[data-demo="publish"]'), hover: true },
-  { at: null },
-  { at: null },
-]
+/*
+ * A still frame, apart from the Spinner: a pointer resting on Bold, which is
+ * in its hover state through its own rule.
+ */
 function Toolbar() {
-  const stage = useRef<HTMLDivElement>(null)
-  useStates(stage, TOOLBAR, 4, 3)
   return (
     <Tile uses={['IconButton', 'Spinner', 'Button']}>
-      <div className={styles.row} ref={stage}>
-        <IconButton icon={<Icon d={ICONS.bold} />} label="Bold" variant="ghost" />
+      <div className={styles.row}>
+        <span className={styles.pointed}>
+          <IconButton data-pseudo-hover="" icon={<Icon d={ICONS.bold} />} label="Bold" variant="ghost" />
+          <Pointer />
+        </span>
         <IconButton icon={<Icon d={ICONS.italic} />} label="Italic" variant="ghost" />
         <IconButton icon={<Icon d={ICONS.link} />} label="Link" variant="ghost" />
         <span className={styles.saving}>
           <Spinner size="sm" />
           Saving
         </span>
-        <Button data-demo="publish" size="sm" variant="primary">
+        <Button size="sm" variant="primary">
           Publish
         </Button>
       </div>
