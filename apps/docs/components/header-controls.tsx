@@ -175,6 +175,8 @@ export function SidebarFooter({ storybook, github }: { storybook: string; github
           </svg>
         }
         label="GitHub repository"
+        // lg is 36px, level with a default Button; IconButton's md is 28px.
+        size="lg"
         variant="secondary"
       >
         <a href={github} rel="noreferrer" target="_blank" />
