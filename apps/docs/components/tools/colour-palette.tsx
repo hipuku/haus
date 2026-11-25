@@ -228,7 +228,7 @@ export function PaletteAnalysis() {
             }
             label="Contrast, every colour as text on every other"
           >
-            <div className={styles.tableWrap}>
+            <div className={`${styles.tableWrap} ${styles.matrixWrap}`}>
               <table className={styles.matrix}>
                 <thead>
                   <tr>

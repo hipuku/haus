@@ -209,13 +209,23 @@
 .tableWrap {
   border: var(--haus-border-width-default) solid var(--haus-color-border-default);
   border-radius: var(--haus-radius-surface);
-  /* The frame hugs the table rather than the card. A matrix sized by its
-     content left a gap between its last column and a full-width frame, and
-     the cells give up their outer edges to that frame, so the gap read as a
-     column with no right-hand side. Capped at the card, where it scrolls. */
-  inline-size: max-content;
-  max-inline-size: 100%;
   overflow-x: auto;
+}
+
+/*
+ * A table sized by its content rather than by the card, centred in it.
+ *
+ * Only the matrix. It is square, one row and column per colour, so at a small
+ * palette it is far narrower than the card and a full-width frame left a gap
+ * past its last column; since the cells give their outer edges to the frame,
+ * that gap read as a column with no right-hand side. A table that fills the
+ * width, like the ladder, keeps the plain frame: giving that one max-content
+ * would leave the card half empty instead.
+ */
+.matrixWrap {
+  inline-size: max-content;
+  margin-inline: auto;
+  max-inline-size: 100%;
 }
 
 /* The wrapper draws the outer edge, so the cells draw only the lines between
