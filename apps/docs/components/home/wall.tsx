@@ -47,9 +47,10 @@ import styles from './wall.module.css'
  * transition and nothing is shown that the component does not do:
  *
  * - Toggle `checked`: the thumb slides on the layout role
- * - a pointer, on three screens, doing one thing on each: focusing a field,
- *   pressing a button, or opening a Select and choosing; hover, press and
- *   focus through the components' own rules, clicks on their own handlers
+ * - a button's hover, or hover and press, or a field's keyboard focus, one per
+ *   screen, through the components' own rules (see useStates)
+ * - Select: opens, its highlight moves, and a format is chosen, through its
+ *   own handlers
  * - Checkbox `checked`: the box fills and the tick draws
  * - RadioGroup `value`: the dot grows in the newly chosen option
  * - Tabs `value`: the marker slides to the chosen tab
@@ -57,10 +58,9 @@ import styles from './wall.module.css'
  *   caller runs by setting `data-state="closed"`, as Toast documents
  * - Spinner: spins
  *
- * Avatar, Badge, Callout, Input and Button have no transition for a change of
+ * Avatar, Badge and Callout have no transition for a change of
  * content, so they hold still: swapping their text would be a cut, and a cut
- * presented as motion claims something they do not do. Button's hover and
- * press are shown by the pointer below, through the component's own rules.
+ * presented as motion claims something they do not do.
  *
  * The whole wall runs in haus's expressive motion mode, scoped to it.
  *
@@ -115,17 +115,16 @@ const ICONS = {
 }
 
 /*
- * A pointer that plays a short script over a screen.
+ * A state a screen moves through, applied straight to a component.
  *
- * Each step names a target and what happens there. The cursor glides to it on
- * the move easing, and once it has arrived the target takes the state a real
- * pointer would give it: hover on the target and every ancestor, as the
- * browser applies it; press; or keyboard focus. Those are the component's own
- * rules, reached through the attributes postcss-pseudo-states.mjs adds beside
- * each `:hover`, `:active` and `:focus-visible`. Where the step clicks, it is
- * a real click on the component's own handler, which is how the Checkbox
- * changes and the Select opens. Steps follow the shared clock, so every copy
- * of a screen plays the same frame.
+ * No pointer is drawn: the component goes into hover, press or keyboard focus
+ * and back, through the attributes postcss-pseudo-states.mjs adds beside each
+ * `:hover`, `:active` and `:focus-visible`, so what shows is the component's
+ * own rule and its own transition. Hover goes on the target and its
+ * ancestors, as the browser applies it. A click, where a step has one, is a
+ * real click on the component's own handler; it is how the Select opens.
+ * Steps follow the shared clock, so every copy of a screen plays the same
+ * frame.
  */
 type Move = {
   at: ((root: HTMLElement) => Element | null) | null
@@ -138,14 +137,12 @@ type Move = {
 }
 
 const STATES = ['hover', 'active', 'focus', 'focus-visible'] as const
-const ARRIVE = 700
 
 const by = (selector: string) => (root: HTMLElement) => root.querySelector(selector)
 
-function usePointer(root: RefObject<HTMLElement | null>, script: Move[], every: number, offset = 0) {
+function useStates(root: RefObject<HTMLElement | null>, script: Move[], every: number, offset = 0) {
   const tick = useContext(Clock)
   const step = Math.floor((tick + offset) / every) % script.length
-  const [position, setPosition] = useState<{ x: number; y: number } | null>(null)
 
   useEffect(() => {
     const stage = root.current
@@ -154,48 +151,28 @@ function usePointer(root: RefObject<HTMLElement | null>, script: Move[], every: 
 
     const move = script[step]
     const target = move.at?.(stage)
-    const box = stage.getBoundingClientRect()
-    if (!target) {
-      setPosition({ x: box.width - 24, y: box.height - 16 })
-      return
+    if (!target) return
+    const chain: Element[] = []
+    for (let node: Element | null = target; node && node !== stage; node = node.parentElement) chain.push(node)
+    if (move.hover) chain.forEach(node => node.setAttribute('data-pseudo-hover', ''))
+    if (move.press) chain.forEach(node => node.setAttribute('data-pseudo-active', ''))
+    if (move.focus) {
+      target.setAttribute('data-pseudo-focus', '')
+      target.setAttribute('data-pseudo-focus-visible', '')
     }
-    const rect = target.getBoundingClientRect()
-    setPosition({ x: rect.left - box.left + rect.width * 0.55, y: rect.top - box.top + rect.height * 0.6 })
-
-    const arrive = setTimeout(() => {
-      const chain: Element[] = []
-      for (let node: Element | null = target; node && node !== stage; node = node.parentElement) chain.push(node)
-      if (move.hover) chain.forEach(node => node.setAttribute('data-pseudo-hover', ''))
-      if (move.press) chain.forEach(node => node.setAttribute('data-pseudo-active', ''))
-      if (move.focus) {
-        target.setAttribute('data-pseudo-focus', '')
-        target.setAttribute('data-pseudo-focus-visible', '')
-      }
-      if (move.enter) target.dispatchEvent(new MouseEvent('mouseover', { bubbles: true, relatedTarget: stage }))
-      if (move.click) (target as HTMLElement).click()
-    }, ARRIVE)
-    return () => clearTimeout(arrive)
+    if (move.enter) target.dispatchEvent(new MouseEvent('mouseover', { bubbles: true, relatedTarget: stage }))
+    if (move.click) (target as HTMLElement).click()
     // The script is a constant per screen; the step is what moves it.
   }, [step, tick === 0])
-
-  return position
 }
 
-function Cursor({ position }: { position: { x: number; y: number } | null }) {
-  return (
-    <svg
-      aria-hidden="true"
-      className={styles.cursor}
-      data-shown={position ? '' : undefined}
-      height="20"
-      style={position ? { transform: `translate(${position.x}px, ${position.y}px)` } : undefined}
-      viewBox="0 0 16 20"
-      width="16"
-    >
-      <path d="M1 1v15.5l4.2-4 2.9 6.3 2.6-1.2-2.9-6.2H14L1 1z" />
-    </svg>
-  )
-}
+/* A button goes into its hover state, holds, and comes out. */
+const hoverOnly = (selector: string): Move[] => [
+  { at: by(selector), hover: true },
+  { at: by(selector), hover: true },
+  { at: null },
+  { at: null },
+]
 
 function Tile({ uses, children }: { uses: string[]; children: ReactNode }) {
   return (
@@ -215,24 +192,23 @@ function Tile({ uses, children }: { uses: string[]; children: ReactNode }) {
   )
 }
 
-/* The pointer clicks into the email field, and that is all. */
+/* The email field takes keyboard focus, holds it, and lets it go. */
 const SIGN_IN: Move[] = [
-  { at: by('input[type="email"]'), hover: true },
   { at: by('input[type="email"]'), focus: true },
   { at: by('input[type="email"]'), focus: true },
+  { at: null },
   { at: null },
 ]
 function SignIn() {
   const stage = useRef<HTMLDivElement>(null)
-  const position = usePointer(stage, SIGN_IN, 4, 1)
+  useStates(stage, SIGN_IN, 4, 1)
   return (
     <Tile uses={['Input', 'Checkbox', 'Button']}>
-      <div className={`${styles.stack} ${styles.stage}`} ref={stage}>
+      <div className={styles.stack} ref={stage}>
         <Input label="Email" onChange={noop} type="email" value="ada@hipuku.dev" />
         <Input label="Password" onChange={noop} type="password" value="analytical" />
         <Checkbox defaultChecked label="Keep me signed in" />
         <Button variant="primary">Sign in</Button>
-        <Cursor position={position} />
       </div>
     </Tile>
   )
@@ -269,7 +245,10 @@ function Notifications() {
   )
 }
 
+const TEAM = hoverOnly('[data-demo="invite"]')
 function Team() {
+  const stage = useRef<HTMLDivElement>(null)
+  useStates(stage, TEAM, 4, 2)
   const people = [
     { name: 'Ada Lovelace', role: 'Owner', status: 'online' as const, tone: 'info' as const },
     { name: 'Grace Hopper', role: 'Admin', status: 'away' as const, tone: 'success' as const },
@@ -277,7 +256,7 @@ function Team() {
   ]
   return (
     <Tile uses={['Avatar', 'Badge', 'Button']}>
-      <div className={styles.stack}>
+      <div className={styles.stack} ref={stage}>
         <ul className={styles.list}>
           {people.map(person => (
             <li className={styles.person} key={person.name}>
@@ -287,19 +266,26 @@ function Team() {
             </li>
           ))}
         </ul>
-        <Button variant="primary">Invite people</Button>
+        <Button data-demo="invite" variant="primary">
+          Invite people
+        </Button>
       </div>
     </Tile>
   )
 }
 
+const DEPLOY = hoverOnly('[data-demo="redeploy"]')
 function Deploy() {
+  const stage = useRef<HTMLDivElement>(null)
+  useStates(stage, DEPLOY, 4, 6)
   return (
     <Tile uses={['Callout', 'Button']}>
-      <div className={styles.stack}>
+      <div className={styles.stack} ref={stage}>
         <Callout tone="success">Deployed to production in 41 seconds.</Callout>
         <div className={styles.row}>
-          <Button variant="primary">Redeploy</Button>
+          <Button data-demo="redeploy" variant="primary">
+            Redeploy
+          </Button>
           <Button variant="ghost">View logs</Button>
         </div>
       </div>
@@ -361,20 +347,25 @@ function Notices() {
   )
 }
 
+const EMPTY = hoverOnly('[data-demo="add"]')
 function Empty() {
+  const stage = useRef<HTMLDivElement>(null)
+  useStates(stage, EMPTY, 4, 0)
   return (
     <Tile uses={['EmptyState', 'Button']}>
-      <EmptyState
-        action={
-          <Button size="sm" variant="primary">
-            Add a colour
-          </Button>
-        }
-        description="Add by hex or extract from an image."
-        headingLevel={3}
-        icon={<Icon d={ICONS.inbox} />}
-        title="No colours yet"
-      />
+      <div ref={stage}>
+        <EmptyState
+          action={
+            <Button data-demo="add" size="sm" variant="primary">
+              Add a colour
+            </Button>
+          }
+          description="Add by hex or extract from an image."
+          headingLevel={3}
+          icon={<Icon d={ICONS.inbox} />}
+          title="No colours yet"
+        />
+      </div>
     </Tile>
   )
 }
@@ -405,19 +396,20 @@ function Feedback() {
   )
 }
 
-/* The pointer presses Publish, and that is all. */
+/* Publish is hovered, pressed, and released. */
 const TOOLBAR: Move[] = [
-  { at: by('[data-pointer="publish"]'), hover: true },
-  { at: by('[data-pointer="publish"]'), hover: true, press: true },
-  { at: by('[data-pointer="publish"]'), hover: true },
+  { at: by('[data-demo="publish"]'), hover: true },
+  { at: by('[data-demo="publish"]'), hover: true, press: true },
+  { at: by('[data-demo="publish"]'), hover: true },
+  { at: null },
   { at: null },
 ]
 function Toolbar() {
   const stage = useRef<HTMLDivElement>(null)
-  const position = usePointer(stage, TOOLBAR, 4, 3)
+  useStates(stage, TOOLBAR, 4, 3)
   return (
     <Tile uses={['IconButton', 'Spinner', 'Button']}>
-      <div className={`${styles.row} ${styles.stage}`} ref={stage}>
+      <div className={styles.row} ref={stage}>
         <IconButton icon={<Icon d={ICONS.bold} />} label="Bold" variant="ghost" />
         <IconButton icon={<Icon d={ICONS.italic} />} label="Italic" variant="ghost" />
         <IconButton icon={<Icon d={ICONS.link} />} label="Link" variant="ghost" />
@@ -425,18 +417,17 @@ function Toolbar() {
           <Spinner size="sm" />
           Saving
         </span>
-        <Button data-pointer="publish" size="sm" variant="primary">
+        <Button data-demo="publish" size="sm" variant="primary">
           Publish
         </Button>
-        <Cursor position={position} />
       </div>
     </Tile>
   )
 }
 
 /*
- * The pointer opens the Select, moves to the next format and chooses it, and
- * that is all. The Select opens through its own click handler and its
+ * The Select opens, its highlight moves to the next format, and that format
+ * is chosen. The Select opens through its own click handler and its
  * highlight follows the pointer through its own mouse handler; it scrolls only
  * its own list, so nothing outside the screen moves.
  */
@@ -460,24 +451,23 @@ const EXPORT: Move[] = [
 function Export() {
   const [format, setFormat] = useState('css')
   const stage = useRef<HTMLDivElement>(null)
-  const position = usePointer(stage, EXPORT, 4, 5)
+  useStates(stage, EXPORT, 4, 5)
   return (
     <Tile uses={['Select', 'Checkbox', 'Button']}>
-      <div className={`${styles.stack} ${styles.stage}`} ref={stage}>
+      <div className={styles.stack} ref={stage}>
         <Select label="Export as" onChange={setFormat} options={FORMATS} value={format} />
         <Select label="Colour space" onChange={noop} options={[{ label: 'OKLCH', value: 'oklch' }]} value="oklch" />
         <Checkbox checked label="Include the dark mode" onChange={noop} />
         <Button variant="primary">Export</Button>
-        <Cursor position={position} />
       </div>
     </Tile>
   )
 }
 
 const COLUMNS: ComponentType[][] = [
-  [SignIn, Team, Toolbar, Sections],
+  [SignIn, Team, Toolbar, Notices],
   [Notifications, Empty, Export],
-  [Deploy, Notices, Feedback],
+  [Deploy, Sections, Feedback],
 ]
 
 /*

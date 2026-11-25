@@ -180,32 +180,3 @@
   inline-size: 100%;
   justify-content: space-between;
 }
-
-/* A screen the pointer plays over: the cursor is placed against it. */
-.stage {
-  position: relative;
-}
-
-/*
- * The pointer. It glides between targets on the move easing, slow enough to
- * follow, and is hidden until its first move so it does not start from the
- * corner.
- */
-.cursor {
-  fill: var(--haus-color-ink-primary);
-  inset-block-start: 0;
-  inset-inline-start: 0;
-  opacity: 0;
-  pointer-events: none;
-  position: absolute;
-  stroke: var(--haus-color-surface-default);
-  stroke-width: 1.25;
-  transition:
-    transform var(--haus-duration-slow) var(--haus-ease-move),
-    opacity var(--haus-motion-fade-in);
-  z-index: 1;
-}
-
-.cursor[data-shown] {
-  opacity: 1;
-}
