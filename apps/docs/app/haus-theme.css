@@ -194,42 +194,36 @@
 }
 
 /*
- * The header's section links, drawn as the ghost Button draws itself: no line
- * at rest, a fill under the pointer, a deeper fill on press, all at the
- * control radius. Fills rather than an underline, because the header already
- * has a rule along its bottom edge and an underline above it read as two
- * lines doing one job.
+ * The header's section links: a change in the text and nothing else.
  *
- * The current section keeps the hover fill and takes semibold, so it is told
- * apart by weight and ground rather than by a hue alone. The fill runs on the
- * fade role, whose duration is zero with reduced motion.
+ * haus's rule for an inline link is an underline, which Button's `text`
+ * variant strengthens on hover. The section names are a deliberate exception:
+ * the header has a rule along its bottom edge, so an underline above it read
+ * as two lines, and a fill made a word in a row of words look like a button.
+ *
+ * So at rest they are `ink-secondary`; under the pointer they take `ink-link`,
+ * the colour every link on the site has, on the highlight role Button's text
+ * variant uses for the same change; and the current section is `ink-primary`
+ * at semibold, told apart by weight rather than by a hue alone. Hover changes
+ * no weight, so nothing moves sideways under the pointer.
  */
 #nd-nav a[data-active] {
-  border-radius: var(--haus-radius-control);
   color: var(--haus-color-ink-secondary);
-  padding: var(--haus-space-inset-2xs) var(--haus-space-inset-sm);
   text-decoration: none;
-  transition:
-    background-color var(--haus-motion-fade-in),
-    color var(--haus-motion-fade-in);
+  transition: color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing);
 }
 
 #nd-nav a[data-active]:hover {
-  background-color: var(--haus-color-surface-subtle);
-  color: var(--haus-color-ink-primary);
-}
-
-#nd-nav a[data-active]:active {
-  background-color: var(--haus-color-surface-sunken);
+  color: var(--haus-color-ink-link);
 }
 
 #nd-nav a[data-active='true'] {
-  background-color: var(--haus-color-surface-subtle);
   color: var(--haus-color-ink-primary);
   font-weight: var(--haus-weight-semibold);
 }
 
 #nd-nav a[data-active]:focus-visible {
+  border-radius: var(--haus-radius-marker);
   outline: var(--haus-border-width-thick) solid var(--haus-color-border-focus);
   outline-offset: var(--haus-border-width-thick);
 }
