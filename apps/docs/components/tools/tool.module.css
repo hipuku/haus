@@ -41,12 +41,19 @@
   padding-inline-start: var(--haus-space-5);
 }
 
-/* A colour chip. Its colour is the reader's input; everything else is a token. */
+/*
+ * A colour chip. Its colour is the reader's input; everything else is a token.
+ *
+ * `vertical-align: middle` because an inline-block sits on the baseline by
+ * default, which put every chip in a table cell a little above the middle of
+ * the hex beside it.
+ */
 .swatch {
   border: var(--haus-border-width-default) solid var(--haus-color-border-default);
   border-radius: var(--haus-radius-marker);
   display: inline-block;
   flex: none;
+  vertical-align: middle;
 }
 
 .swatch[data-size='sm'] {
@@ -238,10 +245,17 @@
   white-space: nowrap;
 }
 
-.table th {
+/* The header row takes the tinted ground; a row's own header is a label in the
+   body and takes the body's. Written as `thead th` rather than `th` for that
+   reason: the first column was reading as a second header. */
+.table thead th {
   background: var(--haus-color-surface-subtle);
   color: var(--haus-color-ink-secondary);
   font-weight: var(--haus-weight-semibold);
+}
+
+.table tbody th {
+  font-weight: var(--haus-weight-regular);
 }
 
 .table code {
@@ -323,8 +337,11 @@
 }
 
 .matrix th {
-  background: var(--haus-color-surface-subtle);
   font-weight: var(--haus-weight-regular);
+}
+
+.matrix thead th {
+  background: var(--haus-color-surface-subtle);
 }
 
 .matrix th code {
