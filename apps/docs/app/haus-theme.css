@@ -216,6 +216,8 @@
 }
 
 .prose :where(p, li, td, th, blockquote, figcaption) a:hover {
+  /* The colour holds; only the underline changes, as on the text button. */
+  color: var(--haus-color-ink-link);
   text-decoration-color: currentColor;
   text-decoration-thickness: var(--haus-border-width-thick);
 }
@@ -370,4 +372,9 @@ figure.shiki {
   block-size: var(--haus-icon-sm);
   flex-shrink: 0;
   inline-size: var(--haus-icon-sm);
+}
+
+/* The rule before the previous and next links sits clear of the page above. */
+.haus-page-end {
+  margin-block-start: var(--haus-space-12);
 }

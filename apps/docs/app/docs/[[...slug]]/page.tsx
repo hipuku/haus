@@ -1,6 +1,7 @@
 import { source } from '@/lib/source'
 import { DocsBody, DocsDescription, DocsPage, DocsTitle } from 'fumadocs-ui/layouts/docs/page'
 import { PageActions } from '@/components/page-actions'
+import { PageEnd } from '@/components/page-end'
 import { notFound } from 'next/navigation'
 import { getMDXComponents } from '@/components/mdx'
 import type { Metadata } from 'next'
@@ -39,6 +40,9 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
             a: createRelativeLink(source, page),
           })}
         />
+        {/* Room, and a rule, between the page and the previous and next links
+            Fumadocs draws after it. */}
+        <PageEnd />
       </DocsBody>
     </DocsPage>
   )
