@@ -1,14 +1,6 @@
 'use client'
 
-import {
-  analysePalette,
-  classifyDeltaE,
-  createNamedColourMatcher,
-  deltaE,
-  toHex,
-  wcagContrast,
-  type NamedColourMatch,
-} from '@hipuku/colour'
+import { analysePalette, createNamedColourMatcher, toHex, type NamedColourMatch } from '@hipuku/colour'
 import { Badge, Button, Input, Textarea } from 'haus-components'
 import { useEffect, useMemo, useState } from 'react'
 
@@ -38,7 +30,7 @@ export function NameColour() {
   const [attempt, setAttempt] = useState(0)
 
   useEffect(() => {
-    // The names subpath is 764KB; importing it here keeps it off every other page.
+    // The names subpath is close to 1MB; importing it here keeps it off every other page.
     // A failed load (a dropped connection, say) offers a retry rather than
     // leaving the loading line up for good.
     setLoadFailed(false)
@@ -76,37 +68,6 @@ export function NameColour() {
             </li>
           ))}
         </ol>
-      )}
-    </div>
-  )
-}
-
-/** Two colours: how far apart they look, and their contrast. */
-export function CompareColours() {
-  const [a, setA] = useState('#3366cc')
-  const [b, setB] = useState('#3467cc')
-  const ha = toHex(a)
-  const hb = toHex(b)
-  const result = useMemo(() => {
-    if (!ha || !hb) return null
-    const distance = deltaE(ha, hb)
-    return { distance, band: classifyDeltaE(distance), contrast: wcagContrast(ha, hb) }
-  }, [ha, hb])
-
-  return (
-    <div className={`not-prose ${styles.stack}`}>
-      <div className="grid gap-3 sm:grid-cols-2">
-        <Input label="First" value={a} onChange={e => setA(e.target.value)} error={ha ? undefined : 'Not a colour.'} />
-        <Input label="Second" value={b} onChange={e => setB(e.target.value)} error={hb ? undefined : 'Not a colour.'} />
-      </div>
-      {result && (
-        <p>
-          {swatch(ha!)} {swatch(hb!)} ΔE {result.distance.toFixed(2)}, <Badge>{result.band}</Badge>. Contrast{' '}
-          {result.contrast.ratio}:1,{' '}
-          <Badge tone={result.contrast.passAA ? 'success' : 'error'}>
-            {result.contrast.passAA ? 'passes' : 'fails'} AA
-          </Badge>
-        </p>
       )}
     </div>
   )

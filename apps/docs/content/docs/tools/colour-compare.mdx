@@ -1,0 +1,15 @@
+---
+title: Compare colours
+description: How far apart two colours look, and whether one can carry text on the other.
+---
+
+import { CompareColours } from '@/components/tools/colour-compare'
+
+Two questions about a pair. **Distance** is whether a person can tell them apart, measured as
+CIEDE2000, where about 1 is the smallest visible difference. **Contrast** is whether one can carry
+text on the other, measured by WCAG 2. A pair can be easy to tell apart and still fail as text.
+
+<CompareColours />
+
+This is [`@hipuku/colour`](/docs/packages/colour) running in the page, the same functions the
+contrast tests use. Nothing is uploaded.

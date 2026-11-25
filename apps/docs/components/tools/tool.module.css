@@ -55,3 +55,80 @@
   margin: var(--haus-space-2) 0 0;
   padding-inline-start: var(--haus-space-5);
 }
+
+/* A colour chip. Its colour is the reader's input; everything else is a token. */
+.swatch {
+  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  border-radius: var(--haus-radius-marker);
+  display: inline-block;
+  flex: none;
+}
+
+.swatch[data-size='sm'] {
+  block-size: var(--haus-icon-sm);
+  inline-size: var(--haus-icon-sm);
+}
+
+.swatch[data-size='md'] {
+  block-size: var(--haus-space-8);
+  inline-size: var(--haus-space-8);
+}
+
+.swatch[data-size='lg'] {
+  block-size: var(--haus-space-16);
+  inline-size: 100%;
+}
+
+/* Two things side by side, stacked on a narrow screen. */
+.pair {
+  display: grid;
+  gap: var(--haus-space-4);
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+}
+
+/* One measured fact: its label, the value large, a verdict and what it means. */
+.fact {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--haus-space-2);
+}
+
+.factLabel {
+  color: var(--haus-color-ink-tertiary);
+  font-size: var(--haus-type-body-sm-size);
+}
+
+.factValue {
+  color: var(--haus-color-ink-primary);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-heading-lg-size);
+  font-weight: var(--haus-weight-semibold);
+}
+
+.factNote {
+  color: var(--haus-color-ink-secondary);
+  font-size: var(--haus-type-body-sm-size);
+  margin: 0;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--haus-space-2);
+}
+
+/* A line of text set in one colour on the other: the test contrast stands for. */
+.sample {
+  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  border-radius: var(--haus-radius-surface);
+  display: flex;
+  flex-direction: column;
+  gap: var(--haus-space-2);
+  padding: var(--haus-space-5);
+}
+
+.sampleLarge {
+  font-size: var(--haus-type-heading-size);
+  font-weight: var(--haus-weight-semibold);
+}
