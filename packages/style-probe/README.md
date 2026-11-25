@@ -1,5 +1,13 @@
 # haus-style-probe
 
+> **Replaced by [`@hipuku/style-probe`](https://www.npmjs.com/package/@hipuku/style-probe).** This is the final release of
+> `haus-style-probe`: it is unchanged in behaviour and exists to point here. Nothing is unpublished, so an
+> existing install keeps working, but new work should take `@hipuku/style-probe`.
+>
+> ```bash
+> npm install @hipuku/style-probe
+> ```
+
 Read a rendered element's design decisions: in-browser computed-style
 extraction, plus pure normalisation into typed token values.
 
