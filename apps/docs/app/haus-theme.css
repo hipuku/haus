@@ -426,11 +426,14 @@ figure.shiki {
   background-color: transparent;
 }
 
-/* A labelled specimen's code, a swatch's token name, is plain mono: no
-   chip, no edge. Fumadocs gives every prose code an edge and a ground, which
-   the inline-code rule above clears only for code in running text. */
-.prose :where(:not(pre) > code[class]) {
+/* A labelled specimen's code, a swatch's token name, is plain mono in the
+   inline-code purple: no chip, no edge. Fumadocs gives every prose code an
+   edge and a ground, which the inline-code rule above clears only for code in
+   running text. Written without :where so it outweighs the specimen's own
+   ink-primary. */
+.prose :not(pre) > code[class] {
   background: none;
+  color: var(--haus-color-primary-on-subtle);
   border: 0;
   padding: 0;
 }
