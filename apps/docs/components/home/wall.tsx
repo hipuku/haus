@@ -49,8 +49,7 @@ import styles from './wall.module.css'
  * - Toggle `checked`: the thumb slides on the layout role
  * - a button's hover, or hover and press, or a field's keyboard focus, one per
  *   screen, through the components' own rules (see useStates)
- * - Select: opens, its highlight moves, and a format is chosen, through its
- *   own handlers
+ * - Select: opens, shows its options and closes, through its own handler
  * - Checkbox `checked`: the box fills and the tick draws
  * - RadioGroup `value`: the dot grows in the newly chosen option
  * - Tabs `value`: the marker slides to the chosen tab
@@ -134,6 +133,8 @@ type Move = {
   click?: boolean
   /** Fires the pointer entering the target, for a handler that reads it. */
   enter?: boolean
+  /** Clicks the target only if its `aria-expanded` is not already this. */
+  expanded?: boolean
 }
 
 const STATES = ['hover', 'active', 'focus', 'focus-visible'] as const
@@ -162,6 +163,9 @@ function useStates(root: RefObject<HTMLElement | null>, script: Move[], every: n
     }
     if (move.enter) target.dispatchEvent(new MouseEvent('mouseover', { bubbles: true, relatedTarget: stage }))
     if (move.click) (target as HTMLElement).click()
+    if (move.expanded !== undefined && (target.getAttribute('aria-expanded') === 'true') !== move.expanded) {
+      ;(target as HTMLElement).click()
+    }
     // The script is a constant per screen; the step is what moves it.
   }, [step, tick === 0])
 }
@@ -369,10 +373,16 @@ function Notices() {
   )
 }
 
-const EMPTY = hoverOnly('[data-demo="add"]')
+/* A pointer resting on Add a colour while it goes hover, pressed, hover. */
+const EMPTY: Move[] = [
+  { at: by('[data-demo="add"]'), hover: true },
+  { at: by('[data-demo="add"]'), hover: true },
+  { at: by('[data-demo="add"]'), hover: true, press: true },
+  { at: by('[data-demo="add"]'), hover: true },
+]
 function Empty() {
   const stage = useRef<HTMLDivElement>(null)
-  useStates(stage, EMPTY, 4, 0)
+  useStates(stage, EMPTY, 3, 0)
   return (
     <Tile uses={['EmptyState', 'Button']}>
       <div ref={stage}>
@@ -448,36 +458,28 @@ function Toolbar() {
 }
 
 /*
- * The Select opens, its highlight moves to the next format, and that format
- * is chosen. The Select opens through its own click handler and its
- * highlight follows the pointer through its own mouse handler; it scrolls only
- * its own list, so nothing outside the screen moves.
+ * The Select opens, shows its options, and closes. Nothing is chosen, so the
+ * value stays where it is. It opens through its own click handler, and
+ * scrolls only its own list.
  */
 const FORMATS = [
   { label: 'CSS custom properties', value: 'css' },
   { label: 'DTCG JSON', value: 'dtcg' },
   { label: 'TypeScript', value: 'ts' },
 ]
-const nextOption = (root: HTMLElement) => {
-  const options = [...root.querySelectorAll('[role="option"]')]
-  const chosen = options.findIndex(option => option.getAttribute('aria-selected') === 'true')
-  return options[(chosen + 1) % options.length] ?? null
-}
 const EXPORT: Move[] = [
-  { at: by('[role="combobox"]'), hover: true },
-  { at: by('[role="combobox"]'), hover: true, click: true },
-  { at: nextOption, hover: true, enter: true },
-  { at: nextOption, hover: true, enter: true, click: true },
-  { at: null },
+  { at: by('[role="combobox"]'), expanded: false },
+  { at: by('[role="combobox"]'), expanded: true },
+  { at: by('[role="combobox"]'), expanded: true },
+  { at: by('[role="combobox"]'), expanded: false },
 ]
 function Export() {
-  const [format, setFormat] = useState('css')
   const stage = useRef<HTMLDivElement>(null)
   useStates(stage, EXPORT, 4, 5)
   return (
     <Tile uses={['Select', 'Checkbox', 'Button']}>
       <div className={styles.stack} ref={stage}>
-        <Select label="Export as" onChange={setFormat} options={FORMATS} value={format} />
+        <Select label="Export as" onChange={noop} options={FORMATS} value="dtcg" />
         <Select label="Colour space" onChange={noop} options={[{ label: 'OKLCH', value: 'oklch' }]} value="oklch" />
         <Checkbox checked label="Include the dark mode" onChange={noop} />
         <Button variant="primary">Export</Button>
