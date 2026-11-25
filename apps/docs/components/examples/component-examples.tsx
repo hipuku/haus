@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { composeStories } from '@storybook/react'
 import { Preview } from '../preview'
 import { STORIES, type ComponentName } from './stories'
@@ -114,13 +114,16 @@ const ATTRIBUTE: Record<keyof Pseudo, string> = {
 /*
  * Menu and Popover open their panels on their own, and Menu moves focus into
  * its first item. Several open on one page stole focus from each other, each
- * closing the last, and moved the page. Every example on those pages but the
- * Playground is inert, so each panel stays as it is drawn.
+ * closing the last, and moved the page. So every example on those pages but
+ * the Playground starts inert, and comes alive on the reader's first press:
+ * inert is lifted in the capture phase of that pointerdown, before the click
+ * that follows is aimed, so the press reaches the trigger as usual.
  */
 const STILL_PAGES: readonly string[] = ['Menu', 'Popover']
 
 function Forced({ pseudo, still, children }: { pseudo?: Pseudo; still: boolean; children: ReactNode }) {
   const root = useRef<HTMLDivElement>(null)
+  const [asleep, setAsleep] = useState(still)
   useEffect(() => {
     const element = root.current
     if (!element || !pseudo) return
@@ -131,8 +134,10 @@ function Forced({ pseudo, still, children }: { pseudo?: Pseudo; still: boolean; 
     }
   }, [pseudo])
   return (
-    <div className="haus-example" inert={still || undefined} ref={root}>
-      {children}
+    <div className="haus-example" onPointerDownCapture={asleep ? () => setAsleep(false) : undefined}>
+      <div inert={asleep || undefined} ref={root}>
+        {children}
+      </div>
     </div>
   )
 }

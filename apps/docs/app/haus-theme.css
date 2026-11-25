@@ -484,8 +484,43 @@ figure.shiki {
  * carries, so Storybook and its screenshots are unchanged. `!important`
  * because the helpers' layout is inline.
  */
-.haus-example {
+/*
+ * Alignment, one rule: a label aligns the way its subject does.
+ *
+ * Compact specimens, a button, a badge, an avatar, a checkbox, sit centred in
+ * the frame as a group, each label centred over its subject. Full-width
+ * specimens, fields, selects, notices, cards, tabs, fill their columns with
+ * the label at the start, on the field's own leading edge, since that is the
+ * edge they are read from.
+ */
+[data-story-item] {
+  align-items: center !important;
+}
+
+.haus-example:has([data-story-row], [data-story-stack], [data-story-grid]) {
+  display: flex;
+  justify-content: center;
+}
+
+[data-of='Input'] .haus-example,
+[data-of='Textarea'] .haus-example,
+[data-of='Select'] .haus-example,
+[data-of='Toast'] .haus-example,
+[data-of='Card'] .haus-example,
+[data-of='Callout'] .haus-example,
+[data-of='Tabs'] .haus-example {
+  display: block;
   inline-size: 100%;
+}
+
+[data-of='Input'] [data-story-item],
+[data-of='Textarea'] [data-story-item],
+[data-of='Select'] [data-story-item],
+[data-of='Toast'] [data-story-item],
+[data-of='Card'] [data-story-item],
+[data-of='Callout'] [data-story-item],
+[data-of='Tabs'] [data-story-item] {
+  align-items: flex-start !important;
 }
 
 /* A grid of states or values, n to a row. */
@@ -524,12 +559,6 @@ figure.shiki {
 /* One card to a row. */
 [data-of='Card'] [data-story-row] {
   flex-direction: column !important;
-}
-
-/* A label centred over its subject. */
-[data-of='EmptyState'] [data-story-item],
-[data-of='IconButton'] [data-story-item] {
-  align-items: center !important;
 }
 
 [data-of='EmptyState'] [data-story-stack] {
@@ -575,4 +604,19 @@ figure.shiki {
 
 [data-of='Popover'][data-story='Placement'] [data-story-item]:nth-child(2) > :not([data-story-label]) {
   padding: calc(var(--haus-space-20) * 2) 0 0 !important;
+}
+
+/* Toast's tone-by-appearance table: the toasts take a readable width. */
+[data-of='Toast'][data-story='ToneByAppearance'] [data-story-grid] {
+  grid-template-columns: max-content repeat(2, minmax(16rem, 1fr)) !important;
+  inline-size: 100%;
+}
+
+/* Toggle's content examples: the label and its description on one line. */
+[data-of='Toggle'][data-story='Content'] label > span:first-child {
+  align-items: baseline;
+  column-gap: var(--haus-space-2);
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap;
 }
