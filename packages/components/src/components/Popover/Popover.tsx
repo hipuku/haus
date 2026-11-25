@@ -266,7 +266,10 @@ export const Popover = React.forwardRef<HTMLDivElement, PopoverProps>(function P
            opinion. Where it does, the two agree about the trigger already and
            the mode's own growth is kept, so a panel that is too narrow for its
            content widens instead of overflowing: `.panel` has no `overflow`,
-           so the alternative is content drawn outside its surface. */
+           so the alternative is content drawn outside its surface. For
+           `width="trigger"` that growth is `.w-trigger`'s own
+           `inline-size: max-content` under its `max-inline-size`, not
+           `.panel`'s minimum, which `.w-trigger` overrides. */
         ...(width === 'trigger' ? { minInlineSize: rect.width } : {}),
         ...(align === 'stretch' && width !== 'trigger' ? { inlineSize: rect.width } : {}),
       }

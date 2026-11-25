@@ -235,9 +235,10 @@ portalled panel is `position: fixed`, so that percentage resolved against the vi
 set `inline-size` from the measured trigger and left the percentage in place, so two props that
 each asked for the trigger's width produced a panel at least as wide as the window. The minimum is
 now written from the trigger's measured width whenever `width="trigger"`, whatever `align` says.
-A panel too narrow for its content still widens, as `width="trigger"` has always done; no
-combination of `width` and `align` holds a panel to its trigger's width exactly, and `.panel`'s
-`min-inline-size: max-content` is why.
+A panel too narrow for its content still widens, as `width="trigger"` has always done: that growth
+is its own `inline-size: max-content`, capped by `popover-width-xl`, rather than the
+`min-inline-size: max-content` that `width="auto"` grows by. No combination of `width` and `align`
+holds a panel to its trigger's width exactly, for one of those two reasons depending on the mode.
 
 **Fixed** · **A tooltip's bubble can be hovered**, which is one of WCAG 1.4.13's three conditions
 and was absent while the component documented it as implemented. The bubble was `pointer-events:
