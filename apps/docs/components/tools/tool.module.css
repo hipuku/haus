@@ -215,29 +215,34 @@
   gap: var(--haus-space-4);
 }
 
-/* Settings in a row that wraps. */
-.controls {
-  align-items: end;
-  display: grid;
-  gap: var(--haus-space-4);
-  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
-}
-
-/* A control with no label of its own, standing level with the fields beside
-   it rather than on their labels. */
-.controlAction {
-  display: flex;
-  padding-block-end: var(--haus-space-0-5);
-}
-
-/* Fields that take their own width rather than equal columns: a rem base is
-   four characters and does not want a third of the page. */
-.options {
+/*
+ * A field and the control beside it: the field takes what is left, the
+ * control takes what it needs.
+ *
+ * `align-items: end` lines the two up on their bottoms, which is where they
+ * agree: a Select carries a label above it and a Button does not, and both
+ * stand at control-height-md. The earlier version nudged the Button down by
+ * half a step instead, which was a guess at the same thing and out by 2px.
+ */
+.row {
   align-items: end;
   display: flex;
   flex-wrap: wrap;
-  gap: var(--haus-space-5);
+  gap: var(--haus-space-4);
 }
+
+.row > .grow {
+  flex: 1 1 16rem;
+  min-inline-size: 0;
+}
+
+/* A field of four characters, which does not want a share of the row. */
+.row > .narrow {
+  flex: 0 0 auto;
+  inline-size: 8rem;
+}
+
+
 
 
 /* A sentence in a table cell, which wraps where the data columns do not. */
@@ -674,4 +679,18 @@
   display: grid;
   gap: var(--haus-space-8);
   grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+}
+
+/*
+ * A written file, shown whole.
+ *
+ * Fumadocs caps a code block at 600px and scrolls inside it, which is right
+ * for a snippet inside a page of prose and wrong for the output of a
+ * converter: a reader checking what was written should not be reading it
+ * through a window, and a page that scrolls inside a thing that scrolls is
+ * worse than a long page.
+ */
+.output :global(pre),
+.output :global(.fd-scroll-container) {
+  max-block-size: none;
 }

@@ -153,7 +153,10 @@ export function Converter({ examples }: { examples: Example[] }) {
       onChange={event =>
         setFiles(all => all.map(f => (f.name === current.name ? { ...f, text: event.target.value } : f)))
       }
-      rows={14}
+      /* As tall as the file, rather than a window onto it. A reader checking
+         an example, or their own upload, should not be scrolling inside a
+         field on a page that also scrolls. */
+      rows={Math.max(8, current.text.split('\n').length)}
       spellCheck={false}
       value={current.text}
     />
@@ -166,14 +169,16 @@ export function Converter({ examples }: { examples: Example[] }) {
           source it came from at the foot of the page, which is the journey
           backwards. */}
       <Stage name="The tokens you have" note="An example, your own files, or either one edited here." number={1}>
-        <div className={styles.controls}>
-          <Select
-            label="Start from an example"
-            onChange={choose}
-            options={examples.map(e => ({ label: e.label, value: e.id }))}
-            value={exampleId}
-          />
-          <div className={styles.controlAction}>
+        <div className={styles.row}>
+          <div className={styles.grow}>
+            <Select
+              label="Start from an example"
+              onChange={choose}
+              options={examples.map(e => ({ label: e.label, value: e.id }))}
+              value={exampleId}
+            />
+          </div>
+          <div>
             <Button onClick={() => upload.current?.click()} variant="secondary">
               Upload your own
             </Button>
@@ -211,26 +216,37 @@ export function Converter({ examples }: { examples: Example[] }) {
       </Stage>
 
       <Stage name="What to write" note="The format to write, and how to write it." number={2}>
-        <div className={styles.options}>
-          <Select
-            label="Convert to"
-            onChange={value => setTarget(value as FormatId)}
-            options={FORMATS.map(format => ({ label: FORMAT_LABEL[format], value: format }))}
-            value={target}
-          />
-          <Input inputMode="decimal" label="Rem base, px" onChange={e => setRemBase(e.target.value)} value={remBase} />
-          {target === 'tailwind' && (
+        <div className={styles.row}>
+          <div className={styles.grow}>
             <Select
-              label="Tailwind modes by"
-              onChange={value => setSelector(value as typeof selector)}
-              options={[
-                { label: 'data-theme attribute', value: 'data-theme' },
-                { label: 'Class', value: 'class' },
-                { label: 'Media query', value: 'media' },
-              ]}
-              value={selector}
+              label="Convert to"
+              onChange={value => setTarget(value as FormatId)}
+              options={FORMATS.map(format => ({ label: FORMAT_LABEL[format], value: format }))}
+              value={target}
             />
+          </div>
+          {target === 'tailwind' && (
+            <div className={styles.grow}>
+              <Select
+                label="Tailwind modes by"
+                onChange={value => setSelector(value as typeof selector)}
+                options={[
+                  { label: 'data-theme attribute', value: 'data-theme' },
+                  { label: 'Class', value: 'class' },
+                  { label: 'Media query', value: 'media' },
+                ]}
+                value={selector}
+              />
+            </div>
           )}
+          <div className={styles.narrow}>
+            <Input
+              inputMode="decimal"
+              label="Rem base, px"
+              onChange={e => setRemBase(e.target.value)}
+              value={remBase}
+            />
+          </div>
         </div>
       </Stage>
 
