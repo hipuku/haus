@@ -123,7 +123,10 @@
 }
 
 /* Inline code is a quiet mark in a sentence, not a second colour in it. */
-.prose :where(:not(pre) > code) {
+.prose :where(:not(pre) > code:not([class])) {
+  /* Inline code in running text only: markdown gives it no class. A labelled
+     specimen's name, a swatch's token, carries a class and keeps its own plain
+     mono style, so a card of names does not read as a run of chips. */
   background: var(--haus-color-surface-sunken);
   /* primary-on-subtle, the role for primary text on a tinted ground: 9.6:1 on
      the light ground, 11.85:1 on the dark one. Not primary-default, which is
@@ -366,7 +369,7 @@ figure.shiki {
 /* In dark, inline code sits on surface-subtle, a step above the page:
    surface-sunken, its light-mode ground, is a step below a page that is
    already near black, and the difference could not be seen. */
-:root[data-theme='dark'] .prose :where(:not(pre) > code) {
+:root[data-theme='dark'] .prose :where(:not(pre) > code:not([class])) {
   background: var(--haus-color-surface-subtle);
 }
 
