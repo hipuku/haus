@@ -1,5 +1,5 @@
 import { createGenerator } from 'fumadocs-typescript'
-import { readFileSync } from 'node:fs'
+import { readFileSync, readdirSync } from 'node:fs'
 import path from 'node:path'
 
 const generator = createGenerator()
@@ -84,6 +84,68 @@ export function apiTableSource({ file, name, element = 'HTMLElement', attributes
  * `React`, which every component in the package does.
  */
 /*
+ * A named union, `BadgeTone`, tells a reader the name of a type rather than
+ * what to pass. Every such alias in the package is a union of string
+ * literals, sometimes built from another alias or an `Extract<>` of one, so
+ * the table resolves a prop whose whole type is one alias into its values.
+ * Anything it cannot resolve fully to literals is left as written, so the
+ * table never shows a guess.
+ */
+const aliases: Map<string, string> = (() => {
+  const files = [
+    path.join(componentsSrc, 'types.ts'),
+    ...readdirSync(path.join(componentsSrc, 'components'), { withFileTypes: true })
+      .filter(entry => entry.isDirectory())
+      .flatMap(entry =>
+        readdirSync(path.join(componentsSrc, 'components', entry.name))
+          .filter(file => /\.tsx?$/.test(file) && !/\.(test|stories)\./.test(file))
+          .map(file => path.join(componentsSrc, 'components', entry.name, file)),
+      ),
+  ]
+  const map = new Map<string, string>()
+  for (const file of files) {
+    for (const [, name, value] of readFileSync(file, 'utf8').matchAll(/^export type (\w+) = ([^\n{]+)$/gm)) {
+      map.set(name, value.trim())
+    }
+  }
+  return map
+})()
+
+function literals(type: string, depth = 0): string[] | null {
+  if (depth > 4) return null
+  const extract = type.match(/^Extract<\s*\w+\s*,\s*(.+)>$/)
+  if (extract) return literals(extract[1], depth + 1)
+  const parts = type.split('|').map(part => part.trim())
+  const out: string[] = []
+  for (const part of parts) {
+    if (/^'[^']*'$/.test(part)) out.push(part.replace(/'/g, '"'))
+    else if (/^"[^"]*"$/.test(part)) out.push(part)
+    else if (aliases.has(part)) {
+      const inner = literals(aliases.get(part)!, depth + 1)
+      if (!inner) return null
+      out.push(...inner)
+    } else return null
+  }
+  return out
+}
+
+function readableType(type: string) {
+  const bare = type.replace(/ \| undefined$/, '')
+  if (!aliases.has(bare)) return bare
+  const values = literals(bare)
+  return values ? [...new Set(values)].join(' | ') : bare
+}
+
+/* A description is the component's doc comment, written in markdown; its
+   backticked spans are code in a sentence, so they become inline code and
+   take the inline-code chip. */
+function withInlineCode(text: string) {
+  return text
+    .split(/(`[^`]+`)/)
+    .map((part, i) => (part.startsWith('`') && part.endsWith('`') ? <code key={i}>{part.slice(1, -1)}</code> : part))
+}
+
+/*
  * The props as a plain table, from the same generator: the prop, its full
  * type, and what it is for. It is an ordinary table in the page's prose, so it
  * takes the site's table styling, one rule colour and the header row's ground,
@@ -119,11 +181,11 @@ export async function ApiTable(props: ApiTableProps) {
                 {entry.required && <span className="haus-api-required">required</span>}
               </td>
               <td>
-                <code className="haus-api-type">{entry.type.replace(/ \| undefined$/, '')}</code>
+                <code className="haus-api-type">{readableType(entry.type)}</code>
               </td>
               {described && (
                 <td>
-                  {entry.description}
+                  {withInlineCode(entry.description)}
                   {fallback && (
                     <span className="haus-api-default">
                       Default <code className="haus-api-type">{fallback}</code>
