@@ -172,15 +172,12 @@ export function InspectColour() {
       </div>
 
       <div className={styles.pair}>
-        <Panel
-          aside={
-            <span className={styles.badges}>
-              <Badge tone="info">{hueFamily(hex) ?? 'Neutral'}</Badge>
-              <Badge>{isLight(hex) ? 'Light' : 'Dark'}</Badge>
-            </span>
-          }
-          label="OKLCH"
-        >
+        {/* The hue family and light-or-dark are readings the package derives
+            from the same three numbers, so they sit in the grid with them
+            rather than as Badges. A neutral subtle Badge is also invisible on
+            a Card in dark mode: both are damson-800, which is the surface gap
+            the tracker already has open against the ghost hover. */}
+        <Panel label="OKLCH">
           <dl className={styles.coords}>
             <div>
               <dt>Lightness</dt>
@@ -194,11 +191,19 @@ export function InspectColour() {
               <dt>Hue</dt>
               <dd>{lch.h === null ? 'none' : `${lch.h.toFixed(1)}°`}</dd>
             </div>
+            <div>
+              <dt>Family</dt>
+              <dd>{hueFamily(hex) ?? 'Neutral'}</dd>
+            </div>
+            <div>
+              <dt>Reads as</dt>
+              <dd>{isLight(hex) ? 'Light' : 'Dark'}</dd>
+            </div>
           </dl>
           {/* The three readings above are what the numbers are; this is the
               line a reader came to the page for, in the form they paste. */}
           <div className={styles.declaration}>
-            <code>{declaration}</code>
+            <code className={styles.value}>{declaration}</code>
             <CopyValue size="lg" text={declaration} variant="secondary" />
           </div>
           <p className={styles.factNote}>
@@ -221,8 +226,8 @@ export function InspectColour() {
             {scale.map((step, i) => (
               <li key={step}>
                 <span className={styles.scaleChip} style={{ background: step }} />
-                <code>{i === 0 ? 50 : i * 100}</code>
-                <code>{step}</code>
+                <code className={styles.value}>{i === 0 ? 50 : i * 100}</code>
+                <code className={styles.value}>{step}</code>
               </li>
             ))}
           </ol>

@@ -77,7 +77,7 @@ export function PaletteAnalysis() {
           {hexes.map(hex => (
             <li key={hex}>
               <Swatch hex={hex} size="lg" />
-              <code>{hex}</code>
+              <code className={styles.value}>{hex}</code>
             </li>
           ))}
         </ul>
@@ -133,7 +133,7 @@ export function PaletteAnalysis() {
               {result.lightness.sortedHexes.map(hex => (
                 <li key={hex}>
                   <Swatch hex={hex} size="sm" />
-                  <code>{hex}</code>
+                  <code className={styles.value}>{hex}</code>
                   <span>{((oklch(hex)?.l ?? 0) * 100).toFixed(1)}%</span>
                 </li>
               ))}
@@ -148,7 +148,7 @@ export function PaletteAnalysis() {
                   {cluster.members.map(hex => (
                     <span className={styles.clusterItem} key={hex}>
                       <Swatch hex={hex} size="md" />
-                      <code>{hex}</code>
+                      <code className={styles.value}>{hex}</code>
                     </span>
                   ))}
                   <Badge tone="warning">Look alike</Badge>
@@ -169,7 +169,7 @@ export function PaletteAnalysis() {
                     <th scope="col">Text on</th>
                     {hexes.map(bg => (
                       <th key={bg} scope="col">
-                        <Swatch hex={bg} size="sm" /> <code>{bg}</code>
+                        <Swatch hex={bg} size="sm" /> <code className={styles.value}>{bg}</code>
                       </th>
                     ))}
                   </tr>
@@ -178,7 +178,7 @@ export function PaletteAnalysis() {
                   {hexes.map(fg => (
                     <tr key={fg}>
                       <th scope="row">
-                        <Swatch hex={fg} size="sm" /> <code>{fg}</code>
+                        <Swatch hex={fg} size="sm" /> <code className={styles.value}>{fg}</code>
                       </th>
                       {hexes.map(bg => {
                         if (fg === bg)

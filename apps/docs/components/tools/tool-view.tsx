@@ -64,11 +64,11 @@ export function Meter({ label, count, total }: { label: string; count: number; t
   const share = total > 0 ? Math.max(1, (count / total) * 100) : 0
   return (
     <div className={styles.meter}>
-      <code>{label}</code>
+      <code className={styles.value}>{label}</code>
       <span className={styles.meterTrack}>
         <span className={styles.meterFill} style={{ inlineSize: `${share}%` }} />
       </span>
-      <code>{count}</code>
+      <code className={styles.value}>{count}</code>
     </div>
   )
 }

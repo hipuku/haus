@@ -259,12 +259,12 @@ export function Converter({ examples }: { examples: Example[] }) {
                       {result.set.tokens.map(token => (
                         <tr key={token.path.join('.')}>
                           <td>
-                            <code>{token.path.join('.')}</code>
+                            <code className={styles.value}>{token.path.join('.')}</code>
                           </td>
                           <td>{token.type ?? 'none'}</td>
                           {result.set.modes.map(mode => (
                             <td key={mode}>
-                              <code>{show(token, token.values[mode])}</code>
+                              <code className={styles.value}>{show(token, token.values[mode])}</code>
                             </td>
                           ))}
                         </tr>
@@ -298,7 +298,7 @@ export function Converter({ examples }: { examples: Example[] }) {
                             <ul className={styles.losses}>
                               {entries.map((loss, i) => (
                                 <li key={i}>
-                                  <code>{loss.token}</code>
+                                  <code className={styles.value}>{loss.token}</code>
                                   {loss.mode ? ` (${loss.mode})` : ''}: {loss.detail}
                                 </li>
                               ))}

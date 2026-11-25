@@ -80,10 +80,12 @@
   inline-size: 100%;
 }
 
-/* Two things side by side, stacked on a narrow screen. */
+/* Two things side by side, stacked on a narrow screen.
+   The same gap as the rhythm between rows, so a grid of panels is evenly
+   spaced in both directions rather than tighter across than down. */
 .pair {
   display: grid;
-  gap: var(--haus-space-4);
+  gap: var(--haus-space-8);
   grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
 }
 
@@ -152,16 +154,16 @@
 }
 
 .names code {
-  color: var(--haus-color-ink-tertiary);
   font-family: var(--haus-font-mono);
   margin-inline-start: auto;
 }
 
-/* OKLCH as three labelled values. */
+/* A colour's readings, each a label and a value. Auto-fit rather than a fixed
+   three, so a reading can be added without the last row stranding. */
 .coords {
   display: grid;
   gap: var(--haus-space-4);
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
   margin: 0;
 }
 
@@ -193,7 +195,6 @@
 }
 
 .scale code {
-  color: var(--haus-color-ink-secondary);
   font-family: var(--haus-font-mono);
   font-size: var(--haus-type-mono-xs-size);
 }
@@ -274,7 +275,6 @@
 }
 
 .table code {
-  color: var(--haus-color-primary-on-subtle);
   font-family: var(--haus-font-mono);
 }
 
@@ -297,7 +297,6 @@
 .strip code,
 .ladderList code,
 .clusterItem code {
-  color: var(--haus-color-ink-secondary);
   font-family: var(--haus-font-mono);
   font-size: var(--haus-type-mono-xs-size);
 }
@@ -459,14 +458,11 @@
 }
 
 .meter code {
-  color: var(--haus-color-ink-secondary);
   font-family: var(--haus-font-mono);
-  font-size: var(--haus-type-mono-xs-size);
   white-space: nowrap;
 }
 
 .meter code:last-child {
-  color: var(--haus-color-ink-tertiary);
   text-align: end;
 }
 
@@ -603,22 +599,40 @@
   gap: var(--haus-space-2);
 }
 
-/* The value sits in a box shaped like the field above it: the control radius,
-   which the brand sets to 4px rather than the 8px of the raw scale, and the
-   control height a default Input and Button both stand at. */
+/*
+ * The value is a field a reader takes something out of, so it is drawn as the
+ * field it is: Input's ground, edge, radius, inset and height, read off
+ * Input.module.css rather than invented. A sunken ground was the earlier
+ * version and is nowhere else on the site; border-control rather than
+ * border-default is Input's edge, which carries 3:1 against the page.
+ */
 .declaration code {
   align-items: center;
-  background: var(--haus-color-surface-sunken);
+  background: var(--haus-color-surface-default);
   block-size: var(--haus-control-height-md);
-  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  border: var(--haus-border-width-default) solid var(--haus-color-border-control);
   border-radius: var(--haus-radius-control);
-  color: var(--haus-color-ink-primary);
+  box-sizing: border-box;
   display: flex;
   flex: 1;
   font-family: var(--haus-font-mono);
   font-size: var(--haus-type-mono-sm-size);
   min-inline-size: 0;
   overflow: auto;
-  padding-inline: var(--haus-space-3);
+  padding-inline: var(--haus-space-inset-sm);
   white-space: nowrap;
+}
+
+/*
+ * Code in the tools, which is always a labelled slot: a band, a step, a token
+ * name, a measured value. Carrying a class is what tells the site's rule this
+ * is not code in a sentence, so it is drawn plain mono with no chip, in the
+ * inline-code purple, exactly as a swatch's token name on Foundations is.
+ * See app/haus-theme.css, `.prose :not(pre) > code[class]`.
+ *
+ * Size only here. The ink is the site's, and restating it would be a second
+ * opinion about a decision already made.
+ */
+.value {
+  font-size: var(--haus-type-mono-xs-size);
 }
