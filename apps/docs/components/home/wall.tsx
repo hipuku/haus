@@ -59,7 +59,8 @@ import styles from './wall.module.css'
  * content, so they hold still: swapping their text would be a cut, and a cut
  * presented as motion claims something they do not do.
  *
- * The whole wall runs in haus's expressive motion mode, scoped to it.
+ * The wall runs in haus's expressive motion mode, which the whole site sets
+ * on its root.
  *
  * One clock. Every screen reads one shared tick, so every copy of a screen is
  * in the same state at the same moment and is the same height. That is what
@@ -635,10 +636,8 @@ export function Wall() {
   }, [still])
 
   return (
-    // The expressive mode: haus's own slower, softer curves for every role,
-    // scoped to the wall, while the rest of the site keeps the standard ones.
     <Clock.Provider value={tick}>
-      <div className={styles.wall} data-haus-motion="expressive" data-still={still || undefined}>
+      <div className={styles.wall} data-still={still || undefined}>
         <div className={styles.columns}>
           {COLUMNS.map((tiles, i) => (
             <Column key={i} reverse={i % 2 === 1} still={still} tiles={tiles} />

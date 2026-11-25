@@ -196,8 +196,7 @@ export function SidebarFooter({ storybook, github }: { storybook: string; github
  * Each link used to colour its own leading border, so changing page switched
  * one rule off and another on, and nothing could move. This is a single rule
  * placed against the current link, which moves to the next one on the
- * indicator role, the role Tabs' marker uses, in the expressive mode scoped to
- * the marker alone. Its first placement does not animate, so it does not fly
+ * indicator role, the role Tabs' marker uses, in the site's expressive mode. Its first placement does not animate, so it does not fly
  * in from the top of the list.
  */
 export function SidebarIndicator() {
@@ -248,7 +247,6 @@ export function SidebarIndicator() {
     <span
       aria-hidden="true"
       className="haus-sidebar-indicator"
-      data-haus-motion="expressive"
       data-settled={settled ? '' : undefined}
       style={{ blockSize: place.height, insetInlineStart: place.left, transform: `translateY(${place.top}px)` }}
     />,

@@ -200,32 +200,39 @@
 }
 
 /*
- * The header's section links: a change in the text and nothing else.
- *
- * haus's rule for an inline link is an underline, which Button's `text`
- * variant strengthens on hover. The section names are a deliberate exception:
- * the header has a rule along its bottom edge, so an underline above it read
- * as two lines, and a fill made a word in a row of words look like a button.
- *
- * So at rest they are `ink-secondary`; under the pointer they take `ink-link`,
- * the colour every link on the site has, on the highlight role Button's text
- * variant uses for the same change; and the current section is `ink-primary`
- * at semibold, told apart by weight rather than by a hue alone. Hover changes
- * no weight, so nothing moves sideways under the pointer.
+ * Every link in running text, and the header's section links, behave as
+ * Button's text variant does: an underline at rest in the link's own colour at
+ * the subtle opacity, which comes to full strength and thickens under the
+ * pointer, on the highlight role. One behaviour for every link a reader meets.
+ * The header links keep their colours; the current section is ink-primary at
+ * semibold with its underline at full strength.
  */
+.prose :where(p, li, td, th, blockquote, figcaption) a,
 #nd-nav a[data-active] {
-  color: var(--haus-color-ink-secondary);
-  text-decoration: none;
-  transition: color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing);
+  text-decoration-color: oklch(from currentColor l c h / var(--haus-opacity-subtle));
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--haus-border-width-default);
+  text-underline-offset: var(--haus-text-underline-offset);
+  transition:
+    color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    text-decoration-color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    text-decoration-thickness var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing);
 }
 
+.prose :where(p, li, td, th, blockquote, figcaption) a:hover,
 #nd-nav a[data-active]:hover {
-  color: var(--haus-color-ink-link);
+  text-decoration-color: currentColor;
+  text-decoration-thickness: var(--haus-border-width-thick);
+}
+
+#nd-nav a[data-active] {
+  color: var(--haus-color-ink-secondary);
 }
 
 #nd-nav a[data-active='true'] {
   color: var(--haus-color-ink-primary);
   font-weight: var(--haus-weight-semibold);
+  text-decoration-color: currentColor;
 }
 
 #nd-nav a[data-active]:focus-visible {
