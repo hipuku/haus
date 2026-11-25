@@ -1,15 +1,30 @@
-.roles {
+/*
+ * The motion roles as a grid: a row per role, a column per mode, and a narrow
+ * column for each row's play control.
+ */
+.grid {
   display: flex;
   flex-direction: column;
   margin-block: var(--haus-space-6);
 }
 
+.head,
 .row {
   align-items: center;
-  border-block-start: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
-  display: flex;
-  gap: var(--haus-space-6);
-  justify-content: space-between;
+  column-gap: var(--haus-space-4);
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr)) auto;
+}
+
+.head {
+  color: var(--haus-color-ink-tertiary);
+  font-size: var(--haus-type-body-sm-size);
+  font-weight: var(--haus-weight-semibold);
+  padding-block-end: var(--haus-space-2);
+}
+
+.row {
+  border-block-start: var(--haus-border-width-default) solid var(--haus-color-border-default);
   padding-block: var(--haus-space-4);
 }
 
@@ -20,11 +35,8 @@
   min-inline-size: 0;
 }
 
-/* A `<code>` in a stretching column, with the page's filled background on
-   inline code, drew a full-width bar for a one-word role name. */
 .name {
   align-self: flex-start;
-  color: var(--haus-color-ink-primary);
   font-family: var(--haus-font-mono);
   font-size: var(--haus-type-mono-sm-size);
   max-inline-size: 100%;
@@ -36,32 +48,33 @@
   line-height: var(--haus-type-body-sm-leading);
 }
 
-.values {
-  color: var(--haus-color-ink-tertiary);
-  font-family: var(--haus-font-mono);
-  font-size: var(--haus-type-label-caption-size);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--haus-space-2);
+  min-inline-size: 0;
+}
+
+/* The mode's name above its cell, shown only where the header row is not. */
+.cellMode {
+  display: none;
 }
 
 .stage {
   align-items: center;
   background: var(--haus-color-surface-subtle);
-  block-size: var(--haus-space-16);
+  block-size: var(--haus-space-12);
   border-radius: var(--haus-radius-md);
   display: flex;
-  flex: none;
-  inline-size: var(--haus-space-20);
   justify-content: center;
   overflow: hidden;
 }
 
 .sample {
   background: var(--haus-color-primary-default);
-  block-size: var(--haus-space-8);
+  block-size: var(--haus-space-6);
   border-radius: var(--haus-radius-marker);
-  inline-size: var(--haus-space-8);
+  inline-size: var(--haus-space-6);
 }
 
 .playing {
@@ -80,18 +93,49 @@
   }
 }
 
-/* A reader who has asked for less motion gets the reduced mode's values from
-   the token layer; the sample still plays, briefly, because the point of the
-   page is to show what it does. */
-@media (prefers-reduced-motion: reduce) {
-  .sample {
-    animation-duration: var(--haus-motion-micro-duration);
-  }
+.values {
+  color: var(--haus-color-ink-tertiary);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-label-caption-size);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-/* The panel the mode tabs control: the roles, in the chosen mode. */
-.modePanel {
+.playCell {
   display: flex;
-  flex-direction: column;
-  margin-block-start: var(--haus-space-4);
+  justify-content: flex-end;
+}
+
+/* On a narrow screen a row stacks: the role and its play control, then its
+   three cells side by side, each named, and no header row. */
+@media (max-width: 48rem) {
+  .head {
+    display: none;
+  }
+
+  .row {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+    row-gap: var(--haus-space-3);
+  }
+
+  .meta {
+    grid-column: 1 / 4;
+    grid-row: 1;
+  }
+
+  .row > .playCell {
+    grid-column: 4;
+    grid-row: 1;
+  }
+
+  .row > .cell {
+    grid-row: 2;
+  }
+
+  .cellMode {
+    color: var(--haus-color-ink-tertiary);
+    display: block;
+    font-size: var(--haus-type-label-caption-size);
+  }
 }

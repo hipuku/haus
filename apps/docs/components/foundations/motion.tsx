@@ -2,7 +2,7 @@
 
 import type React from 'react'
 import { useEffect, useRef, useState } from 'react'
-import { Tabs } from 'haus-components'
+import { IconButton } from 'haus-components'
 import styles from './motion.module.css'
 
 /*
@@ -25,55 +25,109 @@ const ROLES = [
 ] as const
 
 /*
- * The three motion modes as a segmented Tabs, the mode switch Tabs documents.
- * The list of roles is the panel, and it carries the chosen mode as
- * `data-haus-motion`, so each row reads and plays that mode's own values.
- * Choosing a mode replays every role.
+ * Every role in every mode at once, as a grid: a row per role and a column
+ * per mode, each cell a stage of its own carrying `data-haus-motion`, so it
+ * reads and plays that mode's real duration and easing. The three play side
+ * by side, which is the comparison the page is for.
+ *
+ * A row plays as it scrolls into view, and again each time it comes back, so
+ * nothing has finished before the reader reaches it. Each row has its own play
+ * control, and the header's plays every row.
  */
 const MODES = [
   { label: 'Default', value: 'subtle' },
   { label: 'Expressive', value: 'expressive' },
   { label: 'Reduced', value: 'reduced' },
-]
+] as const
+
+const PlayGlyph = () => (
+  <svg aria-hidden="true" fill="currentColor" height="14" viewBox="0 0 24 24" width="14">
+    <path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z" />
+  </svg>
+)
 
 export function MotionRoles() {
-  const [mode, setMode] = useState('subtle')
-  const [playing, setPlaying] = useState(0)
+  const [all, setAll] = useState(0)
+  return (
+    <div className={styles.grid} role="table" aria-label="Motion roles in each mode">
+      <div className={styles.head} role="row">
+        <span role="columnheader">Role</span>
+        {MODES.map(mode => (
+          <span key={mode.value} role="columnheader">
+            {mode.label}
+          </span>
+        ))}
+        <span className={styles.playCell} role="columnheader">
+          <IconButton
+            icon={<PlayGlyph />}
+            label="Play every role"
+            onClick={() => setAll(n => n + 1)}
+            size="sm"
+            variant="ghost"
+          />
+        </span>
+      </div>
+      {ROLES.map(({ role, what }) => (
+        <MotionRow all={all} key={role} role={role} what={what} />
+      ))}
+    </div>
+  )
+}
+
+function MotionRow({ role, what, all }: { role: string; what: string; all: number }) {
+  const row = useRef<HTMLDivElement>(null)
+  const [play, setPlay] = useState(0)
+
+  useEffect(() => {
+    if (all > 0) setPlay(n => n + 1)
+  }, [all])
+
+  useEffect(() => {
+    const element = row.current
+    if (!element) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setPlay(n => n + 1)
+      },
+      { threshold: 0.6 },
+    )
+    observer.observe(element)
+    return () => observer.disconnect()
+  }, [])
 
   return (
-    <div className={styles.roles}>
-      <Tabs
-        appearance="segmented"
-        aria-label="Motion mode"
-        items={MODES}
-        onValueChange={next => {
-          setMode(next)
-          setPlaying(n => n + 1)
-        }}
-        size="sm"
-        value={mode}
-      >
-        <div className={styles.modePanel} data-haus-motion={mode}>
-          {ROLES.map(({ role, what }) => (
-            <MotionRole key={role} mode={mode} play={playing} role={role} what={what} />
-          ))}
-        </div>
-      </Tabs>
+    <div className={styles.row} ref={row} role="row">
+      <div className={styles.meta} role="rowheader">
+        <code className={styles.name}>{role}</code>
+        <span className={styles.what}>{what}</span>
+      </div>
+      {MODES.map(mode => (
+        <MotionCell key={mode.value} label={mode.label} mode={mode.value} play={play} role={role} />
+      ))}
+      <span className={styles.playCell} role="cell">
+        <IconButton
+          icon={<PlayGlyph />}
+          label={`Play ${role}`}
+          onClick={() => setPlay(n => n + 1)}
+          size="sm"
+          variant="ghost"
+        />
+      </span>
     </div>
   )
 }
 
 /*
  * A spring is compiled to a `linear()` ramp of forty-odd samples, which is the
- * right thing to hand a browser and the wrong thing to print in a row. The name
- * of the shape goes on the page and the whole value stays on the title.
+ * right thing to hand a browser and the wrong thing to print in a cell. The
+ * name of the shape goes on the page and the whole value stays on the title.
  */
 function shortEasing(value: string): string {
   if (!value) return 'not set'
-  return value.startsWith('linear(') && value.length > 40 ? 'linear(…), a spring' : value
+  return value.startsWith('linear(') && value.length > 40 ? 'spring' : value
 }
 
-function MotionRole({ role, what, play, mode }: { role: string; what: string; play: number; mode: string }) {
+function MotionCell({ role, mode, label, play }: { role: string; mode: string; label: string; play: number }) {
   const sample = useRef<HTMLDivElement>(null)
   const [values, setValues] = useState({ duration: '', easing: '' })
 
@@ -88,17 +142,12 @@ function MotionRole({ role, what, play, mode }: { role: string; what: string; pl
       })
     }
     read()
-    const observer = new MutationObserver(read)
-    observer.observe(document.documentElement, { attributeFilter: ['class', 'data-theme', 'data-haus-motion'] })
-    // Reduced is a system setting as well as a toolbar one, so the page has to
-    // answer a reader turning it on while they are reading.
+    // Reduced is a system setting as well as a mode, so the page has to answer
+    // a reader turning it on while they are reading.
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)')
     reduced.addEventListener('change', read)
-    return () => {
-      observer.disconnect()
-      reduced.removeEventListener('change', read)
-    }
-  }, [role, mode])
+    return () => reduced.removeEventListener('change', read)
+  }, [role])
 
   useEffect(() => {
     const element = sample.current
@@ -111,17 +160,11 @@ function MotionRole({ role, what, play, mode }: { role: string; what: string; pl
   }, [play])
 
   return (
-    <div className={styles.row}>
-      <div className={styles.meta}>
-        <code className={styles.name}>{role}</code>
-        <span className={styles.what}>{what}</span>
-        <span className={styles.values} title={values.easing}>
-          {values.duration || 'not set'} · {shortEasing(values.easing)}
-        </span>
-      </div>
+    <div className={styles.cell} data-haus-motion={mode} role="cell">
+      <span className={styles.cellMode}>{label}</span>
       <div className={styles.stage}>
         <div
-          className={`${styles.sample} ${styles.playing}`}
+          className={styles.sample}
           data-role={role}
           ref={sample}
           style={
@@ -130,14 +173,16 @@ function MotionRole({ role, what, play, mode }: { role: string; what: string; pl
               animationTimingFunction: `var(--haus-motion-${role}-easing)`,
               // The role's own travel and scale, so a role with neither, press
               // and highlight, is still and a sheet moves the distance the
-              // token says. A fixed offset in the keyframe showed every role
-              // doing the same thing at different speeds.
+              // token says.
               '--offset': `var(--haus-motion-${role}-offset, 0px)`,
               '--scale': `var(--haus-motion-${role}-scale, 1)`,
             } as React.CSSProperties
           }
         />
       </div>
+      <span className={styles.values} title={values.easing}>
+        {values.duration || 'not set'} · {shortEasing(values.easing)}
+      </span>
     </div>
   )
 }
