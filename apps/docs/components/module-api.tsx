@@ -1,27 +1,55 @@
 import { createGenerator } from 'fumadocs-typescript'
-import { AutoTypeTable } from 'fumadocs-typescript/ui'
 import path from 'node:path'
+import { withInlineCode } from './api-table'
 
 const generator = createGenerator()
 
 const packagesDir = path.resolve(process.cwd(), '../../packages')
 
 /**
- * A package's exports with their signatures and doc comments, generated from
- * its entry file. `file` is relative to packages/, such as `colour/src/index.ts`.
- * The generator appends `typeof import()` of the file to the file's own source,
- * so the table is whatever the entry actually exports. Type-only exports have no
- * value and do not appear.
+ * A package's exports as a plain table, as a component's props are drawn: the
+ * export, its signature, and the first paragraph of its doc comment, which is
+ * what it does. The rest of a long comment is the reference, linked from the
+ * page. Generated from the entry file, so the table is whatever the entry
+ * actually exports; type-only exports have no value and do not appear.
  */
-export function ModuleApi({ file }: { file: string }) {
+export async function ModuleApi({ file }: { file: string }) {
   const base = path.posix.basename(file).replace(/\.ts$/, '.js')
+  const [doc] = await generator.generateTypeTable(
+    { path: file, name: 'Api', type: `typeof import('./${base}')` },
+    { basePath: packagesDir },
+  )
+  const entries = doc?.entries ?? []
+  if (!entries.length) return null
+  const lead = (text: string) =>
+    text
+      .split(/\n\s*\n/)[0]
+      .replace(/\s*\n\s*/g, ' ')
+      .trim()
+  const described = entries.some(entry => entry.description)
+
   return (
-    <AutoTypeTable
-      generator={generator}
-      options={{ basePath: packagesDir }}
-      path={file}
-      name="Api"
-      type={`typeof import('./${base}')`}
-    />
+    <table className="haus-api">
+      <thead>
+        <tr>
+          <th>Export</th>
+          <th>Signature</th>
+          {described && <th>Description</th>}
+        </tr>
+      </thead>
+      <tbody>
+        {entries.map(entry => (
+          <tr key={entry.name}>
+            <td>
+              <code className="haus-api-name">{entry.name}</code>
+            </td>
+            <td>
+              <code className="haus-api-type">{entry.type}</code>
+            </td>
+            {described && <td>{withInlineCode(lead(entry.description))}</td>}
+          </tr>
+        ))}
+      </tbody>
+    </table>
   )
 }

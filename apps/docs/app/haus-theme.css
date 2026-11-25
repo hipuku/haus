@@ -620,3 +620,9 @@ figure.shiki {
   flex-direction: row !important;
   flex-wrap: wrap;
 }
+
+/* A package page's one line of facts: name, version, source. */
+.haus-package-meta {
+  color: var(--haus-color-ink-secondary);
+  font-size: var(--haus-type-body-sm-size);
+}

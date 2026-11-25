@@ -139,7 +139,7 @@ function readableType(type: string) {
 /* A description is the component's doc comment, written in markdown; its
    backticked spans are code in a sentence, so they become inline code and
    take the inline-code chip. */
-function withInlineCode(text: string) {
+export function withInlineCode(text: string) {
   return text
     .split(/(`[^`]+`)/)
     .map((part, i) => (part.startsWith('`') && part.endsWith('`') ? <code key={i}>{part.slice(1, -1)}</code> : part))
