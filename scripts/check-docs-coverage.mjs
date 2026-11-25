@@ -3,8 +3,7 @@
 // docs page. Fails naming each one that does not.
 //
 // Keyed off registry.json rather than packages/components, because a
-// component is shipped when it is a registry item, and 19 of the 20 in the
-// package are not yet. A separate list of "components still to document"
+// component is shipped when it is a registry item. A separate list of "components still to document"
 // would be a second list beside a directory, which is the drift this repo
 // already has a test for (barrel.test.ts).
 

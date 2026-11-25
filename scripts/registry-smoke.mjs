@@ -89,23 +89,20 @@ try {
         }
       }
 
-      // A component is rendered so the build includes its stylesheet. Every
-      // item, component or not, has to typecheck and build on its own.
+      // Every export is referenced so the build includes the component's
+      // stylesheet, and any stylesheet it reaches through another item. A
+      // rendered element would need each component's required props; the
+      // module reference needs none and keeps every export from being shaken out.
       if (item.type === 'registry:ui') {
         const index = item.files.find(f => f.target.endsWith('/index.ts')).target
-        const name = item.files
-          .find(f => f.target.endsWith('.tsx'))
-          .target.split('/')
-          .pop()
-          .replace('.tsx', '')
         writeFileSync(
           join(app, 'src/App.tsx'),
           [
             "import '@hipuku/tokens/index.css'",
-            `import { ${name} } from './${index.replace(/\.ts$/, '')}'`,
+            `import * as item from './${index.replace(/\.ts$/, '')}'`,
             '',
             'export default function App() {',
-            `  return <${name}>x</${name}>`,
+            '  return <pre>{Object.keys(item).join(" ")}</pre>',
             '}',
             '',
           ].join('\n'),
@@ -123,10 +120,22 @@ try {
         .filter(f => f.endsWith('.css'))
         .map(f => readFileSync(join(app, 'dist/assets', f), 'utf8'))
         .join('\n')
+      // A property can also be set by the component itself, as an inline style
+      // key such as `'--haus-avatar-bg': bg`, which no stylesheet defines. Only
+      // the item's own source counts, so a token missing from the package still fails.
+      const setInline = new Set(
+        item.files
+          .filter(f => f.path.endsWith('.tsx'))
+          .flatMap(f =>
+            [...readFileSync(join(root, f.path), 'utf8').matchAll(/'(--haus-[a-z0-9-]+)':/g)].map(m => m[1]),
+          ),
+      )
       for (const file of item.files.filter(f => f.path.endsWith('.css'))) {
         const reads = new Set(readFileSync(join(root, file.path), 'utf8').match(/--haus-[a-z0-9-]+/g) ?? [])
         for (const prop of reads) {
-          if (!built.includes(`${prop}:`)) failures.push(`${label}: ${prop} read by ${file.path} is not defined`)
+          if (!built.includes(`${prop}:`) && !setInline.has(prop)) {
+            failures.push(`${label}: ${prop} read by ${file.path} is not defined`)
+          }
         }
       }
       console.log(`${label}: installed alone and checked`)
