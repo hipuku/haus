@@ -54,8 +54,18 @@
  * component examples want the room; a paragraph does not, and at 900px it ran
  * past 120 characters a line. Only the text is held in; anything that is a
  * figure keeps the full column.
+ *
+ * `not-prose` is how a figure says it is one, and this rule did not honour it,
+ * so the measure reached inside the tools and the specimens. A panel's heading
+ * row is a div and spanned it, its rows are a `ul` and stopped at 70ch of
+ * body text, and its note is a `p` and stopped at 70ch of the smaller size:
+ * three widths in one card, none of them the card's. A figure sets its own
+ * measure, which is the box it is drawn in.
+ *
+ * The exclusion goes inside `:where` so the rule's specificity does not move,
+ * which is the same shape the inline-link rule above uses.
  */
-.prose :where(p, ul, ol, blockquote, h4, h5, h6) {
+.prose :where(p, ul, ol, blockquote, h4, h5, h6):where(:not(.not-prose, .not-prose *)) {
   max-width: var(--site-measure);
 }
 
@@ -65,24 +75,28 @@
  * A heading belongs to what comes after it. Fumadocs sets the same margin above
  * and below, so every level of the page sat at one pitch and the structure was
  * invisible until you read it.
+ *
+ * These exclude not-prose for the same reason the measure above does: a figure
+ * sets its own rhythm, and a tool's stage heading is not a section of the
+ * page's prose, so it takes neither the rule above it nor the page's pitch.
  */
-.prose :where(h2) {
+.prose :where(h2):where(:not(.not-prose, .not-prose *)) {
   border-block-start: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
   margin-block: var(--site-section-gap) var(--haus-space-5);
   padding-block-start: var(--haus-space-8);
 }
 
-.prose :where(h2:first-child) {
+.prose :where(h2:first-child):where(:not(.not-prose, .not-prose *)) {
   border-block-start: 0;
   margin-block-start: 0;
   padding-block-start: 0;
 }
 
-.prose :where(h3) {
+.prose :where(h3):where(:not(.not-prose, .not-prose *)) {
   margin-block: var(--haus-space-10) var(--haus-space-3);
 }
 
-.prose :where(h4) {
+.prose :where(h4):where(:not(.not-prose, .not-prose *)) {
   margin-block: var(--haus-space-8) var(--haus-space-2);
 }
 

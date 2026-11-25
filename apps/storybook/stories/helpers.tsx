@@ -6,6 +6,9 @@ import React, { useState } from 'react'
  * Layout for stories, so every component's stories are laid out and labelled
  * the same way. STORIES.md is the standard these serve.
  *
+ * The `data-story-*` attributes change nothing here. They let the docs site
+ * lay the same stories out for its own page without restyling Storybook.
+ *
  * **Labels are outlined pills.** A label in plain text is set in the same type
  * as the component it names and reads as part of the content; an outlined,
  * monospaced pill is visibly furniture. Every label goes through `Label`.
@@ -36,13 +39,20 @@ const labelStyle: React.CSSProperties = {
 }
 
 export function Label({ children }: { children: React.ReactNode }) {
-  return <span style={labelStyle}>{children}</span>
+  return (
+    <span data-story-label style={labelStyle}>
+      {children}
+    </span>
+  )
 }
 
 /** One labelled item: the label above, the component under it. */
 export function Item({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 'var(--haus-space-3)' }}>
+    <div
+      data-story-item
+      style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 'var(--haus-space-3)' }}
+    >
       <Label>{label}</Label>
       {children}
     </div>
@@ -69,6 +79,7 @@ export function Row({
   return (
     <div
       inert={still || undefined}
+      data-story-row
       data-story-still={still || undefined}
       style={{
         pointerEvents: still ? 'none' : undefined,
@@ -95,7 +106,10 @@ export const STILL_CSS =
 /** Items stacked, for components that fill their width (fields, toasts, tabs). */
 export function Stack({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--haus-space-8)', maxInlineSize: '32rem' }}>
+    <div
+      data-story-stack
+      style={{ display: 'flex', flexDirection: 'column', gap: 'var(--haus-space-8)', maxInlineSize: '32rem' }}
+    >
       {children}
     </div>
   )
@@ -117,6 +131,7 @@ export function Grid<R extends string, C extends string>({
 }) {
   return (
     <div
+      data-story-grid
       style={{
         display: 'grid',
         gridTemplateColumns: `max-content repeat(${columns.length}, max-content)`,
@@ -127,13 +142,13 @@ export function Grid<R extends string, C extends string>({
     >
       <span />
       {columns.map(c => (
-        <span key={c}>
+        <span data-story-axis key={c}>
           <ColLabel>{c}</ColLabel>
         </span>
       ))}
       {rows.map(r => (
         <React.Fragment key={r}>
-          <span>
+          <span data-story-axis>
             <ColLabel>{r}</ColLabel>
           </span>
           {columns.map(c => (

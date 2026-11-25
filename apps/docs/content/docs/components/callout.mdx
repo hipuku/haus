@@ -1,11 +1,7 @@
 ---
 title: Callout
-description: 'An inline notice attached to the thing it is about.'
+description: 'An inline notice that stays beside the thing it is about.'
 ---
-
-Not a Toast: a toast is transient, floats, and is about an event.
-
-`live` is the prop this component exists for. drift puts `role="alert"` on every callout it renders, so a static notice interrupts a screen reader on every render; vault puts `role="note"` on every one, so a validation message that appears after a failed save is never announced. axe flags neither: the markup is valid and wrong in context.
 
 ## Examples
 
@@ -19,86 +15,38 @@ Not a Toast: a toast is transient, floats, and is about an event.
 
 ```tsx
 import { Callout } from '@/components/haus/components/Callout'
+
+<Callout tone="warning">Changes are not saved until you publish.</Callout>
 ```
 
 ## API
 
-Callout also takes the attributes its element has, and forwards its ref to it. These are the props
-it adds.
+Callout also takes its element's own attributes and forwards its ref. `className` lands on the
+root.
 
 <ApiTable file="components/Callout/Callout.tsx" name="CalloutProps" element="HTMLDivElement" />
 
-## Anatomy
-
-| Part | Element | What it is for |
-| ---- | ------- | -------------- |
-| Root | `div`, with the role `live` chooses | The tinted box: `callout-bg`, a `callout-border` edge and `radius-surface` |
-| Icon | `span`, `aria-hidden` | The tone's glyph, in `callout-icon`. Replaced by `icon`, or removed with `icon={false}` |
-| Body | `div` | The copy, at the `body-sm` type role |
-
-The glyph is sized against the body step it sits beside rather than against the box, and offset to
-sit on the first line of that text rather than centred in the box, so the mark reads as aligned to
-the line it labels. The offset is computed from the type role: a literal was one typeface's answer
-at one size, and it moved on a typeface or a density change without anything saying so.
-
 ## Tones
 
-Five, the [shared vocabulary](/docs/start/composition) without `primary`: a callout says what kind of notice
-this is, and the brand colour is not a kind of notice.
+`neutral`, `info`, `success`, `warning` and `error`, each with its own glyph. Replace the glyph
+with `icon`, or remove it with `icon={false}`.
 
-Subtle only. Toast carries `appearance` because it genuinely had two designs drawn; a solid
-callout has never been drawn in either product that built one, and inventing one to make the
-vocabulary symmetrical would be a colour nobody asked for.
+## Announcing it
 
-The copy stays `ink-primary` in every tone, as it does on Toast: in a notice, body copy is copy.
-The tone is carried by the tint, the edge and the glyph, which is also what keeps the text
-contrast identical across all five.
+`live` decides whether a screen reader announces the callout. Pick by how it got there:
 
-## Live region
+| `live` | Use it when |
+| ------ | ----------- |
+| `off` | It was on the page from the start, such as a caveat or guidance. The default |
+| `polite` | It appeared in response to something, such as save or validation feedback |
+| `assertive` | It appeared and the reader must hear it now. Interrupts whatever is being read |
 
-`live` is the prop this component exists for, and it takes three answers rather than two.
+<Notice tone="info">
+A Callout stays in the page beside what it describes. For a passing message about an event, use
+Toast.
+</Notice>
 
-| `live` | Role | When |
-| ------ | ---- | ---- |
-| `off` | `note` | The notice was always on the page. A page-level caveat, or form guidance shown before anything is typed |
-| `polite` | `status` | It appeared in response to something and can wait for a pause. Most save and validation feedback |
-| `assertive` | `alert` | It appeared, and waiting would cost the reader something |
+## Accessibility
 
-`alert` is an assertive live region: a screen reader abandons what it is saying and reads it. That
-is why `assertive` is worth having to type, and why it is not the default.
-
-## Keyboard and screen reader
-
-Not interactive, and takes no focus. Anything focusable inside the copy keeps its own place in the
-tab order.
-
-The glyph is `aria-hidden` whether it is the tone's or an override, so colour and the mark are
-never the only signal. The copy has to carry the meaning on its own (WCAG 1.4.1 Use of Color), and
-a tone is a second channel rather than the first.
-
-## Motion
-
-None. Callout sits in the flow and stays, so there is nothing to enter or leave.
-
-## Decisions
-
-- **`live` is a prop because both products hardcoded it, differently.** drift puts `role="alert"`
-  on every callout, so its static "this audit ran against a cached crawl" notice interrupts a
-  reader on every render. vault puts `role="note"` on every one, so a validation message that
-  appears after a failed save is never announced. axe flags neither: nothing in the markup is
-  invalid, and both are wrong in context.
-- **It is not positioned.** Both products that built a callout used it for form guidance and
-  page-level caveats (`haus#28`), and neither ever gave one a position, which is what separates it
-  from Toast.
-- **A tone rule declares custom properties only** (decision 0012). Callout has one appearance, so
-  only one set of rules reads them today. Written the other way, a tone setting background and
-  border outright would sit at equal specificity to the base rule and the later one would win
-  whatever the caller asked for.
-- **The glyphs are drawn, not named.** The package declares only `@hipuku/tokens` and the two
-  React peers, so a consumer without an icon font loaded would get an empty element where the
-  severity indicator belongs, with nothing to say why. Both products that built a Callout reached
-  for Font Awesome.
-- **The glyphs are shared with Toast, not copied.** Two components with the same five marks drawn
-  twice is the duplication the promotions exist to remove.
-- **`icon` is an override because vault's version has one and uses it**, which makes it a measured
-  need rather than an anticipated one.
+- Not interactive. Links inside it keep their place in the tab order.
+- The glyph is decorative: the text must carry the meaning without the colour.

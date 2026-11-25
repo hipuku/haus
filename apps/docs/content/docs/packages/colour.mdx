@@ -1,25 +1,22 @@
 ---
 title: Colour
-description: 'Perceptual colour maths for design tools: contrast, difference, conversion, and 31,900 colour names on a subpath.'
+description: 'Perceptual colour maths: contrast, difference, conversion, and 31,900 colour names on a subpath.'
 ---
 
-Contrast in haus is a test rather than a hope, and something has to do the arithmetic.
-`@hipuku/colour` is that something: perceptual distance, WCAG contrast, conversion between spaces,
-and a matcher that gives a colour its nearest human name. The contrast suite in CI runs these
-functions, and so do the swatches on the [colour foundation](/docs/foundations/colour), which is why
-the numbers on that page are measured rather than written down.
+The arithmetic behind haus's contrast checks and the measured values on the colour foundation page.
 
 <PackageMeta dir="colour" />
 
 ## Install
 
-It replaces `haus-colour-utils` and `haus-colour-names`, which merged into it. Each of those has a
-final deprecated release pointing here and neither was unpublished, but this is **not a drop-in**:
-the names moved to a subpath and the function names changed.
-
 ```bash
 npm install @hipuku/colour
 ```
+
+<Notice tone="info">
+It replaces `haus-colour-utils` and `haus-colour-names`, which are deprecated. It is not a drop-in:
+the function names changed and the names moved to a subpath.
+</Notice>
 
 ## Usage
 
@@ -27,23 +24,20 @@ npm install @hipuku/colour
 import { deltaE, wcagContrast, createNamedColourMatcher } from '@hipuku/colour'
 import { colourNameEntries } from '@hipuku/colour/names'
 
-deltaE('#4f84ba', '#4e83bd') // 0.66, below the threshold a person can see
+deltaE('#4f84ba', '#4e83bd') // 0.66: below what a person can see
 wcagContrast('#000', '#fff').ratio // 21
 
 const nameColour = createNamedColourMatcher(colourNameEntries())
 nameColour('#4f84ba')[0] // { name: 'Blue Vault', hex: '#4e83bd', distance: 0.7 }
 ```
 
-`deltaE` is CIEDE2000, so a difference of 1 is roughly the smallest a person can see, and two
-colours can be compared across hues without one of them winning for being brighter.
+`deltaE` is CIEDE2000: a difference of about 1 is the smallest a person can see.
 
-## The names are a separate import
+## The names subpath
 
-The 31,900 colour names are 764KB, which is not something to post to everyone who wants a contrast
-ratio. They live on their own subpath, so a bundler leaves them out unless `@hipuku/colour/names` is
-imported.
-
-It exports `colourNames`, `colourNameEntries` and `COLOUR_NAME_COUNT`.
+The 31,900 colour names are close to 1MB, so they are a separate import, `@hipuku/colour/names`, and
+a bundler leaves them out unless you import it. It exports `colourNames`, `colourNameEntries` and
+`COLOUR_NAME_COUNT`.
 
 ## API
 

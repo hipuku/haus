@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import { Notice } from './notice'
-import styles from './install.module.css'
+import { DynamicCodeBlock } from 'fumadocs-ui/components/dynamic-codeblock'
 
 /*
  * What installs this component today, read from `registry.json` rather than
@@ -33,9 +33,7 @@ export function Install({ name }: { name: string }) {
     )
   }
 
-  return (
-    <pre className={styles.command}>
-      <code>npx shadcn add @hipuku/{item}</code>
-    </pre>
-  )
+  // The same code block as every other snippet on the page, copy button
+  // included.
+  return <DynamicCodeBlock code={`npx shadcn add @hipuku/${item}`} lang="bash" />
 }

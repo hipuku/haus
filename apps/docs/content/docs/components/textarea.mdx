@@ -1,6 +1,6 @@
 ---
 title: Textarea
-description: 'Input’s multi-line sibling, with the same label, hint and error wiring.'
+description: 'A multi-line text field with its label, hint and error, as Input.'
 ---
 
 ## Examples
@@ -15,81 +15,24 @@ description: 'Input’s multi-line sibling, with the same label, hint and error 
 
 ```tsx
 import { Textarea } from '@/components/haus/components/Textarea'
+
+<Textarea label="Notes" rows={4} value={notes} onChange={e => setNotes(e.target.value)} />
 ```
 
 ## API
 
-Textarea also takes the attributes its element has, and forwards its ref to it. These are the props
-it adds.
+Textarea also takes the textarea's own attributes and forwards its ref to it. `className` lands on
+the root and `controlClassName` on the textarea.
 
 <ApiTable file="components/Textarea/Textarea.tsx" name="TextareaProps" attributes="React.TextareaHTMLAttributes<HTMLTextAreaElement>" />
 
-## Anatomy
-
-| Part | Element | What it is for |
-| ---- | ------- | -------------- |
-| Root | `div` | The block: label, field and messages in a column. Takes `className` |
-| Label | `label`, `htmlFor` the field | The name, at the `label-field` type role |
-| Required mark | `span`, `aria-hidden` | The asterisk, in `error-default`. `aria-required` is what actually says it |
-| Field | `textarea` | The control, which draws its own edge, corner and ring. Takes `controlClassName` |
-| Error | `span`, `role="alert"` | `error`, with a drawn glyph, at the `label-caption` role |
-| Hint | `span` | `hint`, in `ink-secondary` at the `label-caption` role |
-
-This is where it differs from Input. Input has a wrap around its field, because it has adornments
-to place beside the value and a box that has to hold them; a textarea has no adornments, so the
-edge and the ring are drawn on the element itself. There is no `prefix` or `suffix` for the same
-reason: a unit beside a paragraph has nowhere to sit.
-
-The field resizes on the block axis only, and takes a `min-block-size` rather than a height, so
-`rows` sets the opening size and the user can grow it from there.
-
 ## States
 
-The same set as Input, on the same roles. The edge is the whole of the control's boundary, so it
-reads `border-control` for the 3:1 WCAG 1.4.11 asks of it (decision 0031); hover mixes that edge
-toward the page's ink; focus turns it to `border-focus` and steps the outline out; an error turns
-both the edge and the focus outline to `error-default`, so a field that is wrong keeps saying so
-while it is focused.
+`hint`, `error` and `required` work as on Input. `rows` sets the starting height, and the user can
+make it taller. A disabled Textarea cannot be resized.
 
-Disabled takes `surface-disabled`, `border-disabled` and `ink-disabled`, and also turns resizing
-off: a control that cannot be typed into should not offer a handle.
+## Accessibility
 
-The placeholder reads `ink-placeholder`. This is the component that had it wrong: it painted a
-placeholder at `ink-secondary`, as dark as a real value, which is the one thing the colour exists
-to prevent (`haus#42`).
-
-## Keyboard and screen reader
-
-A native `textarea`. Tab moves out of it rather than indenting, and Enter inserts a line break, as
-it does anywhere else.
-
-Focus is `:focus-visible` directly on the element, where Input needs `:has(:focus-visible)` on its
-wrap.
-
-The label is a real `label` with `htmlFor`. The hint and the error are wired through
-`aria-describedby`, error first, so a reader hears what is wrong before the guidance that was
-already there, and the hint is kept rather than replaced. The error carries `role="alert"`, `error`
-sets `aria-invalid`, and `required` sets `aria-required` rather than the native attribute, because
-the component owns its error display and the browser's validation bubble would fight it.
-
-`controlClassName` lands on the field, for the cases where the control needs styling and the block
-around it does not. Ruling B5 keeps `className` on the root, and this is the named second target
-that rule asks for.
-
-## Motion
-
-The edge, the focus colour and the outline offset run on the highlight role. The error grows in on
-the layout role, as a grid row from `0fr` to `1fr`, so the content below moves rather than jumps,
-and the glyph's ring is drawn a stagger step later on the draw role.
-
-## Decisions
-
-- **Resizing is vertical only.** A textarea that can be dragged wider breaks out of the form
-  column it was laid out in, and the axis that matters for prose is the one that holds more lines.
-- **No adornments.** `prefix` and `suffix` exist on Input because a currency mark or a unit sits
-  beside a single value. Beside a paragraph they have nowhere to sit, and the absence is what
-  removes the wrap element Input needs.
-- **An invalid field rings in the error colour.** Asserted off the API rather than off the
-  stylesheet, so any component taking an `error` prop is in the set from the moment it is written.
-- **The placeholder reads its own role** (decision 0031, `haus#42`). `ink-tertiary` clears 3:1,
-  which is right for glyphs and hover fills, and is not the 4.5:1 words in a field want.
+- A native textarea with a real `label`. Enter adds a line, and Tab moves on.
+- The hint and error are read as its description, and an error is announced when it appears.
+- `required` and `error` set `aria-required` and `aria-invalid`.

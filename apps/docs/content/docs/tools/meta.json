@@ -1,5 +1,5 @@
 {
   "title": "Tools",
   "root": true,
-  "pages": ["converter", "colour"]
+  "pages": ["converter", "colour-inspect", "colour-compare", "colour-palette"]
 }

@@ -3,26 +3,11 @@ title: DTCG
 description: Convert design tokens between four formats, in code or on the command line, with a report of what each conversion loses.
 ---
 
-Four tools in a design pipeline, four token formats, and no two of them agree. `@hipuku/dtcg` reads
-all four into one model, writes that model back out as any of them, and tells you exactly what each
-conversion could not carry, per token, with the reason.
-
-That last part is the point. Every converter loses something: Tailwind has no concept of a mode on a
-single token, Figma variables cannot hold a typography composite. A converter that loses it silently
-is worse than one that refuses, so this one hands back a loss report and lets the caller decide.
-
-The [converter tool](/docs/tools/converter) on this site is this package running in your browser.
+Reads and writes DTCG, Figma variables, Tokens Studio and Tailwind v4, and reports what each
+conversion could not carry, per token, rather than dropping it silently. The
+[converter tool](/docs/tools/converter) on this site is this package in your browser.
 
 <PackageMeta dir="dtcg" />
-
-## The four formats
-
-| Format | Read | Written | Notes |
-| ------ | ---- | ------- | ----- |
-| DTCG | Yes | Yes | Resolver documents with modes included |
-| Figma variables | Yes | Yes | The export shape, collections and modes |
-| Tokens Studio | Yes | Yes | Sets and themes |
-| Tailwind v4 | Yes | Yes | `@theme` stylesheets |
 
 ## Install
 
@@ -38,37 +23,48 @@ import { convert } from '@hipuku/dtcg'
 
 const text = readFileSync('tokens.json', 'utf8')
 const result = convert([{ name: 'tokens.json', text }], 'tailwind')
+
 result.format // the format detected in the input
-result.files // the written output, one or more files
-result.allLosses // what was lost reading, then writing, each with the token, reason and detail
+result.files // the output, one or more files
+result.allLosses // what could not be carried, each with the token, the reason and detail
 ```
 
-`read` and `write` are the two halves of `convert`. `detectFormat` names the format of a set of
-documents from their shape.
+`read` and `write` are the two halves of `convert`, and `detectFormat` names a format from its
+shape.
 
-## The dtcg command
+## Formats
 
-The package installs a `dtcg` command. Run it from a project that has `@hipuku/dtcg`
-installed: without a local install, `npx dtcg` fetches the unrelated `dtcg` package from npm.
+| Format | Notes |
+| ------ | ----- |
+| DTCG | Resolver documents, modes included |
+| Figma variables | The export shape: collections and modes |
+| Tokens Studio | Sets and themes |
+| Tailwind v4 | `@theme` stylesheets |
+
+All four are read and written.
+
+## The command line
 
 ```bash
 npx dtcg tokens.json --to tailwind > theme.css
 npx dtcg theme.css --from tailwind --to figma --out figma/
 ```
 
-With `--out`, every output file is written into that directory. Without it, a single output file
-goes to stdout, and more than one is an error. The loss report goes to stderr, one line per loss.
+<Notice tone="warning">
+Run it from a project with `@hipuku/dtcg` installed. Without a local install, `npx dtcg` fetches an
+unrelated package of the same name.
+</Notice>
 
 | Option | Meaning |
 | ------ | ------- |
 | `--to <format>` | `dtcg`, `figma`, `tokens-studio` or `tailwind`. Required |
 | `--from <format>` | The input format. Detected when left out |
-| `--out <dir>` | Write the output files here |
+| `--out <dir>` | Write the output files here. Without it, a single file goes to stdout |
 | `--rem-base <px>` | Pixels per rem. Default 16 |
 | `--mode-selector <kind>` | How a Tailwind stylesheet switches modes: `data-theme`, `class` or `media` |
 
-Exit codes: 0 converted, 1 the input could not be read or names an output file outside `--out`, 2
-the command was wrong, 3 the output could not be written.
+The loss report goes to stderr. Exit codes: 0 converted, 1 the input could not be read, 2 the
+command was wrong, 3 the output could not be written.
 
 ## API
 

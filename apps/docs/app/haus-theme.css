@@ -123,15 +123,24 @@
 }
 
 /* Inline code is a quiet mark in a sentence, not a second colour in it. */
-.prose :where(:not(pre) > code) {
+.prose :where(:not(pre) > code:not([class])) {
+  /* Inline code in running text only: markdown gives it no class. A labelled
+     specimen's name, a swatch's token, carries a class and keeps its own plain
+     mono style, so a card of names does not read as a run of chips. */
   background: var(--haus-color-surface-sunken);
+  /* primary-on-subtle, the role for primary text on a tinted ground: 9.6:1 on
+     the light ground, 11.85:1 on the dark one. Not primary-default, which is
+     the link colour and reaches only 4.74:1 here. */
+  color: var(--haus-color-primary-on-subtle);
+  /* No edge in either mode: the ground carries it. Fumadocs drew a border in
+     dark only, so the two modes did not match. */
+  border: 0;
   border-radius: var(--haus-radius-marker);
-  color: var(--haus-color-ink-primary);
   font-size: 0.9375em;
   padding: 0.125em 0.375em;
 }
 
-.prose :where(a) {
+.prose :where(a:not(.not-prose *)) {
   color: var(--haus-color-ink-link);
   text-underline-offset: 0.2em;
 }
@@ -191,4 +200,436 @@
 
 .haus-wordmark .accent {
   fill: var(--haus-color-primary-hover);
+}
+
+/*
+ * Every link in running text behaves as Button's text variant does: an
+ * underline at rest in the link's own colour at the subtle opacity, which
+ * comes to full strength and thickens under the pointer, on the highlight role.
+ */
+.prose :where(p, li, td, th, blockquote, figcaption) a {
+  text-decoration-color: oklch(from currentColor l c h / var(--haus-opacity-subtle));
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--haus-border-width-default);
+  text-underline-offset: var(--haus-text-underline-offset);
+  transition:
+    color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    text-decoration-color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing),
+    text-decoration-thickness var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing);
+}
+
+.prose :where(p, li, td, th, blockquote, figcaption) a:hover {
+  /* The colour holds; only the underline changes, as on the text button.
+     Fumadocs fades a prose link to 0.8 opacity on hover, which read as a
+     colour change; that is undone here. */
+  color: var(--haus-color-ink-link);
+  opacity: 1;
+  text-decoration-color: currentColor;
+  text-decoration-thickness: var(--haus-border-width-thick);
+}
+
+/*
+ * The header's section links are the one exception, by the owner's choice: a
+ * change in the text's colour and nothing else. At rest ink-secondary, under
+ * the pointer ink-link, on the highlight role; the current section ink-primary
+ * at semibold. No underline, so nothing doubles the header's edge.
+ */
+#nd-nav a[data-active] {
+  color: var(--haus-color-ink-secondary);
+  text-decoration: none;
+  transition: color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing);
+}
+
+#nd-nav a[data-active]:hover {
+  color: var(--haus-color-ink-link);
+}
+
+#nd-nav a[data-active='true'] {
+  color: var(--haus-color-ink-primary);
+  font-weight: var(--haus-weight-semibold);
+}
+
+#nd-nav a[data-active]:focus-visible {
+  border-radius: var(--haus-radius-marker);
+  outline: var(--haus-border-width-thick) solid var(--haus-color-border-focus);
+  outline-offset: var(--haus-border-width-thick);
+}
+
+/* The header has no rule along its bottom edge. Its blurred ground already
+   separates it from the page scrolling under it, and the rule was the second
+   line under the section links. */
+#nd-nav > nav {
+  border-block-end-color: transparent;
+}
+
+/*
+ * The docs sidebar.
+ *
+ * Its page list follows the header's rule rather than Fumadocs' filled pill:
+ * no ground at rest or on hover, the link colour under the pointer, and the
+ * current page in ink-primary at semibold with an accent rule at its leading
+ * edge, the marker the table of contents uses, so the two lists agree.
+ */
+#nd-sidebar a[data-active] {
+  background-color: transparent;
+  border-inline-start: var(--haus-border-width-thick) solid transparent;
+  border-radius: 0;
+  color: var(--haus-color-ink-secondary);
+  transition: color var(--haus-motion-highlight-duration) var(--haus-motion-highlight-easing);
+}
+
+#nd-sidebar a[data-active]:hover {
+  background-color: transparent;
+  color: var(--haus-color-ink-link);
+}
+
+/* The current page's rule is one travelling element, SidebarIndicator in
+   components/header-controls.tsx, rather than each link's own border. */
+.haus-sidebar-indicator {
+  background: var(--haus-color-primary-default);
+  inline-size: var(--haus-border-width-thick);
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.haus-sidebar-indicator[data-settled] {
+  transition:
+    transform var(--haus-motion-indicator-duration) var(--haus-motion-indicator-easing),
+    block-size var(--haus-motion-indicator-duration) var(--haus-motion-indicator-easing);
+}
+
+/* The top row's controls, after the wordmark. */
+.haus-sidebar-controls {
+  align-items: center;
+  display: flex;
+  gap: var(--haus-space-1);
+}
+
+/* GitHub and Storybook at the sidebar's foot, Storybook filling the row. */
+.haus-sidebar-footer {
+  align-items: center;
+  display: flex;
+  gap: var(--haus-space-2);
+}
+
+.haus-sidebar-footer-storybook {
+  flex: 1;
+}
+
+/* The mode switch leads the footer only in the phone drawer, which has no top
+   row; on a wider screen it is in the top row already. */
+@media (min-width: 768px) {
+  .haus-sidebar-footer-mode {
+    display: none;
+  }
+}
+
+/*
+ * The docs sidebar sits on the page's own surface rather than a raised one.
+ * On surface-raised, which in the dark theme is the same colour as the ghost
+ * hover fill (surface-subtle), the hover of its ghost IconButtons did not
+ * show; on surface-default it is a step lighter than its ground in both modes.
+ * The phone drawer takes the same ground.
+ */
+#nd-sidebar,
+#nd-sidebar-mobile {
+  background-color: var(--haus-color-surface-default);
+}
+
+/* Body paragraphs on the relaxed leading: running prose with inline code in
+   it needs the room between lines that the body role's leading does not give. */
+.prose :where(p, li) {
+  line-height: var(--haus-leading-relaxed);
+}
+
+/* A notice's own text sits level with its icon: the prose paragraph margins
+   are taken off inside it, and a second paragraph keeps a small gap. */
+.haus-notice p {
+  margin-block: 0;
+}
+
+.haus-notice p + p {
+  margin-block-start: var(--haus-space-2);
+}
+
+/* Code blocks take the surface radius, as a Card does. */
+.prose figure.shiki,
+figure.shiki {
+  border-radius: var(--haus-radius-surface);
+}
+
+/* The Open menu is placed against its trigger. */
+.haus-page-actions-open {
+  display: inline-flex;
+  position: relative;
+}
+
+/* In dark, inline code sits on surface-subtle, a step above the page:
+   surface-sunken, its light-mode ground, is a step below a page that is
+   already near black, and the difference could not be seen. */
+:root[data-theme='dark'] .prose :where(:not(pre) > code:not([class])) {
+  background: var(--haus-color-surface-subtle);
+}
+
+/* A glyph beside a Button's label. */
+.haus-button-glyph {
+  block-size: var(--haus-icon-sm);
+  flex-shrink: 0;
+  inline-size: var(--haus-icon-sm);
+}
+
+/* Room between the page and the previous and next links after it. */
+.haus-page-end {
+  block-size: var(--haus-space-12);
+}
+
+/*
+ * Every rule and edge in a page's content in one colour, border-default, the
+ * colour of the Divider, the header, the sidebar and the page-action row. The
+ * prose plugin drew its own: a markdown rule, table rules and a code block's
+ * frame each took a different shade from its palette.
+ */
+.prose {
+  --tw-prose-hr: var(--haus-color-border-default);
+  --tw-prose-th-borders: var(--haus-color-border-default);
+  --tw-prose-td-borders: var(--haus-color-border-default);
+  --tw-prose-quote-borders: var(--haus-color-border-default);
+}
+
+.prose :where(hr:not(.not-prose)) {
+  border: 0;
+  border-block-start: var(--haus-border-width-default) solid var(--haus-color-border-default);
+}
+
+.prose :where(table, thead, tbody, tr, th, td, blockquote, figure) {
+  border-color: var(--haus-color-border-default);
+}
+
+/*
+ * A table: the header row on surface-subtle and the body on the page's own
+ * surface, in both modes. Fumadocs set the whole table on its card colour,
+ * which in dark is surface-raised, so the body did not read as the page and
+ * inline code in a cell, itself on surface-subtle, disappeared into it.
+ */
+.prose :where(table),
+.prose :where(div:has(> table)) {
+  background-color: var(--haus-color-surface-default);
+}
+
+.prose :where(thead th, thead td) {
+  background-color: var(--haus-color-surface-subtle);
+}
+
+.prose :where(tbody td, tbody th) {
+  background-color: transparent;
+}
+
+/* A labelled specimen's code, a swatch's token name, is plain mono in the
+   inline-code purple: no chip, no edge. Fumadocs gives every prose code an
+   edge and a ground, which the inline-code rule above clears only for code in
+   running text. Written without :where so it outweighs the specimen's own
+   ink-primary. */
+.prose :not(pre) > code[class] {
+  background: none;
+  color: var(--haus-color-primary-on-subtle);
+  border: 0;
+  padding: 0;
+}
+
+/*
+ * The API table, components/api-table.tsx: an ordinary prose table, so its
+ * rules and header row are the site's. The prop name is the inline-code
+ * purple; the type is quieter mono and wraps; the description is body text.
+ */
+.haus-api {
+  inline-size: 100%;
+}
+
+.haus-api td {
+  vertical-align: top;
+}
+
+.haus-api-name,
+.prose :not(pre) > code.haus-api-type {
+  white-space: nowrap;
+}
+
+/* The description is the one column that wraps; prop and type keep their
+   width and the table scrolls sideways before either breaks. */
+.haus-api td:last-child {
+  white-space: normal;
+}
+
+.haus-api-required,
+.haus-api-default {
+  color: var(--haus-color-ink-tertiary);
+  display: block;
+  font-size: var(--haus-type-body-sm-size);
+  margin-block-start: var(--haus-space-1);
+}
+
+.prose :not(pre) > code.haus-api-type {
+  color: var(--haus-color-ink-secondary);
+  font-size: var(--haus-type-mono-sm-size);
+}
+
+/*
+ * Example layouts on the docs site.
+ *
+ * The examples are the Storybook stories, laid out for the workshop. These
+ * rules re-lay them out for a docs page, through the `data-story-*` hooks the
+ * story helpers carry and the component and story names the example frame
+ * carries, so Storybook and its screenshots are unchanged. `!important`
+ * because the helpers' layout is inline.
+ */
+/*
+ * Alignment, one rule: a label aligns the way its subject does.
+ *
+ * Compact specimens, a button, a badge, an avatar, a checkbox, sit centred in
+ * the frame as a group, each label centred over its subject. Full-width
+ * specimens, fields, selects, notices, cards, tabs, fill their columns with
+ * the label at the start, on the field's own leading edge, since that is the
+ * edge they are read from.
+ */
+[data-story-item] {
+  align-items: center !important;
+}
+
+.haus-example:has([data-story-row], [data-story-stack], [data-story-grid]) {
+  display: flex;
+  justify-content: center;
+}
+
+[data-of='Input'] .haus-example,
+[data-of='Textarea'] .haus-example,
+[data-of='Select'] .haus-example,
+[data-of='Toast'] .haus-example,
+[data-of='Card'] .haus-example,
+[data-of='Callout'] .haus-example,
+[data-of='Tabs'] .haus-example {
+  display: block;
+  inline-size: 100%;
+}
+
+[data-of='Input'] [data-story-item],
+[data-of='Textarea'] [data-story-item],
+[data-of='Select'] [data-story-item],
+[data-of='Toast'] [data-story-item],
+[data-of='Card'] [data-story-item],
+[data-of='Callout'] [data-story-item],
+[data-of='Tabs'] [data-story-item] {
+  align-items: flex-start !important;
+}
+
+/* A grid of states or values, n to a row. */
+[data-of='Button'][data-story='States'] [data-story-row],
+[data-of='IconButton'][data-story='States'] [data-story-row],
+[data-of='Checkbox'][data-story='States'] [data-story-row],
+[data-of='Select'][data-story='States'] [data-story-row] {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+
+[data-of='Input'][data-story='States'] [data-story-row],
+[data-of='Textarea'][data-story='States'] [data-story-row] {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+/* Stacks of fields and notices, two to a row at full width. */
+[data-of='Input'] [data-story-stack],
+[data-of='Textarea'] [data-story-stack],
+[data-of='Checkbox'] [data-story-stack],
+[data-of='Select'] [data-story-stack],
+[data-of='Toast'] [data-story-stack] {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  max-inline-size: none !important;
+}
+
+[data-of='Input'] [data-story-item] > :not([data-story-label]),
+[data-of='Textarea'] [data-story-item] > :not([data-story-label]),
+[data-of='Select'] [data-story-item] > :not([data-story-label]),
+[data-of='Toast'] [data-story-item] > :not([data-story-label]) {
+  inline-size: 100%;
+}
+
+/* One card to a row. */
+[data-of='Card'] [data-story-row] {
+  flex-direction: column !important;
+}
+
+[data-of='EmptyState'] [data-story-stack] {
+  max-inline-size: none !important;
+}
+
+[data-of='EmptyState'] [data-story-item] {
+  inline-size: 100%;
+}
+
+/* A table's row and column labels in the story pill, as every other label. */
+[data-story-axis] > * {
+  border: var(--haus-border-width-default) dashed var(--haus-color-border-control) !important;
+  border-radius: var(--haus-radius-pill) !important;
+  color: var(--haus-color-ink-secondary) !important;
+  display: inline-flex !important;
+  font-family: var(--haus-font-mono) !important;
+  font-size: var(--haus-type-label-xs-size) !important;
+  letter-spacing: var(--haus-type-label-xs-tracking) !important;
+  line-height: var(--haus-type-label-xs-leading) !important;
+  padding: var(--haus-space-0-5) var(--haus-space-2) !important;
+  text-transform: uppercase !important;
+}
+
+/* RadioGroup's examples name the group in their pills; the group's own
+   "Size" heading repeated it in every one. Hidden visually only, so it still
+   names the group. */
+[data-of='RadioGroup'] [role='radiogroup'] > :first-child:not([role]) {
+  block-size: 1px;
+  clip-path: inset(50%);
+  inline-size: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+}
+
+/* Popover's story leaves room above every trigger for a panel placed on top;
+   on a page that is empty space under each label. Only the top placement
+   keeps it, and every panel keeps room below. */
+[data-of='Popover'] [data-story-item] > :not([data-story-label]) {
+  padding: 0 0 calc(var(--haus-space-20) * 2) !important;
+}
+
+[data-of='Popover'][data-story='Placement'] [data-story-item]:nth-child(2) > :not([data-story-label]) {
+  padding: calc(var(--haus-space-20) * 2) 0 0 !important;
+}
+
+/* Toast's tone-by-appearance table: the toasts take a readable width. */
+[data-of='Toast'][data-story='ToneByAppearance'] [data-story-grid] {
+  grid-template-columns: max-content repeat(2, minmax(16rem, 1fr)) !important;
+  inline-size: 100%;
+}
+
+/* Toggle's content examples: the label and its description on one line. */
+[data-of='Toggle'][data-story='Content'] label > span:first-child {
+  align-items: baseline;
+  column-gap: var(--haus-space-2);
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap;
+}
+
+/* A package page's one line of facts: name, version, source. */
+.haus-package-meta {
+  color: var(--haus-color-ink-secondary);
+  font-size: var(--haus-type-body-sm-size);
+}
+
+/* A package export's signature wraps: a function's full signature is too
+   long for one line. A component prop's type does not wrap. */
+.prose :not(pre) > code.haus-api-signature {
+  overflow-wrap: anywhere;
+  white-space: normal;
 }

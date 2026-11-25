@@ -3,10 +3,6 @@ title: Modal
 description: 'A dialog that traps focus and gives it back.'
 ---
 
-The types require either a `title` or an `aria-label`, because a dialog with no accessible name is announced as nothing.
-
-`initialFocus` points focus at the action rather than the container, and `dismissOnBackdrop` can refuse a backdrop click, worth turning off for anything destructive or anything holding unsaved input.
-
 ## Examples
 
 <ComponentExamples name="Modal" />
@@ -19,117 +15,44 @@ The types require either a `title` or an `aria-label`, because a dialog with no 
 
 ```tsx
 import { Modal } from '@/components/haus/components/Modal'
+
+<Modal
+  open={open}
+  onClose={() => setOpen(false)}
+  title="Invite people"
+  initialFocus={emailRef}
+  footer={<Button variant="primary" onClick={invite}>Send invites</Button>}
+>
+  <Input ref={emailRef} label="Email" />
+</Modal>
 ```
 
 ## API
 
-Modal also takes the attributes its element has, and forwards its ref to it. These are the props
-it adds.
+Modal also takes its element's own attributes and forwards its ref. `className` lands on the
+backdrop and `dialogClassName` on the dialog.
 
 <ApiTable file="components/Modal/Modal.tsx" name="ModalProps" element="HTMLDivElement" />
 
-## Anatomy
+## Size and placement
 
-| Part | Element | What it is for |
-| ---- | ------- | -------------- |
-| Backdrop | `div`, in a portal on `document.body` | `color-backdrop` at `z-modal`, and the pointer's way to dismiss. Takes `className` |
-| Dialog | `div`, `role="dialog"`, `aria-modal` | The panel: `surface-default`, `elevation-overlay`, and `tabIndex={-1}` so it can hold focus itself. Takes `dialogClassName` |
-| Header | `div` | The title and the close button, with a `border-subtle` rule under them |
-| Title | `h2` | `title`, at the `heading-sm` role. Names the dialog through `aria-labelledby` |
-| Close | `IconButton` | haus's own icon button, so the close is a real target with the outline focus and press motion every icon action has |
-| Body | `div` | The children. Scrolls on the block axis, which is why a Select inside one needs `portal` |
-| Footer | `div` | `footer`, right-aligned, with a `border-subtle` rule above it |
+`size` sets the dialog's width. `placement` is `center` by default; `start` and `end` anchor it to
+an edge at full height, which is what Drawer does for you.
 
-`className` lands on the backdrop, which is the root (ruling B5), and `dialogClassName` is the
-named second target that rule asks for.
+## Dismissing
 
-The close button is centred on the title's first line by an offset computed from the heading role,
-rather than nudged into place.
+Escape, the close button and a click on the backdrop all call `onClose`. Turn
+`dismissOnBackdrop` off for anything destructive or anything holding unsaved input, so a stray
+click does not lose work.
 
-`size` caps the dialog's width at one of the four `modal-width` tokens. The dialog is rendered into
-a portal, so it is not clipped by whatever contains the component that opened it.
+<Notice tone="info">
+A Select or Popover inside a Modal is placed inside the dialog automatically, so it stays inside
+the focus trap and is not clipped by the dialog's scrolling body.
+</Notice>
 
-## Placement
+## Accessibility
 
-`center` is a modal. `start` and `end` anchor the dialog to that edge at full height, which is what
-Drawer is. The placement is logical, so `end` is the right edge in a left-to-right page and the
-left edge in a right-to-left one.
-
-## Keyboard and screen reader
-
-Escape closes the dialog. Tab cycles within it, wrapping at both ends, and Shift and Tab wrap the
-other way.
-
-`aria-modal="true"` tells assistive technology that the rest of the page is inert. Nothing in the
-DOM enforces that on its own, so without the Tab handling the attribute is a claim the component
-does not keep, and focus walks straight out into the page behind. A `focusin` listener is the other
-half of it, catching focus moved by anything other than Tab. A dialog with nothing focusable in it
-keeps focus on the dialog itself. Neither of those failures is visible to an axe run, which is why
-they are asserted as keyboard tests rather than in the accessibility check.
-
-Focus moves into the dialog when it opens and returns to whatever had it when the dialog closes.
-`initialFocus` points that at the primary action or the first field; it defaults to the dialog
-itself, which announces the dialog and lets the user tab from the top. A ref that has not attached
-yet is ignored in favour of the dialog, because focusing nothing is worse than focusing the
-container.
-
-A name is required, as `title` or as `aria-label`, and the types take exactly one of the two: a
-dialog with no accessible name is announced as nothing.
-
-The backdrop takes no role and no key events. It is not a control, and a screen reader should not
-find it; Escape is the keyboard's way out.
-
-`dismissOnBackdrop` can refuse a backdrop click, which is worth turning off for anything
-destructive or anything holding unsaved input, because a misplaced click should not discard work.
-Even with it on, both ends of the press have to land on the backdrop. A click event's target is the
-nearest common ancestor of its `pointerdown` and its `pointerup`, so a press beginning inside the
-dialog and ending on the backdrop dispatches a click whose target is the backdrop: guarding the
-click alone closed the dialog when someone selected text to its edge and released outside
-(`haus#56`). The latch listens on `pointerdown`, so pen and touch are covered without relying on
-emulated mouse events.
-
-While it is open, the body does not scroll, and the page behind does not shift. Hiding the overflow
-removes a visible scrollbar, which moved the page sideways by its width, so the gutter is reserved
-instead, and only when there was a scrollbar to lose: reserving one on a page with none would shift
-it the other way.
-
-## Motion
-
-Everything runs on the dialog roles. The backdrop fades, and the dialog rises and scales in from
-`motion-dialog-enter-offset` and `motion-dialog-enter-scale`. In expressive the backdrop leads on
-the way in and trails on the way out, so the dialog arrives onto a page that is already dim and
-leaves before it lightens; subtle runs the two together; reduced is the short fade the tokens
-define.
-
-The header, the body and the footer each enter a stagger step after the dialog, in that order,
-which is a sequence in expressive and nothing in subtle.
-
-The dialog stays in the document while the exit runs, so it leaves on the exit role rather than
-vanishing in a frame, and it is `inert` while closing. The backdrop's animation ends last in every
-mode, so that is the one listened for, and the dialog unmounts at once when nothing is animating at
-all.
-
-At an edge placement the panel enters on the sheet roles instead, travelling its own width from that
-edge. In reduced the sheet offset is zero, and the travel is computed so a zero offset becomes no
-travel at all, which makes reduced a fade in place. A spring that overshoots would pull the outer
-edge away from the viewport, so the panel carries its surface a little past that edge and no gap
-opens.
-
-## Decisions
-
-- **A name is required in the types.** Either the visible heading names the dialog or an
-  `aria-label` does, and the type says so rather than leaving it to a reviewer to notice.
-- **The focus trap is written out rather than assumed.** `aria-modal` is a claim about the page,
-  and the Tab and `focusin` handling is what keeps it.
-- **`tabindex="-1"` is excluded from what Tab can reach.** It is how an element says it is
-  programmatically focusable but not in the tab order, which is what the dialog itself uses.
-- **The backdrop dismissal is latched to the press** (`haus#56`), found by migrating core, whose
-  own modal shell carried this latch where haus did not.
-- **`dismissOnBackdrop` exists at all.** A misplaced click should not discard unsaved work, and
-  there was no way to say so.
-- **The close button is haus's IconButton**, so it is a real target with the system's own focus and
-  press behaviour rather than a bare glyph.
-- **Scroll locking reserves the gutter conditionally.** Reserving it unconditionally shifts a page
-  that never had a scrollbar.
-- **The dialog is kept in the document while it closes.** Unmounting on `open` going false means
-  there is nothing left to animate.
+- A name is required: `title`, or `aria-label` when there is no visible title.
+- Focus moves into the dialog on open, to `initialFocus` if you set it, and returns to what had it
+  on close.
+- Tab stays inside the dialog, and the page behind does not scroll.

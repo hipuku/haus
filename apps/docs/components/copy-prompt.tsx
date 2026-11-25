@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
 import { Button } from 'haus-components'
+import { CopyGlyph, useCopied } from './copy'
 
 /*
  * The prompt for working on this component with an agent.
@@ -14,20 +14,12 @@ import { Button } from 'haus-components'
  * actually serves the component, for the same reason the install block does.
  */
 export function CopyPrompt({ prompt }: { prompt: string }) {
-  const [copied, setCopied] = useState(false)
+  const { copied, copy } = useCopied()
 
   return (
-    <Button
-      onClick={() => {
-        void navigator.clipboard.writeText(prompt).then(() => {
-          setCopied(true)
-          setTimeout(() => setCopied(false), 2000)
-        })
-      }}
-      size="sm"
-      variant="secondary"
-    >
-      {copied ? 'Copied' : 'Copy prompt'}
+    <Button onClick={() => void copy(prompt)} variant="secondary">
+      <CopyGlyph copied={copied} />
+      Copy prompt
     </Button>
   )
 }

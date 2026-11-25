@@ -1,5 +1,6 @@
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared'
 import { Wordmark } from '@/components/wordmark'
+import { GitHubButton, SearchButton, SidebarControls, StorybookButton, ThemeButton } from '@/components/header-controls'
 import { docsRoute, gitConfig, storybookUrl } from './shared'
 
 /*
@@ -25,28 +26,52 @@ const SECTIONS = [
   { text: 'Tools', url: `${docsRoute}/tools/converter` },
 ]
 
-export function baseOptions(): BaseLayoutProps {
+/*
+ * `home` drops the header's wordmark on the landing page, where the wordmark
+ * is already the page's heading a few lines below it.
+ */
+const githubUrl = `https://github.com/${gitConfig.user}/${gitConfig.repo}`
+
+export function baseOptions({ home = false }: { home?: boolean } = {}): BaseLayoutProps {
   return {
     nav: {
-      // The wordmark rather than the word, and it points at the overview. The
-      // site used to have a landing page at `/` and an overview at `/docs`
-      // saying much the same thing, so the brand and the first sidebar item
-      // led to two different pages. The landing page is back and says
-      // something else, so the wordmark goes to the front page again.
-      title: <Wordmark />,
+      /*
+       * The wordmark rather than the word, and it points at the front page.
+       *
+       * The landing page draws no wordmark here, because its own heading is
+       * one a few lines below. `null` left the link Fumadocs renders around
+       * this slot with no children and no name, so a keyboard reached a
+       * focusable link to `/` that announced as "link" and nothing else
+       * (2.4.4, 4.1.2). The name is there and the wordmark is not.
+       */
+      title: home ? <span className="sr-only">haus</span> : <Wordmark />,
       url: '/',
+      // In the docs sidebar, the row after the wordmark: mode, search, collapse.
+      ...(home ? {} : { children: <SidebarControls /> }),
     },
-    githubUrl: `https://github.com/${gitConfig.user}/${gitConfig.repo}`,
+    // haus IconButtons in place of Fumadocs' own controls; see
+    // components/header-controls.tsx. The docs sidebar's search is in its top
+    // row, so its own full-width slot is left empty.
+    searchToggle: {
+      components: { lg: home ? <SearchButton /> : <></>, sm: <SearchButton /> },
+    },
+    // The docs sidebar draws mode in its top row and Storybook and GitHub in
+    // its footer, so the switch and the icon links are the landing header's
+    // alone. Without either, Fumadocs' bordered footer pill hides.
+    themeSwitch: home ? { component: <ThemeButton /> } : { enabled: false },
     links: [
       ...SECTIONS.map(section => ({ ...section, active: 'nested-url' as const, on: 'nav' as const })),
-      // Storybook carries no `on`, so it stays in the docs sidebar as well as
-      // the header. Dropping it to the header alone is what hid it from every
-      // docs page on desktop before, where the docs layout draws no nav bar.
-      //
-      // Labelled "Storybook" rather than "Workshop": a link that leaves the
-      // site should say where it goes, and a developer already knows what
-      // Storybook is. The word stays in the prose, where it explains the job.
-      { text: 'Storybook', url: storybookUrl, external: true },
+      ...(home
+        ? [
+            // A labelled link in the landing page's mobile menu, where a reader
+            // looks for it in a list; an icon in its header.
+            { text: 'Storybook', url: storybookUrl, external: true, on: 'menu' as const },
+            { type: 'custom' as const, secondary: true, children: <StorybookButton href={storybookUrl} /> },
+            { type: 'custom' as const, secondary: true, children: <GitHubButton href={githubUrl} /> },
+          ]
+        : []),
     ],
   }
 }
+
+export { githubUrl }

@@ -1,9 +1,7 @@
 ---
 title: RadioGroup
-description: 'A group, not a radio.'
+description: 'One choice from a set, as a group with its question.'
 ---
-
-The arrows move the selection and the whole group is one tab stop, which comes free from the native inputs sharing a name. Option ids are indexed rather than built from the value: `"extra large"` or `"50%"` made an id `htmlFor` matched but no selector could address.
 
 ## Examples
 
@@ -17,93 +15,35 @@ The arrows move the selection and the whole group is one tab stop, which comes f
 
 ```tsx
 import { RadioGroup } from '@/components/haus/components/Radio'
+
+<RadioGroup
+  label="Plan"
+  name="plan"
+  value={plan}
+  onChange={setPlan}
+  options={[
+    { label: 'Free', value: 'free' },
+    { label: 'Team', value: 'team', hint: 'Up to 20 people' },
+  ]}
+/>
 ```
 
 ## API
 
-RadioGroup also takes the attributes its element has, and forwards its ref to it. These are the props
-it adds.
+RadioGroup also takes its element's own attributes and forwards its ref. `className` lands on the
+root.
 
 <ApiTable file="components/Radio/Radio.tsx" name="RadioGroupProps" element="HTMLDivElement" />
 
-## Anatomy
+## Options
 
-| Part | Element | What it is for |
-| ---- | ------- | -------------- |
-| Root | `div`, `role="radiogroup"` | The group. Takes `className` |
-| Group label | `span`, with the required mark | The question, at the `label-field` type role |
-| Options | `div` | The column, or the wrapping row when `orientation` is `horizontal` |
-| Option | `label`, `htmlFor` its input | One row, clickable as one |
-| Input | `input type="radio"`, sharing `name` | The real control, visually hidden and still in the tree |
-| Circle | `span`, `aria-hidden` | The drawn marker: `marker-box`, a `border-width-thick` edge, and a `marker-dot` pseudo-element when selected |
-| Option label, hint | `span` | `label` and the optional `hint` for that option |
-| Error | `span`, `role="alert"` | `error`, with the glyph every field's error carries |
+Options come from `options`, not from children. Each has a `label`, a `value`, and an optional
+`hint` and `disabled`. `orientation="horizontal"` lays them in a row. `onChange` gives you
+`(value, event)`, and it is uncontrolled unless you pass `value`.
 
-The options come from the `options` array rather than from children, because a radio group is the
-one control where the set is the component: every input has to share a `name`, and the group has to
-know which one is selected to draw it.
+## Accessibility
 
-The circle is `border-box`, so its edge sits inside the size `marker-box` names, and it is centred
-on the label's first line by an offset computed from the type role, both as Checkbox's box is.
-
-The selected dot is a pseudo-element and is absolutely positioned, for the reason Checkbox's tick
-is: in flow it gave the circle a baseline only while selected, so the row moved down the line when
-it was chosen.
-
-## States
-
-| State | Circle |
-| ----- | ------ |
-| Rest | `surface-default` with a `border-control` edge |
-| Hover | The edge turns `primary-default` |
-| Selected | The edge turns `primary-default`, with the dot in the same role |
-| Focus | The stepped-out outline in `border-focus`, or `error-default` while the group is invalid |
-| Disabled | `opacity-disabled` on that row |
-
-An unselected circle is an edge and nothing else, so it reads `border-control` for the 3:1 WCAG
-1.4.11 asks of it (decision 0031).
-
-`disabled` is per option rather than on the group, because a set of choices where one is
-unavailable is the common case.
-
-## Keyboard and screen reader
-
-The group is one tab stop and the arrow keys move the selection within it, which comes free from
-the native inputs sharing a `name`. Nothing is added for it.
-
-The root is `role="radiogroup"`, named by the group label through `aria-labelledby`, so a reader
-announces the question before the option. The error is wired through `aria-describedby` and
-carries `role="alert"`. `required` sets `aria-required` on the group rather than the native
-attribute on each input, and `error` sets `aria-invalid`, both for the reason every field in the
-system does it: the component owns its error display, and the browser's validation bubble would
-fight it.
-
-A per-option `hint` sits inside that option's `label`, so it is part of that option's name. An
-option's name is the whole of what it offers, which is the opposite of Checkbox, where the hint
-describes the field and so has to sit outside the label.
-
-`onChange` hands back `(value, event)`. The value is first because a group has no single control
-and the value is the whole point, and the event is there so `event.target.name` is reachable.
-Checkbox and Toggle hand back the same pair.
-
-## Motion
-
-The edge and the focus outline run on the highlight role. A press scales the circle on the press
-role and releases on layout. The dot grows in on the layout role: a spring in expressive, an ease
-in subtle, and at once in reduced.
-
-## Decisions
-
-- **The component is the group, not the radio.** A lone radio is not a control a user can use, and
-  a group is where the shared `name`, the single tab stop and the selected value all live.
-- **Option ids are indexed, not derived from the value.** A value is caller data: a value with a
-  space, a percent sign or a slash produces an id that `htmlFor` still matches but that no
-  `querySelector` or CSS selector can address, and two values differing only in whitespace collide
-  outright.
-- **The group keeps internal state when it is uncontrolled.** Deriving the selection from
-  `value ?? defaultValue` meant it never moved: the native input flipped, because the browser owns
-  that, while the drawn dot stayed on whatever `defaultValue` was, so the visible control and the
-  real one disagreed for the whole life of the component.
-- **An invalid group rings in the error colour.** Radio and Checkbox were both missing this rule,
-  and a token audit could not find it, because a component that never reads a role never appears in
-  a list of components reading it wrongly (`haus#44`).
+- One tab stop for the whole group. The arrow keys move the selection.
+- Announced as a group named by `label`, so the question is read before the options.
+- `required` and `error` set `aria-required` and `aria-invalid` on the group, and an error is
+  announced when it appears.

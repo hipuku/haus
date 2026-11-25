@@ -3,28 +3,9 @@ title: Tokens
 description: Every design decision in haus, as CSS custom properties, typed constants and DTCG JSON, built from one source.
 ---
 
-A design decision should be written down once. `@hipuku/tokens` holds all of them, in three forms
-built from the same source: custom properties for stylesheets, typed constants for the places CSS
-cannot reach, and DTCG JSON for design tools. A value cannot differ between them, because none of
-them is written by hand.
+The values every haus component reads, in three forms built from one source, so they cannot differ.
 
-<PackageMeta dir="tokens" publishedAs="@hipuku/tokens" />
-
-## What is in it
-
-Four layers, each importable on its own, and each depending only on the one above it.
-
-| Layer | Holds | Example |
-| ----- | ----- | ------- |
-| Primitives | The raw scales, with no meaning attached | `--haus-text-16`, `--haus-color-damson-50` |
-| Semantics | Roles, which are what a component reads | `--haus-color-surface-raised`, `--haus-type-body-size` |
-| Brand | Which primitive each role takes, per product | `--haus-brand-radius-surface` |
-| Motion | Durations, easings and the three modes | `--haus-motion-press-duration` |
-
-A component never names a primitive. It names a role, and a brand file decides what that role
-resolves to, which is what lets one component be correct in hipuku's colours, vault's and core's
-without a line of it changing. The [foundations](/docs/foundations/colour) pages show each layer
-with its live values.
+<PackageMeta dir="tokens" />
 
 ## Install
 
@@ -32,31 +13,56 @@ with its live values.
 npm install @hipuku/tokens
 ```
 
-Import the barrel once, at the root of your app. It loads every layer in the order they depend on
-each other, which a hand-written set of imports gets wrong eventually.
+Import it once, at the root of your app:
 
 ```ts
 import '@hipuku/tokens/index.css'
 ```
 
-## The three forms
+## What is in it
 
-| Form | Import | For |
-| ---- | ------ | --- |
-| Custom properties | `@hipuku/tokens/index.css`, or one layer such as `@hipuku/tokens/motion.css` | Stylesheets |
-| Typed constants | `import { tokens } from '@hipuku/tokens'` | Build config, media queries, canvas |
-| DTCG JSON | `@hipuku/tokens/tokens.json` | Figma, Tokens Studio, other token tooling |
-| Brand files | `@hipuku/tokens/brands/core.css`, `/brands/vault.css` | A product's own colours and radii |
+| Import | What it is | For |
+| ------ | ---------- | --- |
+| `@hipuku/tokens/index.css` | Every layer, in order: primitives, semantics, brand and motion | Stylesheets |
+| `@hipuku/tokens/brands/core.css`, `/brands/vault.css` | A second brand's colours and radii | A product's own brand |
+| `import { tokens } from '@hipuku/tokens'` | The same values as typed constants | Build config, media queries, canvas |
+| `@hipuku/tokens/tokens.json` | The source, as DTCG JSON | Figma, Tokens Studio and other tools |
 
-Every custom property starts with `--haus-`. Mode is an attribute, not a build: `data-theme` picks
-light or dark, `data-haus-theme` picks the brand, and `data-haus-motion` picks the motion mode
-(`expressive` or `reduced`, with reduced also applying under `prefers-reduced-motion`).
+Every custom property starts with `--haus-`. Components read roles, such as
+`--haus-color-surface-raised`, never the raw scales beneath them, so a brand can change what a role
+resolves to without touching a component.
+
+## Modes
+
+Set as attributes on the root, not as separate builds:
+
+- `data-theme`: `light` or `dark`. It follows the system when left out.
+- `data-haus-theme`: the brand, such as `vault`.
+- `data-haus-motion`: `expressive` or `reduced`. Subtle is the default, and the reader's
+  `prefers-reduced-motion` setting always wins.
 
 ## The guard
 
-Tokens only hold if nothing goes around them. `@hipuku/tokens/guard` reads a consumer's stylesheets
-and reports any colour, length or duration written as a literal where a token exists, so the rule is
-a build step rather than a review comment.
+`@hipuku/tokens/guard` checks your stylesheets against what you load. Its main check,
+`findUndefinedTokens`, reports every `--haus-*` property your CSS reads that nothing you load
+defines, which matters because an undefined `var()` fails silently: the declaration is dropped and
+nothing warns. Run it in a test.
+
+```ts
+import { readFileSync } from 'node:fs'
+import { findUndefinedTokens } from '@hipuku/tokens/guard'
+
+const read = (file: string) => readFileSync(file, 'utf8')
+
+const tokens = ['primitives', 'brand', 'semantics', 'motion'].map(layer =>
+  read(`node_modules/@hipuku/tokens/dist/${layer}.css`),
+)
+
+const { missing } = findUndefinedTokens({ reads: [read('src/app.css')], defines: tokens })
+// missing is empty when everything the app reads is defined
+```
+
+Pass the layer files, not `index.css`: it only imports them, so on its own it defines nothing.
 
 <ModuleApi file="tokens/src/guard.ts" />
 

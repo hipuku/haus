@@ -1,13 +1,7 @@
 ---
 title: Tooltip
-description: 'A short description attached to a control.'
+description: 'A short description of a control, on hover and on focus.'
 ---
-
-The least-used of the six promotions and the easiest to get wrong.
-
-WCAG 1.4.13 in full: dismissible with Escape without moving focus, hoverable so the pointer can reach the bubble, and persistent with no timeout. Plus the part that is not WCAG and is the most common bug: it appears on **focus** as well as hover. Tab to the button below rather than hovering it.
-
-**A tooltip is not a Popover.** If it takes focus, holds a link, or runs past a line, it is a Popover: `content` is typed `string` so that stays true rather than being a convention. And it must never be the only place a piece of information lives: touch users have no hover.
 
 ## Examples
 
@@ -21,103 +15,32 @@ WCAG 1.4.13 in full: dismissible with Escape without moving focus, hoverable so 
 
 ```tsx
 import { Tooltip } from '@/components/haus/components/Tooltip'
+
+<Tooltip content="Copy link">
+  <IconButton icon={<LinkIcon />} label="Copy link" />
+</Tooltip>
 ```
 
 ## API
 
-Tooltip also takes the attributes its element has, and forwards its ref to it. These are the props
-it adds.
+Tooltip also takes its element's own attributes and forwards its ref. `className` lands on the
+wrapper.
 
 <ApiTable file="components/Tooltip/Tooltip.tsx" name="TooltipProps" element="HTMLDivElement" />
 
-## Anatomy
+## Placement and timing
 
-| Part | Element | What it is for |
-| ---- | ------- | -------------- |
-| Root | `span` | The hover region, holding the trigger and the bubble. Takes `className` |
-| Trigger | The child, cloned | The caller's element, with `aria-describedby` added to it |
-| Bubble | `span`, `role="tooltip"` | `content`, on `surface-inverse` with `ink-inverse`, at `z-tooltip` |
+`placement` is `top` by default, or `bottom` for a control near the top of the screen. `delay`
+waits before showing on hover; it never delays focus.
 
-The root is `inline-flex` rather than a block. A tooltip goes on a control that is usually sitting
-in a line of other controls, and a block wrapper silently changes that layout. The root is also
-what the pointer stays inside while travelling from the trigger to the bubble, which is the
-hoverable half of WCAG 1.4.13.
+<Notice tone="warning">
+A tooltip is never the only place information lives: touch has no hover. And it holds a short
+string only. If it needs a link, a control or more than a line, use Popover.
+</Notice>
 
-The bubble has `pointer-events: none`, so it reads without blocking: it sits over live content and
-the pointer needs to reach what is beneath it. The travel path from the trigger stays inside the
-root, so hoverable still holds.
+## Accessibility
 
-The gap between the trigger and the bubble is part of the offset rather than a margin on the
-bubble. A margin would sit inside the hover region and leave a dead strip the pointer crosses on
-its way in.
-
-The bubble is always rendered and `hidden` while closed, so the trigger is described from its first
-render. A screen reader reads the focused element on focus, before a render that opened the bubble
-could attach anything, and a hidden element still supplies its text to `aria-describedby`.
-
-## Placement
-
-`top` by default, `bottom` for a trigger near the top of the viewport.
-
-The bubble is pinned to the trigger's leading edge rather than centred on it. Centring wants
-`translateX(-50%)`, and CSS has no logical transform, so it would need a right-to-left counterpart
-restating the same value, since a centring offset is symmetric and does not actually flip. `start`
-is also what Popover does, so the two floating surfaces in the package sit the same way, and
-re-centring is a positioning-engine problem of the kind Popover already declines.
-
-## Keyboard and screen reader
-
-It appears on focus as well as on hover, and it is the most common bug in a hand-rolled tooltip:
-one that only answers the mouse is a hover effect rather than a tooltip. Tab to the trigger and the
-bubble shows.
-
-Showing on focus is not one of SC 1.4.13's three conditions, which are about content that is
-already showing. Its Understanding page says such content should be available from the keyboard too
-and sends the reader to SC 2.1.1 Keyboard, so the requirement is there rather than nowhere.
-
-Escape hides it and leaves focus where it is, so it cannot obscure content the user is trying to
-read. The listener is on the document rather than on the trigger, because the pointer case has no
-focused element to receive the key at all, and a tooltip opened by hover and dismissed by Escape is
-the exact scenario WCAG 1.4.13 was written for. The key stops propagating, so dismissing a tooltip
-inside a dialog does not also close the dialog.
-
-It is persistent: it stays until the pointer leaves, focus leaves, or Escape, with no timeout.
-
-`aria-describedby` lands on the interactive element itself. On a wrapper it describes nothing, and
-the trigger is the caller's element, so this is the one place in the package that reaches for
-`cloneElement`. A caller's own `aria-describedby` is kept and the tooltip's id is appended to it.
-The alternative is asking every caller to pass an id and wire it up, which is the step people
-forget, and forgetting it makes the tooltip invisible to the readers who need it most.
-
-The child has to be able to take focus. A tooltip on a plain `span` is invisible to every user who
-is not using a mouse.
-
-`delay` is never applied to focus. A keyboard user has already committed to the element, and a
-delay there is a description that arrives late. It is zero by default, because a delay is a
-judgement about one particular density of interface, and a design system guessing a number for
-everybody is a number every consumer ends up overriding.
-
-## Motion
-
-The bubble enters on the popover role, drifting away from the trigger: a fade and a few pixels in
-subtle, a spring and more travel in expressive, a fade in place in reduced. The direction is a
-custom property pointing back at the trigger, so a bubble above drifts up and one below drifts
-down. Showing the bubble restarts the animation, because it is `hidden` rather than unmounted.
-
-It leaves at once, with no exit animation, because a tooltip that lingers covers whatever the
-pointer has moved on to.
-
-## Decisions
-
-- **`content` is a `string`, not a node.** A tooltip that can hold a link or a button is a Popover,
-  and the moment it holds one the WCAG 1.4.13 contract stops being satisfiable. The type is what
-  keeps that true rather than a convention.
-- **A tooltip must never be the only place a piece of information lives.** Touch users have no
-  hover and may never see it.
-- **All three parts of 1.4.13 are implemented, not two.** Dismissible, hoverable and persistent are
-  re-derived per implementation, and three of them are silently absent in most hand-rolled
-  tooltips, which is the reason this belongs in the system rather than in a product.
-- **`cloneElement` is used here and nowhere else.** Card's note rejects the generic-polymorphic
-  `as` pattern, which costs a page of conditional types for props nobody passes; adding one
-  attribute to one child is a different thing.
-- **`delay` defaults to zero and never applies to focus.**
+- Shows on keyboard focus as well as on hover. The child must be focusable.
+- The child is described by the tooltip's text, which is added to its `aria-describedby`.
+- Escape hides it without moving focus. The pointer can move onto it, and it stays until the pointer
+  or focus leaves, with no timeout.

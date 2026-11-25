@@ -12,5 +12,11 @@ import { Callout, type CalloutProps } from 'haus-components'
  * The site should not be drawing its own notice next to a published one.
  */
 export function Notice({ children, tone = 'info' }: { children: ReactNode; tone?: CalloutProps['tone'] }) {
-  return <Callout tone={tone}>{children}</Callout>
+  // `haus-notice` lets the prose stylesheet take its paragraph margins off the
+  // text inside, which otherwise pushed it below the Callout's icon.
+  return (
+    <Callout className="haus-notice" tone={tone}>
+      {children}
+    </Callout>
+  )
 }

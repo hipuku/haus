@@ -1,11 +1,7 @@
 ---
 title: Tabs
-description: 'A tablist, and the panel it controls.'
+description: 'A tablist and the panel it controls, or a segmented mode switch.'
 ---
-
-Measured across core, drift and vault: three tablists, **zero** `role="tabpanel"`, **zero** `aria-controls`, **zero** arrow-key handling. Every one announces itself as a tablist and delivers none of what the word promises.
-
-The panel is rendered here rather than left to the caller, because the wiring between a tab and its panel is exactly what all three got wrong. Arrow keys move and wrap, Home and End jump, disabled tabs are skipped, and the tablist is one tab stop rather than one per tab.
 
 ## Examples
 
@@ -19,142 +15,41 @@ The panel is rendered here rather than left to the caller, because the wiring be
 
 ```tsx
 import { Tabs } from '@/components/haus/components/Tabs'
+
+<Tabs
+  aria-label="Project"
+  items={[
+    { label: 'Overview', value: 'overview' },
+    { label: 'Activity', value: 'activity' },
+  ]}
+  value={tab}
+  onValueChange={setTab}
+>
+  {tab === 'overview' ? <Overview /> : <Activity />}
+</Tabs>
 ```
 
 ## API
 
-Tabs also takes the attributes its element has, and forwards its ref to it. These are the props
-it adds.
-
-The table is the shape where Tabs renders the panel, which is the one to reach for. The other
-shape leaves the panel to the caller: pass `panelId` instead of `children` and wire your own
-element with `aria-labelledby`, computing the selected tab's id with the exported
-`tabIdFor(id, value)` rather than writing the template yourself. `id` is required in that shape,
-so the ids are computable at all. A label is required either way, as `aria-label` or
-`aria-labelledby`.
+Tabs also takes its element's own attributes and forwards its ref. `className` lands on the root
+and `tabListClassName` on the tablist.
 
 <ApiTable file="components/Tabs/Tabs.tsx" name="TabsOwnPanelProps" element="HTMLDivElement" />
 
-## Anatomy
-
-| Part | Element | What it is for |
-| ---- | ------- | -------------- |
-| Root | `div` | Wraps the list and the panel. Takes `className` |
-| List | `div`, `role="tablist"` | The row. Holds the appearance and the size. Takes `tabListClassName` |
-| Marker | `span`, `aria-hidden` | One element that travels to the selected tab. First in the list, so it paints beneath the tabs |
-| Tab | `button`, `role="tab"` | One tab, with `aria-selected` and a roving `tabIndex` |
-| Panel | `div`, `role="tabpanel"`, `tabIndex={0}` | The children, labelled by the selected tab. Absent when `panelId` is set |
-
-`tabListClassName` lands on the tablist rather than on the wrapper, so the label a screen reader
-reads for the tab group is the one the caller wrote.
-
-Only the active panel is ever in the document.
-
 ## Appearances
 
-`underline` is the original and stays the default, so nothing existing moves. `segmented` is a
-bordered group with the selected tab filled, which is what a two or three way mode switch reads
-as: a row of underlined words does not say that these are the states of one control the way a
-filled segment does.
-
-The two are alternatives rather than layers, so each appearance owns its own decoration and the
-shared tab rule carries none of it. The underline treatment used to sit on the tab itself, where a
-second appearance would have inherited a border it does not want and had to unset it.
-
-Under `underline` the list carries the rule and an unselected tab carries the same rule in a
-transparent colour rather than no rule at all: a border that appears on selection moves every tab
-by its width, which reads as the row twitching. Under `segmented` the track is `surface-sunken`
-with one step of inset, so the filled tab sits inside the track rather than against its edge, and
-the marker is the fill in `surface-raised`.
-
-`TabsAppearance` is deliberately not the `Appearance` of the [shared vocabulary](/docs/start/composition). That union is
-subtle and solid, which Badge and Toast spend on fill weight, and reusing the name here would put two unrelated
-meanings on one type while the compiler accepted every wrong combination of them.
-
-## Keyboard and screen reader
-
-The tablist is one tab stop, through a roving `tabIndex`. Without that every tab is its own tab
-stop, so a keyboard user crosses all of them one at a time to reach the panel, which is both what
-all three products shipped and the opposite of what the pattern is for.
-
-| Key | What it does |
-| --- | ------------ |
-| Arrow right, arrow left | Moves between tabs, wrapping at both ends |
-| Home, End | Jumps to the first or last tab |
-| Tab | Leaves the tablist for the next focusable element |
-
-Tabs binds nothing to Tab, so where it goes is document order: the panel when Tabs renders it,
-which is the common case and why the tablist holds one stop rather than one per tab. With `panelId`
-the panel is the consumer's and may sit anywhere, so Tab reaches whatever comes next in the
-markup, and putting a control between the two halves is what makes that visible.
-
-Disabled tabs are skipped rather than landed on and ignored. Movement is in document order;
-right-to-left ought to reverse it and does not, because the package runs its component tests with
-CSS off, so there is no computed direction to read and no honest way to assert the behaviour, which
-is the same boundary the logical-properties test draws for the visual half.
-
-Selection follows focus. The APG allows either, and automatic activation is right when showing a
-panel is cheap, which it is here because only the active one is rendered. If a panel ever costs a
-fetch, that is the moment to add manual activation. Focus is moved directly rather than waiting for
-a re-render, since the tab is already in the document and only its `tabIndex` changes.
-
-`aria-controls` is set on the selected tab only, and left off the others. Because only the active
-panel is in the document, setting it on every tab pointed each inactive one at an id that did not
-exist. An omitted `aria-controls` is valid where a broken IDREF is not. Nothing caught that: axe
-does not resolve the attribute against the document here, and the component's own tests asserted it
-was present rather than that it resolved.
-
-The panel is focusable, so a panel holding no controls is still reachable after Tab leaves the
-tablist. A tabpanel with nothing tabbable in it is otherwise a region a keyboard user cannot get
-into to read.
-
-A name is required on the tablist, as `aria-label` or `aria-labelledby`, and the types take exactly
-one. A tablist with no accessible name is announced as a tab list and nothing else, which is no
-help at all on a screen that has two.
-
-A tab's focus ring is drawn inside the tab rather than stepping out. A tab sits flush on the rule
-under the list, and an outline outside it is clipped there, which is WCAG 2.4.11 in the one place
-it is easy to miss. Under `forced-colors` the marker's colour is dropped, so the selected tab marks
-itself.
+`underline` is the default, for sections. `segmented` fills the selected tab inside a track, for a
+two or three way mode switch.
 
 ## Rendering the panel yourself
 
-`panelId` is for a consumer whose two halves are not adjacent, which is not an exotic layout: a
-mode switch in a sticky toolbar controlling content further down the page, with a whole form in
-between. Adopting a component that insisted on rendering the panel would mean moving that entire
-body inside the toolbar's wrapper, so one product kept a hand-rolled tablist and none of the
-contract (`haus#67`).
+Tabs renders the panel from `children`. When the panel has to sit elsewhere on the page, pass
+`panelId` and an `id` instead, and give your panel `role="tabpanel"`, `tabIndex={0}` and
+`aria-labelledby={tabIdFor(id, value)}`, using the exported `tabIdFor`.
 
-With `panelId`, Tabs renders no panel and the selected tab's `aria-controls` points at the caller's
-element. The roving `tabIndex`, the arrow keys, Home and End and the wiring are unchanged, which is
-the part worth having and the part every product gets wrong.
+## Accessibility
 
-The caller then owns `role="tabpanel"`, `tabIndex={0}` and `aria-labelledby` pointing back at the
-selected tab. `tabIdFor(id, value)` computes that last one, which is why `id` is required on this
-half: tab ids are generated otherwise and a caller cannot know them. It is a published function
-rather than a documented string template, because a template in prose is a contract nothing checks:
-the caller writes it once, Tabs changes its scheme, and the panel silently stops being labelled.
-
-## Motion
-
-The marker travels to the selected tab on the indicator role: a spring in expressive, an instant
-move in subtle and reduced. It is measured from the selected tab and remeasured when the list
-resizes, and the first placement is not animated, so it does not fly in from the start of the row.
-
-A tab's colour and its focus outline run on the highlight role.
-
-## Decisions
-
-- **The component owns both ends.** Measured across core, drift and vault there were three
-  tablists, no `role="tabpanel"`, no `aria-controls` from a tab to its panel, and no arrow-key
-  handling. A component that emitted only the tabs would let the same defect straight back in, so
-  it owns both or it is not worth having.
-- **`panelId` is the exception, and it is stated rather than assumed** (decisions 0022 and 0023). A
-  component may own a subtree only when it owns every part of it, and a consumer who takes the
-  panel and gives it no role has bought the same nothing they had before, so the prop documents
-  what they now owe.
-- **Data-driven, not a compound `Tabs` with `Tab` children.** It is the shape RadioGroup and Select
-  already use, and the shape one product had already written by hand.
-- **Selection follows focus**, because rendering the active panel is cheap here.
-- **`aria-controls` is omitted rather than dangling.**
-- **The appearance union is its own type**, not the shared `Appearance`.
+- A name is required, as `aria-label` or `aria-labelledby`.
+- The tablist is one tab stop. The arrow keys move between tabs and wrap, Home and End jump, and
+  disabled tabs are skipped. Selection follows focus.
+- Tab from the tablist moves into the panel.

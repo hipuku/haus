@@ -1,8 +1,6 @@
 import { createGenerator } from 'fumadocs-typescript'
-import { AutoTypeTable } from 'fumadocs-typescript/ui'
-import { readFileSync } from 'node:fs'
+import { readFileSync, readdirSync } from 'node:fs'
 import path from 'node:path'
-import styles from './api-table.module.css'
 
 const generator = createGenerator()
 
@@ -31,18 +29,29 @@ export type ApiTableProps = {
 }
 
 /**
- * The attributes a component's source takes out of an HTML attribute set,
- * `Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'>`, so it can define
- * its own. Each is part of the component's API, and leaving the whole
- * attribute set out of the table dropped Select's required `onChange`, Modal's
- * `title` and Tooltip's `content` without a word. A key that is removed and
- * not redefined is not in the props type, so keeping it adds no row.
+ * The attributes a component defines for itself, which stay in the table
+ * although they share a name with an HTML attribute. Two ways to do that, and
+ * both dropped the prop without a word when the table left the whole attribute
+ * set out:
+ *
+ * - taken out and redefined, `Omit<React.HTMLAttributes<HTMLDivElement>,
+ *   'onChange'>`: Select's required `onChange`, Tooltip's `content`
+ * - narrowed in place, `title: string` over the attribute's `title?: string`:
+ *   EmptyState's required `title`
+ *
+ * So the keys named in an `Omit` of an attribute set, and every key declared
+ * in an interface or object type in the file. A key that is not in the props
+ * type adds no row, so over-collecting costs nothing.
  */
 function redefined(file: string) {
   const source = readFileSync(path.join(componentsSrc, file), 'utf8')
-  return [...source.matchAll(/Omit<\s*React\.\w*Attributes<\w+>\s*,([^>]+)>/g)].flatMap(([, keys]) =>
+  const omitted = [...source.matchAll(/Omit<\s*React\.\w*Attributes<\w+>\s*,([^>]+)>/g)].flatMap(([, keys]) =>
     [...keys.matchAll(/'([^']+)'/g)].map(([, key]) => key),
   )
+  const declared = [...source.matchAll(/(?:interface\s+\w+[^{]*|=\s*)\{([^{}]*)\}/g)].flatMap(([, body]) =>
+    [...body.matchAll(/^\s*(?:readonly\s+)?'?([\w-]+)'?\??:/gm)].map(([, key]) => key),
+  )
+  return [...omitted, ...declared]
 }
 
 /**
@@ -74,11 +83,120 @@ export function apiTableSource({ file, name, element = 'HTMLElement', attributes
  * props type the way the component does: the file must import React as
  * `React`, which every component in the package does.
  */
-export function ApiTable(props: ApiTableProps) {
+/*
+ * A named union, `BadgeTone`, tells a reader the name of a type rather than
+ * what to pass. Every such alias in the package is a union of string
+ * literals, sometimes built from another alias or an `Extract<>` of one, so
+ * the table resolves a prop whose whole type is one alias into its values.
+ * Anything it cannot resolve fully to literals is left as written, so the
+ * table never shows a guess.
+ */
+const aliases: Map<string, string> = (() => {
+  const files = [
+    path.join(componentsSrc, 'types.ts'),
+    ...readdirSync(path.join(componentsSrc, 'components'), { withFileTypes: true })
+      .filter(entry => entry.isDirectory())
+      .flatMap(entry =>
+        readdirSync(path.join(componentsSrc, 'components', entry.name))
+          .filter(file => /\.tsx?$/.test(file) && !/\.(test|stories)\./.test(file))
+          .map(file => path.join(componentsSrc, 'components', entry.name, file)),
+      ),
+  ]
+  const map = new Map<string, string>()
+  for (const file of files) {
+    for (const [, name, value] of readFileSync(file, 'utf8').matchAll(/^export type (\w+) = ([^\n{]+)$/gm)) {
+      map.set(name, value.trim())
+    }
+  }
+  return map
+})()
+
+function literals(type: string, depth = 0): string[] | null {
+  if (depth > 4) return null
+  const extract = type.match(/^Extract<\s*\w+\s*,\s*(.+)>$/)
+  if (extract) return literals(extract[1], depth + 1)
+  const parts = type.split('|').map(part => part.trim())
+  const out: string[] = []
+  for (const part of parts) {
+    if (/^'[^']*'$/.test(part)) out.push(part.replace(/'/g, '"'))
+    else if (/^"[^"]*"$/.test(part)) out.push(part)
+    else if (aliases.has(part)) {
+      const inner = literals(aliases.get(part)!, depth + 1)
+      if (!inner) return null
+      out.push(...inner)
+    } else return null
+  }
+  return out
+}
+
+function readableType(type: string) {
+  const bare = type.replace(/ \| undefined$/, '')
+  if (!aliases.has(bare)) return bare
+  const values = literals(bare)
+  return values ? [...new Set(values)].join(' | ') : bare
+}
+
+/* A description is the component's doc comment, written in markdown; its
+   backticked spans are code in a sentence, so they become inline code and
+   take the inline-code chip. */
+export function withInlineCode(text: string) {
+  return text
+    .split(/(`[^`]+`)/)
+    .map((part, i) => (part.startsWith('`') && part.endsWith('`') ? <code key={i}>{part.slice(1, -1)}</code> : part))
+}
+
+/*
+ * The props as a plain table, from the same generator: the prop, its full
+ * type, and what it is for. It is an ordinary table in the page's prose, so it
+ * takes the site's table styling, one rule colour and the header row's ground,
+ * rather than Fumadocs' card of expandable rows, whose collapsed Type column
+ * read "union" until opened.
+ */
+export async function ApiTable(props: ApiTableProps) {
   const { generator, basePath, props: table } = apiTableSource(props)
+  const [doc] = await generator.generateTypeTable(table, { basePath })
+  const entries = doc?.entries ?? []
+  if (!entries.length) return <p>No props beyond the element’s own attributes.</p>
+  const fallbackOf = (entry: (typeof entries)[number]) =>
+    entry.tags.find(tag => tag.name === 'default' || tag.name === 'defaultValue')?.text
+  // A column with nothing in it is left out rather than drawn empty.
+  const described = entries.some(entry => entry.description || fallbackOf(entry))
+
   return (
-    <div className={styles.api}>
-      <AutoTypeTable generator={generator} options={{ basePath }} {...table} />
-    </div>
+    <table className="haus-api">
+      <thead>
+        <tr>
+          <th>Prop</th>
+          <th>Type</th>
+          {described && <th>Description</th>}
+        </tr>
+      </thead>
+      <tbody>
+        {entries.map(entry => {
+          const fallback = fallbackOf(entry)
+          return (
+            <tr key={entry.name}>
+              <td>
+                <code className="haus-api-name">{entry.name}</code>
+                {entry.required && <span className="haus-api-required">required</span>}
+              </td>
+              <td>
+                <code className="haus-api-type">{readableType(entry.type)}</code>
+              </td>
+              {described && (
+                <td>
+                  {withInlineCode(entry.description)}
+                  {fallback && (
+                    <span className="haus-api-default">
+                      Default <code className="haus-api-type">{fallback}</code>
+                    </span>
+                  )}
+                </td>
+              )}
+            </tr>
+          )
+        })}
+      </tbody>
+    </table>
   )
 }

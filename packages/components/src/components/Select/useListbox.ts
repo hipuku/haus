@@ -80,17 +80,20 @@ export function useListbox({ open, labels, selectedIndex, onSelect, onOpenChange
     if (open) setActiveIndex(selectedIndex >= 0 ? selectedIndex : 0)
   }
 
-  // A long list can open with the selected row below the fold. Found by id
-  // rather than through a ref the caller attaches: the panel only exists while
-  // the listbox is open, and the ids are already on the options for
+  // A long list can open with the selected row below the fold, and the
+  // highlight can be moved past the visible rows. Found by id rather than
+  // through a ref the caller attaches: the panel only exists while the
+  // listbox is open, and the ids are already on the options for
   // aria-activedescendant to point at.
+  //
+  // The list scrolls and nothing else does. `scrollIntoView` scrolled every
+  // scrollable ancestor that the row was outside, the page included, so
+  // opening a Select near the bottom of the window moved the page under the
+  // reader, and a Select inside a clipped container scrolled that container.
   useEffect(() => {
     if (!open) return
-    // Optional call, not defensive clutter: jsdom does not implement
-    // scrollIntoView, so a bare call throws inside an effect and takes the
-    // consumer's whole test render down with it. A published component cannot
-    // require the DOM to be complete to mount.
-    document.getElementById(`${baseId}-option-${activeIndex}`)?.scrollIntoView?.({ block: 'nearest' })
+    const option = document.getElementById(`${baseId}-option-${activeIndex}`)
+    if (option) scrollWithinList(option)
   }, [open, activeIndex, baseId])
 
   const optionId = useCallback((index: number) => `${baseId}-option-${index}`, [baseId])
@@ -164,4 +167,29 @@ export function useListbox({ open, labels, selectedIndex, onSelect, onOpenChange
     controls: open ? `${baseId}-listbox` : undefined,
     onKeyDown,
   }
+}
+
+/**
+ * Brings `option` into view by scrolling the list it is in, by the least
+ * distance, as `block: 'nearest'` does, and scrolls nothing further out.
+ *
+ * The search for what scrolls stops at the element holding the listbox, the
+ * panel, so a list too short to scroll moves nothing at all, rather than the
+ * search carrying on up to a scrolling dialog or the page.
+ */
+export function scrollWithinList(option: HTMLElement) {
+  const boundary = option.closest('[role="listbox"]')?.parentElement ?? null
+  let list: HTMLElement | null = option.parentElement
+  while (list) {
+    const overflow = getComputedStyle(list).overflowY
+    if ((overflow === 'auto' || overflow === 'scroll') && list.scrollHeight > list.clientHeight) break
+    if (list === boundary) return
+    list = list.parentElement
+  }
+  if (!list) return
+
+  const row = option.getBoundingClientRect()
+  const box = list.getBoundingClientRect()
+  if (row.top < box.top) list.scrollTop -= box.top - row.top
+  else if (row.bottom > box.bottom) list.scrollTop += row.bottom - box.bottom
 }

@@ -17,29 +17,74 @@
   min-inline-size: 0;
 }
 
+/*
+ * Three kinds of label on these pages, and which to use when.
+ *
+ * 1. The uppercase mono micro-label, `.panelLabel`, names a region of the
+ *    page: a panel, a stage, a section. It is the page talking about its own
+ *    structure, and nothing inside a control uses it.
+ * 2. A control's own label comes from the component, in sentence case, and
+ *    names one thing the reader sets. haus draws it; the page never draws one
+ *    by hand.
+ * 3. A name that came out of the data, a filename or a token path, is not a
+ *    label at all. It is mono, because it is code, and it is set as it was
+ *    written: `theme.css` in capitals is a different string from the one the
+ *    converter produced.
+ *
+ * `.outputName` was drawn as (1) and is (3), which is what made the page look
+ * like it had two label systems and no rule.
+ */
 .outputName {
-  color: var(--haus-color-ink-tertiary);
-  font-family: var(--haus-font-mono);
-  font-size: var(--haus-type-mono-xs-size);
-  letter-spacing: var(--haus-tracking-widest);
-  line-height: var(--haus-type-mono-xs-leading);
-  text-transform: uppercase;
-}
-
-.code {
-  background: var(--haus-color-surface-sunken);
-  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
-  border-radius: var(--haus-radius-md);
-  color: var(--haus-color-ink-primary);
+  color: var(--haus-color-ink-secondary);
   font-family: var(--haus-font-mono);
   font-size: var(--haus-type-mono-sm-size);
   line-height: var(--haus-type-mono-sm-leading);
+}
+
+/*
+ * A stage of the page: its number, its name, and what it is for. The
+ * converter is three things in order, input, settings, result, and it read as
+ * five bands of equal weight with the input at the bottom.
+ */
+.stage {
+  display: grid;
+  gap: var(--haus-space-5);
+}
+
+.stageHead {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--haus-space-3);
+}
+
+.stageNumber {
+  align-items: center;
+  background: var(--haus-color-primary-subtle);
+  block-size: var(--haus-control-height-sm);
+  border-radius: var(--haus-radius-pill);
+  color: var(--haus-color-primary-on-subtle);
+  display: inline-flex;
+  flex: none;
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-mono-sm-size);
+  inline-size: var(--haus-control-height-sm);
+  justify-content: center;
+}
+
+.stageName {
+  color: var(--haus-color-ink-primary);
+  font-size: var(--haus-type-heading-sm-size);
+  font-weight: var(--haus-type-heading-sm-weight);
+  letter-spacing: var(--haus-type-heading-sm-tracking);
+  line-height: var(--haus-type-heading-sm-leading);
   margin: 0;
-  /* The space ladder stops at 80px, which is a gap rather than the height of a
-     reading pane, so the cap is built from it rather than typed as a number. */
-  max-block-size: calc(var(--haus-space-20) * 5);
-  overflow: auto;
-  padding: var(--haus-space-4);
+}
+
+.stageNote {
+  color: var(--haus-color-ink-secondary);
+  font-size: var(--haus-type-body-sm-size);
+  margin: 0;
 }
 
 .summary {
@@ -49,9 +94,595 @@
   margin: 0;
 }
 
-.losses {
+/*
+ * A colour chip. Its colour is the reader's input; everything else is a token.
+ *
+ * `vertical-align: middle` because an inline-block sits on the baseline by
+ * default, which put every chip in a table cell a little above the middle of
+ * the hex beside it.
+ */
+.swatch {
+  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  border-radius: var(--haus-radius-marker);
+  display: inline-block;
+  flex: none;
+  vertical-align: middle;
+}
+
+.swatch[data-size='sm'] {
+  block-size: var(--haus-icon-sm);
+  inline-size: var(--haus-icon-sm);
+}
+
+.swatch[data-size='md'] {
+  block-size: var(--haus-space-8);
+  inline-size: var(--haus-space-8);
+}
+
+.swatch[data-size='lg'] {
+  block-size: var(--haus-space-16);
+  inline-size: 100%;
+}
+
+/* Two things side by side, stacked on a narrow screen.
+   The same gap as the rhythm between rows, so a grid of panels is evenly
+   spaced in both directions rather than tighter across than down. */
+.pair {
   display: grid;
+  gap: var(--haus-space-8);
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+}
+
+.factValue {
+  color: var(--haus-color-ink-primary);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-heading-lg-size);
+  font-weight: var(--haus-weight-semibold);
+}
+
+.factNote {
+  color: var(--haus-color-ink-secondary);
+  font-size: var(--haus-type-body-sm-size);
+  margin: 0;
+}
+
+/* A line of text set in one colour on the other: the test contrast stands for. */
+.sample {
+  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  border-radius: var(--haus-radius-surface);
+  display: flex;
+  flex-direction: column;
+  gap: var(--haus-space-2);
+  padding: var(--haus-space-5);
+}
+
+.sampleLarge {
+  font-size: var(--haus-type-heading-size);
+  font-weight: var(--haus-weight-semibold);
+}
+
+/* A colour's readings, each a label and a value. Auto-fit rather than a fixed
+   three, so a reading can be added without the last row stranding. */
+.coords {
+  display: grid;
+  gap: var(--haus-space-4);
+  grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
+  margin: 0;
+}
+
+.coords dt {
+  color: var(--haus-color-ink-tertiary);
+  font-size: var(--haus-type-body-sm-size);
+}
+
+.coords dd {
+  color: var(--haus-color-ink-primary);
+  font-family: var(--haus-font-mono);
+  margin: 0;
+}
+
+/* A lightness scale as a row of chips, each with its step and value. */
+.scale {
+  display: grid;
+  gap: var(--haus-space-2);
+  grid-template-columns: repeat(auto-fit, minmax(var(--haus-space-16), 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.scale li {
+  display: flex;
+  flex-direction: column;
   gap: var(--haus-space-1);
-  margin: var(--haus-space-2) 0 0;
-  padding-inline-start: var(--haus-space-5);
+}
+
+.scale code {
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-mono-xs-size);
+}
+
+.scaleChip {
+  block-size: var(--haus-space-12);
+  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  border-radius: var(--haus-radius-marker);
+}
+
+/* A tool's controls, which may be one field or several rows of them. */
+.controlsArea {
+  display: grid;
+  gap: var(--haus-space-4);
+}
+
+/*
+ * A field and the control beside it: the field takes what is left, the
+ * control takes what it needs.
+ *
+ * `align-items: end` lines the two up on their bottoms, which is where they
+ * agree: a Select carries a label above it and a Button does not, and both
+ * stand at control-height-md. The earlier version nudged the Button down by
+ * half a step instead, which was a guess at the same thing and out by 2px.
+ */
+.row {
+  align-items: end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--haus-space-4);
+}
+
+.row > .grow {
+  flex: 1 1 16rem;
+  min-inline-size: 0;
+}
+
+/* A field of four characters, which does not want a share of the row. */
+.row > .narrow {
+  flex: 0 0 auto;
+  inline-size: 8rem;
+}
+
+/* A sentence in a table cell, which wraps where the data columns do not. */
+.detail {
+  max-inline-size: 28rem;
+  white-space: normal;
+}
+
+.hidden {
+  display: none;
+}
+
+/*
+ * A table's frame. The site's own tables, the API table included, sit in a
+ * rounded box on the surface radius, so these do too; the wrapper carries the
+ * edge and the corner because a table's own border-collapse cannot be
+ * rounded. It scrolls sideways rather than breaking: the contrast matrix
+ * grows a column per colour.
+ */
+.tableWrap {
+  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  border-radius: var(--haus-radius-surface);
+  overflow-x: auto;
+}
+
+/*
+ * A table sized by its content rather than by the card, centred in it.
+ *
+ * Only the matrix. It is square, one row and column per colour, so at a small
+ * palette it is far narrower than the card and a full-width frame left a gap
+ * past its last column; since the cells give their outer edges to the frame,
+ * that gap read as a column with no right-hand side. A table that fills the
+ * width, like the ladder, keeps the plain frame: giving that one max-content
+ * would leave the card half empty instead.
+ */
+.matrixWrap {
+  inline-size: max-content;
+  margin-inline: auto;
+  max-inline-size: 100%;
+}
+
+/* The wrapper draws the outer edge, so the cells draw only the lines between
+   themselves: an edge on both is a double line at every side. */
+.tableWrap :is(.table, .matrix) tr:last-child :is(td, th) {
+  border-block-end: 0;
+}
+
+.tableWrap .matrix tr > :last-child {
+  border-inline-end: 0;
+}
+
+.tableWrap .matrix tr > :first-child {
+  border-inline-start: 0;
+}
+
+.tableWrap .matrix thead th {
+  border-block-start: 0;
+}
+
+.table {
+  border-collapse: collapse;
+  font-size: var(--haus-type-body-sm-size);
+  inline-size: 100%;
+}
+
+.table th,
+.table td {
+  border-block-end: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  padding: var(--haus-space-2) var(--haus-space-3);
+  text-align: start;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+/* The header row takes the tinted ground; a row's own header is a label in the
+   body and takes the body's. Written as `thead th` rather than `th` for that
+   reason: the first column was reading as a second header. */
+.table thead th {
+  background: var(--haus-color-surface-subtle);
+  color: var(--haus-color-ink-secondary);
+  font-weight: var(--haus-weight-semibold);
+}
+
+.table tbody th {
+  font-weight: var(--haus-weight-regular);
+}
+
+.table code {
+  font-family: var(--haus-font-mono);
+}
+
+/* The palette as a row of large chips. */
+.strip {
+  display: grid;
+  gap: var(--haus-space-2);
+  grid-template-columns: repeat(auto-fit, minmax(var(--haus-space-16), 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.strip li {
+  display: flex;
+  flex-direction: column;
+  gap: var(--haus-space-1);
+}
+
+.strip code,
+.clusterItem code {
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-mono-xs-size);
+}
+
+/* Each colour placed along a track by its OKLCH lightness. */
+.ladder {
+  background: linear-gradient(to right, var(--haus-color-ink-primary), var(--haus-color-surface-default));
+  block-size: var(--haus-space-3);
+  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  border-radius: var(--haus-radius-pill);
+  margin-block: var(--haus-space-4);
+  position: relative;
+}
+
+.ladderMark {
+  block-size: var(--haus-space-6);
+  border: var(--haus-border-width-thick) solid var(--haus-color-surface-default);
+  border-radius: var(--haus-radius-pill);
+  box-shadow: 0 0 0 var(--haus-border-width-default) var(--haus-color-border-strong);
+  inline-size: var(--haus-space-6);
+  inset-block-start: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+/* A group of colours that look alike, as one row's subject. */
+.cluster {
+  align-items: center;
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: var(--haus-space-3);
+  min-inline-size: 0;
+}
+
+.clusterItem {
+  align-items: center;
+  display: inline-flex;
+  gap: var(--haus-space-2);
+}
+
+/* The contrast matrix: each cell a sample, its ratio and its verdict. */
+.matrix {
+  border-collapse: collapse;
+  font-size: var(--haus-type-body-sm-size);
+}
+
+.matrix th,
+.matrix td {
+  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  padding: var(--haus-space-2);
+  text-align: start;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.matrix th {
+  font-weight: var(--haus-weight-regular);
+}
+
+.matrix thead th {
+  background: var(--haus-color-surface-subtle);
+}
+
+.matrix th code {
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-mono-xs-size);
+}
+
+.matrix td {
+  font-family: var(--haus-font-mono);
+}
+
+.matrix td > span {
+  display: block;
+}
+
+.matrixSample {
+  border-radius: var(--haus-radius-marker);
+  font-family: var(--haus-font-sans);
+  font-weight: var(--haus-weight-semibold);
+  margin-block-end: var(--haus-space-1);
+  padding: 0 var(--haus-space-1);
+}
+
+.matrixVerdict {
+  font-size: var(--haus-type-mono-xs-size);
+}
+
+.matrix td[data-verdict='AAA'] .matrixVerdict,
+.matrix td[data-verdict='AA'] .matrixVerdict {
+  color: var(--haus-color-success-on-subtle);
+}
+
+.matrix td[data-verdict='Fail'] .matrixVerdict {
+  color: var(--haus-color-error-on-subtle);
+}
+
+.matrix td.same {
+  color: var(--haus-color-ink-tertiary);
+  font-family: var(--haus-font-sans);
+}
+
+/* ── The ported tool layout ──
+   The arrangements the standalone tools used, on haus roles. See
+   tool-view.tsx for what each one is for. */
+
+/* A tool's controls and its result, on one rhythm. */
+.view {
+  display: grid;
+  gap: var(--haus-space-8);
+  min-inline-size: 0;
+}
+
+/* A labelled box: the heading row, then the facts. */
+.panel {
+  display: grid;
+  gap: var(--haus-space-3);
+  min-inline-size: 0;
+}
+
+.panelTop {
+  align-items: center;
+  display: flex;
+  gap: var(--haus-space-3);
+  justify-content: space-between;
+}
+
+.panelLabel {
+  color: var(--haus-color-ink-tertiary);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-mono-xs-size);
+  letter-spacing: var(--haus-tracking-widest);
+  line-height: var(--haus-type-mono-xs-leading);
+  text-transform: uppercase;
+}
+
+/* A share of a whole: label, track, count. The label and count columns are
+   sized from the space ladder so the tracks of a stack line up. */
+.meter {
+  align-items: center;
+  display: grid;
+  gap: var(--haus-space-3);
+  /* The label column holds the longest band, "ΔE 2 to 10", on one line. Only
+     the track flexes: a label that wraps puts the ranges out of step with each
+     other, which is the one thing a stack of bands is read for. */
+  grid-template-columns: var(--haus-space-20) minmax(0, 1fr) var(--haus-space-8);
+}
+
+.meter code {
+  font-family: var(--haus-font-mono);
+  white-space: nowrap;
+}
+
+.meter code:last-child {
+  text-align: end;
+}
+
+.meterTrack {
+  background: var(--haus-color-surface-sunken);
+  block-size: var(--haus-space-1);
+  border-radius: var(--haus-radius-pill);
+  display: block;
+  overflow: hidden;
+}
+
+.meterFill {
+  background: var(--haus-color-primary-default);
+  border-radius: var(--haus-radius-pill);
+  display: block;
+  block-size: 100%;
+  transition: inline-size var(--haus-motion-layout-duration) var(--haus-motion-layout-easing);
+}
+
+/* The subject of a colour page, drawn large. Two faces sit side by side with
+   no gap, so the pair reads as one block divided rather than two chips. */
+.hero {
+  /* The ladder stops at 5rem, a gap rather than the height of a figure, so
+     the hero's 8rem is built from it rather than typed as a number. */
+  block-size: calc(var(--haus-space-16) * 2);
+  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  border-radius: var(--haus-radius-surface);
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+
+.heroFace {
+  align-items: flex-end;
+  background: var(--face);
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  min-inline-size: 0;
+  padding: var(--haus-space-3);
+}
+
+/* The value, on the colour it names. The ground is the colour itself with a
+   little of its own chosen ink mixed in, so the chip reads as a label on the
+   colour in both themes and on any colour. */
+.heroChip {
+  background: color-mix(in oklab, var(--face-ink) 12%, var(--face));
+  border-radius: var(--haus-radius-pill);
+  color: var(--face-ink);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-mono-xs-size);
+  line-height: var(--haus-type-mono-xs-leading);
+  padding: var(--haus-space-1) var(--haus-space-3);
+  white-space: nowrap;
+}
+
+/* A reading that belongs to the pair rather than to either face. */
+.heroNote {
+  background: var(--haus-color-surface-overlay);
+  border-radius: var(--haus-radius-pill);
+  color: var(--haus-color-ink-primary);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-mono-xs-size);
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  padding: var(--haus-space-1) var(--haus-space-3);
+  position: absolute;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+}
+
+/* The name a colour page answers with, and the control that copies it. */
+.answer {
+  align-items: center;
+  display: flex;
+  gap: var(--haus-space-3);
+}
+
+.answerName {
+  color: var(--haus-color-ink-primary);
+  font-size: var(--haus-type-heading-lg-size);
+  font-weight: var(--haus-weight-semibold);
+  line-height: var(--haus-type-heading-lg-leading);
+  margin: 0;
+}
+
+/* A row of named facts inside a panel, each a label and a value. */
+.rows {
+  display: grid;
+  gap: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.rows li {
+  align-items: center;
+  display: flex;
+  gap: var(--haus-space-3);
+  padding-block: var(--haus-space-2);
+}
+
+.rows li + li {
+  border-block-start: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
+}
+
+.rowName {
+  color: var(--haus-color-ink-secondary);
+  flex: 1;
+  font-size: var(--haus-type-body-sm-size);
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rowValue {
+  color: var(--haus-color-ink-tertiary);
+  flex: none;
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-mono-xs-size);
+}
+
+/* A stack of meters sits tighter than the page's own rhythm. */
+.meters {
+  display: grid;
+  gap: var(--haus-space-2);
+}
+
+/*
+ * Code in the tools, which is always a labelled slot: a band, a step, a token
+ * name, a measured value. Carrying a class is what tells the site's rule this
+ * is not code in a sentence, so it is drawn plain mono with no chip, in the
+ * inline-code purple, exactly as a swatch's token name on Foundations is.
+ * See app/haus-theme.css, `.prose :not(pre) > code[class]`.
+ *
+ * Size only here. The ink is the site's, and restating it would be a second
+ * opinion about a decision already made.
+ */
+.value {
+  font-size: var(--haus-type-mono-xs-size);
+}
+
+/* A pass or fail, as coloured text rather than a Badge: the same roles the
+   contrast matrix uses, and nothing that needs a ground of its own. */
+.verdict {
+  flex: none;
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-mono-xs-size);
+}
+
+.verdict[data-pass='yes'] {
+  color: var(--haus-color-success-on-subtle);
+}
+
+.verdict[data-pass='large'] {
+  color: var(--haus-color-warning-on-subtle);
+}
+
+.verdict[data-pass='no'] {
+  color: var(--haus-color-error-on-subtle);
+}
+
+/* Three things across, on the same gap as a pair. */
+.trio {
+  display: grid;
+  gap: var(--haus-space-8);
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+}
+
+/*
+ * A written file, shown whole.
+ *
+ * Fumadocs caps a code block at 600px and scrolls inside it, which is right
+ * for a snippet inside a page of prose and wrong for the output of a
+ * converter: a reader checking what was written should not be reading it
+ * through a window, and a page that scrolls inside a thing that scrolls is
+ * worse than a long page.
+ */
+.output :global(pre),
+.output :global(.fd-scroll-container) {
+  max-block-size: none;
 }

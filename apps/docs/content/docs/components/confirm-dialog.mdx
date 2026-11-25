@@ -1,9 +1,7 @@
 ---
 title: ConfirmDialog
-description: '"Are you sure", as one component, on Modal.'
+description: '"Are you sure?" as one component, built on Modal.'
 ---
-
-vault and core each built one. Focus starts on Cancel, so Enter does the safe thing; the confirm button carries the tone of the action; while the action runs the button shows it and the dialog cannot be dismissed; a backdrop click never dismisses it. It is an `alertdialog`, so it is announced as interrupting, with its description.
 
 ## Examples
 
@@ -17,76 +15,46 @@ vault and core each built one. Focus starts on Cancel, so Enter does the safe th
 
 ```tsx
 import { ConfirmDialog } from '@/components/haus/components/ConfirmDialog'
+
+<ConfirmDialog
+  open={open}
+  title="Delete workspace?"
+  description="Its records and history are deleted with it."
+  confirmLabel="Delete workspace"
+  tone="error"
+  pending={deleting}
+  onConfirm={deleteWorkspace}
+  onCancel={() => setOpen(false)}
+/>
 ```
 
 ## API
 
-ConfirmDialog also takes the attributes its element has, and forwards its ref to it. These are the props
-it adds.
+ConfirmDialog also takes its element's own attributes and forwards its ref.
 
 <ApiTable file="components/ConfirmDialog/ConfirmDialog.tsx" name="ConfirmDialogProps" element="HTMLDivElement" />
 
-## Anatomy
-
-A Modal at `size="sm"`, with its parts filled in rather than left to the caller.
-
-| Part | What it is | Notes |
-| ---- | ---------- | ----- |
-| Dialog | `Modal`, with `role="alertdialog"` | Named by `title` and described by `description` through `aria-describedby` |
-| Body | `description` | Wrapped in the element the dialog's `aria-describedby` points at |
-| Footer | A right-aligned row of Buttons | Cancel as a `ghost` Button, then the confirm Button as `primary` |
-
-Everything else, including the backdrop, the header, the close button and the focus handling, is
-Modal's.
-
 ## Kinds and tone
 
-`kind` decides how many buttons there are. `confirm` asks, and offers both. `alert` reports and
-offers one, because there is nothing to cancel; it destroys nothing, so it never takes the danger
-tone, and its single button is `neutral` whatever `tone` says.
+- `kind="confirm"` asks, with Cancel and the confirm button. The default.
+- `kind="alert"` reports, with one button and nothing to cancel.
+- `tone="error"` colours the confirm button for an action that destroys something.
 
-`tone` is `neutral` or `error`, narrowed from the [shared vocabulary](/docs/start/composition) to the two a confirmation
-has a meaning for, and it lands on the confirm button. That is what makes the dialog's primary action
-read as the same decision as the button that opened it.
+Write `confirmLabel` as the action, "Delete workspace" rather than "OK": it is the last thing a
+reader hears before acting.
 
-`confirmLabel` is required and should say what the action does. "Delete workspace" rather than
-"OK": the label is what a reader hears when focus reaches the button, and it is the last thing
-between them and the action.
+## While it runs
 
-## Keyboard and screen reader
+Set `pending` while the action runs. The confirm button shows it is working, and Cancel, Escape
+and the close button do nothing, so the action is not abandoned half way.
 
-`role="alertdialog"` rather than `dialog`, so a screen reader announces it as interrupting and
-reads the description with the title.
+<Notice tone="info">
+A click on the backdrop never dismisses a ConfirmDialog, and that cannot be turned on: the point
+is a deliberate answer.
+</Notice>
 
-Focus starts on Cancel, so Enter does the safe thing and a stray keystroke as the dialog appears
-cannot destroy anything. An `alert` has no Cancel, so focus starts on its only button.
+## Accessibility
 
-Escape and the close button both cancel, through the same path Cancel takes.
-
-A backdrop click never dismisses it. `dismissOnBackdrop` is passed as false and is not a prop a
-caller can set, because a deliberate answer is the whole point of the component.
-
-While `pending`, the confirm button shows that it is working and Cancel is disabled, and Escape,
-the close button and Cancel all do nothing, so a running action is not abandoned half way. The
-confirm button's `loading` state is Button's, so it does not take focus away while it runs and it
-announces the wait once through `aria-busy`.
-
-Tab cycles within the dialog and focus returns to whatever had it, both from Modal.
-
-## Motion
-
-Modal's, on the dialog roles. The confirm button's pending state is Button's loading cross-fade on
-the feedback role.
-
-## Decisions
-
-- **It is one component rather than a pattern.** vault's `ConfirmDialog` and core's `ConfirmAction`
-  were both built on their own Modal, and what they agreed on is what this keeps.
-- **Focus starts on Cancel** (vault's answer), so the default keystroke is the safe one.
-- **The confirm button carries the tone** (core's answer), so the dialog matches the action that
-  opened it.
-- **There is a pending state** (core's answer). An action that takes time needs the dialog to say
-  so and to stay.
-- **There is an `alert` kind** (vault's answer), for a dialog that reports rather than asks.
-- **A backdrop click is refused, not configurable.** It is the one dialog where an accidental
-  dismissal is the failure the component exists to prevent.
+- Announced as an alert dialog, with its description read alongside the title.
+- Focus starts on Cancel, so Enter does the safe thing. An `alert` starts on its only button.
+- Escape and the close button cancel. Tab stays in the dialog, and focus returns on close.

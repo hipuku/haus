@@ -1,13 +1,7 @@
 ---
 title: Select
-description: 'haus draws this Select: a trigger, and a panel of options.'
+description: 'A trigger and a panel of options that haus draws, so an option can carry a hint.'
 ---
-
-**It was `Listbox` until decision 0025**, where the native `<select>` it replaces was retired. Measured across core, drift and vault, nothing imported the native one, while two products built this and wrote down the same reason. core: *"a styled listbox standing in for `<select>`, whose native popup can't be themed"*. vault: *"a custom dropdown replacing native `<select>`"*. 
-
-**The hint is the whole argument.** An option carries a second line under its label, which a native `<option>` cannot hold because the operating system draws it. 
-
-Focus stays on the trigger for the entire interaction and the highlighted row is announced through `aria-activedescendant`. That is what lets the options be plain `<li role="option">`: `role="option"` must be owned by the listbox, so anything focusable in between makes the structure invalid. Dismissal composes `Popover`, which already owns outside-click and Escape and is deliberately not a focus trap.
 
 ## Examples
 
@@ -21,122 +15,39 @@ Focus stays on the trigger for the entire interaction and the highlighted row is
 
 ```tsx
 import { Select } from '@/components/haus/components/Select'
+
+<Select
+  label="Role"
+  value={role}
+  onChange={setRole}
+  options={[
+    { label: 'Author', value: 'author', hint: 'Can propose and revise' },
+    { label: 'Viewer', value: 'viewer' },
+  ]}
+/>
 ```
 
 ## API
 
-Select also takes the attributes its element has, and forwards its ref to it. These are the props
-it adds.
+Select also takes its element's own attributes and forwards its ref. `className` lands on the root
+and `controlClassName` on the trigger.
 
 <ApiTable file="components/Select/Select.tsx" name="SelectProps" element="HTMLDivElement" />
 
-## Anatomy
+## Options and forms
 
-| Part | Element | What it is for |
-| ---- | ------- | -------------- |
-| Root | `div` | The block: label, control and messages. Takes `className` |
-| Hidden input | `input type="hidden"` | Rendered when `name` is set, so the control submits inside a plain form |
-| Label | `label`, `htmlFor` the trigger | The name, at the same type role Input's label uses |
-| Control | `div` | The box the panel is placed against, so it opens under the trigger and not under a hint or an error |
-| Trigger | `button`, `role="combobox"` | The control. Holds every ARIA attribute, because it is the element announced |
-| Chevron | `svg`, `aria-hidden` | Turns while the panel is open |
-| Panel | `Popover`, `role="listbox"` | The options, composed rather than reimplemented |
-| Indicator | `span`, `aria-hidden` | One highlight that travels between rows, drawn behind them |
-| Option | `li`, `role="option"` | A row: label, optional hint, and a check when selected |
-| Error | `span`, `role="alert"` | `error`, with the glyph every field's error carries |
-| Hint | `span` | `hint`, below the error, which stays when an error appears |
+Options come from `options`. Each has a `label`, a `value`, and an optional `hint` shown under the
+label, which a native `<select>` cannot do, and `disabled`. Select is controlled: pass `value` and
+`onChange`. Set `name` and it submits inside a plain form.
 
-The trigger is a `button`, so the box, the edge and the ring are drawn there, on the same roles
-Input's wrap uses: `border-control` at rest for the 3:1 WCAG 1.4.11 asks of a control's only edge
-(decision 0031), that edge mixed toward the page's ink on hover, `border-focus` and a stepped-out
-outline on focus, and `error-default` for both while invalid.
+<Notice tone="info">
+Inside something that scrolls or clips, such as a Modal's body, set `portal` so the panel is not
+cut off.
+</Notice>
 
-The options come from the `options` array. An option's `hint` is a second line under its label, and
-it is the thing a native `select` cannot show, because an `option` is text and the operating system
-draws it.
+## Accessibility
 
-## Keyboard and screen reader
-
-Focus stays on the trigger for the entire interaction. The highlighted row is not DOM focus: it is
-announced through `aria-activedescendant`, which is what lets the options be plain
-`li role="option"`, since `role="option"` has to be owned by the listbox and anything focusable in
-between makes the structure invalid.
-
-| Key | What it does |
-| --- | ------------ |
-| Enter, Space | Opens the panel, or commits the highlighted option |
-| Arrow down, arrow up | Opens the panel, or moves the highlight by one |
-| Home, End | Moves the highlight to the first or last option |
-| A printable character | Jumps to the next option starting with what has been typed |
-| Escape, a click outside | Closes the panel, which `Popover` owns |
-
-Typeahead takes one printable character with no modifier, because anything else is a shortcut the
-page or the browser owns, and the buffer expires so the next letter starts fresh. One letter
-pressed repeatedly cycles through the options beginning with it, as a native `select` does, rather
-than searching for that letter three times over.
-
-Opening starts the highlight on the current selection, so the first arrow press moves from where
-the user is rather than from the top of a list they had scrolled past. That is applied during
-render rather than in an effect, because an effect would paint the old row first and then correct
-it. A selection below the fold is scrolled into view.
-
-The trigger is a `combobox` rather than a plain button, because that is the role which carries
-`aria-activedescendant`; without it the highlighted row is announced to nobody. It also carries
-`aria-haspopup`, `aria-expanded` and `aria-controls`, and `aria-invalid` while there is an error.
-
-A name is required, as `label` or as `aria-labelledby`, and the types take exactly one of the two.
-A button can be named by its own contents and a `label` can reach it, since a button is a labelable
-element; what is true here is narrower. The trigger's contents are the selected option, so a name
-taken from them would be the current value rather than what the control is for, and it would change
-every time the value did. A visible `label` also means a Select in a form is labelled like the
-fields beside it, and its `htmlFor` moves focus to the trigger on a click.
-
-The hint and the error are wired to the trigger through `aria-describedby`, the caller's own
-description first, then the error, then the hint. The error sits above the hint and the hint stays,
-as Input's does.
-
-The selected row carries a check rather than only a heavier weight, so the selection is not told by
-weight alone. `aria-selected` is what is announced. A disabled option carries `aria-disabled` and
-cannot be committed.
-
-An option takes no key events of its own, because the trigger keeps focus; its click is the
-pointer's way to choose, and a press on it has its default prevented so focus does not leave the
-trigger before the click lands.
-
-## Motion
-
-The trigger's edge, focus colour and outline run on the highlight role. The chevron turns with it.
-
-The travelling highlight runs on the indicator role: a spring in expressive, an instant swap in
-subtle and in reduced. It is measured from the active option and the first placement after opening
-is not animated, so it does not fly in from the top of the panel. Hover and the keyboard both move
-the same indicator, so there is one highlight rather than two competing ones.
-
-The rows enter on the popover role with a stagger, capped so a long list does not cascade
-indefinitely, and the check draws its stroke on the draw role a couple of steps in. The error grows
-in on the layout role, as Input's does.
-
-Under `forced-colors` the indicator's fill is dropped, so the active row marks itself with the
-forced focus outline instead.
-
-## Decisions
-
-- **Select is the themed control, and the native `select` is retired** (decision 0025, `haus#61`,
-  superseding 0011 and 0020). Measured across core, drift and vault, nothing imported the native
-  one, while two products had built this and written down the same reason.
-- **The keyboard contract is shared, not copied** (`haus#61`). core's copy of `useListbox` recorded
-  that it was ported alongside vault's with the same signature, so the two stayed diffable until
-  one of them moved into haus. Two products wrote the same keyboard contract, and neither should
-  own it.
-- **Escape and outside-dismissal are not in the listbox hook.** Both components that use it already
-  own them, and one of them shares that ownership with every other popover in its app.
-- **The panel composes `Popover`**, which already owns outside-click and Escape, and is
-  deliberately not a focus trap. Trapping focus is what a modal does, and this is not one.
-- **`portal` exists for a Select inside something that clips** (`haus#68`). A Modal body scrolls,
-  so an absolutely positioned panel is cut off at its edge. The prop is passed straight through to
-  `Popover`.
-- **`name` is optional.** A hidden input is what makes the control submit inside a plain form, and
-  a purely controlled use does not want one.
-- **`scrollIntoView` is called optionally.** jsdom does not implement it, so a bare call throws
-  inside an effect and takes a consumer's whole test render down with it. A published component
-  cannot require a complete DOM to mount.
+- A name is required, as `label` or `aria-labelledby`.
+- Focus stays on the trigger. The arrow keys move the highlight, Enter or Space chooses, and typing
+  a letter jumps to the next option starting with it.
+- Escape or a click outside closes it. The selected option carries a check, not only a colour.

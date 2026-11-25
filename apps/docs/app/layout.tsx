@@ -20,7 +20,10 @@ export const metadata: Metadata = {
 
 export default function Layout({ children }: LayoutProps<'/'>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    // The whole site runs in haus's expressive motion mode. A reader's
+    // prefers-reduced-motion still wins: the token file's reduced block
+    // overrides [data-haus-motion] under that media query.
+    <html data-haus-motion="expressive" lang="en" suppressHydrationWarning>
       <head>
         {/* The two faces the default brand names, DM Sans and DM Mono. The site
             loaded neither until now, so every haus component on it fell through

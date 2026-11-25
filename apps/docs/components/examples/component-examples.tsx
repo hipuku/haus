@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { composeStories } from '@storybook/react'
 import { Preview } from '../preview'
 import { STORIES, type ComponentName } from './stories'
@@ -52,7 +53,12 @@ export function ComponentExamples({
             <h3>{title(story, Story)}</h3>
             {description(Story) && <p>{description(Story)}</p>}
             <Preview of={name} story={story}>
-              <Story />
+              <Forced
+                pseudo={Story.parameters?.pseudo as Pseudo | undefined}
+                still={STILL_PAGES.includes(name) && story !== 'Playground'}
+              >
+                <Story />
+              </Forced>
             </Preview>
           </section>
         )
@@ -85,4 +91,53 @@ function title(story: string, Story: { storyName?: string }): string {
 function description(Story: { parameters?: Record<string, unknown> }): string | undefined {
   const docs = Story.parameters?.docs as { description?: { story?: string } } | undefined
   return docs?.description?.story
+}
+
+/*
+ * Storybook's pseudo-states add-on forces hover, press and focus on the
+ * elements a States story lists in `parameters.pseudo`. The docs site does not
+ * run the add-on, so its States examples showed every state at rest. This
+ * applies the same list through the `data-pseudo-*` attributes
+ * postcss-pseudo-states.mjs adds beside each pseudo-class, so the state shown
+ * is the component's own rule.
+ */
+type Pseudo = Partial<Record<'hover' | 'active' | 'focus' | 'focusVisible' | 'focusWithin', string[]>>
+
+const ATTRIBUTE: Record<keyof Pseudo, string> = {
+  hover: 'data-pseudo-hover',
+  active: 'data-pseudo-active',
+  focus: 'data-pseudo-focus',
+  focusVisible: 'data-pseudo-focus-visible',
+  focusWithin: 'data-pseudo-focus-within',
+}
+
+/*
+ * Menu and Popover open their panels on their own, and Menu moves focus into
+ * its first item. Several open on one page stole focus from each other, each
+ * closing the last, and moved the page. So every example on those pages but
+ * the Playground starts inert, and comes alive on the reader's first press:
+ * inert is lifted in the capture phase of that pointerdown, before the click
+ * that follows is aimed, so the press reaches the trigger as usual.
+ */
+const STILL_PAGES: readonly string[] = ['Menu', 'Popover']
+
+function Forced({ pseudo, still, children }: { pseudo?: Pseudo; still: boolean; children: ReactNode }) {
+  const root = useRef<HTMLDivElement>(null)
+  const [asleep, setAsleep] = useState(still)
+  useEffect(() => {
+    const element = root.current
+    if (!element || !pseudo) return
+    for (const [state, selectors] of Object.entries(pseudo) as [keyof Pseudo, string[]][]) {
+      for (const selector of selectors ?? []) {
+        element.querySelectorAll(selector).forEach(node => node.setAttribute(ATTRIBUTE[state], ''))
+      }
+    }
+  }, [pseudo])
+  return (
+    <div className="haus-example" onPointerDownCapture={asleep ? () => setAsleep(false) : undefined}>
+      <div inert={asleep || undefined} ref={root}>
+        {children}
+      </div>
+    </div>
+  )
 }

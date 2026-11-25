@@ -1,12 +1,7 @@
 import { source } from '@/lib/source'
-import {
-  DocsBody,
-  DocsDescription,
-  DocsPage,
-  DocsTitle,
-  MarkdownCopyButton,
-  ViewOptionsPopover,
-} from 'fumadocs-ui/layouts/docs/page'
+import { DocsBody, DocsDescription, DocsPage, DocsTitle } from 'fumadocs-ui/layouts/docs/page'
+import { PageActions } from '@/components/page-actions'
+import { PageEnd } from '@/components/page-end'
 import { notFound } from 'next/navigation'
 import { getMDXComponents } from '@/components/mdx'
 import type { Metadata } from 'next'
@@ -21,24 +16,38 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
 
   const MDX = page.data.body
   const markdownUrl = `${page.url}.md`
+  const section = params.slug?.[0]
+
+  /*
+   * Every page but a tool's carries the page actions.
+   *
+   * A tool page is a running app with a three-sentence lede. Its markdown is
+   * that lede and a tag, so Copy Markdown would hand a reader the one part of
+   * the page that is not the point, and the two buttons would sit above the
+   * field as the first controls a reader meets. The llms routes still serve
+   * the page, and lib/llms-markdown.ts writes the tag out as a line saying
+   * where the tool runs.
+   */
+  const actions = section !== 'tools'
 
   return (
     <DocsPage toc={page.data.toc} full={page.data.full}>
       <DocsTitle>{page.data.title}</DocsTitle>
-      <DocsDescription className="mb-0">{page.data.description}</DocsDescription>
-      <div className="flex flex-row gap-2 items-center border-b pb-6">
-        <MarkdownCopyButton markdownUrl={markdownUrl} />
-        {/* Component pages only: the prompt names a component, its install
-            route and the rules it rests on, which a foundation page has no
-            equivalent of. */}
-        {params.slug?.[0] === 'components' && params.slug[1] && (
-          <ComponentPrompt description={page.data.description} name={page.data.title} slug={params.slug[1]} />
-        )}
-        <ViewOptionsPopover
-          markdownUrl={markdownUrl}
-          githubUrl={`https://github.com/${gitConfig.user}/${gitConfig.repo}/blob/${gitConfig.branch}/apps/docs/content/docs/${encodeURI(page.path)}`}
-        />
-      </div>
+      <DocsDescription className={actions ? 'mb-0' : undefined}>{page.data.description}</DocsDescription>
+      {actions && (
+        <div className="flex flex-row gap-2 items-center pb-6">
+          <PageActions
+            githubUrl={`https://github.com/${gitConfig.user}/${gitConfig.repo}/blob/${gitConfig.branch}/apps/docs/content/docs/${encodeURI(page.path)}`}
+            markdownUrl={markdownUrl}
+          />
+          {/* Component pages only: the prompt names a component, its install
+              route and the rules it rests on, which a foundation page has no
+              equivalent of. */}
+          {section === 'components' && params.slug?.[1] && (
+            <ComponentPrompt description={page.data.description} name={page.data.title} slug={params.slug[1]} />
+          )}
+        </div>
+      )}
       <DocsBody>
         <MDX
           components={getMDXComponents({
@@ -46,6 +55,8 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
             a: createRelativeLink(source, page),
           })}
         />
+        {/* Room between the page and the previous and next links after it. */}
+        <PageEnd />
       </DocsBody>
     </DocsPage>
   )

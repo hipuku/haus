@@ -1,44 +1,54 @@
-.roles {
+/*
+ * The motion roles as a grid: a row per role and a column per mode, top
+ * aligned.
+ */
+.grid {
   display: flex;
   flex-direction: column;
   margin-block: var(--haus-space-6);
 }
 
-.toolbar {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--haus-space-4);
-  margin-block-end: var(--haus-space-5);
+.head,
+.row {
+  align-items: start;
+  column-gap: var(--haus-space-4);
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr));
 }
 
-.note {
+.head {
   color: var(--haus-color-ink-tertiary);
   font-size: var(--haus-type-body-sm-size);
-  line-height: var(--haus-type-body-sm-leading);
+  font-weight: var(--haus-weight-semibold);
+  padding-block-end: var(--haus-space-2);
 }
 
 .row {
-  align-items: center;
-  border-block-start: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
-  display: flex;
-  gap: var(--haus-space-6);
-  justify-content: space-between;
+  border-block-start: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  grid-template-rows: auto auto auto;
   padding-block: var(--haus-space-4);
+  row-gap: var(--haus-space-2);
 }
 
-.meta {
-  display: flex;
-  flex-direction: column;
-  gap: var(--haus-space-1);
+/* The role column and each mode cell span the row's three lines and share
+   them, so the play control lines up with the stages, the name with the
+   durations, and the description with the easings. */
+.meta,
+.cell {
+  display: grid;
+  grid-row: span 3;
+  grid-template-rows: subgrid;
   min-inline-size: 0;
 }
 
-/* A `<code>` in a stretching column, with the page's filled background on
-   inline code, drew a full-width bar for a one-word role name. */
+.duration {
+  color: var(--haus-color-ink-secondary);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-mono-sm-size);
+}
+
 .name {
   align-self: flex-start;
-  color: var(--haus-color-ink-primary);
   font-family: var(--haus-font-mono);
   font-size: var(--haus-type-mono-sm-size);
   max-inline-size: 100%;
@@ -50,32 +60,26 @@
   line-height: var(--haus-type-body-sm-leading);
 }
 
-.values {
-  color: var(--haus-color-ink-tertiary);
-  font-family: var(--haus-font-mono);
-  font-size: var(--haus-type-label-caption-size);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+/* The mode's name above its cell, shown only where the header row is not. */
+.cellMode {
+  display: none;
 }
 
 .stage {
   align-items: center;
   background: var(--haus-color-surface-subtle);
-  block-size: var(--haus-space-16);
+  block-size: var(--haus-space-12);
   border-radius: var(--haus-radius-md);
   display: flex;
-  flex: none;
-  inline-size: var(--haus-space-20);
   justify-content: center;
   overflow: hidden;
 }
 
 .sample {
   background: var(--haus-color-primary-default);
-  block-size: var(--haus-space-8);
+  block-size: var(--haus-space-6);
   border-radius: var(--haus-radius-marker);
-  inline-size: var(--haus-space-8);
+  inline-size: var(--haus-space-6);
 }
 
 .playing {
@@ -94,11 +98,46 @@
   }
 }
 
-/* A reader who has asked for less motion gets the reduced mode's values from
-   the token layer; the sample still plays, briefly, because the point of the
-   page is to show what it does. */
-@media (prefers-reduced-motion: reduce) {
-  .sample {
-    animation-duration: var(--haus-motion-micro-duration);
+.values {
+  color: var(--haus-color-ink-tertiary);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-label-caption-size);
+  overflow-wrap: anywhere;
+}
+
+/* The play control sits at the start of its line. */
+.meta > :first-child {
+  justify-self: start;
+}
+
+/* On a narrow screen a row stacks: the role, then its three cells side by
+   side, each named, and no header row. */
+@media (max-width: 48rem) {
+  .head {
+    display: none;
+  }
+
+  .row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: none;
+    row-gap: var(--haus-space-3);
+  }
+
+  .meta,
+  .cell {
+    display: flex;
+    flex-direction: column;
+    gap: var(--haus-space-1);
+    grid-row: auto;
+  }
+
+  .meta {
+    grid-column: 1 / -1;
+  }
+
+  .cellMode {
+    color: var(--haus-color-ink-tertiary);
+    display: block;
+    font-size: var(--haus-type-label-caption-size);
   }
 }

@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { storybookUrl } from '@/lib/shared'
+import { StorybookButton } from './header-controls'
 import styles from './preview.module.css'
 
 /**
@@ -8,8 +9,7 @@ import styles from './preview.module.css'
  * A component dropped straight onto the page is indistinguishable from the page
  * furniture around it, which is how Badge's four variants read as a stray line
  * of text. A frame says "this is the thing you are installing": its own surface,
- * the system's border and radius, and a caption naming the story so the page,
- * the workshop and the tests are visibly the same example.
+ * the system's border and radius, and a link to the same story in the workshop.
  *
  * It does not carry a light and dark switch of its own. haus's dark map applies
  * at the root (`brand-dark.css`), so a subtree cannot be put in the other mode,
@@ -40,18 +40,16 @@ export function Preview({
 
   return (
     <figure className={styles.preview}>
-      <div className={styles.stage} data-layout={layout}>
+      <div className={styles.stage} data-layout={layout} data-of={of} data-story={story}>
         {children}
       </div>
-      {(story ?? workshop) && (
-        <figcaption className={styles.caption}>
-          <span>{story}</span>
-          {workshop && (
-            <a href={workshop} rel="noreferrer" target="_blank">
-              Open in Storybook
-            </a>
-          )}
-        </figcaption>
+      {/* The story in the workshop, as the header's Storybook control: a
+          ghost IconButton, floating at the frame's top right. The section's
+          heading already names the example, so there is no caption. */}
+      {workshop && (
+        <span className={`${styles.workshop} not-prose`}>
+          <StorybookButton href={workshop} />
+        </span>
       )}
     </figure>
   )

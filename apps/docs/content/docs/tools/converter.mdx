@@ -1,25 +1,31 @@
 ---
 title: Converter
 description: Convert design tokens between DTCG, Figma, Tokens Studio and Tailwind v4, and see what each conversion loses.
+full: true
 ---
 
-import { Converter } from '@/components/tools/converter'
+import { ConverterWorkspace } from '@/components/tools/converter-examples'
 
 Design tools disagree about how a token is written down, and moving between them quietly drops
 things. This converter reads DTCG, Figma variables, Tokens Studio and Tailwind v4, writes any of
 them, and shows you what did not survive.
 
-<Converter />
+<ConverterWorkspace />
 
-## How to read the output
+## Lost and translated
 
-Under the output is the loss report: one line per token the target format could not hold, with the
-reason it could not. No losses means the conversion was complete, which is worth knowing before you
-commit the result.
+The report separates two things a conversion does, and the difference is the whole point of
+reading it.
 
-Two examples of why a report is not empty: Tailwind has no way to express a single token that
-changes with a mode, so a two-mode colour arrives as one value. Figma variables have no composite
-type, so a typography token arrives as its four parts or not at all.
+**Lost** is what the target cannot hold. A second mode in a format with one value per token, a
+composite with no equivalent, a description with nowhere to go. It is not in the output.
+
+**Translated** changed how a value is written and kept what it means. A unit converted, an alias
+resolved to the value it pointed at, a colour written in another space. It is in the output, as
+something else.
+
+A conversion with nothing lost is reversible. One with a long translated list is fine to ship and
+awkward to bring back.
 
 ## It runs here
 

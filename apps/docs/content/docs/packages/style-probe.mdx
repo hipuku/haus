@@ -1,17 +1,12 @@
 ---
 title: Style probe
-description: Read what a browser actually computed for an element, as typed token values.
+description: Read what a browser actually computed for an element, as values a test can compare.
 ---
 
-A component's source says what it should look like. The browser says what it does look like, and
-those are different questions. `@hipuku/style-probe` answers the second one: it reads an element's
-computed style out of a live page and hands it back as values you can compare, so a test can assert
-that a Button really is drawing the token it claims rather than that its class list contains a
-word.
+Reads an element's computed style from a live page and returns typed values, so a test can assert
+what a component really draws. It is how haus's Figma parity check measures components.
 
-This is how the Figma parity check and the component audits are measured.
-
-<PackageMeta dir="style-probe" publishedAs="@hipuku/style-probe" />
+<PackageMeta dir="style-probe" />
 
 ## Install
 
@@ -21,10 +16,8 @@ npm install @hipuku/style-probe
 
 ## Usage
 
-Two halves, split at the browser boundary. `extractRawElements` runs in the page and reads each
-element's computed style; the normalising functions run anywhere and turn those strings into values
-you can compare, such as `"rgb(37, 99, 235)"` into `#2563eb` and `"0.5rem"` resolved to `"8px"` into
-a number. With Playwright, mount a component and read it:
+Two halves: `extractRawElements` runs in the page, and `normaliseElement` turns its strings into
+comparable values anywhere. With Playwright:
 
 ```ts
 import { extractRawElements, normaliseElement } from '@hipuku/style-probe'
@@ -36,7 +29,7 @@ button.styles.backgroundColor // '#2563eb'
 button.styles.padding // [8, 16, 8, 16]
 ```
 
-Leave out `root` to walk the whole page.
+`root` reads one element and its subtree. Leave it out to read the whole page.
 
 ## API
 

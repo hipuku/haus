@@ -269,6 +269,12 @@ bands now fails where it passed. Reported in [#136](https://github.com/hipuku/ha
 
 _Unreleased. No raw values left in the stylesheets, and Badge's tones remap properties._
 
+**Fixed** · **Opening a `Select`, or moving its highlight, no longer scrolls the page.** The
+highlighted option was brought into view with `scrollIntoView`, which scrolls every scrollable
+ancestor the option is outside, the page and any clipped container included, so a Select opened
+near the bottom of the window moved the page under the reader. Only the option list scrolls now, by
+the least distance, and a list too short to scroll moves nothing.
+
 **Fixed** · **A portalled `Popover` with `width="trigger"` and `align="stretch"` is no longer as
 wide as the viewport.** `width="trigger"` sets `min-inline-size: 100%` in the stylesheet, and a
 portalled panel is `position: fixed`, so that percentage resolved against the viewport. `stretch`
