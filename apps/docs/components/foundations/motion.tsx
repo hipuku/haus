@@ -31,8 +31,10 @@ const ROLES = [
  * by side, which is the comparison the page is for.
  *
  * A row plays as it scrolls into view, and again each time it comes back, so
- * nothing has finished before the reader reaches it. Each row has its own play
- * control above the role's name, and the header's, above Role, plays every row.
+ * nothing has finished before the reader reaches it, and has its own play
+ * control. A row is three lines that line up across its columns, by subgrid:
+ * the play control and the stages, then the role's name and each duration,
+ * then what the role is for and each easing.
  */
 const MODES = [
   { label: 'Default', value: 'subtle' },
@@ -47,20 +49,10 @@ const PlayGlyph = () => (
 )
 
 export function MotionRoles() {
-  const [all, setAll] = useState(0)
   return (
     <div className={styles.grid} role="table" aria-label="Motion roles in each mode">
       <div className={styles.head} role="row">
-        <span className={styles.roleHead} role="columnheader">
-          <IconButton
-            icon={<PlayGlyph />}
-            label="Play every role"
-            onClick={() => setAll(n => n + 1)}
-            size="sm"
-            variant="ghost"
-          />
-          Role
-        </span>
+        <span role="columnheader">Role</span>
         {MODES.map(mode => (
           <span key={mode.value} role="columnheader">
             {mode.label}
@@ -68,19 +60,15 @@ export function MotionRoles() {
         ))}
       </div>
       {ROLES.map(({ role, what }) => (
-        <MotionRow all={all} key={role} role={role} what={what} />
+        <MotionRow key={role} role={role} what={what} />
       ))}
     </div>
   )
 }
 
-function MotionRow({ role, what, all }: { role: string; what: string; all: number }) {
+function MotionRow({ role, what }: { role: string; what: string }) {
   const row = useRef<HTMLDivElement>(null)
   const [play, setPlay] = useState(0)
-
-  useEffect(() => {
-    if (all > 0) setPlay(n => n + 1)
-  }, [all])
 
   useEffect(() => {
     const element = row.current
@@ -178,8 +166,9 @@ function MotionCell({ role, mode, label, play }: { role: string; mode: string; l
           }
         />
       </div>
+      <span className={styles.duration}>{values.duration || 'not set'}</span>
       <span className={styles.values} title={values.easing}>
-        {values.duration || 'not set'} · {shortEasing(values.easing)}
+        {shortEasing(values.easing)}
       </span>
     </div>
   )

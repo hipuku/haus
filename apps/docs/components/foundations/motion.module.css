@@ -25,14 +25,26 @@
 
 .row {
   border-block-start: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  grid-template-rows: auto auto auto;
   padding-block: var(--haus-space-4);
+  row-gap: var(--haus-space-2);
 }
 
-.meta {
-  display: flex;
-  flex-direction: column;
-  gap: var(--haus-space-1);
+/* The role column and each mode cell span the row's three lines and share
+   them, so the play control lines up with the stages, the name with the
+   durations, and the description with the easings. */
+.meta,
+.cell {
+  display: grid;
+  grid-row: span 3;
+  grid-template-rows: subgrid;
   min-inline-size: 0;
+}
+
+.duration {
+  color: var(--haus-color-ink-secondary);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-mono-sm-size);
 }
 
 .name {
@@ -46,13 +58,6 @@
   color: var(--haus-color-ink-secondary);
   font-size: var(--haus-type-body-sm-size);
   line-height: var(--haus-type-body-sm-leading);
-}
-
-.cell {
-  display: flex;
-  flex-direction: column;
-  gap: var(--haus-space-2);
-  min-inline-size: 0;
 }
 
 /* The mode's name above its cell, shown only where the header row is not. */
@@ -100,16 +105,9 @@
   overflow-wrap: anywhere;
 }
 
-/* The play control sits above the role's name, at the start of the column. */
-.meta > :first-child,
-.roleHead > :first-child {
-  align-self: flex-start;
-}
-
-.roleHead {
-  display: flex;
-  flex-direction: column;
-  gap: var(--haus-space-1);
+/* The play control sits at the start of its line. */
+.meta > :first-child {
+  justify-self: start;
 }
 
 /* On a narrow screen a row stacks: the role, then its three cells side by
@@ -121,16 +119,20 @@
 
   .row {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: none;
     row-gap: var(--haus-space-3);
+  }
+
+  .meta,
+  .cell {
+    display: flex;
+    flex-direction: column;
+    gap: var(--haus-space-1);
+    grid-row: auto;
   }
 
   .meta {
     grid-column: 1 / -1;
-    grid-row: 1;
-  }
-
-  .row > .cell {
-    grid-row: 2;
   }
 
   .cellMode {
