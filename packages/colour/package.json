@@ -1,6 +1,6 @@
 {
   "name": "@hipuku/colour",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Perceptual colour utilities: CIEDE2000 distance, WCAG contrast, OKLCH lightness scales and hue families, perceptual clustering and nearest-named-colour, with 31,900 colour names on a /names subpath.",
   "license": "MIT",
   "engines": {

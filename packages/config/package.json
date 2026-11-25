@@ -1,6 +1,6 @@
 {
   "name": "@hipuku/config",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Shared TypeScript, Prettier and prose configuration for hipuku repositories, plus the em dash and blocked-name checks.",
   "license": "MIT",
   "engines": {

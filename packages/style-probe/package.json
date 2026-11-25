@@ -1,6 +1,6 @@
 {
   "name": "@hipuku/style-probe",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Read a rendered element's design decisions: in-browser computed-style extraction plus pure, testable normalisation into typed token values.",
   "license": "MIT",
   "engines": {
