@@ -2,7 +2,7 @@
 
 import type React from 'react'
 import { useEffect, useRef, useState } from 'react'
-import { Button } from 'haus-components'
+import { Tabs } from 'haus-components'
 import styles from './motion.module.css'
 
 /*
@@ -24,20 +24,41 @@ const ROLES = [
   { role: 'toast-enter', what: 'A toast arriving at the corner.' },
 ] as const
 
+/*
+ * The three motion modes as a segmented Tabs, the mode switch Tabs documents.
+ * The list of roles is the panel, and it carries the chosen mode as
+ * `data-haus-motion`, so each row reads and plays that mode's own values.
+ * Choosing a mode replays every role.
+ */
+const MODES = [
+  { label: 'Default', value: 'subtle' },
+  { label: 'Expressive', value: 'expressive' },
+  { label: 'Reduced', value: 'reduced' },
+]
+
 export function MotionRoles() {
+  const [mode, setMode] = useState('subtle')
   const [playing, setPlaying] = useState(0)
 
   return (
     <div className={styles.roles}>
-      <div className={styles.toolbar}>
-        <Button onClick={() => setPlaying(n => n + 1)} size="sm" variant="secondary">
-          Replay
-        </Button>
-        <span className={styles.note}>Values follow the motion mode: subtle by default, expressive, or reduced.</span>
-      </div>
-      {ROLES.map(({ role, what }) => (
-        <MotionRole key={role} play={playing} role={role} what={what} />
-      ))}
+      <Tabs
+        appearance="segmented"
+        aria-label="Motion mode"
+        items={MODES}
+        onValueChange={next => {
+          setMode(next)
+          setPlaying(n => n + 1)
+        }}
+        size="sm"
+        value={mode}
+      >
+        <div className={styles.modePanel} data-haus-motion={mode}>
+          {ROLES.map(({ role, what }) => (
+            <MotionRole key={role} mode={mode} play={playing} role={role} what={what} />
+          ))}
+        </div>
+      </Tabs>
     </div>
   )
 }
@@ -52,7 +73,7 @@ function shortEasing(value: string): string {
   return value.startsWith('linear(') && value.length > 40 ? 'linear(…), a spring' : value
 }
 
-function MotionRole({ role, what, play }: { role: string; what: string; play: number }) {
+function MotionRole({ role, what, play, mode }: { role: string; what: string; play: number; mode: string }) {
   const sample = useRef<HTMLDivElement>(null)
   const [values, setValues] = useState({ duration: '', easing: '' })
 
@@ -77,7 +98,7 @@ function MotionRole({ role, what, play }: { role: string; what: string; play: nu
       observer.disconnect()
       reduced.removeEventListener('change', read)
     }
-  }, [role])
+  }, [role, mode])
 
   useEffect(() => {
     const element = sample.current

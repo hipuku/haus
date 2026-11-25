@@ -4,20 +4,6 @@
   margin-block: var(--haus-space-6);
 }
 
-.toolbar {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--haus-space-4);
-  margin-block-end: var(--haus-space-5);
-}
-
-.note {
-  color: var(--haus-color-ink-tertiary);
-  font-size: var(--haus-type-body-sm-size);
-  line-height: var(--haus-type-body-sm-leading);
-}
-
 .row {
   align-items: center;
   border-block-start: var(--haus-border-width-default) solid var(--haus-color-border-subtle);
@@ -101,4 +87,11 @@
   .sample {
     animation-duration: var(--haus-motion-micro-duration);
   }
+}
+
+/* The panel the mode tabs control: the roles, in the chosen mode. */
+.modePanel {
+  display: flex;
+  flex-direction: column;
+  margin-block-start: var(--haus-space-4);
 }
