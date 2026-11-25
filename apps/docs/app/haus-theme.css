@@ -125,11 +125,14 @@
 /* Inline code is a quiet mark in a sentence, not a second colour in it. */
 .prose :where(:not(pre) > code) {
   background: var(--haus-color-surface-sunken);
+  /* primary-on-subtle, the role for primary text on a tinted ground: 9.6:1 on
+     the light ground, 11.85:1 on the dark one. Not primary-default, which is
+     the link colour and reaches only 4.74:1 here. */
+  color: var(--haus-color-primary-on-subtle);
   /* No edge in either mode: the ground carries it. Fumadocs drew a border in
      dark only, so the two modes did not match. */
   border: 0;
   border-radius: var(--haus-radius-marker);
-  color: var(--haus-color-ink-primary);
   font-size: 0.9375em;
   padding: 0.125em 0.375em;
 }
@@ -347,4 +350,11 @@ figure.shiki {
    already near black, and the difference could not be seen. */
 :root[data-theme='dark'] .prose :where(:not(pre) > code) {
   background: var(--haus-color-surface-subtle);
+}
+
+/* A glyph beside a Button's label. */
+.haus-button-glyph {
+  block-size: var(--haus-icon-sm);
+  flex-shrink: 0;
+  inline-size: var(--haus-icon-sm);
 }

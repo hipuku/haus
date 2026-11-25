@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Button } from 'haus-components'
+import { COPY, Glyph } from './page-actions'
 
 /*
  * The prompt for working on this component with an agent.
@@ -26,6 +27,7 @@ export function CopyPrompt({ prompt }: { prompt: string }) {
       }}
       variant="secondary"
     >
+      <Glyph d={COPY} />
       {copied ? 'Copied' : 'Copy prompt'}
     </Button>
   )
