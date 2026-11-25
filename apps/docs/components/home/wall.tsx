@@ -475,6 +475,7 @@ function Export() {
   const tick = useContext(Clock)
   const step = Math.floor((tick + 5) / 4) % OVER.length
   const [pointer, setPointer] = useState<{ x: number; y: number } | null>(null)
+  const last = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
     const root = stage.current
@@ -488,7 +489,14 @@ function Export() {
     if (!option) return
     root.querySelectorAll('[data-pseudo-hover]').forEach(node => node.removeAttribute('data-pseudo-hover'))
     option.setAttribute('data-pseudo-hover', '')
-    option.dispatchEvent(new MouseEvent('mouseover', { bubbles: true, relatedTarget: root }))
+    // What a real pointer sends moving from one row to the next: `mouseout` on
+    // the element it leaves, then `mouseover` on the one it enters. React
+    // builds onMouseEnter from the `mouseout`; a lone `mouseover` from inside
+    // the page is ignored, which left the highlight where it was.
+    const from = last.current ?? root
+    from.dispatchEvent(new MouseEvent('mouseout', { bubbles: true, relatedTarget: option }))
+    option.dispatchEvent(new MouseEvent('mouseover', { bubbles: true, relatedTarget: from }))
+    last.current = option
     const row = option.getBoundingClientRect()
     const box = root.getBoundingClientRect()
     setPointer({ x: row.left - box.left + row.width * 0.7, y: row.top - box.top + row.height * 0.55 })
