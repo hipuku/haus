@@ -45,9 +45,9 @@ _Unreleased._
 
 **Changed** · No change to the package's contents. The first release of this name through `publish.yml`, which confirms its trusted publisher and restores provenance, absent from the hand-published first version.
 
-## @hipuku/style-probe 1.0.1
+## @hipuku/style-probe 1.0.2
 
-_Unreleased._
+_Unreleased. 1.0.2 rather than 1.0.1, because the tag `style-probe-v1.0.1` belongs to `haus-style-probe`'s final release._
 
 **Changed** · No change to the package's contents. The first release of this name through `publish.yml`, which confirms its trusted publisher and restores provenance, absent from the hand-published first version.
 
