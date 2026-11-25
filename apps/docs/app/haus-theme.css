@@ -425,3 +425,12 @@ figure.shiki {
 .prose :where(tbody td, tbody th) {
   background-color: transparent;
 }
+
+/* A labelled specimen's code, a swatch's token name, is plain mono: no
+   chip, no edge. Fumadocs gives every prose code an edge and a ground, which
+   the inline-code rule above clears only for code in running text. */
+.prose :where(:not(pre) > code[class]) {
+  background: none;
+  border: 0;
+  padding: 0;
+}
