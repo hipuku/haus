@@ -25,3 +25,151 @@ Button also takes the attributes its element has, and forwards its ref to it. Th
 it adds.
 
 <ApiTable file="components/Button/Button.tsx" name="ButtonOwnProps" attributes="React.ButtonHTMLAttributes<HTMLButtonElement>" />
+
+## Anatomy
+
+| Part | Element | What it is for |
+| ---- | ------- | -------------- |
+| Root | `button`, or `a` with `href`, or the child `asChild` names | The control. `radius-control`, a `border-width-default` edge and the size's `control-height` floor |
+| Label | `span` | The children. Trimmed to its cap height, so the control centres the letters rather than the font's line box |
+| External glyph | `span`, `aria-hidden` | The arrow `external` appends, sized to `1em` so it follows the label |
+| Spinner slot | `span`, over the label | Holds a `text`-sized Spinner while `loading` |
+
+The label stays in flow while loading and the spinner sits over it, so the button keeps its width
+and neither it nor its neighbours move.
+
+## Variants
+
+`variant` is visual weight and nothing else, from most emphasis to least.
+
+| `variant` | What it is | Reads from |
+| --------- | ---------- | ---------- |
+| `primary` | A solid fill | The tone's solid fill and the ink that sits on it |
+| `secondary` | A tinted fill with an edge | The tone's tinted fill, border and ink |
+| `ghost` | No fill at rest, tint on hover | The tone's tinted fill and its faintest border |
+| `text` | A label with an underline | The tone's ink only. Takes narrower inline padding and thickens its underline on hover |
+
+`danger` left this union because it was a meaning rather than a weight, and it is `tone="error"`
+now, the word Badge and Toast already used. `external` left because it was behaviour plus a glyph
+rather than a look, and it now stacks on whatever weight the caller chose.
+
+## Tones
+
+All five tones of the [shared vocabulary](/docs/start/composition), and every one works at every weight.
+
+A tone remaps a set of private custom properties and decides nothing about weight; a variant reads
+the subset its weight calls for and decides nothing about meaning (decision 0012). No rule ever
+names both, which is what makes the whole cross product work from one short block per tone. The
+flat `.error` rule this replaced set background, border and colour outright, so it won on source
+order whatever the variant said, and `variant="ghost" tone="error"` rendered as a solid button.
+
+`info` and `error` take white ink on their `on-default` role. `success` and `warning` cannot,
+because those two fail with white ink, which is why the role system carries a separate `solid`
+step and why they reach for it instead. Hover moves to `emphasis` in every tone, so the ink only
+ever gains contrast.
+
+The private properties are namespaced `--haus-`, like the tokens, even though they are not tokens:
+the shipped stylesheet must read nothing a consumer could also have declared, or a similarly named
+custom property on an ancestor would reach in and repaint the button.
+
+## Sizes
+
+Three, each setting a label type role, its inset padding and a `control-height` floor. `md` is the
+default. `sm` is for dense pointer interfaces, and `lg` meets the target size WCAG 2.5.5 Target
+Size (Enhanced) asks for.
+
+## Loading and disabled
+
+`loading` does not set the native `disabled` attribute, deliberately. A button that becomes
+disabled while focused drops focus to the document, and a keyboard user who just pressed Save
+loses their place. Instead the button stops being a submit button for the duration, and the
+caller's `onClick` and `onClickCapture` are withheld: the stylesheet's pointer rule cannot stop
+Enter or Space on a focused button, and a capture handler would run before `onClick` anyway. It
+carries `aria-busy` and `aria-disabled`.
+
+A button with no `type` submits, so while a submit button loads a hidden disabled submit button
+stands in for it. Without that stand-in the form has no submit button at all, and a form with one
+field that blocks implicit submission submits when Enter is pressed in it, so the request the
+button is already running would be sent a second time. A form whose default button is disabled
+does nothing on Enter, which is what the stand-in buys.
+
+A disabled anchor is really disabled. `aria-disabled` alone announces a state without creating
+one: the link stayed focusable and still navigated. Dropping `href` is what disables it, so the
+element is then neither focusable nor activatable, and `role="link"` and `tabIndex` put back the
+two things `href` was carrying.
+
+Nothing is attached that the caller did not pass, in any of these branches, so the component still
+renders in a Server Component (decision 0024).
+
+## Keyboard and screen reader
+
+A `button` and an `a` with `href` are keyboard-operable as themselves: Enter and Space on the
+button, Enter on the link. Nothing is added.
+
+Focus is an `outline` rather than a box-shadow ring. An outline needs no gap colour, so it is
+correct on any surface, where the shadow ring painted the page's surface colour into its gap and
+was wrong on a card. It is transparent and tight at rest, and gains colour and steps out to
+`focus-outline-offset` on `:focus-visible`, which is also what draws it in. That is declared
+inside `forced-colors: none`, because a transparent outline is painted in forced colours and would
+otherwise show on every button. Under `forced-colors: active` it takes `focus-outline-forced`,
+which is the system's own `Highlight` colour and so follows the user's theme rather than haus's.
+At `border-width-thick` against `border-focus` it meets the 3:1 WCAG 2.2 asks of a focus
+indicator.
+
+While loading, the spinner inside the button is passed `announcedBy`, so the button does not
+carry two things describing the same wait: `aria-busy` on the button marks its content as being
+updated, and the spinner's own live region is dropped rather than sitting beside it.
+
+`aria-busy` exposes a state. It is not a live region and it does not make a reader say anything,
+so this is one announcement at most rather than one guaranteed. A wait that has to be announced
+needs a live region the consumer owns, holding text, present before the wait begins. IconButton
+is the same.
+
+`external` with `href` is the honest signal that the destination leaves the app, and a `_blank`
+target gets `rel="noopener noreferrer"`.
+
+## Motion
+
+Colour, border and the focus outline run on the highlight role, which never bounces. The press
+itself runs on the press role, scaling the button by `motion-press-scale`, and the release runs on
+the layout role, which is a spring that settles in expressive and an ease in subtle. In reduced,
+highlight collapses to zero and the press scale is one, so a press is a colour change with no
+movement.
+
+The loading swap is a cross-fade on the feedback role: the label fades out and the spinner slot
+fades in two stagger steps later, which is nothing in subtle and a visible sequence in expressive.
+
+A press is scoped to `:not(:disabled, [aria-disabled='true'])`, so neither a disabled button nor a
+loading one moves under the pointer.
+
+## Decisions
+
+- **`variant`, `tone` and `external` are three props** (decision 0005). One prop meant visual
+  weight, meaning and behaviour at once, and said `danger` where Badge and Toast said `error`.
+- **A tone rule declares custom properties only** (decision 0012). It is what makes twenty
+  combinations work without a cross product of rules, and what the flat tone rules it replaced got
+  wrong.
+- **All five tones, not two.** The narrowing this replaced was written on the premise that the
+  other three had no design. The role system already carried the full set for info, success and
+  warning, and Badge already spent every one of them: the design was specified, and only Button
+  had not adopted it.
+- **`asChild`, not a polymorphic `as`** (decision 0022). A router's link is a component rather
+  than an element, and `href` cannot reach it. `haus#57` was filed when core's five navigation
+  buttons could not move onto Button without losing client-side navigation and prefetch. Cloning
+  one child takes components as well as elements, and needs none of the conditional types Card's
+  comment on `as` argues against.
+- **`loading` is absent from the `asChild` half**, so `<Button asChild loading>` is a compile
+  error rather than a silent nothing. The spinner would be a second child, which `asChild` has
+  nowhere to put, and the state it announces is a form submitting: a link has no such state, and
+  `aria-busy` on an anchor describes a wait that never ends. `href` and `target` are absent for
+  the same reason, because the child carries its own destination.
+- **The union exports its halves** (decision 0023, `haus#66`). A wrapper written against the union
+  does not compile, because the compiler cannot rule out the `asChild` branch, whose `children` is
+  a single element. core wrote `Extract<ButtonProps, { asChild?: false }>` on both of its wrappers
+  to get out, which is the right meaning and a type this package should have shipped.
+- **The spinner is the Spinner component** (`haus#55`). The one inside this button was the fourth
+  independent spinner in the portfolio and the one inside the design system itself.
+- **A press darkens the fill rather than filtering the button.** The pressed colour is the hover
+  fill mixed toward the page's ink, so a press reads as darker in light and lighter in dark, and
+  the label keeps its own colour. The `brightness()` filter this replaced dimmed the label along
+  with the fill.

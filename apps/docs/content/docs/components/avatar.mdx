@@ -25,3 +25,66 @@ Avatar also takes the attributes its element has, and forwards its ref to it. Th
 it adds.
 
 <ApiTable file="components/Avatar/Avatar.tsx" name="AvatarProps" element="HTMLDivElement" />
+
+## Anatomy
+
+| Part | Element | What it is for |
+| ---- | ------- | -------------- |
+| Wrapper | `div` | Carries the size and positions the status dot |
+| Circle | `div`, `role="img"` | The clipped circle, with the derived background and ink. Holds the accessible name |
+| Initials | `span`, `aria-hidden` | One or two letters taken from `name`. Hidden, because the circle's label already says the name |
+| Fallback | `svg`, `aria-hidden` | A person glyph, drawn when there is no `name` |
+| Status | `span`, `aria-hidden` | The state dot, on the wrapper rather than inside the circle so it is never clipped |
+
+`overflow: hidden` sits on the circle alone for that reason. The initials take `weight-strong` and
+a line height of one: a single line centred in a circle has its leading set by the circle, and the
+label roles' own leading put the letters a pixel high.
+
+## Sizes
+
+The `sm`, `md` and `lg` of the [shared size scale](/docs/start/composition), plus `xs` and `xl`. Ruling A5 allows
+that extension where it is documented, and this is the case for it: an avatar is a picture rather than a control, so the
+smallest step has a use in a dense table that a control at the same size does not. Each step sets
+both the box, off the space scale, and the type step the initials are drawn at.
+
+## Colour
+
+`name` picks the background and ink, by hashing the string across five `subtle` and `on-subtle`
+pairs: `primary`, `info`, `success`, `warning` and `error`. The pair is read as a role, so the
+contrast of the initials against the circle is the role system's rather than this component's.
+
+Nothing is stored, so the same person is the same colour in every product that renders them, and
+nobody has to persist a choice. The colour is not an identity: five slots means two names collide
+often, and the initials and the label are what tell people apart.
+
+With no `name`, the first pair is used and the fallback glyph is drawn.
+
+## Keyboard and screen reader
+
+Not interactive, and takes no focus.
+
+The circle is `role="img"` with an `aria-label`, so it is announced as one thing rather than as
+loose letters. `alt` sets that label outright. With a `name` and no `alt`, the label is the name,
+and `status` is appended to it as a word, which is what keeps the dot from being colour-only
+(WCAG 1.4.1 Use of Color). The initials, the fallback glyph and the dot are all `aria-hidden`, so
+nothing is read twice.
+
+An empty or whitespace-only `name` renders a blank circle rather than throwing, which it used to:
+indexing the first character of the first part of `''` returned `undefined`, so an avatar for a
+user whose name had not loaded yet took the page down.
+
+## Motion
+
+None. Avatar does not animate.
+
+## Decisions
+
+- **The colour is derived, not stored.** A hash over the name needs no column, no migration and no
+  agreement between products, and it gives one person one colour everywhere.
+- **The derived pair is a role pair, not two literals.** Picking a tint and an ink separately is
+  how a palette acquires a combination nobody checked; `subtle` with its own `on-subtle` is
+  already contrast-checked in both themes.
+- **The status dot lives on the wrapper.** Inside the circle it is clipped by the `overflow`
+  that makes the circle a circle, and a dot with a bite taken out of it reads as a rendering bug.
+- **`xs` and `xl` stay outside the shared scale** rather than widening it. The extension is
+  Avatar's, with a reason, and Button does not inherit it.

@@ -29,3 +29,130 @@ Popover also takes the attributes its element has, and forwards its ref to it. T
 it adds.
 
 <ApiTable file="components/Popover/Popover.tsx" name="PopoverProps" element="HTMLDivElement" />
+
+## Anatomy
+
+One element. The panel sits on `surface-overlay` with a `border-default` edge, `elevation-floating`
+and `z-dropdown`, and takes `radius-control` rather than the overlay radius: a popover is anchored
+to a control and reads as an extension of it, as Select's panel does, where a Modal floats free of
+any control and keeps the overlay radius.
+
+The panel is `border-box`, so one sized to its trigger is the trigger's width. On `content-box` the
+padding and border were added on top, and Select's panel overhung its field by that much on one
+side.
+
+The caller owns the positioning context. The wrapper holding the trigger and the panel needs
+`position: relative`, because there is no way for a child to establish that for its own parent.
+
+## Placement, alignment and width
+
+`placement` puts the panel below or above the trigger. `align` lines it up with the trigger's
+`start` or `end` edge, or stretches it to the trigger's width. Both are logical, so the panel pins
+to the side the text starts on and flips with the writing direction.
+
+`width` is `auto` for a panel that takes its content's width, which is what a small action menu
+wants, `trigger` for a panel at least as wide as the anchor, which is what a select-like menu
+wants, or one of four fixed steps for a panel holding a form. The fixed steps read the
+`popover-width` roles, so a brand can restate them.
+
+`trigger` is a floor rather than a match: the panel grows to its content from there, up to
+`popover-width-xl`, so a long option is readable instead of wrapped.
+
+**Without `portal`, the floor is not the trigger either.** It is `min-inline-size: 100%` on an
+absolutely positioned panel, and a percentage minimum resolves against the containing block, which
+is the caller's nearest positioned ancestor. Where that wrapper is wider than the trigger, so is
+the panel, however short its content. The two coincide when the wrapper is the trigger, which is
+the ordinary case and not a guarantee the component makes.
+
+`portal` is what makes the trigger the reference, by measuring it: the minimum becomes the
+trigger's own rect rather than a percentage of whatever the panel is positioned against. With
+`align="stretch"` it sets the inline size from that measurement instead. Outside `portal`,
+`stretch` sets the two insets, so the panel spans the containing block.
+
+**No combination holds a panel to its trigger's width**, and the rule that widens the panel depends
+on the mode. `width="auto"` grows by `.panel`'s `min-inline-size: max-content`. `width="trigger"`
+declares its own minimum, which overrides that one, and grows by its `inline-size: max-content`
+under `popover-width-xl`. Either way content wider than the trigger widens the panel, and that is
+the intended reading: an option is legible before it is aligned. A caller who needs a hard width
+should set one, and read the next paragraph first.
+
+Do not reach for a fixed step as the cap. It does not track the trigger at all, so a step wider
+than the trigger gives a panel wider than the trigger, and a step narrower than the content is
+still widened by the same minimum.
+
+`portal` renders the panel into `document.body` and positions it from the trigger's rect instead of
+against the caller's positioned ancestor. It is off by default and stays the caller's decision:
+the absolute path needs no measuring and is right whenever nothing between the trigger and the page
+clips, and it is wrong the moment something does, such as a Modal body that scrolls, where
+`placement` cannot help because flipping to `top` clips at the other edge instead (`haus#68`). The
+consumer knows whether it is inside a scrolling container and the panel cannot, which is the same
+division `placement` already makes.
+
+While portalled, the trigger's rect is measured and recomputed on scroll and resize, because both
+move the trigger under a fixed panel, and the trigger's own direction is read with it, because
+`start` and `end` are the trigger's edges and a fixed panel is placed in viewport coordinates.
+
+## Keyboard and screen reader
+
+Escape closes the panel and returns focus to the trigger. The return is the half every hand-rolled
+popover forgets: Escape that only sets `open` to false leaves focus on an element that has just
+left the document, and the browser's fallback is the body, so the next Tab starts at the top of the
+page (WCAG 2.4.3). Focus is only restored when it was actually inside the panel, because a popover
+dismissed by clicking elsewhere should not steal focus back from wherever the pointer deliberately
+took the user.
+
+Escape is handled in the capture phase and stops propagating, so a popover inside a dialog closes
+the popover and not the dialog behind it. Nesting is the normal case rather than the exotic one.
+
+Tabbing out of the last control in the panel closes it. This is deliberately not a focus trap, which
+is what Modal has: a modal's page is inert and Tab has nowhere else to go, where a popover sits over
+live content, and trapping focus in a small menu the user can leave by looking away is worse than
+closing.
+
+Outside dismissal listens on `pointerdown` rather than `click`. A click fires after the pointer is
+released, so a drag that starts inside a menu and ends outside it closed the menu on release;
+`pointerdown` also beats focus, which is what stops a second trigger's panel opening and closing in
+one gesture. The trigger is not treated as outside, or its own click would toggle a panel this
+listener had already closed, and the panel would open and shut on a single click.
+
+`triggerRef` is required, and that is the point of the component. vault's version leaves focus to
+the caller and none of its six call sites does it.
+
+`role` is a closed union rather than a string. A popover with the wrong role is worse than one with
+none: `menu` promises arrow-key navigation between `menuitem` children, and a panel that claims it
+and holds a form is lying to every screen reader that believes it.
+
+A name is required, as `aria-label` or as `aria-labelledby`, and the types take exactly one. A
+panel a screen reader announces as nothing may as well have no role at all.
+
+## Motion
+
+The panel enters on the popover-enter role and leaves on popover-exit: a fade, a few pixels of
+travel out of the trigger, and a slight scale. The direction of that travel is a custom property,
+so a panel below the trigger comes down and one above comes up.
+
+The tokens carry the mode. Subtle and expressive differ in duration, offset and scale, and reduced
+has no travel and no scale, so it is a short fade.
+
+The panel stays in the document while the exit runs, so it leaves on the exit role rather than
+vanishing in a frame. While closing it is `inert`, so nothing in it takes a click or focus, and it
+unmounts when the animation ends, or at once when there is no animation to wait for, which is also
+what happens in a test environment with no CSS. Reopening during the exit goes straight back to the
+enter animation.
+
+## Decisions
+
+- **`triggerRef` is required.** Focus returning to the trigger is the behaviour the component
+  exists to guarantee, and it cannot be guaranteed from a prop a caller may omit.
+- **Not a focus trap.** A popover sits over live content, so tabbing off its end closes it.
+- **No collision detection.** Nothing flips and nothing shifts: the panel goes exactly where
+  `placement` and `align` say. Detection needs a positioning engine measuring rects on scroll and
+  resize, and this package declares `@hipuku/tokens` and the two React peers and nothing else, so
+  adding one would make it a dependency of every consumer of every component. `placement` is the
+  caller's answer to the same problem, one level up, where the layout is known.
+- **`portal` is not that engine either.** It is the same placement in viewport coordinates rather
+  than the ancestor's, and it is off by default.
+- **`role` is typed, not a string.** A role is a promise about behaviour, and the wrong one is a
+  promise the panel does not keep.
+- **Outside dismissal is on `pointerdown`.** A click-based listener closes a menu on the release of
+  a drag that began inside it.

@@ -49,10 +49,12 @@ interface SelectBaseProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'on
   className?: string
 }
 
-/* A combobox's name cannot come from its own contents the way a button's can,
-   and a wrapping <label> does not reach it either, because a button is not a
-   labelable element. So one of these is required, exactly as Modal and Tabs
-   require one. */
+/* The trigger's contents are the selected option, so a name taken from them
+   would be the current value rather than what the control is for, and it would
+   change every time the value did. A button is a labelable element and a
+   <label> does reach it, which is why `label` renders one with `htmlFor`; what
+   it cannot do is supply a name that stays still. So one of these is required,
+   exactly as Modal and Tabs require one. */
 type SelectLabel = { label: string; 'aria-labelledby'?: never } | { label?: never; 'aria-labelledby': string }
 
 export type SelectProps = SelectBaseProps & SelectLabel

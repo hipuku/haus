@@ -29,3 +29,104 @@ IconButton also takes the attributes its element has, and forwards its ref to it
 it adds.
 
 <ApiTable file="components/IconButton/IconButton.tsx" name="IconButtonOwnProps" attributes="React.ButtonHTMLAttributes<HTMLButtonElement>" />
+
+## Anatomy
+
+| Part | Element | What it is for |
+| ---- | ------- | -------------- |
+| Root | `button`, or the child `asChild` names | A square control at the size's `control-height`, with `radius-control`. Carries `aria-label` |
+| Glyph | `span`, `aria-hidden` | Holds `icon`, sized to `1em` so the button decides the glyph rather than the caller |
+| Spinner | `Spinner`, `text` size | Replaces the glyph while `loading` |
+
+The box is `border-box`, so the square is exactly the control height its size names. On
+`content-box` the edge drew it larger than the token said.
+
+The glyph is sized by the button, so a caller passing a smaller or a larger icon gets the same
+square either way.
+
+## Variants
+
+The same three weights as Button, minus `text`: `text` is an underlined word, and there is no word
+here. `secondary` is the default, and `ghost` is the weight both products reach for most, a bare
+glyph that grows a surface on hover.
+
+## Tones
+
+All five tones of the [shared vocabulary](/docs/start/composition), composing with every weight on the same terms as
+Button (decision 0012): a tone remaps a set of private properties and decides no weight, a variant
+reads them and decides no meaning. The properties carry their own `--haus-` namespace for the same
+reason Button's do.
+
+## Sizes
+
+Three, and each one is measured rather than chosen.
+
+| `size` | Box | Glyph | Why this step |
+| ------ | --- | ----- | ------------- |
+| `sm` | `control-height-xs` | `icon-xs` | The smallest step that still meets the target size WCAG 2.5.8 asks for at AA |
+| `md` | `control-height-sm` | `icon-sm` | What both products already draw their default icon button at, to the pixel, and already a rung on haus's scale |
+| `lg` | `control-height-md` | `icon-lg` | The same height as a default Button, for an icon-only action standing beside a labelled one |
+
+The products do not agree below `md`: core's smaller step and vault's two smaller steps are three
+different answers, and two of the three sit under the AA target size floor, so neither was ported
+up into the system. `sm` takes the step that is also a rule.
+
+`lg` exists because an icon-only action beside a labelled button, such as a settings control next
+to a primary one, has no other way to stand level with it. `md` tops out below Button's `md`, so
+the pair read as mismatched.
+
+The glyph is paired with the control's own type role rather than with its box. The scale pairs
+`icon-sm` with the label and `body-sm` roles, and this control's text role is `label`, so that is
+the honest pair; both products agree by measurement, drawing glyphs smaller than the next step up
+inside the same box. Each size keeps the same clearance on every side.
+
+## Keyboard and screen reader
+
+An ordinary `button`, operated with Enter and Space. Focus is the stepped-out outline Button uses,
+on the same tokens and with the same `forced-colors` handling.
+
+`label` is the whole accessibility contract and it is required. The accessible name cannot come
+from the content the way Button's does: an SVG contributes nothing, so without it the control
+announces as a button and nothing else. Both products got this right at each site, and neither had
+anything enforcing it. Under `asChild` the label still lands as `aria-label`, because the child
+supplies the element and not the name, and an anchor wrapping an SVG has no accessible name
+without it.
+
+The glyph is `aria-hidden` in every branch, so a caller's icon cannot contribute a second name.
+
+`loading` does not set the native `disabled` attribute, for the reason Button gives: a control that
+becomes disabled while focused drops focus to the document. It carries `aria-busy` and
+`aria-disabled`, cannot submit, and withholds the caller's click handlers. The spinner that
+replaces the glyph is passed `announcedBy`, so the control does not carry two things describing
+the same wait. `aria-busy` marks the content as updating and is not a live region, so nothing here
+is guaranteed to be spoken; a wait that must be announced needs a region the consumer owns, as
+Button's page sets out.
+
+IconButton defaults to `type="button"`, so only an explicit `type="submit"` needs the hidden
+submit stand-in while it loads.
+
+## Motion
+
+Button's motion, on the same roles: colour, border and the focus outline on highlight, the press
+scale on the press role, the release on layout. A press is scoped away from disabled and loading
+states, so neither moves under the pointer.
+
+## Decisions
+
+- **Promoted on evidence** (decision 0013, `haus#58`), and the evidence had to be found by
+  behaviour rather than by name. An earlier sweep recorded core as having none, because core's is
+  a CSS class rather than a component file, so a filename search could not see it. Measured
+  properly, both products had grown a size axis and a tone axis, which is the pair Button already
+  carries.
+- **`icon` is required and is the only child.** An icon button with a label is a Button, and
+  passing text here would produce a square control with text overflowing it. `children` is omitted
+  from the element attributes, so that is stated in the type rather than only in prose.
+- **`label` is required**, because the name cannot come from the content.
+- **`asChild` is here, and the glyph replaces the child's children** rather than being appended to
+  them (`haus#70`). Button appends, because Button's children are the caller's; here they are not,
+  and `icon` is the content. The case was a square icon-only control inside a framework `Link`,
+  which was the last element keeping a hand-written button class alive in core: `Button asChild`
+  plus a class to square it is a consumer overriding haus's geometry, which is what the migration
+  existed to delete.
+- **`loading` is absent from the `asChild` half**, exactly as on Button. The spinner replaces the
+  glyph, and a link that is permanently busy announces a wait that never ends.

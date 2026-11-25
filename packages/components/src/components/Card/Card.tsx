@@ -77,7 +77,9 @@ export const Card = React.forwardRef<HTMLElement, CardProps>(function Card(props
     return React.cloneElement(
       child,
       {
-        // Card's classes first so the child's own className wins a collision:
+        // Card's classes first, then the child's. The order decides nothing on
+        // its own: the cascade does, and Card's rules being in the
+        // `haus.components` layer is what lets an unlayered caller rule win.
         // the caller is closer to the problem than the system is.
         className: [cls, childProps.className].filter(Boolean).join(' '),
         ref: mergeRefs(ref as React.Ref<unknown>, childRefOf(child)),

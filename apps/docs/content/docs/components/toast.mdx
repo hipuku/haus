@@ -27,3 +27,105 @@ Toast also takes the attributes its element has, and forwards its ref to it. The
 it adds.
 
 <ApiTable file="components/Toast/Toast.tsx" name="ToastProps" element="HTMLDivElement" />
+
+## Anatomy
+
+| Part | Element | What it is for |
+| ---- | ------- | -------------- |
+| Root | `div`, `role="status"` or `alert` | The surface: the tone's tint, a `border-width-default` edge, `radius-surface` and `elevation-floating`, capped at `toast-width` |
+| Icon | The tone's glyph | In `toast-icon`, centred on the title's first line |
+| Title | `span` | `title`, the visible heading |
+| Action | `div` | `action`, on the title's row |
+| Description | `span` | The optional second line |
+| Close | `IconButton` | Rendered only when `onClose` is given |
+
+One border and no accent stripe: a wider leading edge bent with the corner radius and read as an
+artefact. The tint, the border and the tone's glyph, whose shape differs per tone, are what carry
+the tone.
+
+The glyph is centred on the title's first line rather than in the box, as Callout's icon and
+Modal's close button are, so it stays level with the title whether the notice runs to one line or
+three. It is squared with `aspect-ratio` from a single token read, because two reads would raise
+the count of primitives the components consume, which a test holds and three documents quote.
+
+`title` is a named prop rather than spread onto the element: it is the visible heading, not the
+hover tooltip the native `title` attribute would give.
+
+## Tones and appearances
+
+Five tones across two appearances, the same [vocabulary](/docs/start/composition) Badge carries.
+
+`subtle` is the default, because it is Badge's default and because four of the five tones already
+behaved that way. Toast had both appearances and no word for them: `neutral` painted a dark solid
+surface while the other four painted tinted ones, so which one a consumer got was decided by the
+tone they happened to pick. That dark surface is `appearance="solid"` now.
+
+A tone remaps a set of private custom properties and declares nothing else (decision 0012), so an
+appearance reads them without either prop deciding the other's job. `success` and `warning` take
+their `solid` role rather than `default` when filled, because their `default` step fails with white
+ink, which is the same reason Button reaches for it.
+
+The copy stays `ink-primary` in the subtle appearance rather than taking the tone's `on-subtle`
+ink: in a notice the body copy is copy, and that is also what keeps the text contrast identical
+across all five tones.
+
+`ToastVariant` remains as a deprecated alias for `ToastTone`, renamed in 1.0.
+
+## Keyboard and screen reader
+
+Not focusable itself. The action and the close button are ordinary controls and keep their own
+places in the tab order.
+
+The component carries its own live region, so a notice dropped into a consumer's container is not
+silent by construction. An `error` takes `role="alert"` with `aria-live="assertive"`, because it is
+something the user has to act on and a polite region waits behind whatever is being read. The other
+four tones are notices and stay `role="status"` with `aria-live="polite"`. `aria-atomic` is set, so
+the title and the description are announced as one notice rather than as fragments.
+
+**A region that arrives already holding its text is not reliably announced**, which is the limit of
+what the component can do for itself: W3C's status-message technique wants the container present
+before the message. A consumer who wants fewer notices missed keeps a region mounted and renders
+Toasts into it, which is the same container decision ruling B4 leaves with the consumer for
+position, queue and dismissal. The same applies to a Callout or an EmptyState inserted after the
+page has loaded.
+
+**A mounted region lowers the risk rather than removing it.** An `error` is assertive, and an
+assertive change lets assistive technology drop whatever is queued, so a polite notice waiting
+behind one can be lost without ever being spoken. Nothing a live region can do prevents that.
+Where a notice must survive being missed it needs somewhere durable to be read back, such as a list
+the user can open; a live region is an announcement and not a record.
+
+The close button is haus's own IconButton, as Modal's is, so it is a real target with the system's
+focus and press behaviour, and it is labelled "Dismiss".
+
+Being announced at all is the half of accessibility this component keeps. Where the notice appears,
+how long it stays, and whether focus ever moves to it are the consumer's, because they depend on a
+policy this component does not own.
+
+## Motion
+
+Toast owns its entrance. It rises from below and fades in on the toast-enter role: a few pixels in
+subtle, further on a spring in expressive, and a short fade with no travel in reduced.
+
+Set `data-state="closed"` before removing a toast to run its exit on the toast-exit role.
+
+A container that moves toasts itself turns its own movement off rather than composing the two, so
+one notice is never animated twice.
+
+## Decisions
+
+- **No provider, no queue, no positioning, no auto-dismiss timer and no z-index, and there will not
+  be** (ruling B4, decision 0008). A toast system is an application concern: it owns global state,
+  a portal, and a policy about how many notices stack and for how long, and a design system that
+  ships one is shipping an opinion most consumers end up fighting.
+- **It still owns being announced.** The boundary is about placement and policy, not about whether
+  a notice reaches a screen reader, so the live region is the component's.
+- **An error is assertive and the rest are polite.** The role follows the tone rather than being a
+  prop, because the tone already says whether the notice can wait.
+- **`appearance` was named rather than inferred** (ruling A5). The two designs existed and the tone
+  decided which one a consumer got.
+- **`variant` was renamed to `tone` in 1.0** (decision 0005), with the old type kept as a
+  deprecated alias.
+- **One border, no accent stripe.** A wider leading edge bends with the corner radius.
+- **The glyphs are shared with Callout**, drawn rather than named as icon-font classes, so a
+  consumer without an icon font gets the mark rather than an empty element.
