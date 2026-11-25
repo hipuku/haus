@@ -227,3 +227,10 @@
   outline: var(--haus-border-width-thick) solid var(--haus-color-border-focus);
   outline-offset: var(--haus-border-width-thick);
 }
+
+/* The header has no rule along its bottom edge. Its blurred ground already
+   separates it from the page scrolling under it, and the rule was the second
+   line under the section links. */
+#nd-nav > nav {
+  border-block-end-color: transparent;
+}

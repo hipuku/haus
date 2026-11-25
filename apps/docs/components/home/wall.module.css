@@ -20,8 +20,14 @@
   mask-image: linear-gradient(
     to bottom,
     transparent,
-    black var(--haus-space-16),
-    black calc(100% - var(--haus-space-16)),
+    rgb(0 0 0 / 0.1) 4%,
+    rgb(0 0 0 / 0.35) 9%,
+    rgb(0 0 0 / 0.7) 14%,
+    black 20%,
+    black 80%,
+    rgb(0 0 0 / 0.7) 86%,
+    rgb(0 0 0 / 0.35) 91%,
+    rgb(0 0 0 / 0.1) 96%,
     transparent
   );
   overflow: hidden;
@@ -217,4 +223,16 @@
   display: flex;
   justify-content: space-between;
   inline-size: 100%;
+}
+
+/* A page of the team list arriving: the fade role, so it is the system's own
+   entrance and is instant with reduced motion. */
+.page {
+  animation: page-in var(--haus-motion-fade-in) both;
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+  }
 }

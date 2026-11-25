@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import Link from 'next/link'
 import {
   Avatar,
@@ -166,21 +166,32 @@ function Notifications() {
   )
 }
 
-/* Presence changes, one person at a time. */
+/*
+ * A team list that pages: the three people fade out and the next three come
+ * in, on the fade role, so the list is never empty for more than the length
+ * of one fade.
+ */
+const TEAMS = [
+  [
+    { name: 'Ada Lovelace', role: 'Owner', status: 'online' as const, tone: 'info' as const },
+    { name: 'Grace Hopper', role: 'Admin', status: 'away' as const, tone: 'success' as const },
+    { name: 'Alan Turing', role: 'Member', status: 'busy' as const, tone: 'neutral' as const },
+  ],
+  [
+    { name: 'Katherine Johnson', role: 'Admin', status: 'online' as const, tone: 'success' as const },
+    { name: 'Edsger Dijkstra', role: 'Member', status: 'offline' as const, tone: 'neutral' as const },
+    { name: 'Margaret Hamilton', role: 'Owner', status: 'online' as const, tone: 'info' as const },
+  ],
+]
 function Team() {
-  const beat = useBeat(3800, 2600)
-  const statuses = ['online', 'away', 'busy', 'offline'] as const
-  const people = [
-    { name: 'Ada Lovelace', role: 'Owner', tone: 'info' as const },
-    { name: 'Grace Hopper', role: 'Admin', tone: 'success' as const },
-    { name: 'Alan Turing', role: 'Member', tone: 'neutral' as const },
-  ]
+  const beat = useBeat(4600, 2600)
+  const team = TEAMS[beat % TEAMS.length]
   return (
     <Tile uses={['Avatar', 'Badge']}>
-      <ul className={styles.list}>
-        {people.map((person, i) => (
+      <ul className={`${styles.list} ${styles.page}`} key={beat % TEAMS.length}>
+        {team.map(person => (
           <li className={styles.person} key={person.name}>
-            <Avatar name={person.name} size="sm" status={statuses[(i + beat) % statuses.length]} />
+            <Avatar name={person.name} size="sm" status={person.status} />
             <span className={styles.personName}>{person.name}</span>
             <Badge tone={person.tone}>{person.role}</Badge>
           </li>
@@ -317,18 +328,45 @@ function Toolbar() {
   )
 }
 
-/* The chosen format changes. */
+/*
+ * An export form whose first field is used as a person would use it: the
+ * Select opens, the highlight steps to the next option, the option is chosen
+ * and the panel closes. The screen is inert, so the loop drives the real
+ * Select through its own handlers, a click on the trigger, a pointer entering
+ * a row, a click on it, rather than a prop that opens it, which it does not
+ * have. The fields below are what the open panel lies over.
+ */
+const FORMATS = [
+  { label: 'CSS custom properties', value: 'css' },
+  { label: 'DTCG JSON', value: 'dtcg' },
+  { label: 'TypeScript', value: 'ts' },
+]
 function Export() {
-  const beat = useBeat(4200, 3000)
-  const options = [
-    { label: 'CSS custom properties', value: 'css' },
-    { label: 'DTCG JSON', value: 'dtcg' },
-    { label: 'TypeScript', value: 'ts' },
-  ]
+  const [format, setFormat] = useState('css')
+  const ref = useRef<HTMLDivElement>(null)
+  // The step reads the current choice without making it a reason to rerun.
+  const current = useRef(format)
+  current.current = format
+  const beat = useBeat(1400, 3000)
+
+  useEffect(() => {
+    const root = ref.current
+    if (!root || beat === 0) return
+    const trigger = root.querySelector<HTMLElement>('[role="combobox"]')
+    const step = beat % 4
+    if (step === 1) trigger?.click()
+    const options = [...root.querySelectorAll<HTMLElement>('[role="option"]')]
+    const next = options[(FORMATS.findIndex(f => f.value === current.current) + 1) % FORMATS.length]
+    if (step === 2) next?.dispatchEvent(new MouseEvent('mouseover', { bubbles: true, relatedTarget: root }))
+    if (step === 3) next?.click()
+  }, [beat])
+
   return (
-    <Tile uses={['Select', 'Button']}>
-      <div className={styles.stack}>
-        <Select label="Export as" onChange={noop} options={options} value={options[beat % options.length].value} />
+    <Tile uses={['Select', 'Checkbox', 'Button']}>
+      <div className={styles.stack} ref={ref}>
+        <Select label="Export as" onChange={setFormat} options={FORMATS} value={format} />
+        <Select label="Colour space" onChange={noop} options={[{ label: 'OKLCH', value: 'oklch' }]} value="oklch" />
+        <Checkbox checked label="Include the dark mode" onChange={noop} />
         <Button variant="primary">Export</Button>
       </div>
     </Tile>
