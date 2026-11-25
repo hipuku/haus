@@ -1,6 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
+import { usePathname } from 'next/navigation'
 import { useTheme } from 'next-themes'
 import { useSearchContext } from 'fumadocs-ui/contexts/search'
 import { useSidebar } from 'fumadocs-ui/layouts/docs/slots/sidebar'
@@ -183,5 +185,54 @@ export function SidebarFooter({ storybook, github }: { storybook: string; github
         </a>
       </Button>
     </div>
+  )
+}
+
+/*
+ * The docs sidebar's current-page marker, as one element that travels.
+ *
+ * Each link used to colour its own leading border, so changing page switched
+ * one rule off and another on, and nothing could move. This is a single rule
+ * placed against the current link, which moves to the next one on the
+ * indicator role, the role Tabs' marker uses, in the expressive mode scoped to
+ * the marker alone. Its first placement does not animate, so it does not fly
+ * in from the top of the list.
+ */
+export function SidebarIndicator() {
+  const pathname = usePathname()
+  const [place, setPlace] = useState<{ host: HTMLElement; top: number; left: number; height: number } | null>(null)
+  const [settled, setSettled] = useState(false)
+
+  useEffect(() => {
+    const measure = () => {
+      const link = document.querySelector<HTMLElement>('#nd-sidebar a[data-active="true"]')
+      const host = link?.offsetParent
+      if (!link || !(host instanceof HTMLElement)) return setPlace(null)
+      setPlace({ host, top: link.offsetTop, left: link.offsetLeft, height: link.offsetHeight })
+    }
+    const frame = requestAnimationFrame(measure)
+    window.addEventListener('resize', measure)
+    return () => {
+      cancelAnimationFrame(frame)
+      window.removeEventListener('resize', measure)
+    }
+  }, [pathname])
+
+  useEffect(() => {
+    if (!place || settled) return
+    const frame = requestAnimationFrame(() => setSettled(true))
+    return () => cancelAnimationFrame(frame)
+  }, [place, settled])
+
+  if (!place) return null
+  return createPortal(
+    <span
+      aria-hidden="true"
+      className="haus-sidebar-indicator"
+      data-haus-motion="expressive"
+      data-settled={settled ? '' : undefined}
+      style={{ blockSize: place.height, insetInlineStart: place.left, transform: `translateY(${place.top}px)` }}
+    />,
+    place.host,
   )
 }

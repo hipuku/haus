@@ -256,8 +256,21 @@
   color: var(--haus-color-ink-link);
 }
 
-#nd-sidebar a[data-active='true'] {
-  border-inline-start-color: var(--haus-color-primary-default);
+/* The current page's rule is one travelling element, SidebarIndicator in
+   components/header-controls.tsx, rather than each link's own border. */
+.haus-sidebar-indicator {
+  background: var(--haus-color-primary-default);
+  inline-size: var(--haus-border-width-thick);
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.haus-sidebar-indicator[data-settled] {
+  transition:
+    transform var(--haus-motion-indicator-duration) var(--haus-motion-indicator-easing),
+    block-size var(--haus-motion-indicator-duration) var(--haus-motion-indicator-easing);
 }
 
 /* The top row's controls, after the wordmark. */
