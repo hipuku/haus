@@ -24,7 +24,6 @@ export function CopyPrompt({ prompt }: { prompt: string }) {
           setTimeout(() => setCopied(false), 2000)
         })
       }}
-      size="sm"
       variant="secondary"
     >
       {copied ? 'Copied' : 'Copy prompt'}

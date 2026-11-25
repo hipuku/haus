@@ -341,3 +341,10 @@ figure.shiki {
   display: inline-flex;
   position: relative;
 }
+
+/* In dark, inline code sits on surface-subtle, a step above the page:
+   surface-sunken, its light-mode ground, is a step below a page that is
+   already near black, and the difference could not be seen. */
+:root[data-theme='dark'] .prose :where(:not(pre) > code) {
+  background: var(--haus-color-surface-subtle);
+}

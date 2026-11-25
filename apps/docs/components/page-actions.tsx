@@ -25,7 +25,6 @@ export function PageActions({ markdownUrl, githubUrl }: { markdownUrl: string; g
           setCopied(true)
           setTimeout(() => setCopied(false), 2000)
         }}
-        size="sm"
         variant="secondary"
       >
         {copied ? 'Copied' : 'Copy Markdown'}
@@ -36,7 +35,6 @@ export function PageActions({ markdownUrl, githubUrl }: { markdownUrl: string; g
           aria-haspopup="menu"
           onClick={() => setOpen(o => !o)}
           ref={trigger}
-          size="sm"
           variant="secondary"
         >
           Open
