@@ -49,9 +49,6 @@ import styles from './wall.module.css'
  * - Checkbox `checked`: the box fills and the tick draws
  * - RadioGroup `value`: the dot grows in the newly chosen option
  * - Tabs `value`: the marker slides to the chosen tab
- * - Select: the panel opens, the highlight travels, the choice commits and the
- *   panel closes, driven through the Select's own click and pointer handlers
- *   because it has no prop that opens it
  * - Toast: each notice arrives on its entrance and leaves on its exit, which a
  *   caller runs by setting `data-state="closed"`, as Toast documents
  * - Spinner: spins
@@ -333,9 +330,11 @@ function Toolbar() {
 }
 
 /*
- * The first Select is used as a person would use it: it opens, the highlight
- * steps to the next format, that format is chosen and the panel closes. The
- * fields below are what the open panel lies over, inside the card.
+ * The Select holds still. Opening it, or moving its highlight, calls
+ * `scrollIntoView` on the highlighted option, which is right when a person is
+ * using it and wrong here: driven from a script it scrolled the page down to
+ * the wall on load, and scrolled the clipped column under the marquee, which
+ * read as the marquee restarting.
  */
 const FORMATS = [
   { label: 'CSS custom properties', value: 'css' },
@@ -343,30 +342,10 @@ const FORMATS = [
   { label: 'TypeScript', value: 'ts' },
 ]
 function Export() {
-  const [format, setFormat] = useState('css')
-  const current = useRef(format)
-  current.current = format
-  const ref = useRef<HTMLDivElement>(null)
-  const tick = useContext(Clock)
-  const step = Math.floor((tick + 6) / 4) % 4
-
-  useEffect(() => {
-    const root = ref.current
-    if (!root || tick === 0) return
-    const trigger = root.querySelector<HTMLElement>('[role="combobox"]')
-    const open = trigger?.getAttribute('aria-expanded') === 'true'
-    if (step === 1 && !open) trigger?.click()
-    if (step < 2 || !open) return
-    const options = [...root.querySelectorAll<HTMLElement>('[role="option"]')]
-    const next = options[(FORMATS.findIndex(f => f.value === current.current) + 1) % FORMATS.length]
-    if (step === 2) next?.dispatchEvent(new MouseEvent('mouseover', { bubbles: true, relatedTarget: root }))
-    if (step === 3) next?.click()
-  }, [step, tick])
-
   return (
     <Tile uses={['Select', 'Checkbox', 'Button']}>
-      <div className={styles.stack} ref={ref}>
-        <Select label="Export as" onChange={setFormat} options={FORMATS} value={format} />
+      <div className={styles.stack}>
+        <Select label="Export as" onChange={noop} options={FORMATS} value="css" />
         <Select label="Colour space" onChange={noop} options={[{ label: 'OKLCH', value: 'oklch' }]} value="oklch" />
         <Checkbox checked label="Include the dark mode" onChange={noop} />
         <Button variant="primary">Export</Button>
