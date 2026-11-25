@@ -18,8 +18,8 @@ even when the hex barely moves.
 ## @hipuku/tokens 5.3.0
 
 _Unreleased. `haus-tokens`, renamed, with motion roles and a dark mode. The dark mode makes this
-release a major (decision 0004). The manifest is set to 5.3.0, so the tag `tokens-v5.3.0` is what
-publishes it._
+release a major (decision 0004). `RELEASING.md` has the process: the first version of a new name is
+published by hand, and the tag workflow takes over after it._
 
 **Changed, breaking** · **A dark mode, on by default for users whose system is set to dark.**
 `index.css` now loads `brand-dark.css`, which gives every colour role a dark value under
