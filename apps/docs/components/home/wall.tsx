@@ -388,9 +388,12 @@ function Empty() {
       <div ref={stage}>
         <EmptyState
           action={
-            <Button data-demo="add" size="sm" variant="primary">
-              Add a colour
-            </Button>
+            <span className={styles.pointed}>
+              <Button data-demo="add" data-pseudo-hover="" size="sm" variant="primary">
+                Add a colour
+              </Button>
+              <Pointer />
+            </span>
           }
           description="Add by hex or extract from an image."
           headingLevel={3}
