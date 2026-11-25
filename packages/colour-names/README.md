@@ -1,5 +1,13 @@
 # haus-colour-names
 
+> **Replaced by [`@hipuku/colour`](https://www.npmjs.com/package/@hipuku/colour).** This is the final release of
+> `haus-colour-names`: it is unchanged in behaviour and exists to point here. Nothing is unpublished, so an
+> existing install keeps working, but new work should take `@hipuku/colour`.
+>
+> ```bash
+> npm install @hipuku/colour
+> ```
+
 31,900 named colours as data. No dependencies, no matching logic.
 
 The dataset is [meodai/color-names](https://github.com/meodai/color-names). This package
