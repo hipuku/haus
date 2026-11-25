@@ -16,12 +16,14 @@ const registry = JSON.parse(readFileSync(path.resolve(process.cwd(), '../../regi
   items: { name: string }[]
 }
 
-const served = new Set(registry.items.map(item => item.name))
+export const served = new Set(registry.items.map(item => item.name))
+
+// Item names are kebab case, so `RadioGroup` is `radio-group`. Lowercasing
+// alone gave `radiogroup`, which matches nothing.
+export const registryName = (name: string) => name.replace(/(?<!^)([A-Z])/g, '-$1').toLowerCase()
 
 export function Install({ name }: { name: string }) {
-  // Item names are kebab case, so `RadioGroup` is `radio-group`. Lowercasing
-  // alone gave `radiogroup`, which matches nothing.
-  const item = name.replace(/(?<!^)([A-Z])/g, '-$1').toLowerCase()
+  const item = registryName(name)
 
   if (!served.has(item)) {
     return (

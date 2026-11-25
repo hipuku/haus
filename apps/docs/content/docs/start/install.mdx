@@ -20,6 +20,30 @@ The `@hipuku` namespace goes in your `components.json`, once.
 }
 ```
 
+Components install under `components/haus/` in your source directory, and every example on these
+pages imports them through the `@/` alias, as shadcn does. A Next.js app has that alias already. A
+Vite app does not: add it to `tsconfig.app.json`, and to `vite.config.ts` so the build resolves it
+too.
+
+```json title="tsconfig.app.json"
+{
+  "compilerOptions": {
+    "paths": { "@/*": ["./src/*"] }
+  }
+}
+```
+
+```ts title="vite.config.ts"
+import path from 'node:path'
+import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite'
+
+export default defineConfig({
+  plugins: [react()],
+  resolve: { alias: { '@': path.resolve(__dirname, './src') } },
+})
+```
+
 The registry serves TypeScript. The files install exactly as written, so a project with
 `"tsx": false` in its `components.json` would receive TypeScript inside `.js` files and fail to
 build.
