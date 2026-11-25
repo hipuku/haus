@@ -181,7 +181,12 @@ export function PaletteAnalysis() {
                         <Swatch hex={fg} size="sm" /> <code>{fg}</code>
                       </th>
                       {hexes.map(bg => {
-                        if (fg === bg) return <td className={styles.same} key={bg}>Same</td>
+                        if (fg === bg)
+                          return (
+                            <td className={styles.same} key={bg}>
+                              Same
+                            </td>
+                          )
                         const pair = contrast(fg, bg)
                         if (!pair) return <td key={bg} />
                         const verdict = pair.passAAA ? 'AAA' : pair.passAA ? 'AA' : 'Fail'
