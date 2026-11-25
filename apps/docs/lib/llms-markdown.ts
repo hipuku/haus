@@ -14,6 +14,7 @@ const attributes = (tag: string) =>
 
 const cell = (text: string) =>
   text
+    .replace(/\\/g, '\\\\')
     .replace(/\|/g, '\\|')
     .replace(/\s*\n\s*/g, ' ')
     .trim()
