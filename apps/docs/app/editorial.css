@@ -54,8 +54,18 @@
  * component examples want the room; a paragraph does not, and at 900px it ran
  * past 120 characters a line. Only the text is held in; anything that is a
  * figure keeps the full column.
+ *
+ * `not-prose` is how a figure says it is one, and this rule did not honour it,
+ * so the measure reached inside the tools and the specimens. A panel's heading
+ * row is a div and spanned it, its rows are a `ul` and stopped at 70ch of
+ * body text, and its note is a `p` and stopped at 70ch of the smaller size:
+ * three widths in one card, none of them the card's. A figure sets its own
+ * measure, which is the box it is drawn in.
+ *
+ * The exclusion goes inside `:where` so the rule's specificity does not move,
+ * which is the same shape the inline-link rule above uses.
  */
-.prose :where(p, ul, ol, blockquote, h4, h5, h6) {
+.prose :where(p, ul, ol, blockquote, h4, h5, h6):where(:not(.not-prose, .not-prose *)) {
   max-width: var(--site-measure);
 }
 
