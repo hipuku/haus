@@ -2,6 +2,7 @@
 
 import { useRef, useState } from 'react'
 import { Button, Menu, MenuItem } from 'haus-components'
+import { CopyGlyph, Glyph, useCopied } from './copy'
 
 /*
  * The actions under a docs page's title, from haus's own Button and Menu
@@ -11,29 +12,10 @@ import { Button, Menu, MenuItem } from 'haus-components'
  * routes give an agent. Open lists the two places the page itself lives: its
  * source on GitHub and its markdown.
  */
-/* An icon beside a Button's label, by composition: Button lays its children
-   out in a row with its own gap, so the glyph needs only a size, icon-sm. */
-const Glyph = ({ d }: { d: string }) => (
-  <svg
-    aria-hidden="true"
-    className="haus-button-glyph"
-    fill="none"
-    stroke="currentColor"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    strokeWidth="2"
-    viewBox="0 0 24 24"
-  >
-    <path d={d} />
-  </svg>
-)
-export const COPY =
-  'M9 9h10a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H11a2 2 0 0 1-2-2zM5 15H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1'
 const CHEVRON = 'm6 9 6 6 6-6'
-export { Glyph }
 
 export function PageActions({ markdownUrl, githubUrl }: { markdownUrl: string; githubUrl: string }) {
-  const [copied, setCopied] = useState(false)
+  const { copied, copy } = useCopied()
   const [open, setOpen] = useState(false)
   const trigger = useRef<HTMLButtonElement>(null)
 
@@ -58,14 +40,12 @@ export function PageActions({ markdownUrl, githubUrl }: { markdownUrl: string; g
       <Button
         onClick={async () => {
           const text = await fetch(markdownUrl).then(response => response.text())
-          await navigator.clipboard.writeText(text)
-          setCopied(true)
-          setTimeout(() => setCopied(false), 2000)
+          await copy(text)
         }}
         variant="secondary"
       >
-        <Glyph d={COPY} />
-        {copied ? 'Copied' : 'Copy Markdown'}
+        <CopyGlyph copied={copied} />
+        Copy Markdown
       </Button>
     </>
   )

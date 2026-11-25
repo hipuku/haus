@@ -2,7 +2,7 @@
 
 import { Card, IconButton } from 'haus-components'
 import type { CSSProperties, ReactNode } from 'react'
-import { COPY, Glyph } from '../page-actions'
+import { CopyGlyph, useCopied } from '../copy'
 import styles from './tool.module.css'
 
 /*
@@ -128,11 +128,12 @@ export function CopyValue({
   text: string
   variant?: 'ghost' | 'secondary'
 }) {
+  const { copied, copy } = useCopied()
   return (
     <IconButton
-      icon={<Glyph d={COPY} />}
+      icon={<CopyGlyph copied={copied} />}
       label={`Copy ${text}`}
-      onClick={() => void navigator.clipboard?.writeText(text)}
+      onClick={() => void copy(text)}
       size={size}
       variant={variant}
     />
