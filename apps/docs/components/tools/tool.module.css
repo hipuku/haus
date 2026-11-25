@@ -276,3 +276,137 @@
   color: var(--haus-color-primary-on-subtle);
   font-family: var(--haus-font-mono);
 }
+
+/* The palette as a row of large chips. */
+.strip {
+  display: grid;
+  gap: var(--haus-space-2);
+  grid-template-columns: repeat(auto-fit, minmax(var(--haus-space-16), 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.strip li {
+  display: flex;
+  flex-direction: column;
+  gap: var(--haus-space-1);
+}
+
+.strip code,
+.ladderList code,
+.clusterItem code {
+  color: var(--haus-color-ink-secondary);
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-mono-xs-size);
+}
+
+/* Each colour placed along a track by its OKLCH lightness. */
+.ladder {
+  background: linear-gradient(to right, var(--haus-color-ink-primary), var(--haus-color-surface-default));
+  block-size: var(--haus-space-3);
+  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  border-radius: var(--haus-radius-pill);
+  margin-block: var(--haus-space-4);
+  position: relative;
+}
+
+.ladderMark {
+  block-size: var(--haus-space-6);
+  border: var(--haus-border-width-thick) solid var(--haus-color-surface-default);
+  border-radius: var(--haus-radius-pill);
+  box-shadow: 0 0 0 var(--haus-border-width-default) var(--haus-color-border-strong);
+  inline-size: var(--haus-space-6);
+  inset-block-start: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+.ladderList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--haus-space-2) var(--haus-space-5);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ladderList li {
+  align-items: center;
+  display: flex;
+  font-size: var(--haus-type-body-sm-size);
+  gap: var(--haus-space-2);
+}
+
+/* A group of colours that look alike. */
+.cluster {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--haus-space-3);
+}
+
+.clusterItem {
+  align-items: center;
+  display: inline-flex;
+  gap: var(--haus-space-2);
+}
+
+/* The contrast matrix: each cell a sample, its ratio and its verdict. */
+.matrix {
+  border-collapse: collapse;
+  font-size: var(--haus-type-body-sm-size);
+}
+
+.matrix th,
+.matrix td {
+  border: var(--haus-border-width-default) solid var(--haus-color-border-default);
+  padding: var(--haus-space-2);
+  text-align: start;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.matrix th {
+  background: var(--haus-color-surface-subtle);
+  font-weight: var(--haus-weight-regular);
+}
+
+.matrix th code {
+  font-family: var(--haus-font-mono);
+  font-size: var(--haus-type-mono-xs-size);
+}
+
+.matrix td {
+  font-family: var(--haus-font-mono);
+}
+
+.matrix td > span {
+  display: block;
+}
+
+.matrixSample {
+  border-radius: var(--haus-radius-marker);
+  font-family: var(--haus-font-sans);
+  font-weight: var(--haus-weight-semibold);
+  margin-block-end: var(--haus-space-1);
+  padding: 0 var(--haus-space-1);
+}
+
+.matrixVerdict {
+  font-size: var(--haus-type-mono-xs-size);
+}
+
+.matrix td[data-verdict='AAA'] .matrixVerdict,
+.matrix td[data-verdict='AA'] .matrixVerdict {
+  color: var(--haus-color-success-on-subtle);
+}
+
+.matrix td[data-verdict='Fail'] .matrixVerdict {
+  color: var(--haus-color-error-on-subtle);
+}
+
+.matrix td.same {
+  color: var(--haus-color-ink-tertiary);
+  font-family: var(--haus-font-sans);
+}
