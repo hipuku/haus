@@ -91,7 +91,7 @@ function MotionRow({ role, what }: { role: string; what: string }) {
           label={`Play ${role}`}
           onClick={() => setPlay(n => n + 1)}
           size="sm"
-          variant="ghost"
+          variant="secondary"
         />
         <code className={styles.name}>{role}</code>
         <span className={styles.what}>{what}</span>
