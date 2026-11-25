@@ -57,7 +57,7 @@ function neighbourhood(matches: NamedColourMatch[]): Bands {
  * The 31,900 names are close to 1MB, so they load on this page only.
  */
 export function InspectColour() {
-  const [input, setInput] = useState('#4f84ba')
+  const [input, setInput] = useState('#7653ab')
   const [matcher, setMatcher] = useState<Matcher | null>(null)
   const [failed, setFailed] = useState(false)
   const [attempt, setAttempt] = useState(0)

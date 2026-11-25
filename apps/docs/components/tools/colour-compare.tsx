@@ -32,8 +32,10 @@ const LEVELS = [
 ]
 
 export function CompareColours() {
-  const [a, setA] = useState('#3366cc')
-  const [b, setB] = useState('#f5f4f9')
+  /* A pair that is easy to tell apart and still fails as text, which is the
+     case the page exists to make. */
+  const [a, setA] = useState('#7653ab')
+  const [b, setB] = useState('#a98fcf')
   const ha = toHex(a)
   const hb = toHex(b)
 

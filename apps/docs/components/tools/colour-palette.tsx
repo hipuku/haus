@@ -61,7 +61,13 @@ function widest(members: string[]): number {
 }
 
 export function PaletteAnalysis() {
-  const [text, setText] = useState('#161616 #484848 #808080 #bebebe #ffffff #3366cc #3467cc #cc6633')
+  const [text, setText] = useState(
+    /* A twilight running into a sunset. Chosen so the page has something to
+       report in every panel: moderate lightness steps, moderate chroma, a 112
+       degree hue arc that turns back on itself, one grey by chroma, and two
+       groups that look alike, one of them a pair a reader would not catch. */
+    '#1b1033 #3b2167 #6b3fa0 #7653ab #a98fcf #ded4ee #dfd5ef #e08a5f',
+  )
   const hexes = useMemo(
     () => [
       ...new Set(

@@ -209,6 +209,12 @@
 .tableWrap {
   border: var(--haus-border-width-default) solid var(--haus-color-border-default);
   border-radius: var(--haus-radius-surface);
+  /* The frame hugs the table rather than the card. A matrix sized by its
+     content left a gap between its last column and a full-width frame, and
+     the cells give up their outer edges to that frame, so the gap read as a
+     column with no right-hand side. Capped at the card, where it scrolls. */
+  inline-size: max-content;
+  max-inline-size: 100%;
   overflow-x: auto;
 }
 
