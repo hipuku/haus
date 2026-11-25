@@ -8,7 +8,6 @@ import {
   useRef,
   useState,
   type ComponentType,
-  type CSSProperties,
   type ReactNode,
 } from 'react'
 import Link from 'next/link'
@@ -383,26 +382,34 @@ const COLUMNS: ComponentType[][] = [
 ]
 
 /*
- * One column of the marquee. The first set is measured, and the set is
- * repeated until one window plus one set is always covered, so the track can
- * move by exactly one set and restart on an identical frame. The duration
- * follows the set's height, so every column moves at the same speed.
+ * One column of the marquee. The first set is measured against the window,
+ * the fixed-height box the columns sit in, and repeated until one window plus
+ * one set is always covered, so the track can move by exactly one set and
+ * restart on an identical frame.
+ *
+ * The movement is a Web Animation with the distance in pixels, rather than a
+ * CSS animation reading a custom property in its keyframes, which browsers do
+ * not all resolve the same way. If the set's height ever changes, the new
+ * animation starts at the same fraction of the cycle as the old one, so the
+ * column carries on rather than starting over. The duration follows the
+ * height, so every column moves at one speed.
  */
-function Column({ tiles, still }: { tiles: ComponentType[]; still: boolean }) {
+function Column({ tiles, still, reverse }: { tiles: ComponentType[]; still: boolean; reverse: boolean }) {
   const column = useRef<HTMLDivElement>(null)
+  const track = useRef<HTMLDivElement>(null)
   const set = useRef<HTMLDivElement>(null)
-  const [size, setSize] = useState({ set: 0, copies: 1 })
+  const animation = useRef<Animation | null>(null)
+  const [size, setSize] = useState({ set: 0, copies: 0 })
 
   useLayoutEffect(() => {
     if (still || !column.current || !set.current) return
-    // The window is the fixed-height box the columns sit in, not the column:
-    // the column grows with every copy, and measuring it added copies without
-    // end.
     const frame = column.current.parentElement
     const measure = () => {
       const setHeight = set.current?.offsetHeight ?? 0
       const windowHeight = frame?.offsetHeight ?? 0
-      if (setHeight > 0) setSize({ set: setHeight, copies: Math.ceil(windowHeight / setHeight) + 1 })
+      if (setHeight === 0) return
+      const copies = Math.ceil(windowHeight / setHeight) + 1
+      setSize(old => (old.set === setHeight && old.copies === copies ? old : { set: setHeight, copies }))
     }
     measure()
     const observer = new ResizeObserver(measure)
@@ -411,16 +418,44 @@ function Column({ tiles, still }: { tiles: ComponentType[]; still: boolean }) {
     return () => observer.disconnect()
   }, [still])
 
-  const moving = !still && size.set > 0
-  const style = moving
-    ? ({ '--set-height': `${size.set}px`, '--wall-duration': `${size.set / SPEED}s` } as CSSProperties)
-    : undefined
+  useLayoutEffect(() => {
+    const el = track.current
+    if (still || !el || size.set === 0) return
+    const duration = (size.set / SPEED) * 1000
+    const previous = animation.current
+    const progress =
+      previous && previous.effect
+        ? ((previous.currentTime as number) ?? 0) / (previous.effect.getTiming().duration as number)
+        : 0
+    previous?.cancel()
+    const next = el.animate([{ transform: 'translateY(0)' }, { transform: `translateY(${-size.set}px)` }], {
+      direction: reverse ? 'reverse' : 'normal',
+      duration,
+      easing: 'linear',
+      iterations: Infinity,
+    })
+    next.currentTime = (progress % 1) * duration
+    animation.current = next
+    return () => {
+      // Kept for the next run to read its progress; cancelled only when the
+      // column stops moving.
+      if (still) next.cancel()
+    }
+  }, [size.set, still, reverse])
 
+  useEffect(() => {
+    if (still) {
+      animation.current?.cancel()
+      animation.current = null
+    }
+  }, [still])
+
+  const moving = !still && size.set > 0
   const scenes = (key: string) => tiles.map(Scene => <Scene key={`${key}-${Scene.name}`} />)
 
   return (
     <div className={styles.column} ref={column}>
-      <div className={styles.track} data-moving={moving || undefined} style={style}>
+      <div className={styles.track} ref={track}>
         <div className={styles.set} ref={set}>
           {scenes('a')}
         </div>
@@ -465,7 +500,7 @@ export function Wall() {
       <div className={styles.wall} data-haus-motion="expressive" data-still={still || undefined}>
         <div className={styles.columns}>
           {COLUMNS.map((tiles, i) => (
-            <Column key={i} still={still} tiles={tiles} />
+            <Column key={i} reverse={i % 2 === 1} still={still} tiles={tiles} />
           ))}
         </div>
       </div>

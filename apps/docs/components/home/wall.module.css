@@ -39,34 +39,13 @@
   overflow: hidden;
 }
 
-/*
- * The track holds one set of tiles and enough identical copies to keep the
- * window full, and moves by exactly one set's height, measured in
- * components/home/wall.tsx. At the end of a cycle the copy below sits where
- * the first set began, in the same state, so the restart is invisible. The
- * duration is set from the height, so the three columns move at one speed;
- * the middle one runs the other way.
- *
- * Nothing moves until the set has been measured.
- */
+/* The track holds one set of tiles and enough identical copies to keep the
+   window full. It is moved by a Web Animation in components/home/wall.tsx,
+   by exactly one set's height. */
 .track {
   display: flex;
   flex-direction: column;
-}
-
-.track[data-moving] {
-  animation: drift var(--wall-duration) var(--haus-ease-linear) infinite;
   will-change: transform;
-}
-
-.column:nth-child(2) .track[data-moving] {
-  animation-direction: reverse;
-}
-
-@keyframes drift {
-  to {
-    transform: translateY(calc(-1 * var(--set-height)));
-  }
 }
 
 /* Still, the wall is one set per column and no window, so nothing is cut. */
