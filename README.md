@@ -52,8 +52,10 @@ import '@hipuku/tokens/index.css'
 import 'haus-components/styles.css'
 ```
 
-Every component, foundation and package has a page at
-[docs.hipuku.dev](https://docs.hipuku.dev), with the tools that demonstrate them.
+Every component and every foundation has a page at
+[docs.hipuku.dev](https://docs.hipuku.dev), and so does each library package, with the tools that
+demonstrate them. The component library has no page of its own there: it is covered by Install and
+by the page for each component.
 
 React 18 or 19 is a peer dependency. The colour libraries install on their own: `@hipuku/colour`,
 which replaces `haus-colour-utils` and `haus-colour-names`, and `@hipuku/style-probe`, previously

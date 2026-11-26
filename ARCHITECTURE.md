@@ -57,7 +57,7 @@ boundary until the workspace is built; CI builds first for that reason.
 | Package               | Version | What it ships                                                                                                   | Depends on       | Built with |
 | --------------------- | ------- | --------------------------------------------------------------------------------------------------------------- | ---------------- | ---------- |
 | `@hipuku/tokens`      | 6.0.1   | Six stylesheets, the brand files, typed constants, DTCG JSON, and the token guard                               | nothing          | tsup       |
-| `haus-components`     | 3.2.0   | 23 React components and one stylesheet                                                                          | `@hipuku/tokens` | Vite, tsc  |
+| `haus-components`     | 3.2.0   | 23 components, one per directory, and one stylesheet                                                            | `@hipuku/tokens` | Vite, tsc  |
 | `@hipuku/colour`      | 0.1.1   | Contrast, CIEDE2000, clustering, name matching, OKLCH and hue families; 31,900 named colours on `/names`        | `chroma-js`      | tsc        |
 | `@hipuku/style-probe` | 1.0.2   | Computed-style extraction in the page, normalisation in Node                                                    | `@hipuku/colour` | tsup       |
 | `@hipuku/dtcg`        | 0.1.1   | Token conversion between DTCG, Figma, Tokens Studio and Tailwind v4, with a loss report, and the `dtcg` command | `culori`         | tsc        |
@@ -85,8 +85,8 @@ no meta-package ([decision 0007](./DESIGN.md#0007-meta-package)).
 flowchart LR
     T["@hipuku/tokens"]
     C["haus-components"]
-    U["@hipuku/colour"]
-    N["@hipuku/colour/names"]
+    U["haus-colour-utils"]
+    N["haus-colour-names"]
     P["@hipuku/style-probe"]
 
     CORE["core<br/><small>Next.js app</small>"]
@@ -111,8 +111,11 @@ flowchart LR
 | drift   | `haus-colour-utils` ^1.0.0, `haus-style-probe` ^1.0.0                        | Runs `extractRawElements` in each crawled page and `normaliseElement` on the result, then `clusterByPerceptualDistance`, `wcagContrast`, `deltaE` and `hueFamily` in its audit.                                                                                                                       |
 | maple   | `haus-colour-utils` ^1.0.0                                                   | `oklch`, `toHex` and `generateLightnessScale` build each client colour's scale, `deltaE` and `nearestNamedColour` name it, and `wcagContrast` checks its pairs. maple's repository is private, so it is not linked.                                                                                   |
 
-The products above still install the published `haus-colour-utils` and `haus-colour-names`, which in
-this repository are now `@hipuku/colour`. They move when it is published (plan steps 1.8 and 1.9).
+The products above still install `haus-colour-utils` and `haus-colour-names`, which are one package
+here and on npm: `@hipuku/colour`, with the names on its `/names` subpath. The old names are
+deprecated rather than unpublished, so those installs keep working until each product moves. The
+diagram above names the packages its edges describe, which is what those products install today,
+not what the workspace publishes under them.
 
 hexicon was a fifth until 2026-11-23. Its palette analysis moved into `@hipuku/colour` and the
 repository was archived, so it is no longer a consumer.
