@@ -42,3 +42,4 @@ figma/baseline.json
 # Test inputs: real exports in other tools' formats, read byte for byte by the
 # tests. Formatting one changes what is being tested.
 packages/*/src/fixtures/
+.vercel
