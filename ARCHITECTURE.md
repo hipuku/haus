@@ -287,7 +287,7 @@ relies on; neither is an implementation detail.
 | `@hipuku/tokens`      | 4          | 71    |
 | `@hipuku/colour`      | 4          | 73    |
 
-731 tests in Vitest. The component suites run in jsdom with `css: false`, so they assert markup,
+1168 tests in Vitest. The component suites run in jsdom with `css: false`, so they assert markup,
 behaviour and accessibility, not computed styles. `ssr.test.tsx` renders every component to a string
 in a Node environment, and `rsc-rules.test.tsx` checks the Server Component rule. Each package's
 `vitest.config.ts` sets coverage floors, and CI runs the suites with coverage so the floors are
