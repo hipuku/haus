@@ -54,18 +54,26 @@ boundary until the workspace is built; CI builds first for that reason.
 
 ## Packages
 
-| Package               | Version                     | What it ships                                                                                                   | Depends on       | Built with |
-| --------------------- | --------------------------- | --------------------------------------------------------------------------------------------------------------- | ---------------- | ---------- |
-| `@hipuku/tokens`      | 5.2.0 as `haus-tokens`      | Six stylesheets, the brand files, typed constants, DTCG JSON, and the token guard                               | nothing          | tsup       |
-| `haus-components`     | 3.2.0                       | 20 React components and one stylesheet                                                                          | `@hipuku/tokens` | Vite, tsc  |
-| `@hipuku/colour`      | 0.1.0, unreleased           | Contrast, CIEDE2000, clustering, name matching, OKLCH and hue families; 31,900 named colours on `/names`        | `chroma-js`      | tsc        |
-| `@hipuku/style-probe` | 1.0.0 as `haus-style-probe` | Computed-style extraction in the page, normalisation in Node                                                    | `@hipuku/colour` | tsup       |
-| `@hipuku/dtcg`        | 0.1.0, unreleased           | Token conversion between DTCG, Figma, Tokens Studio and Tailwind v4, with a loss report, and the `dtcg` command | `culori`         | tsc        |
+| Package               | Version | What it ships                                                                                                   | Depends on       | Built with |
+| --------------------- | ------- | --------------------------------------------------------------------------------------------------------------- | ---------------- | ---------- |
+| `@hipuku/tokens`      | 6.0.1   | Six stylesheets, the brand files, typed constants, DTCG JSON, and the token guard                               | nothing          | tsup       |
+| `haus-components`     | 3.2.0   | 23 React components and one stylesheet                                                                          | `@hipuku/tokens` | Vite, tsc  |
+| `@hipuku/colour`      | 0.1.1   | Contrast, CIEDE2000, clustering, name matching, OKLCH and hue families; 31,900 named colours on `/names`        | `chroma-js`      | tsc        |
+| `@hipuku/style-probe` | 1.0.2   | Computed-style extraction in the page, normalisation in Node                                                    | `@hipuku/colour` | tsup       |
+| `@hipuku/dtcg`        | 0.1.1   | Token conversion between DTCG, Figma, Tokens Studio and Tailwind v4, with a loss report, and the `dtcg` command | `culori`         | tsc        |
 
-The three `haus-*` packages publish ESM and CommonJS with their own types, and `main` points at the CommonJS build
-so a bundler or runtime that falls back to `main` gets a file it can load. The `@hipuku/*`
-packages are ESM only. `haus-components` has
-`react` and `react-dom` 18 or 19 as peers.
+Every package above is live on npm, released through CI with provenance. `@hipuku/tokens` and
+`haus-components` publish ESM and CommonJS with their own types, and `main` points at the
+CommonJS build so a bundler or runtime that falls back to `main` gets a file it can load. The
+other `@hipuku/*` packages are ESM only. `haus-components` has `react` and `react-dom` 18 or 19
+as peers.
+
+`@hipuku/config` 0.1.1 and `@hipuku/motion` 0.1.1 are live as well: shared tool configuration and
+the motion engine.
+
+The old names are deprecated, not unpublished: `haus-tokens` 5.2.1, `haus-colour-utils` 1.0.2,
+`haus-colour-names` 1.0.1 and `haus-style-probe` 1.0.1 each have a final release and still
+install, so a consumer on one keeps working until it moves.
 
 ## Consumers
 
@@ -77,8 +85,8 @@ no meta-package ([decision 0007](./DESIGN.md#0007-meta-package)).
 flowchart LR
     T["@hipuku/tokens"]
     C["haus-components"]
-    U["haus-colour-utils"]
-    N["haus-colour-names"]
+    U["@hipuku/colour"]
+    N["@hipuku/colour/names"]
     P["@hipuku/style-probe"]
 
     CORE["core<br/><small>Next.js app</small>"]
@@ -87,7 +95,7 @@ flowchart LR
     MAPLE["maple<br/><small>brand library for studios</small>"]
 
     T -- "brands/core.css" --> CORE
-    C -- "13 of 20" --> CORE
+    C -- "13 of 23" --> CORE
     T -- "brands/vault.css" --> VAULT
     U --> VAULT
     N --> VAULT
@@ -98,7 +106,7 @@ flowchart LR
 
 | Product | Packages                                                                     | How it uses them                                                                                                                                                                                                                                                                                      |
 | ------- | ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| core    | `haus-tokens` ^5.2.0, `haus-components` ^3.1.0                               | Imports the six token stylesheets and `brands/core.css`, then `haus-components/styles.css`. Renders 13 of the 20 components, including stateless ones from Server Components.                                                                                                                         |
+| core    | `haus-tokens` ^5.2.0, `haus-components` ^3.1.0                               | Imports the six token stylesheets and `brands/core.css`, then `haus-components/styles.css`. Renders 13 of the 23 components, including stateless ones from Server Components.                                                                                                                         |
 | vault   | `haus-tokens` ^5.2.0, `haus-colour-utils` ^1.0.0, `haus-colour-names` ^1.0.0 | Imports the token stylesheets and `brands/vault.css`, and builds its own components on the roles. Uses `hueFamily` to sort colours and the name data for its two-pass name search. Its side is in [vault's ARCHITECTURE.md](https://github.com/hipuku/vault/blob/main/ARCHITECTURE.md#haus-packages). |
 | drift   | `haus-colour-utils` ^1.0.0, `haus-style-probe` ^1.0.0                        | Runs `extractRawElements` in each crawled page and `normaliseElement` on the result, then `clusterByPerceptualDistance`, `wcagContrast`, `deltaE` and `hueFamily` in its audit.                                                                                                                       |
 | maple   | `haus-colour-utils` ^1.0.0                                                   | `oklch`, `toHex` and `generateLightnessScale` build each client colour's scale, `deltaE` and `nearestNamedColour` name it, and `wcagContrast` checks its pairs. maple's repository is private, so it is not linked.                                                                                   |
@@ -201,7 +209,7 @@ flowchart LR
 
 ## Colour utilities
 
-`haus-colour-utils` wraps `chroma-js` for the operations the products share: WCAG contrast with AA
+`@hipuku/colour` wraps `chroma-js` for the operations the products share: WCAG contrast with AA
 and AAA verdicts, CIEDE2000 distance, single-linkage clustering by perceptual distance, a lightness
 ramp, nearest named colour (CIE76 to shortlist, CIEDE2000 to rank), and OKLCH conversion with a
 hue family.
@@ -209,7 +217,7 @@ hue family.
 ### Hue families
 
 **Decision.** `hueFamily` bins OKLCH hue into eight families at boundaries fitted to named colours:
-the set that maximises mean per-family recall over 4,275 names from `haus-colour-names` whose names
+the set that maximises mean per-family recall over 4,275 names from the colour-name dataset whose names
 end in a family word. Two edges are set by hand. Orange ends at 72 rather than the fitted 70, so
 `#ffa500` stays orange. Hue 328 is purple, because purple and magenta cannot be separated by hue
 (`#800080` and `#ff00ff` are both at 328) and far more real colours there are called purple.

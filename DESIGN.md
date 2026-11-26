@@ -1,7 +1,7 @@
 # haus: design
 
 The design system itself: how the tokens are layered, how a brand is applied, the type system, how
-the 20 components are shaped, and what checks hold it together. The numbered rulings behind it are
+the 23 components are shaped, and what checks hold it together. The numbered rulings behind it are
 under [Decisions](#decisions), each with what it was chosen over and what it costs. The Figma file
 mirrors all of it:
 [haus Design System](https://www.figma.com/design/Qo23P38COlJrfQmlM39Fa3/haus-Design-System).

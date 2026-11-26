@@ -1,6 +1,6 @@
 # haus tokens
 
-`@hipuku/tokens` (on npm as `haus-tokens` until the new name is published) is the source of truth for every visual value in haus: colour,
+`@hipuku/tokens` is the source of truth for every visual value in haus: colour,
 type, space, radius, elevation, and motion. It ships as plain CSS custom
 properties (the runtime format) and a W3C Design Tokens JSON file (the handoff
 format for tooling). haus is **light-mode only**: there is no dark theme and no
