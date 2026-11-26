@@ -83,11 +83,11 @@ no meta-package ([decision 0007](./DESIGN.md#0007-meta-package)).
 ```mermaid
 %%{init: {'theme':'base','themeVariables':{'primaryColor':'#f6f3fc','primaryBorderColor':'#7653ab','primaryTextColor':'#111113','lineColor':'#807f85','secondaryColor':'#f5f4f9','tertiaryColor':'#ffffff','fontFamily':'Manrope, ui-sans-serif, system-ui','fontSize':'13px','clusterBkg':'#fcfbfe','clusterBorder':'#e7e7ed','titleColor':'#442a68','edgeLabelBackground':'#ffffff'},'themeCSS':'background-color:#ffffff;border-radius:8px;'}}%%
 flowchart LR
-    T["@hipuku/tokens"]
+    T["haus-tokens"]
     C["haus-components"]
     U["haus-colour-utils"]
     N["haus-colour-names"]
-    P["@hipuku/style-probe"]
+    P["haus-style-probe"]
 
     CORE["core<br/><small>Next.js app</small>"]
     VAULT["vault<br/><small>Electron app</small>"]
