@@ -7,6 +7,7 @@ libraries underneath. Light and dark modes; the product brands are light only.
 ![The haus Storybook: the Composition page, a sign-in form built from haus components, beside the token and component index](screenshots/storybook-composition.png)
 
 [![Case study on hipuku.dev](https://img.shields.io/badge/Case_study-hipuku.dev-7653AB?style=for-the-badge)](https://www.hipuku.dev/work/haus)
+[![Documentation](https://img.shields.io/badge/Docs-docs.hipuku.dev-7653AB?style=for-the-badge)](https://docs.hipuku.dev)
 [![Live Storybook](https://img.shields.io/badge/Live-Storybook-7653AB?logo=storybook&logoColor=white&style=for-the-badge)](https://haus.hipuku.dev)
 [![haus-components on npm](https://img.shields.io/npm/v/haus-components?label=npm&logo=npm&logoColor=white&color=7653AB&style=for-the-badge)](https://www.npmjs.com/package/haus-components)
 [![Figma file](https://img.shields.io/badge/Figma-1_file-7653AB?logo=figma&logoColor=white&style=for-the-badge)](https://www.figma.com/design/Qo23P38COlJrfQmlM39Fa3/haus-Design-System)
@@ -50,6 +51,11 @@ npm install @hipuku/tokens haus-components
 import '@hipuku/tokens/index.css'
 import 'haus-components/styles.css'
 ```
+
+Every component and every foundation has a page at
+[docs.hipuku.dev](https://docs.hipuku.dev), and so does each library package, with the tools that
+demonstrate them. The component library has no page of its own there: it is covered by Install and
+by the page for each component.
 
 React 18 or 19 is a peer dependency. The colour libraries install on their own: `@hipuku/colour`,
 which replaces `haus-colour-utils` and `haus-colour-names`, and `@hipuku/style-probe`, previously

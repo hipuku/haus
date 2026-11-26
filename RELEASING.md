@@ -37,7 +37,7 @@ new name, as for colour above. The first version of each new name is published b
 
 Until the new names are on npm, consumer-facing install text keeps the published names: the root
 README, Storybook's installation page, and the install and import examples in both packages'
-READMEs. `registry.json` keeps Badge's dependency on `haus-tokens@^5.2.0`. All of them switch at the
+READMEs. `registry.json` now depends on `@hipuku/tokens@^6.0.0`. All of them switched at the
 release.
 
 Every `@hipuku/*` manifest sets `publishConfig.provenance`. Provenance is generated in CI, so if the

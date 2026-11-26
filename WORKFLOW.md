@@ -78,7 +78,7 @@ found once the snapshot is refreshed.
 
 | Item               | Code                                                                      | Figma                                                 |
 | ------------------ | ------------------------------------------------------------------------- | ----------------------------------------------------- |
-| `token --haus-*`   | A custom property in `haus-tokens`, resolved to its final value           | A variable, by its code syntax, resolved              |
+| `token --haus-*`   | A custom property in `@hipuku/tokens`, resolved to its final value        | A variable, by its code syntax, resolved              |
 | `component Button` | A folder in `packages/components/src/components`                          | A component set                                       |
 | `axis Button.size` | A prop typed as a union of strings, or an alias for one                   | A variant property of the set                         |
 | `states Button`    | The `:hover`, `:active`, `:focus-visible` and `:disabled` rules it writes | The `Hover`, `Pressed`, `Focus` and `Disabled` states |
